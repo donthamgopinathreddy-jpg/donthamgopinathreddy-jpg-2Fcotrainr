@@ -109,9 +109,11 @@ const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType
 export default function Meals() {
   const [meals, setMeals] = useState<MealEntry[]>(DEMO_MEALS);
   const [showAddFood, setShowAddFood] = useState(false);
+  const [selectedFood, setSelectedFood] = useState<FoodInfo | null>(null);
   const [newFood, setNewFood] = useState({
     name: "",
     weight: "",
+    quantity: "",
     calories: "",
     protein: "",
     carbs: "",
