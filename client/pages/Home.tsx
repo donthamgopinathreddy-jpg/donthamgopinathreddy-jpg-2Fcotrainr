@@ -143,7 +143,10 @@ export default function Home() {
           </button>
 
           {/* Calories Progress */}
-          <div>
+          <button
+            onClick={() => navigate("/activity/calories")}
+            className="w-full text-left hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
+          >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Flame className="w-5 h-5 text-red-600" />
@@ -158,7 +161,7 @@ export default function Home() {
               />
             </div>
             <p className="text-xs text-gray-600 mt-1">{caloriesPercent}% of daily goal</p>
-          </div>
+          </button>
 
           {/* Water Intake Progress */}
           <div>
