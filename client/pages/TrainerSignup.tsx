@@ -16,7 +16,22 @@ interface TrainerFormData {
   gallery: File[];
 }
 
-const SPECIALTY_OPTIONS = ["Zumba", "CrossFit", "Boxing", "Yoga", "Strength", "Rehab"];
+const SPECIALTY_OPTIONS = [
+  "Gym",
+  "Yoga",
+  "CrossFit",
+  "Boxing",
+  "Zumba",
+  "Swimming",
+  "Pilates",
+  "HIIT",
+  "Aerobics",
+  "Dance",
+  "Martial Arts",
+  "Cycling",
+  "Running",
+  "Stretching",
+];
 
 export default function TrainerSignup() {
   const navigate = useNavigate();
