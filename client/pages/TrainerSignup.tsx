@@ -31,6 +31,7 @@ export default function TrainerSignup() {
     certifications: [],
     idProof: null,
     price: "",
+    gallery: [],
   });
 
   const toggleSpecialty = (specialty: string) => {
