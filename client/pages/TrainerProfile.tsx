@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, MapPin, Check, MessageCircle, Calendar } from "lucide-react";
-import GlassyTile from "@/components/GlassyTile";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Star, MapPin, Check, MessageCircle } from "lucide-react";
 
 interface TrainerDetails {
   id: string;
