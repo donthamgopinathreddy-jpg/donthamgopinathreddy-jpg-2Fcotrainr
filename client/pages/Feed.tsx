@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Heart, MessageCircle, Share2, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Heart, MessageCircle, Share2, Plus, UserPlus, UserCheck } from "lucide-react";
 
 interface Post {
   id: string;
@@ -12,6 +13,7 @@ interface Post {
   comments: number;
   shares: number;
   liked: boolean;
+  followed: boolean;
   createdAt: string;
 }
 
@@ -27,6 +29,7 @@ const DEMO_POSTS: Post[] = [
     comments: 47,
     shares: 23,
     liked: false,
+    followed: false,
     createdAt: "2 hours ago",
   },
   {
@@ -40,6 +43,7 @@ const DEMO_POSTS: Post[] = [
     comments: 28,
     shares: 12,
     liked: true,
+    followed: false,
     createdAt: "4 hours ago",
   },
   {
@@ -52,6 +56,7 @@ const DEMO_POSTS: Post[] = [
     comments: 89,
     shares: 156,
     liked: false,
+    followed: false,
     createdAt: "6 hours ago",
   },
   {
@@ -65,11 +70,13 @@ const DEMO_POSTS: Post[] = [
     comments: 52,
     shares: 34,
     liked: false,
+    followed: false,
     createdAt: "8 hours ago",
   },
 ];
 
 export default function Feed() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<Post[]>(DEMO_POSTS);
   const [showNewPost, setShowNewPost] = useState(false);
   const [newPostContent, setNewPostContent] = useState("");
@@ -86,6 +93,23 @@ export default function Feed() {
           : post
       )
     );
+  };
+
+  const toggleFollow = (postId: string) => {
+    setPosts(
+      posts.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              followed: !post.followed,
+            }
+          : post
+      )
+    );
+  };
+
+  const handleAuthorClick = (authorName: string) => {
+    navigate(`/profile/${authorName.toLowerCase().replace(/\s+/g, "-")}`);
   };
 
   const handleNewPost = () => {
@@ -168,15 +192,43 @@ export default function Feed() {
             >
               {/* Post Header */}
               <div className="px-4 pt-4 pb-3 flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-sm">
+                <button
+                  onClick={() => handleAuthorClick(post.authorName)}
+                  className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-sm hover:ring-2 hover:ring-primary/50 transition-all flex-shrink-0"
+                >
                   {post.authorAvatar}
-                </div>
-                <div className="flex-1">
-                  <p className="font-bold text-foreground text-sm">{post.authorName}</p>
+                </button>
+                <div className="flex-1 min-w-0">
+                  <button
+                    onClick={() => handleAuthorClick(post.authorName)}
+                    className="font-bold text-foreground text-sm hover:text-primary transition-colors text-left"
+                  >
+                    {post.authorName}
+                  </button>
                   <p className="text-xs text-muted-foreground">
                     {post.authorRole === "trainer" ? "🏋️ Trainer" : "👤 Client"} • {post.createdAt}
                   </p>
                 </div>
+                <button
+                  onClick={() => toggleFollow(post.id)}
+                  className={`flex items-center gap-1 px-3 py-1 rounded-lg font-semibold text-xs transition-all flex-shrink-0 ${
+                    post.followed
+                      ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-blue-600 text-white hover:bg-blue-700"
+                  }`}
+                >
+                  {post.followed ? (
+                    <>
+                      <UserCheck className="w-4 h-4" />
+                      Following
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="w-4 h-4" />
+                      Follow
+                    </>
+                  )}
+                </button>
               </div>
 
               {/* Post Content */}
