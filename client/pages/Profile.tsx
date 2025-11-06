@@ -18,7 +18,7 @@ export default function Profile() {
         </div>
 
         {/* Profile Content */}
-        <div className="px-4 py-8 space-y-4">
+        <div className="px-4 py-8 space-y-6">
           {/* Stats */}
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-card rounded-xl p-4 border border-border text-center">
@@ -35,8 +35,17 @@ export default function Profile() {
             </div>
           </div>
 
+          {/* Join as Trainer CTA */}
+          <GlassyTile
+            icon={<Briefcase className="w-8 h-8" />}
+            title="Become a Trainer"
+            subtitle="Share your expertise and earn"
+            onClick={() => navigate("/trainer-signup")}
+            variant="primary"
+          />
+
           {/* Menu Items */}
-          <div className="space-y-2 mt-8">
+          <div className="space-y-2">
             <button className="w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:bg-muted transition-colors">
               <Edit2 className="w-5 h-5 text-muted-foreground" />
               <span className="font-medium">Edit Profile</span>
