@@ -228,26 +228,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const demoMode = async () => {
+  const demoMode = async (role: "client" | "trainer" = "client") => {
     try {
       // Create a demo user object
       const demoUser: DemoUser = {
         id: "demo-user-" + Math.random().toString(36).substring(7),
-        email: "demo@cotrainr.app",
+        email: role === "trainer" ? "demo-trainer@cotrainr.app" : "demo@cotrainr.app",
         user_metadata: {
-          username: "demo_user",
-          full_name: "Demo User",
-          role: "client",
+          username: role === "trainer" ? "demo_trainer" : "demo_user",
+          full_name: role === "trainer" ? "Demo Trainer" : "Demo User",
+          role,
         },
       };
 
       const demoProfile: UserProfile = {
         id: demoUser.id,
-        username: "demo_user",
-        full_name: "Demo User",
-        email: "demo@cotrainr.app",
-        role: "client",
-        gender: "male",
+        username: role === "trainer" ? "demo_trainer" : "demo_user",
+        full_name: role === "trainer" ? "Demo Trainer" : "Demo User",
+        email: role === "trainer" ? "demo-trainer@cotrainr.app" : "demo@cotrainr.app",
+        role,
+        gender: role === "trainer" ? "male" : "male",
         weight_kg: 75,
         height_cm: 180,
       };
