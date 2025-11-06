@@ -365,26 +365,48 @@ export default function Meals() {
                 />
                 {suggestions.length > 0 && (
                   <div className="absolute z-10 top-full left-0 right-0 bg-white border border-border rounded-lg mt-1 shadow-lg">
-                    {suggestions.map((food) => (
-                      <button
-                        key={food}
-                        onClick={() => handleSelectSuggestion(food)}
-                        className="w-full text-left px-3 py-2 hover:bg-primary/10 text-sm text-foreground first:rounded-t-lg last:rounded-b-lg transition-colors capitalize"
-                      >
-                        {food}
-                      </button>
-                    ))}
+                    {suggestions.map((food) => {
+                      const foodInfo = FOOD_DATABASE[food.toLowerCase()];
+                      return (
+                        <button
+                          key={food}
+                          onClick={() => handleSelectSuggestion(food)}
+                          className="w-full text-left px-3 py-2 hover:bg-primary/10 text-sm text-foreground first:rounded-t-lg last:rounded-b-lg transition-colors capitalize"
+                        >
+                          <div className="flex justify-between items-center">
+                            <span>{food}</span>
+                            {foodInfo.inputType === "quantity" && (
+                              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">
+                                {foodInfo.unitName}
+                              </span>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
               </div>
 
-              <input
-                type="number"
-                placeholder="Weight (grams)"
-                value={newFood.weight}
-                onChange={(e) => handleWeightChange(e.target.value)}
-                className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
-              />
+              {selectedFood && (
+                selectedFood.inputType === "quantity" ? (
+                  <input
+                    type="number"
+                    placeholder={`Quantity (${selectedFood.unitName})`}
+                    value={newFood.quantity}
+                    onChange={(e) => handleQuantityChange(e.target.value)}
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  />
+                ) : (
+                  <input
+                    type="number"
+                    placeholder="Weight (grams)"
+                    value={newFood.weight}
+                    onChange={(e) => handleWeightChange(e.target.value)}
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  />
+                )
+              )}
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2">
                 <p className="text-xs font-semibold text-blue-900">Auto-calculated nutrition:</p>
