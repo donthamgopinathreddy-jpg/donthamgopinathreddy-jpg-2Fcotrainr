@@ -291,21 +291,58 @@ export default function Meals() {
             <div className="bg-card border border-border rounded-xl p-4 space-y-3">
               <h3 className="font-bold text-foreground">Add Meal</h3>
 
-              <input
-                type="text"
-                placeholder="Food name (e.g., Chicken Rice)"
-                value={newFood.name}
-                onChange={(e) => setNewFood((prev) => ({ ...prev, name: e.target.value }))}
-                className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Food name (e.g., Chicken, Rice, Eggs)"
+                  value={newFood.name}
+                  onChange={(e) => handleFoodNameChange(e.target.value)}
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                />
+                {suggestions.length > 0 && (
+                  <div className="absolute z-10 top-full left-0 right-0 bg-white border border-border rounded-lg mt-1 shadow-lg">
+                    {suggestions.map((food) => (
+                      <button
+                        key={food}
+                        onClick={() => handleSelectSuggestion(food)}
+                        className="w-full text-left px-3 py-2 hover:bg-primary/10 text-sm text-foreground first:rounded-t-lg last:rounded-b-lg transition-colors capitalize"
+                      >
+                        {food}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <input
                 type="number"
-                placeholder="Calories"
-                value={newFood.calories}
-                onChange={(e) => setNewFood((prev) => ({ ...prev, calories: e.target.value }))}
+                placeholder="Weight (grams)"
+                value={newFood.weight}
+                onChange={(e) => handleWeightChange(e.target.value)}
                 className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
               />
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2">
+                <p className="text-xs font-semibold text-blue-900">Auto-calculated nutrition:</p>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <p className="text-blue-700 font-medium">{newFood.calories || "0"} cal</p>
+                  </div>
+                  <div>
+                    <p className="text-blue-700 font-medium">P: {newFood.protein || "0"}g</p>
+                  </div>
+                  <div>
+                    <p className="text-blue-700 font-medium">C: {newFood.carbs || "0"}g</p>
+                  </div>
+                  <div>
+                    <p className="text-blue-700 font-medium">F: {newFood.fat || "0"}g</p>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-xs text-muted-foreground">
+                💡 Type a food name and weight to auto-calculate nutrition. Can be manually edited.
+              </p>
 
               <div className="grid grid-cols-3 gap-2">
                 <input
@@ -313,34 +350,38 @@ export default function Meals() {
                   placeholder="Protein (g)"
                   value={newFood.protein}
                   onChange={(e) => setNewFood((prev) => ({ ...prev, protein: e.target.value }))}
-                  className="w-full bg-background border border-border rounded-lg px-2 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className="w-full bg-background border border-border rounded-lg px-2 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-xs"
                 />
                 <input
                   type="number"
                   placeholder="Carbs (g)"
                   value={newFood.carbs}
                   onChange={(e) => setNewFood((prev) => ({ ...prev, carbs: e.target.value }))}
-                  className="w-full bg-background border border-border rounded-lg px-2 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className="w-full bg-background border border-border rounded-lg px-2 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-xs"
                 />
                 <input
                   type="number"
                   placeholder="Fat (g)"
                   value={newFood.fat}
                   onChange={(e) => setNewFood((prev) => ({ ...prev, fat: e.target.value }))}
-                  className="w-full bg-background border border-border rounded-lg px-2 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className="w-full bg-background border border-border rounded-lg px-2 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-xs"
                 />
               </div>
 
               <div className="flex gap-2">
                 <button
-                  onClick={() => setShowAddFood(false)}
+                  onClick={() => {
+                    setShowAddFood(false);
+                    setNewFood({ name: "", weight: "", calories: "", protein: "", carbs: "", fat: "" });
+                    setSuggestions([]);
+                  }}
                   className="flex-1 bg-muted text-muted-foreground font-medium py-2 rounded-lg hover:bg-muted/80 transition-colors text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleAddMeal}
-                  disabled={!newFood.name || !newFood.calories}
+                  disabled={!newFood.name || !newFood.weight}
                   className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity text-sm"
                 >
                   Save Meal
