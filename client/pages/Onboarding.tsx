@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight, ArrowLeft } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
@@ -21,7 +21,17 @@ interface FormData {
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { signUp, demoMode } = useAuth();
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading authentication...</p>
+      </div>
+    );
+  }
+
+  const { signUp, demoMode } = authContext;
   const [step, setStep] = useState<OnboardingStep>("welcome");
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
