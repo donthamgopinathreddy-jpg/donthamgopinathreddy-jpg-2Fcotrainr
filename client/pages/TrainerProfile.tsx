@@ -202,20 +202,96 @@ export default function TrainerProfile() {
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <button
-              onClick={handleTry10Min}
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all"
-            >
-              <span>📹</span>
-              Video Call
-            </button>
+          <div className="space-y-3 mb-6">
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={handleTry10Min}
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all"
+              >
+                <span>📹</span>
+                Video Call
+              </button>
 
-            <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all">
-              <MessageCircle className="w-5 h-5" />
-              Chat
+              <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all">
+                <MessageCircle className="w-5 h-5" />
+                Chat
+              </button>
+            </div>
+
+            <button
+              onClick={() => setShowBookingModal(true)}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all flex items-center justify-center gap-2"
+            >
+              <Calendar className="w-5 h-5" />
+              Book Full Session
             </button>
           </div>
+
+          {/* Booking Modal */}
+          {showBookingModal && (
+            <div className="fixed inset-0 bg-black/50 flex items-end z-50">
+              <div className="w-full bg-card border-t border-border rounded-t-2xl p-6 space-y-4 max-h-96 overflow-y-auto">
+                <h3 className="font-bold text-lg text-foreground">Book a Session</h3>
+
+                {/* Date Selection */}
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-2">Select Date</p>
+                  <div className="flex gap-2 overflow-x-auto pb-2">
+                    {["Today", "Tomorrow", "Mon", "Tue", "Wed"].map((day) => (
+                      <button
+                        key={day}
+                        onClick={() => setSelectedDate(day)}
+                        className={`px-4 py-2 rounded-lg whitespace-nowrap font-medium transition-all ${
+                          selectedDate === day
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground hover:border-primary"
+                        }`}
+                      >
+                        {day}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Time Selection */}
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-2">Select Time</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {TIME_SLOTS.map((time) => (
+                      <button
+                        key={time}
+                        onClick={() => setSelectedTime(time)}
+                        className={`py-2 rounded-lg font-medium text-sm transition-all ${
+                          selectedTime === time
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground hover:border-primary border border-transparent"
+                        }`}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Confirm Button */}
+                <div className="flex gap-2 pt-4">
+                  <button
+                    onClick={() => setShowBookingModal(false)}
+                    className="flex-1 bg-muted text-muted-foreground font-medium py-3 rounded-lg hover:bg-muted/80 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleBookSession}
+                    disabled={!selectedTime}
+                    className="flex-1 bg-primary text-primary-foreground font-bold py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                  >
+                    Confirm Booking
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
