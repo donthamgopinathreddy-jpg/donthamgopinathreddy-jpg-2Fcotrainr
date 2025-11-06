@@ -40,6 +40,11 @@ const MOCK_TRAINER: TrainerDetails = {
   ],
   specialties: ["Strength Training", "Muscle Building", "Weight Loss"],
   totalSessions: 245,
+  certifications: [
+    "Certified Personal Trainer (NASM)",
+    "Strength and Conditioning Specialist",
+    "Nutrition Certification",
+  ],
 };
 
 export default function TrainerProfile() {
