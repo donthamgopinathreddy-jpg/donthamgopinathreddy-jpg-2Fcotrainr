@@ -6,11 +6,26 @@ import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare,
 import { useTrainerClients } from "@/hooks/useTrainerClients";
 
 // Sample posts data
-const LATEST_POSTS = [
+interface PostData {
+  id: string;
+  authorName: string;
+  authorRole: "trainer" | "client";
+  authorAvatar: string;
+  content: string;
+  image?: string;
+  likes: number;
+  comments: number;
+  shares: number;
+  liked: boolean;
+  followed: boolean;
+  createdAt: string;
+}
+
+const LATEST_POSTS: PostData[] = [
   {
     id: "1",
     authorName: "Priya Singh",
-    authorRole: "trainer" as const,
+    authorRole: "trainer",
     authorAvatar: "PS",
     content: "🔥 New transformation! Check out my client Rahul's amazing 12-week journey. Consistency is key! #FitnessJourney",
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=500&fit=crop",
@@ -18,12 +33,13 @@ const LATEST_POSTS = [
     comments: 47,
     shares: 23,
     liked: false,
+    followed: false,
     createdAt: "2 hours ago",
   },
   {
     id: "2",
     authorName: "Amit Kumar",
-    authorRole: "client" as const,
+    authorRole: "client",
     authorAvatar: "AK",
     content: "Day 30 of my fitness journey! Started with my trainer Raj at CrossFit. Already seeing results 💪",
     image: "https://images.unsplash.com/photo-1552672260-7bdde322fa4f?w=500&h=500&fit=crop",
@@ -31,18 +47,20 @@ const LATEST_POSTS = [
     comments: 28,
     shares: 12,
     liked: true,
+    followed: false,
     createdAt: "4 hours ago",
   },
   {
     id: "3",
     authorName: "Neha Verma",
-    authorRole: "trainer" as const,
+    authorRole: "trainer",
     authorAvatar: "NV",
     content: "💡 Tip: Start your workout with a 5-min warm-up. It increases blood flow and prevents injuries. Tag someone who needs this!",
     likes: 542,
     comments: 89,
     shares: 156,
     liked: false,
+    followed: false,
     createdAt: "6 hours ago",
   },
 ];
@@ -59,6 +77,7 @@ export default function TrainerHome() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const view = searchParams.get("view") || "stats";
+  const [latestPosts, setLatestPosts] = useState<PostData[]>(LATEST_POSTS);
 
   const [coverImage, setCoverImage] = useState(
     "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop"
@@ -319,7 +338,7 @@ export default function TrainerHome() {
                 </button>
               </div>
               <div className="space-y-3">
-                {LATEST_POSTS.slice(0, 3).map((post) => (
+                {latestPosts.slice(0, 3).map((post) => (
                   <div
                     key={post.id}
                     className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-md transition-all"
@@ -327,18 +346,47 @@ export default function TrainerHome() {
                     {/* Post Header */}
                     <div className="p-4">
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 flex items-center justify-center text-white font-bold text-sm">
+                        <button
+                          onClick={() => navigate(`/profile/${post.authorName.toLowerCase().replace(/\s+/g, "-")}`)}
+                          className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 flex items-center justify-center text-white font-bold text-sm hover:ring-2 hover:ring-orange-300 transition-all flex-shrink-0"
+                        >
                           {post.authorAvatar}
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900 text-sm">{post.authorName}</p>
+                        </button>
+                        <div className="flex-1 min-w-0">
+                          <button
+                            onClick={() => navigate(`/profile/${post.authorName.toLowerCase().replace(/\s+/g, "-")}`)}
+                            className="font-semibold text-gray-900 text-sm hover:text-blue-600 transition-colors text-left"
+                          >
+                            {post.authorName}
+                          </button>
                           <p className="text-xs text-gray-500">{post.createdAt}</p>
                         </div>
-                        {post.authorRole === "trainer" && (
-                          <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-semibold">
-                            Trainer
-                          </span>
-                        )}
+                        <button
+                          onClick={() =>
+                            setLatestPosts(
+                              latestPosts.map((p) =>
+                                p.id === post.id ? { ...p, followed: !p.followed } : p
+                              )
+                            )
+                          }
+                          className={`flex items-center gap-1 px-2 py-1 rounded-lg font-semibold text-xs transition-all flex-shrink-0 ${
+                            post.followed
+                              ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                              : "bg-blue-600 text-white hover:bg-blue-700"
+                          }`}
+                        >
+                          {post.followed ? (
+                            <>
+                              <UserCheck className="w-3 h-3" />
+                              Following
+                            </>
+                          ) : (
+                            <>
+                              <Users className="w-3 h-3" />
+                              Follow
+                            </>
+                          )}
+                        </button>
                       </div>
 
                       {/* Post Content */}
