@@ -138,12 +138,15 @@ export default function Home() {
         </div>
 
         {/* Promo Card */}
-        <div className="bg-gradient-to-br from-orange-500/20 via-yellow-500/20 to-orange-400/20 rounded-2xl p-6 border border-orange-500/30 backdrop-blur">
-          <h3 className="text-lg font-bold text-foreground mb-2">Unlock Premium</h3>
-          <p className="text-sm text-muted-foreground mb-4">
+        <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 border border-purple-200">
+          <h3 className="text-lg font-bold text-gray-900 mb-2">Unlock Premium</h3>
+          <p className="text-sm text-gray-700 mb-4">
             Unlimited video sessions, full meal tracking, and priority chat support.
           </p>
-          <button className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all">
+          <button
+            onClick={() => navigate("/subscription")}
+            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:opacity-90 transition-all"
+          >
             Subscribe ₹199/mo
           </button>
         </div>
