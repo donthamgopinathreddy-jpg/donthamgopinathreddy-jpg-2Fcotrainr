@@ -1,5 +1,5 @@
 interface LogoProps {
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
   className?: string;
 }
 
@@ -7,6 +7,8 @@ const sizeMap = {
   sm: "h-8 w-auto",
   md: "h-12 w-auto",
   lg: "h-16 w-auto",
+  xl: "h-24 w-auto",
+  "2xl": "h-32 w-auto",
 };
 
 export default function Logo({ size = "md", className }: LogoProps) {
