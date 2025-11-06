@@ -139,18 +139,18 @@ export default function Home() {
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Flame className="w-5 h-5 text-orange-500" />
-                <span className="font-semibold text-foreground">Calories</span>
+                <Flame className="w-5 h-5 text-red-600" />
+                <span className="font-semibold text-gray-900">Calories</span>
               </div>
-              <span className="text-sm font-bold text-primary">{caloriesConsumed} / {caloriesGoal}</span>
+              <span className="text-sm font-bold text-red-600">{caloriesConsumed} / {caloriesGoal}</span>
             </div>
-            <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-400 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-red-600 via-red-500 to-red-600 transition-all duration-500 shadow-lg shadow-red-600/50"
                 style={{ width: `${Math.min(caloriesPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">{caloriesPercent}% of daily goal</p>
+            <p className="text-xs text-gray-600 mt-1">{caloriesPercent}% of daily goal</p>
           </div>
 
           {/* Water Intake Progress */}
