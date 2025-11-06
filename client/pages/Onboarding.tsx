@@ -132,7 +132,7 @@ export default function Onboarding() {
       {step === "welcome" && (
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
           <div className="mb-8">
-            <Logo size="lg" className="mx-auto mb-6" />
+            <Logo size="2xl" className="mx-auto mb-6" />
             <p className="text-muted-foreground text-lg">
               Your personal fitness companion
             </p>
@@ -302,7 +302,7 @@ export default function Onboarding() {
             </div>
 
             <GlassyTile
-              icon={<span className="text-4xl">🏋️</span>}
+              icon={<Users className="w-8 h-8 text-cyan-600" />}
               title="I'm a Client"
               subtitle="I want to find trainers and improve my fitness"
               onClick={() => handleRoleSelect("client")}
@@ -311,13 +311,57 @@ export default function Onboarding() {
             />
 
             <GlassyTile
-              icon={<span className="text-4xl">👨‍🏫</span>}
+              icon={<Award className="w-8 h-8 text-amber-600" />}
               title="I'm a Trainer"
               subtitle="I want to share my expertise and earn"
               onClick={() => handleRoleSelect("trainer")}
               className="text-left cursor-pointer"
               variant="secondary"
             />
+          </div>
+        </div>
+      )}
+
+      {/* Permissions Step */}
+      {step === "permissions" && (
+        <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
+          <div className="max-w-md w-full space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-2">Enable Permissions</h2>
+              <p className="text-muted-foreground mb-6">
+                To provide the best experience, we need access to:
+              </p>
+              <ul className="text-left space-y-3 mb-8 text-sm">
+                <li className="flex items-center gap-3 text-foreground">
+                  <span className="text-orange-500 font-bold">✓</span>
+                  <span><strong>Location</strong> - Find nearby trainers</span>
+                </li>
+                <li className="flex items-center gap-3 text-foreground">
+                  <span className="text-orange-500 font-bold">✓</span>
+                  <span><strong>Camera</strong> - Video training sessions</span>
+                </li>
+                <li className="flex items-center gap-3 text-foreground">
+                  <span className="text-orange-500 font-bold">✓</span>
+                  <span><strong>Microphone</strong> - Audio during calls</span>
+                </li>
+              </ul>
+            </div>
+
+            <button
+              onClick={handlePermissionsAllow}
+              disabled={loading || permissionLoading}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-orange-500/30 transition-all"
+            >
+              {permissionLoading ? "Requesting..." : "Enable Permissions"}
+            </button>
+
+            <button
+              onClick={handlePermissionsSkip}
+              disabled={loading}
+              className="w-full bg-gray-100 text-gray-900 font-bold py-4 rounded-xl hover:bg-gray-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? "Creating account..." : "Skip for Now"}
+            </button>
           </div>
         </div>
       )}
