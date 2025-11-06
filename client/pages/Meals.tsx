@@ -57,36 +57,53 @@ const DEMO_MEALS: MealEntry[] = [
 ];
 
 // Function to find closest food match and calculate macros
-const calculateMacrosFromFood = (foodName: string, weight: number) => {
+const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType: "weight" | "quantity" = "weight") => {
   const normalizedFood = foodName.toLowerCase().trim();
 
   // Try exact match first
   if (FOOD_DATABASE[normalizedFood]) {
     const food = FOOD_DATABASE[normalizedFood];
-    const multiplier = weight / 100;
+    let weightInGrams = inputValue;
+
+    // If input is quantity and food has unitWeight, convert to grams
+    if (inputType === "quantity" && food.inputType === "quantity" && food.unitWeight) {
+      weightInGrams = inputValue * food.unitWeight;
+    }
+
+    const multiplier = weightInGrams / 100;
     return {
       calories: Math.round(food.calories * multiplier),
       protein: Math.round(food.protein * multiplier * 10) / 10,
       carbs: Math.round(food.carbs * multiplier * 10) / 10,
       fat: Math.round(food.fat * multiplier * 10) / 10,
+      inputType: food.inputType,
+      unitName: food.unitName,
     };
   }
 
   // Try partial match
   for (const [key, value] of Object.entries(FOOD_DATABASE)) {
     if (normalizedFood.includes(key) || key.includes(normalizedFood)) {
-      const multiplier = weight / 100;
+      let weightInGrams = inputValue;
+
+      if (inputType === "quantity" && value.inputType === "quantity" && value.unitWeight) {
+        weightInGrams = inputValue * value.unitWeight;
+      }
+
+      const multiplier = weightInGrams / 100;
       return {
         calories: Math.round(value.calories * multiplier),
         protein: Math.round(value.protein * multiplier * 10) / 10,
         carbs: Math.round(value.carbs * multiplier * 10) / 10,
         fat: Math.round(value.fat * multiplier * 10) / 10,
+        inputType: value.inputType,
+        unitName: value.unitName,
       };
     }
   }
 
   // Default values if not found
-  return { calories: 0, protein: 0, carbs: 0, fat: 0 };
+  return { calories: 0, protein: 0, carbs: 0, fat: 0, inputType: "weight", unitName: undefined };
 };
 
 export default function Meals() {
