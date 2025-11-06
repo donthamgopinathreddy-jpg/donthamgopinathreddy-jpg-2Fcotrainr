@@ -213,7 +213,7 @@ export default function Home() {
           {/* Join as Trainer CTA */}
           <div
             onClick={() => navigate("/trainer-signup")}
-            className="relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-lg hover:shadow-2xl"
+            className="relative overflow-hidden rounded-2xl p-4 py-5 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-lg hover:shadow-2xl"
             style={{
               background: "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 25%, #FFA502 50%, #FFB700 75%, #FF6B6B 100%)",
               backgroundSize: "300% 300%",
@@ -226,16 +226,37 @@ export default function Home() {
                 50% { background-position: 100% 50%; }
                 100% { background-position: 0% 50%; }
               }
+              .trainer-cta::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 120px;
+                height: 120px;
+                background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.1) 50%);
+                opacity: 0.5;
+                pointer-events: none;
+              }
+              .trainer-cta::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 120px;
+                height: 120px;
+                background: linear-gradient(135deg, rgba(255,255,255,0.15) 50%, transparent 50%);
+                pointer-events: none;
+              }
             `}</style>
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50" />
+            <div className="absolute inset-0 trainer-cta" />
             <div className="relative z-10 text-center">
-              <div className="flex justify-center mb-3">
-                <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
-                  <Briefcase className="w-8 h-8 text-white" />
+              <div className="flex justify-center mb-2">
+                <div className="p-2 bg-white/20 rounded-full backdrop-blur-sm">
+                  <Briefcase className="w-6 h-6 text-gray-900" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-white mb-1">Become a Trainer</h3>
-              <p className="text-sm text-white/90">Share your expertise and earn</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-0.5">Become a Trainer</h3>
+              <p className="text-xs text-gray-800">Share your expertise and earn</p>
             </div>
           </div>
         </div>
