@@ -41,15 +41,6 @@ const MOCK_TRAINER: TrainerDetails = {
   totalSessions: 245,
 };
 
-const TIME_SLOTS = [
-  "6:00 AM",
-  "7:00 AM",
-  "8:00 AM",
-  "5:00 PM",
-  "6:00 PM",
-  "7:00 PM",
-];
-
 export default function TrainerProfile() {
   const navigate = useNavigate();
   const trainer = MOCK_TRAINER;
