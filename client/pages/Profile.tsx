@@ -62,6 +62,19 @@ export default function Profile() {
     setShowEditModal(false);
   };
 
+  const handleProfilePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setUser((prev) => ({
+          ...prev,
+          profilePhoto: event.target?.result as string,
+        }));
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
   const isTrainer = user.role === "trainer";
 
   return (
