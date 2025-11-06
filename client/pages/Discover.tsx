@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { ChevronDown, MapPin, Star, Lock, X } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { ChevronDown, MapPin, Star, Lock } from "lucide-react";
 import GlassyTile from "@/components/GlassyTile";
 
 type Tab = "trainers" | "nutritionists";
 type SortOption = "distance" | "rating" | "price";
 
 interface Filter {
-  categories: string[];
+  category: string | null;
   verified: boolean;
   priceRange: [number, number];
   distance: number;
   sort: SortOption;
 }
 
-const TRAINER_CATEGORIES = ["Zumba", "CrossFit", "Boxing", "Yoga", "Strength", "Rehab"];
-const NUTRITIONIST_CATEGORIES = ["Weight Loss", "Sports Nutrition", "Diabetes", "PCOS", "General"];
+const TRAINER_CATEGORIES = ["All", "Zumba", "CrossFit", "Boxing", "Yoga", "Strength", "Rehab"];
+const NUTRITIONIST_CATEGORIES = ["All", "Weight Loss", "Sports Nutrition", "Diabetes", "PCOS", "General"];
 
 const MOCK_TRAINERS = [
   {
@@ -47,39 +47,102 @@ const MOCK_TRAINERS = [
     verified: false,
     avatar: "AS",
   },
+  {
+    id: 4,
+    name: "Kumar Mishra",
+    category: "Boxing",
+    distance: 4.1,
+    rating: 4.6,
+    price: 550,
+    verified: true,
+    avatar: "KM",
+  },
+  {
+    id: 5,
+    name: "Neha Verma",
+    category: "Strength",
+    distance: 2.8,
+    rating: 4.9,
+    price: 650,
+    verified: true,
+    avatar: "NV",
+  },
+  {
+    id: 6,
+    name: "Vikram Singh",
+    category: "Zumba",
+    distance: 5.2,
+    rating: 4.5,
+    price: 450,
+    verified: false,
+    avatar: "VS",
+  },
 ];
 
 export default function Discover() {
   const [activeTab, setActiveTab] = useState<Tab>("trainers");
   const [showFilters, setShowFilters] = useState(false);
   const [filter, setFilter] = useState<Filter>({
-    categories: [],
+    category: "All",
     verified: false,
     priceRange: [0, 2000],
     distance: 20,
     sort: "distance",
   });
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const categories = activeTab === "trainers" ? TRAINER_CATEGORIES : NUTRITIONIST_CATEGORIES;
-  const hasActiveFilters = filter.categories.length > 0 || filter.verified || filter.distance < 20;
+  const hasActiveFilters = (filter.category && filter.category !== "All") || filter.verified || filter.distance < 20;
 
-  const toggleCategory = (cat: string) => {
+  const selectCategory = (cat: string) => {
     setFilter({
       ...filter,
-      categories: filter.categories.includes(cat)
-        ? filter.categories.filter((c) => c !== cat)
-        : [...filter.categories, cat],
+      category: cat,
     });
   };
 
   const clearFilters = () => {
     setFilter({
-      categories: [],
+      category: "All",
       verified: false,
       priceRange: [0, 2000],
       distance: 20,
       sort: "distance",
     });
+  };
+
+  const filteredTrainers = MOCK_TRAINERS.filter((trainer) => {
+    if (filter.category && filter.category !== "All" && trainer.category !== filter.category) {
+      return false;
+    }
+    if (filter.verified && !trainer.verified) {
+      return false;
+    }
+    return true;
+  });
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    setTouchEnd(e.changedTouches[0].clientX);
+    handleSwipe();
+  };
+
+  const handleSwipe = () => {
+    if (!carouselRef.current) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      carouselRef.current.scrollBy({ left: 150, behavior: "smooth" });
+    } else if (isRightSwipe) {
+      carouselRef.current.scrollBy({ left: -150, behavior: "smooth" });
+    }
   };
 
   return (
