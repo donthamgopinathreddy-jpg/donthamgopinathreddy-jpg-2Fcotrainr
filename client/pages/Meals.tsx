@@ -4,17 +4,70 @@ import { Plus, Minus, TrendingUp } from "lucide-react";
 interface MealEntry {
   id: string;
   name: string;
+  weight: number;
   calories: number;
   protein: number;
   carbs: number;
   fat: number;
 }
 
+// Food database with nutritional info per 100g
+const FOOD_DATABASE: Record<string, { calories: number; protein: number; carbs: number; fat: number }> = {
+  "chicken breast": { calories: 165, protein: 31, carbs: 0, fat: 3.6 },
+  "rice": { calories: 130, protein: 2.7, carbs: 28, fat: 0.3 },
+  "oatmeal": { calories: 389, protein: 17, carbs: 66, fat: 6.9 },
+  "berries": { calories: 57, protein: 0.7, carbs: 14, fat: 0.3 },
+  "greek yogurt": { calories: 59, protein: 10, carbs: 3.3, fat: 0.4 },
+  "eggs": { calories: 155, protein: 13, carbs: 1.1, fat: 11 },
+  "milk": { calories: 61, protein: 3.2, carbs: 4.8, fat: 3.3 },
+  "bread": { calories: 265, protein: 9, carbs: 49, fat: 3.3 },
+  "banana": { calories: 89, protein: 1.1, carbs: 23, fat: 0.3 },
+  "apple": { calories: 52, protein: 0.3, carbs: 14, fat: 0.2 },
+  "broccoli": { calories: 34, protein: 2.8, carbs: 7, fat: 0.4 },
+  "salmon": { calories: 208, protein: 20, carbs: 0, fat: 13 },
+  "almonds": { calories: 579, protein: 21, carbs: 22, fat: 50 },
+  "sweet potato": { calories: 86, protein: 1.6, carbs: 20, fat: 0.1 },
+  "peanut butter": { calories: 588, protein: 25, carbs: 20, fat: 50 },
+};
+
 const DEMO_MEALS: MealEntry[] = [
-  { id: "1", name: "Oatmeal with berries", calories: 350, protein: 12, carbs: 52, fat: 8 },
-  { id: "2", name: "Chicken breast rice", calories: 520, protein: 45, carbs: 48, fat: 6 },
-  { id: "3", name: "Greek yogurt", calories: 150, protein: 18, carbs: 10, fat: 5 },
+  { id: "1", name: "Oatmeal with berries", weight: 250, calories: 350, protein: 12, carbs: 52, fat: 8 },
+  { id: "2", name: "Chicken breast rice", weight: 300, calories: 520, protein: 45, carbs: 48, fat: 6 },
+  { id: "3", name: "Greek yogurt", weight: 200, calories: 150, protein: 18, carbs: 10, fat: 5 },
 ];
+
+// Function to find closest food match and calculate macros
+const calculateMacrosFromFood = (foodName: string, weight: number) => {
+  const normalizedFood = foodName.toLowerCase().trim();
+
+  // Try exact match first
+  if (FOOD_DATABASE[normalizedFood]) {
+    const food = FOOD_DATABASE[normalizedFood];
+    const multiplier = weight / 100;
+    return {
+      calories: Math.round(food.calories * multiplier),
+      protein: Math.round(food.protein * multiplier * 10) / 10,
+      carbs: Math.round(food.carbs * multiplier * 10) / 10,
+      fat: Math.round(food.fat * multiplier * 10) / 10,
+    };
+  }
+
+  // Try partial match
+  for (const [key, value] of Object.entries(FOOD_DATABASE)) {
+    if (normalizedFood.includes(key) || key.includes(normalizedFood)) {
+      const multiplier = weight / 100;
+      return {
+        calories: Math.round(value.calories * multiplier),
+        protein: Math.round(value.protein * multiplier * 10) / 10,
+        carbs: Math.round(value.carbs * multiplier * 10) / 10,
+        fat: Math.round(value.fat * multiplier * 10) / 10,
+      };
+    }
+  }
+
+  // Default values if not found
+  return { calories: 0, protein: 0, carbs: 0, fat: 0 };
+};
 
 export default function Meals() {
   const [meals, setMeals] = useState<MealEntry[]>(DEMO_MEALS);
