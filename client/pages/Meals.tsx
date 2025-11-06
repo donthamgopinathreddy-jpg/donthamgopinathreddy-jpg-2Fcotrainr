@@ -11,23 +11,43 @@ interface MealEntry {
   fat: number;
 }
 
-// Food database with nutritional info per 100g
-const FOOD_DATABASE: Record<string, { calories: number; protein: number; carbs: number; fat: number }> = {
-  "chicken breast": { calories: 165, protein: 31, carbs: 0, fat: 3.6 },
-  "rice": { calories: 130, protein: 2.7, carbs: 28, fat: 0.3 },
-  "oatmeal": { calories: 389, protein: 17, carbs: 66, fat: 6.9 },
-  "berries": { calories: 57, protein: 0.7, carbs: 14, fat: 0.3 },
-  "greek yogurt": { calories: 59, protein: 10, carbs: 3.3, fat: 0.4 },
-  "eggs": { calories: 155, protein: 13, carbs: 1.1, fat: 11 },
-  "milk": { calories: 61, protein: 3.2, carbs: 4.8, fat: 3.3 },
-  "bread": { calories: 265, protein: 9, carbs: 49, fat: 3.3 },
-  "banana": { calories: 89, protein: 1.1, carbs: 23, fat: 0.3 },
-  "apple": { calories: 52, protein: 0.3, carbs: 14, fat: 0.2 },
-  "broccoli": { calories: 34, protein: 2.8, carbs: 7, fat: 0.4 },
-  "salmon": { calories: 208, protein: 20, carbs: 0, fat: 13 },
-  "almonds": { calories: 579, protein: 21, carbs: 22, fat: 50 },
-  "sweet potato": { calories: 86, protein: 1.6, carbs: 20, fat: 0.1 },
-  "peanut butter": { calories: 588, protein: 25, carbs: 20, fat: 50 },
+// Food database with nutritional info per 100g or per unit
+interface FoodInfo {
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  inputType: "weight" | "quantity"; // weight for grams, quantity for units
+  unitName?: string; // e.g., "per egg", "per cup", "per slice"
+  unitWeight?: number; // grams per unit, used to convert quantity to weight
+}
+
+const FOOD_DATABASE: Record<string, FoodInfo> = {
+  "chicken breast": { calories: 165, protein: 31, carbs: 0, fat: 3.6, inputType: "weight" },
+  "rice": { calories: 130, protein: 2.7, carbs: 28, fat: 0.3, inputType: "weight" },
+  "oatmeal": { calories: 389, protein: 17, carbs: 66, fat: 6.9, inputType: "weight" },
+  "berries": { calories: 57, protein: 0.7, carbs: 14, fat: 0.3, inputType: "weight" },
+  "greek yogurt": { calories: 59, protein: 10, carbs: 3.3, fat: 0.4, inputType: "weight" },
+  "eggs": { calories: 155, protein: 13, carbs: 1.1, fat: 11, inputType: "quantity", unitName: "per egg", unitWeight: 50 },
+  "milk": { calories: 61, protein: 3.2, carbs: 4.8, fat: 3.3, inputType: "weight" },
+  "bread": { calories: 265, protein: 9, carbs: 49, fat: 3.3, inputType: "quantity", unitName: "per slice", unitWeight: 30 },
+  "banana": { calories: 89, protein: 1.1, carbs: 23, fat: 0.3, inputType: "quantity", unitName: "per banana", unitWeight: 120 },
+  "apple": { calories: 52, protein: 0.3, carbs: 14, fat: 0.2, inputType: "quantity", unitName: "per apple", unitWeight: 182 },
+  "broccoli": { calories: 34, protein: 2.8, carbs: 7, fat: 0.4, inputType: "weight" },
+  "salmon": { calories: 208, protein: 20, carbs: 0, fat: 13, inputType: "weight" },
+  "almonds": { calories: 579, protein: 21, carbs: 22, fat: 50, inputType: "quantity", unitName: "per handful", unitWeight: 30 },
+  "sweet potato": { calories: 86, protein: 1.6, carbs: 20, fat: 0.1, inputType: "weight" },
+  "peanut butter": { calories: 588, protein: 25, carbs: 20, fat: 50, inputType: "weight" },
+  "orange": { calories: 47, protein: 0.9, carbs: 12, fat: 0.3, inputType: "quantity", unitName: "per orange", unitWeight: 150 },
+  "carrot": { calories: 41, protein: 0.9, carbs: 10, fat: 0.2, inputType: "quantity", unitName: "per carrot", unitWeight: 61 },
+  "cheese": { calories: 402, protein: 25, carbs: 1.3, fat: 33, inputType: "quantity", unitName: "per slice", unitWeight: 30 },
+  "butter": { calories: 717, protein: 0.9, carbs: 0.1, fat: 81, inputType: "weight" },
+  "honey": { calories: 304, protein: 0.3, carbs: 82, fat: 0, inputType: "weight" },
+  "pasta": { calories: 131, protein: 5, carbs: 25, fat: 1.1, inputType: "weight" },
+  "tomato": { calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2, inputType: "quantity", unitName: "per tomato", unitWeight: 123 },
+  "lettuce": { calories: 15, protein: 1.4, carbs: 2.9, fat: 0.3, inputType: "weight" },
+  "chicken thigh": { calories: 209, protein: 26, carbs: 0, fat: 11, inputType: "weight" },
+  "tuna": { calories: 144, protein: 30, carbs: 0, fat: 1.3, inputType: "weight" },
 };
 
 const DEMO_MEALS: MealEntry[] = [
