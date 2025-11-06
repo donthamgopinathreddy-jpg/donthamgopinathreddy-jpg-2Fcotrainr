@@ -37,6 +37,7 @@ const AppContent = () => (
       <Route path="/messages" element={<AppLayout><Messages /></AppLayout>} />
       <Route path="/meals" element={<AppLayout><Meals /></AppLayout>} />
       <Route path="/profile" element={<AppLayout><Profile /></AppLayout>} />
+      <Route path="/feed" element={<AppLayout><Feed /></AppLayout>} />
       <Route path="/trainer-signup" element={<AppLayout><TrainerSignup /></AppLayout>} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
