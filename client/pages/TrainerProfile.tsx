@@ -19,7 +19,6 @@ interface TrainerDetails {
   gallery: string[];
   specialties: string[];
   totalSessions: number;
-  certifications?: string[];
 }
 
 const MOCK_TRAINER: TrainerDetails = {
@@ -42,11 +41,6 @@ const MOCK_TRAINER: TrainerDetails = {
   ],
   specialties: ["Strength Training", "Muscle Building", "Weight Loss"],
   totalSessions: 245,
-  certifications: [
-    "Certified Personal Trainer (NASM)",
-    "Strength and Conditioning Specialist",
-    "Nutrition Certification",
-  ],
 };
 
 const TIME_SLOTS = [
@@ -137,20 +131,42 @@ export default function TrainerProfile() {
             </div>
           </div>
 
-          {/* Certifications */}
-          {trainer.certifications && trainer.certifications.length > 0 && (
-            <div className="mb-6">
-              <h3 className="text-sm font-bold text-foreground mb-2">Certifications</h3>
-              <div className="space-y-2">
-                {trainer.certifications.map((cert, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-sm">
-                    <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-foreground">{cert}</span>
-                  </div>
-                ))}
-              </div>
+          {/* Stats Grid */}
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="bg-card border border-border rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-primary">{trainer.totalSessions}</div>
+              <p className="text-xs text-muted-foreground">Sessions</p>
             </div>
-          )}
+            <div className="bg-card border border-border rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-primary">₹{trainer.price}</div>
+              <p className="text-xs text-muted-foreground">Per Session</p>
+            </div>
+            <div className="bg-card border border-border rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-primary">{trainer.yearsOfExperience}+</div>
+              <p className="text-xs text-muted-foreground">Years Exp.</p>
+            </div>
+          </div>
+
+          {/* Bio */}
+          <div className="mb-6">
+            <h3 className="text-sm font-bold text-foreground mb-2">About</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{trainer.bio}</p>
+          </div>
+
+          {/* Specialties */}
+          <div className="mb-6">
+            <h3 className="text-sm font-bold text-foreground mb-2">Specialties</h3>
+            <div className="flex flex-wrap gap-2">
+              {trainer.specialties.map((spec) => (
+                <div
+                  key={spec}
+                  className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium"
+                >
+                  {spec}
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Gallery */}
           <div className="mb-6">
@@ -168,25 +184,18 @@ export default function TrainerProfile() {
           </div>
 
           {/* Action Buttons */}
-          <div className="space-y-3 mb-6">
-            <GlassyTile
-              title="Try 10-min Session"
-              subtitle="Free trial (3 total)"
-              onClick={handleTry10Min}
-              variant="primary"
-              className="text-center cursor-pointer"
-            />
-
+          <div className="grid grid-cols-2 gap-3 mb-6">
             <button
-              onClick={() => setShowBookingModal(true)}
-              className="w-full bg-gradient-primary text-gray-900 font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all"
+              onClick={handleTry10Min}
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all"
             >
-              Book Full Session
+              <span>📹</span>
+              Video Call
             </button>
 
-            <button className="w-full flex items-center justify-center gap-2 bg-card border border-border text-foreground font-bold py-3 rounded-xl hover:bg-muted transition-colors">
+            <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all">
               <MessageCircle className="w-5 h-5" />
-              Message Trainer
+              Chat
             </button>
           </div>
 
