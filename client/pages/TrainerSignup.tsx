@@ -233,17 +233,6 @@ export default function TrainerSignup() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Price per Session (₹)</label>
-              <input
-                type="number"
-                placeholder="e.g., 500"
-                value={formData.price}
-                onChange={(e) => setFormData((prev) => ({ ...prev, price: e.target.value }))}
-                className="w-full bg-card border border-border rounded-lg px-4 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div>
               <label className="block text-sm font-medium mb-2">Gallery (Photos & Videos)</label>
               <label className="flex items-center justify-center w-full px-4 py-6 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-colors">
                 <div className="text-center">
