@@ -101,13 +101,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            username: userData.username,
+            full_name: userData.full_name,
+            role: userData.role,
+          },
+        },
       });
 
       if (error) throw error;
 
       if (data.user) {
-        // Create user profile in users table
-        const { error: profileError } = await supabase.from("users").insert({
+        setUser(data.user);
+
+        // Create user profile in users table asynchronously
+        // Don't wait for this to complete to avoid blocking signup
+        supabase.from("users").insert({
           id: data.user.id,
           email,
           username: userData.username,
@@ -116,18 +126,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           gender: userData.gender,
           weight_kg: userData.weight_kg,
           height_cm: userData.height_cm,
+        }).then(({ error: profileError }) => {
+          if (profileError) {
+            console.error("Profile creation error:", profileError);
+          } else if (userData.role === "trainer") {
+            // Create trainer profile
+            supabase.from("trainers").insert({
+              id: data.user.id,
+            }).catch((err) => console.error("Trainer profile error:", err));
+          }
         });
 
-        if (profileError) throw profileError;
-
-        // If trainer, create trainer profile
-        if (userData.role === "trainer") {
-          await supabase.from("trainers").insert({
-            id: data.user.id,
-          });
-        }
-
-        setUser(data.user);
+        await new Promise(resolve => setTimeout(resolve, 500));
         await fetchUserProfile(data.user.id);
       }
     } catch (error: any) {
