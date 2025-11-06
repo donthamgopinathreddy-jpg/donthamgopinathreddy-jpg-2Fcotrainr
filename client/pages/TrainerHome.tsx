@@ -284,9 +284,9 @@ export default function TrainerHome() {
                   onClick={() => navigate("/feed")}
                   className="bg-gradient-to-br from-purple-100 via-pink-100 to-rose-100 rounded-2xl p-5 border border-purple-200 hover:shadow-lg hover:shadow-purple-300/50 transition-all transform hover:scale-105"
                 >
-                  <Briefcase className="w-7 h-7 text-purple-600 mb-2" />
-                  <p className="font-bold text-gray-900 text-sm">Post Update</p>
-                  <p className="text-xs text-gray-600">Share progress</p>
+                  <MessageIcon className="w-7 h-7 text-purple-600 mb-2" />
+                  <p className="font-bold text-gray-900 text-sm">Feed</p>
+                  <p className="text-xs text-gray-600">See other users</p>
                 </button>
                 <button
                   onClick={() => navigate("/messages")}
