@@ -19,6 +19,8 @@ import TrainerProfile from "./pages/TrainerProfile";
 import VideoCall from "./pages/VideoCall";
 import Subscription from "./pages/Subscription";
 import TrainerSignup from "./pages/TrainerSignup";
+import TrainerDashboard from "./pages/TrainerDashboard";
+import TrainerClientDetail from "./pages/TrainerClientDetail";
 import ActivityDetail from "./pages/ActivityDetail";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
@@ -191,6 +193,26 @@ const AppContent = () => (
           <ProtectedRoute>
             <AppLayout>
               <TrainerSignup />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/trainer-dashboard"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <TrainerDashboard />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/trainer/client/:clientId"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <TrainerClientDetail />
             </AppLayout>
           </ProtectedRoute>
         }
