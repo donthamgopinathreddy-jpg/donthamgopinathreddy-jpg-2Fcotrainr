@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
-import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper } from "lucide-react";
+import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase } from "lucide-react";
 
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
