@@ -67,12 +67,17 @@ export const useMeals = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        const errorMsg = error.message || error.code || JSON.stringify(error);
+        console.error("Error adding meal:", errorMsg);
+        throw new Error(errorMsg);
+      }
       setMeals((prev) => [data, ...prev]);
       return data;
-    } catch (error) {
-      console.error("Error adding meal:", error);
-      throw error;
+    } catch (error: any) {
+      const errorMsg = error?.message || error?.code || String(error) || "Failed to add meal";
+      console.error("Error adding meal:", errorMsg);
+      throw new Error(errorMsg);
     }
   };
 
