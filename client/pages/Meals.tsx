@@ -150,12 +150,31 @@ export default function Meals() {
     }
   };
 
+  const handleQuantityChange = (quantity: string) => {
+    setNewFood((prev) => ({ ...prev, quantity }));
+
+    // Auto-calculate macros if both food name and quantity are provided
+    if (newFood.name && quantity && selectedFood) {
+      const macros = calculateMacrosFromFood(newFood.name, Number(quantity), "quantity");
+      setNewFood((prev) => ({
+        ...prev,
+        quantity,
+        calories: String(macros.calories),
+        protein: String(macros.protein),
+        carbs: String(macros.carbs),
+        fat: String(macros.fat),
+      }));
+    } else {
+      setNewFood((prev) => ({ ...prev, quantity }));
+    }
+  };
+
   const handleWeightChange = (weight: string) => {
     setNewFood((prev) => ({ ...prev, weight }));
 
     // Auto-calculate macros if both food name and weight are provided
-    if (newFood.name && weight) {
-      const macros = calculateMacrosFromFood(newFood.name, Number(weight));
+    if (newFood.name && weight && selectedFood?.inputType === "weight") {
+      const macros = calculateMacrosFromFood(newFood.name, Number(weight), "weight");
       setNewFood((prev) => ({
         ...prev,
         weight,
@@ -170,21 +189,10 @@ export default function Meals() {
   };
 
   const handleSelectSuggestion = (food: string) => {
-    setNewFood((prev) => ({ ...prev, name: food }));
+    const foodData = FOOD_DATABASE[food.toLowerCase()];
+    setSelectedFood(foodData);
+    setNewFood((prev) => ({ ...prev, name: food, quantity: "", weight: "" }));
     setSuggestions([]);
-
-    // Auto-calculate if weight is provided
-    if (newFood.weight) {
-      const macros = calculateMacrosFromFood(food, Number(newFood.weight));
-      setNewFood((prev) => ({
-        ...prev,
-        name: food,
-        calories: String(macros.calories),
-        protein: String(macros.protein),
-        carbs: String(macros.carbs),
-        fat: String(macros.fat),
-      }));
-    }
   };
 
   const handleAddMeal = () => {
