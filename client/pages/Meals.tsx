@@ -97,20 +97,76 @@ export default function Meals() {
   const carbsPercent = Math.min((totalCarbs / carbsGoal) * 100, 100);
   const fatPercent = Math.min((totalFat / fatGoal) * 100, 100);
 
+  const handleFoodNameChange = (name: string) => {
+    setNewFood((prev) => ({ ...prev, name }));
+
+    // Show suggestions
+    if (name.length > 0) {
+      const matches = Object.keys(FOOD_DATABASE).filter((food) =>
+        food.includes(name.toLowerCase())
+      );
+      setSuggestions(matches);
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleWeightChange = (weight: string) => {
+    setNewFood((prev) => ({ ...prev, weight }));
+
+    // Auto-calculate macros if both food name and weight are provided
+    if (newFood.name && weight) {
+      const macros = calculateMacrosFromFood(newFood.name, Number(weight));
+      setNewFood((prev) => ({
+        ...prev,
+        weight,
+        calories: String(macros.calories),
+        protein: String(macros.protein),
+        carbs: String(macros.carbs),
+        fat: String(macros.fat),
+      }));
+    } else {
+      setNewFood((prev) => ({ ...prev, weight }));
+    }
+  };
+
+  const handleSelectSuggestion = (food: string) => {
+    setNewFood((prev) => ({ ...prev, name: food }));
+    setSuggestions([]);
+
+    // Auto-calculate if weight is provided
+    if (newFood.weight) {
+      const macros = calculateMacrosFromFood(food, Number(newFood.weight));
+      setNewFood((prev) => ({
+        ...prev,
+        name: food,
+        calories: String(macros.calories),
+        protein: String(macros.protein),
+        carbs: String(macros.carbs),
+        fat: String(macros.fat),
+      }));
+    }
+  };
+
   const handleAddMeal = () => {
-    if (!newFood.name || !newFood.calories) return;
+    if (!newFood.name || !newFood.weight) return;
+
+    const weight = Number(newFood.weight);
+    const macros = calculateMacrosFromFood(newFood.name, weight);
 
     const meal: MealEntry = {
       id: Date.now().toString(),
       name: newFood.name,
-      calories: Number(newFood.calories),
-      protein: Number(newFood.protein) || 0,
-      carbs: Number(newFood.carbs) || 0,
-      fat: Number(newFood.fat) || 0,
+      weight: weight,
+      calories: macros.calories,
+      protein: macros.protein,
+      carbs: macros.carbs,
+      fat: macros.fat,
     };
 
     setMeals([...meals, meal]);
-    setNewFood({ name: "", calories: "", protein: "", carbs: "", fat: "" });
+    setNewFood({ name: "", weight: "", calories: "", protein: "", carbs: "", fat: "" });
+    setSuggestions([]);
     setShowAddFood(false);
   };
 
