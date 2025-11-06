@@ -242,8 +242,13 @@ export default function Meals() {
   return (
     <div className="min-h-screen bg-white pb-20 l-shape-bg fitness-gradient-4">
       <div className="max-w-md mx-auto">
+        {/* Logo Header */}
+        <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
+          <Logo size="sm" />
+        </div>
+
         {/* Header */}
-        <div className="sticky top-0 z-40 bg-white border-b border-gray-200 px-4 py-6">
+        <div className="sticky top-12 z-39 bg-white border-b border-gray-200 px-4 py-6">
           <h1 className="text-3xl font-bold text-gray-900">Meal Tracker</h1>
           <p className="text-gray-600 text-sm">Log your meals and track nutrition</p>
         </div>
