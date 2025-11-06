@@ -101,7 +101,7 @@ export default function TrainerProfile() {
         </div>
 
         {/* Profile Info Section */}
-        <div className="px-4 pb-6">
+        <div className="px-4 pb-6 l-shape-bg fitness-gradient-2">
           {/* Avatar & Basic Info */}
           <div className="flex gap-4 items-start -mt-12 mb-6 relative z-10">
             <div className="w-24 h-24 bg-gradient-primary rounded-2xl flex items-center justify-center font-bold text-3xl text-gray-900 border-4 border-background">
