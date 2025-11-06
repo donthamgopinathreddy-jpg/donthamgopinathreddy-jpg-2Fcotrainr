@@ -260,6 +260,9 @@ export default function Meals() {
                 >
                   <div className="flex-1">
                     <p className="font-medium text-foreground">{meal.name}</p>
+                    <p className="text-xs text-muted-foreground mb-1">
+                      Weight: {meal.weight}g
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {meal.calories} cal • P: {meal.protein}g • C: {meal.carbs}g • F: {meal.fat}g
                     </p>
