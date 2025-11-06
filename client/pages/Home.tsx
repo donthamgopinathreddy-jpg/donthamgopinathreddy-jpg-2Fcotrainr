@@ -192,7 +192,7 @@ export default function Home() {
             />
             <GlassyTile
               icon={<Utensils className="w-6 h-6 text-green-600" />}
-              title="Meals"
+              title="Meal Tracker"
               onClick={() => navigate("/meals")}
               variant="meals"
               className="text-center"
