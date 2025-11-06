@@ -120,7 +120,7 @@ export default function Home() {
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 -mt-8 pb-8 relative z-20 space-y-6">
         {/* Progress Bars Card */}
-        <div className="bg-card border border-border rounded-2xl p-6 space-y-6">
+        <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
           {/* Steps Progress */}
           <div>
             <div className="flex items-center justify-between mb-3">
