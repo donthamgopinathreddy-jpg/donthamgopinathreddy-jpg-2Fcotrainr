@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase } from "lucide-react";
 
@@ -57,6 +58,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Logo Header */}
+      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
+        <Logo size="sm" />
+      </div>
+
       {/* Hero Header with Cover Image */}
       <div className="relative overflow-hidden bg-gradient-to-br from-cyan-400 to-blue-500 h-64">
         {/* Cover Image */}
