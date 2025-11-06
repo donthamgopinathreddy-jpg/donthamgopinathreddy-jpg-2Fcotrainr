@@ -158,16 +158,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           height_cm: userData.height_cm,
         }).then(({ error: profileError }) => {
           if (profileError) {
-            console.error("Profile creation error:", profileError);
+            console.error("Profile creation error:", profileError?.message || JSON.stringify(profileError));
           } else if (userData.role === "trainer") {
             // Create trainer profile
             supabase.from("trainers").insert({
               id: data.user.id,
-            }).catch((err) => console.error("Trainer profile error:", err));
+            }).catch((err) => console.error("Trainer profile error:", err?.message || err));
           }
+        }).catch((err) => {
+          console.error("Profile insert catch error:", err?.message || err);
         });
 
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 1000));
         await fetchUserProfile(data.user.id);
       }
     } catch (error: any) {
