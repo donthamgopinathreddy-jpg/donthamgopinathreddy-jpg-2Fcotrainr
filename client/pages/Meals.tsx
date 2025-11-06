@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus, Minus, TrendingUp } from "lucide-react";
+import Logo from "@/components/Logo";
 
 interface MealEntry {
   id: string;
