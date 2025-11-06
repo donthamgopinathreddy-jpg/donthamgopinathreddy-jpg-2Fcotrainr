@@ -458,7 +458,8 @@ export default function Meals() {
                 <button
                   onClick={() => {
                     setShowAddFood(false);
-                    setNewFood({ name: "", weight: "", calories: "", protein: "", carbs: "", fat: "" });
+                    setNewFood({ name: "", weight: "", quantity: "", calories: "", protein: "", carbs: "", fat: "" });
+                    setSelectedFood(null);
                     setSuggestions([]);
                   }}
                   className="flex-1 bg-muted text-muted-foreground font-medium py-2 rounded-lg hover:bg-muted/80 transition-colors text-sm"
