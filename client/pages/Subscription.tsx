@@ -1,37 +1,60 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, Zap } from "lucide-react";
+import { ArrowLeft, Check, Zap, Crown } from "lucide-react";
 
 const PLANS = [
   {
+    id: "free",
+    name: "Free",
+    price: 0,
+    duration: "Forever",
+    tier: "free",
+    savings: null,
+    popular: false,
+    features: [
+      "10 messages per week",
+      "3 x 10-min trial sessions",
+      "Basic meal tracking",
+      "View trainer profiles",
+      "Community access",
+    ],
+  },
+  {
     id: "monthly",
-    name: "Monthly",
+    name: "Premium",
     price: 199,
     duration: "per month",
+    tier: "premium",
     savings: null,
+    popular: true,
     features: [
       "Unlimited video sessions",
       "Unlimited chat messaging",
       "Priority support",
       "Access to all trainers",
-      "Meal tracking",
+      "Full meal tracking",
       "Ad-free experience",
+      "Exclusive workout plans",
+      "Macro tracking & analytics",
     ],
   },
   {
     id: "quarterly",
-    name: "Quarterly",
+    name: "Gold",
     price: 499,
     duration: "for 3 months",
+    tier: "gold",
     savings: "Save ₹100",
+    popular: false,
     features: [
-      "Unlimited video sessions",
-      "Unlimited chat messaging",
-      "Priority support",
-      "Access to all trainers",
-      "Meal tracking",
-      "Ad-free experience",
-      "Exclusive workout plans",
+      "Everything in Premium",
+      "Priority trainer access",
+      "1:1 nutrition consultation",
+      "Custom meal plans",
+      "AI-powered recommendations",
+      "Exclusive content library",
+      "24/7 priority support",
+      "VIP community access",
     ],
   },
 ];
