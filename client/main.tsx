@@ -3,8 +3,9 @@ import App from "./App";
 
 createRoot(document.getElementById("root")!).render(<App />);
 
-// Unregister any existing service workers to prevent conflicts with Supabase API calls
+// Completely disable service worker to prevent conflicts with Supabase API calls
 if ("serviceWorker" in navigator) {
+  // Unregister all existing service workers
   navigator.serviceWorker.getRegistrations().then((registrations) => {
     registrations.forEach((registration) => {
       registration.unregister().catch((error) => {
@@ -12,4 +13,15 @@ if ("serviceWorker" in navigator) {
       });
     });
   });
+
+  // Clear all caches
+  if ("caches" in window) {
+    caches.keys().then((cacheNames) => {
+      cacheNames.forEach((cacheName) => {
+        caches.delete(cacheName).catch((error) => {
+          console.log("Error clearing cache:", error);
+        });
+      });
+    });
+  }
 }
