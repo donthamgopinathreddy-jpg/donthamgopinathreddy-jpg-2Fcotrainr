@@ -85,152 +85,150 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const AppContent = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/onboarding" element={<Onboarding />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Home />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/discover"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Discover />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/trainer/:id"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <TrainerProfile />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/messages"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Messages />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/chat/:trainerId"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <ChatMessages />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/meals"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Meals />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Profile />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/feed"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Feed />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/video/:trainerId"
-        element={
-          <ProtectedRoute>
-            <VideoCall />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/subscription"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <Subscription />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/trainer-signup"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <TrainerSignup />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/trainer-dashboard"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <TrainerDashboard />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/trainer/client/:clientId"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <TrainerClientDetail />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/activity/:type"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <ActivityDetail />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
-  </BrowserRouter>
+const AppRoutes = () => (
+  <Routes>
+    <Route path="/onboarding" element={<Onboarding />} />
+    <Route
+      path="/"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <Home />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/discover"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <Discover />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/trainer/:id"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <TrainerProfile />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/messages"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <Messages />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/chat/:trainerId"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <ChatMessages />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/meals"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <Meals />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/profile"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <Profile />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/feed"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <Feed />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/video/:trainerId"
+      element={
+        <ProtectedRoute>
+          <VideoCall />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/subscription"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <Subscription />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/trainer-signup"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <TrainerSignup />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/trainer-dashboard"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <TrainerDashboard />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/trainer/client/:clientId"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <TrainerClientDetail />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/activity/:type"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <ActivityDetail />
+          </AppLayout>
+        </ProtectedRoute>
+      }
+    />
+    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+    <Route path="*" element={<NotFound />} />
+  </Routes>
 );
 
 const App = () => {
@@ -242,11 +240,13 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <AuthProvider>
-          <Toaster />
-          <Sonner />
-          <AppContent />
-        </AuthProvider>
+        <BrowserRouter>
+          <AuthProvider>
+            <Toaster />
+            <Sonner />
+            <AppRoutes />
+          </AuthProvider>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   );
