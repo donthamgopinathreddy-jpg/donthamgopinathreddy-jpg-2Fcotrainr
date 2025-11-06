@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, MapPin, Star, Lock, Search } from "lucide-react";
+import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 
 type Tab = "trainers" | "nutritionists";
