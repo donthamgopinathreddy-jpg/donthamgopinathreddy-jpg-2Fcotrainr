@@ -119,7 +119,16 @@ export default function Onboarding() {
       {step !== "welcome" && (
         <div className="px-4 py-4 border-b border-border">
           <button
-            onClick={() => setStep(step === "form" ? "welcome" : "form")}
+            onClick={() => {
+              if (step === "form") {
+                setStep("welcome");
+              } else if (step === "role") {
+                setStep("form");
+              } else if (step === "permissions") {
+                setStep("role");
+                setUserRole(null);
+              }
+            }}
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
