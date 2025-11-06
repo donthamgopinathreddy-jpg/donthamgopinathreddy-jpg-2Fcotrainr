@@ -262,7 +262,7 @@ export default function Home() {
         </div>
 
         {/* Promo Card */}
-        <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 border border-purple-200">
+        <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 border border-purple-200 l-shape-bg fitness-gradient-3">
           <h3 className="text-lg font-bold text-gray-900 mb-2">Unlock Premium</h3>
           <p className="text-sm text-gray-700 mb-4">
             Unlimited video sessions, full meal tracking, and priority chat support.
