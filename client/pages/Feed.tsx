@@ -108,10 +108,6 @@ export default function Feed() {
     );
   };
 
-  const handleAuthorClick = (authorName: string) => {
-    navigate(`/profile/${authorName.toLowerCase().replace(/\s+/g, "-")}`);
-  };
-
   const handleNewPost = () => {
     if (!newPostContent.trim()) return;
 
@@ -192,19 +188,11 @@ export default function Feed() {
             >
               {/* Post Header */}
               <div className="px-4 pt-4 pb-3 flex items-center gap-3">
-                <button
-                  onClick={() => handleAuthorClick(post.authorName)}
-                  className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-sm hover:ring-2 hover:ring-primary/50 transition-all flex-shrink-0"
-                >
+                <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-sm flex-shrink-0">
                   {post.authorAvatar}
-                </button>
+                </div>
                 <div className="flex-1 min-w-0">
-                  <button
-                    onClick={() => handleAuthorClick(post.authorName)}
-                    className="font-bold text-foreground text-sm hover:text-primary transition-colors text-left"
-                  >
-                    {post.authorName}
-                  </button>
+                  <p className="font-bold text-foreground text-sm">{post.authorName}</p>
                   <p className="text-xs text-muted-foreground">
                     {post.authorRole === "trainer" ? "🏋️ Trainer" : "👤 Client"} • {post.createdAt}
                   </p>
