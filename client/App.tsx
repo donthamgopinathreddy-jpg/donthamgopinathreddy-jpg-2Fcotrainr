@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Onboarding from "./pages/Onboarding";
 import Home from "./pages/Home";
+import TrainerHome from "./pages/TrainerHome";
 import Discover from "./pages/Discover";
 import Messages from "./pages/Messages";
 import ChatMessages from "./pages/ChatMessages";
@@ -85,6 +86,16 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const RoleBasedHome = () => {
+  const { userProfile } = useAuth();
+
+  if (userProfile?.role === "trainer") {
+    return <TrainerHome />;
+  }
+
+  return <Home />;
+};
+
 const AppRoutes = () => (
   <Routes>
     <Route path="/onboarding" element={<Onboarding />} />
@@ -93,7 +104,7 @@ const AppRoutes = () => (
       element={
         <ProtectedRoute>
           <AppLayout>
-            <Home />
+            <RoleBasedHome />
           </AppLayout>
         </ProtectedRoute>
       }
