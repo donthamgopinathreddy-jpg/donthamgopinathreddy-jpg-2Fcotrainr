@@ -291,67 +291,79 @@ export default function Discover() {
 
       {/* Trainers List */}
       {activeTab === "trainers" && (
-        <div className="max-w-md mx-auto px-4 py-6 space-y-4">
-          {MOCK_TRAINERS.map((trainer, idx) => (
-            <div
-              key={trainer.id}
-              className="animate-slide-up"
-              style={{ animationDelay: `${idx * 60}ms` }}
-            >
-              <GlassyTile
-                className="p-4"
-                variant={idx % 2 === 0 ? "primary" : "secondary"}
-              >
-                <div className="flex gap-4">
-                  {/* Avatar */}
-                  <div className="w-16 h-16 bg-gradient-primary rounded-xl flex items-center justify-center font-bold text-gray-900 flex-shrink-0">
-                    {trainer.avatar}
-                  </div>
+        <div className="max-w-md mx-auto px-4 py-6">
+          {filteredTrainers.length > 0 ? (
+            <div className="space-y-4">
+              {filteredTrainers.map((trainer, idx) => (
+                <div
+                  key={trainer.id}
+                  className="animate-slide-up"
+                  style={{ animationDelay: `${idx * 60}ms` }}
+                >
+                  <GlassyTile
+                    className="p-4"
+                    variant={idx % 2 === 0 ? "primary" : "secondary"}
+                  >
+                    <div className="flex gap-4">
+                      {/* Avatar */}
+                      <div className="w-16 h-16 bg-gradient-primary rounded-xl flex items-center justify-center font-bold text-gray-900 flex-shrink-0">
+                        {trainer.avatar}
+                      </div>
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-bold text-foreground">{trainer.name}</h3>
-                      {trainer.verified && (
-                        <div className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">
-                          ✓ Verified
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-bold text-foreground">{trainer.name}</h3>
+                          {trainer.verified && (
+                            <div className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">
+                              ��� Verified
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
 
-                    <p className="text-xs text-muted-foreground mb-2">{trainer.category}</p>
+                        <p className="text-xs text-muted-foreground mb-2">{trainer.category}</p>
 
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        {trainer.distance} km
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            {trainer.distance} km
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Star className="w-3 h-3 fill-primary text-primary" />
+                            {trainer.rating}
+                          </div>
+                          <div className="font-semibold text-primary">₹{trainer.price}</div>
+                        </div>
+
+                        {/* CTAs */}
+                        <div className="flex gap-2">
+                          <button className="flex-1 bg-primary text-primary-foreground font-semibold py-2 rounded-lg text-xs hover:opacity-90 transition-opacity">
+                            Try 10-min
+                          </button>
+                          <button className="flex-1 bg-muted text-muted-foreground font-semibold py-2 rounded-lg text-xs hover:opacity-90 transition-opacity">
+                            View Profile
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-3 h-3 fill-primary text-primary" />
-                        {trainer.rating}
-                      </div>
-                      <div className="font-semibold text-primary">₹{trainer.price}</div>
                     </div>
-
-                    {/* CTAs */}
-                    <div className="flex gap-2">
-                      <button className="flex-1 bg-primary text-primary-foreground font-semibold py-2 rounded-lg text-xs hover:opacity-90 transition-opacity">
-                        Try 10-min
-                      </button>
-                      <button className="flex-1 bg-muted text-muted-foreground font-semibold py-2 rounded-lg text-xs hover:opacity-90 transition-opacity">
-                        View Profile
-                      </button>
-                    </div>
-                  </div>
+                  </GlassyTile>
                 </div>
-              </GlassyTile>
-            </div>
-          ))}
+              ))}
 
-          {/* Load More */}
-          <button className="w-full py-3 text-primary font-semibold hover:opacity-80 transition-opacity">
-            Load more trainers
-          </button>
+              {/* Load More */}
+              <button className="w-full py-3 text-primary font-semibold hover:opacity-80 transition-opacity">
+                Load more trainers
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="w-12 h-12 bg-card rounded-full flex items-center justify-center mb-4">
+                <span className="text-2xl">🔍</span>
+              </div>
+              <h3 className="font-bold text-foreground mb-1">No trainers found</h3>
+              <p className="text-muted-foreground text-sm">Try adjusting your filters or category</p>
+            </div>
+          )}
         </div>
       )}
     </div>
