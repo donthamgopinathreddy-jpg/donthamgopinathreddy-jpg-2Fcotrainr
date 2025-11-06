@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown, MapPin, Star, Lock } from "lucide-react";
+import { ChevronDown, MapPin, Star, Lock, Search } from "lucide-react";
 import GlassyTile from "@/components/GlassyTile";
 
 type Tab = "trainers" | "nutritionists";
