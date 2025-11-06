@@ -16,6 +16,16 @@ interface UserProfile {
   bio?: string;
 }
 
+interface DemoUser {
+  id: string;
+  email: string;
+  user_metadata?: {
+    username?: string;
+    full_name?: string;
+    role?: string;
+  };
+}
+
 interface AuthContextType {
   user: User | null;
   userProfile: UserProfile | null;
@@ -24,6 +34,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
+  demoMode: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -196,6 +207,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const demoMode = async () => {
+    try {
+      // Create a demo user object
+      const demoUser: DemoUser = {
+        id: "demo-user-" + Math.random().toString(36).substring(7),
+        email: "demo@cotrainr.app",
+        user_metadata: {
+          username: "demo_user",
+          full_name: "Demo User",
+          role: "client",
+        },
+      };
+
+      const demoProfile: UserProfile = {
+        id: demoUser.id,
+        username: "demo_user",
+        full_name: "Demo User",
+        email: "demo@cotrainr.app",
+        role: "client",
+        gender: "male",
+        weight_kg: 75,
+        height_cm: 180,
+      };
+
+      // Set demo user (use any to bypass User type)
+      setUser(demoUser as any);
+      setUserProfile(demoProfile);
+    } catch (error) {
+      console.error("Error entering demo mode:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -206,6 +250,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         signIn,
         signOut,
         updateProfile,
+        demoMode,
       }}
     >
       {children}
