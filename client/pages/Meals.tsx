@@ -196,15 +196,31 @@ export default function Meals() {
   };
 
   const handleAddMeal = () => {
-    if (!newFood.name || !newFood.weight) return;
+    if (!newFood.name) return;
 
-    const weight = Number(newFood.weight);
-    const macros = calculateMacrosFromFood(newFood.name, weight);
+    let inputValue = 0;
+    let inputType: "weight" | "quantity" = "weight";
+
+    if (selectedFood?.inputType === "quantity") {
+      if (!newFood.quantity) return;
+      inputValue = Number(newFood.quantity);
+      inputType = "quantity";
+    } else {
+      if (!newFood.weight) return;
+      inputValue = Number(newFood.weight);
+      inputType = "weight";
+    }
+
+    const macros = calculateMacrosFromFood(newFood.name, inputValue, inputType);
+
+    const actualWeight = selectedFood?.inputType === "quantity" && selectedFood.unitWeight
+      ? Number(newFood.quantity) * selectedFood.unitWeight
+      : Number(newFood.weight);
 
     const meal: MealEntry = {
       id: Date.now().toString(),
       name: newFood.name,
-      weight: weight,
+      weight: actualWeight,
       calories: macros.calories,
       protein: macros.protein,
       carbs: macros.carbs,
@@ -212,7 +228,8 @@ export default function Meals() {
     };
 
     setMeals([...meals, meal]);
-    setNewFood({ name: "", weight: "", calories: "", protein: "", carbs: "", fat: "" });
+    setNewFood({ name: "", weight: "", quantity: "", calories: "", protein: "", carbs: "", fat: "" });
+    setSelectedFood(null);
     setSuggestions([]);
     setShowAddFood(false);
   };
