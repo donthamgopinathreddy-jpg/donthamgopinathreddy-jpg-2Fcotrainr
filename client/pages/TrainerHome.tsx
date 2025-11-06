@@ -346,19 +346,11 @@ export default function TrainerHome() {
                     {/* Post Header */}
                     <div className="p-4">
                       <div className="flex items-center gap-3 mb-3">
-                        <button
-                          onClick={() => navigate(`/profile/${post.authorName.toLowerCase().replace(/\s+/g, "-")}`)}
-                          className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 flex items-center justify-center text-white font-bold text-sm hover:ring-2 hover:ring-orange-300 transition-all flex-shrink-0"
-                        >
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                           {post.authorAvatar}
-                        </button>
+                        </div>
                         <div className="flex-1 min-w-0">
-                          <button
-                            onClick={() => navigate(`/profile/${post.authorName.toLowerCase().replace(/\s+/g, "-")}`)}
-                            className="font-semibold text-gray-900 text-sm hover:text-blue-600 transition-colors text-left"
-                          >
-                            {post.authorName}
-                          </button>
+                          <p className="font-semibold text-gray-900 text-sm">{post.authorName}</p>
                           <p className="text-xs text-gray-500">{post.createdAt}</p>
                         </div>
                         <button
