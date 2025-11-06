@@ -104,34 +104,34 @@ export default function Home() {
 
         {/* Quick Action Tiles */}
         <div className="space-y-3">
-          <h3 className="text-sm font-bold text-muted-foreground px-1">Quick Access</h3>
+          <h3 className="text-sm font-bold text-gray-600 px-1">Quick Access</h3>
           <div className="grid grid-cols-2 gap-3">
             <GlassyTile
-              icon={<Dumbbell className="w-6 h-6" />}
+              icon={<Dumbbell className="w-6 h-6 text-cyan-600" />}
               title="Trainers"
               onClick={() => navigate("/discover")}
-              variant="primary"
+              variant="trainers"
               className="text-center"
             />
             <GlassyTile
-              icon={<Apple className="w-6 h-6" />}
+              icon={<Apple className="w-6 h-6 text-purple-600" />}
               title="Nutritionists"
               onClick={() => navigate("/discover")}
-              variant="secondary"
+              variant="nutritionists"
               className="text-center"
             />
             <GlassyTile
-              icon={<Utensils className="w-6 h-6" />}
+              icon={<Utensils className="w-6 h-6 text-green-600" />}
               title="Meals"
               onClick={() => navigate("/meals")}
-              variant="primary"
+              variant="meals"
               className="text-center"
             />
             <GlassyTile
-              icon={<Newspaper className="w-6 h-6" />}
+              icon={<Newspaper className="w-6 h-6 text-amber-600" />}
               title="Feed"
               onClick={() => navigate("/feed")}
-              variant="secondary"
+              variant="feed"
               className="text-center"
             />
           </div>
