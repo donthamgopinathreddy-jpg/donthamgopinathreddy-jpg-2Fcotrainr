@@ -36,7 +36,7 @@ const GlassyTile = ({
   return (
     <div
       onClick={onClick}
-      className={`${baseStyles} ${customGradient || gradientStyles[variant]} ${className} group`}
+      className={`${baseStyles} ${customGradient || gradientStyles[variant]} ${className} group tile-hover`}
     >
       {/* Animated gradient shimmer effect */}
       <div
