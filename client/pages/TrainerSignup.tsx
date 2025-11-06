@@ -100,7 +100,7 @@ export default function TrainerSignup() {
   };
 
   const isStep1Complete = formData.fullName && formData.phone && formData.email;
-  const isStep2Complete = formData.specialties.length > 0 && formData.bio && formData.experience && formData.price;
+  const isStep2Complete = formData.specialties.length > 0 && formData.bio && formData.experience;
   const isStep3Complete = formData.certifications.length > 0 && formData.idProof;
 
   const handleSubmit = () => {
