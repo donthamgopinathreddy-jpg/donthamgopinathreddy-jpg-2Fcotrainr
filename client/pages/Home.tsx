@@ -121,18 +121,18 @@ export default function Home() {
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Footprints className="w-5 h-5 text-orange-500" />
-                <span className="font-semibold text-foreground">Steps</span>
+                <Footprints className="w-5 h-5 text-orange-600" />
+                <span className="font-semibold text-gray-900">Steps</span>
               </div>
-              <span className="text-sm font-bold text-primary">{stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}</span>
+              <span className="text-sm font-bold text-orange-600">{stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}</span>
             </div>
-            <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-primary transition-all duration-500"
+                className="h-full bg-gradient-to-r from-orange-600 to-amber-500 transition-all duration-500 shadow-lg shadow-orange-600/50"
                 style={{ width: `${Math.min(stepsPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">{stepsPercent}% of daily goal</p>
+            <p className="text-xs text-gray-600 mt-1">{stepsPercent}% of daily goal</p>
           </div>
 
           {/* Calories Progress */}
@@ -157,18 +157,18 @@ export default function Home() {
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Droplets className="w-5 h-5 text-cyan-400" />
-                <span className="font-semibold text-foreground">Water</span>
+                <Droplets className="w-5 h-5 text-cyan-600" />
+                <span className="font-semibold text-gray-900">Water</span>
               </div>
-              <span className="text-sm font-bold text-cyan-400">{waterConsumed}L / {waterGoal}L</span>
+              <span className="text-sm font-bold text-cyan-600">{waterConsumed}L / {waterGoal}L</span>
             </div>
-            <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-cyan-600 to-blue-600 transition-all duration-500 shadow-lg shadow-cyan-600/50"
                 style={{ width: `${Math.min(waterPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">{waterPercent}% of daily goal</p>
+            <p className="text-xs text-gray-600 mt-1">{waterPercent}% of daily goal</p>
           </div>
         </div>
 
