@@ -134,6 +134,20 @@ export default function Onboarding() {
               <p className="text-muted-foreground">We'll use this to personalize your experience</p>
             </div>
 
+            {/* Username */}
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Username</label>
+              <input
+                type="text"
+                placeholder="johndoe"
+                value={formData.username}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, username: e.target.value }))
+                }
+                className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
             {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
@@ -162,18 +176,21 @@ export default function Onboarding() {
               />
             </div>
 
-            {/* Phone */}
+            {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Phone Number</label>
+              <label className="block text-sm font-medium text-foreground mb-2">Password</label>
               <input
-                type="tel"
-                placeholder="+91 98765 43210"
-                value={formData.phone}
+                type="password"
+                placeholder="At least 6 characters"
+                value={formData.password}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, phone: e.target.value }))
+                  setFormData((prev) => ({ ...prev, password: e.target.value }))
                 }
                 className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
+              {formData.password && formData.password.length < 6 && (
+                <p className="text-xs text-red-500 mt-1">Password must be at least 6 characters</p>
+              )}
             </div>
 
             {/* Gender */}
