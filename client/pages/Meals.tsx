@@ -468,7 +468,7 @@ export default function Meals() {
                 </button>
                 <button
                   onClick={handleAddMeal}
-                  disabled={!newFood.name || !newFood.weight}
+                  disabled={!newFood.name || (!newFood.weight && !newFood.quantity)}
                   className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity text-sm"
                 >
                   Save Meal
