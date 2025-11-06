@@ -40,16 +40,20 @@ export default function Home() {
 
   // Mock data
   const quote = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
+  const userWeight = 75; // kg - would come from user profile
+
+  // Calculate water goal based on weight: roughly 30ml per kg
+  const waterGoalCalculated = Math.round((userWeight * 30) / 1000 * 10) / 10;
+
   const stepsGoal = 10000;
   const stepsCompleted = 8420;
   const caloriesGoal = 2500;
   const caloriesConsumed = 1850;
-  const waterGoal = 3;
   const waterConsumed = 2.2;
 
   const stepsPercent = Math.round((stepsCompleted / stepsGoal) * 100);
   const caloriesPercent = Math.round((caloriesConsumed / caloriesGoal) * 100);
-  const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
+  const waterPercent = Math.round((waterConsumed / waterGoalCalculated) * 100);
 
   return (
     <div className="min-h-screen bg-white">
