@@ -292,15 +292,17 @@ export default function Feed() {
                 </div>
               )}
 
-              {/* Upload and Post Actions */}
-              <div className="flex gap-2 items-center">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*,video/*"
-                  onChange={handleMediaSelect}
-                  className="hidden"
-                />
+              {/* Media Upload Input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*,video/*"
+                onChange={handleMediaSelect}
+                className="hidden"
+              />
+
+              {/* Upload and Action Buttons */}
+              <div className="flex gap-2">
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors"
@@ -308,26 +310,20 @@ export default function Feed() {
                   <Paperclip className="w-5 h-5" />
                   Add Media
                 </button>
-                <button
-                  onClick={() => {
-                    setMentionSearch("");
-                    setShowMentionSuggestions(true);
-                  }}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors"
-                >
-                  <AtSign className="w-5 h-5" />
-                  Mention
-                </button>
+              </div>
+
+              {/* Post and Cancel Buttons */}
+              <div className="flex gap-2 w-full">
                 <button
                   onClick={() => setShowNewPost(false)}
-                  className="flex-1 bg-muted text-muted-foreground font-medium py-2 rounded-lg hover:bg-muted/80 transition-colors"
+                  className="flex-1 bg-gray-300 text-gray-900 font-bold py-3 rounded-lg hover:bg-gray-400 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleNewPost}
                   disabled={!newPostContent.trim()}
-                  className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                  className="flex-1 bg-gradient-primary text-gray-900 font-bold py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-orange-500/30 transition-all"
                 >
                   Post
                 </button>
