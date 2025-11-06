@@ -130,9 +130,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(data.user);
         await fetchUserProfile(data.user.id);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing up:", error);
-      throw error;
+      const errorMessage = error?.message || JSON.stringify(error);
+      throw new Error(errorMessage);
     }
   };
 
@@ -149,9 +150,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(data.user);
         await fetchUserProfile(data.user.id);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing in:", error);
-      throw error;
+      const errorMessage = error?.message || JSON.stringify(error);
+      throw new Error(errorMessage);
     }
   };
 
