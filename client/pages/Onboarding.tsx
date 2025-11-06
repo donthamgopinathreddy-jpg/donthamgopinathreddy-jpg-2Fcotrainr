@@ -140,7 +140,7 @@ export default function Onboarding() {
               <input
                 type="text"
                 placeholder="johndoe"
-                value={formData.username}
+                value={formData?.username ?? ""}
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, username: e.target.value }))
                 }
@@ -154,7 +154,7 @@ export default function Onboarding() {
               <input
                 type="text"
                 placeholder="John Doe"
-                value={formData.fullName}
+                value={formData?.fullName ?? ""}
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, fullName: e.target.value }))
                 }
@@ -168,7 +168,7 @@ export default function Onboarding() {
               <input
                 type="email"
                 placeholder="john@example.com"
-                value={formData.email}
+                value={formData?.email ?? ""}
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, email: e.target.value }))
                 }
@@ -182,13 +182,13 @@ export default function Onboarding() {
               <input
                 type="password"
                 placeholder="At least 6 characters"
-                value={formData.password}
+                value={formData?.password ?? ""}
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, password: e.target.value }))
                 }
                 className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
-              {formData.password && formData.password.length < 6 && (
+              {(formData?.password ?? "").length > 0 && (formData?.password ?? "").length < 6 && (
                 <p className="text-xs text-red-500 mt-1">Password must be at least 6 characters</p>
               )}
             </div>
@@ -202,7 +202,7 @@ export default function Onboarding() {
                     key={gender}
                     onClick={() => setFormData((prev) => ({ ...prev, gender }))}
                     className={`flex-1 py-3 rounded-lg font-medium transition-all ${
-                      formData.gender === gender
+                      formData?.gender === gender
                         ? "bg-primary text-primary-foreground"
                         : "bg-card border border-border text-foreground hover:border-primary"
                     }`}
@@ -220,7 +220,7 @@ export default function Onboarding() {
                 <input
                   type="number"
                   placeholder="170"
-                  value={formData.height}
+                  value={formData?.height ?? ""}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, height: e.target.value }))
                   }
@@ -232,7 +232,7 @@ export default function Onboarding() {
                 <input
                   type="number"
                   placeholder="75"
-                  value={formData.weight}
+                  value={formData?.weight ?? ""}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, weight: e.target.value }))
                   }
