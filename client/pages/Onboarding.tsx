@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight, ArrowLeft } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 import GlassyTile from "@/components/GlassyTile";
 
 type OnboardingStep = "welcome" | "form" | "role";
 type Gender = "male" | "female" | "other";
 
 interface FormData {
+  username: string;
   fullName: string;
   email: string;
-  phone: string;
+  password: string;
   gender: Gender | "";
   height: string;
   weight: string;
@@ -17,20 +20,25 @@ interface FormData {
 
 export default function Onboarding() {
   const navigate = useNavigate();
+  const { signUp } = useAuth();
   const [step, setStep] = useState<OnboardingStep>("welcome");
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
+    username: "",
     fullName: "",
     email: "",
-    phone: "",
+    password: "",
     gender: "",
     height: "",
     weight: "",
   });
 
   const isFormComplete =
+    formData.username &&
     formData.fullName &&
     formData.email &&
-    formData.phone &&
+    formData.password &&
+    formData.password.length >= 6 &&
     formData.gender &&
     formData.height &&
     formData.weight;
@@ -43,16 +51,30 @@ export default function Onboarding() {
     }
   };
 
-  const handleRoleSelect = (role: "client" | "trainer") => {
-    // Store user data (in real app, this would go to backend)
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({ ...formData, role })
-    );
-    if (role === "trainer") {
-      navigate("/trainer-signup");
-    } else {
-      navigate("/");
+  const handleRoleSelect = async (role: "client" | "trainer") => {
+    setLoading(true);
+    try {
+      await signUp(formData.email, formData.password, {
+        username: formData.username,
+        full_name: formData.fullName,
+        role,
+        gender: formData.gender as Gender,
+        weight_kg: parseFloat(formData.weight),
+        height_cm: parseFloat(formData.height),
+      });
+
+      toast.success("Account created successfully!");
+
+      if (role === "trainer") {
+        navigate("/trainer-signup");
+      } else {
+        navigate("/");
+      }
+    } catch (error: any) {
+      console.error("Signup error:", error);
+      toast.error(error.message || "Failed to create account");
+    } finally {
+      setLoading(false);
     }
   };
 
