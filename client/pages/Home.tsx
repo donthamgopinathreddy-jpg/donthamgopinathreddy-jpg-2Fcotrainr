@@ -12,6 +12,30 @@ const MOTIVATIONAL_QUOTES = [
 
 export default function Home() {
   const navigate = useNavigate();
+  const [coverImage, setCoverImage] = useState(
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop"
+  );
+  const [profileImage, setProfileImage] = useState("https://api.dicebear.com/7.x/avataaars/svg?seed=Admin");
+
+  const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setCoverImage(event.target?.result as string);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+  const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setProfileImage(event.target?.result as string);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
 
   // Mock data
   const quote = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
@@ -27,19 +51,64 @@ export default function Home() {
   const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Gradient Header */}
-      <div className="relative overflow-hidden bg-gradient-primary min-h-60 flex flex-col items-center justify-center px-6 pb-12">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute -top-20 -left-20 w-60 h-60 bg-white rounded-full filter blur-3xl animate-pulse" />
-          <div className="absolute -bottom-10 -right-20 w-80 h-80 bg-white rounded-full filter blur-3xl animate-pulse" />
-        </div>
+    <div className="min-h-screen bg-white">
+      {/* Hero Header with Cover Image */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-cyan-400 to-blue-500 h-64">
+        {/* Cover Image */}
+        <img
+          src={coverImage}
+          alt="Cover"
+          className="w-full h-full object-cover"
+        />
 
-        {/* Content */}
-        <div className="relative z-10 text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-3">Welcome Back</h1>
-          <p className="text-gray-800 text-base font-medium">{quote}</p>
+        {/* Edit Cover Button */}
+        <label className="absolute top-4 right-4 bg-white/90 hover:bg-white p-3 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all">
+          <svg className="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleCoverImageChange}
+            className="hidden"
+          />
+        </label>
+
+        {/* Greeting */}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 to-transparent p-6">
+          <p className="text-white text-base font-medium">{quote}</p>
+        </div>
+      </div>
+
+      {/* Profile Section */}
+      <div className="max-w-md mx-auto px-4 -mt-16 relative z-20 mb-8">
+        <div className="flex items-end gap-4">
+          {/* Profile Picture */}
+          <div className="relative">
+            <img
+              src={profileImage}
+              alt="Profile"
+              className="w-24 h-24 rounded-2xl border-4 border-white shadow-lg object-cover"
+            />
+            <label className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 p-2 rounded-lg cursor-pointer shadow-lg transition-all">
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleProfileImageChange}
+                className="hidden"
+              />
+            </label>
+          </div>
+
+          {/* Welcome Text */}
+          <div className="pb-2">
+            <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+            <p className="text-gray-600 text-sm">Ready to train?</p>
+          </div>
         </div>
       </div>
 
