@@ -209,6 +209,16 @@ export default function Home() {
               className="text-center"
             />
           </div>
+
+          {/* Join as Trainer CTA */}
+          <GlassyTile
+            icon={<Briefcase className="w-6 h-6 text-blue-700" />}
+            title="Become a Trainer"
+            subtitle="Share your expertise and earn"
+            onClick={() => navigate("/trainer-signup")}
+            variant="primary"
+            className="w-full text-center"
+          />
         </div>
 
         {/* Promo Card */}
