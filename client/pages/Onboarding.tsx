@@ -7,7 +7,7 @@ import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { usePermissions } from "@/hooks/usePermissions";
 
-type OnboardingStep = "welcome" | "form" | "role";
+type OnboardingStep = "welcome" | "form" | "role" | "permissions";
 type Gender = "male" | "female" | "other";
 
 interface FormData {
@@ -23,8 +23,10 @@ interface FormData {
 export default function Onboarding() {
   const navigate = useNavigate();
   const { signUp, demoMode } = useAuth();
+  const { requestAllPermissions, loading: permissionLoading } = usePermissions();
   const [step, setStep] = useState<OnboardingStep>("welcome");
   const [loading, setLoading] = useState(false);
+  const [userRole, setUserRole] = useState<"client" | "trainer" | null>(null);
   const [formData, setFormData] = useState<FormData>({
     username: "",
     fullName: "",
