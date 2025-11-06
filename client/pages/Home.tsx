@@ -177,28 +177,28 @@ export default function Home() {
           <h3 className="text-sm font-bold text-gray-600 px-1">Quick Access</h3>
           <div className="grid grid-cols-2 gap-3">
             <GlassyTile
-              icon={<Dumbbell className="w-6 h-6 text-cyan-600" />}
+              icon={<Dumbbell className="w-6 h-6 text-cyan-700" />}
               title="Trainers"
               onClick={() => navigate("/discover")}
               variant="trainers"
               className="text-center"
             />
             <GlassyTile
-              icon={<Apple className="w-6 h-6 text-purple-600" />}
+              icon={<Apple className="w-6 h-6 text-purple-700" />}
               title="Nutritionists"
               onClick={() => navigate("/discover")}
               variant="nutritionists"
               className="text-center"
             />
             <GlassyTile
-              icon={<Utensils className="w-6 h-6 text-green-600" />}
+              icon={<Utensils className="w-6 h-6 text-green-700" />}
               title="Meal Tracker"
               onClick={() => navigate("/meals")}
               variant="meals"
               className="text-center"
             />
             <GlassyTile
-              icon={<Newspaper className="w-6 h-6 text-amber-600" />}
+              icon={<Newspaper className="w-6 h-6 text-amber-700" />}
               title="Feed"
               onClick={() => navigate("/feed")}
               variant="feed"
