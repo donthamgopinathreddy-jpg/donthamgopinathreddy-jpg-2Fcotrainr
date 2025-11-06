@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin } from "lucide-react";
+import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera } from "lucide-react";
 import GlassyTile from "@/components/GlassyTile";
 
 interface UserType {
