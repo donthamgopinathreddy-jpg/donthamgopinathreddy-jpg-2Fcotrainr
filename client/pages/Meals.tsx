@@ -84,12 +84,12 @@ export default function Meals() {
             {/* Calories Bar */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-orange-500">Calories</span>
-                <span className="text-sm font-bold text-foreground">{totalCalories} / {calorieGoal}</span>
+                <span className="text-sm font-semibold text-orange-600">Calories</span>
+                <span className="text-sm font-bold text-gray-900">{totalCalories} / {calorieGoal}</span>
               </div>
-              <div className="w-full h-4 bg-muted rounded-full overflow-hidden">
+              <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-400 transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 transition-all duration-500 shadow-lg shadow-orange-600/50"
                   style={{ width: `${caloriePercent}%` }}
                 />
               </div>
@@ -98,12 +98,12 @@ export default function Meals() {
             {/* Protein Bar */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-red-500">Protein</span>
-                <span className="text-sm font-bold text-foreground">{totalProtein}g / {proteinGoal}g</span>
+                <span className="text-sm font-semibold text-red-600">Protein</span>
+                <span className="text-sm font-bold text-gray-900">{totalProtein}g / {proteinGoal}g</span>
               </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+              <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-red-500 to-pink-500 transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-red-600 to-pink-600 transition-all duration-500 shadow-lg shadow-red-600/50"
                   style={{ width: `${proteinPercent}%` }}
                 />
               </div>
@@ -112,12 +112,12 @@ export default function Meals() {
             {/* Carbs Bar */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-blue-500">Carbs</span>
-                <span className="text-sm font-bold text-foreground">{totalCarbs}g / {carbsGoal}g</span>
+                <span className="text-sm font-semibold text-blue-600">Carbs</span>
+                <span className="text-sm font-bold text-gray-900">{totalCarbs}g / {carbsGoal}g</span>
               </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+              <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-blue-600 to-cyan-600 transition-all duration-500 shadow-lg shadow-blue-600/50"
                   style={{ width: `${carbsPercent}%` }}
                 />
               </div>
@@ -126,12 +126,12 @@ export default function Meals() {
             {/* Fat Bar */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-amber-500">Fat</span>
-                <span className="text-sm font-bold text-foreground">{totalFat}g / {fatGoal}g</span>
+                <span className="text-sm font-semibold text-amber-600">Fat</span>
+                <span className="text-sm font-bold text-gray-900">{totalFat}g / {fatGoal}g</span>
               </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+              <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-amber-500 to-yellow-600 transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-amber-600 to-yellow-600 transition-all duration-500 shadow-lg shadow-amber-600/50"
                   style={{ width: `${fatPercent}%` }}
                 />
               </div>
