@@ -134,6 +134,9 @@ export default function Discover() {
     if (filter.verified && !trainer.verified) {
       return false;
     }
+    if (searchQuery && !trainer.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
     return true;
   });
 
