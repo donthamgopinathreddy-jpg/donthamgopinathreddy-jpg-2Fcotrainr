@@ -7,50 +7,50 @@
 
 @layer base {
   /**
-   * Tailwind CSS theme
+   * Tailwind CSS theme - Light/White Clean Theme
    * tailwind.config.ts expects the following color variables to be expressed as HSL values.
    * A different format will require also updating the theme in tailwind.config.ts.
   */
   :root {
-    /* CoTrainr Dark Theme */
-    --background: 240 15% 8%;
-    --foreground: 210 40% 98%;
+    /* CoTrainr Light Theme - Clean White */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 20%;
 
-    --card: 240 15% 12%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 98%;
+    --card-foreground: 240 10% 20%;
 
-    --popover: 240 15% 12%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 20%;
 
     /* Orange to Yellow Gradient Colors */
     --primary: 39 100% 50%;
-    --primary-foreground: 240 15% 8%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 15 100% 55%;
-    --secondary-foreground: 240 15% 8%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 10% 25%;
-    --muted-foreground: 210 20% 70%;
+    --muted: 240 10% 90%;
+    --muted-foreground: 240 10% 40%;
 
     --accent: 39 100% 50%;
-    --accent-foreground: 240 15% 8%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 240 10% 20%;
-    --input: 240 10% 20%;
+    --border: 240 10% 88%;
+    --input: 240 10% 95%;
     --ring: 39 100% 50%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 240 15% 12%;
-    --sidebar-foreground: 210 40% 98%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 10% 20%;
     --sidebar-primary: 39 100% 50%;
-    --sidebar-primary-foreground: 240 15% 8%;
-    --sidebar-accent: 240 10% 25%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 240 10% 20%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 10% 90%;
+    --sidebar-accent-foreground: 240 10% 20%;
+    --sidebar-border: 240 10% 88%;
     --sidebar-ring: 39 100% 50%;
   }
 }
