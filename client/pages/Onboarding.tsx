@@ -164,22 +164,24 @@ export default function Onboarding() {
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          <div className="w-full max-w-sm space-y-2">
-            <button
-              onClick={() => handleDemoMode("client")}
-              disabled={loading}
-              className="w-full bg-gray-100 text-gray-900 font-bold py-4 rounded-xl hover:bg-gray-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Loading..." : "Try Demo (Client)"}
-            </button>
-            <button
-              onClick={() => handleDemoMode("trainer")}
-              disabled={loading}
-              className="w-full bg-blue-100 text-blue-900 font-bold py-4 rounded-xl hover:bg-blue-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Loading..." : "Try Demo (Trainer)"}
-            </button>
-          </div>
+          {import.meta.env.DEV && (
+            <div className="w-full max-w-sm space-y-2">
+              <button
+                onClick={() => handleDemoMode("client")}
+                disabled={loading}
+                className="w-full bg-gray-100 text-gray-900 font-bold py-4 rounded-xl hover:bg-gray-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? "Loading..." : "Try Demo (Client)"}
+              </button>
+              <button
+                onClick={() => handleDemoMode("trainer")}
+                disabled={loading}
+                className="w-full bg-blue-100 text-blue-900 font-bold py-4 rounded-xl hover:bg-blue-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? "Loading..." : "Try Demo (Trainer)"}
+              </button>
+            </div>
+          )}
         </div>
       )}
 

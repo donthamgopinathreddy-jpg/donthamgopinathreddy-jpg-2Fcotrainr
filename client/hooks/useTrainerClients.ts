@@ -141,22 +141,22 @@ export const useTrainerClients = () => {
 
     setLoading(true);
     try {
-      // For demo users, return demo clients
-      if (user.id.startsWith("demo-user")) {
+      // For demo users, return demo clients (only in development)
+      if (import.meta.env.DEV && user.id.startsWith("demo-user")) {
         setClients(DEMO_CLIENTS);
       } else {
-        // In production, fetch from Supabase
+        // In production or for non-demo users, fetch from Supabase
         // const { data, error } = await supabase
         //   .from("trainer_clients")
         //   .select("*")
         //   .eq("trainer_id", user.id);
         // if (error) throw error;
         // setClients(data || []);
-        setClients(DEMO_CLIENTS);
+        setClients([]);
       }
     } catch (error) {
       console.error("Error fetching clients:", error);
-      setClients(DEMO_CLIENTS);
+      setClients([]);
     } finally {
       setLoading(false);
     }

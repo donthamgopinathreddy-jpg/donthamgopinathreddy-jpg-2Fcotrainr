@@ -229,6 +229,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const demoMode = async (role: "client" | "trainer" = "client") => {
+    // Demo mode is only available in development
+    if (!import.meta.env.DEV) {
+      throw new Error("Demo mode is not available in production");
+    }
+
     try {
       // Create a demo user object
       const demoUser: DemoUser = {
