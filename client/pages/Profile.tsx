@@ -1,6 +1,10 @@
-import { User, Edit2, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { User, Edit2, LogOut, Briefcase } from "lucide-react";
+import GlassyTile from "@/components/GlassyTile";
 
 export default function Profile() {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background pb-20">
       <div className="max-w-md mx-auto">
