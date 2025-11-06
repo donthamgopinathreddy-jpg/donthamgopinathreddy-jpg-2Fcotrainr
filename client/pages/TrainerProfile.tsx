@@ -54,25 +54,11 @@ const TIME_SLOTS = [
 
 export default function TrainerProfile() {
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState("Today");
-  const [selectedTime, setSelectedTime] = useState("");
-  const [showBookingModal, setShowBookingModal] = useState(false);
-
   const trainer = MOCK_TRAINER;
 
   const handleTry10Min = () => {
-    // TODO: Implement video call logic
-    alert("Starting 10-minute trial session...");
-  };
-
-  const handleBookSession = () => {
-    if (!selectedTime) {
-      alert("Please select a time slot");
-      return;
-    }
-    // TODO: Implement booking logic
-    alert(`Booked session for ${selectedDate} at ${selectedTime}`);
-    setShowBookingModal(false);
+    // Navigate to video call
+    navigate(`/video/${trainer.id}`);
   };
 
   return (
