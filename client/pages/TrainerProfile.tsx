@@ -17,6 +17,7 @@ interface TrainerDetails {
   gallery: string[];
   specialties: string[];
   totalSessions: number;
+  certifications?: string[];
 }
 
 const MOCK_TRAINER: TrainerDetails = {
