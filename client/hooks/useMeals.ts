@@ -35,10 +35,15 @@ export const useMeals = () => {
         .lte("logged_at", `${today}T23:59:59`)
         .order("logged_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching meals:", error?.message || error?.code || JSON.stringify(error));
+        throw error;
+      }
       setMeals(data || []);
-    } catch (error) {
-      console.error("Error fetching meals:", error);
+    } catch (error: any) {
+      console.error("Error fetching meals:", error?.message || error?.code || JSON.stringify(error));
+      // Silently fail - meals will just be empty until they're added
+      setMeals([]);
     } finally {
       setLoading(false);
     }
