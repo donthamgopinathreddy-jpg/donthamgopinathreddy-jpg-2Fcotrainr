@@ -78,7 +78,7 @@ export default function Profile() {
   const isTrainer = user.role === "trainer";
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white pb-20 l-shape-bg fitness-gradient-1">
       <div className="max-w-md mx-auto">
         {/* Profile Header */}
         <div className="bg-gradient-to-br from-blue-100 to-cyan-100 px-4 py-12 text-center">
