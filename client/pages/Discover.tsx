@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { ChevronDown, MapPin, Star, Lock, Search } from "lucide-react";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
+import { useTrainers } from "@/hooks/useTrainers";
 
 type Tab = "trainers" | "nutritionists";
 type SortOption = "distance" | "rating" | "price";
@@ -14,7 +15,6 @@ interface Filter {
   sort: SortOption;
 }
 
-// Categories in exact order per spec
 const TRAINER_CATEGORIES = [
   "All",
   "Gym",
@@ -32,180 +32,11 @@ const TRAINER_CATEGORIES = [
   "Running",
   "Stretching",
 ];
+
 const NUTRITIONIST_CATEGORIES = ["All", "Weight Loss", "Sports Nutrition", "Diabetes", "PCOS", "General"];
 
-const MOCK_TRAINERS = [
-  {
-    id: 1,
-    name: "Priya Singh",
-    category: "Gym",
-    yearsOfExperience: 5,
-    distance: 2.5,
-    rating: 4.8,
-    ratingCount: 124,
-    price: 500,
-    verified: true,
-    avatar: "PS",
-  },
-  {
-    id: 2,
-    name: "Raj Patel",
-    category: "CrossFit",
-    yearsOfExperience: 7,
-    distance: 1.8,
-    rating: 4.9,
-    ratingCount: 98,
-    price: 600,
-    verified: true,
-    avatar: "RP",
-  },
-  {
-    id: 3,
-    name: "Anjali Sharma",
-    category: "Yoga",
-    yearsOfExperience: 8,
-    distance: 3.2,
-    rating: 4.7,
-    ratingCount: 156,
-    price: 400,
-    verified: false,
-    avatar: "AS",
-  },
-  {
-    id: 4,
-    name: "Kumar Mishra",
-    category: "Boxing",
-    yearsOfExperience: 6,
-    distance: 4.1,
-    rating: 4.6,
-    ratingCount: 87,
-    price: 550,
-    verified: true,
-    avatar: "KM",
-  },
-  {
-    id: 5,
-    name: "Neha Verma",
-    category: "Gym",
-    yearsOfExperience: 4,
-    distance: 2.8,
-    rating: 4.9,
-    ratingCount: 203,
-    price: 650,
-    verified: true,
-    avatar: "NV",
-  },
-  {
-    id: 6,
-    name: "Vikram Singh",
-    category: "Zumba",
-    yearsOfExperience: 3,
-    distance: 5.2,
-    rating: 4.5,
-    ratingCount: 67,
-    price: 450,
-    verified: false,
-    avatar: "VS",
-  },
-  {
-    id: 7,
-    name: "Sarah Johnson",
-    category: "Swimming",
-    yearsOfExperience: 9,
-    distance: 3.5,
-    rating: 4.9,
-    ratingCount: 178,
-    price: 550,
-    verified: true,
-    avatar: "SJ",
-  },
-  {
-    id: 8,
-    name: "Marcus Chen",
-    category: "Pilates",
-    yearsOfExperience: 6,
-    distance: 2.2,
-    rating: 4.7,
-    ratingCount: 145,
-    price: 480,
-    verified: true,
-    avatar: "MC",
-  },
-  {
-    id: 9,
-    name: "Emma Rodriguez",
-    category: "HIIT",
-    yearsOfExperience: 4,
-    distance: 2.9,
-    rating: 4.8,
-    ratingCount: 112,
-    price: 520,
-    verified: true,
-    avatar: "ER",
-  },
-  {
-    id: 10,
-    name: "David Thompson",
-    category: "Running",
-    yearsOfExperience: 7,
-    distance: 4.3,
-    rating: 4.6,
-    ratingCount: 98,
-    price: 450,
-    verified: false,
-    avatar: "DT",
-  },
-  {
-    id: 11,
-    name: "Sophia Patel",
-    category: "Dance",
-    yearsOfExperience: 5,
-    distance: 3.1,
-    rating: 4.9,
-    ratingCount: 189,
-    price: 500,
-    verified: true,
-    avatar: "SP",
-  },
-  {
-    id: 12,
-    name: "Alex Kim",
-    category: "Martial Arts",
-    yearsOfExperience: 10,
-    distance: 2.6,
-    rating: 4.8,
-    ratingCount: 167,
-    price: 600,
-    verified: true,
-    avatar: "AK",
-  },
-  {
-    id: 13,
-    name: "Lisa Wang",
-    category: "Cycling",
-    yearsOfExperience: 5,
-    distance: 5.1,
-    rating: 4.7,
-    ratingCount: 134,
-    price: 480,
-    verified: false,
-    avatar: "LW",
-  },
-  {
-    id: 14,
-    name: "James Murphy",
-    category: "Aerobics",
-    yearsOfExperience: 6,
-    distance: 3.4,
-    rating: 4.6,
-    ratingCount: 102,
-    price: 420,
-    verified: true,
-    avatar: "JM",
-  },
-];
-
 export default function Discover() {
+  const { trainers, loading } = useTrainers();
   const [activeTab, setActiveTab] = useState<Tab>("trainers");
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -240,17 +71,48 @@ export default function Discover() {
     });
   };
 
-  const filteredTrainers = MOCK_TRAINERS.filter((trainer) => {
-    if (filter.category && filter.category !== "All" && trainer.category !== filter.category) {
-      return false;
+  // Filter trainers based on selected criteria
+  const filteredTrainers = trainers.filter((trainer) => {
+    // Check if trainer has a specialty matching the category (if category is not "All")
+    if (filter.category && filter.category !== "All") {
+      const matchesCategory = trainer.specialties && trainer.specialties.length > 0
+        ? trainer.specialties.some(spec =>
+            spec.toLowerCase().includes(filter.category!.toLowerCase())
+          )
+        : false;
+      if (!matchesCategory) return false;
     }
+
+    // Check verified status
     if (filter.verified && !trainer.verified) {
       return false;
     }
-    if (searchQuery && !trainer.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+
+    // Check search query
+    if (searchQuery && !trainer.full_name.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
+
+    // Check price range
+    const price = trainer.hourly_rate || 500;
+    if (price < filter.priceRange[0] || price > filter.priceRange[1]) {
+      return false;
+    }
+
     return true;
+  });
+
+  // Sort trainers
+  const sortedTrainers = [...filteredTrainers].sort((a, b) => {
+    switch (filter.sort) {
+      case "rating":
+        return (b.rating || 0) - (a.rating || 0);
+      case "price":
+        return (a.hourly_rate || 500) - (b.hourly_rate || 500);
+      case "distance":
+      default:
+        return 0;
+    }
   });
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -273,6 +135,16 @@ export default function Discover() {
     } else if (isRightSwipe) {
       carouselRef.current.scrollBy({ left: -150, behavior: "smooth" });
     }
+  };
+
+  const getInitials = (name?: string) => {
+    if (!name) return "?";
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   return (
@@ -380,17 +252,19 @@ export default function Discover() {
           {/* Additional Filters Panel */}
           {showFilters && (
             <div className="px-4 py-4 space-y-4 border-t border-border bg-card/50 backdrop-blur">
-              {/* Distance Filter */}
+              {/* Price Range Filter */}
               <div>
-                <h3 className="text-sm font-semibold mb-3">Distance: {filter.distance} km</h3>
-                <input
-                  type="range"
-                  min="2"
-                  max="20"
-                  value={filter.distance}
-                  onChange={(e) => setFilter({ ...filter, distance: Number(e.target.value) })}
-                  className="w-full"
-                />
+                <h3 className="text-sm font-semibold mb-3">Price Range: ₹{filter.priceRange[0]} - ₹{filter.priceRange[1]}</h3>
+                <div className="space-y-2">
+                  <input
+                    type="range"
+                    min="0"
+                    max="2000"
+                    value={filter.priceRange[1]}
+                    onChange={(e) => setFilter({ ...filter, priceRange: [filter.priceRange[0], Number(e.target.value)] })}
+                    className="w-full"
+                  />
+                </div>
               </div>
 
               {/* Verified Only */}
@@ -441,9 +315,16 @@ export default function Discover() {
       {/* Trainers List */}
       {activeTab === "trainers" && (
         <div className="max-w-md mx-auto px-4 py-6">
-          {filteredTrainers.length > 0 ? (
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="w-12 h-12 bg-card rounded-full flex items-center justify-center mb-4 animate-spin">
+                <span>⏳</span>
+              </div>
+              <p className="text-muted-foreground">Loading trainers...</p>
+            </div>
+          ) : sortedTrainers.length > 0 ? (
             <div className="space-y-4">
-              {filteredTrainers.map((trainer, idx) => (
+              {sortedTrainers.map((trainer, idx) => (
                 <div
                   key={trainer.id}
                   className="animate-slide-up"
@@ -456,13 +337,13 @@ export default function Discover() {
                     <div className="flex gap-4">
                       {/* Avatar */}
                       <div className="w-16 h-16 bg-gradient-primary rounded-xl flex items-center justify-center font-bold text-gray-900 flex-shrink-0">
-                        {trainer.avatar}
+                        {getInitials(trainer.full_name)}
                       </div>
 
                       {/* Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-bold text-foreground">{trainer.name}</h3>
+                          <h3 className="font-bold text-foreground">{trainer.full_name}</h3>
                           {trainer.verified && (
                             <div className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">
                               ✓ Verified
@@ -471,26 +352,30 @@ export default function Discover() {
                         </div>
 
                         <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-                      <span className="font-medium">{trainer.category}</span>
-                      <span>•</span>
-                      <span>{trainer.yearsOfExperience} yrs</span>
-                    </div>
+                          <span className="font-medium">
+                            {trainer.specialties && trainer.specialties.length > 0
+                              ? trainer.specialties[0]
+                              : "Fitness"}
+                          </span>
+                          <span>•</span>
+                          <span>{trainer.years_of_experience || 0} yrs</span>
+                        </div>
 
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                      <div className="flex items-center gap-1">
-                        <Star className="w-3 h-3 fill-primary text-primary" />
-                        <span className="font-semibold">{trainer.rating}</span>
-                        <span className="text-muted-foreground">({trainer.ratingCount})</span>
-                      </div>
-                    </div>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                          <div className="flex items-center gap-1">
+                            <Star className="w-3 h-3 fill-primary text-primary" />
+                            <span className="font-semibold">{trainer.rating || 0}</span>
+                            <span className="text-muted-foreground">({trainer.reviews_count || 0})</span>
+                          </div>
+                        </div>
 
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        {trainer.distance} km
-                      </div>
-                      <div className="font-semibold text-primary">₹{trainer.price}</div>
-                    </div>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            <span>Nearby</span>
+                          </div>
+                          <div className="font-semibold text-primary">₹{trainer.hourly_rate || 500}/hr</div>
+                        </div>
 
                         {/* CTAs */}
                         <div className="flex gap-2">
