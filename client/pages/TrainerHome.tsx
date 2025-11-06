@@ -80,7 +80,7 @@ export default function TrainerHome() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white pb-36">
       {/* Logo Header */}
       <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
         <Logo size="sm" />
@@ -413,7 +413,7 @@ export default function TrainerHome() {
       )}
 
       {/* View Toggle at Bottom */}
-      <div className="fixed bottom-24 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-4 py-4 shadow-lg">
         <div className="max-w-md mx-auto flex gap-2">
           <button
             onClick={() => toggleView("stats")}
