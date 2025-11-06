@@ -35,6 +35,13 @@ export default function Profile() {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserType>(MOCK_USER);
   const [isFollowing, setIsFollowing] = useState(user.isFollowing);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editForm, setEditForm] = useState({
+    name: user.name,
+    gender: user.gender,
+    height: user.height,
+    weight: user.weight,
+  });
 
   const handleFollow = () => {
     setIsFollowing(!isFollowing);
