@@ -8,10 +8,16 @@ const Navigation = () => {
 
   const isActive = (path: string) => location.pathname === path;
   const isTrainer = userProfile?.role === "trainer";
+  const isTrainerHome = isTrainer && location.pathname === "/";
+
+  // Hide navigation for trainers on home page (they have toggle buttons)
+  if (isTrainerHome) {
+    return null;
+  }
 
   const navItems = isTrainer
     ? [
-        { path: "/trainer-dashboard", label: "Clients", icon: BarChart3 },
+        { path: "/", label: "Home", icon: Home },
         { path: "/messages", label: "Messages", icon: MessageCircle },
         { path: "/profile", label: "Profile", icon: User },
       ]
