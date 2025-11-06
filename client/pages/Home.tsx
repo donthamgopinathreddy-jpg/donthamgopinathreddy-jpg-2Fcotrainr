@@ -122,7 +122,10 @@ export default function Home() {
         {/* Progress Bars Card */}
         <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
           {/* Steps Progress */}
-          <div>
+          <button
+            onClick={() => navigate("/activity/steps")}
+            className="w-full text-left hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
+          >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Footprints className="w-5 h-5 text-orange-600" />
@@ -137,7 +140,7 @@ export default function Home() {
               />
             </div>
             <p className="text-xs text-gray-600 mt-1">{stepsPercent}% of daily goal</p>
-          </div>
+          </button>
 
           {/* Calories Progress */}
           <div>
