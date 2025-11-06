@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, ArrowLeft } from "lucide-react";
+import { ChevronRight, ArrowLeft, Users, Award } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
+import { usePermissions } from "@/hooks/usePermissions";
 
 type OnboardingStep = "welcome" | "form" | "role";
 type Gender = "male" | "female" | "other";
