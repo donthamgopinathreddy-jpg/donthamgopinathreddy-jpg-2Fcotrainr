@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ChevronRight, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 
 type OnboardingStep = "welcome" | "form" | "role";
@@ -97,10 +98,7 @@ export default function Onboarding() {
       {step === "welcome" && (
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
           <div className="mb-8">
-            <div className="w-24 h-24 bg-gradient-primary rounded-3xl flex items-center justify-center mb-6 mx-auto">
-              <span className="text-5xl">🏋️</span>
-            </div>
-            <h1 className="text-4xl font-bold text-foreground mb-3">CoTrainr</h1>
+            <Logo size="lg" className="mx-auto mb-6" />
             <p className="text-muted-foreground text-lg">
               Your personal fitness companion
             </p>
