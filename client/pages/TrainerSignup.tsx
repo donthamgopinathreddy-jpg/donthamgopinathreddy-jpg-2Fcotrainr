@@ -228,6 +228,40 @@ export default function TrainerSignup() {
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-medium mb-2">Gallery (Photos & Videos)</label>
+              <label className="flex items-center justify-center w-full px-4 py-6 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-colors">
+                <div className="text-center">
+                  <Plus className="w-6 h-6 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-sm font-medium">Upload Photos & Videos</p>
+                  <p className="text-xs text-muted-foreground">PNG, JPG, MP4 up to 10MB each</p>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*,video/*"
+                  multiple
+                  onChange={handleGalleryUpload}
+                  className="hidden"
+                />
+              </label>
+
+              {formData.gallery.length > 0 && (
+                <div className="space-y-2 mt-3">
+                  {formData.gallery.map((file, idx) => (
+                    <div key={idx} className="flex items-center justify-between bg-card border border-border rounded-lg p-3">
+                      <p className="text-xs font-medium truncate">{file.name}</p>
+                      <button
+                        onClick={() => removeGalleryImage(idx)}
+                        className="p-1 hover:bg-muted rounded transition-colors"
+                      >
+                        <X className="w-4 h-4 text-destructive" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="flex gap-3 mt-8">
               <button
                 onClick={() => setStep(1)}
