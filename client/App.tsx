@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Onboarding from "./pages/Onboarding";
 import Home from "./pages/Home";
 import Discover from "./pages/Discover";
 import Messages from "./pages/Messages";
@@ -29,6 +30,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => (
 const AppContent = () => (
   <BrowserRouter>
     <Routes>
+      <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/" element={<AppLayout><Home /></AppLayout>} />
       <Route path="/discover" element={<AppLayout><Discover /></AppLayout>} />
       <Route path="/messages" element={<AppLayout><Messages /></AppLayout>} />
