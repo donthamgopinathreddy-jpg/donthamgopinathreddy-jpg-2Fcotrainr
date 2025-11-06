@@ -60,6 +60,10 @@
     @apply border-border;
   }
 
+  html {
+    @apply dark;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -73,5 +77,13 @@
   code {
     overflow-x: auto;
     white-space: pre;
+  }
+}
+
+@layer components {
+  /* Animations for delayed stagger effect */
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out forwards;
+    opacity: 0;
   }
 }
