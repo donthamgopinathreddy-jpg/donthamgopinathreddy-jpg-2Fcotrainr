@@ -49,7 +49,8 @@ const AppContent = () => (
 
 const App = () => {
   useEffect(() => {
-    document.documentElement.classList.add("dark");
+    // Use light theme (remove dark class if present)
+    document.documentElement.classList.remove("dark");
   }, []);
 
   return (
