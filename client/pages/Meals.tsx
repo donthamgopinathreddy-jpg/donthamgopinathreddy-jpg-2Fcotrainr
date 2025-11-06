@@ -74,11 +74,13 @@ export default function Meals() {
   const [showAddFood, setShowAddFood] = useState(false);
   const [newFood, setNewFood] = useState({
     name: "",
+    weight: "",
     calories: "",
     protein: "",
     carbs: "",
     fat: "",
   });
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const totalCalories = meals.reduce((sum, meal) => sum + meal.calories, 0);
   const totalProtein = meals.reduce((sum, meal) => sum + meal.protein, 0);
