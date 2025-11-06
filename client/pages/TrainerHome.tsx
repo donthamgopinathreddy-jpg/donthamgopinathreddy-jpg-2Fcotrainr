@@ -264,41 +264,113 @@ export default function TrainerHome() {
             <div>
               <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Access</h2>
               <div className="grid grid-cols-2 gap-3">
-                <GlassyTile
-                  icon={<Flame className="w-6 h-6 text-red-600" />}
-                  title="Track Meals"
-                  subtitle="Log your nutrition"
+                <button
                   onClick={() => navigate("/meals")}
-                  variant="primary"
-                />
-                <GlassyTile
-                  icon={<Users className="w-6 h-6 text-purple-600" />}
-                  title="View Clients"
-                  subtitle="Manage your team"
+                  className="bg-gradient-to-br from-amber-100 via-orange-100 to-red-100 rounded-2xl p-5 border border-orange-200 hover:shadow-lg hover:shadow-orange-300/50 transition-all transform hover:scale-105"
+                >
+                  <Flame className="w-7 h-7 text-orange-600 mb-2" />
+                  <p className="font-bold text-gray-900 text-sm">Track Meals</p>
+                  <p className="text-xs text-gray-600">Log nutrition</p>
+                </button>
+                <button
                   onClick={() => toggleView("clients")}
-                  variant="secondary"
-                />
-                <GlassyTile
-                  icon={<Briefcase className="w-6 h-6 text-green-600" />}
-                  title="Post Update"
-                  subtitle="Share with community"
+                  className="bg-gradient-to-br from-cyan-100 via-blue-100 to-teal-100 rounded-2xl p-5 border border-cyan-200 hover:shadow-lg hover:shadow-cyan-300/50 transition-all transform hover:scale-105"
+                >
+                  <Users className="w-7 h-7 text-cyan-600 mb-2" />
+                  <p className="font-bold text-gray-900 text-sm">View Clients</p>
+                  <p className="text-xs text-gray-600">Manage team</p>
+                </button>
+                <button
                   onClick={() => navigate("/feed")}
-                  variant="primary"
-                />
-                <GlassyTile
-                  icon={<MessageSquare className="w-6 h-6 text-blue-600" />}
-                  title="Messages"
-                  subtitle="Chat with clients"
+                  className="bg-gradient-to-br from-purple-100 via-pink-100 to-rose-100 rounded-2xl p-5 border border-purple-200 hover:shadow-lg hover:shadow-purple-300/50 transition-all transform hover:scale-105"
+                >
+                  <Briefcase className="w-7 h-7 text-purple-600 mb-2" />
+                  <p className="font-bold text-gray-900 text-sm">Post Update</p>
+                  <p className="text-xs text-gray-600">Share progress</p>
+                </button>
+                <button
                   onClick={() => navigate("/messages")}
-                  variant="secondary"
-                />
-                <GlassyTile
-                  icon={<User className="w-6 h-6 text-indigo-600" />}
-                  title="My Profile"
-                  subtitle="View your settings"
+                  className="bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 rounded-2xl p-5 border border-green-200 hover:shadow-lg hover:shadow-green-300/50 transition-all transform hover:scale-105"
+                >
+                  <MessageSquare className="w-7 h-7 text-green-600 mb-2" />
+                  <p className="font-bold text-gray-900 text-sm">Messages</p>
+                  <p className="text-xs text-gray-600">Chat clients</p>
+                </button>
+                <button
                   onClick={() => navigate("/profile")}
-                  variant="primary"
-                />
+                  className="bg-gradient-to-br from-indigo-100 via-violet-100 to-purple-100 rounded-2xl p-5 border border-indigo-200 hover:shadow-lg hover:shadow-indigo-300/50 transition-all transform hover:scale-105"
+                >
+                  <User className="w-7 h-7 text-indigo-600 mb-2" />
+                  <p className="font-bold text-gray-900 text-sm">My Profile</p>
+                  <p className="text-xs text-gray-600">View settings</p>
+                </button>
+              </div>
+            </div>
+
+            {/* Latest Posts Section */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold text-gray-900">Latest Posts</h2>
+                <button
+                  onClick={() => navigate("/feed")}
+                  className="text-blue-600 hover:text-blue-700 text-sm font-semibold"
+                >
+                  View All →
+                </button>
+              </div>
+              <div className="space-y-3">
+                {LATEST_POSTS.slice(0, 3).map((post) => (
+                  <div
+                    key={post.id}
+                    className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-md transition-all"
+                  >
+                    {/* Post Header */}
+                    <div className="p-4">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-400 flex items-center justify-center text-white font-bold text-sm">
+                          {post.authorAvatar}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-gray-900 text-sm">{post.authorName}</p>
+                          <p className="text-xs text-gray-500">{post.createdAt}</p>
+                        </div>
+                        {post.authorRole === "trainer" && (
+                          <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-semibold">
+                            Trainer
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Post Content */}
+                      <p className="text-sm text-gray-700 mb-3 line-clamp-2">{post.content}</p>
+
+                      {/* Post Image */}
+                      {post.image && (
+                        <img
+                          src={post.image}
+                          alt="Post"
+                          className="w-full h-40 object-cover rounded-lg mb-3"
+                        />
+                      )}
+
+                      {/* Post Stats */}
+                      <div className="flex items-center justify-between text-xs text-gray-600 border-t border-gray-100 pt-3">
+                        <button className="flex items-center gap-1 hover:text-red-600 transition-colors">
+                          <Heart className={`w-4 h-4 ${post.liked ? "fill-red-600 text-red-600" : ""}`} />
+                          <span>{post.likes}</span>
+                        </button>
+                        <button className="flex items-center gap-1 hover:text-blue-600 transition-colors">
+                          <MessageIcon className="w-4 h-4" />
+                          <span>{post.comments}</span>
+                        </button>
+                        <button className="flex items-center gap-1 hover:text-green-600 transition-colors">
+                          <Share2 className="w-4 h-4" />
+                          <span>{post.shares}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
