@@ -13,6 +13,7 @@ import Messages from "./pages/Messages";
 import Meals from "./pages/Meals";
 import Profile from "./pages/Profile";
 import Feed from "./pages/Feed";
+import TrainerProfile from "./pages/TrainerProfile";
 import TrainerSignup from "./pages/TrainerSignup";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
