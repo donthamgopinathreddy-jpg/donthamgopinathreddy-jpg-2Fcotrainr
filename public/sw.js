@@ -34,7 +34,16 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") {
+  const url = new URL(event.request.url);
+
+  // Skip API calls (Supabase, external services, etc.) and non-GET requests
+  if (
+    event.request.method !== "GET" ||
+    url.hostname !== "localhost" ||
+    url.pathname.startsWith("/api") ||
+    event.request.url.includes("supabase") ||
+    event.request.url.includes("googleapis")
+  ) {
     return;
   }
 
