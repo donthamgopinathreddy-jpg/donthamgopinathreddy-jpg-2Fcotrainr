@@ -36,18 +36,18 @@ const GlassyTile = ({
   return (
     <div
       onClick={onClick}
-      className={`${baseStyles} ${gradientStyles[variant]} ${className} group`}
+      className={`${baseStyles} ${customGradient || gradientStyles[variant]} ${className} group`}
     >
       {/* Animated gradient shimmer effect */}
       <div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white via-30% to-transparent opacity-0 group-hover:opacity-20 animate-shimmer"
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white via-30% to-transparent opacity-0 group-hover:opacity-15 animate-shimmer"
         style={{
           backgroundSize: "200% 100%",
         }}
       />
 
       {/* Glow effect */}
-      <div className="absolute inset-0 bg-gradient-glow opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
+      <div className="absolute inset-0 rounded-2xl" />
 
       {/* Content */}
       <div className="relative z-10">
