@@ -52,16 +52,28 @@ export default function Onboarding() {
       setStep("form");
     } else if (step === "form" && isFormComplete) {
       setStep("role");
+    } else if (step === "role") {
+      setStep("permissions");
     }
   };
 
-  const handleRoleSelect = async (role: "client" | "trainer") => {
+  const handlePermissionsSkip = async () => {
+    await handleRoleSelectComplete();
+  };
+
+  const handlePermissionsAllow = async () => {
+    await requestAllPermissions();
+    await handleRoleSelectComplete();
+  };
+
+  const handleRoleSelectComplete = async () => {
+    if (!userRole) return;
     setLoading(true);
     try {
       await signUp(formData.email, formData.password, {
         username: formData.username,
         full_name: formData.fullName,
-        role,
+        role: userRole,
         gender: formData.gender as Gender,
         weight_kg: parseFloat(formData.weight),
         height_cm: parseFloat(formData.height),
@@ -69,7 +81,7 @@ export default function Onboarding() {
 
       toast.success("Account created successfully!");
 
-      if (role === "trainer") {
+      if (userRole === "trainer") {
         navigate("/trainer-signup");
       } else {
         navigate("/");
@@ -80,6 +92,11 @@ export default function Onboarding() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRoleSelect = (role: "client" | "trainer") => {
+    setUserRole(role);
+    setStep("permissions");
   };
 
   const handleDemoMode = async () => {
