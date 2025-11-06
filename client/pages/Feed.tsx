@@ -1,95 +1,15 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, MessageCircle, Share2, Plus, UserPlus, UserCheck, Paperclip, X, AtSign } from "lucide-react";
-
-interface Post {
-  id: string;
-  authorName: string;
-  authorRole: "trainer" | "client";
-  authorAvatar: string;
-  content: string;
-  image?: string;
-  likes: number;
-  comments: number;
-  shares: number;
-  liked: boolean;
-  followed: boolean;
-  createdAt: string;
-}
-
-const DEMO_POSTS: Post[] = [
-  {
-    id: "1",
-    authorName: "Priya Singh",
-    authorRole: "trainer",
-    authorAvatar: "PS",
-    content: "🔥 New transformation! Check out my client Rahul's amazing 12-week journey. Consistency is key! #FitnessJourney",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=500&fit=crop",
-    likes: 324,
-    comments: 47,
-    shares: 23,
-    liked: false,
-    followed: false,
-    createdAt: "2 hours ago",
-  },
-  {
-    id: "2",
-    authorName: "Amit Kumar",
-    authorRole: "client",
-    authorAvatar: "AK",
-    content: "Day 30 of my fitness journey! Started with my trainer Raj at CrossFit. Already seeing results 💪",
-    image: "https://images.unsplash.com/photo-1552672260-7bdde322fa4f?w=500&h=500&fit=crop",
-    likes: 156,
-    comments: 28,
-    shares: 12,
-    liked: true,
-    followed: false,
-    createdAt: "4 hours ago",
-  },
-  {
-    id: "3",
-    authorName: "Neha Verma",
-    authorRole: "trainer",
-    authorAvatar: "NV",
-    content: "💡 Tip: Start your workout with a 5-min warm-up. It increases blood flow and prevents injuries. Tag someone who needs this!",
-    likes: 542,
-    comments: 89,
-    shares: 156,
-    liked: false,
-    followed: false,
-    createdAt: "6 hours ago",
-  },
-  {
-    id: "4",
-    authorName: "Sneha Patel",
-    authorRole: "client",
-    authorAvatar: "SP",
-    content: "Finally hit my target weight! 🎉 Thanks to my nutritionist and trainer for keeping me on track!",
-    image: "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=500&h=500&fit=crop",
-    likes: 287,
-    comments: 52,
-    shares: 34,
-    liked: false,
-    followed: false,
-    createdAt: "8 hours ago",
-  },
-];
-
-const AVAILABLE_USERS = [
-  "Priya Singh",
-  "Amit Kumar",
-  "Neha Verma",
-  "Sneha Patel",
-  "Raj Patel",
-  "Sarah Williams",
-  "Mike Chen",
-  "Emma Davis",
-];
+import { usePosts } from "@/hooks/usePosts";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export default function Feed() {
   const navigate = useNavigate();
+  const { userProfile } = useAuth();
+  const { posts, createPost, likePost, incrementComments, loading } = usePosts();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [posts, setPosts] = useState<Post[]>(DEMO_POSTS);
   const [showNewPost, setShowNewPost] = useState(false);
   const [newPostContent, setNewPostContent] = useState("");
   const [selectedMedia, setSelectedMedia] = useState<string | null>(null);
@@ -97,33 +17,19 @@ export default function Feed() {
   const [mentions, setMentions] = useState<string[]>([]);
   const [showMentionSuggestions, setShowMentionSuggestions] = useState(false);
   const [mentionSearch, setMentionSearch] = useState("");
+  const [postLoading, setPostLoading] = useState(false);
+  const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
 
-  const toggleLike = (postId: string) => {
-    setPosts(
-      posts.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              liked: !post.liked,
-              likes: post.liked ? post.likes - 1 : post.likes + 1,
-            }
-          : post
-      )
-    );
-  };
-
-  const toggleFollow = (postId: string) => {
-    setPosts(
-      posts.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              followed: !post.followed,
-            }
-          : post
-      )
-    );
-  };
+  const AVAILABLE_USERS = [
+    "Priya Singh",
+    "Amit Kumar",
+    "Neha Verma",
+    "Sneha Patel",
+    "Raj Patel",
+    "Sarah Williams",
+    "Mike Chen",
+    "Emma Davis",
+  ];
 
   const handleMediaSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -156,30 +62,86 @@ export default function Feed() {
       !mentions.includes(user)
   );
 
-  const handleNewPost = () => {
-    if (!newPostContent.trim()) return;
+  const handleNewPost = async () => {
+    if (!newPostContent.trim()) {
+      toast.error("Please write something to post");
+      return;
+    }
 
-    const post: Post = {
-      id: Date.now().toString(),
-      authorName: "You",
-      authorRole: "client",
-      authorAvatar: "ME",
-      content: newPostContent,
-      image: mediaType === "image" ? selectedMedia || undefined : undefined,
-      likes: 0,
-      comments: 0,
-      shares: 0,
-      liked: false,
-      followed: false,
-      createdAt: "just now",
-    };
+    setPostLoading(true);
+    try {
+      await createPost({
+        content: newPostContent,
+        image_url: mediaType === "image" ? selectedMedia || undefined : undefined,
+        video_url: mediaType === "video" ? selectedMedia || undefined : undefined,
+      });
 
-    setPosts([post, ...posts]);
-    setNewPostContent("");
-    setSelectedMedia(null);
-    setMediaType(null);
-    setMentions([]);
-    setShowNewPost(false);
+      setNewPostContent("");
+      setSelectedMedia(null);
+      setMediaType(null);
+      setMentions([]);
+      setShowNewPost(false);
+      toast.success("Post created successfully!");
+    } catch (error) {
+      console.error("Error creating post:", error);
+      toast.error("Failed to create post. Please try again.");
+    } finally {
+      setPostLoading(false);
+    }
+  };
+
+  const handleLike = async (postId: string) => {
+    try {
+      setLikedPosts((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(postId)) {
+          newSet.delete(postId);
+        } else {
+          newSet.add(postId);
+        }
+        return newSet;
+      });
+      await likePost(postId);
+    } catch (error) {
+      console.error("Error liking post:", error);
+      toast.error("Failed to like post");
+    }
+  };
+
+  const handleComment = async (postId: string) => {
+    try {
+      await incrementComments(postId);
+      toast.success("Comment added!");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      toast.error("Failed to add comment");
+    }
+  };
+
+  const getInitials = (name?: string) => {
+    if (!name) return "?";
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+
+    return date.toLocaleDateString();
   };
 
   return (
@@ -316,101 +278,118 @@ export default function Feed() {
               <div className="flex gap-2 w-full">
                 <button
                   onClick={() => setShowNewPost(false)}
-                  className="flex-1 bg-gray-300 text-gray-900 font-bold py-3 rounded-lg hover:bg-gray-400 transition-colors"
+                  disabled={postLoading}
+                  className="flex-1 bg-gray-300 text-gray-900 font-bold py-3 rounded-lg hover:bg-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleNewPost}
-                  disabled={!newPostContent.trim()}
+                  disabled={!newPostContent.trim() || postLoading}
                   className="flex-1 bg-gradient-primary text-gray-900 font-bold py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-orange-500/30 transition-all"
                 >
-                  Post
+                  {postLoading ? "Posting..." : "Post"}
                 </button>
               </div>
             </div>
           </div>
         )}
 
+        {/* Loading State */}
+        {loading && (
+          <div className="px-4 py-12 text-center">
+            <p className="text-muted-foreground">Loading posts...</p>
+          </div>
+        )}
+
         {/* Posts List */}
-        <div className="px-4 space-y-4 pb-4">
-          {posts.map((post) => (
-            <div
-              key={post.id}
-              className="bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-colors"
-            >
-              {/* Post Header */}
-              <div className="px-4 pt-4 pb-3 flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-sm flex-shrink-0">
-                  {post.authorAvatar}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-bold text-foreground text-sm">{post.authorName}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {post.authorRole === "trainer" ? "🏋️ Trainer" : "👤 Client"} • {post.createdAt}
-                  </p>
-                </div>
-                <button
-                  onClick={() => toggleFollow(post.id)}
-                  className={`flex items-center gap-1 px-3 py-1 rounded-lg font-semibold text-xs transition-all flex-shrink-0 ${
-                    post.followed
-                      ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      : "bg-blue-600 text-white hover:bg-blue-700"
-                  }`}
+        {!loading && (
+          <div className="px-4 space-y-4 pb-4">
+            {posts.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No posts yet. Be the first to post!</p>
+              </div>
+            ) : (
+              posts.map((post) => (
+                <div
+                  key={post.id}
+                  className="bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-colors"
                 >
-                  {post.followed ? (
-                    <>
-                      <UserCheck className="w-4 h-4" />
-                      Following
-                    </>
-                  ) : (
-                    <>
+                  {/* Post Header */}
+                  <div className="px-4 pt-4 pb-3 flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-sm flex-shrink-0">
+                      {getInitials(post.author_name)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-foreground text-sm">{post.author_name || "Unknown"}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {post.author_role === "trainer" ? "🏋️ Trainer" : "👤 Client"} •{" "}
+                        {formatDate(post.created_at)}
+                      </p>
+                    </div>
+                    <button className="flex items-center gap-1 px-3 py-1 rounded-lg font-semibold text-xs transition-all flex-shrink-0 bg-blue-600 text-white hover:bg-blue-700">
                       <UserPlus className="w-4 h-4" />
                       Follow
-                    </>
+                    </button>
+                  </div>
+
+                  {/* Post Content */}
+                  <div className="px-4 py-2">
+                    <p className="text-foreground text-sm leading-relaxed">{post.content}</p>
+                  </div>
+
+                  {/* Post Image */}
+                  {post.image_url && (
+                    <div className="w-full h-64 overflow-hidden">
+                      <img
+                        src={post.image_url}
+                        alt="Post"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   )}
-                </button>
-              </div>
 
-              {/* Post Content */}
-              <div className="px-4 py-2">
-                <p className="text-foreground text-sm leading-relaxed">{post.content}</p>
-              </div>
+                  {/* Post Video */}
+                  {post.video_url && (
+                    <div className="w-full h-64 overflow-hidden">
+                      <video
+                        src={post.video_url}
+                        className="w-full h-full object-cover"
+                        controls
+                      />
+                    </div>
+                  )}
 
-              {/* Post Image */}
-              {post.image && (
-                <div className="w-full h-64 overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt="Post"
-                    className="w-full h-full object-cover"
-                  />
+                  {/* Post Actions */}
+                  <div className="px-4 py-3 border-t border-border flex items-center justify-between text-muted-foreground">
+                    <button
+                      onClick={() => handleLike(post.id)}
+                      className={`flex items-center gap-2 text-sm font-medium transition-colors ${
+                        likedPosts.has(post.id) ? "text-red-500" : "hover:text-red-500"
+                      }`}
+                    >
+                      <Heart
+                        className={`w-4 h-4 ${likedPosts.has(post.id) ? "fill-red-500" : ""}`}
+                      />
+                      <span>{post.likes_count}</span>
+                    </button>
+                    <button
+                      onClick={() => handleComment(post.id)}
+                      className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      <span>{post.comments_count}</span>
+                    </button>
+                    <button className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors">
+                      <Share2 className="w-4 h-4" />
+                      <span>{post.shares_count}</span>
+                    </button>
+                  </div>
                 </div>
-              )}
-
-              {/* Post Actions */}
-              <div className="px-4 py-3 border-t border-border flex items-center justify-between text-muted-foreground">
-                <button
-                  onClick={() => toggleLike(post.id)}
-                  className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                    post.liked ? "text-red-500" : "hover:text-red-500"
-                  }`}
-                >
-                  <Heart className={`w-4 h-4 ${post.liked ? "fill-red-500" : ""}`} />
-                  <span>{post.likes}</span>
-                </button>
-                <button className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors">
-                  <MessageCircle className="w-4 h-4" />
-                  <span>{post.comments}</span>
-                </button>
-                <button className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors">
-                  <Share2 className="w-4 h-4" />
-                  <span>{post.shares}</span>
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
