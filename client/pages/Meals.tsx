@@ -352,9 +352,11 @@ export default function Meals() {
 
           {/* Today's Meals */}
           <div>
-            <h3 className="text-sm font-bold text-muted-foreground mb-3">Today's Meals ({meals.length})</h3>
+            <h3 className="text-sm font-bold text-muted-foreground mb-3">
+              Today's Meals ({loading ? "..." : mealEntries.length})
+            </h3>
             <div className="space-y-2">
-              {meals.map((meal) => (
+              {mealEntries.map((meal) => (
                 <div
                   key={meal.id}
                   className="bg-card border border-border rounded-lg p-4 flex items-center justify-between hover:border-primary transition-colors"
