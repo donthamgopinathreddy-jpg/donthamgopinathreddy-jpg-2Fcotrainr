@@ -51,6 +51,17 @@ export default function Profile() {
     }));
   };
 
+  const handleSaveEdit = () => {
+    setUser((prev) => ({
+      ...prev,
+      name: editForm.name,
+      gender: editForm.gender,
+      height: editForm.height,
+      weight: editForm.weight,
+    }));
+    setShowEditModal(false);
+  };
+
   const isTrainer = user.role === "trainer";
 
   return (
