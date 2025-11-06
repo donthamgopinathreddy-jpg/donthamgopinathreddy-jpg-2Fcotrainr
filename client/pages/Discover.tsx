@@ -95,6 +95,7 @@ const MOCK_TRAINERS = [
 export default function Discover() {
   const [activeTab, setActiveTab] = useState<Tab>("trainers");
   const [showFilters, setShowFilters] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<Filter>({
     category: "All",
     verified: false,
