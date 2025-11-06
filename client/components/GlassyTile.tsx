@@ -22,7 +22,7 @@ const GlassyTile = ({
   customGradient,
 }: GlassyTileProps) => {
   const baseStyles =
-    "relative overflow-hidden rounded-2xl p-6 backdrop-blur-xl border border-gray-200 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-md hover:shadow-xl hover:shadow-gray-400/30";
+    "relative overflow-hidden rounded-2xl p-6 backdrop-blur-xl border-2 border-white/60 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-md hover:shadow-xl hover:shadow-gray-400/40";
 
   const gradientStyles = {
     trainers: "bg-gradient-to-br from-cyan-400 via-blue-400 to-teal-400",
