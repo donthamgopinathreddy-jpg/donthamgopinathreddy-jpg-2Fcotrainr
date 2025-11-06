@@ -1,15 +1,11 @@
 import "dotenv/config";
 import express from "express";
-import cors from "cors";
 import { handleDemo } from "./routes/demo";
 
 export function createServer() {
   const app = express();
 
-  // Middleware - only apply CORS
-  app.use(cors());
-
-  // Apply JSON parser only to /api routes to avoid interfering with other requests
+  // Only add middleware for /api routes to prevent interference with client requests
   app.use("/api", express.json());
   app.use("/api", express.urlencoded({ extended: true }));
 
