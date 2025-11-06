@@ -82,12 +82,23 @@ export default function Profile() {
       <div className="max-w-md mx-auto">
         {/* Profile Header */}
         <div className="bg-gradient-to-br from-blue-100 to-cyan-100 px-4 py-12 text-center">
-          <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
-            {user.profilePhoto ? (
-              <img src={user.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
-            ) : (
-              <User className="w-12 h-12 text-gray-600" />
-            )}
+          <div className="relative w-24 h-24 mx-auto mb-4 group">
+            <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
+              {user.profilePhoto ? (
+                <img src={user.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                <User className="w-12 h-12 text-gray-600" />
+              )}
+            </div>
+            <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-blue-700 transition-colors group-hover:scale-110">
+              <Camera className="w-4 h-4" />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleProfilePhotoUpload}
+                className="hidden"
+              />
+            </label>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-1">{user.name}</h1>
           {isTrainer && (
