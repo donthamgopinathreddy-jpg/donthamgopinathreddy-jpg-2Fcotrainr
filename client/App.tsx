@@ -48,6 +48,7 @@ const AppContent = () => (
       <Route path="/video/:trainerId" element={<VideoCall />} />
       <Route path="/subscription" element={<AppLayout><Subscription /></AppLayout>} />
       <Route path="/trainer-signup" element={<AppLayout><TrainerSignup /></AppLayout>} />
+      <Route path="/activity/:type" element={<AppLayout><ActivityDetail /></AppLayout>} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
