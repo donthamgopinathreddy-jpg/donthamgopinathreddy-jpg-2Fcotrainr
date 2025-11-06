@@ -96,8 +96,9 @@ const RoleBasedHome = () => {
   return <Home />;
 };
 
-const AppRoutes = () => (
-  <Routes>
+const AppRoutes = () => {
+  return (
+    <Routes>
     <Route path="/onboarding" element={<Onboarding />} />
     <Route
       path="/"
@@ -237,10 +238,11 @@ const AppRoutes = () => (
         </ProtectedRoute>
       }
     />
-    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-    <Route path="*" element={<NotFound />} />
-  </Routes>
-);
+      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
 
 const App = () => {
   useEffect(() => {
