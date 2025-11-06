@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Plus, Minus, TrendingUp } from "lucide-react";
 import Logo from "@/components/Logo";
+import { useMeals } from "@/hooks/useMeals";
+import { toast } from "sonner";
 
 interface MealEntry {
   id: string;
@@ -108,7 +110,7 @@ const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType
 };
 
 export default function Meals() {
-  const [meals, setMeals] = useState<MealEntry[]>(DEMO_MEALS);
+  const { meals, addMeal, deleteMeal, loading } = useMeals();
   const [showAddFood, setShowAddFood] = useState(false);
   const [selectedFood, setSelectedFood] = useState<FoodInfo | null>(null);
   const [newFood, setNewFood] = useState({
@@ -121,11 +123,26 @@ export default function Meals() {
     fat: "",
   });
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [addingMeal, setAddingMeal] = useState(false);
 
-  const totalCalories = meals.reduce((sum, meal) => sum + meal.calories, 0);
-  const totalProtein = meals.reduce((sum, meal) => sum + meal.protein, 0);
-  const totalCarbs = meals.reduce((sum, meal) => sum + meal.carbs, 0);
-  const totalFat = meals.reduce((sum, meal) => sum + meal.fat, 0);
+  // Convert Supabase meals to local format for display
+  const mealEntries = useMemo(() =>
+    meals.map((meal) => ({
+      id: meal.id,
+      name: meal.food_name,
+      weight: meal.weight_g,
+      calories: meal.calories,
+      protein: meal.protein_g,
+      carbs: meal.carbs_g,
+      fat: meal.fat_g,
+    })),
+    [meals]
+  );
+
+  const totalCalories = mealEntries.reduce((sum, meal) => sum + meal.calories, 0);
+  const totalProtein = mealEntries.reduce((sum, meal) => sum + meal.protein, 0);
+  const totalCarbs = mealEntries.reduce((sum, meal) => sum + meal.carbs, 0);
+  const totalFat = mealEntries.reduce((sum, meal) => sum + meal.fat, 0);
 
   const calorieGoal = 2500;
   const proteinGoal = 100;
@@ -196,7 +213,7 @@ export default function Meals() {
     setSuggestions([]);
   };
 
-  const handleAddMeal = () => {
+  const handleAddMeal = async () => {
     if (!newFood.name) return;
 
     let inputValue = 0;
@@ -218,25 +235,39 @@ export default function Meals() {
       ? Number(newFood.quantity) * selectedFood.unitWeight
       : Number(newFood.weight);
 
-    const meal: MealEntry = {
-      id: Date.now().toString(),
-      name: newFood.name,
-      weight: actualWeight,
-      calories: macros.calories,
-      protein: macros.protein,
-      carbs: macros.carbs,
-      fat: macros.fat,
-    };
+    setAddingMeal(true);
+    try {
+      await addMeal({
+        food_name: newFood.name,
+        weight_g: actualWeight,
+        calories: macros.calories,
+        protein_g: macros.protein,
+        carbs_g: macros.carbs,
+        fat_g: macros.fat,
+        meal_type: "snack",
+      });
 
-    setMeals([...meals, meal]);
-    setNewFood({ name: "", weight: "", quantity: "", calories: "", protein: "", carbs: "", fat: "" });
-    setSelectedFood(null);
-    setSuggestions([]);
-    setShowAddFood(false);
+      toast.success("Meal added!");
+      setNewFood({ name: "", weight: "", quantity: "", calories: "", protein: "", carbs: "", fat: "" });
+      setSelectedFood(null);
+      setSuggestions([]);
+      setShowAddFood(false);
+    } catch (error) {
+      console.error("Error adding meal:", error);
+      toast.error("Failed to add meal");
+    } finally {
+      setAddingMeal(false);
+    }
   };
 
-  const removeMeal = (id: string) => {
-    setMeals(meals.filter((meal) => meal.id !== id));
+  const removeMeal = async (id: string) => {
+    try {
+      await deleteMeal(id);
+      toast.success("Meal deleted!");
+    } catch (error) {
+      console.error("Error deleting meal:", error);
+      toast.error("Failed to delete meal");
+    }
   };
 
   return (
