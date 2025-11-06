@@ -134,6 +134,14 @@ export default function Onboarding() {
             Get Started
             <ChevronRight className="w-5 h-5" />
           </button>
+
+          <button
+            onClick={handleDemoMode}
+            disabled={loading}
+            className="w-full max-w-sm mt-4 bg-gray-100 text-gray-900 font-bold py-4 rounded-xl hover:bg-gray-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Loading..." : "Try Demo"}
+          </button>
         </div>
       )}
 
