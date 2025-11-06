@@ -7,7 +7,8 @@ interface GlassyTileProps {
   onClick?: () => void;
   className?: string;
   children?: ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "trainers" | "nutritionists" | "meals" | "chat" | "video" | "feed";
+  customGradient?: string;
 }
 
 const GlassyTile = ({
@@ -17,14 +18,19 @@ const GlassyTile = ({
   onClick,
   className = "",
   children,
-  variant = "primary",
+  variant = "trainers",
+  customGradient,
 }: GlassyTileProps) => {
   const baseStyles =
-    "relative overflow-hidden rounded-2xl p-6 backdrop-blur-xl border border-white border-opacity-10 cursor-pointer transition-all duration-200 active:scale-95 hover:scale-102";
+    "relative overflow-hidden rounded-2xl p-6 backdrop-blur-xl border border-gray-200 cursor-pointer transition-all duration-200 active:scale-95 hover:scale-102";
 
   const gradientStyles = {
-    primary: "bg-gradient-to-br from-orange-500/20 via-orange-400/10 to-yellow-500/20",
-    secondary: "bg-gradient-to-br from-yellow-500/20 via-orange-400/10 to-orange-500/20",
+    trainers: "bg-gradient-to-br from-cyan-100 via-blue-100 to-teal-100",
+    nutritionists: "bg-gradient-to-br from-purple-100 via-violet-100 to-pink-100",
+    meals: "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100",
+    chat: "bg-gradient-to-br from-pink-100 via-rose-100 to-red-100",
+    video: "bg-gradient-to-br from-blue-100 via-cyan-100 to-sky-100",
+    feed: "bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100",
   };
 
   return (
