@@ -102,54 +102,92 @@ export default function Subscription() {
 
           {/* Plans */}
           <div className="space-y-4">
-            {PLANS.map((plan) => (
-              <div
-                key={plan.id}
-                onClick={() => setSelectedPlan(plan.id)}
-                className={`relative p-6 rounded-2xl border-2 cursor-pointer transition-all ${
-                  selectedPlan === plan.id
-                    ? "border-blue-600 bg-blue-50"
-                    : "border-gray-200 bg-white hover:border-gray-300"
-                }`}
-              >
-                {/* Savings Badge */}
-                {plan.savings && (
-                  <div className="absolute -top-3 right-6 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                    {plan.savings}
-                  </div>
-                )}
+            {PLANS.map((plan) => {
+              const tierStyles = {
+                free: {
+                  border: "border-gray-300",
+                  bg: "bg-gray-50",
+                  selected: "border-gray-600 bg-gray-100",
+                  badge: "bg-gray-600",
+                  text: "text-gray-900",
+                  accent: "text-gray-600",
+                },
+                premium: {
+                  border: "border-amber-300",
+                  bg: "bg-amber-50",
+                  selected: "border-amber-600 bg-amber-100",
+                  badge: "bg-amber-600",
+                  text: "text-amber-900",
+                  accent: "text-amber-700",
+                },
+                gold: {
+                  border: "border-yellow-400",
+                  bg: "bg-yellow-50",
+                  selected: "border-yellow-600 bg-yellow-100",
+                  badge: "bg-yellow-600",
+                  text: "text-yellow-900",
+                  accent: "text-yellow-700",
+                },
+              };
 
-                {/* Plan Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
-                    <p className="text-sm text-gray-600">{plan.duration}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-3xl font-bold text-gray-900">₹{plan.price}</p>
-                  </div>
-                </div>
+              const style = tierStyles[plan.tier as keyof typeof tierStyles];
+              const isSelected = selectedPlan === plan.id;
 
-                {/* Features List */}
-                <div className="space-y-2">
-                  {plan.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{feature}</span>
+              return (
+                <div
+                  key={plan.id}
+                  onClick={() => setSelectedPlan(plan.id)}
+                  className={`relative p-6 rounded-2xl border-2 cursor-pointer transition-all ${
+                    isSelected ? `${style.selected} shadow-lg` : `${style.border} ${style.bg} hover:shadow-md`
+                  }`}
+                >
+                  {/* Popular Badge */}
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-6 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                      <Crown className="w-3 h-3" />
+                      Most Popular
                     </div>
-                  ))}
-                </div>
+                  )}
 
-                {/* Selected Indicator */}
-                {selectedPlan === plan.id && (
-                  <div className="absolute top-4 right-4">
-                    <div className="w-5 h-5 rounded-full border-2 border-blue-600 flex items-center justify-center">
-                      <div className="w-2 h-2 rounded-full bg-blue-600" />
+                  {/* Savings Badge */}
+                  {plan.savings && (
+                    <div className="absolute -top-3 right-6 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      {plan.savings}
+                    </div>
+                  )}
+
+                  {/* Plan Header */}
+                  <div className="flex items-start justify-between mb-4 pt-2">
+                    <div>
+                      <h3 className={`text-xl font-bold ${style.text}`}>{plan.name}</h3>
+                      <p className={`text-sm ${style.accent}`}>{plan.duration}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className={`text-3xl font-bold ${style.text}`}>₹{plan.price}</p>
                     </div>
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {/* Features List */}
+                  <div className="space-y-2">
+                    {plan.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <Check className={`w-4 h-4 ${style.accent} flex-shrink-0`} />
+                        <span className={`text-sm ${style.text}`}>{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Selected Indicator */}
+                  {isSelected && (
+                    <div className="absolute top-4 right-4">
+                      <div className={`w-5 h-5 rounded-full border-2 ${style.badge} flex items-center justify-center bg-white`}>
+                        <div className={`w-2 h-2 rounded-full ${style.badge}`} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           {/* Payment Button */}
