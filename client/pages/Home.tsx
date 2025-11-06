@@ -177,7 +177,7 @@ export default function Home() {
         </div>
 
         {/* Quick Action Tiles */}
-        <div className="space-y-3">
+        <div className="space-y-3 l-shape-bg fitness-gradient-2 rounded-2xl p-4">
           <h3 className="text-sm font-bold text-gray-600 px-1">Quick Access</h3>
           <div className="grid grid-cols-2 gap-3">
             <GlassyTile
