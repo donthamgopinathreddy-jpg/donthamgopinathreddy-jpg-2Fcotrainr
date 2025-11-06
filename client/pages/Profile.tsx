@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera } from "lucide-react";
+import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera, CheckCircle } from "lucide-react";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface UserType {
   role: "client" | "trainer";
@@ -21,20 +22,20 @@ interface UserType {
   rating?: number;
 }
 
-const MOCK_USER: UserType = {
-  role: "client",
-  name: "Admin User",
-  gender: "Male",
-  height: 180,
-  weight: 75,
-  isFollowing: false,
-  followers: 0,
-  following: 0,
-};
-
 export default function Profile() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserType>(MOCK_USER);
+  const { userProfile, signOut } = useAuth();
+
+  const [user, setUser] = useState<UserType>({
+    role: userProfile?.role || "client",
+    name: userProfile?.full_name || "User",
+    gender: userProfile?.gender || "Not specified",
+    height: userProfile?.height_cm || 170,
+    weight: userProfile?.weight_kg || 70,
+    isFollowing: false,
+    followers: 0,
+    following: 0,
+  });
   const [isFollowing, setIsFollowing] = useState(user.isFollowing);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -270,14 +271,26 @@ export default function Profile() {
               <Edit2 className="w-5 h-5 text-gray-600" />
               <span className="font-medium text-gray-900">Edit Profile</span>
             </button>
+            {!isTrainer && (
+              <button
+                onClick={() => navigate("/subscription")}
+                className="w-full flex items-center gap-3 bg-gradient-to-r from-orange-100 to-amber-100 border border-orange-200 rounded-lg p-4 hover:shadow-lg transition-all"
+              >
+                <CheckCircle className="w-5 h-5 text-orange-600" />
+                <span className="font-bold text-gray-900">Upgrade to Premium</span>
+              </button>
+            )}
             <button
-              onClick={() => navigate("/subscription")}
-              className="w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+              onClick={async () => {
+                try {
+                  await signOut();
+                  navigate("/onboarding");
+                } catch (error) {
+                  console.error("Logout error:", error);
+                }
+              }}
+              className="w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors text-red-600"
             >
-              <Users className="w-5 h-5 text-gray-600" />
-              <span className="font-medium text-gray-900">Subscription</span>
-            </button>
-            <button className="w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors text-red-600">
               <LogOut className="w-5 h-5" />
               <span className="font-medium">Logout</span>
             </button>
