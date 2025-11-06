@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
 import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper } from "lucide-react";
