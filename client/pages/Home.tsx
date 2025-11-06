@@ -176,44 +176,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Monthly Bar Chart */}
-        <div className="bg-card border border-border rounded-2xl p-6 l-shape-bg fitness-gradient-4 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-foreground">Monthly Progress</h3>
-            <span className="text-xs text-muted-foreground">This Month</span>
-          </div>
-
-          <div className="space-y-3">
-            {[
-              { day: "Mon", value: 65, max: 100 },
-              { day: "Tue", value: 78, max: 100 },
-              { day: "Wed", value: 85, max: 100 },
-              { day: "Thu", value: 72, max: 100 },
-              { day: "Fri", value: 92, max: 100 },
-              { day: "Sat", value: 88, max: 100 },
-              { day: "Sun", value: 81, max: 100 },
-            ].map((item, idx) => (
-              <div key={idx} className="space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-foreground">{item.day}</span>
-                  <span className="text-xs font-bold text-primary">{item.value}%</span>
-                </div>
-                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-500 shadow-sm shadow-blue-600/50"
-                    style={{ width: `${item.value}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex items-center justify-between pt-2 border-t border-border">
-            <span className="text-xs font-semibold text-foreground">Avg Score</span>
-            <span className="text-sm font-bold text-primary">80.14%</span>
-          </div>
-        </div>
-
         {/* Quick Action Tiles */}
         <div className="space-y-3 l-shape-bg fitness-gradient-2 rounded-2xl p-4">
           <h3 className="text-sm font-bold text-gray-600 px-1">Quick Access</h3>
