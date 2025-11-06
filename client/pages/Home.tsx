@@ -211,14 +211,33 @@ export default function Home() {
           </div>
 
           {/* Join as Trainer CTA */}
-          <GlassyTile
-            icon={<Briefcase className="w-6 h-6 text-blue-700" />}
-            title="Become a Trainer"
-            subtitle="Share your expertise and earn"
+          <div
             onClick={() => navigate("/trainer-signup")}
-            variant="primary"
-            className="w-full text-center"
-          />
+            className="relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-lg hover:shadow-2xl"
+            style={{
+              background: "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 25%, #FFA502 50%, #FFB700 75%, #FF6B6B 100%)",
+              backgroundSize: "300% 300%",
+              animation: "gradientFlow 8s ease infinite"
+            }}
+          >
+            <style>{`
+              @keyframes gradientFlow {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+              }
+            `}</style>
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50" />
+            <div className="relative z-10 text-center">
+              <div className="flex justify-center mb-3">
+                <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                  <Briefcase className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-1">Become a Trainer</h3>
+              <p className="text-sm text-white/90">Share your expertise and earn</p>
+            </div>
+          </div>
         </div>
 
         {/* Promo Card */}
