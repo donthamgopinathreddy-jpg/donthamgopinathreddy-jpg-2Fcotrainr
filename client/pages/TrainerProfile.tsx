@@ -112,42 +112,20 @@ export default function TrainerProfile() {
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            <div className="bg-card border border-border rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{trainer.totalSessions}</div>
-              <p className="text-xs text-muted-foreground">Sessions</p>
+          {/* Certifications */}
+          {trainer.certifications && trainer.certifications.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-sm font-bold text-foreground mb-3">Certifications</h3>
+              <div className="space-y-2">
+                {trainer.certifications.map((cert, idx) => (
+                  <div key={idx} className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
+                    <span className="text-sm text-foreground">{cert}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="bg-card border border-border rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">₹{trainer.price}</div>
-              <p className="text-xs text-muted-foreground">Per Session</p>
-            </div>
-            <div className="bg-card border border-border rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{trainer.yearsOfExperience}+</div>
-              <p className="text-xs text-muted-foreground">Years Exp.</p>
-            </div>
-          </div>
-
-          {/* Bio */}
-          <div className="mb-6">
-            <h3 className="text-sm font-bold text-foreground mb-2">About</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{trainer.bio}</p>
-          </div>
-
-          {/* Specialties */}
-          <div className="mb-6">
-            <h3 className="text-sm font-bold text-foreground mb-2">Specialties</h3>
-            <div className="flex flex-wrap gap-2">
-              {trainer.specialties.map((spec) => (
-                <div
-                  key={spec}
-                  className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium"
-                >
-                  {spec}
-                </div>
-              ))}
-            </div>
-          </div>
+          )}
 
           {/* Gallery */}
           <div className="mb-6">
