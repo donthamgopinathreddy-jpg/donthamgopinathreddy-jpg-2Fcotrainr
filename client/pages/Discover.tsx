@@ -13,16 +13,19 @@ interface Filter {
   sort: SortOption;
 }
 
-const TRAINER_CATEGORIES = ["All", "Zumba", "CrossFit", "Boxing", "Yoga", "Strength", "Rehab"];
+// Categories in exact order per spec
+const TRAINER_CATEGORIES = ["All", "Gym", "Zumba", "CrossFit", "Boxing", "Yoga"];
 const NUTRITIONIST_CATEGORIES = ["All", "Weight Loss", "Sports Nutrition", "Diabetes", "PCOS", "General"];
 
 const MOCK_TRAINERS = [
   {
     id: 1,
     name: "Priya Singh",
-    category: "Zumba",
+    category: "Gym",
+    yearsOfExperience: 5,
     distance: 2.5,
     rating: 4.8,
+    ratingCount: 124,
     price: 500,
     verified: true,
     avatar: "PS",
@@ -31,8 +34,10 @@ const MOCK_TRAINERS = [
     id: 2,
     name: "Raj Patel",
     category: "CrossFit",
+    yearsOfExperience: 7,
     distance: 1.8,
     rating: 4.9,
+    ratingCount: 98,
     price: 600,
     verified: true,
     avatar: "RP",
@@ -41,8 +46,10 @@ const MOCK_TRAINERS = [
     id: 3,
     name: "Anjali Sharma",
     category: "Yoga",
+    yearsOfExperience: 8,
     distance: 3.2,
     rating: 4.7,
+    ratingCount: 156,
     price: 400,
     verified: false,
     avatar: "AS",
@@ -51,8 +58,10 @@ const MOCK_TRAINERS = [
     id: 4,
     name: "Kumar Mishra",
     category: "Boxing",
+    yearsOfExperience: 6,
     distance: 4.1,
     rating: 4.6,
+    ratingCount: 87,
     price: 550,
     verified: true,
     avatar: "KM",
@@ -60,9 +69,11 @@ const MOCK_TRAINERS = [
   {
     id: 5,
     name: "Neha Verma",
-    category: "Strength",
+    category: "Gym",
+    yearsOfExperience: 4,
     distance: 2.8,
     rating: 4.9,
+    ratingCount: 203,
     price: 650,
     verified: true,
     avatar: "NV",
@@ -71,8 +82,10 @@ const MOCK_TRAINERS = [
     id: 6,
     name: "Vikram Singh",
     category: "Zumba",
+    yearsOfExperience: 3,
     distance: 5.2,
     rating: 4.5,
+    ratingCount: 67,
     price: 450,
     verified: false,
     avatar: "VS",
@@ -316,7 +329,7 @@ export default function Discover() {
                           <h3 className="font-bold text-foreground">{trainer.name}</h3>
                           {trainer.verified && (
                             <div className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">
-                              ��� Verified
+                              ✓ Verified
                             </div>
                           )}
                         </div>
