@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
-import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle } from "lucide-react";
+import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User } from "lucide-react";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
 
 const MOTIVATIONAL_QUOTES = [
@@ -244,11 +244,18 @@ export default function TrainerHome() {
                   variant="primary"
                 />
                 <GlassyTile
-                  icon={<Users className="w-6 h-6 text-blue-600" />}
+                  icon={<MessageSquare className="w-6 h-6 text-blue-600" />}
                   title="Messages"
                   subtitle="Chat with clients"
                   onClick={() => navigate("/messages")}
                   variant="secondary"
+                />
+                <GlassyTile
+                  icon={<User className="w-6 h-6 text-indigo-600" />}
+                  title="My Profile"
+                  subtitle="View your settings"
+                  onClick={() => navigate("/profile")}
+                  variant="primary"
                 />
               </div>
             </div>
