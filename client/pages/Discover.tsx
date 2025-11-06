@@ -275,7 +275,7 @@ export default function Discover() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white pb-20 l-shape-bg">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-white border-b border-gray-200">
         <div className="max-w-md mx-auto">
