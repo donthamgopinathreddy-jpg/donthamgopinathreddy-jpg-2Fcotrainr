@@ -334,19 +334,27 @@ export default function Discover() {
                           )}
                         </div>
 
-                        <p className="text-xs text-muted-foreground mb-2">{trainer.category}</p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                      <span className="font-medium">{trainer.category}</span>
+                      <span>•</span>
+                      <span>{trainer.yearsOfExperience} yrs</span>
+                    </div>
 
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
-                          <div className="flex items-center gap-1">
-                            <MapPin className="w-3 h-3" />
-                            {trainer.distance} km
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Star className="w-3 h-3 fill-primary text-primary" />
-                            {trainer.rating}
-                          </div>
-                          <div className="font-semibold text-primary">₹{trainer.price}</div>
-                        </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                      <div className="flex items-center gap-1">
+                        <Star className="w-3 h-3 fill-primary text-primary" />
+                        <span className="font-semibold">{trainer.rating}</span>
+                        <span className="text-muted-foreground">({trainer.ratingCount})</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-3 h-3" />
+                        {trainer.distance} km
+                      </div>
+                      <div className="font-semibold text-primary">₹{trainer.price}</div>
+                    </div>
 
                         {/* CTAs */}
                         <div className="flex gap-2">
