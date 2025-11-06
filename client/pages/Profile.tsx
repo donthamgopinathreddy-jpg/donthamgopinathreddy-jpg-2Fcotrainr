@@ -231,13 +231,28 @@ export default function Profile() {
 
           {/* Join as Trainer CTA - only for clients */}
           {!isTrainer && (
-            <GlassyTile
-              icon={<Briefcase className="w-8 h-8" />}
-              title="Become a Trainer"
-              subtitle="Share your expertise and earn"
+            <div
               onClick={() => navigate("/trainer-signup")}
-              variant="primary"
-            />
+              className="relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-lg hover:shadow-2xl l-shape-bg"
+              style={{
+                background: "linear-gradient(135deg, #10B981 0%, #06B6D4 25%, #3B82F6 50%, #8B5CF6 75%, #10B981 100%)",
+                backgroundSize: "300% 300%",
+                animation: "gradientFlow 8s ease infinite"
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50" />
+              <div className="relative z-10 text-center space-y-3">
+                <div className="flex justify-center">
+                  <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                    <Briefcase className="w-8 h-8 text-white" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-1">Become a Trainer</h3>
+                  <p className="text-sm text-white/90">Share your expertise and earn</p>
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Menu Items */}
