@@ -18,6 +18,7 @@ const Navigation = () => {
   const navItems = isTrainer
     ? [
         { path: "/", label: "Home", icon: Home },
+        { path: "/discover", label: "Network", icon: MapPin },
         { path: "/messages", label: "Messages", icon: MessageCircle },
         { path: "/profile", label: "Profile", icon: User },
       ]
