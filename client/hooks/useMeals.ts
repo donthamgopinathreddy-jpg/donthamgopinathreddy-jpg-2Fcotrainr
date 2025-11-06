@@ -36,12 +36,15 @@ export const useMeals = () => {
         .order("logged_at", { ascending: false });
 
       if (error) {
-        console.error("Error fetching meals:", error?.message || error?.code || JSON.stringify(error));
-        throw error;
+        const errorMsg = typeof error === 'object' ? (error as any).message || (error as any).code || 'Unknown error' : String(error);
+        console.error("Error fetching meals:", errorMsg);
+        setMeals([]);
+        return;
       }
       setMeals(data || []);
     } catch (error: any) {
-      console.error("Error fetching meals:", error?.message || error?.code || JSON.stringify(error));
+      const errorMsg = error?.message || error?.code || 'Failed to fetch meals';
+      console.error("Error fetching meals:", errorMsg);
       // Silently fail - meals will just be empty until they're added
       setMeals([]);
     } finally {
