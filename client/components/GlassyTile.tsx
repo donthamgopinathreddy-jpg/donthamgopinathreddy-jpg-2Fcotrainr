@@ -25,12 +25,12 @@ const GlassyTile = ({
     "relative overflow-hidden rounded-2xl p-6 backdrop-blur-xl border border-gray-200 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-md hover:shadow-xl hover:shadow-gray-400/30";
 
   const gradientStyles = {
-    trainers: "bg-gradient-to-br from-cyan-100 via-blue-100 to-teal-100",
-    nutritionists: "bg-gradient-to-br from-purple-100 via-violet-100 to-pink-100",
-    meals: "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100",
-    chat: "bg-gradient-to-br from-pink-100 via-rose-100 to-red-100",
-    video: "bg-gradient-to-br from-blue-100 via-cyan-100 to-sky-100",
-    feed: "bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100",
+    trainers: "bg-gradient-to-br from-cyan-400 via-blue-400 to-teal-400",
+    nutritionists: "bg-gradient-to-br from-purple-400 via-violet-400 to-pink-400",
+    meals: "bg-gradient-to-br from-green-400 via-emerald-400 to-teal-400",
+    chat: "bg-gradient-to-br from-pink-400 via-rose-400 to-red-400",
+    video: "bg-gradient-to-br from-blue-400 via-cyan-400 to-sky-400",
+    feed: "bg-gradient-to-br from-amber-400 via-orange-400 to-yellow-400",
   };
 
   return (
