@@ -128,9 +128,9 @@ export default function Home() {
               className="text-center"
             />
             <GlassyTile
-              icon={<MessageCircle className="w-6 h-6" />}
-              title="Chat"
-              onClick={() => navigate("/messages")}
+              icon={<Newspaper className="w-6 h-6" />}
+              title="Feed"
+              onClick={() => navigate("/feed")}
               variant="secondary"
               className="text-center"
             />
