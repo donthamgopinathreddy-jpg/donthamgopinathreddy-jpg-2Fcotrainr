@@ -13,6 +13,7 @@ interface TrainerFormData {
   certifications: File[];
   idProof: File | null;
   price: string;
+  gallery: File[];
 }
 
 const SPECIALTY_OPTIONS = ["Zumba", "CrossFit", "Boxing", "Yoga", "Strength", "Rehab"];
