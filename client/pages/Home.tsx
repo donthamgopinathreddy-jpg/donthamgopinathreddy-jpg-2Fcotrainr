@@ -26,15 +26,24 @@ export default function Home() {
       <div className="max-w-md mx-auto px-4 py-8 space-y-6">
         {/* Progress Pills */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="bg-card rounded-xl p-4 border border-border text-center">
+          <div className="bg-card rounded-xl p-4 border border-border text-center hover:border-primary transition-colors">
+            <div className="flex justify-center mb-2">
+              <Award className="w-5 h-5 text-primary" />
+            </div>
             <div className="text-2xl font-bold text-primary mb-1">3</div>
             <p className="text-xs text-muted-foreground">Trials left</p>
           </div>
-          <div className="bg-card rounded-xl p-4 border border-border text-center">
+          <div className="bg-card rounded-xl p-4 border border-border text-center hover:border-primary transition-colors">
+            <div className="flex justify-center mb-2">
+              <Footprints className="w-5 h-5 text-primary" />
+            </div>
             <div className="text-2xl font-bold text-primary mb-1">8.4k</div>
             <p className="text-xs text-muted-foreground">Steps today</p>
           </div>
-          <div className="bg-card rounded-xl p-4 border border-border text-center">
+          <div className="bg-card rounded-xl p-4 border border-border text-center hover:border-primary transition-colors">
+            <div className="flex justify-center mb-2">
+              <Flame className="w-5 h-5 text-primary" />
+            </div>
             <div className="text-2xl font-bold text-primary mb-1">1,850</div>
             <p className="text-xs text-muted-foreground">Calories today</p>
           </div>
