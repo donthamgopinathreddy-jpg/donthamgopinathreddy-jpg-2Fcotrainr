@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
-import { Dumbbell, Apple, Flame, Footprints } from "lucide-react";
+import { Dumbbell, Apple, Flame, Footprints, Award } from "lucide-react";
 
 export default function Home() {
   const navigate = useNavigate();
