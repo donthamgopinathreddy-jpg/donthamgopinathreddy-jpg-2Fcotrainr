@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, MapPin, Check, MessageCircle } from "lucide-react";
+import { ArrowLeft, Star, MapPin, Check, MessageCircle, Calendar } from "lucide-react";
 
 interface TrainerDetails {
   id: string;
