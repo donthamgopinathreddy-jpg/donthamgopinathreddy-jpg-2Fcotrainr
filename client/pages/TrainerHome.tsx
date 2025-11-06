@@ -2,8 +2,50 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
-import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User } from "lucide-react";
+import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User, Heart, Share2, MessageCircle as MessageIcon } from "lucide-react";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
+
+// Sample posts data
+const LATEST_POSTS = [
+  {
+    id: "1",
+    authorName: "Priya Singh",
+    authorRole: "trainer" as const,
+    authorAvatar: "PS",
+    content: "🔥 New transformation! Check out my client Rahul's amazing 12-week journey. Consistency is key! #FitnessJourney",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=500&fit=crop",
+    likes: 324,
+    comments: 47,
+    shares: 23,
+    liked: false,
+    createdAt: "2 hours ago",
+  },
+  {
+    id: "2",
+    authorName: "Amit Kumar",
+    authorRole: "client" as const,
+    authorAvatar: "AK",
+    content: "Day 30 of my fitness journey! Started with my trainer Raj at CrossFit. Already seeing results 💪",
+    image: "https://images.unsplash.com/photo-1552672260-7bdde322fa4f?w=500&h=500&fit=crop",
+    likes: 156,
+    comments: 28,
+    shares: 12,
+    liked: true,
+    createdAt: "4 hours ago",
+  },
+  {
+    id: "3",
+    authorName: "Neha Verma",
+    authorRole: "trainer" as const,
+    authorAvatar: "NV",
+    content: "💡 Tip: Start your workout with a 5-min warm-up. It increases blood flow and prevents injuries. Tag someone who needs this!",
+    likes: 542,
+    comments: 89,
+    shares: 156,
+    liked: false,
+    createdAt: "6 hours ago",
+  },
+];
 
 const MOTIVATIONAL_QUOTES = [
   "Lead by example! Keep crushing your goals! 🚀",
