@@ -89,10 +89,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .eq("id", userId)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching user profile:", error.message, error.code);
+        // Create a default profile if fetch fails
+        setUserProfile({
+          id: userId,
+          username: "user",
+          full_name: "User",
+          email: "",
+          role: "client",
+        });
+        return;
+      }
       setUserProfile(data);
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
+    } catch (error: any) {
+      console.error("Error fetching user profile:", error?.message || error);
+      // Create a default profile if fetch fails
+      setUserProfile({
+        id: userId,
+        username: "user",
+        full_name: "User",
+        email: "",
+        role: "client",
+      });
     }
   };
 
