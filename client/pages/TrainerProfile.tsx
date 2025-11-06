@@ -48,13 +48,34 @@ const MOCK_TRAINER: TrainerDetails = {
   ],
 };
 
+const TIME_SLOTS = [
+  "6:00 AM",
+  "7:00 AM",
+  "8:00 AM",
+  "5:00 PM",
+  "6:00 PM",
+  "7:00 PM",
+];
+
 export default function TrainerProfile() {
   const navigate = useNavigate();
   const trainer = MOCK_TRAINER;
+  const [selectedDate, setSelectedDate] = useState("Today");
+  const [selectedTime, setSelectedTime] = useState("");
+  const [showBookingModal, setShowBookingModal] = useState(false);
 
   const handleTry10Min = () => {
     // Navigate to video call
     navigate(`/video/${trainer.id}`);
+  };
+
+  const handleBookSession = () => {
+    if (!selectedTime) {
+      alert("Please select a time slot");
+      return;
+    }
+    alert(`Booked session for ${selectedDate} at ${selectedTime}`);
+    setShowBookingModal(false);
   };
 
   return (
