@@ -14,7 +14,23 @@ interface Filter {
 }
 
 // Categories in exact order per spec
-const TRAINER_CATEGORIES = ["All", "Gym", "Zumba", "CrossFit", "Boxing", "Yoga"];
+const TRAINER_CATEGORIES = [
+  "All",
+  "Gym",
+  "Yoga",
+  "CrossFit",
+  "Boxing",
+  "Zumba",
+  "Swimming",
+  "Pilates",
+  "HIIT",
+  "Aerobics",
+  "Dance",
+  "Martial Arts",
+  "Cycling",
+  "Running",
+  "Stretching",
+];
 const NUTRITIONIST_CATEGORIES = ["All", "Weight Loss", "Sports Nutrition", "Diabetes", "PCOS", "General"];
 
 const MOCK_TRAINERS = [
