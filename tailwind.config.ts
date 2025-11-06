@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  darkMode: ["class"],
+  darkMode: "class",
   content: ["./client/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
@@ -63,6 +63,11 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundImage: {
+        "gradient-primary": "linear-gradient(135deg, #ff9500 0%, #ffd700 100%)",
+        "gradient-primary-reverse": "linear-gradient(135deg, #ffd700 0%, #ff9500 100%)",
+        "gradient-glow": "radial-gradient(circle at center, rgba(255, 149, 0, 0.3) 0%, transparent 70%)",
+      },
       keyframes: {
         "accordion-down": {
           from: {
@@ -80,10 +85,48 @@ export default {
             height: "0",
           },
         },
+        "shimmer": {
+          "0%": {
+            backgroundPosition: "-1000px 0",
+          },
+          "100%": {
+            backgroundPosition: "1000px 0",
+          },
+        },
+        "pulse-glow": {
+          "0%, 100%": {
+            opacity: "1",
+          },
+          "50%": {
+            opacity: "0.8",
+          },
+        },
+        "scale-bounce": {
+          "0%, 100%": {
+            transform: "scale(1)",
+          },
+          "50%": {
+            transform: "scale(1.05)",
+          },
+        },
+        "slide-up": {
+          from: {
+            opacity: "0",
+            transform: "translateY(10px)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "shimmer": "shimmer 3s infinite",
+        "pulse-glow": "pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "scale-bounce": "scale-bounce 0.2s ease-out",
+        "slide-up": "slide-up 0.3s ease-out",
       },
     },
   },
