@@ -18,6 +18,7 @@ import TrainerProfile from "./pages/TrainerProfile";
 import VideoCall from "./pages/VideoCall";
 import Subscription from "./pages/Subscription";
 import TrainerSignup from "./pages/TrainerSignup";
+import ActivityDetail from "./pages/ActivityDetail";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
 
