@@ -109,10 +109,19 @@ const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType
   return { calories: 0, protein: 0, carbs: 0, fat: 0, inputType: "weight", unitName: undefined };
 };
 
+const MEAL_TYPES = [
+  { id: "breakfast", label: "🌅 Breakfast", time: "7-9 AM" },
+  { id: "lunch", label: "🍽️ Lunch", time: "12-2 PM" },
+  { id: "dinner", label: "🌙 Dinner", time: "7-9 PM" },
+  { id: "snack", label: "🥤 Snack", time: "Anytime" },
+  { id: "post-dinner", label: "🌟 Post Dinner", time: "After 9 PM" },
+];
+
 export default function Meals() {
   const { meals, addMeal, deleteMeal, loading } = useMeals();
   const [showAddFood, setShowAddFood] = useState(false);
   const [selectedFood, setSelectedFood] = useState<FoodInfo | null>(null);
+  const [selectedMealType, setSelectedMealType] = useState<string>("breakfast");
   const [newFood, setNewFood] = useState({
     name: "",
     weight: "",
@@ -135,9 +144,19 @@ export default function Meals() {
       protein: meal.protein_g,
       carbs: meal.carbs_g,
       fat: meal.fat_g,
+      mealType: meal.meal_type || "snack",
     })),
     [meals]
   );
+
+  // Group meals by type
+  const mealsByType = useMemo(() => {
+    const grouped: { [key: string]: typeof mealEntries } = {};
+    MEAL_TYPES.forEach((type) => {
+      grouped[type.id] = mealEntries.filter((m) => m.mealType === type.id);
+    });
+    return grouped;
+  }, [mealEntries]);
 
   const totalCalories = mealEntries.reduce((sum, meal) => sum + meal.calories, 0);
   const totalProtein = mealEntries.reduce((sum, meal) => sum + meal.protein, 0);
@@ -244,7 +263,7 @@ export default function Meals() {
         protein_g: macros.protein,
         carbs_g: macros.carbs,
         fat_g: macros.fat,
-        meal_type: "snack",
+        meal_type: selectedMealType,
       });
 
       toast.success("Meal added!");
@@ -350,34 +369,53 @@ export default function Meals() {
             </div>
           </div>
 
-          {/* Today's Meals */}
+          {/* Today's Meals - Grouped by Type */}
           <div>
-            <h3 className="text-sm font-bold text-muted-foreground mb-3">
+            <h3 className="text-sm font-bold text-muted-foreground mb-4">
               Today's Meals ({loading ? "..." : mealEntries.length})
             </h3>
-            <div className="space-y-2">
-              {mealEntries.map((meal) => (
-                <div
-                  key={meal.id}
-                  className="bg-card border border-border rounded-lg p-4 flex items-center justify-between hover:border-primary transition-colors"
-                >
-                  <div className="flex-1">
-                    <p className="font-medium text-foreground">{meal.name}</p>
-                    <p className="text-xs text-muted-foreground mb-1">
-                      Weight: {meal.weight}g
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {meal.calories} cal • P: {meal.protein}g • C: {meal.carbs}g • F: {meal.fat}g
-                    </p>
+            <div className="space-y-6">
+              {MEAL_TYPES.map((mealType) => {
+                const mealsOfType = mealsByType[mealType.id];
+                return (
+                  <div key={mealType.id}>
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-foreground text-sm">
+                        {mealType.label}
+                      </h4>
+                      <span className="text-xs text-muted-foreground">{mealType.time}</span>
+                    </div>
+                    {mealsOfType.length > 0 ? (
+                      <div className="space-y-2">
+                        {mealsOfType.map((meal) => (
+                          <div
+                            key={meal.id}
+                            className="bg-card border border-border rounded-lg p-4 flex items-center justify-between hover:border-primary transition-colors"
+                          >
+                            <div className="flex-1">
+                              <p className="font-medium text-foreground">{meal.name}</p>
+                              <p className="text-xs text-muted-foreground mb-1">
+                                Weight: {meal.weight}g
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {meal.calories} cal • P: {meal.protein}g • C: {meal.carbs}g • F: {meal.fat}g
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => removeMeal(meal.id)}
+                              className="p-1 hover:bg-muted rounded transition-colors text-muted-foreground hover:text-destructive"
+                            >
+                              <Minus className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-muted-foreground italic">No meals logged</p>
+                    )}
                   </div>
-                  <button
-                    onClick={() => removeMeal(meal.id)}
-                    className="p-1 hover:bg-muted rounded transition-colors text-muted-foreground hover:text-destructive"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -393,6 +431,27 @@ export default function Meals() {
           ) : (
             <div className="bg-card border border-border rounded-xl p-4 space-y-3">
               <h3 className="font-bold text-foreground">Add Meal</h3>
+
+              {/* Meal Type Selection */}
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground block mb-2">Meal Type</label>
+                <div className="grid grid-cols-5 gap-2">
+                  {MEAL_TYPES.map((type) => (
+                    <button
+                      key={type.id}
+                      onClick={() => setSelectedMealType(type.id)}
+                      className={`py-2 px-1 rounded-lg text-xs font-medium transition-all ${
+                        selectedMealType === type.id
+                          ? "bg-primary text-primary-foreground shadow-md"
+                          : "bg-background border border-border text-foreground hover:border-primary"
+                      }`}
+                      title={type.label}
+                    >
+                      {type.label.split(" ")[0]}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               <div className="relative">
                 <input
@@ -500,6 +559,7 @@ export default function Meals() {
                     setNewFood({ name: "", weight: "", quantity: "", calories: "", protein: "", carbs: "", fat: "" });
                     setSelectedFood(null);
                     setSuggestions([]);
+                    setSelectedMealType("breakfast");
                   }}
                   className="flex-1 bg-muted text-muted-foreground font-medium py-2 rounded-lg hover:bg-muted/80 transition-colors text-sm"
                 >
