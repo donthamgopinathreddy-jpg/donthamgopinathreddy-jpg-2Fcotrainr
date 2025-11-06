@@ -21,7 +21,7 @@ interface FormData {
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { signUp } = useAuth();
+  const { signUp, demoMode } = useAuth();
   const [step, setStep] = useState<OnboardingStep>("welcome");
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -74,6 +74,20 @@ export default function Onboarding() {
     } catch (error: any) {
       console.error("Signup error:", error);
       toast.error(error.message || "Failed to create account");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDemoMode = async () => {
+    setLoading(true);
+    try {
+      await demoMode();
+      toast.success("Entered demo mode!");
+      navigate("/");
+    } catch (error: any) {
+      console.error("Demo mode error:", error);
+      toast.error("Failed to enter demo mode");
     } finally {
       setLoading(false);
     }
