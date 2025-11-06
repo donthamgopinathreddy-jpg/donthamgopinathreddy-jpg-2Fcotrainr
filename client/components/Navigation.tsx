@@ -10,9 +10,16 @@ const Navigation = () => {
     { path: "/", label: "Home", icon: Home },
     { path: "/discover", label: "Discover", icon: MapPin },
     { path: "/messages", label: "Messages", icon: MessageCircle },
-    { path: "/meals", label: "Meals", icon: Utensils },
+    { path: "/meals", label: "Tracker", icon: Utensils },
     { path: "/profile", label: "Profile", icon: User },
   ];
+
+  const handleNavClick = () => {
+    // Haptic feedback for mobile devices
+    if (navigator.vibrate) {
+      navigator.vibrate(10);
+    }
+  };
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-2xl">
