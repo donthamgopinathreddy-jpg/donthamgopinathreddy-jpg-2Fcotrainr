@@ -30,7 +30,8 @@ const Navigation = () => {
             <Link
               key={path}
               to={path}
-              className={`flex-1 flex flex-col items-center justify-center py-3 transition-all duration-200 relative active:scale-90 ${
+              onClick={handleNavClick}
+              className={`flex-1 flex flex-col items-center justify-center py-3 transition-all duration-200 relative active:scale-90 hover:bg-gray-50 rounded-lg ${
                 active ? "text-blue-600" : "text-gray-600 hover:text-gray-900"
               }`}
             >
