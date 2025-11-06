@@ -12,6 +12,7 @@ import Discover from "./pages/Discover";
 import Messages from "./pages/Messages";
 import Meals from "./pages/Meals";
 import Profile from "./pages/Profile";
+import Feed from "./pages/Feed";
 import TrainerSignup from "./pages/TrainerSignup";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
