@@ -1,18 +1,27 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, MapPin, MessageCircle, Utensils, User } from "lucide-react";
+import { Home, MapPin, MessageCircle, Utensils, User, BarChart3 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navigation = () => {
   const location = useLocation();
+  const { userProfile } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
+  const isTrainer = userProfile?.role === "trainer";
 
-  const navItems = [
-    { path: "/", label: "Home", icon: Home },
-    { path: "/discover", label: "Discover", icon: MapPin },
-    { path: "/messages", label: "Messages", icon: MessageCircle },
-    { path: "/meals", label: "Tracker", icon: Utensils },
-    { path: "/profile", label: "Profile", icon: User },
-  ];
+  const navItems = isTrainer
+    ? [
+        { path: "/trainer-dashboard", label: "Clients", icon: BarChart3 },
+        { path: "/messages", label: "Messages", icon: MessageCircle },
+        { path: "/profile", label: "Profile", icon: User },
+      ]
+    : [
+        { path: "/", label: "Home", icon: Home },
+        { path: "/discover", label: "Discover", icon: MapPin },
+        { path: "/messages", label: "Messages", icon: MessageCircle },
+        { path: "/meals", label: "Tracker", icon: Utensils },
+        { path: "/profile", label: "Profile", icon: User },
+      ];
 
   const handleNavClick = () => {
     // Haptic feedback for mobile devices
