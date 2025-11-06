@@ -1,6 +1,6 @@
 import "./global.css";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -18,7 +18,7 @@ import Navigation from "./components/Navigation";
 const queryClient = new QueryClient();
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => (
-  <div className="min-h-screen bg-background text-foreground dark">
+  <div className="min-h-screen bg-background text-foreground">
     <div className="pb-24">
       {children}
     </div>
@@ -26,31 +26,32 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
+const AppContent = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AppLayout><Home /></AppLayout>} />
+          <Route path="/discover" element={<AppLayout><Discover /></AppLayout>} />
+          <Route path="/messages" element={<AppLayout><Messages /></AppLayout>} />
+          <Route path="/meals" element={<AppLayout><Meals /></AppLayout>} />
+          <Route path="/profile" element={<AppLayout><Profile /></AppLayout>} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
 const App = () => {
-  // Ensure dark mode is enabled on mount
-  React.useEffect(() => {
+  useEffect(() => {
     document.documentElement.classList.add("dark");
   }, []);
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<AppLayout><Home /></AppLayout>} />
-            <Route path="/discover" element={<AppLayout><Discover /></AppLayout>} />
-            <Route path="/messages" element={<AppLayout><Messages /></AppLayout>} />
-            <Route path="/meals" element={<AppLayout><Meals /></AppLayout>} />
-            <Route path="/profile" element={<AppLayout><Profile /></AppLayout>} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
+  return <AppContent />;
 };
 
 createRoot(document.getElementById("root")!).render(<App />);
