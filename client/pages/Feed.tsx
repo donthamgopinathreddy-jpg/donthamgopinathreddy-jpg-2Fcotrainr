@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, MessageCircle, Share2, Plus, UserPlus, UserCheck } from "lucide-react";
+import { Heart, MessageCircle, Share2, Plus, UserPlus, UserCheck, Paperclip, X, AtSign } from "lucide-react";
 
 interface Post {
   id: string;
@@ -75,11 +75,28 @@ const DEMO_POSTS: Post[] = [
   },
 ];
 
+const AVAILABLE_USERS = [
+  "Priya Singh",
+  "Amit Kumar",
+  "Neha Verma",
+  "Sneha Patel",
+  "Raj Patel",
+  "Sarah Williams",
+  "Mike Chen",
+  "Emma Davis",
+];
+
 export default function Feed() {
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [posts, setPosts] = useState<Post[]>(DEMO_POSTS);
   const [showNewPost, setShowNewPost] = useState(false);
   const [newPostContent, setNewPostContent] = useState("");
+  const [selectedMedia, setSelectedMedia] = useState<string | null>(null);
+  const [mediaType, setMediaType] = useState<"image" | "video" | null>(null);
+  const [mentions, setMentions] = useState<string[]>([]);
+  const [showMentionSuggestions, setShowMentionSuggestions] = useState(false);
+  const [mentionSearch, setMentionSearch] = useState("");
 
   const toggleLike = (postId: string) => {
     setPosts(
@@ -108,6 +125,37 @@ export default function Feed() {
     );
   };
 
+  const handleMediaSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const type = file.type.startsWith("video") ? "video" : "image";
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setSelectedMedia(event.target?.result as string);
+      setMediaType(type);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddMention = (userName: string) => {
+    if (!mentions.includes(userName)) {
+      setMentions([...mentions, userName]);
+      setNewPostContent((prev) => {
+        const withMention = prev + (prev ? " " : "") + `@${userName.replace(/\s+/g, "")}`;
+        return withMention;
+      });
+    }
+    setShowMentionSuggestions(false);
+    setMentionSearch("");
+  };
+
+  const filteredUsers = AVAILABLE_USERS.filter(
+    (user) =>
+      user.toLowerCase().includes(mentionSearch.toLowerCase()) &&
+      !mentions.includes(user)
+  );
+
   const handleNewPost = () => {
     if (!newPostContent.trim()) return;
 
@@ -117,15 +165,20 @@ export default function Feed() {
       authorRole: "client",
       authorAvatar: "ME",
       content: newPostContent,
+      image: mediaType === "image" ? selectedMedia || undefined : undefined,
       likes: 0,
       comments: 0,
       shares: 0,
       liked: false,
+      followed: false,
       createdAt: "just now",
     };
 
     setPosts([post, ...posts]);
     setNewPostContent("");
+    setSelectedMedia(null);
+    setMediaType(null);
+    setMentions([]);
     setShowNewPost(false);
   };
 
@@ -156,11 +209,115 @@ export default function Feed() {
               <textarea
                 placeholder="Share your fitness journey, tips, or motivation... ✨"
                 value={newPostContent}
-                onChange={(e) => setNewPostContent(e.target.value)}
+                onChange={(e) => {
+                  setNewPostContent(e.target.value);
+                  const lastWord = e.target.value.split(/\s+/).pop() || "";
+                  if (lastWord.startsWith("@")) {
+                    setMentionSearch(lastWord.slice(1));
+                    setShowMentionSuggestions(true);
+                  } else {
+                    setShowMentionSuggestions(false);
+                  }
+                }}
                 rows={4}
                 className="w-full bg-background border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               />
-              <div className="flex gap-2">
+
+              {/* Mention Suggestions */}
+              {showMentionSuggestions && filteredUsers.length > 0 && (
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 space-y-1 max-h-40 overflow-y-auto">
+                  {filteredUsers.map((user) => (
+                    <button
+                      key={user}
+                      onClick={() => handleAddMention(user)}
+                      className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg text-sm flex items-center gap-2 transition-colors"
+                    >
+                      <AtSign className="w-4 h-4 text-blue-600" />
+                      <span className="text-foreground">{user}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Mentions Display */}
+              {mentions.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {mentions.map((mention) => (
+                    <div
+                      key={mention}
+                      className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2"
+                    >
+                      @{mention}
+                      <button
+                        onClick={() => {
+                          setMentions(mentions.filter((m) => m !== mention));
+                          setNewPostContent((prev) =>
+                            prev.replace(`@${mention.replace(/\s+/g, "")}`, "").trim()
+                          );
+                        }}
+                        className="hover:text-blue-900"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Media Preview */}
+              {selectedMedia && (
+                <div className="relative rounded-lg overflow-hidden bg-gray-100 h-40">
+                  {mediaType === "image" ? (
+                    <img
+                      src={selectedMedia}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <video
+                      src={selectedMedia}
+                      className="w-full h-full object-cover"
+                      controls
+                    />
+                  )}
+                  <button
+                    onClick={() => {
+                      setSelectedMedia(null);
+                      setMediaType(null);
+                    }}
+                    className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-2 rounded-full transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+
+              {/* Upload and Post Actions */}
+              <div className="flex gap-2 items-center">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*,video/*"
+                  onChange={handleMediaSelect}
+                  className="hidden"
+                />
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors"
+                >
+                  <Paperclip className="w-5 h-5" />
+                  Add Media
+                </button>
+                <button
+                  onClick={() => {
+                    setMentionSearch("");
+                    setShowMentionSuggestions(true);
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors"
+                >
+                  <AtSign className="w-5 h-5" />
+                  Mention
+                </button>
                 <button
                   onClick={() => setShowNewPost(false)}
                   className="flex-1 bg-muted text-muted-foreground font-medium py-2 rounded-lg hover:bg-muted/80 transition-colors"
