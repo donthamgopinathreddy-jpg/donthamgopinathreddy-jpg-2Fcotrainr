@@ -293,7 +293,7 @@ export default function Home() {
                 <Flame className="w-5 h-5 text-red-600" />
                 <span className="font-semibold text-gray-900">Calories Burned</span>
               </div>
-              <span className="text-sm font-bold text-red-600">{caloriesBurned} cal</span>
+              <span className="text-sm font-bold text-red-600">{displayCalories} cal</span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
