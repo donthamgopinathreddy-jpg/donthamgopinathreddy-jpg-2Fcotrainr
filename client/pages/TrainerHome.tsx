@@ -111,6 +111,7 @@ export default function TrainerHome() {
   const [stepsTarget, setStepsTarget] = useState(10000);
   const [editStepsTarget, setEditStepsTarget] = useState(stepsTarget);
   const [meetingIdInput, setMeetingIdInput] = useState("");
+  const [showMeetingInput, setShowMeetingInput] = useState(false);
   const [showScheduleMeetingModal, setShowScheduleMeetingModal] = useState(false);
   const [meetingTitle, setMeetingTitle] = useState("");
   const [meetingDate, setMeetingDate] = useState("");
@@ -198,30 +199,6 @@ export default function TrainerHome() {
       {/* Logo Header */}
       <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
         <Logo size="sm" />
-      </div>
-
-      {/* Meetings Section - Top */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-blue-200 px-4 py-6">
-        <div className="max-w-md mx-auto">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Join a Meeting</h2>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Enter meeting ID..."
-              value={meetingIdInput}
-              onChange={(e) => setMeetingIdInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleJoinMeeting()}
-              className="flex-1 bg-white border-2 border-blue-400 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary font-medium"
-            />
-            <button
-              onClick={handleJoinMeeting}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
-              title="Join meeting"
-            >
-              <Video className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* Conditional View Rendering */}
