@@ -31,7 +31,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-2xl">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-2xl" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
       <div className="flex justify-around max-w-md mx-auto w-full">
         {navItems.map(({ path, label, icon: Icon }) => {
           const active = isActive(path);
