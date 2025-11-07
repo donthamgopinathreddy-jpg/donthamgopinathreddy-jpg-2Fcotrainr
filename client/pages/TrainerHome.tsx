@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
-import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User, Heart, Share2, MessageCircle as MessageIcon, Newspaper, MapPin, UserCheck, Settings } from "lucide-react";
+import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User, Heart, Share2, MessageCircle as MessageIcon, Newspaper, MapPin, UserCheck, Settings, Copy, Check } from "lucide-react";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
 import { toast } from "sonner";
 
@@ -343,6 +343,14 @@ export default function TrainerHome() {
                   <MapPin className="w-7 h-7 text-green-600 mb-2" />
                   <p className="font-bold text-gray-900 text-sm">Network</p>
                   <p className="text-xs text-gray-600">Find trainers</p>
+                </button>
+                <button
+                  onClick={() => setShowScheduleMeetingModal(true)}
+                  className="bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 rounded-2xl p-5 border border-blue-200 hover:shadow-lg hover:shadow-blue-300/50 transition-all transform hover:scale-105"
+                >
+                  <Video className="w-7 h-7 text-blue-600 mb-2" />
+                  <p className="font-bold text-gray-900 text-sm">Video Session</p>
+                  <p className="text-xs text-gray-600">Schedule meeting</p>
                 </button>
               </div>
             </div>
