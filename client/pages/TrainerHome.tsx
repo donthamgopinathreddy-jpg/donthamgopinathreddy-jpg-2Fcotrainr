@@ -429,7 +429,7 @@ export default function TrainerHome() {
                     style={{ width: `${Math.min(caloriesPercent, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600 mt-1">~{caloriesBurned} cal from {stepsCompleted} steps</p>
+                <p className="text-xs text-gray-600 mt-1">~{displayCalories} cal {connectedDevice ? "from watch data" : `from ${displaySteps} steps`}</p>
               </button>
 
               {/* Water Progress */}
