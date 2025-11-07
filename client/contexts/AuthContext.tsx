@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .single();
 
       if (error) {
-        console.error("Error fetching user profile:", error.message, error.code);
+        console.error("Error fetching user profile:", error);
         // Create a default profile if fetch fails
         setUserProfile({
           id: userId,
