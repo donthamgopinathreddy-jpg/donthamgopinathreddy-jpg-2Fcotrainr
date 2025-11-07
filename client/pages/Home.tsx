@@ -99,9 +99,30 @@ export default function Home() {
     toast.success("Meeting declined");
   };
 
-  const stepsPercent = Math.round((stepsCompleted / stepsGoal) * 100);
-  const caloriesPercent = Math.round((caloriesBurned / 400) * 100); // 400 is typical daily burn
-  const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
+  // Use watch data if connected, otherwise use mock data
+  const displaySteps = connectedDevice ? watchData.steps : stepsCompleted;
+  const displayCalories = connectedDevice ? watchData.caloriesBurned : caloriesBurned;
+  const displayWater = connectedDevice ? watchData.waterConsumed : waterConsumed;
+  const displayHeartRate = connectedDevice ? watchData.heartRate : null;
+
+  const stepsPercent = Math.round((displaySteps / stepsGoal) * 100);
+  const caloriesPercent = Math.round((displayCalories / 400) * 100); // 400 is typical daily burn
+  const waterPercent = Math.round((displayWater / waterGoal) * 100);
+
+  const handleConnectWatch = (device: string) => {
+    setConnectedDevice(device);
+    // Simulate watch data sync with slight delay
+    setTimeout(() => {
+      toast.success(`✓ ${device} connected! Syncing data...`);
+      setShowWatchModal(false);
+    }, 500);
+  };
+
+  const handleDisconnectWatch = () => {
+    const deviceName = connectedDevice;
+    setConnectedDevice(null);
+    toast.success(`Disconnected from ${deviceName}`);
+  };
 
   return (
     <div className="min-h-screen bg-white">
