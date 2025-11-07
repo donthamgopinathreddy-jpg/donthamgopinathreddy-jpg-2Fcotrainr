@@ -25,7 +25,14 @@ export default function VideoSessions() {
   const [meetingTime, setMeetingTime] = useState("");
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
   const [generatedMeetingLink, setGeneratedMeetingLink] = useState("");
-  const [scheduledMeetings, setScheduledMeetings] = useState<ScheduledMeeting[]>([]);
+  const [scheduledMeetings, setScheduledMeetings] = useState<ScheduledMeeting[]>(() => {
+    try {
+      const saved = localStorage.getItem("scheduledMeetings");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
 
   // Notification checker - runs every minute
   useEffect(() => {
