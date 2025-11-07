@@ -39,7 +39,7 @@ export default function TrainerClientDetail() {
   const weightRemaining = client.goal_weight_kg ? client.goal_weight_kg - client.weight_kg : 0;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-24">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-between px-4 py-3">
         <button

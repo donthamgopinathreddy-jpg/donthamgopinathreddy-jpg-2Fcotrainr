@@ -32,7 +32,7 @@ export default function VideoCall() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center text-white relative overflow-hidden pb-20">
+    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center text-white relative overflow-hidden pb-24">
       {/* Video Feed Placeholder */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 opacity-20" />
 
