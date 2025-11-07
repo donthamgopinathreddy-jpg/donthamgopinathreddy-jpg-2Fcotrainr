@@ -4,6 +4,9 @@ import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User, Heart, Share2, MessageCircle as MessageIcon, Newspaper, MapPin, UserCheck } from "lucide-react";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
+import { useState } from "react";
+import { Settings } from "lucide-react";
+import { toast } from "sonner";
 
 // Sample posts data
 interface PostData {
