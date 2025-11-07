@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
-import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase } from "lucide-react";
+import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase, Settings } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
@@ -18,6 +20,13 @@ export default function Home() {
     "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop"
   );
   const [profileImage, setProfileImage] = useState("https://api.dicebear.com/7.x/avataaars/svg?seed=Admin");
+  const [showTargetsModal, setShowTargetsModal] = useState(false);
+  const [targets, setTargets] = useState({
+    steps: 10000,
+    calories: 2500,
+    water: 2.5,
+  });
+  const [editTargets, setEditTargets] = useState({ ...targets });
 
   const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -46,11 +55,18 @@ export default function Home() {
   // Calculate water goal based on weight: roughly 30ml per kg
   const waterGoalCalculated = Math.round((userWeight * 30) / 1000 * 10) / 10;
 
-  const stepsGoal = 10000;
+  const stepsGoal = targets.steps;
   const stepsCompleted = 8420;
-  const caloriesGoal = 2500;
+  const caloriesGoal = targets.calories;
   const caloriesConsumed = 1850;
   const waterConsumed = 2.2;
+  const waterGoal = targets.water;
+
+  const handleSaveTargets = () => {
+    setTargets({ ...editTargets });
+    setShowTargetsModal(false);
+    toast.success("Targets updated!");
+  };
 
   const stepsPercent = Math.round((stepsCompleted / stepsGoal) * 100);
   const caloriesPercent = Math.round((caloriesConsumed / caloriesGoal) * 100);
