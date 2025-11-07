@@ -596,6 +596,119 @@ export default function Profile() {
             </div>
           </div>
         )}
+
+        {/* Trainer Referral Modal */}
+        {showTrainerReferralModal && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center p-0 md:p-4">
+            <div className="w-full md:max-w-md bg-white rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg md:text-xl font-bold text-gray-900">Refer a Cotrainer</h2>
+                <button
+                  onClick={() => setShowTrainerReferralModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Referral Info */}
+              <div className="space-y-4">
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Share your trainer code with other trainers and earn commission when they join CoTrainr!
+                </p>
+
+                {/* Trainer Referral Link Card */}
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-4 space-y-3">
+                  <p className="text-xs font-semibold text-gray-700">Your Trainer Referral Link</p>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <input
+                      type="text"
+                      readOnly
+                      value={trainerReferralLink}
+                      className="flex-1 bg-white border border-blue-300 rounded-lg px-3 py-2 text-xs md:text-sm text-gray-700 focus:outline-none overflow-hidden text-ellipsis"
+                    />
+                    <button
+                      onClick={handleCopyTrainerReferralLink}
+                      className={`px-3 md:px-4 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-1 whitespace-nowrap text-xs md:text-sm ${
+                        trainerReferralCopied
+                          ? "bg-blue-600 text-white"
+                          : "bg-blue-600 text-white hover:bg-blue-700"
+                      }`}
+                    >
+                      {trainerReferralCopied ? (
+                        <>
+                          <Check className="w-3 md:w-4 h-3 md:h-4" />
+                          Copied
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3 md:w-4 h-3 md:h-4" />
+                          Copy
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Trainer Referral Code */}
+                <div className="bg-card border border-border rounded-lg p-4">
+                  <p className="text-xs text-gray-600 mb-2">Coach Code</p>
+                  <p className="text-base md:text-lg font-bold text-blue-600">{trainerReferralCode}</p>
+                </div>
+
+                {/* Benefits */}
+                <div className="space-y-3">
+                  {/* Referred Trainer Benefits */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-2">
+                    <p className="text-sm font-semibold text-gray-900">New Trainer Gets</p>
+                    <ul className="space-y-1 text-xs text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600 mt-0.5 flex-shrink-0">✓</span>
+                        <span>Onboarding support</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600 mt-0.5 flex-shrink-0">✓</span>
+                        <span>50% platform fee waived (3 months)</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Your Benefits as Referrer */}
+                  <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 space-y-2">
+                    <p className="text-sm font-semibold text-gray-900">You Get</p>
+                    <ul className="space-y-1 text-xs text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-indigo-600 mt-0.5 flex-shrink-0">✓</span>
+                        <span>₹2000 per referral</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-indigo-600 mt-0.5 flex-shrink-0">✓</span>
+                        <span>Featured trainer profile</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 pt-2 sm:pt-4">
+                <button
+                  onClick={() => setShowTrainerReferralModal(false)}
+                  className="flex-1 bg-gray-200 text-gray-900 font-medium py-2.5 md:py-3 rounded-lg hover:bg-gray-300 transition-colors text-sm md:text-base"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={handleShareTrainerReferral}
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium py-2.5 md:py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm md:text-base"
+                >
+                  <Share2 className="w-3 md:w-4 h-3 md:h-4" />
+                  Share
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
