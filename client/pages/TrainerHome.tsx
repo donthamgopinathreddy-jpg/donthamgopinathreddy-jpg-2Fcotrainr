@@ -128,9 +128,48 @@ export default function TrainerHome() {
   const [meetingTime, setMeetingTime] = useState("");
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
   const [generatedMeetingLink, setGeneratedMeetingLink] = useState("");
+  const [scheduledMeetings, setScheduledMeetings] = useState<ScheduledMeeting[]>(() => {
+    try {
+      const saved = localStorage.getItem("scheduledMeetings");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
 
   const toggleView = (newView: string) => {
     setSearchParams({ view: newView });
+  };
+
+  // Listen for changes to localStorage (synced from VideoSessions page)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      try {
+        const saved = localStorage.getItem("scheduledMeetings");
+        setScheduledMeetings(saved ? JSON.parse(saved) : []);
+      } catch {
+        setScheduledMeetings([]);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  const formatDateTime = (date: string, time: string) => {
+    const dateObj = new Date(`${date}T${time}`);
+    return dateObj.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  const handleStartMeeting = (meeting: ScheduledMeeting) => {
+    navigate(`/video-meeting?room=${meeting.roomId}&title=${encodeURIComponent(meeting.title)}`);
+    toast.success("Starting meeting...");
   };
 
   // Calculate trainer's personal stats
