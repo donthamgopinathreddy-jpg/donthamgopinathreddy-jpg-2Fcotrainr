@@ -40,7 +40,9 @@ export default function Profile() {
   const [isFollowing, setIsFollowing] = useState(user.isFollowing);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showReferralModal, setShowReferralModal] = useState(false);
+  const [showTrainerReferralModal, setShowTrainerReferralModal] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
+  const [trainerReferralCopied, setTrainerReferralCopied] = useState(false);
   const [editForm, setEditForm] = useState({
     name: user.name,
     gender: user.gender,
