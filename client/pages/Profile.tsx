@@ -152,7 +152,7 @@ export default function Profile() {
         </div>
 
         {/* Profile Content */}
-        <div className="px-4 py-8 space-y-6">
+        <div className="px-4 sm:px-6 py-8 space-y-4 sm:space-y-6">
           {/* Follow Button (if not own profile) */}
           {!isTrainer && (
             <button
