@@ -113,17 +113,21 @@ export default function VideoMeeting() {
                 {/* Video Background */}
                 {participant.isVideoOff ? (
                   <div className="flex flex-col items-center justify-center w-full h-full bg-gray-700">
-                    <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-xl mb-3">
-                      {participant.avatar}
-                    </div>
+                    <img
+                      src={participant.pictureUrl}
+                      alt={participant.name}
+                      className="w-16 h-16 rounded-full object-cover mb-3 border-2 border-gray-600"
+                    />
                     <p className="text-gray-300 font-semibold">{participant.name}</p>
                     <p className="text-gray-400 text-xs mt-1">Camera off</p>
                   </div>
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center">
-                    <div className="w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-4xl">
-                      {participant.avatar}
-                    </div>
+                    <img
+                      src={participant.pictureUrl}
+                      alt={participant.name}
+                      className="w-24 h-24 rounded-full object-cover border-2 border-gray-600"
+                    />
                   </div>
                 )}
 
