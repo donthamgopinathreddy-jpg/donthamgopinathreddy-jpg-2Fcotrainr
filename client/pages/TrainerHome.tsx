@@ -155,6 +155,34 @@ export default function TrainerHome() {
     navigate(`/trainer/client/${clientId}`);
   };
 
+  const handleGenerateMeetingLink = () => {
+    if (!meetingTitle || !meetingDate || !meetingTime) {
+      alert("Please fill in all fields");
+      return;
+    }
+    const uniqueId = Math.random().toString(36).substring(2, 9).toUpperCase();
+    const link = `${window.location.origin}/video-meeting?room=${uniqueId}&title=${encodeURIComponent(meetingTitle)}&time=${meetingDate} ${meetingTime}`;
+    setGeneratedMeetingLink(link);
+    toast.success("Meeting link generated!");
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(generatedMeetingLink);
+    toast.success("Link copied to clipboard!");
+  };
+
+  const handleSendToClients = () => {
+    if (selectedClients.length === 0) {
+      alert("Please select at least one client");
+      return;
+    }
+    const clientNames = selectedClients
+      .map(id => clients.find(c => c.id === id)?.name || "Unknown")
+      .join(", ");
+    alert(`Meeting link sent to: ${clientNames}\n\nLink: ${generatedMeetingLink}`);
+    toast.success(`Sent to ${selectedClients.length} client(s)`);
+  };
+
   return (
     <div className="min-h-screen bg-white pb-36">
       {/* Logo Header */}
