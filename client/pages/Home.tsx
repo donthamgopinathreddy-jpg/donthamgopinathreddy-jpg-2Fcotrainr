@@ -20,12 +20,8 @@ export default function Home() {
   );
   const [profileImage, setProfileImage] = useState("https://api.dicebear.com/7.x/avataaars/svg?seed=Admin");
   const [showTargetsModal, setShowTargetsModal] = useState(false);
-  const [targets, setTargets] = useState({
-    steps: 10000,
-    calories: 2500,
-    water: 2.5,
-  });
-  const [editTargets, setEditTargets] = useState({ ...targets });
+  const [stepsTarget, setStepsTarget] = useState(10000);
+  const [editStepsTarget, setEditStepsTarget] = useState(stepsTarget);
 
   const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -52,24 +48,24 @@ export default function Home() {
   const userWeight = 75; // kg - would come from user profile
 
   // Calculate water goal based on weight: roughly 30ml per kg
-  const waterGoalCalculated = Math.round((userWeight * 30) / 1000 * 10) / 10;
+  const waterGoal = Math.round((userWeight * 30) / 1000 * 10) / 10;
 
-  const stepsGoal = targets.steps;
+  const stepsGoal = stepsTarget;
   const stepsCompleted = 8420;
-  const caloriesGoal = targets.calories;
-  const caloriesConsumed = 1850;
+
+  // Calculate calories burned from steps (~0.05 cal per step)
+  const caloriesBurned = Math.round(stepsCompleted * 0.05);
   const waterConsumed = 2.2;
-  const waterGoal = targets.water;
 
   const handleSaveTargets = () => {
-    setTargets({ ...editTargets });
+    setStepsTarget(editStepsTarget);
     setShowTargetsModal(false);
-    toast.success("Targets updated!");
+    toast.success("Steps target updated!");
   };
 
   const stepsPercent = Math.round((stepsCompleted / stepsGoal) * 100);
-  const caloriesPercent = Math.round((caloriesConsumed / caloriesGoal) * 100);
-  const waterPercent = Math.round((waterConsumed / waterGoalCalculated) * 100);
+  const caloriesPercent = Math.round((caloriesBurned / 400) * 100); // 400 is typical daily burn
+  const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
 
   return (
     <div className="min-h-screen bg-white">
@@ -142,14 +138,17 @@ export default function Home() {
       <div className="max-w-md mx-auto px-4 -mt-8 pb-8 relative z-20 space-y-6">
         {/* Progress Bars Card */}
         <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
-          <div className="flex items-center justify-between -mx-6 -mt-6 px-6 pt-6 pb-3 border-b border-border">
-            <h2 className="text-lg font-bold text-foreground">Today's Targets</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-foreground">Today's Stats</h2>
             <button
-              onClick={() => setEditTargets({ ...targets }) || setShowTargetsModal(true)}
+              onClick={() => {
+                setEditStepsTarget(stepsTarget);
+                setShowTargetsModal(true);
+              }}
               className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
             >
               <Settings className="w-4 h-4" />
-              Edit
+              Edit Steps
             </button>
           </div>
           {/* Steps Progress */}
@@ -324,41 +323,23 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Targets Edit Modal */}
+      {/* Steps Target Edit Modal */}
       {showTargetsModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
-            <h2 className="text-lg font-bold text-gray-900">Edit Daily Targets</h2>
+            <h2 className="text-lg font-bold text-gray-900">Edit Daily Steps Target</h2>
+            <p className="text-sm text-gray-600">Set your daily step goal. Calories burned and water intake are calculated automatically.</p>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Steps</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Steps Goal</label>
               <input
                 type="number"
-                value={editTargets.steps}
-                onChange={(e) => setEditTargets({ ...editTargets, steps: parseInt(e.target.value) || 0 })}
+                value={editStepsTarget}
+                onChange={(e) => setEditStepsTarget(parseInt(e.target.value) || 0)}
                 className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
               />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Calories</label>
-              <input
-                type="number"
-                value={editTargets.calories}
-                onChange={(e) => setEditTargets({ ...editTargets, calories: parseInt(e.target.value) || 0 })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Water (L)</label>
-              <input
-                type="number"
-                step="0.1"
-                value={editTargets.water}
-                onChange={(e) => setEditTargets({ ...editTargets, water: parseFloat(e.target.value) || 0 })}
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
+              <p className="text-xs text-gray-500 mt-2">• Calories burned = steps × 0.05 cal</p>
+              <p className="text-xs text-gray-500">• Water goal = weight × 30ml (currently {waterGoal}L)</p>
             </div>
 
             <div className="flex gap-2 pt-2">
@@ -372,7 +353,7 @@ export default function Home() {
                 onClick={handleSaveTargets}
                 className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
               >
-                Save Targets
+                Save Goal
               </button>
             </div>
           </div>
