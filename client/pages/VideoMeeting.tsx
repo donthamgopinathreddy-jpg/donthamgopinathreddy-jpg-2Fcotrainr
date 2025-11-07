@@ -6,18 +6,19 @@ interface Participant {
   id: string;
   name: string;
   avatar: string;
+  pictureUrl: string;
   isMuted: boolean;
   isVideoOff: boolean;
   isTrainer: boolean;
 }
 
 const MOCK_PARTICIPANTS: Participant[] = [
-  { id: "1", name: "Priya Singh", avatar: "PS", isMuted: false, isVideoOff: false, isTrainer: true },
-  { id: "2", name: "Amit Kumar", avatar: "AK", isMuted: true, isVideoOff: false, isTrainer: false },
-  { id: "3", name: "Neha Verma", avatar: "NV", isMuted: false, isVideoOff: false, isTrainer: false },
-  { id: "4", name: "Raj Patel", avatar: "RP", isMuted: false, isVideoOff: true, isTrainer: false },
-  { id: "5", name: "Sarah Chen", avatar: "SC", isMuted: false, isVideoOff: false, isTrainer: false },
-  { id: "6", name: "Mike Johnson", avatar: "MJ", isMuted: true, isVideoOff: false, isTrainer: false },
+  { id: "1", name: "Priya Singh", avatar: "PS", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=PriyaSingh", isMuted: false, isVideoOff: false, isTrainer: true },
+  { id: "2", name: "Amit Kumar", avatar: "AK", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=AmitKumar", isMuted: true, isVideoOff: false, isTrainer: false },
+  { id: "3", name: "Neha Verma", avatar: "NV", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=NehaVerma", isMuted: false, isVideoOff: false, isTrainer: false },
+  { id: "4", name: "Raj Patel", avatar: "RP", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=RajPatel", isMuted: false, isVideoOff: true, isTrainer: false },
+  { id: "5", name: "Sarah Chen", avatar: "SC", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=SarahChen", isMuted: false, isVideoOff: false, isTrainer: false },
+  { id: "6", name: "Mike Johnson", avatar: "MJ", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=MikeJohnson", isMuted: true, isVideoOff: false, isTrainer: false },
 ];
 
 export default function VideoMeeting() {
