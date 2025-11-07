@@ -25,6 +25,14 @@ export default function Home() {
   const [pendingMeetings, setPendingMeetings] = useState([
     { id: "MEET123", title: "Group Training", trainer: "Priya Singh", time: "3:00 PM", date: "Today" },
   ]);
+  const [showWatchModal, setShowWatchModal] = useState(false);
+  const [connectedDevice, setConnectedDevice] = useState<string | null>(null);
+  const [watchData, setWatchData] = useState({
+    steps: 8420,
+    heartRate: 72,
+    caloriesBurned: 420,
+    waterConsumed: 2.2,
+  });
 
   const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
