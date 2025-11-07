@@ -4,6 +4,7 @@ import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera, Ch
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 interface UserType {
   role: "client" | "trainer";
