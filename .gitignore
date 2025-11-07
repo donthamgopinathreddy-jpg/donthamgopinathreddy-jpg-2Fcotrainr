@@ -25,3 +25,18 @@ dist-ssr
 
 .config/
 !.env
+
+# Capacitor
+ios
+android
+.gradle
+build/
+*.apk
+*.aab
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
