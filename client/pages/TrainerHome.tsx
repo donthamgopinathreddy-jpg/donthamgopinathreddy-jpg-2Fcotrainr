@@ -588,6 +588,43 @@ export default function TrainerHome() {
         </>
       )}
 
+      {/* Steps Target Edit Modal */}
+      {showTargetsModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
+            <h2 className="text-lg font-bold text-gray-900">Edit Daily Steps Target</h2>
+            <p className="text-sm text-gray-600">Set your daily step goal. Calories burned and water intake are calculated automatically.</p>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Steps Goal</label>
+              <input
+                type="number"
+                value={editStepsTarget}
+                onChange={(e) => setEditStepsTarget(parseInt(e.target.value) || 0)}
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <p className="text-xs text-gray-500 mt-2">• Calories burned = steps × 0.05 cal</p>
+              <p className="text-xs text-gray-500">• Water goal = weight × 30ml (currently {waterGoal}L)</p>
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => setShowTargetsModal(false)}
+                className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveTargets}
+                className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
+              >
+                Save Goal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
