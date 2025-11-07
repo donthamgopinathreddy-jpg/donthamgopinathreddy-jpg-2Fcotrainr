@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
-import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User, Heart, Share2, MessageCircle as MessageIcon, Newspaper, MapPin, UserCheck, Settings, Copy, Check, Play, Clock, X, Watch, Smartphone } from "lucide-react";
+import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User, Heart, Share2, MessageCircle as MessageIcon, Newspaper, MapPin, UserCheck, Settings, Copy, Check, Play, Clock, X } from "lucide-react";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
 import { toast } from "sonner";
 
