@@ -326,29 +326,17 @@ export default function TrainerHome() {
             {/* Progress Bars Card */}
             <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-bold text-foreground">Today's Stats</h2>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setShowWatchModal(true)}
-                    className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors text-sm font-semibold"
-                    title={connectedDevice ? "Manage watch" : "Connect watch"}
-                  >
-                    <Watch className="w-4 h-4" />
-                    {connectedDevice || "Connect"}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setEditStepsTarget(stepsTarget);
-                      setShowTargetsModal(true);
-                    }}
-                    className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
-                  >
-                    <Settings className="w-4 h-4" />
-                    Edit Steps
-                  </button>
-                </div>
+                <h2 className="text-lg font-bold text-foreground">Today's Stats</h2>
+                <button
+                  onClick={() => {
+                    setEditStepsTarget(stepsTarget);
+                    setShowTargetsModal(true);
+                  }}
+                  className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
+                >
+                  <Settings className="w-4 h-4" />
+                  Edit Steps
+                </button>
               </div>
 
               {/* Steps Progress */}
