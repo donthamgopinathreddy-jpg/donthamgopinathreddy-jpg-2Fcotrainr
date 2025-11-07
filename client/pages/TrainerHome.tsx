@@ -218,6 +218,20 @@ export default function TrainerHome() {
           <div className="max-w-md mx-auto px-4 -mt-8 pb-8 relative z-20 space-y-6">
             {/* Progress Bars Card */}
             <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-bold text-foreground">Today's Stats</h2>
+                <button
+                  onClick={() => {
+                    setEditStepsTarget(stepsTarget);
+                    setShowTargetsModal(true);
+                  }}
+                  className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
+                >
+                  <Settings className="w-4 h-4" />
+                  Edit Steps
+                </button>
+              </div>
+
               {/* Steps Progress */}
               <button
                 onClick={() => navigate("/activity/steps")}
