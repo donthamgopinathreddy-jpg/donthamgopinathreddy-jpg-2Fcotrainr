@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
-  "You're doing amazing, keep it up! ���",
+  "You're doing amazing, keep it up! 💪",
   "Progress over perfection! 🎯",
   "Your body is a temple, treat it right! 🏛️",
   "One day or day one, you decide! ⚡",
@@ -254,7 +254,7 @@ export default function Home() {
                 style={{ width: `${Math.min(caloriesPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-gray-600 mt-1">~{displayCalories} cal {connectedDevice ? "from watch data" : `from ${displaySteps} steps`}</p>
+            <p className="text-xs text-gray-600 mt-1">~{caloriesBurned} cal from {stepsCompleted} steps</p>
           </button>
 
           {/* Water Intake Progress */}
