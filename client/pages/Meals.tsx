@@ -381,9 +381,12 @@ export default function Meals() {
                 return (
                   <div key={mealType.id}>
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold text-foreground text-sm">
-                        {mealType.label}
-                      </h4>
+                      <div className="flex items-center gap-2">
+                        <mealType.icon className="w-4 h-4 text-primary" />
+                        <h4 className="font-semibold text-foreground text-sm">
+                          {mealType.label}
+                        </h4>
+                      </div>
                       <span className="text-xs text-muted-foreground">{mealType.time}</span>
                     </div>
                     {mealsOfType.length > 0 ? (
