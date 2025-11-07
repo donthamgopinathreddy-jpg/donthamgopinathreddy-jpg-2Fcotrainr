@@ -58,19 +58,33 @@ export default function VideoMeeting() {
   };
 
   const toggleMute = (participantId: string) => {
+    const participant = participants.find(p => p.id === participantId);
+    const newMutedState = !participant?.isMuted;
+
     setParticipants(
       participants.map((p) =>
-        p.id === participantId ? { ...p, isMuted: !p.isMuted } : p
+        p.id === participantId ? { ...p, isMuted: newMutedState } : p
       )
     );
+
+    if (isCurrentUserTrainer && participant && !participant.isTrainer) {
+      toast.info(`${participant.name} is now ${newMutedState ? "muted" : "unmuted"}`);
+    }
   };
 
   const toggleVideo = (participantId: string) => {
+    const participant = participants.find(p => p.id === participantId);
+    const newVideoOffState = !participant?.isVideoOff;
+
     setParticipants(
       participants.map((p) =>
-        p.id === participantId ? { ...p, isVideoOff: !p.isVideoOff } : p
+        p.id === participantId ? { ...p, isVideoOff: newVideoOffState } : p
       )
     );
+
+    if (isCurrentUserTrainer && participant && !participant.isTrainer) {
+      toast.info(`${participant.name}'s camera is now ${newVideoOffState ? "off" : "on"}`);
+    }
   };
 
   return (
