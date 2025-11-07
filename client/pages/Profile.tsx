@@ -73,6 +73,29 @@ export default function Profile() {
     }
   };
 
+  // Trainer Referral Functions
+  const trainerReferralCode = userProfile?.id?.substring(0, 8).toUpperCase() || "COACH";
+  const trainerReferralLink = `${window.location.origin}/trainer-signup?ref=${trainerReferralCode}`;
+
+  const handleCopyTrainerReferralLink = () => {
+    navigator.clipboard.writeText(trainerReferralLink);
+    setTrainerReferralCopied(true);
+    toast.success("✓ Trainer referral link copied!");
+    setTimeout(() => setTrainerReferralCopied(false), 2000);
+  };
+
+  const handleShareTrainerReferral = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "Join CoTrainr as a Trainer",
+        text: "Join CoTrainr as a trainer! Build your coaching business and reach more clients.",
+        url: trainerReferralLink,
+      });
+    } else {
+      handleCopyTrainerReferralLink();
+    }
+  };
+
   const handleFollow = () => {
     setIsFollowing(!isFollowing);
     setUser((prev) => ({
