@@ -189,6 +189,14 @@ const AppRoutes = () => {
       }
     />
     <Route
+      path="/video-meeting"
+      element={
+        <ProtectedRoute>
+          <VideoMeeting />
+        </ProtectedRoute>
+      }
+    />
+    <Route
       path="/subscription"
       element={
         <ProtectedRoute>
