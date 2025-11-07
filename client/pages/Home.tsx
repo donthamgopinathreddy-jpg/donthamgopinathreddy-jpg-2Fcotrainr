@@ -96,7 +96,7 @@ export default function Home() {
   const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-24">
       {/* Logo Header */}
       <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
         <Logo size="sm" />
