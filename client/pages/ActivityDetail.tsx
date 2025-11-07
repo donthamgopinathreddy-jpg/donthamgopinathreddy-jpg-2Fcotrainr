@@ -83,7 +83,7 @@ export default function ActivityDetail() {
   const max = Math.max(...activity.data.map((d) => d.max));
 
   return (
-    <div className="min-h-screen bg-white pb-20 l-shape-bg fitness-gradient-1">
+    <div className="min-h-screen bg-white pb-24 l-shape-bg fitness-gradient-1">
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="bg-gradient-to-br from-blue-100 to-cyan-100 px-4 py-6 flex items-center gap-4">

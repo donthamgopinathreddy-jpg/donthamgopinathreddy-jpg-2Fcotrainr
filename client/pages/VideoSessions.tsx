@@ -170,7 +170,7 @@ export default function VideoSessions() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white pb-24">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3">
         <button
