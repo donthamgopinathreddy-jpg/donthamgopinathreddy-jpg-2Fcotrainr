@@ -110,6 +110,7 @@ export default function TrainerHome() {
   const [showTargetsModal, setShowTargetsModal] = useState(false);
   const [stepsTarget, setStepsTarget] = useState(10000);
   const [editStepsTarget, setEditStepsTarget] = useState(stepsTarget);
+  const [meetingIdInput, setMeetingIdInput] = useState("");
   const [showScheduleMeetingModal, setShowScheduleMeetingModal] = useState(false);
   const [meetingTitle, setMeetingTitle] = useState("");
   const [meetingDate, setMeetingDate] = useState("");
@@ -181,6 +182,15 @@ export default function TrainerHome() {
       .join(", ");
     alert(`Meeting link sent to: ${clientNames}\n\nLink: ${generatedMeetingLink}`);
     toast.success(`Sent to ${selectedClients.length} client(s)`);
+  };
+
+  const handleJoinMeeting = () => {
+    if (!meetingIdInput.trim()) {
+      alert("Please enter a meeting ID");
+      return;
+    }
+    navigate(`/video-meeting?room=${meetingIdInput}`);
+    toast.success("Joining meeting...");
   };
 
   return (
