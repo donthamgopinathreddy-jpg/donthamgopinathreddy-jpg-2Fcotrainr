@@ -22,6 +22,9 @@ export default function Home() {
   const [showTargetsModal, setShowTargetsModal] = useState(false);
   const [stepsTarget, setStepsTarget] = useState(10000);
   const [editStepsTarget, setEditStepsTarget] = useState(stepsTarget);
+  const [pendingMeetings, setPendingMeetings] = useState([
+    { id: "MEET123", title: "Group Training", trainer: "Priya Singh", time: "3:00 PM", date: "Today" },
+  ]);
 
   const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
