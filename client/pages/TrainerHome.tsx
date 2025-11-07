@@ -667,6 +667,166 @@ export default function TrainerHome() {
         </div>
       )}
 
+      {/* Schedule Meeting Modal */}
+      {showScheduleMeetingModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 max-h-screen overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 my-4">
+            <h2 className="text-lg font-bold text-gray-900">Schedule Video Meeting</h2>
+
+            {/* Meeting Title */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Meeting Title</label>
+              <input
+                type="text"
+                placeholder="e.g., Group Training Session"
+                value={meetingTitle}
+                onChange={(e) => setMeetingTitle(e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+              <input
+                type="date"
+                value={meetingDate}
+                onChange={(e) => setMeetingDate(e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
+            {/* Time */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+              <input
+                type="time"
+                value={meetingTime}
+                onChange={(e) => setMeetingTime(e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
+            {/* Client Selection */}
+            {!generatedMeetingLink && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Select Clients to Invite</label>
+                <div className="space-y-2 max-h-48 overflow-y-auto bg-gray-50 p-3 rounded-lg">
+                  {clients.length > 0 ? (
+                    clients.map((client) => (
+                      <label key={client.id} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedClients.includes(client.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedClients([...selectedClients, client.id]);
+                            } else {
+                              setSelectedClients(selectedClients.filter(id => id !== client.id));
+                            }
+                          }}
+                          className="w-4 h-4 rounded border-gray-300"
+                        />
+                        <span className="text-sm text-gray-900">{client.name}</span>
+                      </label>
+                    ))
+                  ) : (
+                    <p className="text-xs text-gray-500">No clients available</p>
+                  )}
+                </div>
+                <p className="text-xs text-gray-500 mt-1">{selectedClients.length} client(s) selected</p>
+              </div>
+            )}
+
+            {/* Generated Link Display */}
+            {generatedMeetingLink && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3 space-y-2">
+                <p className="text-sm font-semibold text-gray-900">Meeting Link Generated!</p>
+                <div className="flex items-center gap-2 bg-white border border-gray-300 rounded px-3 py-2">
+                  <input
+                    type="text"
+                    readOnly
+                    value={generatedMeetingLink}
+                    className="flex-1 bg-transparent text-xs text-gray-600 focus:outline-none"
+                  />
+                  <button
+                    onClick={handleCopyLink}
+                    className="text-primary hover:text-primary/80 transition-colors"
+                    title="Copy to clipboard"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Buttons */}
+            <div className="flex gap-2 pt-2">
+              {!generatedMeetingLink ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setShowScheduleMeetingModal(false);
+                      setMeetingTitle("");
+                      setMeetingDate("");
+                      setMeetingTime("");
+                      setSelectedClients([]);
+                      setGeneratedMeetingLink("");
+                    }}
+                    className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleGenerateMeetingLink}
+                    className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
+                  >
+                    Generate Link
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      setGeneratedMeetingLink("");
+                      setMeetingTitle("");
+                      setMeetingDate("");
+                      setMeetingTime("");
+                      setSelectedClients([]);
+                    }}
+                    className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    Schedule New
+                  </button>
+                  <button
+                    onClick={handleSendToClients}
+                    className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                  >
+                    <Check className="w-4 h-4" />
+                    Send to Clients
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Close Button */}
+            <button
+              onClick={() => {
+                setShowScheduleMeetingModal(false);
+                setMeetingTitle("");
+                setMeetingDate("");
+                setMeetingTime("");
+                setSelectedClients([]);
+                setGeneratedMeetingLink("");
+              }}
+              className="w-full text-gray-600 hover:text-gray-900 text-sm font-medium py-2 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
