@@ -1,19 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Video, Calendar } from "lucide-react";
+import { ArrowLeft, Video, Calendar, Play, X, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
+
+interface ScheduledMeeting {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  roomId: string;
+  link: string;
+  selectedClients: string[];
+  clientNames: string[];
+  notificationSent: boolean;
+}
 
 export default function VideoSessions() {
   const navigate = useNavigate();
   const { clients } = useTrainerClients();
   const [meetingIdInput, setMeetingIdInput] = useState("");
-  const [showScheduleMeetingModal, setShowScheduleMeetingModal] = useState(false);
   const [meetingTitle, setMeetingTitle] = useState("");
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
   const [generatedMeetingLink, setGeneratedMeetingLink] = useState("");
+  const [scheduledMeetings, setScheduledMeetings] = useState<ScheduledMeeting[]>([]);
+
+  // Notification checker - runs every minute
+  useEffect(() => {
+    const notificationTimer = setInterval(() => {
+      const now = new Date();
+      
+      scheduledMeetings.forEach((meeting) => {
+        if (meeting.notificationSent) return; // Already sent
+        
+        const meetingDateTime = new Date(`${meeting.date}T${meeting.time}`);
+        const tenMinutesBefore = new Date(meetingDateTime.getTime() - 10 * 60 * 1000);
+        
+        if (now >= tenMinutesBefore && now < meetingDateTime) {
+          // Send notification
+          sendNotification(meeting);
+          
+          // Mark as sent
+          setScheduledMeetings(prev =>
+            prev.map(m =>
+              m.id === meeting.id ? { ...m, notificationSent: true } : m
+            )
+          );
+        }
+      });
+    }, 60000); // Check every minute
+
+    return () => clearInterval(notificationTimer);
+  }, [scheduledMeetings]);
+
+  const sendNotification = (meeting: ScheduledMeeting) => {
+    // Browser notification if supported
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification("Meeting Starting Soon!", {
+        body: `${meeting.title} starts in 10 minutes at ${meeting.time}`,
+        icon: "https://cdn.builder.io/api/v1/image/assets%2Fc659d255956c4643b6576a691786eec0%2Fe823f4816a094df5bccc1efcb008e8ff?format=webp&width=800",
+      });
+    }
+    
+    // App toast notification
+    toast.info(`🔔 Meeting "${meeting.title}" starts in 10 minutes!`);
+  };
 
   const handleJoinMeeting = () => {
     if (!meetingIdInput.trim()) {
@@ -45,11 +98,63 @@ export default function VideoSessions() {
       alert("Please select at least one client");
       return;
     }
+
     const clientNames = selectedClients
       .map(id => clients.find(c => c.id === id)?.name || "Unknown")
       .join(", ");
-    alert(`Meeting link sent to: ${clientNames}\n\nLink: ${generatedMeetingLink}`);
-    toast.success(`Sent to ${selectedClients.length} client(s)`);
+
+    // Request notification permission if not already granted
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+
+    // Extract room ID from link
+    const roomId = generatedMeetingLink.split("room=")[1]?.split("&")[0] || "";
+
+    // Add to scheduled meetings list
+    const newMeeting: ScheduledMeeting = {
+      id: roomId,
+      title: meetingTitle,
+      date: meetingDate,
+      time: meetingTime,
+      roomId: roomId,
+      link: generatedMeetingLink,
+      selectedClients: selectedClients,
+      clientNames: clientNames.split(", "),
+      notificationSent: false,
+    };
+
+    setScheduledMeetings([...scheduledMeetings, newMeeting]);
+
+    toast.success(`✓ Meeting scheduled and sent to ${selectedClients.length} client(s)`);
+
+    // Reset form
+    setGeneratedMeetingLink("");
+    setMeetingTitle("");
+    setMeetingDate("");
+    setMeetingTime("");
+    setSelectedClients([]);
+  };
+
+  const handleStartMeeting = (meeting: ScheduledMeeting) => {
+    navigate(`/video-meeting?room=${meeting.roomId}&title=${encodeURIComponent(meeting.title)}`);
+    toast.success("Starting meeting...");
+  };
+
+  const handleDeleteMeeting = (meetingId: string) => {
+    setScheduledMeetings(scheduledMeetings.filter(m => m.id !== meetingId));
+    toast.success("Meeting removed");
+  };
+
+  const formatDateTime = (date: string, time: string) => {
+    const dateObj = new Date(`${date}T${time}`);
+    return dateObj.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
   };
 
   return (
@@ -70,6 +175,64 @@ export default function VideoSessions() {
 
       {/* Content */}
       <div className="max-w-md mx-auto px-4 py-6 space-y-6">
+        {/* Scheduled Meetings List */}
+        {scheduledMeetings.length > 0 && (
+          <div>
+            <h2 className="text-lg font-bold text-gray-900 mb-4">Upcoming Meetings</h2>
+            <div className="space-y-3">
+              {scheduledMeetings.map((meeting) => (
+                <div
+                  key={meeting.id}
+                  className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300 rounded-2xl p-4 space-y-3"
+                >
+                  {/* Meeting Header */}
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-bold text-gray-900 text-base">{meeting.title}</h3>
+                      <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                        <Clock className="w-4 h-4" />
+                        {formatDateTime(meeting.date, meeting.time)}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteMeeting(meeting.id)}
+                      className="p-2 hover:bg-red-100 rounded-lg transition-colors"
+                    >
+                      <X className="w-5 h-5 text-red-600" />
+                    </button>
+                  </div>
+
+                  {/* Clients List */}
+                  <div className="text-sm text-gray-700">
+                    <p className="font-semibold mb-1">Clients: {meeting.clientNames.length}</p>
+                    <p className="text-xs text-gray-600">{meeting.clientNames.join(", ")}</p>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleStartMeeting(meeting)}
+                      className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2 rounded-lg font-bold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all"
+                    >
+                      <Play className="w-4 h-4" />
+                      Start
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(meeting.link);
+                        toast.success("Link copied!");
+                      }}
+                      className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-lg font-semibold transition-colors"
+                    >
+                      Copy Link
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Join Meeting Section */}
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-6 space-y-4">
           <div className="flex items-center gap-3">
@@ -199,9 +362,10 @@ export default function VideoSessions() {
 
               <button
                 onClick={handleSendToClients}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all hover:opacity-90"
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all hover:opacity-90 flex items-center justify-center gap-2"
               >
-                Send to Clients
+                <Play className="w-4 h-4" />
+                Send to Clients & Schedule
               </button>
 
               <button
