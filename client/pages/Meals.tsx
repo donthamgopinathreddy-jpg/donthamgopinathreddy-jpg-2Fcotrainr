@@ -607,6 +607,75 @@ export default function Meals() {
             </p>
           </div>
         </div>
+
+        {/* Goals Edit Modal */}
+        {showGoalsModal && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
+              <h2 className="text-lg font-bold text-gray-900">Edit Daily Goals</h2>
+
+              {/* Calories */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Daily Calories</label>
+                <input
+                  type="number"
+                  value={editGoals.calories}
+                  onChange={(e) => setEditGoals({ ...editGoals, calories: parseInt(e.target.value) || 0 })}
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              {/* Protein */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Daily Protein (g)</label>
+                <input
+                  type="number"
+                  value={editGoals.protein}
+                  onChange={(e) => setEditGoals({ ...editGoals, protein: parseInt(e.target.value) || 0 })}
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              {/* Carbs */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Daily Carbs (g)</label>
+                <input
+                  type="number"
+                  value={editGoals.carbs}
+                  onChange={(e) => setEditGoals({ ...editGoals, carbs: parseInt(e.target.value) || 0 })}
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              {/* Fat */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Daily Fat (g)</label>
+                <input
+                  type="number"
+                  value={editGoals.fat}
+                  onChange={(e) => setEditGoals({ ...editGoals, fat: parseInt(e.target.value) || 0 })}
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-2 pt-2">
+                <button
+                  onClick={() => setShowGoalsModal(false)}
+                  className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveGoals}
+                  className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
+                >
+                  Save Goals
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
