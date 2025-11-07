@@ -420,7 +420,7 @@ export default function TrainerHome() {
                     <span className="font-semibold text-gray-900">Calories Burned</span>
                   </div>
                   <span className="text-sm font-bold text-red-600">
-                    {caloriesBurned} cal
+                    {displayCalories} cal
                   </span>
                 </div>
                 <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
