@@ -308,20 +308,12 @@ export default function TrainerHome() {
                   <p className="text-xs text-gray-600">See other users</p>
                 </button>
                 <button
-                  onClick={() => navigate("/messages")}
-                  className="bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 rounded-2xl p-5 border border-green-200 hover:shadow-lg hover:shadow-green-300/50 transition-all transform hover:scale-105"
+                  onClick={() => navigate("/discover")}
+                  className="bg-gradient-to-br from-cyan-100 via-sky-100 to-blue-100 rounded-2xl p-5 border border-cyan-200 hover:shadow-lg hover:shadow-cyan-300/50 transition-all transform hover:scale-105"
                 >
-                  <MessageSquare className="w-7 h-7 text-green-600 mb-2" />
-                  <p className="font-bold text-gray-900 text-sm">Messages</p>
-                  <p className="text-xs text-gray-600">Chat clients</p>
-                </button>
-                <button
-                  onClick={() => navigate("/profile")}
-                  className="bg-gradient-to-br from-indigo-100 via-violet-100 to-purple-100 rounded-2xl p-5 border border-indigo-200 hover:shadow-lg hover:shadow-indigo-300/50 transition-all transform hover:scale-105"
-                >
-                  <User className="w-7 h-7 text-indigo-600 mb-2" />
-                  <p className="font-bold text-gray-900 text-sm">My Profile</p>
-                  <p className="text-xs text-gray-600">View settings</p>
+                  <MapPin className="w-7 h-7 text-cyan-600 mb-2" />
+                  <p className="font-bold text-gray-900 text-sm">Network</p>
+                  <p className="text-xs text-gray-600">Find trainers</p>
                 </button>
               </div>
             </div>
