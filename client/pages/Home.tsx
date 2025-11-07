@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase, Settings } from "lucide-react";
-import { useState } from "react";
 import { toast } from "sonner";
 
 const MOTIVATIONAL_QUOTES = [
