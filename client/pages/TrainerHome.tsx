@@ -309,9 +309,9 @@ export default function TrainerHome() {
                 </button>
                 <button
                   onClick={() => navigate("/discover")}
-                  className="bg-gradient-to-br from-cyan-100 via-sky-100 to-blue-100 rounded-2xl p-5 border border-cyan-200 hover:shadow-lg hover:shadow-cyan-300/50 transition-all transform hover:scale-105"
+                  className="bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 rounded-2xl p-5 border border-green-200 hover:shadow-lg hover:shadow-green-300/50 transition-all transform hover:scale-105"
                 >
-                  <MapPin className="w-7 h-7 text-cyan-600 mb-2" />
+                  <MapPin className="w-7 h-7 text-green-600 mb-2" />
                   <p className="font-bold text-gray-900 text-sm">Network</p>
                   <p className="text-xs text-gray-600">Find trainers</p>
                 </button>
