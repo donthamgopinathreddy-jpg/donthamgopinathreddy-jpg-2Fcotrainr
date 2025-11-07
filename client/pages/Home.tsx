@@ -234,12 +234,6 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-bold text-foreground">Today's Stats</h2>
-              {connectedDevice && (
-                <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">
-                  <Watch className="w-3 h-3" />
-                  {connectedDevice}
-                </div>
-              )}
             </div>
             <div className="flex gap-2">
               <button
@@ -248,7 +242,7 @@ export default function Home() {
                 title={connectedDevice ? "Manage watch" : "Connect watch"}
               >
                 <Watch className="w-4 h-4" />
-                {connectedDevice ? "Connected" : "Connect"}
+                {connectedDevice || "Connect"}
               </button>
               <button
                 onClick={() => {
