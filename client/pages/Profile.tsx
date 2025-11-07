@@ -106,13 +106,13 @@ export default function Profile() {
   const isTrainer = user.role === "trainer";
 
   return (
-    <div className="min-h-screen bg-white pb-20 l-shape-bg fitness-gradient-1">
+    <div className="min-h-screen bg-white pb-24 l-shape-bg fitness-gradient-1">
       {/* Logo Header */}
-      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
+      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3 w-full">
         <Logo size="sm" />
       </div>
 
-      <div className="max-w-md mx-auto">
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
         {/* Profile Header */}
         <div className="bg-gradient-to-br from-blue-100 to-cyan-100 px-4 py-12 text-center">
           <div className="relative w-24 h-24 mx-auto mb-4 group">
