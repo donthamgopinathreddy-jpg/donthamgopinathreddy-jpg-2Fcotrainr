@@ -49,6 +49,7 @@ export default function Home() {
   // Mock data
   const quote = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
   const userWeight = 75; // kg - would come from user profile
+  const userHeight = 175; // cm - would come from user profile
 
   // Calculate water goal based on weight: roughly 30ml per kg
   const waterGoal = Math.round((userWeight * 30) / 1000 * 10) / 10;
@@ -59,6 +60,19 @@ export default function Home() {
   // Calculate calories burned from steps (~0.05 cal per step)
   const caloriesBurned = Math.round(stepsCompleted * 0.05);
   const waterConsumed = 2.2;
+
+  // Calculate BMI
+  const heightInMeters = userHeight / 100;
+  const bmi = Math.round((userWeight / (heightInMeters * heightInMeters)) * 10) / 10;
+
+  const getBMICategory = (bmi: number) => {
+    if (bmi < 18.5) return { category: "Underweight", color: "text-blue-600", bgColor: "bg-blue-50" };
+    if (bmi < 25) return { category: "Normal", color: "text-green-600", bgColor: "bg-green-50" };
+    if (bmi < 30) return { category: "Overweight", color: "text-orange-600", bgColor: "bg-orange-50" };
+    return { category: "Obese", color: "text-red-600", bgColor: "bg-red-50" };
+  };
+
+  const bmiStatus = getBMICategory(bmi);
 
   const handleSaveTargets = () => {
     setStepsTarget(editStepsTarget);
