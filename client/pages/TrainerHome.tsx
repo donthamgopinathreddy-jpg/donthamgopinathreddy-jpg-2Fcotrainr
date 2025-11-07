@@ -175,7 +175,21 @@ export default function TrainerHome() {
   // Calculate trainer's personal stats
   const quote = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
   const trainerWeight = 78;
+  const trainerHeight = 178; // cm
   const waterGoal = Math.round((trainerWeight * 30) / 1000 * 10) / 10;
+
+  // Calculate BMI
+  const heightInMeters = trainerHeight / 100;
+  const bmi = Math.round((trainerWeight / (heightInMeters * heightInMeters)) * 10) / 10;
+
+  const getBMICategory = (bmi: number) => {
+    if (bmi < 18.5) return { category: "Underweight", color: "text-blue-600", bgColor: "bg-blue-50" };
+    if (bmi < 25) return { category: "Normal", color: "text-green-600", bgColor: "bg-green-50" };
+    if (bmi < 30) return { category: "Overweight", color: "text-orange-600", bgColor: "bg-orange-50" };
+    return { category: "Obese", color: "text-red-600", bgColor: "bg-red-50" };
+  };
+
+  const bmiStatus = getBMICategory(bmi);
 
   const stepsGoal = stepsTarget;
   const stepsCompleted = 9200;
