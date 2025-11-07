@@ -36,8 +36,7 @@ export const useMeals = () => {
         .order("logged_at", { ascending: false });
 
       if (error) {
-        const errorMsg = typeof error === 'object' ? (error as any).message || (error as any).code || 'Unknown error' : String(error);
-        console.error("Error fetching meals:", errorMsg);
+        console.error("Error fetching meals:", error);
         setMeals([]);
         return;
       }
