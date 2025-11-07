@@ -118,17 +118,22 @@ export default function TrainerHome() {
   // Calculate trainer's personal stats
   const quote = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
   const trainerWeight = 78;
-  const waterGoalCalculated = Math.round((trainerWeight * 30) / 1000 * 10) / 10;
+  const waterGoal = Math.round((trainerWeight * 30) / 1000 * 10) / 10;
 
-  const stepsGoal = 10000;
+  const stepsGoal = stepsTarget;
   const stepsCompleted = 9200;
-  const caloriesGoal = 2800;
-  const caloriesConsumed = 2100;
+  const caloriesBurned = Math.round(stepsCompleted * 0.05);
   const waterConsumed = 2.5;
 
+  const handleSaveTargets = () => {
+    setStepsTarget(editStepsTarget);
+    setShowTargetsModal(false);
+    toast.success("Steps target updated!");
+  };
+
   const stepsPercent = Math.round((stepsCompleted / stepsGoal) * 100);
-  const caloriesPercent = Math.round((caloriesConsumed / caloriesGoal) * 100);
-  const waterPercent = Math.round((waterConsumed / waterGoalCalculated) * 100);
+  const caloriesPercent = Math.round((caloriesBurned / 400) * 100);
+  const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
 
   // Clients view stats
   const totalClients = clients.length;
