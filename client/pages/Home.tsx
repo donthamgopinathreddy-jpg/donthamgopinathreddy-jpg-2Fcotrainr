@@ -267,7 +267,7 @@ export default function Home() {
                 <Droplets className="w-5 h-5 text-cyan-600" />
                 <span className="font-semibold text-gray-900">Water</span>
               </div>
-              <span className="text-sm font-bold text-cyan-600">{displayWater}L / {waterGoal}L</span>
+              <span className="text-sm font-bold text-cyan-600">{waterConsumed}L / {waterGoal}L</span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
