@@ -297,6 +297,16 @@ export default function Profile() {
               <Edit2 className="w-5 h-5 text-gray-600" />
               <span className="font-medium text-gray-900">Edit Profile</span>
             </button>
+
+            {/* Invite/Refer Friend Button */}
+            <button
+              onClick={() => setShowReferralModal(true)}
+              className="w-full flex items-center gap-3 bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200 rounded-lg p-4 hover:shadow-lg transition-all"
+            >
+              <Users className="w-5 h-5 text-green-600" />
+              <span className="font-bold text-gray-900">Invite Friends</span>
+            </button>
+
             {!isTrainer && (
               <button
                 onClick={() => navigate("/subscription")}
