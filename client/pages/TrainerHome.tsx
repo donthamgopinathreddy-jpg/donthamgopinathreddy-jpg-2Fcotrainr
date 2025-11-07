@@ -107,6 +107,9 @@ export default function TrainerHome() {
 
   const { clients, selectedClient, setSelectedClient } = useTrainerClients();
   const [expandedClient, setExpandedClient] = useState<string | null>(null);
+  const [showTargetsModal, setShowTargetsModal] = useState(false);
+  const [stepsTarget, setStepsTarget] = useState(10000);
+  const [editStepsTarget, setEditStepsTarget] = useState(stepsTarget);
 
   const toggleView = (newView: string) => {
     setSearchParams({ view: newView });
