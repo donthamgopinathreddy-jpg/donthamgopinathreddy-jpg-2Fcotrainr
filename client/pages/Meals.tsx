@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Plus, Minus, TrendingUp, Sunrise, Apple, UtensilsCrossed, Moon, Clock } from "lucide-react";
+import { Plus, Minus, TrendingUp, Sunrise, Apple, UtensilsCrossed, Moon, Clock, Settings } from "lucide-react";
 import Logo from "@/components/Logo";
 import { useMeals } from "@/hooks/useMeals";
 import { toast } from "sonner";
@@ -134,6 +134,14 @@ export default function Meals() {
   });
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [addingMeal, setAddingMeal] = useState(false);
+  const [showGoalsModal, setShowGoalsModal] = useState(false);
+  const [goals, setGoals] = useState({
+    calories: 2500,
+    protein: 100,
+    carbs: 300,
+    fat: 80,
+  });
+  const [editGoals, setEditGoals] = useState({ ...goals });
 
   // Convert Supabase meals to local format for display
   const mealEntries = useMemo(() =>
@@ -164,10 +172,16 @@ export default function Meals() {
   const totalCarbs = mealEntries.reduce((sum, meal) => sum + meal.carbs, 0);
   const totalFat = mealEntries.reduce((sum, meal) => sum + meal.fat, 0);
 
-  const calorieGoal = 2500;
-  const proteinGoal = 100;
-  const carbsGoal = 300;
-  const fatGoal = 80;
+  const calorieGoal = goals.calories;
+  const proteinGoal = goals.protein;
+  const carbsGoal = goals.carbs;
+  const fatGoal = goals.fat;
+
+  const handleSaveGoals = () => {
+    setGoals({ ...editGoals });
+    setShowGoalsModal(false);
+    toast.success("Goals updated!");
+  };
 
   const caloriePercent = Math.min((totalCalories / calorieGoal) * 100, 100);
   const proteinPercent = Math.min((totalProtein / proteinGoal) * 100, 100);
@@ -310,7 +324,13 @@ export default function Meals() {
           <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-foreground">Today's Summary</h2>
-              <TrendingUp className="w-5 h-5 text-primary" />
+              <button
+                onClick={() => setEditGoals({ ...goals }) || setShowGoalsModal(true)}
+                className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
+              >
+                <Settings className="w-4 h-4" />
+                Edit Goals
+              </button>
             </div>
 
             {/* Calories Bar */}
