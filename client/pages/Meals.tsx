@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Plus, Minus, TrendingUp, Sunrise, Apple, UtensilsCrossed, Moon, Snack } from "lucide-react";
+import { Plus, Minus, TrendingUp, Sunrise, Apple, UtensilsCrossed, Moon, Clock } from "lucide-react";
 import Logo from "@/components/Logo";
 import { useMeals } from "@/hooks/useMeals";
 import { toast } from "sonner";
@@ -115,7 +115,7 @@ const MEAL_TYPES = [
   { id: "lunch", label: "Lunch", icon: UtensilsCrossed, time: "12-2 PM" },
   { id: "afternoon-snack", label: "Afternoon Snack", icon: Apple, time: "4-5 PM" },
   { id: "dinner", label: "Dinner", icon: Moon, time: "7-9 PM" },
-  { id: "evening-snack", label: "Evening Snack", icon: Snack, time: "9+ PM" },
+  { id: "evening-snack", label: "Evening Snack", icon: Clock, time: "9+ PM" },
 ];
 
 export default function Meals() {
