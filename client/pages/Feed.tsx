@@ -145,7 +145,7 @@ export default function Feed() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-24">
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="sticky top-0 z-40 bg-background border-b border-border px-4 py-6">

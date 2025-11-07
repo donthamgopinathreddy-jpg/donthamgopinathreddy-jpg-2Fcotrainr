@@ -148,7 +148,7 @@ export default function Discover() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20 l-shape-bg">
+    <div className="min-h-screen bg-white pb-24 l-shape-bg">
       {/* Logo Header */}
       <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
         <Logo size="sm" />

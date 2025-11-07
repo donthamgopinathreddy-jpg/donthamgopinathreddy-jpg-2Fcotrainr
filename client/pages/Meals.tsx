@@ -305,7 +305,7 @@ export default function Meals() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20 l-shape-bg fitness-gradient-4">
+    <div className="min-h-screen bg-white pb-24 l-shape-bg fitness-gradient-4">
       <div className="max-w-md mx-auto">
         {/* Logo Header */}
         <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
