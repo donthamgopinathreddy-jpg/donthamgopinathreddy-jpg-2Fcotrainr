@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import Feed from "./pages/Feed";
 import TrainerProfile from "./pages/TrainerProfile";
 import VideoCall from "./pages/VideoCall";
+import VideoMeeting from "./pages/VideoMeeting";
 import Subscription from "./pages/Subscription";
 import TrainerSignup from "./pages/TrainerSignup";
 import TrainerDashboard from "./pages/TrainerDashboard";
