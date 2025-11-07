@@ -39,12 +39,37 @@ export default function Profile() {
   });
   const [isFollowing, setIsFollowing] = useState(user.isFollowing);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showReferralModal, setShowReferralModal] = useState(false);
+  const [referralCopied, setReferralCopied] = useState(false);
   const [editForm, setEditForm] = useState({
     name: user.name,
     gender: user.gender,
     height: user.height,
     weight: user.weight,
   });
+
+  // Generate referral link
+  const referralCode = userProfile?.id?.substring(0, 8).toUpperCase() || "REFER";
+  const referralLink = `${window.location.origin}?ref=${referralCode}`;
+
+  const handleCopyReferralLink = () => {
+    navigator.clipboard.writeText(referralLink);
+    setReferralCopied(true);
+    toast.success("✓ Referral link copied!");
+    setTimeout(() => setReferralCopied(false), 2000);
+  };
+
+  const handleShareReferral = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "Join CoTrainr",
+        text: "Join me on CoTrainr! Get personalized training and nutrition guidance.",
+        url: referralLink,
+      });
+    } else {
+      handleCopyReferralLink();
+    }
+  };
 
   const handleFollow = () => {
     setIsFollowing(!isFollowing);
