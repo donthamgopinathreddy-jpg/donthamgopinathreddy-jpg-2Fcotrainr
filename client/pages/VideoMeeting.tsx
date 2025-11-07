@@ -27,6 +27,10 @@ export default function VideoMeeting() {
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
   const [showChat, setShowChat] = useState(true);
+
+  // Find the trainer in the meeting
+  const trainerParticipant = participants.find(p => p.isTrainer);
+  const isCurrentUserTrainer = true; // In a real app, this would come from auth context
   const [chatMessages, setChatMessages] = useState([
     { id: 1, name: "Priya Singh", message: "Welcome everyone! Let's begin the session.", time: "2:15 PM" },
     { id: 2, name: "Amit Kumar", message: "Thanks for the session Priya!", time: "2:18 PM" },
