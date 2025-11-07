@@ -116,17 +116,22 @@ export default function VideoMeeting() {
                     <img
                       src={participant.pictureUrl}
                       alt={participant.name}
-                      className="w-16 h-16 rounded-full object-cover mb-3 border-2 border-gray-600"
+                      className="w-32 h-32 rounded-full object-cover mb-3 border-4 border-gray-600"
                     />
                     <p className="text-gray-300 font-semibold">{participant.name}</p>
                     <p className="text-gray-400 text-xs mt-1">Camera off</p>
                   </div>
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center relative overflow-hidden">
+                    {/* Video stream placeholder with particle effect */}
+                    <div className="absolute inset-0 opacity-30">
+                      <div className="w-full h-full bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><filter id=%22noise%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%223%22 result=%22noise%22 /></filter><rect width=%22100%22 height=%22100%22 filter=%22url(%23noise)%22 opacity=%220.5%22/></svg>')] animate-pulse"></div>
+                    </div>
+                    {/* Profile picture overlay in top-left corner */}
                     <img
                       src={participant.pictureUrl}
                       alt={participant.name}
-                      className="w-24 h-24 rounded-full object-cover border-2 border-gray-600"
+                      className="absolute bottom-3 right-3 w-12 h-12 rounded-full object-cover border-2 border-white z-10"
                     />
                   </div>
                 )}
