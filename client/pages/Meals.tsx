@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Plus, Minus, TrendingUp } from "lucide-react";
+import { Plus, Minus, TrendingUp, Sunrise, Apple, UtensilsCrossed, Moon, Snack } from "lucide-react";
 import Logo from "@/components/Logo";
 import { useMeals } from "@/hooks/useMeals";
 import { toast } from "sonner";
@@ -110,13 +110,12 @@ const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType
 };
 
 const MEAL_TYPES = [
-  { id: "pre-breakfast", label: "🌙 Pre Breakfast", time: "5-7 AM" },
-  { id: "breakfast", label: "🌅 Breakfast", time: "7-9 AM" },
-  { id: "mid-snack", label: "🥨 Mid Snack", time: "10-11 AM" },
-  { id: "lunch", label: "🍽️ Lunch", time: "12-2 PM" },
-  { id: "snack", label: "🥤 Snack", time: "4-5 PM" },
-  { id: "dinner", label: "🌙 Dinner", time: "7-9 PM" },
-  { id: "post-dinner", label: "🌟 Post Dinner", time: "After 9 PM" },
+  { id: "early-breakfast", label: "Early Breakfast", icon: Sunrise, time: "6-7 AM" },
+  { id: "mid-snack", label: "Mid-Morning Snack", icon: Apple, time: "10-11 AM" },
+  { id: "lunch", label: "Lunch", icon: UtensilsCrossed, time: "12-2 PM" },
+  { id: "afternoon-snack", label: "Afternoon Snack", icon: Apple, time: "4-5 PM" },
+  { id: "dinner", label: "Dinner", icon: Moon, time: "7-9 PM" },
+  { id: "evening-snack", label: "Evening Snack", icon: Snack, time: "9+ PM" },
 ];
 
 export default function Meals() {
