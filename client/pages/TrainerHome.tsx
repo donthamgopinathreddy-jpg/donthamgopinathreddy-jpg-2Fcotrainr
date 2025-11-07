@@ -410,6 +410,31 @@ export default function TrainerHome() {
               </button>
             </div>
 
+            {/* BMI Index Card */}
+            <div className={`${bmiStatus.bgColor} border-2 border-gray-200 rounded-2xl p-6 space-y-4`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Activity className={`w-6 h-6 ${bmiStatus.color}`} />
+                  <h2 className="text-lg font-bold text-gray-900">BMI Index</h2>
+                </div>
+              </div>
+              <div className="text-center">
+                <div className={`text-4xl font-bold ${bmiStatus.color} mb-2`}>{bmi}</div>
+                <p className={`text-sm font-semibold ${bmiStatus.color} mb-3`}>{bmiStatus.category}</p>
+                <p className="text-xs text-gray-600">Height: {trainerHeight}cm | Weight: {trainerWeight}kg</p>
+              </div>
+              <div className="flex gap-2 text-xs text-gray-700">
+                <div className="flex-1 text-center">
+                  <p className="font-semibold">Normal</p>
+                  <p className="text-gray-500">18.5 - 24.9</p>
+                </div>
+                <div className="flex-1 text-center">
+                  <p className="font-semibold">Overweight</p>
+                  <p className="text-gray-500">25 - 29.9</p>
+                </div>
+              </div>
+            </div>
+
             {/* Quick Access Tiles */}
             <div>
               <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Access</h2>
