@@ -136,9 +136,37 @@ export default function TrainerHome() {
       return [];
     }
   });
+  const [showWatchModal, setShowWatchModal] = useState(false);
+  const [connectedDevice, setConnectedDevice] = useState<string | null>(null);
+  const [watchData, setWatchData] = useState({
+    steps: 12500,
+    heartRate: 68,
+    caloriesBurned: 620,
+    waterConsumed: 3.2,
+  });
 
   const toggleView = (newView: string) => {
     setSearchParams({ view: newView });
+  };
+
+  // Use watch data if connected, otherwise use mock data
+  const displaySteps = connectedDevice ? watchData.steps : 12500;
+  const displayCalories = connectedDevice ? watchData.caloriesBurned : 620;
+  const displayWater = connectedDevice ? watchData.waterConsumed : 3.2;
+  const displayHeartRate = connectedDevice ? watchData.heartRate : null;
+
+  const handleConnectWatch = (device: string) => {
+    setConnectedDevice(device);
+    setTimeout(() => {
+      toast.success(`✓ ${device} connected! Syncing data...`);
+      setShowWatchModal(false);
+    }, 500);
+  };
+
+  const handleDisconnectWatch = () => {
+    const deviceName = connectedDevice;
+    setConnectedDevice(null);
+    toast.success(`Disconnected from ${deviceName}`);
   };
 
   // Listen for changes to localStorage (synced from VideoSessions page)
