@@ -264,25 +264,58 @@ export default function Profile() {
 
           {/* Join as Trainer CTA - only for clients */}
           {!isTrainer && (
-            <div
-              onClick={() => navigate("/trainer-signup")}
-              className="relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-lg hover:shadow-2xl l-shape-bg"
-              style={{
-                background: "linear-gradient(135deg, #10B981 0%, #06B6D4 25%, #3B82F6 50%, #8B5CF6 75%, #10B981 100%)",
-                backgroundSize: "300% 300%",
-                animation: "gradientFlow 8s ease infinite"
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50" />
-              <div className="relative z-10 text-center space-y-3">
-                <div className="flex justify-center">
-                  <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
-                    <Briefcase className="w-8 h-8 text-white" />
+            <div>
+              <div
+                onClick={() => navigate("/trainer-signup")}
+                className="relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-lg hover:shadow-2xl l-shape-bg mb-4"
+                style={{
+                  background: "linear-gradient(135deg, #10B981 0%, #06B6D4 25%, #3B82F6 50%, #8B5CF6 75%, #10B981 100%)",
+                  backgroundSize: "300% 300%",
+                  animation: "gradientFlow 8s ease infinite"
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50" />
+                <div className="relative z-10 text-center space-y-3">
+                  <div className="flex justify-center">
+                    <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                      <Briefcase className="w-8 h-8 text-white" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-1">Become a Trainer</h3>
+                    <p className="text-sm text-white/90">Share your expertise and earn</p>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-1">Become a Trainer</h3>
-                  <p className="text-sm text-white/90">Share your expertise and earn</p>
+              </div>
+
+              {/* Quick Action Tiles */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                {/* Invite Friends Tile */}
+                <div
+                  onClick={() => setShowReferralModal(true)}
+                  className="bg-gradient-to-br from-green-100 to-emerald-100 border-2 border-green-300 rounded-xl p-4 cursor-pointer transition-all duration-200 active:scale-95 hover:shadow-lg"
+                >
+                  <div className="flex flex-col items-center gap-2 text-center h-full justify-center">
+                    <div className="p-2 bg-green-600/20 rounded-full">
+                      <Users className="w-5 h-5 text-green-700" />
+                    </div>
+                    <h4 className="font-bold text-gray-900 text-sm">Invite Friends</h4>
+                    <p className="text-xs text-gray-700">Earn rewards</p>
+                  </div>
+                </div>
+
+                {/* Upgrade to Premium Tile */}
+                <div
+                  onClick={() => navigate("/subscription")}
+                  className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-4 cursor-pointer transition-all duration-200 active:scale-95 hover:shadow-lg"
+                >
+                  <div className="flex flex-col items-center gap-2 text-center h-full justify-center">
+                    <div className="p-2 bg-orange-600/20 rounded-full">
+                      <CheckCircle className="w-5 h-5 text-orange-700" />
+                    </div>
+                    <h4 className="font-bold text-gray-900 text-sm">Go Premium</h4>
+                    <p className="text-xs text-gray-700">Unlock all</p>
+                  </div>
                 </div>
               </div>
             </div>
