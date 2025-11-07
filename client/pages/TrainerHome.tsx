@@ -383,14 +383,55 @@ export default function TrainerHome() {
                   <p className="font-bold text-gray-900 text-sm">Network</p>
                   <p className="text-xs text-gray-600">Find trainers</p>
                 </button>
-                <button
-                  onClick={() => setShowScheduleMeetingModal(true)}
-                  className="bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 rounded-2xl p-5 border border-blue-200 hover:shadow-lg hover:shadow-blue-300/50 transition-all transform hover:scale-105"
-                >
-                  <Video className="w-7 h-7 text-blue-600 mb-2" />
-                  <p className="font-bold text-gray-900 text-sm">Video Session</p>
-                  <p className="text-xs text-gray-600">Schedule meeting</p>
-                </button>
+                <div className="bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 rounded-2xl p-5 border border-blue-200 hover:shadow-lg hover:shadow-blue-300/50 transition-all">
+                  {!showMeetingInput ? (
+                    <button
+                      onClick={() => setShowMeetingInput(true)}
+                      className="w-full text-center transform hover:scale-105 transition-all"
+                    >
+                      <Video className="w-7 h-7 text-blue-600 mb-2 mx-auto" />
+                      <p className="font-bold text-gray-900 text-sm">Video Session</p>
+                      <p className="text-xs text-gray-600">Schedule or join</p>
+                    </button>
+                  ) : (
+                    <div className="space-y-3">
+                      <h3 className="font-bold text-gray-900 text-sm">Join a Meeting</h3>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Meeting ID..."
+                          value={meetingIdInput}
+                          onChange={(e) => setMeetingIdInput(e.target.value)}
+                          onKeyPress={(e) => e.key === "Enter" && handleJoinMeeting()}
+                          className="flex-1 bg-white border-2 border-blue-400 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary text-sm font-medium"
+                          autoFocus
+                        />
+                        <button
+                          onClick={handleJoinMeeting}
+                          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                          title="Join meeting"
+                        >
+                          <Video className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setShowMeetingInput(false);
+                          setMeetingIdInput("");
+                        }}
+                        className="w-full text-xs text-gray-600 hover:text-gray-900 py-1 transition-colors"
+                      >
+                        Close
+                      </button>
+                      <button
+                        onClick={() => setShowScheduleMeetingModal(true)}
+                        className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity"
+                      >
+                        Schedule Meeting
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
