@@ -413,8 +413,8 @@ export default function Profile() {
 
         {/* Referral Modal */}
         {showReferralModal && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
-            <div className="w-full bg-white rounded-t-3xl p-6 space-y-6">
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center sm:justify-center p-4">
+            <div className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-6 space-y-6 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-bold text-gray-900">Invite Friends</h2>
                 <button
