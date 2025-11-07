@@ -19,6 +19,7 @@ import Feed from "./pages/Feed";
 import TrainerProfile from "./pages/TrainerProfile";
 import VideoCall from "./pages/VideoCall";
 import VideoMeeting from "./pages/VideoMeeting";
+import VideoSessions from "./pages/VideoSessions";
 import Subscription from "./pages/Subscription";
 import TrainerSignup from "./pages/TrainerSignup";
 import TrainerDashboard from "./pages/TrainerDashboard";
@@ -194,6 +195,16 @@ const AppRoutes = () => {
       element={
         <ProtectedRoute>
           <VideoMeeting />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/video-sessions"
+      element={
+        <ProtectedRoute>
+          <AppLayout>
+            <VideoSessions />
+          </AppLayout>
         </ProtectedRoute>
       }
     />
