@@ -34,6 +34,11 @@ export default function VideoSessions() {
     }
   });
 
+  // Persist meetings to localStorage
+  useEffect(() => {
+    localStorage.setItem("scheduledMeetings", JSON.stringify(scheduledMeetings));
+  }, [scheduledMeetings]);
+
   // Notification checker - runs every minute
   useEffect(() => {
     const notificationTimer = setInterval(() => {
