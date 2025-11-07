@@ -272,7 +272,7 @@ export default function Home() {
                 <Footprints className="w-5 h-5 text-orange-600" />
                 <span className="font-semibold text-gray-900">Steps</span>
               </div>
-              <span className="text-sm font-bold text-orange-600">{stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}</span>
+              <span className="text-sm font-bold text-orange-600">{displaySteps.toLocaleString()} / {stepsGoal.toLocaleString()}</span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
