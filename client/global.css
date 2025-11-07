@@ -60,8 +60,15 @@
     @apply border-border;
   }
 
+  html {
+    /* Safe area support for native/PWA apps */
+    --safe-area-bottom: env(safe-area-inset-bottom);
+  }
+
   body {
     @apply bg-background text-foreground;
+    /* Support for notch and home indicator */
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
