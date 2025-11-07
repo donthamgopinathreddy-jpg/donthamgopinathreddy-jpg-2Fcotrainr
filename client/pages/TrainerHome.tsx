@@ -249,10 +249,10 @@ export default function TrainerHome() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Flame className="w-5 h-5 text-red-600" />
-                    <span className="font-semibold text-gray-900">Calories</span>
+                    <span className="font-semibold text-gray-900">Calories Burned</span>
                   </div>
                   <span className="text-sm font-bold text-red-600">
-                    {caloriesConsumed.toLocaleString()} / {caloriesGoal.toLocaleString()}
+                    {caloriesBurned} cal
                   </span>
                 </div>
                 <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -261,7 +261,7 @@ export default function TrainerHome() {
                     style={{ width: `${Math.min(caloriesPercent, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600 mt-1">{caloriesPercent}% of daily goal</p>
+                <p className="text-xs text-gray-600 mt-1">~{caloriesBurned} cal from {stepsCompleted} steps</p>
               </button>
 
               {/* Water Progress */}
