@@ -156,9 +156,9 @@ export default function VideoMeeting() {
                   </div>
                 </div>
 
-                {/* Hover Controls (for trainer only) */}
-                {participant.isTrainer && (
-                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                {/* Trainer Controls - Visible on hover if current user is trainer and this is a client */}
+                {isCurrentUserTrainer && !participant.isTrainer && (
+                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1 bg-black/60 rounded-lg p-1">
                     <button
                       onClick={() => toggleMute(participant.id)}
                       className={`p-2 rounded-full transition-colors ${
@@ -166,6 +166,7 @@ export default function VideoMeeting() {
                           ? "bg-red-600 hover:bg-red-700"
                           : "bg-gray-600 hover:bg-gray-700"
                       }`}
+                      title={participant.isMuted ? "Unmute client" : "Mute client"}
                     >
                       {participant.isMuted ? (
                         <MicOff className="w-4 h-4 text-white" />
@@ -180,6 +181,7 @@ export default function VideoMeeting() {
                           ? "bg-red-600 hover:bg-red-700"
                           : "bg-gray-600 hover:bg-gray-700"
                       }`}
+                      title={participant.isVideoOff ? "Turn on client camera" : "Turn off client camera"}
                     >
                       {participant.isVideoOff ? (
                         <VideoOff className="w-4 h-4 text-white" />
