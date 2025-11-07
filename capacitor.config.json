@@ -1,0 +1,19 @@
+{
+  "appId": "com.cotrainr.app",
+  "appName": "CoTrainr",
+  "webDir": "dist/spa",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "limitsNavigationsToAppBoundDomains": true
+  },
+  "android": {
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}
