@@ -471,22 +471,36 @@ export default function Profile() {
                 </div>
 
                 {/* Benefits */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
-                  <p className="text-sm font-semibold text-gray-900">Benefits</p>
-                  <ul className="space-y-2 text-sm text-gray-700">
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-600 mt-0.5">✓</span>
-                      <span>Your friend gets 1 free session</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-600 mt-0.5">✓</span>
-                      <span>You get a ₹500 credit</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-600 mt-0.5">✓</span>
-                      <span>Unlimited referrals, unlimited rewards!</span>
-                    </li>
-                  </ul>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {/* Friend Benefits */}
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 space-y-2">
+                    <p className="text-sm font-semibold text-gray-900">Friend Gets</p>
+                    <ul className="space-y-1 text-xs text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 mt-0.5">✓</span>
+                        <span>20% OFF first month</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 mt-0.5">✓</span>
+                        <span>2 free trainer sessions</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Your Benefits */}
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 space-y-2">
+                    <p className="text-sm font-semibold text-gray-900">You Get</p>
+                    <ul className="space-y-1 text-xs text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-purple-600 mt-0.5">✓</span>
+                        <span>₹1000 cashback</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-purple-600 mt-0.5">✓</span>
+                        <span>Unlock Pro features</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
 
