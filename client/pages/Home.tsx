@@ -66,6 +66,17 @@ export default function Home() {
     toast.success("Steps target updated!");
   };
 
+  const handleJoinMeeting = (meetingId: string) => {
+    navigate(`/video-meeting?room=${meetingId}`);
+    setPendingMeetings(pendingMeetings.filter(m => m.id !== meetingId));
+    toast.success("Joining meeting...");
+  };
+
+  const handleDeclineMeeting = (meetingId: string) => {
+    setPendingMeetings(pendingMeetings.filter(m => m.id !== meetingId));
+    toast.success("Meeting declined");
+  };
+
   const stepsPercent = Math.round((stepsCompleted / stepsGoal) * 100);
   const caloriesPercent = Math.round((caloriesBurned / 400) * 100); // 400 is typical daily burn
   const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
@@ -76,6 +87,42 @@ export default function Home() {
       <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
         <Logo size="sm" />
       </div>
+
+      {/* Pending Meeting Invites */}
+      {pendingMeetings.length > 0 && (
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-b-2 border-orange-200 px-4 py-4">
+          <div className="max-w-md mx-auto">
+            <h3 className="text-sm font-bold text-gray-900 mb-3">Meeting Invites</h3>
+            <div className="space-y-2">
+              {pendingMeetings.map((meeting) => (
+                <div
+                  key={meeting.id}
+                  className="bg-white border-2 border-orange-400 rounded-lg p-3 flex items-center justify-between gap-2 shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-sm text-gray-900">{meeting.title}</p>
+                    <p className="text-xs text-gray-600">{meeting.trainer} • {meeting.time}</p>
+                  </div>
+                  <div className="flex gap-2 flex-shrink-0">
+                    <button
+                      onClick={() => handleJoinMeeting(meeting.id)}
+                      className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-4 py-2 rounded-lg font-bold text-xs shadow-md hover:shadow-lg transition-all transform hover:scale-105 whitespace-nowrap"
+                    >
+                      Join
+                    </button>
+                    <button
+                      onClick={() => handleDeclineMeeting(meeting.id)}
+                      className="bg-gray-300 hover:bg-gray-400 text-gray-900 px-3 py-2 rounded-lg font-semibold text-xs transition-colors"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero Header with Cover Image */}
       <div className="relative overflow-hidden bg-gradient-to-br from-cyan-400 to-blue-500 h-64">
