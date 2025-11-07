@@ -1,0 +1,273 @@
+import { useState } from "react";
+import { Mic, MicOff, Video, VideoOff, Phone, MessageCircle, Users, Settings, Share2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+interface Participant {
+  id: string;
+  name: string;
+  avatar: string;
+  isMuted: boolean;
+  isVideoOff: boolean;
+  isTrainer: boolean;
+}
+
+const MOCK_PARTICIPANTS: Participant[] = [
+  { id: "1", name: "Priya Singh", avatar: "PS", isMuted: false, isVideoOff: false, isTrainer: true },
+  { id: "2", name: "Amit Kumar", avatar: "AK", isMuted: true, isVideoOff: false, isTrainer: false },
+  { id: "3", name: "Neha Verma", avatar: "NV", isMuted: false, isVideoOff: false, isTrainer: false },
+  { id: "4", name: "Raj Patel", avatar: "RP", isMuted: false, isVideoOff: true, isTrainer: false },
+  { id: "5", name: "Sarah Chen", avatar: "SC", isMuted: false, isVideoOff: false, isTrainer: false },
+  { id: "6", name: "Mike Johnson", avatar: "MJ", isMuted: true, isVideoOff: false, isTrainer: false },
+];
+
+export default function VideoMeeting() {
+  const navigate = useNavigate();
+  const [participants, setParticipants] = useState(MOCK_PARTICIPANTS);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isVideoOff, setIsVideoOff] = useState(false);
+  const [showChat, setShowChat] = useState(true);
+  const [chatMessages, setChatMessages] = useState([
+    { id: 1, name: "Priya Singh", message: "Welcome everyone! Let's begin the session.", time: "2:15 PM" },
+    { id: 2, name: "Amit Kumar", message: "Thanks for the session Priya!", time: "2:18 PM" },
+  ]);
+  const [newMessage, setNewMessage] = useState("");
+
+  const handleSendMessage = () => {
+    if (newMessage.trim()) {
+      setChatMessages([
+        ...chatMessages,
+        {
+          id: chatMessages.length + 1,
+          name: "You",
+          message: newMessage,
+          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        },
+      ]);
+      setNewMessage("");
+    }
+  };
+
+  const handleEndCall = () => {
+    navigate("/");
+  };
+
+  const toggleMute = (participantId: string) => {
+    setParticipants(
+      participants.map((p) =>
+        p.id === participantId ? { ...p, isMuted: !p.isMuted } : p
+      )
+    );
+  };
+
+  const toggleVideo = (participantId: string) => {
+    setParticipants(
+      participants.map((p) =>
+        p.id === participantId ? { ...p, isVideoOff: !p.isVideoOff } : p
+      )
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-900 flex flex-col">
+      {/* Header */}
+      <div className="bg-gray-800 border-b border-gray-700 px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
+            <Users className="w-6 h-6 text-gray-900" />
+          </div>
+          <div>
+            <h1 className="text-white font-bold">Group Training Session</h1>
+            <p className="text-gray-400 text-xs">{participants.length} participants</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowChat(!showChat)}
+            className="p-2 hover:bg-gray-700 rounded-lg text-gray-300 hover:text-white transition-colors"
+            title="Toggle chat"
+          >
+            <MessageCircle className="w-5 h-5" />
+          </button>
+          <button className="p-2 hover:bg-gray-700 rounded-lg text-gray-300 hover:text-white transition-colors" title="Share screen">
+            <Share2 className="w-5 h-5" />
+          </button>
+          <button className="p-2 hover:bg-gray-700 rounded-lg text-gray-300 hover:text-white transition-colors" title="Settings">
+            <Settings className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Video Grid */}
+        <div className="flex-1 p-4 overflow-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {participants.map((participant) => (
+              <div
+                key={participant.id}
+                className={`relative rounded-lg overflow-hidden bg-gray-800 aspect-video flex items-center justify-center group ${
+                  participant.isTrainer ? "border-2 border-primary" : "border border-gray-700"
+                }`}
+              >
+                {/* Video Background */}
+                {participant.isVideoOff ? (
+                  <div className="flex flex-col items-center justify-center w-full h-full bg-gray-700">
+                    <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-xl mb-3">
+                      {participant.avatar}
+                    </div>
+                    <p className="text-gray-300 font-semibold">{participant.name}</p>
+                    <p className="text-gray-400 text-xs mt-1">Camera off</p>
+                  </div>
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center">
+                    <div className="w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-4xl">
+                      {participant.avatar}
+                    </div>
+                  </div>
+                )}
+
+                {/* Trainer Badge */}
+                {participant.isTrainer && (
+                  <div className="absolute top-2 left-2 bg-primary text-gray-900 px-2 py-1 rounded-full text-xs font-bold">
+                    Trainer
+                  </div>
+                )}
+
+                {/* Participant Info */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3">
+                  <p className="text-white font-semibold text-sm">{participant.name}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    {participant.isMuted && <MicOff className="w-3 h-3 text-red-500" />}
+                    {participant.isVideoOff && <VideoOff className="w-3 h-3 text-red-500" />}
+                  </div>
+                </div>
+
+                {/* Hover Controls (for trainer only) */}
+                {participant.isTrainer && (
+                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                    <button
+                      onClick={() => toggleMute(participant.id)}
+                      className={`p-2 rounded-full transition-colors ${
+                        participant.isMuted
+                          ? "bg-red-600 hover:bg-red-700"
+                          : "bg-gray-600 hover:bg-gray-700"
+                      }`}
+                    >
+                      {participant.isMuted ? (
+                        <MicOff className="w-4 h-4 text-white" />
+                      ) : (
+                        <Mic className="w-4 h-4 text-white" />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => toggleVideo(participant.id)}
+                      className={`p-2 rounded-full transition-colors ${
+                        participant.isVideoOff
+                          ? "bg-red-600 hover:bg-red-700"
+                          : "bg-gray-600 hover:bg-gray-700"
+                      }`}
+                    >
+                      {participant.isVideoOff ? (
+                        <VideoOff className="w-4 h-4 text-white" />
+                      ) : (
+                        <Video className="w-4 h-4 text-white" />
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Chat Sidebar */}
+        {showChat && (
+          <div className="w-80 bg-gray-800 border-l border-gray-700 flex flex-col">
+            {/* Chat Header */}
+            <div className="border-b border-gray-700 px-4 py-3">
+              <h2 className="text-white font-bold">Chat</h2>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
+              {chatMessages.map((msg) => (
+                <div key={msg.id} className="text-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="text-white font-semibold">{msg.name}</p>
+                    <p className="text-gray-400 text-xs">{msg.time}</p>
+                  </div>
+                  <p className="text-gray-300 bg-gray-700 rounded px-3 py-2">{msg.message}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Chat Input */}
+            <div className="border-t border-gray-700 p-3">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Send a message..."
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                  className="flex-1 bg-gray-700 text-white placeholder-gray-400 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <button
+                  onClick={handleSendMessage}
+                  className="bg-primary text-gray-900 px-3 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Control Bar */}
+      <div className="bg-gray-800 border-t border-gray-700 px-4 py-4 flex items-center justify-center gap-4">
+        <button
+          onClick={() => setIsMuted(!isMuted)}
+          className={`p-4 rounded-full transition-colors ${
+            isMuted
+              ? "bg-red-600 hover:bg-red-700"
+              : "bg-gray-700 hover:bg-gray-600"
+          }`}
+          title={isMuted ? "Unmute" : "Mute"}
+        >
+          {isMuted ? (
+            <MicOff className="w-6 h-6 text-white" />
+          ) : (
+            <Mic className="w-6 h-6 text-white" />
+          )}
+        </button>
+
+        <button
+          onClick={() => setIsVideoOff(!isVideoOff)}
+          className={`p-4 rounded-full transition-colors ${
+            isVideoOff
+              ? "bg-red-600 hover:bg-red-700"
+              : "bg-gray-700 hover:bg-gray-600"
+          }`}
+          title={isVideoOff ? "Turn on camera" : "Turn off camera"}
+        >
+          {isVideoOff ? (
+            <VideoOff className="w-6 h-6 text-white" />
+          ) : (
+            <Video className="w-6 h-6 text-white" />
+          )}
+        </button>
+
+        <div className="w-px h-8 bg-gray-700" />
+
+        <button
+          onClick={handleEndCall}
+          className="p-4 rounded-full bg-red-600 hover:bg-red-700 transition-colors"
+          title="End call"
+        >
+          <Phone className="w-6 h-6 text-white" />
+        </button>
+      </div>
+    </div>
+  );
+}
