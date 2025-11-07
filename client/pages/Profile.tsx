@@ -410,6 +410,105 @@ export default function Profile() {
             </div>
           </div>
         )}
+
+        {/* Referral Modal */}
+        {showReferralModal && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
+            <div className="w-full bg-white rounded-t-3xl p-6 space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-gray-900">Invite Friends</h2>
+                <button
+                  onClick={() => setShowReferralModal(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Referral Info */}
+              <div className="space-y-4">
+                <p className="text-sm text-gray-600">
+                  Share your referral link with friends and earn rewards when they join CoTrainr!
+                </p>
+
+                {/* Referral Link Card */}
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-4 space-y-3">
+                  <p className="text-xs font-semibold text-gray-700">Your Referral Link</p>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      readOnly
+                      value={referralLink}
+                      className="flex-1 bg-white border border-green-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none"
+                    />
+                    <button
+                      onClick={handleCopyReferralLink}
+                      className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 ${
+                        referralCopied
+                          ? "bg-green-600 text-white"
+                          : "bg-green-600 text-white hover:bg-green-700"
+                      }`}
+                    >
+                      {referralCopied ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          Copied
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4" />
+                          Copy
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Referral Code */}
+                <div className="bg-card border border-border rounded-lg p-4">
+                  <p className="text-xs text-gray-600 mb-2">Referral Code</p>
+                  <p className="text-lg font-bold text-green-600">{referralCode}</p>
+                </div>
+
+                {/* Benefits */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
+                  <p className="text-sm font-semibold text-gray-900">Benefits</p>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 mt-0.5">✓</span>
+                      <span>Your friend gets 1 free session</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 mt-0.5">✓</span>
+                      <span>You get a ₹500 credit</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 mt-0.5">✓</span>
+                      <span>Unlimited referrals, unlimited rewards!</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => setShowReferralModal(false)}
+                  className="flex-1 bg-gray-200 text-gray-900 font-medium py-3 rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={handleShareReferral}
+                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-medium py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                >
+                  <Share2 className="w-4 h-4" />
+                  Share
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
