@@ -67,9 +67,8 @@ export const useMeals = () => {
         .single();
 
       if (error) {
-        const errorMsg = error.message || error.code || JSON.stringify(error);
-        console.error("Error adding meal:", errorMsg);
-        throw new Error(errorMsg);
+        console.error("Error adding meal:", error);
+        throw error;
       }
       setMeals((prev) => [data, ...prev]);
       return data;
