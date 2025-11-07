@@ -114,7 +114,7 @@ export default function Profile() {
 
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
         {/* Profile Header */}
-        <div className="bg-gradient-to-br from-blue-100 to-cyan-100 px-4 py-12 text-center">
+        <div className="bg-gradient-to-br from-blue-100 to-cyan-100 px-4 sm:px-6 py-12 text-center">
           <div className="relative w-24 h-24 mx-auto mb-4 group">
             <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
               {user.profilePhoto ? (
