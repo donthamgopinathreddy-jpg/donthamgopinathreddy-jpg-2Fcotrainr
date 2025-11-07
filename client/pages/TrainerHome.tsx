@@ -110,6 +110,12 @@ export default function TrainerHome() {
   const [showTargetsModal, setShowTargetsModal] = useState(false);
   const [stepsTarget, setStepsTarget] = useState(10000);
   const [editStepsTarget, setEditStepsTarget] = useState(stepsTarget);
+  const [showScheduleMeetingModal, setShowScheduleMeetingModal] = useState(false);
+  const [meetingTitle, setMeetingTitle] = useState("");
+  const [meetingDate, setMeetingDate] = useState("");
+  const [meetingTime, setMeetingTime] = useState("");
+  const [selectedClients, setSelectedClients] = useState<string[]>([]);
+  const [generatedMeetingLink, setGeneratedMeetingLink] = useState("");
 
   const toggleView = (newView: string) => {
     setSearchParams({ view: newView });
