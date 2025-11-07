@@ -573,32 +573,6 @@ export default function TrainerHome() {
         </>
       )}
 
-      {/* View Toggle at Bottom */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-4 py-4 shadow-lg">
-        <div className="max-w-md mx-auto flex gap-2">
-          <button
-            onClick={() => toggleView("stats")}
-            className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
-              view === "stats"
-                ? "bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg"
-                : "bg-gray-100 text-gray-900 hover:bg-gray-200"
-            }`}
-          >
-            My Stats
-          </button>
-          <button
-            onClick={() => toggleView("clients")}
-            className={`flex-1 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
-              view === "clients"
-                ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg"
-                : "bg-gray-100 text-gray-900 hover:bg-gray-200"
-            }`}
-          >
-            <Users className="w-5 h-5" />
-            My Clients
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
