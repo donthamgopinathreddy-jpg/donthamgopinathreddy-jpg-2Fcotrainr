@@ -22,6 +22,18 @@ interface PostData {
   createdAt: string;
 }
 
+interface ScheduledMeeting {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  roomId: string;
+  link: string;
+  selectedClients: string[];
+  clientNames: string[];
+  notificationSent: boolean;
+}
+
 const LATEST_POSTS: PostData[] = [
   {
     id: "1",
