@@ -69,6 +69,11 @@ export default function TrainerProfile() {
     navigate(`/video/${trainer.id}`);
   };
 
+  const handleStartChat = () => {
+    // Navigate to chat with trainer
+    navigate(`/chat/${trainer.id}`);
+  };
+
   const handleBookSession = () => {
     if (!selectedTime) {
       alert("Please select a time slot");
@@ -212,7 +217,10 @@ export default function TrainerProfile() {
                 Video Call
               </button>
 
-              <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all">
+              <button
+                onClick={handleStartChat}
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all"
+              >
                 <MessageCircle className="w-5 h-5" />
                 Chat
               </button>
