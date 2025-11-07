@@ -84,6 +84,11 @@
 }
 
 @layer components {
+  /* Safe area and navigation bottom padding for native/PWA apps */
+  .pb-safe {
+    padding-bottom: max(96px, calc(96px + env(safe-area-inset-bottom)));
+  }
+
   /* Animations for delayed stagger effect */
   .animate-slide-up {
     animation: slide-up 0.3s ease-out forwards;
