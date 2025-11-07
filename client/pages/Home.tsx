@@ -511,6 +511,72 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Fitness Watch Connection Modal */}
+      {showWatchModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-gray-900">Connect Fitness Watch</h2>
+              <button
+                onClick={() => setShowWatchModal(false)}
+                className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-600" />
+              </button>
+            </div>
+
+            <p className="text-sm text-gray-600">Sync your fitness watch to auto-populate daily stats like steps, calories, and heart rate.</p>
+
+            {!connectedDevice ? (
+              <div className="space-y-3">
+                <p className="text-xs font-semibold text-gray-700">Available Devices:</p>
+                {["Apple Watch", "Garmin", "Fitbit", "Wear OS", "Samsung Galaxy Watch"].map((device) => (
+                  <button
+                    key={device}
+                    onClick={() => handleConnectWatch(device)}
+                    className="w-full flex items-center gap-3 p-3 border-2 border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-400 transition-all"
+                  >
+                    <Smartphone className="w-5 h-5 text-blue-600" />
+                    <div className="text-left flex-1">
+                      <p className="font-semibold text-gray-900">{device}</p>
+                      <p className="text-xs text-gray-600">Sync your fitness data</p>
+                    </div>
+                    <Check className="w-5 h-5 text-gray-400" />
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-5 h-5 text-green-600" />
+                    <p className="font-semibold text-gray-900">{connectedDevice} Connected</p>
+                  </div>
+                  <p className="text-xs text-gray-600 ml-7">
+                    Syncing data: Steps, Calories, Heart Rate, Water Intake
+                  </p>
+                </div>
+                <button
+                  onClick={handleDisconnectWatch}
+                  className="w-full bg-red-50 text-red-600 font-semibold py-2 rounded-lg hover:bg-red-100 transition-colors border border-red-200"
+                >
+                  Disconnect {connectedDevice}
+                </button>
+              </div>
+            )}
+
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => setShowWatchModal(false)}
+                className="w-full bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
