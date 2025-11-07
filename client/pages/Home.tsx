@@ -142,6 +142,16 @@ export default function Home() {
       <div className="max-w-md mx-auto px-4 -mt-8 pb-8 relative z-20 space-y-6">
         {/* Progress Bars Card */}
         <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
+          <div className="flex items-center justify-between -mx-6 -mt-6 px-6 pt-6 pb-3 border-b border-border">
+            <h2 className="text-lg font-bold text-foreground">Today's Targets</h2>
+            <button
+              onClick={() => setEditTargets({ ...targets }) || setShowTargetsModal(true)}
+              className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
+            >
+              <Settings className="w-4 h-4" />
+              Edit
+            </button>
+          </div>
           {/* Steps Progress */}
           <button
             onClick={() => navigate("/activity/steps")}
@@ -313,6 +323,61 @@ export default function Home() {
           </p>
         </div>
       </div>
+
+      {/* Targets Edit Modal */}
+      {showTargetsModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
+            <h2 className="text-lg font-bold text-gray-900">Edit Daily Targets</h2>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Steps</label>
+              <input
+                type="number"
+                value={editTargets.steps}
+                onChange={(e) => setEditTargets({ ...editTargets, steps: parseInt(e.target.value) || 0 })}
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Calories</label>
+              <input
+                type="number"
+                value={editTargets.calories}
+                onChange={(e) => setEditTargets({ ...editTargets, calories: parseInt(e.target.value) || 0 })}
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Water (L)</label>
+              <input
+                type="number"
+                step="0.1"
+                value={editTargets.water}
+                onChange={(e) => setEditTargets({ ...editTargets, water: parseFloat(e.target.value) || 0 })}
+                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => setShowTargetsModal(false)}
+                className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveTargets}
+                className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
+              >
+                Save Targets
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
