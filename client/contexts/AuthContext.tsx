@@ -174,7 +174,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error: any) {
       console.error("Error signing up:", error);
-      const errorMessage = error?.message || JSON.stringify(error);
+      const errorMessage = error?.message || String(error);
       throw new Error(errorMessage);
     }
   };
