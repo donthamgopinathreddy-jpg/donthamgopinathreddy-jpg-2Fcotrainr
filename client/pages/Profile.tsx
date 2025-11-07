@@ -346,6 +346,39 @@ export default function Profile() {
             </div>
           )}
 
+          {/* Trainer Referral Tiles */}
+          {isTrainer && (
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              {/* Refer a Cotrainer Tile */}
+              <div
+                onClick={() => setShowTrainerReferralModal(true)}
+                className="bg-gradient-to-br from-blue-100 to-indigo-100 border-2 border-blue-300 rounded-xl p-4 cursor-pointer transition-all duration-200 active:scale-95 hover:shadow-lg"
+              >
+                <div className="flex flex-col items-center gap-2 text-center h-full justify-center">
+                  <div className="p-2 bg-blue-600/20 rounded-full">
+                    <Briefcase className="w-5 h-5 text-blue-700" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 text-sm">Refer Trainer</h4>
+                  <p className="text-xs text-gray-700">Earn bonus</p>
+                </div>
+              </div>
+
+              {/* Upgrade to Premium Tile */}
+              <div
+                onClick={() => navigate("/subscription")}
+                className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-4 cursor-pointer transition-all duration-200 active:scale-95 hover:shadow-lg"
+              >
+                <div className="flex flex-col items-center gap-2 text-center h-full justify-center">
+                  <div className="p-2 bg-orange-600/20 rounded-full">
+                    <CheckCircle className="w-5 h-5 text-orange-700" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 text-sm">Go Premium</h4>
+                  <p className="text-xs text-gray-700">More features</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Menu Items */}
           <div className="space-y-2">
             <button
