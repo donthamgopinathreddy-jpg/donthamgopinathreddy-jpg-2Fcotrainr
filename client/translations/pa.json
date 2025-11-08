@@ -1,0 +1,16 @@
+{
+  "app": {"name": "ਕੋਟ੍ਰੇਨਰ", "tagline": "ਤੁਹਾਡਾ ਨਿੱਜੀ ਫਿਟਨੈਸ ਸਾਥੀ"},
+  "onboarding": {"welcome": "ਕੋਟ੍ਰੇਨਰ ਵਿੱਚ ਸੁਆਗਤ ਹੈ", "subtitle": "ਤੁਹਾਡਾ ਨਿੱਜੀ ਫਿਟਨੈਸ ਸਾਥੀ", "description": "ਤਸਦੀਕ ਪ੍ਰਾਪਤ ਸਿਖਲਾਈਦੇਣਾਂ ਨਾਲ ਜੁੜੋ, ਆਪਣੀ ਪੋਸ਼ਟਿਕਤਾ ਨੂੰ ਟਰੈਕ ਕਰੋ ਅਤੇ ਇੱਕ ਫਿਟਨੈਸ ਕਮਿਊਨਿਟੀ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋ।", "tagline": "ਇਹ ਸਭ ਤੁਹਾਨੂੰ ਬਿਹਤਰ ਜਾਣਨ ਤੋਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ।", "selectLanguage": "ਆਪਣੀ ਭਾਸ਼ਾ ਚੁਣੋ", "getStarted": "ਸ਼ੁਰੂ ਕਰੋ", "tryDemoClient": "ਡੈਮੋ ਅਜ਼ਮਾਓ (ਕਲਾਇੰਟ)", "tryDemoTrainer": "ਡੈਮੋ ਅਜ਼ਮਾਓ (ਸਿਖਲਾਈਦੇਣ ਵਾਲਾ)"},
+  "auth": {"username": "ਯੂਜ਼ਰਨੇਮ", "fullName": "ਪੂਰਾ ਨਾਮ", "email": "ਈ-ਮੇਲ", "password": "ਪਾਸਵਰਡ", "confirmPassword": "ਪਾਸਵਰਡ ਦੀ ਤਸਦੀਕ ਕਰੋ", "gender": "ਲਿੰਗ", "male": "ਪੁਰਖ", "female": "ਔਰਤ", "other": "ਹੋਰ", "height": "ਕੱਦ (ਸੈ.ਮੀ)", "weight": "ਭਾਰ (ਕਿ.ਗ੍ਰਾ)", "signUp": "ਸਾਇਨ ਅਪ ਕਰੋ", "signIn": "ਸਾਇਨ ਇਨ ਕਰੋ", "logout": "ਲਾਗ ਆਊਟ ਕਰੋ", "continueBtn": "ਜਾਰੀ ਰੱਖੋ"},
+  "roles": {"selectRole": "ਆਪਣੀ ਭੂਮਿਕਾ ਚੁਣੋ", "client": "ਮੈਂ ਇਕ ਕਲਾਇੰਟ ਹਾਂ", "trainer": "ਮੈਂ ਇਕ ਸਿਖਲਾਈਦੇਣ ਵਾਲਾ ਹਾਂ", "clientDesc": "ਫਿਟਨੈਸ ਗਾਈਡੈਂਸ ਲੱਭ ਰਿਹਾ ਹੈ", "trainerDesc": "ਫਿਟਨੈਸ ਸਿਖਲਾਈ ਸੇਵਾਵਾਂ ਪ੍ਰਦਾਨ ਕਰੋ"},
+  "home": {"todaysStats": "ਅੱਜ ਦੇ ਅੰਕੜੇ", "steps": "ਕਦਮ", "calories": "ਸੜੇ ਹੋਏ ਕੈਲੋਰੀਜ", "water": "ਪਾਣੀ ਦੀ ਵਰਤੋਂ", "editTargets": "ਲੱਖਾਂ ਵਿੱਚ ਸੋਧ ਕਰੋ", "explore": "ਸਿਖਲਾਈਦੇਣ ਵਾਲਿਆਂ ਨੂੰ ਖੋਜ ਕਰੋ", "chat": "ਸੁਨੇਹੇ", "nutrition": "ਪੋਸ਼ਟਿਕਤਾ", "videos": "ਵਿਡੀਓ", "community": "ਸਮਾਜ"},
+  "profile": {"myProfile": "ਮੇਰਾ ਪ੍ਰੋਫਾਈਲ", "followers": "ਫਾਲੋਅਰ", "following": "ਅਨੁਸਰਨ ਕਰ ਰਿਹਾ ਹੈ", "editProfile": "ਪ੍ਰੋਫਾਈਲ ਵਿੱਚ ਸੋਧ ਕਰੋ", "settings": "ਸੈਟਿੰਗਜ", "language": "ਭਾਸ਼ਾ", "changeLanguage": "ਭਾਸ਼ਾ ਬਦਲੋ", "logout": "ਲਾਗ ਆਊਟ ਕਰੋ", "referral": "ਇੱਕ ਦੋਸਤ ਦਾ ਹਵਾਲਾ ਦਿਓ", "trainerReferral": "ਸਿਖਲਾਈਦੇਣ ਵਾਲੇ ਦਾ ਹਵਾਲਾ ਦਿਓ", "becomeTrainer": "ਸਿਖਲਾਈਦੇਣ ਵਾਲਾ ਬਣ ਜਾਓ", "save": "ਸੰਭਾਲੋ", "cancel": "ਰੱਦ ਕਰੋ"},
+  "trainer": {"profile": "ਸਿਖਲਾਈਦੇਣ ਵਾਲੇ ਦਾ ਪ੍ਰੋਫਾਈਲ", "experience": "ਅਨੁਭਵ ਦੇ ਸਾਲ", "specialties": "ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ", "bookSession": "ਸੈਸ਼ਨ ਬੁੱਕ ਕਰੋ", "verified": "ਤਸਦੀਕ ਪ੍ਰਾਪਤ ਸਿਖਲਾਈਦੇਣ ਵਾਲਾ"},
+  "discover": {"title": "ਸਿਖਲਾਈਦੇਣ ਵਾਲਿਆਂ ਨੂੰ ਖੋਜ ਕਰੋ", "gym": "ਜਿਮ", "zumba": "ਜ਼ੁੰਬਾ", "crossfit": "ਕ੍ਰਾਸ ਫਿਟ", "boxing": "ਬਾਕਸਿੰਗ", "yoga": "ਯੋਗਾ"},
+  "meals": {"nutrition": "ਪੋਸ਼ਟਿਕਤਾ", "today": "ਅੱਜ", "calories": "ਕੈਲੋਰੀਜ", "protein": "ਪ੍ਰੋਟੀਨ", "carbs": "ਕਾਰਬਜ਼", "fat": "ਚਰਬੀ", "addMeal": "ਭੋਜਨ ਸ਼ਾਮਿਲ ਕਰੋ", "editGoals": "ਲੱਖਾਂ ਵਿੱਚ ਸੋਧ ਕਰੋ"},
+  "messages": {"title": "ਸੁਨੇਹੇ", "chat": "ਚਾਟ", "noMessages": "ਅਜੇ ਕੋਈ ਸੁਨੇਹਾ ਨਹੀਂ"},
+  "feed": {"title": "ਸਮਾਜ ਫੀਡ", "post": "ਪੋਸਟ ਕਰੋ", "like": "ਪਸੰਦ", "comment": "ਟਿੱਪਣੀ ਕਰੋ", "share": "ਸਾਂਝਾ ਕਰੋ"},
+  "video": {"videoCall": "ਵਿਡੀਓ ਕਾਲ", "startCall": "ਕਾਲ ਸ਼ੁਰੂ ਕਰੋ", "endCall": "ਕਾਲ ਖਤਮ ਕਰੋ", "duration": "ਮਿਆਦ"},
+  "subscription": {"title": "ਪ੍ਰੀਮਿਅਮ ਅਪਗ੍ਰੇਡ ਕਰੋ", "unlimitedChat": "ਅਨਲਿਮਿਟਿਡ ਚਾਟ", "unlimitedVideos": "ਅਨਲਿਮਿਟਿਡ ਵਿਡੀਓ ਕਾਲਾਂ", "subscribe": "ਸਬਸਕ੍ਰਾਈਬ ਕਰੋ", "perMonth": "ਪ੍ਰਤੀ ਮਹੀਨਾ", "perThreeMonths": "3 ਮਹੀਨਿਆਂ ਲਈ"},
+  "common": {"loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...", "error": "ਅਸਫ਼ਲ", "success": "ਸਫ਼ਲਤਾ", "confirm": "ਪੁਸ਼ਟੀ ਕਰੋ", "delete": "ਮਿਟਾਓ", "edit": "ਵਿੱਚ ਸੋਧ ਕਰੋ", "close": "ਬੰਦ ਕਰੋ", "copy": "ਕਾਪੀ ਕਰੋ", "share": "ਸਾਂਝਾ ਕਰੋ", "back": "ਪਿੱਛੇ", "next": "ਅਗਲਾ"}
+}
