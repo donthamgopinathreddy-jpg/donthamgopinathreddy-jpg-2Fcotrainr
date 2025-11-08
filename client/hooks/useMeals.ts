@@ -19,6 +19,12 @@ export const useMeals = () => {
   const { user } = useAuth();
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isDemo, setIsDemo] = useState(false);
+
+  // Check if user is in demo mode
+  const isDemoMode = () => {
+    return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
+  };
 
   // Fetch meals for today
   const fetchTodayMeals = async () => {
@@ -26,6 +32,21 @@ export const useMeals = () => {
 
     setLoading(true);
     try {
+      // Check if demo mode
+      if (isDemoMode()) {
+        setIsDemo(true);
+        // Load from localStorage in demo mode
+        const demoMeals = localStorage.getItem(`meals_demo_${user.id}`);
+        if (demoMeals) {
+          setMeals(JSON.parse(demoMeals));
+        } else {
+          setMeals([]);
+        }
+        setLoading(false);
+        return;
+      }
+
+      setIsDemo(false);
       const today = new Date().toISOString().split("T")[0];
       const { data, error } = await supabase
         .from("meals")
@@ -36,15 +57,14 @@ export const useMeals = () => {
         .order("logged_at", { ascending: false });
 
       if (error) {
-        console.error("Error fetching meals:", error);
+        console.error("Supabase error fetching meals:", error?.message || JSON.stringify(error));
         setMeals([]);
         return;
       }
       setMeals(data || []);
     } catch (error: any) {
-      const errorMsg = error?.message || error?.code || 'Failed to fetch meals';
+      const errorMsg = error?.message || error?.code || String(error) || 'Failed to fetch meals';
       console.error("Error fetching meals:", errorMsg);
-      // Silently fail - meals will just be empty until they're added
       setMeals([]);
     } finally {
       setLoading(false);
