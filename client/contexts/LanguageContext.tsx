@@ -1,7 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 
 export type LanguageCode = "en" | "hi" | "ta" | "te" | "kn" | "bn" | "mr" | "gu" | "pa" | "or" | "ur";
 
@@ -24,51 +21,58 @@ interface LanguageContextType {
   setLanguage: (lang: LanguageCode) => void;
   languages: typeof INDIAN_LANGUAGES;
   isInitialized: boolean;
+  translations: Record<string, any>;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+// Import all translations
+import enTranslations from "@/translations/en.json";
+import hiTranslations from "@/translations/hi.json";
+import taTranslations from "@/translations/ta.json";
+import teTranslations from "@/translations/te.json";
+import knTranslations from "@/translations/kn.json";
+import bnTranslations from "@/translations/bn.json";
+import mrTranslations from "@/translations/mr.json";
+import guTranslations from "@/translations/gu.json";
+import paTranslations from "@/translations/pa.json";
+import orTranslations from "@/translations/or.json";
+import urTranslations from "@/translations/ur.json";
+
+const allTranslations: Record<LanguageCode, Record<string, any>> = {
+  en: enTranslations,
+  hi: hiTranslations,
+  ta: taTranslations,
+  te: teTranslations,
+  kn: knTranslations,
+  bn: bnTranslations,
+  mr: mrTranslations,
+  gu: guTranslations,
+  pa: paTranslations,
+  or: orTranslations,
+  ur: urTranslations,
+};
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
   const [language, setLanguageState] = useState<LanguageCode>("en");
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    const initI18n = async () => {
-      const savedLanguage = localStorage.getItem("userLanguage") as LanguageCode | null;
-      const defaultLanguage = savedLanguage || "en";
-
-      try {
-        await i18n
-          .use(LanguageDetector)
-          .use(initReactI18next)
-          .init({
-            resources: await loadTranslations(),
-            fallbackLng: "en",
-            lng: defaultLanguage,
-            interpolation: {
-              escapeValue: false,
-            },
-            detection: {
-              order: ["localStorage", "navigator"],
-              caches: ["localStorage"],
-            },
-          });
-
-        setLanguageState(defaultLanguage);
-        setIsInitialized(true);
-      } catch (error) {
-        console.error("Error initializing i18n:", error);
-        setIsInitialized(true);
-      }
-    };
-
-    initI18n();
+    const savedLanguage = localStorage.getItem("userLanguage") as LanguageCode | null;
+    const defaultLanguage = savedLanguage || "en";
+    setLanguageState(defaultLanguage);
+    document.documentElement.lang = defaultLanguage;
+    setIsInitialized(true);
   }, []);
 
   const setLanguage = (lang: LanguageCode) => {
     setLanguageState(lang);
     localStorage.setItem("userLanguage", lang);
-    i18n.changeLanguage(lang);
+    document.documentElement.lang = lang;
+  };
+
+  const getCurrentTranslations = () => {
+    return allTranslations[language] || allTranslations.en;
   };
 
   return (
@@ -78,6 +82,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
         setLanguage,
         languages: INDIAN_LANGUAGES,
         isInitialized,
+        translations: getCurrentTranslations(),
       }}
     >
       {children}
@@ -93,32 +98,20 @@ export const useLanguage = () => {
   return context;
 };
 
-async function loadTranslations() {
-  const translations: Record<string, any> = {};
+// Simple translation helper
+export const useTranslation = () => {
+  const { translations } = useLanguage();
 
-  // Import all translation files dynamically
-  const translationFiles = {
-    en: () => import("@/translations/en.json"),
-    hi: () => import("@/translations/hi.json"),
-    ta: () => import("@/translations/ta.json"),
-    te: () => import("@/translations/te.json"),
-    kn: () => import("@/translations/kn.json"),
-    bn: () => import("@/translations/bn.json"),
-    mr: () => import("@/translations/mr.json"),
-    gu: () => import("@/translations/gu.json"),
-    pa: () => import("@/translations/pa.json"),
-    or: () => import("@/translations/or.json"),
-    ur: () => import("@/translations/ur.json"),
+  const t = (key: string, fallback?: string) => {
+    const keys = key.split(".");
+    let value: any = translations;
+
+    for (const k of keys) {
+      value = value?.[k];
+    }
+
+    return typeof value === "string" ? value : fallback || key;
   };
 
-  for (const [lang, loader] of Object.entries(translationFiles)) {
-    try {
-      const module = await loader();
-      translations[lang] = { translation: module.default };
-    } catch (error) {
-      console.warn(`Could not load translations for ${lang}:`, error);
-    }
-  }
-
-  return translations;
-}
+  return { t };
+};
