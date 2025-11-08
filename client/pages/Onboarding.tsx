@@ -26,9 +26,12 @@ export default function Onboarding() {
   const navigate = useNavigate();
   const { signUp, demoMode } = useAuth();
   const { requestAllPermissions, loading: permissionLoading } = usePermissions();
+  const { language, setLanguage, languages } = useLanguage();
+  const { t } = useTranslation();
   const [step, setStep] = useState<OnboardingStep>("welcome");
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState<"client" | "trainer" | null>(null);
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     username: "",
     fullName: "",
