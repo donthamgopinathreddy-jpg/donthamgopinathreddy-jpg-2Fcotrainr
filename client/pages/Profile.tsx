@@ -27,6 +27,7 @@ interface UserType {
 export default function Profile() {
   const navigate = useNavigate();
   const { userProfile, signOut } = useAuth();
+  const { language, setLanguage, languages } = useLanguage();
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
@@ -44,6 +45,7 @@ export default function Profile() {
   const [showTrainerReferralModal, setShowTrainerReferralModal] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
   const [trainerReferralCopied, setTrainerReferralCopied] = useState(false);
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   const [editForm, setEditForm] = useState({
     name: user.name,
     gender: user.gender,
