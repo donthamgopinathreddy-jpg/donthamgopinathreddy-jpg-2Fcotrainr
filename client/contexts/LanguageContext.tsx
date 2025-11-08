@@ -100,7 +100,7 @@ export const useLanguage = () => {
 
 // Simple translation helper
 export const useTranslation = () => {
-  const { translations } = useLanguage();
+  const { translations, language } = useLanguage();
 
   const t = (key: string, fallback?: string) => {
     const keys = key.split(".");
@@ -113,5 +113,6 @@ export const useTranslation = () => {
     return typeof value === "string" ? value : fallback || key;
   };
 
-  return { t };
+  // Return language in dependency array so components re-render when it changes
+  return { t, language };
 };
