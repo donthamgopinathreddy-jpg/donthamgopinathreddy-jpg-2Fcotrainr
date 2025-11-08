@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, ArrowLeft, Users, Award } from "lucide-react";
+import { ChevronRight, ArrowLeft, Users, Award, Globe } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
