@@ -1,0 +1,131 @@
+{
+  "app": {
+    "name": "CoTrainr",
+    "tagline": "Your personal fitness companion"
+  },
+  "onboarding": {
+    "welcome": "Welcome to CoTrainr",
+    "subtitle": "Your personal fitness companion",
+    "description": "Connect with verified trainers, track your nutrition, and join a fitness community.",
+    "tagline": "It all starts with getting to know you better.",
+    "selectLanguage": "Select Your Language",
+    "getStarted": "Get Started",
+    "tryDemoClient": "Try Demo (Client)",
+    "tryDemoTrainer": "Try Demo (Trainer)"
+  },
+  "auth": {
+    "username": "Username",
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "height": "Height (cm)",
+    "weight": "Weight (kg)",
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "logout": "Logout",
+    "continueBtn": "Continue"
+  },
+  "roles": {
+    "selectRole": "Select Your Role",
+    "client": "I'm a Client",
+    "trainer": "I'm a Trainer",
+    "clientDesc": "Looking for fitness guidance",
+    "trainerDesc": "Offer fitness training services"
+  },
+  "home": {
+    "todaysStats": "Today's Stats",
+    "steps": "Steps",
+    "calories": "Calories Burned",
+    "water": "Water Intake",
+    "editTargets": "Edit Targets",
+    "explore": "Explore Trainers",
+    "chat": "Messages",
+    "nutrition": "Nutrition",
+    "videos": "Videos",
+    "community": "Community"
+  },
+  "profile": {
+    "myProfile": "My Profile",
+    "followers": "Followers",
+    "following": "Following",
+    "editProfile": "Edit Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "changeLanguage": "Change Language",
+    "logout": "Logout",
+    "referral": "Refer a Friend",
+    "trainerReferral": "Refer a Trainer",
+    "becomeTrainer": "Become a Trainer",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "trainer": {
+    "profile": "Trainer Profile",
+    "experience": "Years of Experience",
+    "specialties": "Specialties",
+    "bookSession": "Book Session",
+    "verified": "Verified Trainer"
+  },
+  "discover": {
+    "title": "Discover Trainers",
+    "gym": "Gym",
+    "zumba": "Zumba",
+    "crossfit": "CrossFit",
+    "boxing": "Boxing",
+    "yoga": "Yoga"
+  },
+  "meals": {
+    "nutrition": "Nutrition",
+    "today": "Today",
+    "calories": "Calories",
+    "protein": "Protein",
+    "carbs": "Carbs",
+    "fat": "Fat",
+    "addMeal": "Add Meal",
+    "editGoals": "Edit Goals"
+  },
+  "messages": {
+    "title": "Messages",
+    "chat": "Chat",
+    "noMessages": "No messages yet"
+  },
+  "feed": {
+    "title": "Community Feed",
+    "post": "Post",
+    "like": "Like",
+    "comment": "Comment",
+    "share": "Share"
+  },
+  "video": {
+    "videoCall": "Video Call",
+    "startCall": "Start Call",
+    "endCall": "End Call",
+    "duration": "Duration"
+  },
+  "subscription": {
+    "title": "Upgrade to Premium",
+    "unlimitedChat": "Unlimited Chat",
+    "unlimitedVideos": "Unlimited Video Calls",
+    "subscribe": "Subscribe",
+    "perMonth": "per month",
+    "perThreeMonths": "for 3 months"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "copy": "Copy",
+    "share": "Share",
+    "back": "Back",
+    "next": "Next"
+  }
+}
