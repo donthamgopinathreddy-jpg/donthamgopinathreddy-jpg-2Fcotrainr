@@ -144,19 +144,56 @@ export default function Onboarding() {
       {/* Welcome Step */}
       {step === "welcome" && (
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          {/* Language Selector Button */}
+          <button
+            onClick={() => setShowLanguageSelector(!showLanguageSelector)}
+            className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 rounded-lg bg-card border border-border hover:border-primary transition-colors"
+            title="Select Language"
+          >
+            <Globe className="w-4 h-4" />
+            <span className="text-sm font-medium">{language.toUpperCase()}</span>
+          </button>
+
+          {/* Language Dropdown */}
+          {showLanguageSelector && (
+            <div className="absolute top-12 right-4 bg-card border border-border rounded-lg shadow-lg z-50 w-64 max-h-72 overflow-y-auto">
+              <div className="p-2">
+                <p className="text-xs font-semibold text-muted-foreground px-3 py-2 uppercase tracking-wider">
+                  Select Language
+                </p>
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setLanguage(lang.code);
+                      setShowLanguageSelector(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                      language === lang.code
+                        ? "bg-primary text-primary-foreground font-medium"
+                        : "text-foreground hover:bg-card-hover"
+                    }`}
+                  >
+                    {lang.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="mb-8">
             <Logo size="2xl" className="mx-auto mb-6" />
             <p className="text-muted-foreground text-lg">
-              Your personal fitness companion
+              {t("onboarding.subtitle")}
             </p>
           </div>
 
           <div className="max-w-sm space-y-4 mb-12">
             <p className="text-foreground font-medium">
-              Connect with verified trainers, track your nutrition, and join a fitness community.
+              {t("onboarding.description")}
             </p>
             <p className="text-sm text-muted-foreground">
-              It all starts with getting to know you better.
+              {t("onboarding.tagline")}
             </p>
           </div>
 
@@ -164,7 +201,7 @@ export default function Onboarding() {
             onClick={handleContinue}
             className="w-full max-w-sm bg-gradient-primary text-gray-900 font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-orange-500/30 transition-all"
           >
-            Get Started
+            {t("onboarding.getStarted")}
             <ChevronRight className="w-5 h-5" />
           </button>
 
