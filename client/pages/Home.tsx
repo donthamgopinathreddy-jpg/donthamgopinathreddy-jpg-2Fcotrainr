@@ -304,7 +304,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Droplets className="w-5 h-5 text-cyan-600" />
-                <span className="font-semibold text-gray-900">Water</span>
+                <span className="font-semibold text-gray-900">{t("home.water")}</span>
               </div>
               <span className="text-sm font-bold text-cyan-600">{waterConsumed}L / {waterGoal}L</span>
             </div>
