@@ -283,7 +283,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Flame className="w-5 h-5 text-red-600" />
-                <span className="font-semibold text-gray-900">Calories Burned</span>
+                <span className="font-semibold text-gray-900">{t("home.calories")}</span>
               </div>
               <span className="text-sm font-bold text-red-600">{caloriesBurned} cal</span>
             </div>
