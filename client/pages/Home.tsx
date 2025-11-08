@@ -16,6 +16,9 @@ const MOTIVATIONAL_QUOTES = [
 
 export default function Home() {
   const navigate = useNavigate();
+  const { language, setLanguage, languages } = useLanguage();
+  const { t } = useTranslation();
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   const [coverImage, setCoverImage] = useState(
     "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop"
   );
