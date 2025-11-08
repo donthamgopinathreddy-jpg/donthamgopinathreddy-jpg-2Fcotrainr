@@ -262,7 +262,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Footprints className="w-5 h-5 text-orange-600" />
-                <span className="font-semibold text-gray-900">Steps</span>
+                <span className="font-semibold text-gray-900">{t("home.steps")}</span>
               </div>
               <span className="text-sm font-bold text-orange-600">{stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}</span>
             </div>
