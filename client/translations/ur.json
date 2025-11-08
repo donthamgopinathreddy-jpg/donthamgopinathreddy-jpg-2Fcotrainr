@@ -1,0 +1,16 @@
+{
+  "app": {"name": "کوٹریڈنر", "tagline": "آپ کا ذاتی فٹنیس ساتھی"},
+  "onboarding": {"welcome": "کوٹریڈنر میں خوش آمدید", "subtitle": "آپ کا ذاتی فٹنیس ساتھی", "description": "تصدیق شدہ ٹریننگ کے ساتھ رابطہ کریں، اپنی غذائی معلومات کو ٹریک کریں اور ایک فٹنیس کمیونٹی میں شامل ہوں۔", "tagline": "یہ سب آپ کو بہتر طریقے سے جاننے سے شروع ہوتا ہے۔", "selectLanguage": "اپنی زبان منتخب کریں", "getStarted": "شروع کریں", "tryDemoClient": "ڈیمو آزمائیں (کلائنٹ)", "tryDemoTrainer": "ڈیمو آزمائیں (ٹریننگ دینے والا)"},
+  "auth": {"username": "صارف کا نام", "fullName": "مکمل نام", "email": "ای میل", "password": "پاس ورڈ", "confirmPassword": "پاس ورڈ کی تصدیق کریں", "gender": "صنف", "male": "مرد", "female": "عورت", "other": "دیگر", "height": "اونچائی (سینٹی میٹر)", "weight": "وزن (کلوگرام)", "signUp": "سائن اپ کریں", "signIn": "سائن ان کریں", "logout": "لاگ آؤٹ کریں", "continueBtn": "جاری رکھیں"},
+  "roles": {"selectRole": "اپنا کردار منتخب کریں", "client": "میں ایک کلائنٹ ہوں", "trainer": "میں ایک ٹریننگ دینے والا ہوں", "clientDesc": "فٹنیس رہنمائی تلاش کر رہے ہیں", "trainerDesc": "فٹنیس ٹریننگ سروسیں فراہم کریں"},
+  "home": {"todaysStats": "آج کے اعدادوشمار", "steps": "قدم", "calories": "جلائے گئے کیلوری", "water": "پانی کی کھپت", "editTargets": "اہداف میں ترمیم کریں", "explore": "ٹریننگ دینے والوں کو دریافت کریں", "chat": "پیغام", "nutrition": "غذائیں", "videos": "ویڈیوز", "community": "برادری"},
+  "profile": {"myProfile": "میرا پروفائل", "followers": "فالورز", "following": "فالو کر رہے ہیں", "editProfile": "پروفائل میں ترمیم کریں", "settings": "سیٹنگز", "language": "زبان", "changeLanguage": "زبان تبدیل کریں", "logout": "لاگ آؤٹ کریں", "referral": "کسی دوست کو ریفر کریں", "trainerReferral": "کسی ٹریننگ دینے والے کو ریفر کریں", "becomeTrainer": "ٹریننگ دینے والا بنیں", "save": "محفوظ کریں", "cancel": "منسوخ کریں"},
+  "trainer": {"profile": "ٹریننگ دینے والے کا پروفائل", "experience": "تجربے کے سال", "specialties": "تخصصات", "bookSession": "سیشن بک کریں", "verified": "تصدیق شدہ ٹریننگ دینے والا"},
+  "discover": {"title": "ٹریننگ دینے والوں کو دریافت کریں", "gym": "جم", "zumba": "زومبا", "crossfit": "کراس فٹ", "boxing": "بوکسنگ", "yoga": "یوگا"},
+  "meals": {"nutrition": "غذائیں", "today": "آج", "calories": "کیلوری", "protein": "پروٹین", "carbs": "کاربز", "fat": "چکنائی", "addMeal": "کھانا شامل کریں", "editGoals": "اہداف میں ترمیم کریں"},
+  "messages": {"title": "پیغام", "chat": "چیٹ", "noMessages": "ابھی کوئی پیغام نہیں"},
+  "feed": {"title": "برادری فیڈ", "post": "پوسٹ کریں", "like": "پسند", "comment": "تبصرہ", "share": "شیئر کریں"},
+  "video": {"videoCall": "ویڈیو کال", "startCall": "کال شروع کریں", "endCall": "کال ختم کریں", "duration": "مدت"},
+  "subscription": {"title": "پریمیم میں اپ گریڈ کریں", "unlimitedChat": "بے محدود چیٹ", "unlimitedVideos": "بے محدود ویڈیو کالز", "subscribe": "سبسکرائب کریں", "perMonth": "فی ماہ", "perThreeMonths": "3 مہینے کے لیے"},
+  "common": {"loading": "لوڈ ہو رہا ہے...", "error": "خرابی", "success": "کامیابی", "confirm": "تصدیق کریں", "delete": "حذف کریں", "edit": "ترمیم کریں", "close": "بند کریں", "copy": "کاپی کریں", "share": "شیئر کریں", "back": "واپس", "next": "اگلا"}
+}
