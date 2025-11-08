@@ -1,0 +1,16 @@
+{
+  "app": {"name": "কোট্রেনার", "tagline": "আপনার ব্যক্তিগত ফিটনেস সঙ্গী"},
+  "onboarding": {"welcome": "কোট্রেনারে স্বাগতম", "subtitle": "আপনার ব্যক্তিগত ফিটনেস সঙ্গী", "description": "যাচাইকৃত প্রশিক্ষকদের সাথে সংযুক্ত হন, আপনার পুষ্টি ট্র্যাক করুন এবং একটি ফিটনেস সম্প্রদায়ে যোগ দিন।", "tagline": "এটি সবকিছু আপনাকে আরও ভালোভাবে জানা থেকে শুরু হয়���", "selectLanguage": "আপনার ভাষা নির্বাচন করুন", "getStarted": "শুরু করুন", "tryDemoClient": "ডেমো চেষ্টা করুন (ক্লায়েন্ট)", "tryDemoTrainer": "ডেমো চেষ্টা করুন (প্রশিক্ষক)"},
+  "auth": {"username": "ব্যবহারকারী নাম", "fullName": "সম্পূর্ণ নাম", "email": "ইমেইল", "password": "পাসওয়ার্ড", "confirmPassword": "পাসওয়ার্ড নিশ্চিত করুন", "gender": "লিঙ্গ", "male": "পুরুষ", "female": "মহিলা", "other": "অন্যান্য", "height": "উচ্চতা (সেমি)", "weight": "ওজন (কেজি)", "signUp": "সাইন আপ করুন", "signIn": "সাইন ইন করুন", "logout": "লগ আউট করুন", "continueBtn": "অবিরত রাখুন"},
+  "roles": {"selectRole": "আপনার ভূমিকা নির্বাচন করুন", "client": "আমি একজন ক্লায়েন্ট", "trainer": "আমি একজন প্রশিক্ষক", "clientDesc": "ফিটনেস নির্দেশনা খুঁজছেন", "trainerDesc": "ফিটনেস প্রশিক্ষণ সেবা প্রদান করুন"},
+  "home": {"todaysStats": "আজকের পরিসংখ্যান", "steps": "পদক্ষেপ", "calories": "পোড়ানো ক্যালোরি", "water": "জল গ্রহণ", "editTargets": "লক্ষ্য সম্পাদন করুন", "explore": "প্রশিক্ষকদের অন্বেষণ করুন", "chat": "বার্তা", "nutrition": "পুষ্টি", "videos": "ভিডিও", "community": "সম্প্রদায়"},
+  "profile": {"myProfile": "আমার প্রোফাইল", "followers": "ফলোয়ার", "following": "অনুসরণ করছি", "editProfile": "প্রোফাইল সম্পাদন করুন", "settings": "সেটিংস", "language": "ভাষা", "changeLanguage": "ভাষা পরিবর্তন করুন", "logout": "লগ আউট করুন", "referral": "একজন বন্ধুকে রেফার করুন", "trainerReferral": "একজন প্রশিক্ষককে র��ফার করুন", "becomeTrainer": "প্রশিক্ষক হন", "save": "সংরক্ষণ করুন", "cancel": "বাতিল করুন"},
+  "trainer": {"profile": "প্রশিক্ষক প্রোফাইল", "experience": "অভিজ্ঞতার বছর", "specialties": "বিশেষত্ব", "bookSession": "সেশন বুক করুন", "verified": "যাচাইকৃত প্রশিক্ষক"},
+  "discover": {"title": "প্রশিক্ষকদের আবিষ্কার করুন", "gym": "জিম", "zumba": "জুম্বা", "crossfit": "ক্রসফিট", "boxing": "বক্সিং", "yoga": "যোগ"},
+  "meals": {"nutrition": "পুষ্টি", "today": "আজ", "calories": "ক্যালোরি", "protein": "প্রোটিন", "carbs": "কার্বস", "fat": "চর্বি", "addMeal": "খাবার যোগ করুন", "editGoals": "লক্ষ্য সম্পাদন করুন"},
+  "messages": {"title": "বার্তা", "chat": "চ্যাট", "noMessages": "এখনো কোন বার্তা নেই"},
+  "feed": {"title": "সম্প্রদায় ফিড", "post": "পোস্ট করুন", "like": "পছন্দ", "comment": "মন্তব্য", "share": "শেয়ার করুন"},
+  "video": {"videoCall": "ভিডিও কল", "startCall": "কল শুরু করুন", "endCall": "কল শেষ করুন", "duration": "স্থিতিকাল"},
+  "subscription": {"title": "প্রিমিয়ামে আপগ্রেড করুন", "unlimitedChat": "সীমাহীন চ্যাট", "unlimitedVideos": "সীমাহীন ভিডিও কল", "subscribe": "সাবস্ক্রাইব করুন", "perMonth": "প্রতি মাসে", "perThreeMonths": "3 মাসের জন্য"},
+  "common": {"loading": "লোড হচ্ছে...", "error": "ত্রুটি", "success": "সাফল্য", "confirm": "নিশ্চিত করুন", "delete": "মুছুন", "edit": "সম্পাদন করুন", "close": "বন্ধ করুন", "copy": "কপি করুন", "share": "শেয়ার করুন", "back": "পিছনে", "next": "পরবর্তী"}
+}
