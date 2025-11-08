@@ -1,0 +1,16 @@
+{
+  "app": {"name": "କୋଟ୍ରେନର", "tagline": "ଆପଣଙ୍କ ବ୍ୟକ୍ତିଗତ ଫିଟନେସ ସଙ୍ଗୀ"},
+  "onboarding": {"welcome": "କୋଟ୍ରେନରକୁ ସ୍ୱାଗତ", "subtitle": "ଆପଣଙ୍କ ବ୍ୟକ୍ତିଗତ ଫିଟନେସ ସଙ୍ଗୀ", "description": "ଯାଞ୍ଚିତ ଅଭିଯୋଜକଙ୍କ ସାଥେ ସଂଯୋଗ କରନ୍ତୁ, ଆପଣଙ୍କ ପୁଷ୍ଟିକୁ ଟ୍ରାକ କରନ୍ତୁ ଏବଂ ଏକ ଫିଟନେସ ସମ୍ପ୍ରଦାୟରେ ଯୋଗ ଦିন।", "tagline": "ଏହା ସବୁ ଆପଣଙ୍କୁ ଉତ୍ତମ ଭାବରେ ଜାଣିବା ଠାରୁ ଶୁରୁ ହୁଏ।", "selectLanguage": "ଆପଣଙ୍କ ଭାଷା ବାଛ���୍ତୁ", "getStarted": "ଆରମ୍ଭ କରନ୍ତୁ", "tryDemoClient": "ଡେମୋ ଚେଷ୍ଟା କରନ୍ତୁ (ଦୋକାନୀ)", "tryDemoTrainer": "ଡେମୋ ଚେଷ୍ଟା କରନ୍ତୁ (ଅଭିଯୋଜକ)"},
+  "auth": {"username": "ବ୍ୟବହାରକାରୀ ନାମ", "fullName": "ସମ୍ପୂର୍ଣ୍ଣ ନାମ", "email": "ଇମେଲ", "password": "ପାସୱୋର୍ଡ", "confirmPassword": "ପାସୱୋର୍ଡ ନିଶ୍ଚିତ କରନ୍ତୁ", "gender": "ଲିଙ୍ଗ", "male": "ପୁରୁଷ", "female": "ମହିଳା", "other": "ଅନ୍ୟାନ୍ୟ", "height": "ଉଚ୍ଚତା (ସେମି)", "weight": "ଓଜନ (କେଜି)", "signUp": "ସାଇନ ଅପ କରନ୍ତୁ", "signIn": "ସାଇନ ଇନ କରନ୍ତୁ", "logout": "ଲଗଆଉଟ କରନ୍ତୁ", "continueBtn": "ଜାରି ରାଖନ୍ତୁ"},
+  "roles": {"selectRole": "ଆପଣଙ୍କ ଭୂମିକା ବାଛନ୍ତୁ", "client": "ମୁଁ ଏକ ଦୋକାନୀ", "trainer": "ମୁଁ ଏକ ଅଭିଯୋଜକ", "clientDesc": "ଫିଟନେସ ମାର୍ଗଦର୍ଶନ ଖୋଜୁଛି", "trainerDesc": "ଫି��ନେସ ତାଲିମ ସେବା ପ୍ରଦାନ କରନ୍ତୁ"},
+  "home": {"todaysStats": "ଆଜକର ପରିସଂଖ୍ୟାନ", "steps": "ଧାଡ଼ି", "calories": "ଧରାଯାଇଥିବା କ୍ୟାଲୋରୀ", "water": "ଜଳ ପାନ", "editTargets": "ଲକ୍ଷ୍ୟ ସମ୍ପାଦନ କରନ୍ତୁ", "explore": "ଅଭିଯୋଜକଙ୍କୁ ଅନ୍ବେଷଣ କରନ୍ତୁ", "chat": "ବାର୍ତ୍ତା", "nutrition": "ପୁଷ୍ଟି", "videos": "ଭିଡିଓ", "community": "ସମ୍ପ୍ରଦାୟ"},
+  "profile": {"myProfile": "ମୋ ପ୍ରୋଫାଇଲ", "followers": "ଅନୁସରଣକାରୀ", "following": "ଅନୁସରଣ କରୁଛି", "editProfile": "ପ୍ରୋଫାଇଲ ସମ୍ପାଦନ କରନ୍ତୁ", "settings": "ସେଟିଂସ", "language": "ଭାଷା", "changeLanguage": "ଭାଷା ପରିବର୍ତନ କରନ୍ତୁ", "logout": "ଲଗଆଉଟ କରନ୍ତୁ", "referral": "ଏକ ବନ୍ଧୁକୁ ରେଫର କରନ୍ତୁ", "trainerReferral": "ଏକ ଅଭିଯୋଜକୁ ରେଫର କରନ୍ତୁ", "becomeTrainer": "ଅଭିଯୋଜକ ହୋଇଯାଅ", "save": "ସଂରକ୍ଷଣ କରନ୍ତୁ", "cancel": "ବାତିଲ କରନ୍ତୁ"},
+  "trainer": {"profile": "ଅଭିଯୋଜକ ପ୍ରୋଫାଇଲ", "experience": "ଅଭିଜ୍ଞତାର ବର୍ଷ", "specialties": "ବିଶେଷତ୍ବ", "bookSession": "ସେସନ ବୁକ କରନ୍ତୁ", "verified": "ଯାଞ୍ଚିତ ଅଭିଯୋଜକ"},
+  "discover": {"title": "ଅଭିଯୋଜକଙ୍କୁ ଆବିଷ୍କାର କରନ୍ତୁ", "gym": "ଜିମ", "zumba": "ଜୁମ୍ବା", "crossfit": "କ୍ରସଫିଟ", "boxing": "ମୁକ୍କେବାଜି", "yoga": "ଯୋଗ"},
+  "meals": {"nutrition": "ପୁଷ୍ଟି", "today": "ଆଜ", "calories": "ଖଦ୍ଦରଗୁଟି", "protein": "ପ୍ରୋଟିନ", "carbs": "କାର୍ବ୍ସ", "fat": "ଚର୍ବି", "addMeal": "ଖାବାର ଯୋଗ କରନ୍ତୁ", "editGoals": "ଲକ୍ଷ୍ୟ ସମ୍ପାଦନ କରନ୍ତୁ"},
+  "messages": {"title": "ବାର୍ତ୍ତା", "chat": "ଚ୍ୟାଟ", "noMessages": "ଏଖନ କୌଣସି ବାର୍ତ୍ତା ନାହିଁ"},
+  "feed": {"title": "ସମ୍ପ୍ରଦାୟ ଫିଡ", "post": "ଲେଖିବେ", "like": "ପସନ୍ଦ", "comment": "ମନ୍ତବ୍ୟ", "share": "ଅଂଶୀଦାରୀ"},
+  "video": {"videoCall": "ଭିଡିଓ କଲ", "startCall": "କଲ ଆରମ୍ଭ କରନ୍ତୁ", "endCall": "କଲ ଶେଷ କରନ୍ତୁ", "duration": "ଅବଧି"},
+  "subscription": {"title": "ପ୍ରିମିୟମକୁ ଅପଗ୍ରେଡ କରନ୍ତୁ", "unlimitedChat": "ସୀମାହୀନ ଚ୍ୟାଟ", "unlimitedVideos": "ସୀମାହୀନ ଭିଡିଓ କଲ", "subscribe": "ସାଇନ ଅପ କରନ୍ତୁ", "perMonth": "ମାସିକ", "perThreeMonths": "3 ମାସ ପାଇଁ"},
+  "common": {"loading": "ଲୋଡ ହେଉଛି...", "error": "ତ୍ରୁଟି", "success": "ସଫଳତା", "confirm": "ନିଶ୍ଚିତ କରନ୍ତୁ", "delete": "ଡିଲିଟ କରନ୍ତୁ", "edit": "ସମ୍ପାଦନ କରନ୍ତୁ", "close": "ବନ୍ଦ କରନ୍ତୁ", "copy": "ନକଲ କରନ୍ତୁ", "share": "ଅଂଶୀଦାରୀ", "back": "ପଛନେ", "next": "ପରବର୍ତୀ"}
+}
