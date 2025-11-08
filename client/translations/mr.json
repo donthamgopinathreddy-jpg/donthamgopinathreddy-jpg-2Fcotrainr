@@ -1,0 +1,16 @@
+{
+  "app": {"name": "कोट्रेनर", "tagline": "आपला व्यक्तिगत फिटनेस सहयोगी"},
+  "onboarding": {"welcome": "कोट्रेनरमध्ये आपले स्वागत आहे", "subtitle": "आपला व्यक्तिगत फिटनेस सहयोगी", "description": "सत्यापित प्रशिक्षकांशी जोडा, आपल्या पोषणाचे ट्रॅक करा आणि फिटनेस समुदायामध्ये सामील व्हा।", "tagline": "हे सर्व आपल्याला अधिक चांगल्या प्रकारे जाणून घेण्या��ासून सुरू होते।", "selectLanguage": "आपली भाषा निवडा", "getStarted": "सुरू करा", "tryDemoClient": "डेमो वापरून पहा (क्लायंट)", "tryDemoTrainer": "डेमो वापरून पहा (प्रशिक्षक)"},
+  "auth": {"username": "वापरकर्ता नाव", "fullName": "पूर्ण नाव", "email": "ईमेल", "password": "संकेतशब्द", "confirmPassword": "संकेतशब्द पुष्टी करा", "gender": "लिंग", "male": "पुरुष", "female": "स्त्री", "other": "इतर", "height": "उंची (सेमी)", "weight": "वजन (किग्रा)", "signUp": "साइन अप करा", "signIn": "साइन इन करा", "logout": "लॉग आउट करा", "continueBtn": "सुरू ठेवा"},
+  "roles": {"selectRole": "आपली भूमिका निवडा", "client": "मी एक क्लायंट आहे", "trainer": "मी एक प्रशिक्षक आहे", "clientDesc": "फिटनेस मार्गदर्शन शोधत आहे", "trainerDesc": "फिटनेस प्रशिक्षण सेवा प्रदान करा"},
+  "home": {"todaysStats": "आजचे आकडेवारी", "steps": "पावले", "calories": "जळलेली कॅलोरी", "water": "पानी सेवन", "editTargets": "लक्ष्य संपादित करा", "explore": "प्रशिक्षकांचा शोध घ्या", "chat": "संदेश", "nutrition": "पोषण", "videos": "व्हिडिओज", "community": "समुदाय"},
+  "profile": {"myProfile": "माझी प्रोफाइल", "followers": "अनुयायी", "following": "अनुसरण करत आहे", "editProfile": "प्रोफाइल संपादित करा", "settings": "सेटिंग्ज", "language": "भाषा", "changeLanguage": "भाषा बदला", "logout": "लॉग आउट करा", "referral": "मित्राचा संदर्भ द्या", "trainerReferral": "प्रशिक्षकाचा संदर्भ द्या", "becomeTrainer": "प्रशिक्षक व्हा", "save": "जतन करा", "cancel": "रद्द करा"},
+  "trainer": {"profile": "प्रशिक्षक प्रोफाइल", "experience": "अनुभवाचे वर्ष", "specialties": "विशेषज्ञता", "bookSession": "सेशन बुक करा", "verified": "सत्यापित प्रशिक्षक"},
+  "discover": {"title": "प्रशिक्षकांचा शोध घ्या", "gym": "जिम", "zumba": "जुम्बा", "crossfit": "क्रॉसफिट", "boxing": "बॉक्सिंग", "yoga": "योग"},
+  "meals": {"nutrition": "पोषण", "today": "आज", "calories": "कॅलोरी", "protein": "प्रोटीन", "carbs": "कार्ब्स", "fat": "फॅट", "addMeal": "भोजन जोडा", "editGoals": "लक्ष्य संपादित करा"},
+  "messages": {"title": "संदेश", "chat": "चॅट", "noMessages": "अजून कोणतेही संदेश नाहीत"},
+  "feed": {"title": "समुदाय फीड", "post": "पोस्ट करा", "like": "पसंद करा", "comment": "टिप्पणी करा", "share": "शेअर करा"},
+  "video": {"videoCall": "व्हिडिओ कॉल", "startCall": "कॉल सुरू करा", "endCall": "कॉल समाप्त करा", "duration": "कालावधी"},
+  "subscription": {"title": "प्रीमियमवर अपग्रेड करा", "unlimitedChat": "मर्यादित चॅट", "unlimitedVideos": "मर्यादित व्हिडिओ कॉल्स", "subscribe": "सदस्यता घ्या", "perMonth": "प्रति महिना", "perThreeMonths": "3 महिन्यांसाठी"},
+  "common": {"loading": "लोड होत आहे...", "error": "त्रुटी", "success": "यश", "confirm": "पुष्टी करा", "delete": "हटवा", "edit": "संपादित करा", "close": "बंद करा", "copy": "कॉपी करा", "share": "शेअर करा", "back": "मागे", "next": "पुढील"}
+}
