@@ -100,9 +100,11 @@ export const useLanguage = () => {
 
 // Simple translation helper
 export const useTranslation = () => {
-  const { translations, language } = useLanguage();
+  const context = useLanguage();
+  const { translations, language } = context;
 
-  const t = (key: string, fallback?: string) => {
+  // Create t function that explicitly depends on both language and translations
+  const t = React.useCallback((key: string, fallback?: string) => {
     const keys = key.split(".");
     let value: any = translations;
 
@@ -111,8 +113,7 @@ export const useTranslation = () => {
     }
 
     return typeof value === "string" ? value : fallback || key;
-  };
+  }, [language, translations]); // Explicit dependency on language and translations
 
-  // Return language in dependency array so components re-render when it changes
   return { t, language };
 };
