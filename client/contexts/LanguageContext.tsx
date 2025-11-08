@@ -6,7 +6,7 @@ const INDIAN_LANGUAGES: { code: LanguageCode; name: string }[] = [
   { code: "en", name: "English" },
   { code: "hi", name: "हिन्दी (Hindi)" },
   { code: "ta", name: "தமிழ் (Tamil)" },
-  { code: "te", name: "తెలుగు (Telugu)" },
+  { code: "te", name: "���ెలుగు (Telugu)" },
   { code: "kn", name: "ಕನ್ನಡ (Kannada)" },
   { code: "bn", name: "বাংলা (Bengali)" },
   { code: "mr", name: "मराठी (Marathi)" },
@@ -104,7 +104,7 @@ export const useTranslation = () => {
   const { translations, language } = context;
 
   // Create t function that explicitly depends on both language and translations
-  const t = React.useCallback((key: string, fallback?: string) => {
+  const t = useCallback((key: string, fallback?: string) => {
     const keys = key.split(".");
     let value: any = translations;
 
