@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera, CheckCircle, Share2, Copy, Check } from "lucide-react";
+import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera, CheckCircle, Share2, Copy, Check, Globe } from "lucide-react";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 
 interface UserType {
