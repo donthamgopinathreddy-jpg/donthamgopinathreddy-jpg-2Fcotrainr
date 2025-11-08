@@ -1,0 +1,131 @@
+{
+  "app": {
+    "name": "कोट्रेनर",
+    "tagline": "आपका व्यक्तिगत फिटनेस साथी"
+  },
+  "onboarding": {
+    "welcome": "कोट्रेनर में आपका स्वागत है",
+    "subtitle": "आपका व्यक्तिगत फिटनेस साथी",
+    "description": "सत्यापित प्रशिक्षकों के साथ जुड़ें, अपने पोषण को ट्रैक करें और एक फिटनेस समुदाय में शामिल हों।",
+    "tagline": "यह सब आपको बेहतर जानने से शुरू होता है।",
+    "selectLanguage": "अपनी भाषा चुनें",
+    "getStarted": "��ुरुआत करें",
+    "tryDemoClient": "डेमो आजमाएं (क्लाइंट)",
+    "tryDemoTrainer": "डेमो आजमाएं (प्रशिक्षक)"
+  },
+  "auth": {
+    "username": "उपयोगकर्ता नाम",
+    "fullName": "पूरा नाम",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "gender": "लिंग",
+    "male": "पुरुष",
+    "female": "महिला",
+    "other": "अन्य",
+    "height": "ऊंचाई (सेमी)",
+    "weight": "वजन (किग्रा)",
+    "signUp": "साइन अप करें",
+    "signIn": "साइन इन करें",
+    "logout": "लॉग आउट करें",
+    "continueBtn": "जारी रखें"
+  },
+  "roles": {
+    "selectRole": "अपनी भूमिका चुनें",
+    "client": "मैं एक क्लाइंट हूं",
+    "trainer": "मैं एक प्रशिक्षक हूं",
+    "clientDesc": "फिटनेस मार्गदर्शन की तलाश में",
+    "trainerDesc": "फिटनेस प्रशिक्षण सेवाएं प्रदान करें"
+  },
+  "home": {
+    "todaysStats": "आज के आंकड़े",
+    "steps": "कदम",
+    "calories": "बर्न किए गए कैलोरी",
+    "water": "पानी का सेवन",
+    "editTargets": "लक्ष्य संपादित करें",
+    "explore": "प्रशिक्षकों को एक्सप्लोर करें",
+    "chat": "संदेश",
+    "nutrition": "पोषण",
+    "videos": "वीडियो",
+    "community": "समुदाय"
+  },
+  "profile": {
+    "myProfile": "मेरी प्रोफाइल",
+    "followers": "फॉलोवर्स",
+    "following": "फॉलो कर रहे हैं",
+    "editProfile": "प्रोफाइल संपादित करें",
+    "settings": "सेटिंग्स",
+    "language": "भाषा",
+    "changeLanguage": "भाषा बदलें",
+    "logout": "लॉग आउट करें",
+    "referral": "एक दोस्त को रेफर करें",
+    "trainerReferral": "एक प्रशिक्षक को रेफर ��रें",
+    "becomeTrainer": "एक प्रशिक्षक बनें",
+    "save": "सहेजें",
+    "cancel": "रद्द करें"
+  },
+  "trainer": {
+    "profile": "प्रशिक्षक प्रोफाइल",
+    "experience": "अनुभव के वर्ष",
+    "specialties": "विशेषताएं",
+    "bookSession": "सत्र बुक करें",
+    "verified": "सत्यापित प्रशिक्षक"
+  },
+  "discover": {
+    "title": "प्रशिक्षकों को खोजें",
+    "gym": "जिम",
+    "zumba": "ज़ुम्बा",
+    "crossfit": "क्रॉसफिट",
+    "boxing": "बॉक्सिंग",
+    "yoga": "योग"
+  },
+  "meals": {
+    "nutrition": "पोषण",
+    "today": "आज",
+    "calories": "कैलोरी",
+    "protein": "प्रोटीन",
+    "carbs": "कार्ब्स",
+    "fat": "वसा",
+    "addMeal": "भोजन जोड़ें",
+    "editGoals": "लक्ष्य संपादित करें"
+  },
+  "messages": {
+    "title": "संदेश",
+    "chat": "चैट",
+    "noMessages": "अभी को��� संदेश नहीं"
+  },
+  "feed": {
+    "title": "समुदाय फीड",
+    "post": "पोस्ट करें",
+    "like": "पसंद करें",
+    "comment": "टिप्पणी करें",
+    "share": "साझा करें"
+  },
+  "video": {
+    "videoCall": "वीडियो कॉल",
+    "startCall": "कॉल शुरू करें",
+    "endCall": "कॉल समाप्त करें",
+    "duration": "अवधि"
+  },
+  "subscription": {
+    "title": "प्रीमियम में अपग्रेड करें",
+    "unlimitedChat": "असीमित चैट",
+    "unlimitedVideos": "असीमित वीडियो कॉल",
+    "subscribe": "सदस्यता लें",
+    "perMonth": "प्रति माह",
+    "perThreeMonths": "3 महीने के लिए"
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "confirm": "पुष्टि करें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "close": "बंद करें",
+    "copy": "क��पी करें",
+    "share": "साझा करें",
+    "back": "वापस",
+    "next": "आगे"
+  }
+}
