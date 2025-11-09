@@ -26,7 +26,6 @@ interface UserType {
 export default function Profile() {
   const navigate = useNavigate();
   const { userProfile, signOut } = useAuth();
-  const { language, setLanguage, languages } = useLanguage();
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
