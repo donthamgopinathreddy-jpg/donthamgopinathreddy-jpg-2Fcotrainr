@@ -1,8 +1,7 @@
 import { useState, useRef } from "react";
-import { ChevronDown, MapPin, Star, Lock, Search, Globe } from "lucide-react";
+import { ChevronDown, MapPin, Star, Lock, Search } from "lucide-react";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
-import { useLanguage, useTranslation } from "@/contexts/LanguageContext";
 import { useTrainers } from "@/hooks/useTrainers";
 
 type Tab = "trainers" | "nutritionists";
