@@ -159,14 +159,26 @@ export default function Profile() {
     }
   };
 
-  const handleProfilePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
+        const dataUrl = event.target?.result as string;
         setUser((prev) => ({
           ...prev,
-          profilePhoto: event.target?.result as string,
+          profilePhoto: dataUrl,
         }));
+
+        try {
+          // Save profile picture to database
+          await updateProfile({
+            profile_picture_url: dataUrl,
+          });
+          toast.success("✓ Profile photo updated!");
+        } catch (error) {
+          console.error("Error uploading profile photo:", error);
+          toast.error("Failed to upload profile photo");
+        }
       };
       reader.readAsDataURL(e.target.files[0]);
     }
