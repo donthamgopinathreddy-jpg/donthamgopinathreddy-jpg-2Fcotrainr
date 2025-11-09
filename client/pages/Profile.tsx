@@ -198,8 +198,8 @@ export default function Profile() {
         <div className="bg-gradient-to-br from-blue-100 to-cyan-100 px-4 sm:px-6 py-12 text-center">
           <div className="relative w-24 h-24 mx-auto mb-4 group">
             <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
-              {user.profilePhoto ? (
-                <img src={user.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+              {user.profilePhoto || userProfile?.profile_picture_url ? (
+                <img src={user.profilePhoto || userProfile?.profile_picture_url} alt="Profile" className="w-full h-full object-cover" />
               ) : (
                 <User className="w-12 h-12 text-gray-600" />
               )}
