@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
-import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase, Settings, Activity, Globe } from "lucide-react";
-import { useLanguage, useTranslation } from "@/contexts/LanguageContext";
+import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase, Settings, Activity } from "lucide-react";
 import { toast } from "sonner";
 
 const MOTIVATIONAL_QUOTES = [
