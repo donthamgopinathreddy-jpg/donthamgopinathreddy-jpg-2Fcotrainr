@@ -191,44 +191,9 @@ export default function Home() {
           </div>
 
           {/* Welcome Text */}
-          <div className="pb-2 relative">
-            {/* Language Selector Button */}
-            <button
-              onClick={() => setShowLanguageSelector(!showLanguageSelector)}
-              className="absolute -top-8 right-0 flex items-center gap-1 px-2 py-1 bg-white rounded-lg text-xs font-medium text-gray-900 hover:bg-gray-100 transition-all border border-gray-200"
-              title="Change Language"
-            >
-              <Globe className="w-4 h-4" />
-              <span>{language.toUpperCase()}</span>
-            </button>
-
-            {/* Language Dropdown */}
-            {showLanguageSelector && (
-              <div className="absolute -top-1 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 w-52 max-h-64 overflow-y-auto mt-10">
-                <div className="p-2">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        setLanguage(lang.code);
-                        setShowLanguageSelector(false);
-                        toast.success(`Language changed to ${lang.name}`);
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                        language === lang.code
-                          ? "bg-blue-100 text-blue-900 font-medium"
-                          : "text-gray-900 hover:bg-gray-100"
-                      }`}
-                    >
-                      {lang.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <h1 className="text-3xl font-bold text-gray-900">{t("onboarding.welcome", "Welcome Back")}</h1>
-            <p className="text-gray-600 text-sm">{t("onboarding.tagline")}</p>
+          <div className="pb-2">
+            <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+            <p className="text-gray-600 text-sm">Ready to train?</p>
           </div>
         </div>
       </div>
