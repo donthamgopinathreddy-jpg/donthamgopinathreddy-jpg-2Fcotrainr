@@ -16,6 +16,8 @@ const MOTIVATIONAL_QUOTES = [
 
 export default function Home() {
   const navigate = useNavigate();
+  const { userProfile, updateProfile } = useAuth();
+
   const [coverImage, setCoverImage] = useState(
     "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop"
   );
@@ -23,9 +25,21 @@ export default function Home() {
   const [showTargetsModal, setShowTargetsModal] = useState(false);
   const [stepsTarget, setStepsTarget] = useState(10000);
   const [editStepsTarget, setEditStepsTarget] = useState(stepsTarget);
+  const [stepsCompleted, setStepsCompleted] = useState(0);
+  const [waterConsumed, setWaterConsumed] = useState(0);
   const [pendingMeetings, setPendingMeetings] = useState([
     { id: "MEET123", title: "Group Training", trainer: "Priya Singh", time: "3:00 PM", date: "Today" },
   ]);
+
+  // Sync user data from profile
+  useEffect(() => {
+    if (userProfile) {
+      if (userProfile.weight_kg) {
+        setStepsCompleted(parseInt(userProfile.bio?.split("|")[0] || "0") || 0);
+        setWaterConsumed(parseFloat(userProfile.bio?.split("|")[1] || "0") || 0);
+      }
+    }
+  }, [userProfile]);
 
   const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
