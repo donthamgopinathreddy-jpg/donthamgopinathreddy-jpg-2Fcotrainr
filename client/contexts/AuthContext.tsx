@@ -145,31 +145,41 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (data.user) {
         setUser(data.user);
 
-        // Create user profile in users table asynchronously
-        // Don't wait for this to complete to avoid blocking signup
-        supabase.from("users").insert({
-          id: data.user.id,
-          email,
-          username: userData.username,
-          full_name: userData.full_name,
-          role: userData.role,
-          gender: userData.gender,
-          weight_kg: userData.weight_kg,
-          height_cm: userData.height_cm,
-        }).then(({ error: profileError }) => {
+        // Create user profile in users table - WAIT for this to complete
+        try {
+          const { error: profileError } = await supabase.from("users").insert({
+            id: data.user.id,
+            email,
+            username: userData.username,
+            full_name: userData.full_name,
+            role: userData.role,
+            gender: userData.gender || null,
+            weight_kg: userData.weight_kg || null,
+            height_cm: userData.height_cm || null,
+          });
+
           if (profileError) {
             console.error("Profile creation error:", profileError);
-          } else if (userData.role === "trainer") {
-            // Create trainer profile
-            supabase.from("trainers").insert({
-              id: data.user.id,
-            }).catch((err) => console.error("Trainer profile error:", err));
           }
-        }).catch((err) => {
-          console.error("Profile insert catch error:", err);
-        });
 
-        await new Promise(resolve => setTimeout(resolve, 1000));
+          // Create trainer profile if role is trainer
+          if (userData.role === "trainer") {
+            const { error: trainerError } = await supabase.from("trainers").insert({
+              id: data.user.id,
+              years_of_experience: 0,
+            });
+            if (trainerError) {
+              console.error("Trainer profile error:", trainerError);
+            }
+          }
+        } catch (err) {
+          console.error("Profile creation error:", err);
+        }
+
+        // Wait a bit for the database to process
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Fetch the created profile
         await fetchUserProfile(data.user.id);
       }
     } catch (error: any) {
