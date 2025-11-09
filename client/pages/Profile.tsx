@@ -389,45 +389,6 @@ export default function Profile() {
               <span className="font-medium text-gray-900">Edit Profile</span>
             </button>
 
-            {/* Language Selector Button */}
-            <div className="relative">
-              <button
-                onClick={() => setShowLanguageSelector(!showLanguageSelector)}
-                className="w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors"
-              >
-                <Globe className="w-5 h-5 text-purple-600" />
-                <span className="font-medium text-gray-900">Language</span>
-                <span className="ml-auto text-sm font-medium text-muted-foreground">
-                  {language.toUpperCase()}
-                </span>
-              </button>
-
-              {/* Language Dropdown */}
-              {showLanguageSelector && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-border rounded-lg shadow-lg z-50 overflow-y-auto max-h-72">
-                  <div className="p-2">
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => {
-                          setLanguage(lang.code);
-                          setShowLanguageSelector(false);
-                          toast.success(`Language changed to ${lang.name}`);
-                        }}
-                        className={`w-full text-left px-4 py-2 rounded-md text-sm transition-colors ${
-                          language === lang.code
-                            ? "bg-purple-100 text-purple-900 font-medium"
-                            : "text-gray-900 hover:bg-gray-100"
-                        }`}
-                      >
-                        {lang.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
             <button
               onClick={async () => {
                 try {
@@ -593,7 +554,7 @@ export default function Profile() {
                         <span>20% OFF first month</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-green-600 mt-0.5 flex-shrink-0">✓</span>
+                        <span className="text-green-600 mt-0.5 flex-shrink-0">��</span>
                         <span>2 free trainer sessions</span>
                       </li>
                     </ul>
