@@ -43,7 +43,6 @@ export default function Profile() {
   const [showTrainerReferralModal, setShowTrainerReferralModal] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
   const [trainerReferralCopied, setTrainerReferralCopied] = useState(false);
-  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   const [editForm, setEditForm] = useState({
     name: user.name,
     gender: user.gender,
