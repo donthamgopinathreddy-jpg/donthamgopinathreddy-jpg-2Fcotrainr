@@ -43,11 +43,12 @@ export default function Profile() {
   const [showTrainerReferralModal, setShowTrainerReferralModal] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
   const [trainerReferralCopied, setTrainerReferralCopied] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [editForm, setEditForm] = useState({
-    name: user.name,
-    gender: user.gender,
-    height: user.height,
-    weight: user.weight,
+    name: userProfile?.full_name || "User",
+    gender: userProfile?.gender || "Not specified",
+    height: userProfile?.height_cm || 170,
+    weight: userProfile?.weight_kg || 70,
   });
 
   // Generate referral link
@@ -667,7 +668,7 @@ export default function Profile() {
                         <span>Onboarding support</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-blue-600 mt-0.5 flex-shrink-0">��</span>
+                        <span className="text-blue-600 mt-0.5 flex-shrink-0">✓</span>
                         <span>50% platform fee waived (3 months)</span>
                       </li>
                     </ul>
