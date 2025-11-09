@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera, CheckCircle, Share2, Copy, Check, Loader } from "lucide-react";
 import Logo from "@/components/Logo";
