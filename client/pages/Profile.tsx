@@ -51,6 +51,29 @@ export default function Profile() {
     weight: userProfile?.weight_kg || 70,
   });
 
+  // Sync state with userProfile whenever it changes
+  useEffect(() => {
+    if (userProfile) {
+      const newUserState = {
+        role: userProfile.role || "client",
+        name: userProfile.full_name || "User",
+        gender: userProfile.gender || "Not specified",
+        height: userProfile.height_cm || 170,
+        weight: userProfile.weight_kg || 70,
+        isFollowing: false,
+        followers: 0,
+        following: 0,
+      };
+      setUser(newUserState);
+      setEditForm({
+        name: userProfile.full_name || "User",
+        gender: userProfile.gender || "Not specified",
+        height: userProfile.height_cm || 170,
+        weight: userProfile.weight_kg || 70,
+      });
+    }
+  }, [userProfile]);
+
   // Generate referral link
   const referralCode = userProfile?.id?.substring(0, 8).toUpperCase() || "REFER";
   const referralLink = `${window.location.origin}?ref=${referralCode}`;
