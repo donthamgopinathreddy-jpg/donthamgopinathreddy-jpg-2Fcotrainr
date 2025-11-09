@@ -63,18 +63,16 @@ export default function Home() {
 
   // Mock data
   const quote = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
-  const userWeight = 75; // kg - would come from user profile
-  const userHeight = 175; // cm - would come from user profile
+  const userWeight = userProfile?.weight_kg || 75;
+  const userHeight = userProfile?.height_cm || 175;
 
   // Calculate water goal based on weight: roughly 30ml per kg
   const waterGoal = Math.round((userWeight * 30) / 1000 * 10) / 10;
 
   const stepsGoal = stepsTarget;
-  const stepsCompleted = 8420;
 
   // Calculate calories burned from steps (~0.05 cal per step)
   const caloriesBurned = Math.round(stepsCompleted * 0.05);
-  const waterConsumed = 2.2;
 
   // Calculate BMI
   const heightInMeters = userHeight / 100;
