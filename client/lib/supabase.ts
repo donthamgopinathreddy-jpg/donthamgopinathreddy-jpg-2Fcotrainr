@@ -9,71 +9,31 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-// Custom storage adapter for Capacitor
-class CapacitorStorage {
-  async getItem(key: string): Promise<string | null> {
-    try {
-      // Try Capacitor storage first (native)
-      if (typeof window !== "undefined" && (window as any).Capacitor) {
-        const { Preferences } = (window as any).Capacitor.Plugins;
-        if (Preferences) {
-          const { value } = await Preferences.get({ key });
-          return value || null;
-        }
-      }
-      // Fallback to localStorage for web
-      return localStorage.getItem(key);
-    } catch (error) {
-      console.error("Storage get error:", error);
-      return localStorage.getItem(key);
-    }
-  }
+// For Capacitor native apps, we need to use Preferences instead of localStorage
+let storageImpl: any = localStorage;
 
-  async setItem(key: string, value: string): Promise<void> {
-    try {
-      // Try Capacitor storage first (native)
-      if (typeof window !== "undefined" && (window as any).Capacitor) {
-        const { Preferences } = (window as any).Capacitor.Plugins;
-        if (Preferences) {
-          await Preferences.set({ key, value });
-          return;
-        }
-      }
-      // Fallback to localStorage for web
-      localStorage.setItem(key, value);
-    } catch (error) {
-      console.error("Storage set error:", error);
-      localStorage.setItem(key, value);
+// Check if we're in a Capacitor environment
+if (typeof window !== "undefined" && (window as any).Capacitor) {
+  try {
+    const { Preferences } = (window as any).Capacitor.Plugins;
+    if (Preferences) {
+      storageImpl = {
+        getItem: (key: string) => Preferences.get({ key }).then((result: any) => result.value),
+        setItem: (key: string, value: string) => Preferences.set({ key, value }),
+        removeItem: (key: string) => Preferences.remove({ key }),
+      };
     }
-  }
-
-  async removeItem(key: string): Promise<void> {
-    try {
-      // Try Capacitor storage first (native)
-      if (typeof window !== "undefined" && (window as any).Capacitor) {
-        const { Preferences } = (window as any).Capacitor.Plugins;
-        if (Preferences) {
-          await Preferences.remove({ key });
-          return;
-        }
-      }
-      // Fallback to localStorage for web
-      localStorage.removeItem(key);
-    } catch (error) {
-      console.error("Storage remove error:", error);
-      localStorage.removeItem(key);
-    }
+  } catch (error) {
+    console.warn("Could not initialize Capacitor storage, falling back to localStorage");
   }
 }
 
-const storage = new CapacitorStorage();
-
-// Create client with proper storage for both web and native
+// Create client with options to handle requests better
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    storage: storage as any,
+    storage: storageImpl,
   },
   global: {
     headers: {
