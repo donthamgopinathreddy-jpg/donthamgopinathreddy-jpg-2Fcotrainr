@@ -203,7 +203,7 @@ export default function Home() {
         {/* Progress Bars Card */}
         <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-foreground">{t("home.todaysStats")}</h2>
+            <h2 className="text-lg font-bold text-foreground">Today's Stats</h2>
             <button
               onClick={() => {
                 setEditStepsTarget(stepsTarget);
@@ -212,7 +212,7 @@ export default function Home() {
               className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
             >
               <Settings className="w-4 h-4" />
-              {t("home.editTargets")}
+              Edit Steps
             </button>
           </div>
           {/* Steps Progress */}
@@ -223,7 +223,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Footprints className="w-5 h-5 text-orange-600" />
-                <span className="font-semibold text-gray-900">{t("home.steps")}</span>
+                <span className="font-semibold text-gray-900">Steps</span>
               </div>
               <span className="text-sm font-bold text-orange-600">{stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}</span>
             </div>
