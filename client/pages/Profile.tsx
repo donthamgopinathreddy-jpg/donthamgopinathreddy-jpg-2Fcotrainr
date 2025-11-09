@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera, CheckCircle, Share2, Copy, Check } from "lucide-react";
+import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera, CheckCircle, Share2, Copy, Check, Loader } from "lucide-react";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { useAuth } from "@/contexts/AuthContext";
@@ -667,7 +667,7 @@ export default function Profile() {
                         <span>Onboarding support</span>
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-blue-600 mt-0.5 flex-shrink-0">✓</span>
+                        <span className="text-blue-600 mt-0.5 flex-shrink-0">��</span>
                         <span>50% platform fee waived (3 months)</span>
                       </li>
                     </ul>
