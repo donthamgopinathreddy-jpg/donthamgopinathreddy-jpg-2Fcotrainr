@@ -83,6 +83,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUserProfile = async (userId: string) => {
     try {
+      console.log("Fetching user profile for:", userId);
+
       const { data, error } = await supabase
         .from("users")
         .select("*")
@@ -91,27 +93,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (error) {
         console.error("Error fetching user profile:", error);
-        // Create a default profile if fetch fails
-        setUserProfile({
-          id: userId,
-          username: "user",
-          full_name: "User",
-          email: "",
-          role: "client",
-        });
         return;
       }
-      setUserProfile(data);
+
+      if (data) {
+        console.log("User profile fetched successfully:", data);
+        setUserProfile(data);
+      } else {
+        console.warn("No profile data found for user:", userId);
+      }
     } catch (error: any) {
       console.error("Error fetching user profile:", error?.message || error);
-      // Create a default profile if fetch fails
-      setUserProfile({
-        id: userId,
-        username: "user",
-        full_name: "User",
-        email: "",
-        role: "client",
-      });
     }
   };
 
