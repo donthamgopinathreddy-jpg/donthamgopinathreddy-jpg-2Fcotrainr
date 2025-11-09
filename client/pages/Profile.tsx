@@ -105,15 +105,35 @@ export default function Profile() {
     }));
   };
 
-  const handleSaveEdit = () => {
-    setUser((prev) => ({
-      ...prev,
-      name: editForm.name,
-      gender: editForm.gender,
-      height: editForm.height,
-      weight: editForm.weight,
-    }));
-    setShowEditModal(false);
+  const handleSaveEdit = async () => {
+    try {
+      setIsSaving(true);
+
+      // Update profile in database
+      await updateProfile({
+        full_name: editForm.name,
+        gender: editForm.gender,
+        height_cm: editForm.height,
+        weight_kg: editForm.weight,
+      });
+
+      // Update local state
+      setUser((prev) => ({
+        ...prev,
+        name: editForm.name,
+        gender: editForm.gender,
+        height: editForm.height,
+        weight: editForm.weight,
+      }));
+
+      toast.success("✓ Profile updated successfully!");
+      setShowEditModal(false);
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      toast.error("Failed to update profile");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleProfilePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
