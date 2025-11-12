@@ -147,15 +147,16 @@ export default function Discover() {
       .slice(0, 2);
   };
 
-  return (
-    <div className="min-h-screen bg-white pb-24 l-shape-bg">
-      {/* Logo Header */}
-      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
-        <Logo size="sm" />
-      </div>
+  const { theme } = useTheme();
 
+  return (
+    <div className={`min-h-screen pb-24 l-shape-bg ${
+      theme === "dark" ? "bg-gray-950" : "bg-white"
+    }`}>
       {/* Header */}
-      <div className="sticky top-12 z-40 bg-white border-b border-gray-200">
+      <div className={`sticky top-0 z-40 ${
+        theme === "dark" ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"
+      } border-b`}>
         <div className="max-w-md mx-auto">
           {/* Title */}
           <div className="px-4 py-6">
