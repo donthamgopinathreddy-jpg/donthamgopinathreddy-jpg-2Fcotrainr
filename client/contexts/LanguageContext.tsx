@@ -8,7 +8,7 @@ const INDIAN_LANGUAGES: { code: LanguageCode; name: string }[] = [
   { code: "ta", name: "தமிழ் (Tamil)" },
   { code: "te", name: "���ెలుగు (Telugu)" },
   { code: "kn", name: "ಕನ್ನಡ (Kannada)" },
-  { code: "bn", name: "বাংলা (Bengali)" },
+  { code: "bn", name: "��াংলা (Bengali)" },
   { code: "mr", name: "मराठी (Marathi)" },
   { code: "gu", name: "ગુજરાતી (Gujarati)" },
   { code: "pa", name: "ਪੰਜਾਬੀ (Punjabi)" },
@@ -55,14 +55,18 @@ const allTranslations: Record<LanguageCode, Record<string, any>> = {
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
   const [language, setLanguageState] = useState<LanguageCode>("en");
-  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("userLanguage") as LanguageCode | null;
-    const defaultLanguage = savedLanguage || "en";
-    setLanguageState(defaultLanguage);
-    document.documentElement.lang = defaultLanguage;
-    setIsInitialized(true);
+    try {
+      const savedLanguage = localStorage.getItem("userLanguage") as LanguageCode | null;
+      const defaultLanguage = savedLanguage || "en";
+      setLanguageState(defaultLanguage);
+      if (document?.documentElement) {
+        document.documentElement.lang = defaultLanguage;
+      }
+    } catch (error) {
+      console.debug("Language initialization error:", error);
+    }
   }, []);
 
   const setLanguage = (lang: LanguageCode) => {
