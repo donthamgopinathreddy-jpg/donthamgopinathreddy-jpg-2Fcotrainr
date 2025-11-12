@@ -21,8 +21,25 @@ export default function Login() {
 
     setLoading(true);
     try {
+      let loginEmail = email;
+
+      // If user entered a username (no @ symbol), look up their email
+      if (!email.includes("@")) {
+        const { data: userData, error: userError } = await supabase
+          .from("users")
+          .select("email")
+          .eq("username", email)
+          .single();
+
+        if (userError || !userData) {
+          throw new Error("User not found");
+        }
+
+        loginEmail = userData.email;
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: loginEmail,
         password,
       });
 
