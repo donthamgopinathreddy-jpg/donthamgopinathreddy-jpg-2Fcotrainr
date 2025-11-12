@@ -55,6 +55,11 @@ export default function UserProfile() {
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [editingBio, setEditingBio] = useState(false);
   const [bioText, setBioText] = useState("");
+  const [postComments, setPostComments] = useState<{ [key: string]: Comment[] }>({});
+  const [commentInput, setCommentInput] = useState<{ [key: string]: string }>({});
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [likeLoading, setLikeLoading] = useState<Set<string>>(new Set());
+  const [commentLoading, setCommentLoading] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (!userId) return;
