@@ -159,13 +159,13 @@ export default function UserProfile() {
   }, [userId, navigate, currentUser?.id]);
 
   const handleFollow = async () => {
-    if (!userId) return;
+    if (!user?.id) return;
 
     setIsTogglingFollow(true);
     try {
-      const success = await toggleFollow(userId);
+      const success = await toggleFollow(user.id);
       if (success) {
-        toast.success(isFollowing(userId) ? "Unfollowed" : "Following!");
+        toast.success(isFollowing(user.id) ? "Unfollowed" : "Following!");
       } else {
         toast.error("Failed to update follow status");
       }
@@ -255,14 +255,14 @@ export default function UserProfile() {
   };
 
   const handleSaveBio = async () => {
-    if (!userId) return;
+    if (!user?.id) return;
 
     try {
       // Update in Supabase
       const { error } = await supabase
         .from("users")
         .update({ bio: bioText })
-        .eq("id", userId);
+        .eq("id", user.id);
 
       if (error) {
         toast.error("Failed to save bio");
@@ -283,7 +283,7 @@ export default function UserProfile() {
   };
 
   const handleDeletePost = async (postId: string) => {
-    if (!currentUser?.id || currentUser.id !== userId) {
+    if (!currentUser?.id || currentUser.id !== user?.id) {
       toast.error("You can only delete your own posts");
       return;
     }
