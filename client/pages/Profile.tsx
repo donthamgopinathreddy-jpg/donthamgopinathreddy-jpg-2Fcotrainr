@@ -971,7 +971,7 @@ export default function Profile() {
                 {/* Referral Code */}
                 <div className={`rounded-lg p-4 ${
                   theme === "dark"
-                    ? "bg-gray-700 border border-gray-600"
+                    ? "bg-gradient-to-br from-green-500/20 via-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-green-500/30"
                     : "bg-card border border-border"
                 }`}>
                   <p className={`text-xs mb-2 ${
