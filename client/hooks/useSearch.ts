@@ -26,31 +26,40 @@ export const useSearch = () => {
     try {
       const searchTerm = `%${query.toLowerCase()}%`;
 
-      // Simple query with only essential columns
-      const { data, error } = await supabase
+      // Search by username
+      const { data: usernameResults, error: error1 } = await supabase
         .from("users")
         .select("id, username, full_name, profile_picture_url, bio, role")
-        .or(`username.ilike.${searchTerm},full_name.ilike.${searchTerm}`)
-        .limit(20);
+        .ilike("username", searchTerm);
 
-      if (error) {
-        console.error("Search error - Column error:", error.message);
+      // Search by full_name
+      const { data: nameResults, error: error2 } = await supabase
+        .from("users")
+        .select("id, username, full_name, profile_picture_url, bio, role")
+        .ilike("full_name", searchTerm);
+
+      if (error1) {
+        console.error("Username search error:", error1.message);
+      }
+
+      if (error2) {
+        console.error("Name search error:", error2.message);
+      }
+
+      // Combine results and remove duplicates
+      const allUsers = [...(usernameResults || []), ...(nameResults || [])];
+      const uniqueUsers = Array.from(
+        new Map(allUsers.map((u) => [u.id, u])).values()
+      ).slice(0, 20);
+
+      if (uniqueUsers.length === 0) {
         setResults([]);
         setLoading(false);
         return;
       }
-
-      if (!data || data.length === 0) {
-        console.log("No search results found for:", query);
-        setResults([]);
-        setLoading(false);
-        return;
-      }
-
-      console.log("Search results:", data);
 
       // Transform results
-      const transformedResults: SearchUser[] = data.map((user) => ({
+      const transformedResults: SearchUser[] = uniqueUsers.map((user) => ({
         id: user.id || "",
         username: user.username || "",
         full_name: user.full_name || "",
