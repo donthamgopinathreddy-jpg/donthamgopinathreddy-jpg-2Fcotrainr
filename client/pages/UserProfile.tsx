@@ -589,7 +589,7 @@ export default function UserProfile() {
 
           {/* Bio Section */}
           <div className="mb-4">
-            {currentUser?.id === userId && editingBio ? (
+            {currentUser?.id === user?.id && editingBio ? (
               <div className="space-y-2">
                 <textarea
                   value={bioText}
@@ -635,7 +635,7 @@ export default function UserProfile() {
                   >
                     {bioText}
                   </p>
-                ) : currentUser?.id === userId ? (
+                ) : currentUser?.id === user?.id ? (
                   <p
                     className={`text-sm italic ${
                       theme === "light" ? "text-gray-500" : "text-gray-500"
@@ -644,7 +644,7 @@ export default function UserProfile() {
                     No bio yet
                   </p>
                 ) : null}
-                {currentUser?.id === userId && (
+                {currentUser?.id === user?.id && (
                   <button
                     onClick={() => setEditingBio(true)}
                     className={`flex items-center gap-1 text-xs font-medium transition-colors ${
@@ -694,7 +694,7 @@ export default function UserProfile() {
                       {post.content}
                     </p>
                   </div>
-                  {currentUser?.id === userId && (
+                  {currentUser?.id === user?.id && (
                     <button
                       onClick={() => setShowDeleteConfirm(post.id)}
                       className="text-red-500 hover:text-red-700 transition-colors p-1 flex-shrink-0 ml-2"
