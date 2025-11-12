@@ -495,12 +495,17 @@ export default function Profile() {
               onClick={async () => {
                 try {
                   await signOut();
-                  navigate("/onboarding");
+                  toast.success("Logged out successfully");
+                  // Navigate to login after a short delay to ensure state is cleared
+                  setTimeout(() => {
+                    navigate("/login", { replace: true });
+                  }, 500);
                 } catch (error) {
                   console.error("Logout error:", error);
+                  toast.error("Failed to logout");
                 }
               }}
-              className="w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors text-red-600"
+              className="w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:bg-red-50 transition-colors text-red-600"
             >
               <LogOut className="w-5 h-5" />
               <span className="font-medium">Logout</span>
