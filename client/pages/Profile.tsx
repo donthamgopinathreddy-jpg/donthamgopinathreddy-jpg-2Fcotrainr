@@ -774,8 +774,10 @@ export default function Profile() {
           <div className="space-y-2">
             <button
               onClick={() => setShowEditModal(true)}
-              className={`w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 transition-colors ${
-                theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-50"
+              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
+                theme === "dark"
+                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
+                  : "bg-white border-gray-300 hover:bg-gray-50"
               }`}
             >
               <Edit2
@@ -802,7 +804,11 @@ export default function Profile() {
                   toast.error("Failed to logout");
                 }
               }}
-              className="w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:bg-red-50 transition-colors text-red-600"
+              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
+                theme === "dark"
+                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800 text-red-400"
+                  : "bg-white border-gray-300 hover:bg-red-50 text-red-600"
+              }`}
             >
               <LogOut className="w-5 h-5" />
               <span className="font-medium">Logout</span>
