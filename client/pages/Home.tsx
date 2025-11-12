@@ -165,8 +165,20 @@ export default function Home() {
         return;
       }
 
-      // Save steps target to Supabase in bio field (format: "steps|water")
+      // Check if demo mode
+      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+
+      // Save steps target and water to Supabase in bio field (format: "steps|water")
       const bioValue = `${editStepsTarget}|${waterConsumed}`;
+
+      if (isDemoMode) {
+        // Save to localStorage in demo mode
+        localStorage.setItem(`targets_${userProfile.id}`, bioValue);
+        setStepsTarget(editStepsTarget);
+        setShowTargetsModal(false);
+        toast.success("✓ Targets updated!");
+        return;
+      }
 
       const { error } = await supabase
         .from("users")
@@ -177,10 +189,10 @@ export default function Home() {
 
       setStepsTarget(editStepsTarget);
       setShowTargetsModal(false);
-      toast.success("✓ Steps target updated!");
+      toast.success("✓ Targets updated!");
     } catch (error) {
-      console.error("Error saving steps target:", error);
-      toast.error("Failed to save steps target");
+      console.error("Error saving targets:", error);
+      toast.error("Failed to save targets");
     }
   };
 
