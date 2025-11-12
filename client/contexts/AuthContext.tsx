@@ -50,23 +50,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         console.log("Checking auth state...");
 
-        // First check if there's a session
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log("Session found:", session?.user?.email);
+        // Add timeout to prevent hanging (5 seconds)
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Auth check timeout")), 5000)
+        );
 
-        if (session?.user) {
-          setUser(session.user);
-          await fetchUserProfile(session.user.id);
-        } else {
-          // If no session, try getUser as backup
-          const { data: { user } } = await supabase.auth.getUser();
-          if (user) {
-            setUser(user);
-            await fetchUserProfile(user.id);
+        const authPromise = (async () => {
+          // First check if there's a session
+          const { data: { session } } = await supabase.auth.getSession();
+          console.log("Session found:", session?.user?.email);
+
+          if (session?.user) {
+            setUser(session.user);
+            await fetchUserProfile(session.user.id);
           } else {
-            setUser(null);
+            // If no session, try getUser as backup
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+              setUser(user);
+              await fetchUserProfile(user.id);
+            } else {
+              setUser(null);
+            }
           }
-        }
+        })();
+
+        await Promise.race([authPromise, timeoutPromise]);
       } catch (error) {
         console.error("Error checking auth:", error);
         setUser(null);
