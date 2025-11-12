@@ -105,7 +105,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .single();
 
       if (error) {
-        console.error("Error fetching user profile:", error);
+        const errorMsg = error?.message || error?.details || String(error);
+        console.warn("Error fetching user profile:", errorMsg);
         return;
       }
 
@@ -164,7 +165,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           });
 
           if (profileError) {
-            console.error("Profile creation error:", profileError);
+            const errorMsg = profileError?.message || profileError?.details || String(profileError);
+            console.warn("Profile creation error:", errorMsg);
           }
 
           // Create trainer profile if role is trainer
@@ -174,11 +176,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               years_of_experience: 0,
             });
             if (trainerError) {
-              console.error("Trainer profile error:", trainerError);
+              const errorMsg = trainerError?.message || trainerError?.details || String(trainerError);
+              console.warn("Trainer profile error:", errorMsg);
             }
           }
-        } catch (err) {
-          console.error("Profile creation error:", err);
+        } catch (err: any) {
+          const errorMsg = err?.message || String(err);
+          console.warn("Profile creation error:", errorMsg);
         }
 
         // Wait a bit for the database to process
