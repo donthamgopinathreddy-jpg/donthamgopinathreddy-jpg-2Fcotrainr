@@ -287,7 +287,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const updateProfile = async (updates: Partial<UserProfile>, retryCount = 0) => {
+  const updateProfile = async (
+    updates: Partial<UserProfile>,
+    retryCount = 0,
+  ) => {
     try {
       if (!user) throw new Error("No user logged in");
 
@@ -307,7 +310,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           return updateProfile(updates, retryCount + 1);
         }
 
-        const errorMsg = error?.message || error?.details || JSON.stringify(error) || "Unknown error";
+        const errorMsg =
+          error?.message ||
+          error?.details ||
+          JSON.stringify(error) ||
+          "Unknown error";
         throw new Error(errorMsg);
       }
 
@@ -323,7 +330,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return updateProfile(updates, retryCount + 1);
       }
 
-      const errorMsg = error?.message || String(error) || "Failed to update profile";
+      const errorMsg =
+        error?.message || String(error) || "Failed to update profile";
       console.error("Error updating profile:", errorMsg);
       throw new Error(errorMsg);
     }
