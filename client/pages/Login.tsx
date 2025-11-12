@@ -4,15 +4,23 @@ import { ChevronRight, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
+
+  // If user is already logged in, redirect to home
+  if (user) {
+    navigate("/", { replace: true });
+    return null;
+  }
 
   const isFormComplete = email && password && password.length >= 6;
 
@@ -66,7 +74,10 @@ export default function Login() {
 
       if (data.user) {
         toast.success("Login successful!");
-        setTimeout(() => navigate("/"), 1000);
+        // Wait a bit for auth state to propagate, then navigate
+        setTimeout(() => {
+          navigate("/", { replace: true });
+        }, 500);
       }
     } catch (error: any) {
       console.error("Login error:", error);
