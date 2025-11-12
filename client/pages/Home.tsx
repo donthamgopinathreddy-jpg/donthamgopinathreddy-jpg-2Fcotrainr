@@ -15,9 +15,12 @@ import {
   Settings,
   Activity,
   Upload,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
 
 const MOTIVATIONAL_QUOTES = [
