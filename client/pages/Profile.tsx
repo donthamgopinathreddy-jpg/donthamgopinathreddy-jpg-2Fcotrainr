@@ -4,6 +4,7 @@ import { User, Edit2, LogOut, Briefcase, Heart, Users, Award, MapPin, Camera, Ch
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
 interface UserType {
@@ -126,6 +127,21 @@ export default function Profile() {
       ...prev,
       followers: isFollowing ? prev.followers - 1 : prev.followers + 1,
     }));
+  };
+
+  const updateProfile = async (updates: Record<string, any>) => {
+    if (!userProfile?.id) {
+      throw new Error("User not found");
+    }
+
+    const { error } = await supabase
+      .from("users")
+      .update(updates)
+      .eq("id", userProfile.id);
+
+    if (error) {
+      throw error;
+    }
   };
 
   const handleSaveEdit = async () => {
