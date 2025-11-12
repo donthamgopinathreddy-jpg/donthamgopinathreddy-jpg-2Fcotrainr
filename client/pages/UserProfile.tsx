@@ -359,7 +359,7 @@ export default function UserProfile() {
           user_id: currentUser.id,
           content: commentText,
         })
-        .select(`id, content, user_id, created_at, users!post_comments_user_id_fkey(username, full_name)`)
+        .select("id, content, user_id, created_at")
         .single();
 
       if (error) {
@@ -389,10 +389,10 @@ export default function UserProfile() {
         content: newComment.content,
         user_id: newComment.user_id,
         created_at: newComment.created_at,
-        author: newComment.users ? {
-          username: newComment.users.username,
-          full_name: newComment.users.full_name,
-        } : undefined,
+        author: {
+          username: currentUser.username || "User",
+          full_name: currentUser.full_name || "User",
+        },
       };
 
       setPostComments((prev) => ({
