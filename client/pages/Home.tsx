@@ -452,12 +452,74 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Feed/Posts Teaser */}
-        <div className="bg-card border border-border rounded-xl p-4">
-          <h3 className="text-sm font-bold text-primary mb-2">📰 Latest Posts</h3>
-          <p className="text-xs text-muted-foreground">
-            Transformation stories, tips, and motivation from our community.
-          </p>
+        {/* Latest Feed Posts */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-foreground px-2">📰 Latest Posts</h3>
+          {loadingFeed ? (
+            <div className="text-center py-8">
+              <div className="inline-block animate-spin h-8 w-8 text-primary">
+                <svg viewBox="0 0 50 50">
+                  <circle
+                    className="opacity-30"
+                    cx="25"
+                    cy="25"
+                    r="20"
+                    stroke="currentColor"
+                    strokeWidth="5"
+                    fill="none"
+                  />
+                  <circle
+                    className="text-primary"
+                    cx="25"
+                    cy="25"
+                    r="20"
+                    stroke="currentColor"
+                    strokeWidth="5"
+                    fill="none"
+                    strokeDasharray="100"
+                    strokeDashoffset="75"
+                  />
+                </svg>
+              </div>
+            </div>
+          ) : latestFeed.length > 0 ? (
+            latestFeed.map((post) => (
+              <div key={post.id} className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-3">
+                  <img
+                    src={post.users?.profile_picture_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${post.user_id}`}
+                    alt={post.users?.full_name || "User"}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="font-semibold text-sm text-foreground">{post.users?.full_name || "User"}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(post.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm text-foreground mb-3 line-clamp-3">{post.content}</p>
+                {post.image_url && (
+                  <img
+                    src={post.image_url}
+                    alt="Post"
+                    className="w-full rounded-lg mb-3 object-cover max-h-48"
+                  />
+                )}
+                <button
+                  onClick={() => navigate("/feed")}
+                  className="text-xs font-semibold text-primary hover:text-primary/80"
+                >
+                  View More Posts →
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="bg-card border border-border rounded-xl p-6 text-center">
+              <Newspaper className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm text-muted-foreground">No posts yet. Check back soon!</p>
+            </div>
+          )}
         </div>
       </div>
 
