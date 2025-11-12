@@ -55,33 +55,11 @@ export default function Login() {
         }
       }
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginEmail,
-        password,
-      });
+      // Use AuthContext signIn method which properly updates context state
+      await authSignIn(loginEmail, password);
 
-      if (error) {
-        // Retry on "body stream already read" error
-        if (
-          error.message?.includes("body stream already read") &&
-          retryCount < 2
-        ) {
-          console.warn(`Login retry attempt ${retryCount + 1}/2`);
-          await new Promise((resolve) => setTimeout(resolve, 500));
-          setLoading(false);
-          return handleLogin(retryCount + 1);
-        }
-        throw error;
-      }
-
-      if (data.user) {
-        toast.success("Login successful!");
-        // Navigate directly since Supabase confirms the login
-        // Give auth context a moment to update, then navigate
-        setTimeout(() => {
-          navigate("/", { replace: true });
-        }, 2000);
-      }
+      toast.success("Login successful!");
+      // The useEffect will handle navigation once user state is updated
     } catch (error: any) {
       console.error("Login error:", error);
 
