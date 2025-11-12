@@ -26,92 +26,46 @@ export const useSearch = () => {
 
     setLoading(true);
     try {
-      const searchTerm = query.toLowerCase();
+      const searchTerm = `%${query.toLowerCase()}%`;
 
-      // Search in users table - try username first
-      const { data: usernameResults, error: usernameError } = await supabase
+      // Single query to search both username and full_name
+      const { data, error } = await supabase
         .from("users")
-        .select(
-          "id, username, full_name, profile_picture_url, location, bio, role, verified"
-        )
-        .ilike("username", `%${searchTerm}%`)
+        .select("*")
+        .or(`username.ilike.${searchTerm},full_name.ilike.${searchTerm}`)
         .limit(20);
 
-      // Search by full_name if needed
-      const { data: nameResults, error: nameError } = await supabase
-        .from("users")
-        .select(
-          "id, username, full_name, profile_picture_url, location, bio, role, verified"
-        )
-        .ilike("full_name", `%${searchTerm}%`)
-        .limit(20);
-
-      if (usernameError) {
-        const errorMsg = usernameError?.message || "Failed to search by username";
-        console.error("Error searching users by username:", errorMsg);
-      }
-
-      if (nameError) {
-        const errorMsg = nameError?.message || "Failed to search by name";
-        console.error("Error searching users by name:", errorMsg);
-      }
-
-      // Combine results and remove duplicates
-      const allData = [
-        ...(usernameResults || []),
-        ...(nameResults || []),
-      ];
-      const uniqueData = Array.from(
-        new Map(allData.map((user) => [user.id, user])).values()
-      );
-
-      if (!uniqueData.length) {
+      if (error) {
+        const errorMsg = error?.message || "Failed to search users";
+        console.error("Error searching users:", errorMsg);
         setResults([]);
+        setLoading(false);
         return;
       }
 
-      // Get followers count and rating for each user
-      const usersWithStats = await Promise.all(
-        uniqueData.map(async (user) => {
-          try {
-            // Get followers count
-            const { count: followersCount } = await supabase
-              .from("follows")
-              .select("*", { count: "exact" })
-              .eq("following_id", user.id);
+      if (!data || data.length === 0) {
+        setResults([]);
+        setLoading(false);
+        return;
+      }
 
-            // Get rating from trainer profile if exists
-            let rating = undefined;
-            if (user.role === "trainer") {
-              const { data: trainerData } = await supabase
-                .from("trainers")
-                .select("rating")
-                .eq("id", user.id)
-                .single();
+      // Transform results without making additional queries
+      const transformedResults: SearchUser[] = data.map((user) => ({
+        id: user.id,
+        username: user.username || "",
+        full_name: user.full_name || "",
+        profile_picture_url: user.profile_picture_url,
+        location: user.location,
+        bio: user.bio,
+        followers_count: user.followers_count || 0,
+        rating: user.rating,
+        verified: user.verified || false,
+        role: user.role || "client",
+      }));
 
-              rating = trainerData?.rating;
-            }
-
-            return {
-              ...user,
-              followers_count: followersCount || 0,
-              rating: rating,
-            };
-          } catch (err) {
-            const errMsg = err instanceof Error ? err.message : String(err);
-            console.error(`Error getting stats for user ${user.id}:`, errMsg);
-            return {
-              ...user,
-              followers_count: 0,
-              rating: undefined,
-            };
-          }
-        })
-      );
-
-      setResults(usersWithStats as SearchUser[]);
+      setResults(transformedResults);
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : JSON.stringify(error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
       console.error("Search error:", errorMsg);
       setResults([]);
     } finally {
