@@ -31,14 +31,13 @@ const UNIT_MAP: Record<string, string> = {
   water: "liters",
 };
 
-const DAY_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
-const FULL_DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 interface DayData {
   day: string;
+  date: string;
   value: number;
   max: number;
-  date: string;
 }
 
 export default function ActivityDetail() {
@@ -59,7 +58,7 @@ export default function ActivityDetail() {
 
   const isToday = selectedDayOffset === 0;
 
-  // Calculate week dates
+  // Calculate week dates (Sunday to Saturday)
   const weekDates = useMemo(() => {
     const dates = [];
     const today = new Date();
@@ -82,7 +81,7 @@ export default function ActivityDetail() {
   const waterConsumed = userProfile?.bio ? parseFloat(userProfile.bio.split("|")[1] || "0") : 0;
   const caloriesBurned = Math.round(stepsCompleted * 0.05);
 
-  // Generate weekly data
+  // Generate weekly data with real calendar dates
   const weeklyData: DayData[] = useMemo(() => {
     const data: DayData[] = [];
     
@@ -102,24 +101,27 @@ export default function ActivityDetail() {
         }
       }
 
+      const dateStr = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
       data.push({
         day: DAY_NAMES[date.getDay()],
+        date: dateStr,
         value,
         max,
-        date: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
       });
     }
 
     return data;
   }, [type, stepsCompleted, caloriesBurned, waterConsumed, weekDates]);
 
-  const maxValue = Math.max(...weeklyData.map((d) => d.max));
-  const average = weeklyData.reduce((sum, day) => sum + day.value, 0) / weeklyData.length;
-  const total = weeklyData.reduce((sum, day) => sum + day.value, 0);
+  // Calculate average steps for the week
+  const averageSteps = Math.round(
+    weeklyData.reduce((sum, day) => sum + day.value, 0) / weeklyData.length
+  );
+  const totalSteps = weeklyData.reduce((sum, day) => sum + day.value, 0);
 
-  const getBarHeight = (value: number, max: number) => {
-    return Math.min((value / max) * 100, 100);
-  };
+  // Find max value for bar chart scaling
+  const maxBarValue = Math.max(...weeklyData.map((d) => d.value), 1);
 
   const getTitle = () => {
     switch (type) {
@@ -134,11 +136,18 @@ export default function ActivityDetail() {
     }
   };
 
+  // Format current date for header
+  const formattedDate = selectedDate.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  });
+
   return (
     <div className={`min-h-screen pb-24 ${theme === "dark" ? "bg-gray-950" : "bg-white"}`}>
       {/* Header */}
       <div className={`sticky top-0 z-40 ${theme === "dark" ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"} border-b`}>
-        <div className="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
+        <div className="max-w-md mx-auto px-4 py-4 flex items-center gap-3">
           <button
             onClick={() => navigate(-1)}
             className={`p-2 rounded-lg transition-colors ${
@@ -151,16 +160,16 @@ export default function ActivityDetail() {
           </button>
           <div>
             <h1 className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
-              {getTitle()}
+              {colors.icon} {getTitle()}
             </h1>
             <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-              {FULL_DAY_NAMES[selectedDate.getDay()]}
+              {formattedDate}
             </p>
           </div>
         </div>
 
-        {/* Week Day Picker */}
-        <div className={`max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-2 ${
+        {/* Week Day Picker with Real Dates */}
+        <div className={`max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-2 overflow-x-auto ${
           theme === "dark" ? "border-gray-800 border-t" : "border-gray-200 border-t"
         }`}>
           {weekDates.map((date, idx) => {
@@ -171,7 +180,7 @@ export default function ActivityDetail() {
               <button
                 key={idx}
                 onClick={() => setSelectedDayOffset(dayOffset)}
-                className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all ${
+                className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all whitespace-nowrap ${
                   isSelected
                     ? "bg-orange-600 text-white"
                     : theme === "dark"
@@ -189,11 +198,11 @@ export default function ActivityDetail() {
 
       {/* Content */}
       <div className="max-w-md mx-auto px-4 py-6 space-y-6">
-        {/* Large Stats Card */}
-        <div className={`relative rounded-2xl overflow-hidden border p-8 text-center space-y-4 ${
+        {/* Large Stats Card for Selected Day */}
+        <div className={`relative rounded-2xl overflow-hidden p-8 text-center space-y-4 ${
           theme === "dark"
-            ? "bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700"
-            : "bg-gradient-to-br from-gray-50 to-white border-gray-200"
+            ? "bg-gradient-to-br from-gray-800 to-gray-900"
+            : "bg-gradient-to-br from-gray-50 to-white"
         }`}>
           <div className="relative space-y-4">
             {/* Icon */}
@@ -202,10 +211,21 @@ export default function ActivityDetail() {
             {/* Main Value */}
             <div>
               <div className={`text-5xl font-bold ${colors.text}`}>
-                {type === "water" ? total.toFixed(1) : Math.round(total).toLocaleString()}
+                {type === "water" 
+                  ? selectedDate.toDateString() === new Date().toDateString() 
+                    ? waterConsumed.toFixed(1) 
+                    : "0.0"
+                  : type === "calories"
+                  ? selectedDate.toDateString() === new Date().toDateString()
+                    ? caloriesBurned
+                    : "0"
+                  : selectedDate.toDateString() === new Date().toDateString()
+                  ? stepsCompleted.toLocaleString()
+                  : "0"
+                }
               </div>
               <div className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                / {type === "water" ? "2.5" : type === "calories" ? "2500" : "10,000"} {unit}
+                {type === "water" ? "/ 2.5" : type === "calories" ? "/ 2500" : "/ 10,000"} {unit}
               </div>
             </div>
 
@@ -216,61 +236,39 @@ export default function ActivityDetail() {
               <div
                 className={`h-full bg-gradient-to-r ${colors.gradient} transition-all duration-500`}
                 style={{
-                  width: `${Math.min((total / (type === "water" ? 2.5 : type === "calories" ? 2500 : 10000)) * 100, 100)}%`,
+                  width: `${Math.min(
+                    ((selectedDate.toDateString() === new Date().toDateString()
+                      ? type === "water"
+                        ? waterConsumed / 2.5
+                        : type === "calories"
+                        ? caloriesBurned / 2500
+                        : stepsCompleted / 10000
+                      : 0) * 100),
+                    100
+                  )}%`,
                 }}
               />
             </div>
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-2 pt-4">
-              <div className={`rounded-lg p-2 text-center ${
-                theme === "dark" ? "bg-gray-700/50" : "bg-gray-100"
-              }`}>
-                <div className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                  Avg
-                </div>
-                <div className={`text-sm font-bold ${colors.text}`}>
-                  {type === "water" ? average.toFixed(1) : Math.round(average)}
-                </div>
-              </div>
-              <div className={`rounded-lg p-2 text-center ${
-                theme === "dark" ? "bg-gray-700/50" : "bg-gray-100"
-              }`}>
-                <div className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                  Peak
-                </div>
-                <div className={`text-sm font-bold ${colors.text}`}>
-                  {type === "water"
-                    ? Math.max(...weeklyData.map((d) => d.value)).toFixed(1)
-                    : Math.max(...weeklyData.map((d) => d.value))}
-                </div>
-              </div>
-              <div className={`rounded-lg p-2 text-center ${
-                theme === "dark" ? "bg-gray-700/50" : "bg-gray-100"
-              }`}>
-                <div className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                  Total
-                </div>
-                <div className={`text-sm font-bold ${colors.text}`}>
-                  {type === "water" ? total.toFixed(1) : total.toLocaleString()}
-                </div>
-              </div>
+            {/* Date Display */}
+            <div className={`text-xs font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+              {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
             </div>
           </div>
         </div>
 
-        {/* Daily Breakdown */}
-        <div className={`rounded-2xl p-6 space-y-4 border ${
+        {/* Weekly Breakdown with Vertical Bar Chart */}
+        <div className={`rounded-2xl p-6 space-y-4 ${
           theme === "dark"
-            ? "bg-gray-800/50 border-gray-700"
-            : "bg-white border-gray-200"
+            ? "bg-gray-800/50"
+            : "bg-white"
         }`}>
           <div className="flex items-center justify-between">
             <h3 className={`font-bold flex items-center gap-2 ${
               theme === "dark" ? "text-white" : "text-gray-900"
             }`}>
               <Calendar className={`w-5 h-5 ${colors.text}`} />
-              Weekly Breakdown
+              {type === "steps" ? "Weekly Steps" : type === "calories" ? "Weekly Calories" : "Weekly Water"}
             </h3>
             <span className={`text-xs ${
               theme === "dark" ? "text-gray-400" : "text-gray-600"
@@ -279,94 +277,81 @@ export default function ActivityDetail() {
             </span>
           </div>
 
-          {/* Daily Chart */}
-          <div className={`rounded-lg p-4 ${
+          {/* Summary Stats */}
+          <div className={`rounded-lg p-4 space-y-2 ${
             theme === "dark" ? "bg-gray-900" : "bg-gray-50"
           }`}>
-            <div className="space-y-3">
-              {weeklyData.map((dayData, idx) => (
-                <div key={idx} className="space-y-1">
-                  {/* Day Header */}
-                  <div className="flex items-center justify-between">
-                    <span className={`text-sm font-semibold w-12 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}>
-                      {dayData.day}
-                    </span>
-                    <div className="flex-1 flex justify-end">
-                      <div className="text-right">
-                        <span className={`text-sm font-bold ${colors.text}`}>
-                          {type === "water" ? dayData.value.toFixed(1) : dayData.value.toLocaleString()}
-                        </span>
-                        <span className={`text-xs ml-1 ${
-                          theme === "dark" ? "text-gray-500" : "text-gray-600"
-                        }`}>
-                          {type === "water" ? `/ ${dayData.max}L` : `/ ${dayData.max.toLocaleString()}`}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bar */}
-                  <div className={`relative h-8 rounded-lg overflow-hidden border ${
-                    theme === "dark"
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-200"
-                  }`}>
-                    <div
-                      className={`h-full bg-gradient-to-r ${colors.gradient} transition-all duration-500`}
-                      style={{ width: `${getBarHeight(dayData.value, maxValue)}%` }}
-                    >
-                      {getBarHeight(dayData.value, maxValue) > 20 && (
-                        <div className="h-full flex items-center justify-end pr-2">
-                          <span className="text-xs font-bold text-white">
-                            {type === "water" ? dayData.value.toFixed(1) : dayData.value.toLocaleString()}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <p className={`text-xs ${
-                    theme === "dark" ? "text-gray-500" : "text-gray-600"
-                  }`}>
-                    {dayData.date}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Summary */}
-          <div className={`rounded-lg p-4 space-y-3 border ${
-            theme === "dark"
-              ? "bg-gray-900 border-gray-700"
-              : "bg-gray-50 border-gray-200"
-          }`}>
             <div className="flex items-center justify-between">
-              <div className={`flex items-center gap-2 ${
-                theme === "dark" ? "text-gray-400" : "text-gray-600"
-              }`}>
-                <TrendingUp className="w-4 h-4" />
-                <span className="text-sm">Weekly Avg</span>
-              </div>
-              <span className={`font-bold ${colors.text}`}>
-                {type === "water" ? average.toFixed(1) : Math.round(average).toLocaleString()} {unit}
+              <span className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                Weekly Average
+              </span>
+              <span className={`font-bold text-lg ${colors.text}`}>
+                {averageSteps.toLocaleString()} {unit}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                Weekly Total
+              </span>
+              <span className={`font-bold text-lg ${colors.text}`}>
+                {totalSteps.toLocaleString()} {unit}
               </span>
             </div>
           </div>
-        </div>
 
-        {/* No Data Message */}
-        {total === 0 && !isToday && (
-          <div className={`rounded-xl p-4 border text-center text-sm ${
-            theme === "dark"
-              ? "bg-gray-800/30 border-gray-700 text-gray-400"
-              : "bg-gray-100 border-gray-200 text-gray-600"
+          {/* Vertical Standing Bar Chart */}
+          <div className={`rounded-lg p-6 ${
+            theme === "dark" ? "bg-gray-900" : "bg-gray-50"
           }`}>
-            No data for this day
+            <div className="flex items-end justify-around gap-2 h-48">
+              {weeklyData.map((dayData, idx) => {
+                const barHeightPercent = maxBarValue > 0 ? (dayData.value / maxBarValue) * 100 : 0;
+                
+                return (
+                  <div key={idx} className="flex flex-col items-center gap-2 flex-1">
+                    {/* Vertical Bar */}
+                    <div className="w-full flex flex-col items-center justify-end h-full relative group">
+                      <div
+                        className={`w-full bg-gradient-to-t ${colors.gradient} rounded-t-lg transition-all duration-300 hover:opacity-80`}
+                        style={{
+                          height: `${barHeightPercent}%`,
+                          minHeight: barHeightPercent > 0 ? "4px" : "0px",
+                        }}
+                        title={`${dayData.day} ${dayData.date}: ${dayData.value.toLocaleString()} ${unit}`}
+                      />
+                      
+                      {/* Value on top of bar */}
+                      {barHeightPercent > 0 && (
+                        <div className={`absolute -top-6 text-xs font-bold ${colors.text}`}>
+                          {dayData.value.toLocaleString()}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Day and Date Label */}
+                    <div className="text-center">
+                      <div className={`text-xs font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}>
+                        {dayData.day}
+                      </div>
+                      <div className={`text-xs ${theme === "dark" ? "text-gray-500" : "text-gray-600"}`}>
+                        {dayData.date}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        )}
+
+          {/* Additional Info */}
+          {type === "steps" && (
+            <div className={`rounded-lg p-4 text-center text-sm ${
+              theme === "dark" ? "bg-gray-900 text-gray-400" : "bg-gray-100 text-gray-600"
+            }`}>
+              <p>Only today's data is shown. Previous days' data will appear once logged.</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
