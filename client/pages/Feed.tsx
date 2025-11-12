@@ -1,9 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, MessageCircle, Share2, Plus, UserPlus, UserCheck, Paperclip, X, AtSign } from "lucide-react";
+import { Heart, MessageCircle, Share2, Plus, UserPlus, UserCheck, Paperclip, X, AtSign, Search as SearchIcon, Loader } from "lucide-react";
 import { usePosts } from "@/hooks/usePosts";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useSearch } from "@/hooks/useSearch";
+import { useFollows } from "@/hooks/useFollows";
 import { toast } from "sonner";
 
 export default function Feed() {
@@ -11,6 +13,8 @@ export default function Feed() {
   const { userProfile } = useAuth();
   const { theme } = useTheme();
   const { posts, createPost, likePost, incrementComments, loading } = usePosts();
+  const { results: searchResults, loading: searchLoading, searchUsers } = useSearch();
+  const { isFollowing, toggleFollow } = useFollows();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showNewPost, setShowNewPost] = useState(false);
   const [newPostContent, setNewPostContent] = useState("");
@@ -21,6 +25,20 @@ export default function Feed() {
   const [mentionSearch, setMentionSearch] = useState("");
   const [postLoading, setPostLoading] = useState(false);
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+  const [isTogglingId, setIsTogglingId] = useState<string | null>(null);
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery.trim()) {
+        searchUsers(searchQuery);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery, searchUsers]);
 
   const AVAILABLE_USERS = [
     "Priya Singh",
@@ -117,6 +135,25 @@ export default function Feed() {
     } catch (error) {
       console.error("Error adding comment:", error);
       toast.error("Failed to add comment");
+    }
+  };
+
+  const handleFollow = async (userId: string) => {
+    setIsTogglingId(userId);
+    try {
+      const success = await toggleFollow(userId);
+      if (success) {
+        toast.success(
+          isFollowing(userId) ? "Unfollowed" : "Following!"
+        );
+      } else {
+        toast.error("Failed to update follow status");
+      }
+    } catch (error) {
+      console.error("Error toggling follow:", error);
+      toast.error("Something went wrong");
+    } finally {
+      setIsTogglingId(null);
     }
   };
 
