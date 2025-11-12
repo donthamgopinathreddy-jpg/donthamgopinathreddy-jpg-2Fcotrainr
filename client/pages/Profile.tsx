@@ -72,6 +72,19 @@ export default function Profile() {
     age: userProfile?.age || 25,
   });
 
+  // Calculate age from date of birth
+  const calculateAge = (dateOfBirth: string): number => {
+    if (!dateOfBirth) return 25;
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return Math.max(0, age);
+  };
+
   // Sync state with userProfile whenever it changes
   useEffect(() => {
     if (userProfile) {
@@ -86,6 +99,7 @@ export default function Profile() {
         following: 0,
       };
       setUser(newUserState);
+      const calculatedAge = userProfile.date_of_birth ? calculateAge(userProfile.date_of_birth) : (userProfile.age || 25);
       setEditForm({
         name: userProfile.full_name || "User",
         email: userProfile.email || "",
@@ -94,7 +108,7 @@ export default function Profile() {
         height: userProfile.height_cm || 170,
         weight: userProfile.weight_kg || 70,
         dateOfBirth: userProfile.date_of_birth || "",
-        age: userProfile.age || 25,
+        age: calculatedAge,
       });
     }
   }, [userProfile]);
