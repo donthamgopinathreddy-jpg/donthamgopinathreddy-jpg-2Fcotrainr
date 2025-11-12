@@ -78,6 +78,7 @@ export const LanguageProvider = ({
   children: React.ReactNode;
 }) => {
   const [language, setLanguageState] = useState<LanguageCode>("en");
+  const [isInitialized] = useState(true);
 
   useEffect(() => {
     try {
