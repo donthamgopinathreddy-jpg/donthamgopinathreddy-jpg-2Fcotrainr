@@ -143,16 +143,81 @@ export default function UserProfile() {
     }
   };
 
-  const handleLike = (postId: string) => {
-    setLikedPosts((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(postId)) {
-        newSet.delete(postId);
+  const handleLike = async (postId: string) => {
+    if (!currentUser?.id) {
+      toast.error("You must be logged in to like posts");
+      return;
+    }
+
+    setLikeLoading((prev) => new Set(prev).add(postId));
+
+    try {
+      const isLiked = likedPosts.has(postId);
+
+      if (isLiked) {
+        // Unlike: delete from post_likes table
+        await supabase
+          .from("post_likes")
+          .delete()
+          .eq("post_id", postId)
+          .eq("user_id", currentUser.id);
+
+        // Update likes_count
+        const post = posts.find(p => p.id === postId);
+        if (post && post.likes_count > 0) {
+          await supabase
+            .from("posts")
+            .update({ likes_count: post.likes_count - 1 })
+            .eq("id", postId);
+        }
+
+        setLikedPosts((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(postId);
+          return newSet;
+        });
+
+        setPosts((prev) =>
+          prev.map((p) =>
+            p.id === postId ? { ...p, likes_count: Math.max(0, p.likes_count - 1) } : p
+          )
+        );
       } else {
-        newSet.add(postId);
+        // Like: insert into post_likes table
+        await supabase
+          .from("post_likes")
+          .insert({
+            post_id: postId,
+            user_id: currentUser.id,
+          });
+
+        // Update likes_count
+        const post = posts.find(p => p.id === postId);
+        if (post) {
+          await supabase
+            .from("posts")
+            .update({ likes_count: post.likes_count + 1 })
+            .eq("id", postId);
+        }
+
+        setLikedPosts((prev) => new Set(prev).add(postId));
+
+        setPosts((prev) =>
+          prev.map((p) =>
+            p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p
+          )
+        );
       }
-      return newSet;
-    });
+    } catch (error) {
+      console.error("Error toggling like:", error);
+      toast.error("Failed to update like");
+    } finally {
+      setLikeLoading((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(postId);
+        return newSet;
+      });
+    }
   };
 
   const handleSaveBio = async () => {
