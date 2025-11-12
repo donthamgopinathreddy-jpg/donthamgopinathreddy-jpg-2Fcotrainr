@@ -121,6 +121,34 @@ export default function UserProfile() {
     });
   };
 
+  const handleSaveBio = async () => {
+    if (!userId) return;
+
+    try {
+      // Update in Supabase
+      const { error } = await supabase
+        .from("users")
+        .update({ bio: bioText })
+        .eq("id", userId);
+
+      if (error) {
+        toast.error("Failed to save bio");
+        return;
+      }
+
+      // Update local state
+      if (user) {
+        setUser({ ...user, bio: bioText });
+      }
+
+      setEditingBio(false);
+      toast.success("Bio updated!");
+    } catch (error) {
+      console.error("Error saving bio:", error);
+      toast.error("Failed to save bio");
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
