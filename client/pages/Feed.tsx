@@ -12,13 +12,15 @@ import {
   AtSign,
   Search as SearchIcon,
   Loader,
+  ChevronDown,
 } from "lucide-react";
-import { usePosts } from "@/hooks/usePosts";
+import { usePosts, Post } from "@/hooks/usePosts";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useSearch } from "@/hooks/useSearch";
+import { useSearch, SearchUser } from "@/hooks/useSearch";
 import { useFollows } from "@/hooks/useFollows";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 export default function Feed() {
   const navigate = useNavigate();
