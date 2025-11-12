@@ -671,12 +671,15 @@ export default function Profile() {
                   <input
                     type="date"
                     value={editForm.dateOfBirth}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const newDOB = e.target.value;
+                      const newAge = calculateAge(newDOB);
                       setEditForm((prev) => ({
                         ...prev,
-                        dateOfBirth: e.target.value,
-                      }))
-                    }
+                        dateOfBirth: newDOB,
+                        age: newAge,
+                      }));
+                    }}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
                   />
                 </div>
