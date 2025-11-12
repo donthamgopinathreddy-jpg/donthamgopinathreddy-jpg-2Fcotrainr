@@ -7,7 +7,6 @@ export interface SearchUser {
   full_name: string;
   profile_picture_url?: string;
   bio?: string;
-  followers_count?: number;
   rating?: number;
   verified?: boolean;
   role: "client" | "trainer";
@@ -27,7 +26,7 @@ export const useSearch = () => {
     try {
       const searchTerm = `%${query.toLowerCase()}%`;
 
-      // Query only columns that exist in the users table
+      // Simple query with only essential columns
       const { data, error } = await supabase
         .from("users")
         .select("id, username, full_name, profile_picture_url, bio, role")
@@ -35,61 +34,37 @@ export const useSearch = () => {
         .limit(20);
 
       if (error) {
-        const errorMsg = error?.message || "Failed to search users";
-        console.error("Search error:", errorMsg);
+        console.error("Search error - Column error:", error.message);
         setResults([]);
         setLoading(false);
         return;
       }
 
       if (!data || data.length === 0) {
+        console.log("No search results found for:", query);
         setResults([]);
         setLoading(false);
         return;
       }
 
-      // Transform results and get trainer details for trainers
-      const transformedResults: SearchUser[] = await Promise.all(
-        data.map(async (user) => {
-          let verified = false;
-          let rating = undefined;
+      console.log("Search results:", data);
 
-          // Get trainer details if user is a trainer
-          if (user.role === "trainer") {
-            try {
-              const { data: trainerData } = await supabase
-                .from("trainers")
-                .select("verified, rating")
-                .eq("id", user.id)
-                .single();
-
-              if (trainerData) {
-                verified = trainerData.verified || false;
-                rating = trainerData.rating;
-              }
-            } catch (err) {
-              console.debug(`Could not fetch trainer details for ${user.id}`);
-            }
-          }
-
-          return {
-            id: user.id,
-            username: user.username || "",
-            full_name: user.full_name || "",
-            profile_picture_url: user.profile_picture_url,
-            bio: user.bio,
-            followers_count: 0,
-            rating: rating,
-            verified: verified,
-            role: user.role || "client",
-          };
-        })
-      );
+      // Transform results
+      const transformedResults: SearchUser[] = data.map((user) => ({
+        id: user.id || "",
+        username: user.username || "",
+        full_name: user.full_name || "",
+        profile_picture_url: user.profile_picture_url,
+        bio: user.bio,
+        rating: undefined,
+        verified: false,
+        role: (user.role as "client" | "trainer") || "client",
+      }));
 
       setResults(transformedResults);
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error);
-      console.error("Search error:", errorMsg);
+      console.error("Search exception:", errorMsg);
       setResults([]);
     } finally {
       setLoading(false);
