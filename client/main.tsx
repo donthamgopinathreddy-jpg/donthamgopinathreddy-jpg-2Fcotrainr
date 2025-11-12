@@ -1,7 +1,10 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 
-console.log("main.tsx: Starting app initialization at", new Date().toISOString());
+console.log(
+  "main.tsx: Starting app initialization at",
+  new Date().toISOString(),
+);
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {
@@ -15,12 +18,19 @@ const startRender = Date.now();
 
 try {
   const root = createRoot(rootElement);
-  console.log("main.tsx: React root created, rendering App at", new Date().toISOString());
+  console.log(
+    "main.tsx: React root created, rendering App at",
+    new Date().toISOString(),
+  );
 
   root.render(<App />);
 
   const renderTime = Date.now() - startRender;
-  console.log("main.tsx: App render called successfully after", renderTime, "ms");
+  console.log(
+    "main.tsx: App render called successfully after",
+    renderTime,
+    "ms",
+  );
 } catch (error) {
   const errorTime = Date.now() - startRender;
   console.error("main.tsx: Error rendering app after", errorTime, "ms:", error);
