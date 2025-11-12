@@ -766,36 +766,55 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Steps Target Edit Modal */}
+      {/* Targets Edit Modal */}
       {showTargetsModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
             <h2 className="text-lg font-bold text-gray-900">
-              Edit Daily Steps Target
+              Edit Daily Targets
             </h2>
             <p className="text-sm text-gray-600">
-              Set your daily step goal. Calories burned and water intake are
-              calculated automatically.
+              Set your daily goals. Calories burned are calculated from steps.
             </p>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Daily Steps Goal
-              </label>
-              <input
-                type="number"
-                value={editStepsTarget}
-                onChange={(e) =>
-                  setEditStepsTarget(parseInt(e.target.value) || 0)
-                }
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <p className="text-xs text-gray-500 mt-2">
-                • Calories burned = steps × 0.05 cal
-              </p>
-              <p className="text-xs text-gray-500">
-                • Water goal = weight × 30ml (currently {waterGoal}L)
-              </p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Daily Steps Goal
+                </label>
+                <input
+                  type="number"
+                  value={editStepsTarget}
+                  onChange={(e) =>
+                    setEditStepsTarget(parseInt(e.target.value) || 0)
+                  }
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., 10000"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Calories burned = steps × 0.05 cal
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Water Consumed Today (L)
+                </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  value={waterConsumed}
+                  onChange={(e) =>
+                    setWaterConsumed(parseFloat(e.target.value) || 0)
+                  }
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., 2.5"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Daily goal: {waterGoal}L (based on your weight)
+                </p>
+              </div>
             </div>
 
             <div className="flex gap-2 pt-2">
@@ -809,7 +828,7 @@ export default function Home() {
                 onClick={handleSaveTargets}
                 className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
               >
-                Save Goal
+                Save
               </button>
             </div>
           </div>
