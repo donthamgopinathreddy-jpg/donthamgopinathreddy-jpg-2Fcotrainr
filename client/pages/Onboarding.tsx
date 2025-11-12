@@ -182,6 +182,18 @@ export default function Onboarding() {
               </button>
             </div>
           )}
+
+          <div className="text-center pt-4">
+            <p className="text-muted-foreground text-sm">
+              Already have an account?{" "}
+              <button
+                onClick={() => navigate("/login")}
+                className="text-primary hover:text-primary/80 font-medium transition-colors"
+              >
+                Sign In
+              </button>
+            </p>
+          </div>
         </div>
       )}
 
