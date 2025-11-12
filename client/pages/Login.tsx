@@ -16,12 +16,13 @@ export default function Login() {
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
 
-  // Use effect to redirect when user logs in
+  // Use effect to redirect if already logged in (e.g., from browser back button)
   useEffect(() => {
     if (user) {
-      navigate("/", { replace: true });
+      // User is already authenticated, redirect to home
+      setTimeout(() => navigate("/", { replace: true }), 500);
     }
-  }, [user, navigate]);
+  }, []);
 
   const isFormComplete = email && password && password.length >= 6;
 
