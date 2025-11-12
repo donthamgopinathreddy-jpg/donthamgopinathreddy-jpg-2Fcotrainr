@@ -292,7 +292,7 @@ export default function UserProfile() {
     try {
       const { data: commentsData, error } = await supabase
         .from("post_comments")
-        .select(`id, content, user_id, created_at, users!post_comments_user_id_fkey(username, full_name)`)
+        .select("id, content, user_id, created_at")
         .eq("post_id", postId)
         .order("created_at", { ascending: true });
 
@@ -301,14 +301,29 @@ export default function UserProfile() {
         return;
       }
 
+      // Fetch user info for comments
+      const userIds = [...new Set((commentsData || []).map(c => c.user_id))];
+      let userMap: { [key: string]: any } = {};
+
+      if (userIds.length > 0) {
+        const { data: usersData } = await supabase
+          .from("users")
+          .select("id, username, full_name")
+          .in("id", userIds);
+
+        if (usersData) {
+          userMap = Object.fromEntries(usersData.map(u => [u.id, u]));
+        }
+      }
+
       const formattedComments = (commentsData || []).map((c: any) => ({
         id: c.id,
         content: c.content,
         user_id: c.user_id,
         created_at: c.created_at,
-        author: c.users ? {
-          username: c.users.username,
-          full_name: c.users.full_name,
+        author: userMap[c.user_id] ? {
+          username: userMap[c.user_id].username,
+          full_name: userMap[c.user_id].full_name,
         } : undefined,
       }));
 
