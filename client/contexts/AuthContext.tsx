@@ -50,9 +50,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         console.log("Checking auth state...");
 
-        // Add timeout to prevent hanging (5 seconds)
+        // Add timeout to prevent hanging (15 seconds for Fly.dev slowness)
         const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Auth check timeout")), 5000)
+          setTimeout(() => reject(new Error("Auth check timeout")), 15000)
         );
 
         const authPromise = (async () => {
