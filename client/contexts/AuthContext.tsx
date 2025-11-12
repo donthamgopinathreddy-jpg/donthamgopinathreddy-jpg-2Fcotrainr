@@ -52,12 +52,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         console.log("Checking auth state...");
 
-        // Set a timeout of 5 seconds for auth check (Supabase can be slow)
+        // Set a timeout of 8 seconds for auth check (Supabase can be slow on Fly.dev)
         const timeoutPromise = new Promise((resolve) => {
           setTimeout(() => {
             console.warn("Auth check timeout - proceeding without session");
             resolve(null);
-          }, 5000);
+          }, 8000);
         });
 
         const authPromise = (async () => {
