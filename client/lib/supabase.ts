@@ -28,12 +28,24 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
   }
 }
 
-// Create client with minimal configuration to avoid response handling issues
+// Custom fetch to handle proxy/middleware response body issues
+const customFetch = (url: string, options?: RequestInit) => {
+  return fetch(url, {
+    ...options,
+    // Ensure we don't cache responses that might be intercepted
+    cache: "no-store",
+  });
+};
+
+// Create client with proper configuration
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
     storage: storageImpl,
     detectSessionInUrl: true,
+  },
+  global: {
+    fetch: customFetch,
   },
 });
