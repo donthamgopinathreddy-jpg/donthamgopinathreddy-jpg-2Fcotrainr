@@ -279,7 +279,7 @@ export default function Onboarding() {
         date_of_birth: formData.dateOfBirth,
         age: age,
         weight_kg: parseFloat(formData.weight),
-        height_cm: parseFloat(formData.height),
+        height_cm: getHeightInCm(),
       });
 
       toast.success("Account created successfully!");
