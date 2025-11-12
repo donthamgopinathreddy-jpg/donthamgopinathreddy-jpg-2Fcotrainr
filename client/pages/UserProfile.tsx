@@ -1,4 +1,3 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart, MessageCircle, Loader } from "lucide-react";
