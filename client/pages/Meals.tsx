@@ -599,7 +599,7 @@ export default function Meals() {
       className={`min-h-screen pb-24 ${
         theme === "dark"
           ? "l-shape-bg fitness-gradient-4 bg-gray-950"
-          : "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
+          : "bg-white"
       }`}
     >
       <div className="max-w-md mx-auto">
@@ -634,12 +634,12 @@ export default function Meals() {
             className={`rounded-2xl p-6 space-y-5 ${
               theme === "dark"
                 ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                : "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 border border-green-200"
+                : "bg-gradient-to-br from-purple-200 via-violet-200 to-pink-200 border border-purple-300"
             }`}
           >
             <div className="flex items-center justify-between">
               <h2 className={`text-lg font-bold ${
-                theme === "dark" ? "text-white" : "text-gray-900"
+                theme === "dark" ? "text-white" : "text-purple-900"
               }`}>
                 Today's Summary
               </h2>

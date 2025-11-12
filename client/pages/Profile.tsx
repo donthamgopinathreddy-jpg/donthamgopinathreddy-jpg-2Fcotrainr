@@ -280,7 +280,7 @@ export default function Profile() {
       className={`min-h-screen pb-24 ${
         theme === "dark"
           ? "l-shape-bg fitness-gradient-1 bg-gray-950"
-          : "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
+          : "bg-white"
       }`}
     >
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
