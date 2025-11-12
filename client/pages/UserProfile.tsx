@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Heart, MessageCircle, Loader } from "lucide-react";
+import { ArrowLeft, Heart, MessageCircle, Loader, Edit2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useFollows } from "@/hooks/useFollows";
@@ -31,11 +32,14 @@ export default function UserProfile() {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { isFollowing, toggleFollow } = useFollows();
+  const { userProfile: currentUser, updateProfile } = useAuth();
   const [user, setUser] = useState<UserData | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [isTogglingFollow, setIsTogglingFollow] = useState(false);
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
+  const [editingBio, setEditingBio] = useState(false);
+  const [bioText, setBioText] = useState("");
 
   useEffect(() => {
     if (!userId) return;
@@ -57,6 +61,7 @@ export default function UserProfile() {
         }
 
         setUser(userData as UserData);
+        setBioText(userData.bio || "");
 
         // Fetch user's posts
         const { data: postsData, error: postsError } = await supabase
