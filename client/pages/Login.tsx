@@ -16,7 +16,7 @@ export default function Login() {
 
   const isFormComplete = email && password && password.length >= 6;
 
-  const handleLogin = async () => {
+  const handleLogin = async (retryCount = 0) => {
     if (!isFormComplete) return;
 
     setLoading(true);
@@ -51,6 +51,16 @@ export default function Login() {
       });
 
       if (error) {
+        // Retry on "body stream already read" error
+        if (
+          error.message?.includes("body stream already read") &&
+          retryCount < 2
+        ) {
+          console.warn(`Login retry attempt ${retryCount + 1}/2`);
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          setLoading(false);
+          return handleLogin(retryCount + 1);
+        }
         throw error;
       }
 
