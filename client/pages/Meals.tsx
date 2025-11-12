@@ -634,7 +634,7 @@ export default function Meals() {
             className={`rounded-2xl p-6 space-y-5 ${
               theme === "dark"
                 ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                : "bg-gradient-to-br from-yellow-200/60 via-amber-200/60 to-yellow-300/60 backdrop-blur-xl border border-yellow-300/40"
+                : "bg-gradient-to-br from-yellow-200/30 via-amber-200/30 to-yellow-300/30 backdrop-blur-2xl border border-yellow-300/20"
             }`}
           >
             <div className="flex items-center justify-between">
@@ -791,7 +791,7 @@ export default function Meals() {
                             className={`rounded-lg p-4 flex items-center justify-between transition-colors ${
                               theme === "dark"
                                 ? "bg-gray-700/40 border border-gray-600/40 hover:border-gray-600/60"
-                                : "bg-gradient-to-br from-yellow-100/50 to-amber-100/50 backdrop-blur-md border border-yellow-200/40 hover:border-yellow-300/60"
+                                : "bg-gradient-to-br from-yellow-100/20 to-amber-100/20 backdrop-blur-xl border border-yellow-200/15 hover:border-yellow-300/40"
                             }`}
                           >
                             <div className="flex-1">
@@ -846,7 +846,7 @@ export default function Meals() {
               className={`rounded-xl p-4 space-y-3 ${
                 theme === "dark"
                   ? "bg-gray-700/50 border border-gray-600/50 backdrop-blur-xl"
-                  : "bg-gradient-to-br from-yellow-100/50 via-amber-100/50 to-yellow-100/50 backdrop-blur-lg border border-yellow-200/40"
+                  : "bg-gradient-to-br from-yellow-100/25 via-amber-100/25 to-yellow-100/25 backdrop-blur-2xl border border-yellow-200/20"
               }`}
             >
               <h3 className={`font-bold ${
