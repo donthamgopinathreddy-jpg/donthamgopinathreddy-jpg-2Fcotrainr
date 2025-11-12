@@ -160,6 +160,8 @@
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
     overflow-wrap: anywhere;
     word-break: break-word;
+    /* Smooth theme transition */
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
   }
 
   pre,
