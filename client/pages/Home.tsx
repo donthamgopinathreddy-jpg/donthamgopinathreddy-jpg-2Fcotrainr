@@ -207,8 +207,6 @@ export default function Home() {
         return;
       }
 
-      setStepsCompleted(0);
-
       const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
       const bioValue = `0|${waterConsumed}`;
 
@@ -218,11 +216,17 @@ export default function Home() {
           .update({ bio: bioValue })
           .eq("id", userProfile.id);
 
-        if (error) throw error;
+        if (error) {
+          console.error("Supabase error:", error);
+          throw error;
+        }
       } else {
         localStorage.setItem(`targets_${userProfile.id}`, bioValue);
       }
 
+      // Update local state only after successful DB save
+      setStepsCompleted(0);
+      setShowTargetsModal(false);
       toast.success("✓ Steps reset to 0!");
     } catch (error) {
       console.error("Error resetting steps:", error);
