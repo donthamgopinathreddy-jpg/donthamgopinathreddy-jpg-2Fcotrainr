@@ -361,7 +361,7 @@ export default function Profile() {
           {/* Account Info Card */}
           <div className={`rounded-2xl p-6 space-y-3 ${
             theme === "dark"
-              ? "bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-teal-500/20 backdrop-blur-xl border border-blue-500/30"
+              ? "bg-gradient-to-br from-blue-300/40 via-cyan-300/40 to-teal-300/40 backdrop-blur-xl border border-blue-300/50"
               : "bg-card border border-border"
           }`}>
             <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Account Information</h3>
@@ -384,7 +384,7 @@ export default function Profile() {
           {/* Basic Info Card */}
           <div className={`rounded-2xl p-6 space-y-3 ${
             theme === "dark"
-              ? "bg-gradient-to-br from-purple-500/20 via-violet-500/20 to-pink-500/20 backdrop-blur-xl border border-purple-500/30"
+              ? "bg-gradient-to-br from-purple-300/40 via-violet-300/40 to-pink-300/40 backdrop-blur-xl border border-purple-300/50"
               : "bg-card border border-border"
           }`}>
             <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Basic Information</h3>
@@ -417,7 +417,7 @@ export default function Profile() {
               {user.specialties && (
                 <div className={`rounded-2xl p-6 space-y-3 ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-blue-500/20 via-indigo-500/20 to-purple-500/20 backdrop-blur-xl border border-blue-500/30"
+                    ? "bg-gradient-to-br from-blue-300/40 via-indigo-300/40 to-purple-300/40 backdrop-blur-xl border border-blue-300/50"
                     : "bg-card border border-border"
                 }`}>
                   <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Specialties</h3>
@@ -442,7 +442,7 @@ export default function Profile() {
               {user.qualifications && user.qualifications.length > 0 && (
                 <div className={`rounded-2xl p-6 space-y-3 ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-amber-500/20 via-orange-500/20 to-red-500/20 backdrop-blur-xl border border-amber-500/30"
+                    ? "bg-gradient-to-br from-amber-300/40 via-orange-300/40 to-red-300/40 backdrop-blur-xl border border-amber-300/50"
                     : "bg-card border border-border"
                 }`}>
                   <div className="flex items-center gap-2 mb-3">
@@ -464,7 +464,7 @@ export default function Profile() {
               {user.location && (
                 <div className={`rounded-2xl p-4 flex items-center gap-3 ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-green-500/20 via-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-green-500/30"
+                    ? "bg-gradient-to-br from-green-300/40 via-emerald-300/40 to-teal-300/40 backdrop-blur-xl border border-green-300/50"
                     : "bg-card border border-border"
                 }`}>
                   <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
@@ -484,7 +484,7 @@ export default function Profile() {
             <div className="grid grid-cols-3 gap-3">
               <div className={`rounded-xl p-4 text-center ${
                 theme === "dark"
-                  ? "bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-blue-500/20 backdrop-blur-xl border border-blue-500/30"
+                  ? "bg-gradient-to-br from-blue-300/40 via-cyan-300/40 to-blue-300/40 backdrop-blur-xl border border-blue-300/50"
                   : "bg-card border border-border"
               }`}>
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
@@ -492,7 +492,7 @@ export default function Profile() {
               </div>
               <div className={`rounded-xl p-4 text-center ${
                 theme === "dark"
-                  ? "bg-gradient-to-br from-purple-500/20 via-violet-500/20 to-purple-500/20 backdrop-blur-xl border border-purple-500/30"
+                  ? "bg-gradient-to-br from-purple-300/40 via-violet-300/40 to-purple-300/40 backdrop-blur-xl border border-purple-300/50"
                   : "bg-card border border-border"
               }`}>
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
@@ -500,7 +500,7 @@ export default function Profile() {
               </div>
               <div className={`rounded-xl p-4 text-center ${
                 theme === "dark"
-                  ? "bg-gradient-to-br from-pink-500/20 via-rose-500/20 to-pink-500/20 backdrop-blur-xl border border-pink-500/30"
+                  ? "bg-gradient-to-br from-pink-300/40 via-rose-300/40 to-pink-300/40 backdrop-blur-xl border border-pink-300/50"
                   : "bg-card border border-border"
               }`}>
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
@@ -971,7 +971,7 @@ export default function Profile() {
                 {/* Referral Code */}
                 <div className={`rounded-lg p-4 ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-green-500/20 via-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-green-500/30"
+                    ? "bg-gradient-to-br from-green-300/40 via-emerald-300/40 to-teal-300/40 backdrop-blur-xl border border-green-300/50"
                     : "bg-card border border-border"
                 }`}>
                   <p className={`text-xs mb-2 ${
@@ -1151,7 +1151,7 @@ export default function Profile() {
                 {/* Trainer Referral Code */}
                 <div className={`rounded-lg p-4 ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-blue-500/20 via-indigo-500/20 to-purple-500/20 backdrop-blur-xl border border-blue-500/30"
+                    ? "bg-gradient-to-br from-blue-300/40 via-indigo-300/40 to-purple-300/40 backdrop-blur-xl border border-blue-300/50"
                     : "bg-card border border-border"
                 }`}>
                   <p className={`text-xs mb-2 ${

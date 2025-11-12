@@ -340,7 +340,7 @@ export default function Meals() {
           {/* Today's Summary Card */}
           <div className={`rounded-2xl p-6 space-y-5 ${
             theme === "dark"
-              ? "bg-gradient-to-br from-green-500/20 via-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-green-500/30"
+              ? "bg-gradient-to-br from-green-300/40 via-emerald-300/40 to-teal-300/40 backdrop-blur-xl border border-green-300/50"
               : "bg-card border border-border"
           }`}>
             <div className="flex items-center justify-between">
@@ -445,7 +445,7 @@ export default function Meals() {
                             key={meal.id}
                             className={`rounded-lg p-4 flex items-center justify-between transition-colors ${
                               theme === "dark"
-                                ? "bg-green-500/10 border border-green-500/30 hover:border-green-500/50"
+                                ? "bg-green-300/20 border border-green-300/40 hover:border-green-300/60"
                                 : "bg-card border border-border hover:border-primary"
                             }`}
                           >
@@ -488,7 +488,7 @@ export default function Meals() {
           ) : (
             <div className={`rounded-xl p-4 space-y-3 ${
               theme === "dark"
-                ? "bg-gradient-to-br from-green-500/20 via-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-green-500/30"
+                ? "bg-gradient-to-br from-green-300/40 via-emerald-300/40 to-teal-300/40 backdrop-blur-xl border border-green-300/50"
                 : "bg-card border border-border"
             }`}>
               <h3 className="font-bold text-foreground">Add Meal</h3>
