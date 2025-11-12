@@ -272,25 +272,22 @@ const AppRoutes = () => {
 };
 
 const App = () => {
-  useEffect(() => {
-    // Use light theme (remove dark class if present)
-    document.documentElement.classList.remove("dark");
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <LanguageProvider>
-          <AuthProvider>
-            <BrowserRouter>
-              <AuthInitializer>
-                <Toaster />
-                <Sonner />
-                <AppRoutes />
-              </AuthInitializer>
-            </BrowserRouter>
-          </AuthProvider>
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <BrowserRouter>
+                <AuthInitializer>
+                  <Toaster />
+                  <Sonner />
+                  <AppRoutes />
+                </AuthInitializer>
+              </BrowserRouter>
+            </AuthProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
