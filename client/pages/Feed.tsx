@@ -47,6 +47,9 @@ export default function Feed() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [isTogglingId, setIsTogglingId] = useState<string | null>(null);
+  const [selectedSearchUser, setSelectedSearchUser] = useState<SearchUser | null>(null);
+  const [userPosts, setUserPosts] = useState<Post[]>([]);
+  const [loadingUserPosts, setLoadingUserPosts] = useState(false);
 
   // Debounced search
   useEffect(() => {
