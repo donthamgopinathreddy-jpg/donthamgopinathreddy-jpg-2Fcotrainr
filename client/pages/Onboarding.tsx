@@ -61,6 +61,7 @@ export default function Onboarding() {
     height: "",
     weight: "",
     age: "",
+    dateOfBirth: "",
   });
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
 
