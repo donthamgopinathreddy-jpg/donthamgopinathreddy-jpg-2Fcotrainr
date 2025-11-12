@@ -77,6 +77,7 @@ export default function Onboarding() {
     dateOfBirth: "",
   });
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const [heightUnit, setHeightUnit] = useState<"cm" | "inches">("cm");
 
   // Username availability checking
   const [usernameStatus, setUsernameStatus] = useState<
