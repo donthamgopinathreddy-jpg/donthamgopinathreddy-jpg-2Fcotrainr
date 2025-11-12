@@ -248,6 +248,161 @@ export default function UserProfile() {
     }
   };
 
+  const handleDeletePost = async (postId: string) => {
+    if (!currentUser?.id || currentUser.id !== userId) {
+      toast.error("You can only delete your own posts");
+      return;
+    }
+
+    try {
+      // Delete likes associated with post
+      await supabase
+        .from("post_likes")
+        .delete()
+        .eq("post_id", postId);
+
+      // Delete comments associated with post
+      await supabase
+        .from("post_comments")
+        .delete()
+        .eq("post_id", postId);
+
+      // Delete the post
+      const { error } = await supabase
+        .from("posts")
+        .delete()
+        .eq("id", postId)
+        .eq("user_id", currentUser.id);
+
+      if (error) {
+        toast.error("Failed to delete post");
+        return;
+      }
+
+      setPosts(posts.filter((p) => p.id !== postId));
+      setShowDeleteConfirm(null);
+      toast.success("Post deleted successfully");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      toast.error("Failed to delete post");
+    }
+  };
+
+  const fetchPostComments = async (postId: string) => {
+    try {
+      const { data: commentsData, error } = await supabase
+        .from("post_comments")
+        .select(`id, content, user_id, created_at, users!post_comments_user_id_fkey(username, full_name)`)
+        .eq("post_id", postId)
+        .order("created_at", { ascending: true });
+
+      if (error) {
+        console.error("Error fetching comments:", error);
+        return;
+      }
+
+      const formattedComments = (commentsData || []).map((c: any) => ({
+        id: c.id,
+        content: c.content,
+        user_id: c.user_id,
+        created_at: c.created_at,
+        author: c.users ? {
+          username: c.users.username,
+          full_name: c.users.full_name,
+        } : undefined,
+      }));
+
+      setPostComments((prev) => ({
+        ...prev,
+        [postId]: formattedComments,
+      }));
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+
+  const handleAddComment = async (postId: string) => {
+    if (!currentUser?.id) {
+      toast.error("You must be logged in to comment");
+      return;
+    }
+
+    const commentText = commentInput[postId]?.trim();
+    if (!commentText) {
+      toast.error("Comment cannot be empty");
+      return;
+    }
+
+    setCommentLoading((prev) => new Set(prev).add(postId));
+
+    try {
+      // Insert comment
+      const { data: newComment, error } = await supabase
+        .from("post_comments")
+        .insert({
+          post_id: postId,
+          user_id: currentUser.id,
+          content: commentText,
+        })
+        .select(`id, content, user_id, created_at, users!post_comments_user_id_fkey(username, full_name)`)
+        .single();
+
+      if (error) {
+        console.error("Error adding comment:", error);
+        toast.error("Failed to add comment");
+        return;
+      }
+
+      // Update comments_count
+      const post = posts.find(p => p.id === postId);
+      if (post) {
+        await supabase
+          .from("posts")
+          .update({ comments_count: post.comments_count + 1 })
+          .eq("id", postId);
+      }
+
+      // Update local state
+      setPosts((prev) =>
+        prev.map((p) =>
+          p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p
+        )
+      );
+
+      const formattedComment = {
+        id: newComment.id,
+        content: newComment.content,
+        user_id: newComment.user_id,
+        created_at: newComment.created_at,
+        author: newComment.users ? {
+          username: newComment.users.username,
+          full_name: newComment.users.full_name,
+        } : undefined,
+      };
+
+      setPostComments((prev) => ({
+        ...prev,
+        [postId]: [...(prev[postId] || []), formattedComment],
+      }));
+
+      setCommentInput((prev) => ({
+        ...prev,
+        [postId]: "",
+      }));
+
+      toast.success("Comment added!");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      toast.error("Failed to add comment");
+    } finally {
+      setCommentLoading((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(postId);
+        return newSet;
+      });
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
