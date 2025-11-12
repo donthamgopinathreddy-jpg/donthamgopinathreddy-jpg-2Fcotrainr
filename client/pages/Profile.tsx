@@ -16,9 +16,9 @@ import {
   Check,
   Loader,
 } from "lucide-react";
-import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
