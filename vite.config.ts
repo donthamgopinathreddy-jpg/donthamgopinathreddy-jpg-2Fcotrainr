@@ -15,6 +15,14 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     outDir: "dist/spa",
+    sourcemap: mode === "development",
+    target: "es2015",
+    minify: "terser",
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   },
   plugins: [react(), expressPlugin()],
   resolve: {
