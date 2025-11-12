@@ -103,6 +103,32 @@ export default function Onboarding() {
     passwordRegex.upperCase.test(formData.password) &&
     passwordRegex.specialChar.test(formData.password);
 
+  // Helper functions for height conversion
+  const cmToInches = (cm: number): number => {
+    return Math.round((cm / 2.54) * 10) / 10;
+  };
+
+  const inchesToCm = (inches: number): number => {
+    return Math.round(inches * 2.54);
+  };
+
+  const getHeightInCm = (): number => {
+    if (!formData.height.trim()) return 0;
+    if (heightUnit === "inches") {
+      return inchesToCm(parseFloat(formData.height));
+    }
+    return parseFloat(formData.height);
+  };
+
+  const getHeightDisplay = (): string => {
+    if (!formData.height.trim()) return "";
+    if (heightUnit === "cm") {
+      return formData.height;
+    } else {
+      return cmToInches(parseFloat(formData.height)).toString();
+    }
+  };
+
   // Check username availability
   useEffect(() => {
     if (!formData.username) {
