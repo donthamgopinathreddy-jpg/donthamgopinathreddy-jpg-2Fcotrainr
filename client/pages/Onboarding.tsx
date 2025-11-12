@@ -695,29 +695,46 @@ export default function Onboarding() {
         </div>
       )}
 
-      {/* Age Step */}
-      {step === "age" && (
+      {/* Date of Birth Step */}
+      {step === "dateOfBirth" && (
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">How old are you?</h2>
-              <p className="text-muted-foreground">This helps us suggest appropriate workouts</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">What's your date of birth?</h2>
+              <p className="text-muted-foreground">This helps us create personalized workout recommendations</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Age</label>
+              <label className="block text-sm font-medium text-foreground mb-2">Date of Birth</label>
               <input
-                type="number"
-                placeholder="25"
-                value={formData.age}
-                onChange={(e) => setFormData((prev) => ({ ...prev, age: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                type="date"
+                value={formData.dateOfBirth}
+                onChange={(e) => setFormData((prev) => ({ ...prev, dateOfBirth: e.target.value }))}
+                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
 
+            {formData.dateOfBirth && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <p className="text-sm text-blue-900">
+                  <strong>Age:</strong> {(() => {
+                    const today = new Date();
+                    const birthDate = new Date(formData.dateOfBirth);
+                    let age = today.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = today.getMonth() - birthDate.getMonth();
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                      age--;
+                    }
+                    return age;
+                  })()}
+                  {" "} years
+                </p>
+              </div>
+            )}
+
             <button
               onClick={handleNext}
-              disabled={!formData.age.trim() || loading}
+              disabled={!formData.dateOfBirth || loading}
               className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
             >
               Continue
