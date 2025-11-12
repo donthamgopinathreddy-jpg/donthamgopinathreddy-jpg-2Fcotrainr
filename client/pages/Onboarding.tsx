@@ -213,13 +213,26 @@ export default function Onboarding() {
     if (!userRole) return;
     setLoading(true);
     try {
+      // Calculate age from date of birth
+      let age = 25; // default
+      if (formData.dateOfBirth) {
+        const today = new Date();
+        const birthDate = new Date(formData.dateOfBirth);
+        age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+      }
+
       await signUp(formData.email, formData.password, {
         username: formData.username,
         full_name: formData.fullName,
         role: userRole,
         gender: formData.gender as Gender,
         phone_number: `${formData.countryCode} ${formData.phoneNumber}`,
-        age: parseInt(formData.age),
+        date_of_birth: formData.dateOfBirth,
+        age: age,
         weight_kg: parseFloat(formData.weight),
         height_cm: parseFloat(formData.height),
       });
