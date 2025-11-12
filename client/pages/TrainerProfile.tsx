@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Star, MapPin, Check, MessageCircle, Calendar } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface TrainerDetails {
   id: string;
@@ -59,6 +60,7 @@ const TIME_SLOTS = [
 
 export default function TrainerProfile() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const trainer = MOCK_TRAINER;
   const [selectedDate, setSelectedDate] = useState("Today");
   const [selectedTime, setSelectedTime] = useState("");
@@ -84,10 +86,18 @@ export default function TrainerProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className={`min-h-screen pb-24 ${
+      theme === "light"
+        ? "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
+        : "bg-gray-950"
+    }`}>
       <div className="max-w-md mx-auto">
         {/* Header with Back Button */}
-        <div className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b border-border px-4 py-4 flex items-center gap-3">
+        <div className={`sticky top-0 z-40 backdrop-blur border-b px-4 py-4 flex items-center gap-3 ${
+          theme === "light"
+            ? "bg-gradient-to-r from-red-50/80 to-orange-50/80 border-orange-200"
+            : "bg-gray-900/80 border-gray-800"
+        }`}>
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-card rounded-lg transition-colors"
