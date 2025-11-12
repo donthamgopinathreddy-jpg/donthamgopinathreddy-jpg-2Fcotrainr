@@ -26,22 +26,46 @@ export const useSearch = () => {
 
     setLoading(true);
     try {
-      const searchTerm = `%${query.toLowerCase()}%`;
+      const searchTerm = query.toLowerCase();
 
-      // Search in users table by username or full_name
-      const { data, error } = await supabase
+      // Search in users table - try username first
+      const { data: usernameResults, error: usernameError } = await supabase
         .from("users")
         .select(
           "id, username, full_name, profile_picture_url, location, bio, role, verified"
         )
-        .or(
-          `username.ilike.${searchTerm},full_name.ilike.${searchTerm}`
-        )
+        .ilike("username", `%${searchTerm}%`)
         .limit(20);
 
-      if (error) {
-        const errorMsg = error?.message || JSON.stringify(error) || "Unknown error";
-        console.error("Error searching users:", errorMsg);
+      // Search by full_name if needed
+      const { data: nameResults, error: nameError } = await supabase
+        .from("users")
+        .select(
+          "id, username, full_name, profile_picture_url, location, bio, role, verified"
+        )
+        .ilike("full_name", `%${searchTerm}%`)
+        .limit(20);
+
+      if (usernameError) {
+        const errorMsg = usernameError?.message || "Failed to search by username";
+        console.error("Error searching users by username:", errorMsg);
+      }
+
+      if (nameError) {
+        const errorMsg = nameError?.message || "Failed to search by name";
+        console.error("Error searching users by name:", errorMsg);
+      }
+
+      // Combine results and remove duplicates
+      const allData = [
+        ...(usernameResults || []),
+        ...(nameResults || []),
+      ];
+      const uniqueData = Array.from(
+        new Map(allData.map((user) => [user.id, user])).values()
+      );
+
+      if (!uniqueData.length) {
         setResults([]);
         return;
       }
