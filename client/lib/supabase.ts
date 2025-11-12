@@ -29,12 +29,34 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
 }
 
 // Custom fetch to handle proxy/middleware response body issues
-const customFetch = (url: string, options?: RequestInit) => {
-  return fetch(url, {
-    ...options,
-    // Ensure we don't cache responses that might be intercepted
-    cache: "no-store",
-  });
+const customFetch = async (url: string, options?: RequestInit) => {
+  try {
+    const response = await fetch(url, {
+      ...options,
+      cache: "no-store",
+      headers: {
+        ...options?.headers,
+        // Add headers to prevent proxy interference
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+      },
+    });
+
+    // Handle response body reading issues
+    if (!response.ok && response.status >= 500) {
+      // Clone the response to avoid "body already read" issues
+      const cloned = response.clone();
+      const text = await cloned.text();
+      throw new Error(`Server error ${response.status}: ${text}`);
+    }
+
+    return response;
+  } catch (error: any) {
+    // Log fetch errors for debugging
+    console.error("Fetch error:", error);
+    throw error;
+  }
 };
 
 // Create client with proper configuration
@@ -44,8 +66,12 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     storage: storageImpl,
     detectSessionInUrl: true,
+    flowType: "implicit",
   },
   global: {
     fetch: customFetch,
+    headers: {
+      "Cache-Control": "no-cache",
+    },
   },
 });
