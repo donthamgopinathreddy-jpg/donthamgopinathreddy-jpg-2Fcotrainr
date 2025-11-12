@@ -634,12 +634,12 @@ export default function Meals() {
             className={`rounded-2xl p-6 space-y-5 ${
               theme === "dark"
                 ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                : "bg-gradient-to-br from-purple-200 via-violet-200 to-pink-200 border border-purple-300"
+                : "bg-gradient-to-br from-green-200 via-emerald-200 to-teal-200 border border-green-300"
             }`}
           >
             <div className="flex items-center justify-between">
               <h2 className={`text-lg font-bold ${
-                theme === "dark" ? "text-white" : "text-purple-900"
+                theme === "dark" ? "text-white" : "text-green-900"
               }`}>
                 Today's Summary
               </h2>
@@ -799,7 +799,7 @@ export default function Meals() {
                             className={`rounded-lg p-4 flex items-center justify-between transition-colors ${
                               theme === "dark"
                                 ? "bg-gray-700/40 border border-gray-600/40 hover:border-gray-600/60"
-                                : "bg-gradient-to-br from-purple-100 to-pink-100 border border-purple-200 hover:border-purple-300"
+                                : "bg-gradient-to-br from-green-100 to-teal-100 border border-green-200 hover:border-green-300"
                             }`}
                           >
                             <div className="flex-1">
@@ -854,7 +854,7 @@ export default function Meals() {
               className={`rounded-xl p-4 space-y-3 ${
                 theme === "dark"
                   ? "bg-gray-700/50 border border-gray-600/50 backdrop-blur-xl"
-                  : "bg-gradient-to-br from-purple-100 via-violet-100 to-pink-100 border border-purple-200"
+                  : "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 border border-green-200"
               }`}
             >
               <h3 className={`font-bold ${
