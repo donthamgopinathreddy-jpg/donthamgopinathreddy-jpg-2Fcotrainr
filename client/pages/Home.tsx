@@ -404,6 +404,22 @@ export default function Home() {
             </p>
           </button>
 
+          {/* Quick Add Steps Buttons */}
+          <div className="flex gap-2 pt-2">
+            <button
+              onClick={() => handleAddSteps(100)}
+              className="flex-1 bg-orange-100 hover:bg-orange-200 text-orange-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+            >
+              +100 steps
+            </button>
+            <button
+              onClick={() => handleAddSteps(500)}
+              className="flex-1 bg-orange-100 hover:bg-orange-200 text-orange-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+            >
+              +500 steps
+            </button>
+          </div>
+
           {/* Calories Progress */}
           <button
             onClick={() => navigate("/activity/calories")}
