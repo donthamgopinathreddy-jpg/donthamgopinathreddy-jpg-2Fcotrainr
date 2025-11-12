@@ -169,8 +169,8 @@ export default function Onboarding() {
     } else if (step === "height" && formData.height.trim()) {
       setStep("weight");
     } else if (step === "weight" && formData.weight.trim()) {
-      setStep("age");
-    } else if (step === "age" && formData.age.trim()) {
+      setStep("dateOfBirth");
+    } else if (step === "dateOfBirth" && formData.dateOfBirth) {
       setStep("permissions");
     }
   };
