@@ -176,27 +176,42 @@ export default function Profile() {
   };
 
   const handleProfilePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const reader = new FileReader();
-      reader.onload = async (event) => {
-        const dataUrl = event.target?.result as string;
-        setUser((prev) => ({
-          ...prev,
-          profilePhoto: dataUrl,
-        }));
+    if (!e.target.files?.[0] || !userProfile?.id) return;
 
-        try {
-          // Save profile picture to database
-          await updateProfile({
-            profile_picture_url: dataUrl,
-          });
-          toast.success("✓ Profile photo updated!");
-        } catch (error) {
-          console.error("Error uploading profile photo:", error);
-          toast.error("Failed to upload profile photo");
-        }
-      };
-      reader.readAsDataURL(e.target.files[0]);
+    const file = e.target.files[0];
+    setIsSaving(true);
+
+    try {
+      // Upload file to Supabase Storage
+      const fileName = `${userProfile.id}-${Date.now()}-${file.name}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("profile-photos")
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from("profile-photos")
+        .getPublicUrl(uploadData.path);
+
+      // Save URL to database
+      await updateProfile({
+        profile_picture_url: urlData.publicUrl,
+      });
+
+      // Update local state
+      setUser((prev) => ({
+        ...prev,
+        profilePhoto: urlData.publicUrl,
+      }));
+
+      toast.success("✓ Profile photo updated!");
+    } catch (error: any) {
+      console.error("Error uploading profile photo:", error);
+      toast.error("Failed to upload profile photo");
+    } finally {
+      setIsSaving(false);
     }
   };
 
