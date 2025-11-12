@@ -151,16 +151,20 @@ export default function Meals() {
 
   // Convert Supabase meals to local format for display
   const mealEntries = useMemo(() =>
-    meals.map((meal) => ({
-      id: meal.id,
-      name: meal.food_name,
-      weight: meal.weight_g,
-      calories: meal.calories,
-      protein: meal.protein_g,
-      carbs: meal.carbs_g,
-      fat: meal.fat_g,
-      mealType: meal.meal_type || "snack",
-    })),
+    meals.map((meal) => {
+      // Find the UI ID that matches this meal's DB value
+      const mealTypeUI = MEAL_TYPES.find((t) => t.dbValue === meal.meal_type)?.id || "evening-snack";
+      return {
+        id: meal.id,
+        name: meal.food_name,
+        weight: meal.weight_g,
+        calories: meal.calories,
+        protein: meal.protein_g,
+        carbs: meal.carbs_g,
+        fat: meal.fat_g,
+        mealType: mealTypeUI,
+      };
+    }),
     [meals]
   );
 
