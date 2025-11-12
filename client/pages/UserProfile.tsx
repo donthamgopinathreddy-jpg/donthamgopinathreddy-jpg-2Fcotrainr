@@ -236,40 +236,45 @@ export default function UserProfile() {
               : "bg-gray-900 border-gray-800"
           }`}
         >
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <div
-                className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl ${
-                  theme === "light" ? "bg-gray-300 text-gray-700" : "bg-gray-700 text-white"
+          <div className="flex items-center gap-4 mb-4">
+            {/* Profile Picture */}
+            <img
+              src={
+                user.profile_picture_url ||
+                `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`
+              }
+              alt={user.full_name}
+              className="w-20 h-20 rounded-full object-cover border-2 border-gray-300"
+            />
+
+            {/* User Info */}
+            <div className="flex-1">
+              <h1
+                className={`text-2xl font-bold ${
+                  theme === "light" ? "text-gray-900" : "text-white"
                 }`}
               >
-                {user.full_name.charAt(0)}
-              </div>
-              <div>
-                <h1
-                  className={`text-2xl font-bold ${
-                    theme === "light" ? "text-gray-900" : "text-white"
-                  }`}
-                >
-                  {user.full_name}
-                </h1>
-                <p
-                  className={theme === "light" ? "text-gray-600" : "text-gray-400"}
-                >
-                  @{user.username}
-                </p>
-                {user.role === "trainer" && (
-                  <span className="text-xs bg-blue-100 text-blue-900 px-2 py-1 rounded mt-1 inline-block">
-                    Trainer
-                  </span>
-                )}
-              </div>
+                {user.full_name}
+              </h1>
+              <p
+                className={theme === "light" ? "text-gray-600" : "text-gray-400"}
+              >
+                @{user.username}
+              </p>
+              {user.role === "trainer" && (
+                <span className="text-xs bg-blue-100 text-blue-900 px-2 py-1 rounded mt-1 inline-block">
+                  Trainer
+                </span>
+              )}
             </div>
+          </div>
 
+          {/* Follow Button */}
+          <div className="mb-4">
             <button
               onClick={handleFollow}
               disabled={isTogglingFollow}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${
+              className={`w-full px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${
                 isFollowing(user.id)
                   ? theme === "light"
                     ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -281,15 +286,81 @@ export default function UserProfile() {
             </button>
           </div>
 
-          {user.bio && (
-            <p
-              className={`text-sm ${
-                theme === "light" ? "text-gray-700" : "text-gray-300"
-              }`}
-            >
-              {user.bio}
-            </p>
-          )}
+          {/* Bio Section */}
+          <div className="mb-4">
+            {currentUser?.id === userId && editingBio ? (
+              <div className="space-y-2">
+                <textarea
+                  value={bioText}
+                  onChange={(e) =>
+                    setBioText(e.target.value.slice(0, 120))
+                  }
+                  maxLength={120}
+                  placeholder="Add a bio (max 120 characters)..."
+                  className={`w-full px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
+                    theme === "light"
+                      ? "bg-white border-gray-300 text-gray-900"
+                      : "bg-gray-800 border-gray-700 text-white"
+                  }`}
+                  rows={2}
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleSaveBio}
+                    className="flex-1 px-3 py-1 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-colors text-sm"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={() => {
+                      setEditingBio(false);
+                      setBioText(user.bio || "");
+                    }}
+                    className={`flex-1 px-3 py-1 rounded-lg font-medium transition-colors text-sm ${
+                      theme === "light"
+                        ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        : "bg-gray-700 text-white hover:bg-gray-600"
+                    }`}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                {bioText ? (
+                  <p
+                    className={`text-sm mb-2 ${
+                      theme === "light" ? "text-gray-700" : "text-gray-300"
+                    }`}
+                  >
+                    {bioText}
+                  </p>
+                ) : currentUser?.id === userId ? (
+                  <p
+                    className={`text-sm italic ${
+                      theme === "light" ? "text-gray-500" : "text-gray-500"
+                    }`}
+                  >
+                    No bio yet
+                  </p>
+                ) : null}
+                {currentUser?.id === userId && (
+                  <button
+                    onClick={() => setEditingBio(true)}
+                    className={`flex items-center gap-1 text-xs font-medium transition-colors ${
+                      theme === "light"
+                        ? "text-blue-600 hover:text-blue-700"
+                        : "text-blue-400 hover:text-blue-300"
+                    }`}
+                  >
+                    <Edit2 className="w-3 h-3" />
+                    Edit Bio
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Posts */}
