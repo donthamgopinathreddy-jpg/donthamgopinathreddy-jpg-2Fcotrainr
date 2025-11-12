@@ -226,7 +226,7 @@ export default function Feed() {
               className={`w-full px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary ${
                 theme === "light"
                   ? "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
-                  : "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  : "bg-gray-700 border-gray-600 text-black placeholder-gray-400"
               }`}
             />
 
@@ -259,14 +259,14 @@ export default function Feed() {
                         <div className="flex items-center gap-2 flex-1 min-w-0">
                           <div
                             className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs ${
-                              theme === "light" ? "bg-gray-300 text-gray-700" : "bg-gray-600 text-white"
+                              theme === "light" ? "bg-gray-300 text-gray-700" : "bg-gray-600 text-black"
                             }`}
                           >
                             {user.full_name.charAt(0)}
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className={`text-sm font-semibold truncate ${
-                              theme === "light" ? "text-gray-900" : "text-white"
+                              theme === "light" ? "text-gray-900" : "text-black"
                             }`}>
                               {user.full_name}
                             </p>
@@ -285,7 +285,7 @@ export default function Feed() {
                             isFollowing(user.id)
                               ? theme === "light"
                                 ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                                : "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                                : "bg-gray-600 text-black hover:bg-gray-500"
                               : "bg-primary text-primary-foreground hover:opacity-90"
                           }`}
                         >
