@@ -71,8 +71,18 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
 
   const setLanguage = (lang: LanguageCode) => {
     setLanguageState(lang);
-    localStorage.setItem("userLanguage", lang);
-    document.documentElement.lang = lang;
+    try {
+      localStorage.setItem("userLanguage", lang);
+    } catch (error) {
+      console.debug("Error saving language preference:", error);
+    }
+    try {
+      if (document?.documentElement) {
+        document.documentElement.lang = lang;
+      }
+    } catch (error) {
+      console.debug("Error setting document language:", error);
+    }
   };
 
   const getCurrentTranslations = () => {
