@@ -72,9 +72,13 @@ export default function Profile() {
       setUser(newUserState);
       setEditForm({
         name: userProfile.full_name || "User",
+        email: userProfile.email || "",
+        phone: userProfile.phone_number || "",
         gender: userProfile.gender || "Not specified",
         height: userProfile.height_cm || 170,
         weight: userProfile.weight_kg || 70,
+        dateOfBirth: userProfile.date_of_birth || "",
+        age: userProfile.age || 25,
       });
     }
   }, [userProfile]);
