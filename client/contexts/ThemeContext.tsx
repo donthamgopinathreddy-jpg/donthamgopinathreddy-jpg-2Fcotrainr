@@ -12,33 +12,40 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setThemeState] = useState<ThemeMode>("light");
-  const [mounted, setMounted] = useState(false);
 
   // Load theme from localStorage on mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as ThemeMode | null;
-    if (savedTheme) {
-      setThemeState(savedTheme);
-      applyTheme(savedTheme);
-    } else {
-      setThemeState("light");
+    try {
+      const savedTheme = localStorage.getItem("theme") as ThemeMode | null;
+      const themeToApply = savedTheme || "light";
+      setThemeState(themeToApply);
+      applyTheme(themeToApply);
+    } catch (error) {
+      console.debug("Theme loading error:", error);
       applyTheme("light");
     }
-    setMounted(true);
   }, []);
 
   const applyTheme = (newTheme: ThemeMode) => {
-    const htmlElement = document.documentElement;
-    if (newTheme === "dark") {
-      htmlElement.classList.add("dark");
-    } else {
-      htmlElement.classList.remove("dark");
+    try {
+      const htmlElement = document.documentElement;
+      if (newTheme === "dark") {
+        htmlElement.classList.add("dark");
+      } else {
+        htmlElement.classList.remove("dark");
+      }
+    } catch (error) {
+      console.debug("Error applying theme:", error);
     }
   };
 
   const setTheme = (newTheme: ThemeMode) => {
     setThemeState(newTheme);
-    localStorage.setItem("theme", newTheme);
+    try {
+      localStorage.setItem("theme", newTheme);
+    } catch (error) {
+      console.debug("Error saving theme:", error);
+    }
     applyTheme(newTheme);
   };
 
@@ -46,10 +53,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
   };
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
