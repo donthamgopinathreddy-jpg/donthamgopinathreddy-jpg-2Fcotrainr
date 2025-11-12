@@ -203,9 +203,10 @@ export default function Profile() {
 
       toast.success("✓ Profile updated successfully!");
       setShowEditModal(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving profile:", error);
-      toast.error("Failed to update profile");
+      const errorMsg = error?.message || String(error) || "Failed to update profile";
+      toast.error(errorMsg);
     } finally {
       setIsSaving(false);
     }
