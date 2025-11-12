@@ -200,6 +200,36 @@ export default function Home() {
     }
   };
 
+  const handleResetSteps = async () => {
+    try {
+      if (!userProfile?.id) {
+        toast.error("User not found");
+        return;
+      }
+
+      setStepsCompleted(0);
+
+      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+      const bioValue = `0|${waterConsumed}`;
+
+      if (!isDemoMode) {
+        const { error } = await supabase
+          .from("users")
+          .update({ bio: bioValue })
+          .eq("id", userProfile.id);
+
+        if (error) throw error;
+      } else {
+        localStorage.setItem(`targets_${userProfile.id}`, bioValue);
+      }
+
+      toast.success("✓ Steps reset to 0!");
+    } catch (error) {
+      console.error("Error resetting steps:", error);
+      toast.error("Failed to reset steps");
+    }
+  };
+
   const handleAddSteps = async (amount: number) => {
     try {
       if (!userProfile?.id) {
