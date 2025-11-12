@@ -25,17 +25,24 @@ export default function Login() {
 
       // If user entered a username (no @ symbol), look up their email
       if (!email.includes("@")) {
-        const { data: userData, error: userError } = await supabase
-          .from("users")
-          .select("email")
-          .eq("username", email)
-          .single();
+        try {
+          const { data: userData } = await supabase
+            .from("users")
+            .select("email")
+            .eq("username", email.toLowerCase())
+            .single();
 
-        if (userError || !userData) {
-          throw new Error("User not found");
+          if (userData?.email) {
+            loginEmail = userData.email;
+          } else {
+            // If username not found, assume it's an email anyway and try
+            loginEmail = email;
+          }
+        } catch (err) {
+          // If lookup fails, try the input as-is (might be email)
+          console.warn("Username lookup failed, trying as email:", err);
+          loginEmail = email;
         }
-
-        loginEmail = userData.email;
       }
 
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -43,15 +50,18 @@ export default function Login() {
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
       if (data.user) {
         toast.success("Login successful!");
-        navigate("/");
+        setTimeout(() => navigate("/"), 1000);
       }
     } catch (error: any) {
       console.error("Login error:", error);
-      toast.error(error.message || "Failed to login");
+      const errorMsg = error?.message || error?.status || "Failed to login";
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
