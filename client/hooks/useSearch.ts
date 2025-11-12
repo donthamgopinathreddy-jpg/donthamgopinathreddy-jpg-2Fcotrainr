@@ -26,7 +26,7 @@ export const useSearch = () => {
 
     setLoading(true);
     try {
-      const searchTerm = query.toLowerCase();
+      const searchTerm = `%${query.toLowerCase()}%`;
 
       // Search in users table by username or full_name
       const { data, error } = await supabase
@@ -35,18 +35,19 @@ export const useSearch = () => {
           "id, username, full_name, profile_picture_url, location, bio, role, verified"
         )
         .or(
-          `username.ilike.%${searchTerm}%,full_name.ilike.%${searchTerm}%`
+          `username.ilike.${searchTerm},full_name.ilike.${searchTerm}`
         )
         .limit(20);
 
       if (error) {
-        console.error("Error searching users:", error);
+        const errorMsg = error?.message || JSON.stringify(error) || "Unknown error";
+        console.error("Error searching users:", errorMsg);
         setResults([]);
         return;
       }
 
       // Get followers count and rating for each user
-      if (data) {
+      if (data && data.length > 0) {
         const usersWithStats = await Promise.all(
           data.map(async (user) => {
             try {
@@ -74,7 +75,8 @@ export const useSearch = () => {
                 rating: rating,
               };
             } catch (err) {
-              console.error(`Error getting stats for user ${user.id}:`, err);
+              const errMsg = err instanceof Error ? err.message : String(err);
+              console.error(`Error getting stats for user ${user.id}:`, errMsg);
               return {
                 ...user,
                 followers_count: 0,
@@ -85,9 +87,12 @@ export const useSearch = () => {
         );
 
         setResults(usersWithStats as SearchUser[]);
+      } else {
+        setResults([]);
       }
     } catch (error) {
-      console.error("Search error:", error);
+      const errorMsg = error instanceof Error ? error.message : JSON.stringify(error);
+      console.error("Search error:", errorMsg);
       setResults([]);
     } finally {
       setLoading(false);
