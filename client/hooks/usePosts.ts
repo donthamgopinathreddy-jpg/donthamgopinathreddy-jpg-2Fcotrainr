@@ -31,10 +31,25 @@ export const usePosts = () => {
   const [loading, setLoading] = useState(false);
   const [userLikes, setUserLikes] = useState<Set<string>>(new Set());
 
+  // Check if user is in demo mode
+  const isDemoMode = () => {
+    return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
+  };
+
   // Fetch all posts with author details
   const fetchPosts = async () => {
     setLoading(true);
     try {
+      const isDemo = isDemoMode();
+
+      if (isDemo) {
+        // Load from localStorage in demo mode
+        const demoPosts = localStorage.getItem(`posts_demo_${user?.id}`);
+        setPosts(demoPosts ? JSON.parse(demoPosts) : []);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("posts")
         .select("*")
@@ -78,6 +93,35 @@ export const usePosts = () => {
     if (!user) return;
 
     try {
+      const isDemo = isDemoMode();
+      const createdAt = new Date().toISOString();
+
+      if (isDemo) {
+        // Create post in localStorage in demo mode
+        const newPost: Post = {
+          id: `local-${Date.now()}`,
+          user_id: user.id,
+          content: postInput.content,
+          image_url: postInput.image_url,
+          video_url: postInput.video_url,
+          likes_count: 0,
+          comments_count: 0,
+          shares_count: 0,
+          created_at: createdAt,
+          updated_at: createdAt,
+          author_name: user.user_metadata?.full_name || "You",
+          author_avatar: user.user_metadata?.picture,
+        };
+
+        const demoPosts = localStorage.getItem(`posts_demo_${user.id}`);
+        const existingPosts = demoPosts ? JSON.parse(demoPosts) : [];
+        const updatedPosts = [newPost, ...existingPosts];
+
+        localStorage.setItem(`posts_demo_${user.id}`, JSON.stringify(updatedPosts));
+        setPosts(updatedPosts);
+        return newPost;
+      }
+
       const { data, error } = await supabase
         .from("posts")
         .insert({
@@ -114,6 +158,20 @@ export const usePosts = () => {
   // Delete a post
   const deletePost = async (postId: string) => {
     try {
+      const isDemo = isDemoMode();
+
+      if (isDemo) {
+        // Delete from localStorage in demo mode
+        const demoPosts = localStorage.getItem(`posts_demo_${user?.id}`);
+        if (demoPosts) {
+          const existingPosts = JSON.parse(demoPosts);
+          const updatedPosts = existingPosts.filter((p: Post) => p.id !== postId);
+          localStorage.setItem(`posts_demo_${user?.id}`, JSON.stringify(updatedPosts));
+        }
+        setPosts((prev) => prev.filter((p) => p.id !== postId));
+        return;
+      }
+
       const { error } = await supabase
         .from("posts")
         .delete()
@@ -153,6 +211,23 @@ export const usePosts = () => {
         )
       );
 
+      const isDemo = isDemoMode();
+
+      if (isDemo) {
+        // Update in localStorage in demo mode
+        const demoPosts = localStorage.getItem(`posts_demo_${user?.id}`);
+        if (demoPosts) {
+          const existingPosts = JSON.parse(demoPosts);
+          const updatedPosts = existingPosts.map((p: Post) =>
+            p.id === postId
+              ? { ...p, likes_count: Math.max(0, p.likes_count + delta) }
+              : p
+          );
+          localStorage.setItem(`posts_demo_${user?.id}`, JSON.stringify(updatedPosts));
+        }
+        return;
+      }
+
       // Update in database
       const { data, error } = await supabase
         .from("posts")
@@ -184,6 +259,21 @@ export const usePosts = () => {
           p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p
         )
       );
+
+      const isDemo = isDemoMode();
+
+      if (isDemo) {
+        // Update in localStorage in demo mode
+        const demoPosts = localStorage.getItem(`posts_demo_${user?.id}`);
+        if (demoPosts) {
+          const existingPosts = JSON.parse(demoPosts);
+          const updatedPosts = existingPosts.map((p: Post) =>
+            p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p
+          );
+          localStorage.setItem(`posts_demo_${user?.id}`, JSON.stringify(updatedPosts));
+        }
+        return;
+      }
 
       const { data, error } = await supabase
         .from("posts")
