@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Plus, Minus, TrendingUp, Sunrise, Apple, UtensilsCrossed, Moon, Clock, Settings } from "lucide-react";
-import Logo from "@/components/Logo";
 import { useMeals } from "@/hooks/useMeals";
+import { useTheme } from "@/contexts/ThemeContext";
 import { toast } from "sonner";
 
 interface MealEntry {
