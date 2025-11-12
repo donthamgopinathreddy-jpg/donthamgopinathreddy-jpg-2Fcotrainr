@@ -27,12 +27,27 @@ export const useMessages = (recipientId?: string) => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // Check if user is in demo mode
+  const isDemoMode = () => {
+    return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
+  };
+
   // Fetch conversations for current user
   const fetchConversations = async () => {
     if (!user) return;
 
     setLoading(true);
     try {
+      const isDemo = isDemoMode();
+
+      if (isDemo) {
+        // Load from localStorage in demo mode
+        const demoConversations = localStorage.getItem(`conversations_demo_${user.id}`);
+        setConversations(demoConversations ? JSON.parse(demoConversations) : []);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("messages")
         .select("*")
@@ -79,8 +94,8 @@ export const useMessages = (recipientId?: string) => {
         }
       }
 
-      setConversations(conversationList.sort((a, b) => 
-        new Date(b.last_message_time || 0).getTime() - 
+      setConversations(conversationList.sort((a, b) =>
+        new Date(b.last_message_time || 0).getTime() -
         new Date(a.last_message_time || 0).getTime()
       ));
     } catch (error) {
@@ -96,6 +111,16 @@ export const useMessages = (recipientId?: string) => {
 
     setLoading(true);
     try {
+      const isDemo = isDemoMode();
+
+      if (isDemo) {
+        // Load from localStorage in demo mode
+        const demoMessages = localStorage.getItem(`messages_demo_${user.id}_${otherUserId}`);
+        setMessages(demoMessages ? JSON.parse(demoMessages) : []);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("messages")
         .select("*")
@@ -132,6 +157,50 @@ export const useMessages = (recipientId?: string) => {
     if (!user) return;
 
     try {
+      const isDemo = isDemoMode();
+      const createdAt = new Date().toISOString();
+
+      if (isDemo) {
+        // Save to localStorage in demo mode
+        const newMessage: Message = {
+          id: `local-${Date.now()}`,
+          sender_id: user.id,
+          recipient_id: recipientId,
+          content,
+          is_read: false,
+          created_at: createdAt,
+        };
+
+        const key = `messages_demo_${user.id}_${recipientId}`;
+        const demoMessages = localStorage.getItem(key);
+        const existingMessages = demoMessages ? JSON.parse(demoMessages) : [];
+        const updatedMessages = [...existingMessages, newMessage];
+
+        localStorage.setItem(key, JSON.stringify(updatedMessages));
+        setMessages((prev) => [...prev, newMessage]);
+
+        // Update conversations
+        const conversationsKey = `conversations_demo_${user.id}`;
+        const demoConversations = localStorage.getItem(conversationsKey);
+        const existingConversations = demoConversations ? JSON.parse(demoConversations) : [];
+
+        const conversationIndex = existingConversations.findIndex(
+          (c: Conversation) => c.other_user_id === recipientId
+        );
+
+        if (conversationIndex >= 0) {
+          existingConversations[conversationIndex] = {
+            ...existingConversations[conversationIndex],
+            last_message: content,
+            last_message_time: createdAt,
+          };
+        }
+
+        localStorage.setItem(conversationsKey, JSON.stringify(existingConversations));
+
+        return newMessage;
+      }
+
       const { data, error } = await supabase
         .from("messages")
         .insert({
