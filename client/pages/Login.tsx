@@ -20,9 +20,9 @@ export default function Login() {
   useEffect(() => {
     if (user) {
       // User is already authenticated, redirect to home
-      setTimeout(() => navigate("/", { replace: true }), 500);
+      navigate("/", { replace: true });
     }
-  }, []);
+  }, [user]);
 
   const isFormComplete = email && password && password.length >= 6;
 
