@@ -98,7 +98,7 @@ const RoleBasedHome = () => {
   return <Home />;
 };
 
-const AuthInitializer = () => {
+const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   const { loading } = useAuth();
 
   // Show loading screen while AuthProvider initializes
@@ -141,7 +141,7 @@ const AuthInitializer = () => {
     );
   }
 
-  return <AppRoutes />;
+  return <>{children}</>;
 };
 
 const AppRoutes = () => {
@@ -323,9 +323,11 @@ const App = () => {
         <LanguageProvider>
           <BrowserRouter>
             <AuthProvider>
-              <Toaster />
-              <Sonner />
-              <AuthInitializer />
+              <AuthInitializer>
+                <Toaster />
+                <Sonner />
+                <AppRoutes />
+              </AuthInitializer>
             </AuthProvider>
           </BrowserRouter>
         </LanguageProvider>
