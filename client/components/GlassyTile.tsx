@@ -51,9 +51,9 @@ const GlassyTile = ({
 
       {/* Content */}
       <div className="relative z-10">
-        {icon && <div className="mb-3 text-primary opacity-90 group-hover:opacity-100 transition-opacity">{icon}</div>}
-        <h3 className="text-lg font-bold text-foreground mb-1">{title}</h3>
-        {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+        {icon && <div className="mb-3 text-white opacity-90 group-hover:opacity-100 transition-opacity text-3xl">{icon}</div>}
+        <h3 className="text-lg font-bold text-white mb-1">{title}</h3>
+        {subtitle && <p className="text-sm text-white/80">{subtitle}</p>}
         {children}
       </div>
     </div>
