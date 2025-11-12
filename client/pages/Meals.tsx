@@ -289,10 +289,10 @@ export default function Meals() {
         protein_g: macros.protein,
         carbs_g: macros.carbs,
         fat_g: macros.fat,
-        meal_type: selectedMealType,
+        meal_type: getMealTypeForDB(selectedMealType),
       });
 
-      toast.success("Meal added!");
+      toast.success("✓ Meal added successfully!");
       setNewFood({ name: "", weight: "", quantity: "", calories: "", protein: "", carbs: "", fat: "" });
       setSelectedFood(null);
       setSuggestions([]);
