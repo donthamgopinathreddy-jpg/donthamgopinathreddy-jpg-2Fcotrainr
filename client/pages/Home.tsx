@@ -158,10 +158,57 @@ export default function Home() {
 
   const bmiStatus = getBMICategory(bmi);
 
-  const handleSaveTargets = () => {
-    setStepsTarget(editStepsTarget);
-    setShowTargetsModal(false);
-    toast.success("Steps target updated!");
+  const handleSaveTargets = async () => {
+    try {
+      if (!userProfile?.id) {
+        toast.error("User not found");
+        return;
+      }
+
+      // Save steps target to Supabase in bio field (format: "steps|water")
+      const bioValue = `${editStepsTarget}|${waterConsumed}`;
+
+      const { error } = await supabase
+        .from("users")
+        .update({ bio: bioValue })
+        .eq("id", userProfile.id);
+
+      if (error) throw error;
+
+      setStepsTarget(editStepsTarget);
+      setShowTargetsModal(false);
+      toast.success("✓ Steps target updated!");
+    } catch (error) {
+      console.error("Error saving steps target:", error);
+      toast.error("Failed to save steps target");
+    }
+  };
+
+  const handleAddSteps = async (amount: number) => {
+    try {
+      if (!userProfile?.id) {
+        toast.error("User not found");
+        return;
+      }
+
+      const newSteps = stepsCompleted + amount;
+      setStepsCompleted(newSteps);
+
+      // Save to Supabase
+      const bioValue = `${newSteps}|${waterConsumed}`;
+
+      const { error } = await supabase
+        .from("users")
+        .update({ bio: bioValue })
+        .eq("id", userProfile.id);
+
+      if (error) throw error;
+
+      toast.success(`✓ Added ${amount} steps!`);
+    } catch (error) {
+      console.error("Error saving steps:", error);
+      toast.error("Failed to save steps");
+    }
   };
 
   const handleJoinMeeting = (meetingId: string) => {
