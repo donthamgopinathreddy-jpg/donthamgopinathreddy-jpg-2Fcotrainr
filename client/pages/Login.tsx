@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight, Mail, Lock } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
+import { supabase } from "@/lib/supabase";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { signIn } = useAuth();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,9 +21,17 @@ export default function Login() {
 
     setLoading(true);
     try {
-      await signIn(email, password);
-      toast.success("Login successful!");
-      navigate("/");
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        toast.success("Login successful!");
+        navigate("/");
+      }
     } catch (error: any) {
       console.error("Login error:", error);
       toast.error(error.message || "Failed to login");
