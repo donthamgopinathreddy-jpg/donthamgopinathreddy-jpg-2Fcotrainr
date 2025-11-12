@@ -14,6 +14,9 @@ interface UserProfile {
   profile_picture_url?: string;
   cover_image_url?: string;
   bio?: string;
+  phone_number?: string;
+  age?: number;
+  date_of_birth?: string;
 }
 
 interface DemoUser {
