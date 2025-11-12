@@ -160,7 +160,11 @@ export default function Discover() {
         <div className="max-w-md mx-auto">
           {/* Title */}
           <div className="px-4 py-6">
-            <h1 className="text-2xl font-bold">Discover</h1>
+            <h1 className={`text-2xl font-bold ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}>
+              Discover
+            </h1>
           </div>
 
           {/* Tabs */}
