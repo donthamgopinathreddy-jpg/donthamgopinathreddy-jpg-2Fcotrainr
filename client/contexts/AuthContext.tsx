@@ -189,6 +189,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             height_cm: userData.height_cm || null,
             phone_number: userData.phone_number || null,
             age: userData.age || null,
+            date_of_birth: userData.date_of_birth || null,
           });
 
           if (profileError) {
