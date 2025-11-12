@@ -28,9 +28,18 @@
 
   <body>
     <div id="root">
-      <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f5f5f5; font-family: system-ui;">
-        <div style="text-align: center;">
-          <p style="color: #666;">Loading app...</p>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          background: #f5f5f5;
+          font-family: system-ui;
+        "
+      >
+        <div style="text-align: center">
+          <p style="color: #666">Loading app...</p>
         </div>
       </div>
     </div>
@@ -54,9 +63,14 @@
       // If app doesn't load after 10 seconds, show error
       setTimeout(() => {
         const root = document.getElementById("root");
-        if (root && root.children.length === 1 && root.children[0].style.display === "flex") {
+        if (
+          root &&
+          root.children.length === 1 &&
+          root.children[0].style.display === "flex"
+        ) {
           console.error("App failed to load within 10 seconds");
-          root.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f5f5f5; font-family: system-ui;"><div style="text-align: center; color: #d32f2f;"><p>Failed to load app</p><p style="font-size: 12px; color: #999;">Check browser console for errors</p></div></div>';
+          root.innerHTML =
+            '<div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f5f5f5; font-family: system-ui;"><div style="text-align: center; color: #d32f2f;"><p>Failed to load app</p><p style="font-size: 12px; color: #999;">Check browser console for errors</p></div></div>';
         }
       }, 10000);
     </script>
