@@ -324,72 +324,190 @@ export default function Feed() {
                     </p>
 
                     {searchResults.map((user) => (
-                      <div
-                        key={user.id}
-                        onClick={() => navigate(`/profile/${user.id}`)}
-                        className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${
-                          theme === "light"
-                            ? "bg-white border border-gray-200 hover:bg-gray-50"
-                            : "bg-gray-700 border border-gray-600 hover:bg-gray-600"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <div
-                            className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs ${
-                              theme === "light"
-                                ? "bg-gray-300 text-gray-700"
-                                : "bg-gray-600 text-white"
-                            }`}
-                          >
-                            {user.full_name.charAt(0)}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p
-                              className={`text-sm font-semibold truncate ${
-                                theme === "light"
-                                  ? "text-gray-900"
-                                  : "text-white"
-                              }`}
-                            >
-                              {user.full_name}
-                            </p>
-                            <p
-                              className={`text-xs truncate ${
-                                theme === "light"
-                                  ? "text-gray-600"
-                                  : "text-gray-300"
-                              }`}
-                            >
-                              @{user.username}
-                            </p>
-                          </div>
-                        </div>
-
-                        <button
-                          onClick={() => handleFollow(user.id)}
-                          disabled={isTogglingId === user.id}
-                          className={`ml-2 flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex-shrink-0 ${
-                            isFollowing(user.id)
+                      <div key={user.id} className="space-y-2">
+                        <div
+                          onClick={() => handleSelectSearchUser(user)}
+                          className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${
+                            selectedSearchUser?.id === user.id
                               ? theme === "light"
-                                ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                                : "bg-gray-600 text-white hover:bg-gray-500"
-                              : "bg-primary text-primary-foreground hover:opacity-90"
+                                ? "bg-blue-50 border border-blue-300"
+                                : "bg-blue-900/40 border border-blue-700"
+                              : theme === "light"
+                                ? "bg-white border border-gray-200 hover:bg-gray-50"
+                                : "bg-gray-700 border border-gray-600 hover:bg-gray-600"
                           }`}
                         >
-                          {isTogglingId === user.id ? (
-                            <Loader className="w-3 h-3 animate-spin" />
-                          ) : isFollowing(user.id) ? (
-                            <>
-                              <UserCheck className="w-3 h-3" />
-                              <span>Following</span>
-                            </>
-                          ) : (
-                            <>
-                              <UserPlus className="w-3 h-3" />
-                              <span>Follow</span>
-                            </>
-                          )}
-                        </button>
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            <div
+                              className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs ${
+                                theme === "light"
+                                  ? "bg-gray-300 text-gray-700"
+                                  : "bg-gray-600 text-white"
+                              }`}
+                            >
+                              {user.full_name.charAt(0)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p
+                                className={`text-sm font-semibold truncate ${
+                                  theme === "light"
+                                    ? "text-gray-900"
+                                    : "text-white"
+                                }`}
+                              >
+                                {user.full_name}
+                              </p>
+                              <p
+                                className={`text-xs truncate ${
+                                  theme === "light"
+                                    ? "text-gray-600"
+                                    : "text-gray-300"
+                                }`}
+                              >
+                                @{user.username}
+                              </p>
+                            </div>
+                          </div>
+
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleFollow(user.id);
+                            }}
+                            disabled={isTogglingId === user.id}
+                            className={`ml-2 flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex-shrink-0 ${
+                              isFollowing(user.id)
+                                ? theme === "light"
+                                  ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                  : "bg-gray-600 text-white hover:bg-gray-500"
+                                : "bg-primary text-primary-foreground hover:opacity-90"
+                            }`}
+                          >
+                            {isTogglingId === user.id ? (
+                              <Loader className="w-3 h-3 animate-spin" />
+                            ) : isFollowing(user.id) ? (
+                              <>
+                                <UserCheck className="w-3 h-3" />
+                                <span>Following</span>
+                              </>
+                            ) : (
+                              <>
+                                <UserPlus className="w-3 h-3" />
+                                <span>Follow</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+
+                        {/* Show posts for selected user */}
+                        {selectedSearchUser?.id === user.id && (
+                          <div className="ml-3 pl-3 border-l-2 border-primary space-y-3 pb-2">
+                            {loadingUserPosts && (
+                              <div className="flex items-center justify-center py-3">
+                                <Loader className="w-4 h-4 animate-spin text-primary" />
+                              </div>
+                            )}
+                            {!loadingUserPosts && userPosts.length === 0 && (
+                              <p className={`text-xs italic ${
+                                theme === "light" ? "text-gray-500" : "text-gray-400"
+                              }`}>
+                                No posts yet
+                              </p>
+                            )}
+                            {!loadingUserPosts && userPosts.map((post) => (
+                              <div
+                                key={post.id}
+                                className={`rounded-lg overflow-hidden border ${
+                                  theme === "light"
+                                    ? "bg-white border-gray-100"
+                                    : "bg-gray-800 border-gray-700"
+                                }`}
+                              >
+                                {/* Post Header */}
+                                <div className={`px-3 py-2 border-b ${
+                                  theme === "light"
+                                    ? "border-gray-100"
+                                    : "border-gray-700"
+                                }`}>
+                                  <p className={`text-xs font-semibold ${
+                                    theme === "light"
+                                      ? "text-gray-900"
+                                      : "text-white"
+                                  }`}>
+                                    {formatDate(post.created_at)}
+                                  </p>
+                                </div>
+
+                                {/* Post Content */}
+                                <div className="px-3 py-2">
+                                  <p className={`text-xs leading-relaxed ${
+                                    theme === "light"
+                                      ? "text-gray-700"
+                                      : "text-gray-300"
+                                  }`}>
+                                    {post.content}
+                                  </p>
+                                </div>
+
+                                {/* Post Image */}
+                                {post.image_url && (
+                                  <div className="w-full h-32 overflow-hidden">
+                                    <img
+                                      src={post.image_url}
+                                      alt="Post"
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                )}
+
+                                {/* Post Video */}
+                                {post.video_url && (
+                                  <div className="w-full h-32 overflow-hidden">
+                                    <video
+                                      src={post.video_url}
+                                      className="w-full h-full object-cover"
+                                      controls
+                                    />
+                                  </div>
+                                )}
+
+                                {/* Post Actions */}
+                                <div className={`px-3 py-2 border-t flex items-center justify-around text-xs ${
+                                  theme === "light"
+                                    ? "border-gray-100"
+                                    : "border-gray-700"
+                                }`}>
+                                  <button
+                                    onClick={() => handleLike(post.id)}
+                                    className={`flex items-center gap-1 font-medium transition-colors ${
+                                      likedPosts.has(post.id)
+                                        ? "text-red-500"
+                                        : theme === "light"
+                                          ? "text-gray-600 hover:text-red-500"
+                                          : "text-gray-400 hover:text-red-500"
+                                    }`}
+                                  >
+                                    <Heart
+                                      className={`w-3 h-3 ${likedPosts.has(post.id) ? "fill-red-500" : ""}`}
+                                    />
+                                    <span>{post.likes_count}</span>
+                                  </button>
+                                  <button
+                                    onClick={() => handleComment(post.id)}
+                                    className={`flex items-center gap-1 font-medium transition-colors ${
+                                      theme === "light"
+                                        ? "text-gray-600 hover:text-primary"
+                                        : "text-gray-400 hover:text-primary"
+                                    }`}
+                                  >
+                                    <MessageCircle className="w-3 h-3" />
+                                    <span>{post.comments_count}</span>
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </>
