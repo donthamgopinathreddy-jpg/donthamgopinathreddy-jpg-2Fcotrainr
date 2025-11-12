@@ -861,14 +861,22 @@ export default function Profile() {
         {/* Referral Modal */}
         {showReferralModal && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center p-0 md:p-4">
-            <div className="w-full md:max-w-md bg-white rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto">
+            <div className={`w-full md:max-w-md rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}>
               <div className="flex items-center justify-between">
-                <h2 className="text-lg md:text-xl font-bold text-gray-900">
+                <h2 className={`text-lg md:text-xl font-bold ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}>
                   Invite Friends
                 </h2>
                 <button
                   onClick={() => setShowReferralModal(false)}
-                  className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                  className={`text-2xl leading-none ${
+                    theme === "dark"
+                      ? "text-gray-400 hover:text-gray-300"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
                 >
                   ✕
                 </button>
