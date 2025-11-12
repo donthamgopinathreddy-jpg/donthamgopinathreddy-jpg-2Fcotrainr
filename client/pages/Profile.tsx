@@ -182,35 +182,35 @@ export default function Profile() {
     setIsSaving(true);
 
     try {
-      // Upload file to Supabase Storage
-      const fileName = `${userProfile.id}-${Date.now()}-${file.name}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("profile-photos")
-        .upload(fileName, file, { upsert: true });
+      // Read as data URL and store directly
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const dataUrl = event.target?.result as string;
 
-      if (uploadError) throw uploadError;
+        try {
+          // Save data URL to database
+          await updateProfile({
+            profile_picture_url: dataUrl,
+          });
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from("profile-photos")
-        .getPublicUrl(uploadData.path);
+          // Update local state
+          setUser((prev) => ({
+            ...prev,
+            profilePhoto: dataUrl,
+          }));
 
-      // Save URL to database
-      await updateProfile({
-        profile_picture_url: urlData.publicUrl,
-      });
-
-      // Update local state
-      setUser((prev) => ({
-        ...prev,
-        profilePhoto: urlData.publicUrl,
-      }));
-
-      toast.success("✓ Profile photo updated!");
+          toast.success("✓ Profile photo updated!");
+        } catch (error: any) {
+          console.error("Error saving profile photo:", error);
+          toast.error("Failed to save profile photo");
+        } finally {
+          setIsSaving(false);
+        }
+      };
+      reader.readAsDataURL(file);
     } catch (error: any) {
-      console.error("Error uploading profile photo:", error);
-      toast.error("Failed to upload profile photo");
-    } finally {
+      console.error("Error processing profile photo:", error);
+      toast.error("Failed to process profile photo");
       setIsSaving(false);
     }
   };
