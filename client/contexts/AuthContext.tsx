@@ -46,37 +46,58 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Check auth state on mount
   useEffect(() => {
+    let isMounted = true;
+
     const checkAuth = async () => {
       try {
         console.log("Checking auth state...");
 
-        // First check if there's a session
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log("Session found:", session?.user?.email);
+        // Set a timeout of 3 seconds for auth check
+        const timeoutPromise = new Promise((resolve) => {
+          setTimeout(() => {
+            console.warn("Auth check timeout - proceeding without session");
+            resolve(null);
+          }, 3000);
+        });
 
-        if (session?.user) {
-          setUser(session.user);
-          await fetchUserProfile(session.user.id);
-        } else {
-          // If no session, try getUser as backup
-          const { data: { user } } = await supabase.auth.getUser();
-          if (user) {
-            setUser(user);
-            await fetchUserProfile(user.id);
+        const authPromise = (async () => {
+          // First check if there's a session
+          const { data: { session } } = await supabase.auth.getSession();
+          console.log("Session found:", session?.user?.email);
+
+          if (session?.user) {
+            setUser(session.user);
+            await fetchUserProfile(session.user.id);
           } else {
-            setUser(null);
+            // If no session, try getUser as backup
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+              setUser(user);
+              await fetchUserProfile(user.id);
+            } else {
+              setUser(null);
+            }
           }
-        }
+        })();
+
+        // Race between auth check and timeout
+        await Promise.race([authPromise, timeoutPromise]);
       } catch (error) {
         console.error("Error checking auth:", error);
         setUser(null);
       } finally {
-        // Mark loading as done AFTER auth check completes
-        setLoading(false);
+        if (isMounted) {
+          // Mark loading as done AFTER auth check completes
+          setLoading(false);
+        }
       }
     };
 
     checkAuth();
+
+    return () => {
+      isMounted = false;
+    };
 
     // Listen for auth changes
     const {
