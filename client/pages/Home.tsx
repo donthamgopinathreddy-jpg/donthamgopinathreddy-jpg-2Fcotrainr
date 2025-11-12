@@ -71,31 +71,30 @@ export default function Home() {
 
     const file = e.target.files[0];
     try {
-      // Upload to Supabase Storage
-      const fileName = `cover-${userProfile.id}-${Date.now()}-${file.name}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("cover-images")
-        .upload(fileName, file, { upsert: true });
+      // Read as data URL and store directly
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const dataUrl = event.target?.result as string;
 
-      if (uploadError) throw uploadError;
+        try {
+          // Update database with data URL
+          if (updateProfile) {
+            await updateProfile({
+              cover_image_url: dataUrl,
+            });
+          }
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from("cover-images")
-        .getPublicUrl(uploadData.path);
-
-      // Update database
-      if (updateProfile) {
-        await updateProfile({
-          cover_image_url: urlData.publicUrl,
-        });
-      }
-
-      setCoverImage(urlData.publicUrl);
-      toast.success("✓ Cover image updated!");
+          setCoverImage(dataUrl);
+          toast.success("✓ Cover image updated!");
+        } catch (error) {
+          console.error("Error saving cover image:", error);
+          toast.error("Failed to save cover image");
+        }
+      };
+      reader.readAsDataURL(file);
     } catch (error) {
-      console.error("Error uploading cover image:", error);
-      toast.error("Failed to upload cover image");
+      console.error("Error processing cover image:", error);
+      toast.error("Failed to process cover image");
     }
   };
 
