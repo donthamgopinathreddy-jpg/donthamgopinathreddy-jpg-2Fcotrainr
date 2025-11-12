@@ -494,16 +494,50 @@ export default function Onboarding() {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Phone Number</label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <input
-                  type="tel"
-                  placeholder="+1 (555) 123-4567"
-                  value={formData.phoneNumber}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, phoneNumber: e.target.value }))}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                />
+              <div className="flex gap-2">
+                {/* Country Code Dropdown */}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                    className="bg-card border border-border rounded-lg px-3 py-3 min-w-20 font-medium text-foreground hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  >
+                    {formData.countryCode}
+                  </button>
+
+                  {showCountryDropdown && (
+                    <div className="absolute top-full left-0 mt-1 bg-white border border-border rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto w-48">
+                      {COUNTRY_CODES.map((country) => (
+                        <button
+                          key={country.code}
+                          onClick={() => {
+                            setFormData((prev) => ({ ...prev, countryCode: country.code }));
+                            setShowCountryDropdown(false);
+                          }}
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-sm text-foreground"
+                        >
+                          <span className="mr-2">{country.flag}</span>
+                          {country.name} ({country.code})
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Phone Number Input */}
+                <div className="relative flex-1">
+                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
+                    type="tel"
+                    placeholder="123 456 7890"
+                    value={formData.phoneNumber}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, phoneNumber: e.target.value }))}
+                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  />
+                </div>
               </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Your full number: {formData.countryCode} {formData.phoneNumber}
+              </p>
             </div>
 
             <button
