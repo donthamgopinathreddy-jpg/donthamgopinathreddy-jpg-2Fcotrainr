@@ -318,7 +318,11 @@ export default function TrainerHome() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-36">
+    <div className={`min-h-screen pb-36 ${
+      theme === "light"
+        ? "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
+        : "bg-gray-950"
+    }`}>
       {/* Conditional View Rendering */}
       {view === "stats" ? (
         <>

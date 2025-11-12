@@ -144,9 +144,17 @@ export default function ActivityDetail() {
   });
 
   return (
-    <div className={`min-h-screen pb-24 ${theme === "dark" ? "bg-gray-950" : "bg-white"}`}>
+    <div className={`min-h-screen pb-24 ${
+      theme === "dark"
+        ? "bg-gray-950"
+        : "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
+    }`}>
       {/* Header */}
-      <div className={`sticky top-0 z-40 ${theme === "dark" ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"} border-b`}>
+      <div className={`sticky top-0 z-40 border-b ${
+        theme === "dark"
+          ? "bg-gray-900 border-gray-800"
+          : "bg-gradient-to-r from-red-50 to-orange-50 border-orange-200"
+      }`}>
         <div className="max-w-md mx-auto px-4 py-4 flex items-center gap-3">
           <button
             onClick={() => navigate(-1)}
