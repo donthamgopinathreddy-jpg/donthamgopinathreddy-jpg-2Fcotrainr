@@ -21,12 +21,27 @@ export const useBookings = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // Check if user is in demo mode
+  const isDemoMode = () => {
+    return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
+  };
+
   // Fetch bookings for current user (as client or trainer)
   const fetchBookings = async () => {
     if (!user) return;
 
     setLoading(true);
     try {
+      const isDemo = isDemoMode();
+
+      if (isDemo) {
+        // Load from localStorage in demo mode
+        const demoBookings = localStorage.getItem(`bookings_demo_${user.id}`);
+        setBookings(demoBookings ? JSON.parse(demoBookings) : []);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("bookings")
         .select("*")
@@ -76,6 +91,32 @@ export const useBookings = () => {
     if (!user) return;
 
     try {
+      const isDemo = isDemoMode();
+      const createdAt = new Date().toISOString();
+
+      if (isDemo) {
+        // Create booking in localStorage in demo mode
+        const newBooking: Booking = {
+          id: `local-${Date.now()}`,
+          client_id: user.id,
+          trainer_id: trainerId,
+          session_date: sessionDate,
+          duration_minutes: durationMinutes,
+          status: "pending",
+          notes,
+          created_at: createdAt,
+          updated_at: createdAt,
+        };
+
+        const demoBookings = localStorage.getItem(`bookings_demo_${user.id}`);
+        const existingBookings = demoBookings ? JSON.parse(demoBookings) : [];
+        const updatedBookings = [...existingBookings, newBooking];
+
+        localStorage.setItem(`bookings_demo_${user.id}`, JSON.stringify(updatedBookings));
+        setBookings((prev) => [...prev, newBooking]);
+        return newBooking;
+      }
+
       const { data, error } = await supabase
         .from("bookings")
         .insert({
@@ -106,6 +147,25 @@ export const useBookings = () => {
     if (!user) return;
 
     try {
+      const isDemo = isDemoMode();
+      const updatedAt = new Date().toISOString();
+
+      if (isDemo) {
+        // Update booking in localStorage in demo mode
+        const demoBookings = localStorage.getItem(`bookings_demo_${user.id}`);
+        if (demoBookings) {
+          const existingBookings = JSON.parse(demoBookings);
+          const updatedBookings = existingBookings.map((b: Booking) =>
+            b.id === bookingId ? { ...b, status, updated_at: updatedAt } : b
+          );
+          localStorage.setItem(`bookings_demo_${user.id}`, JSON.stringify(updatedBookings));
+          setBookings(updatedBookings);
+
+          return existingBookings.find((b: Booking) => b.id === bookingId);
+        }
+        return null;
+      }
+
       const { data, error } = await supabase
         .from("bookings")
         .update({ status })
