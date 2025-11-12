@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
@@ -16,11 +16,12 @@ export default function Login() {
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
 
-  // If user is already logged in, redirect to home
-  if (user) {
-    navigate("/", { replace: true });
-    return null;
-  }
+  // Use effect to redirect when user logs in
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
 
   const isFormComplete = email && password && password.length >= 6;
 
