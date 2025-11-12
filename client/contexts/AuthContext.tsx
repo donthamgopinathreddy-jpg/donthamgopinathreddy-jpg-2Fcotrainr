@@ -131,6 +131,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       gender?: string;
       weight_kg?: number;
       height_cm?: number;
+      phone_number?: string;
+      age?: number;
     }
   ) => {
     try {
@@ -162,6 +164,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             gender: userData.gender || null,
             weight_kg: userData.weight_kg || null,
             height_cm: userData.height_cm || null,
+            phone_number: userData.phone_number || null,
+            age: userData.age || null,
           });
 
           if (profileError) {
