@@ -25,10 +25,12 @@ export const useSearch = () => {
   const searchUsers = async (query: string) => {
     if (!query.trim()) {
       setResults([]);
+      setLoading(false);
       return;
     }
 
     setLoading(true);
+
     try {
       // In demo mode, return mock results
       if (isDemoMode()) {
@@ -61,46 +63,44 @@ export const useSearch = () => {
         setLoading(false);
         return;
       }
+
       const searchTerm = `%${query.toLowerCase()}%`;
+      let allUsers: any[] = [];
 
       // Search by username
-      const { data: usernameData, error: usernameError } = await supabase
-        .from("users")
-        .select("id, username, full_name, profile_picture_url, bio, role")
-        .ilike("username", searchTerm)
-        .limit(10);
+      try {
+        const { data } = await supabase
+          .from("users")
+          .select("id, username, full_name, profile_picture_url, bio, role")
+          .ilike("username", searchTerm)
+          .limit(10);
+
+        if (data) {
+          allUsers = [...allUsers, ...data];
+        }
+      } catch (err) {
+        console.warn("Username search failed");
+      }
 
       // Search by full_name
-      const { data: nameData, error: nameError } = await supabase
-        .from("users")
-        .select("id, username, full_name, profile_picture_url, bio, role")
-        .ilike("full_name", searchTerm)
-        .limit(10);
+      try {
+        const { data } = await supabase
+          .from("users")
+          .select("id, username, full_name, profile_picture_url, bio, role")
+          .ilike("full_name", searchTerm)
+          .limit(10);
 
-      // Handle errors gracefully
-      if (usernameError && usernameError.code !== "PGRST") {
-        console.warn("Username search warning:", usernameError.message);
+        if (data) {
+          allUsers = [...allUsers, ...data];
+        }
+      } catch (err) {
+        console.warn("Name search failed");
       }
 
-      if (nameError && nameError.code !== "PGRST") {
-        console.warn("Name search warning:", nameError.message);
-      }
-
-      // Combine results and remove duplicates
-      const allUsers = [
-        ...(usernameData || []),
-        ...(nameData || []),
-      ];
-      
+      // Remove duplicates
       const uniqueUsers = Array.from(
         new Map(allUsers.map((u) => [u.id, u])).values()
       ).slice(0, 20);
-
-      if (uniqueUsers.length === 0) {
-        setResults([]);
-        setLoading(false);
-        return;
-      }
 
       // Transform results
       const transformedResults: SearchUser[] = uniqueUsers.map((user) => ({
@@ -116,8 +116,7 @@ export const useSearch = () => {
 
       setResults(transformedResults);
     } catch (err: any) {
-      console.error("Search exception:", err?.message || String(err));
-      // Silently fail on network errors instead of showing error
+      console.error("Search error:", err?.message);
       setResults([]);
     } finally {
       setLoading(false);
