@@ -137,18 +137,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (error) {
         const errorMsg = error?.message || error?.details || String(error);
-        console.warn("Error fetching user profile:", errorMsg);
+        console.debug("Error fetching user profile:", errorMsg);
         return;
       }
 
       if (data) {
-        console.log("User profile fetched successfully:", data);
+        console.debug("User profile fetched successfully:", data);
         setUserProfile(data);
-      } else {
-        console.warn("No profile data found for user:", userId);
       }
     } catch (error: any) {
-      console.error("Error fetching user profile:", error?.message || error);
+      // Silently continue - app works without profile data initially
+      console.debug("Profile fetch error (non-blocking):", error?.message);
     }
   };
 
