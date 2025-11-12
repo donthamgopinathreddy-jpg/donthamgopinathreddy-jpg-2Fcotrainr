@@ -16,16 +16,9 @@ export interface Meal {
 }
 
 export const useMeals = () => {
+  const { user } = useAuth();
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState(false);
-  let user;
-
-  try {
-    ({ user } = useAuth());
-  } catch (error) {
-    // useAuth not available yet, user will be undefined
-    user = undefined;
-  }
 
   // Check if user is in demo mode
   const isDemoMode = () => {
