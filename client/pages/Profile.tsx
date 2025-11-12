@@ -1151,7 +1151,7 @@ export default function Profile() {
                 {/* Trainer Referral Code */}
                 <div className={`rounded-lg p-4 ${
                   theme === "dark"
-                    ? "bg-gray-700 border border-gray-600"
+                    ? "bg-gradient-to-br from-blue-500/20 via-indigo-500/20 to-purple-500/20 backdrop-blur-xl border border-blue-500/30"
                     : "bg-card border border-border"
                 }`}>
                   <p className={`text-xs mb-2 ${
