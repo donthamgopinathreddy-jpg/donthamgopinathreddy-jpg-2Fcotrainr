@@ -47,9 +47,13 @@ export default function Profile() {
   const [isSaving, setIsSaving] = useState(false);
   const [editForm, setEditForm] = useState({
     name: userProfile?.full_name || "User",
+    email: userProfile?.email || "",
+    phone: userProfile?.phone_number || "",
     gender: userProfile?.gender || "Not specified",
     height: userProfile?.height_cm || 170,
     weight: userProfile?.weight_kg || 70,
+    dateOfBirth: userProfile?.date_of_birth || "",
+    age: userProfile?.age || 25,
   });
 
   // Sync state with userProfile whenever it changes
