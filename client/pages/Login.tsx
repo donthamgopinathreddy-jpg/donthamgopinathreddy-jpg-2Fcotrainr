@@ -109,9 +109,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <div className="px-4 py-6 border-b border-border">
+      <div className="px-4 py-6 border-b border-gray-200">
         <button
           onClick={() => navigate("/onboarding")}
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
