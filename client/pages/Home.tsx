@@ -845,9 +845,9 @@ export default function Home() {
               </div>
             ))
           ) : (
-            <div className="bg-card border border-border rounded-xl p-6 text-center">
-              <Newspaper className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center">
+              <Newspaper className="w-8 h-8 text-gray-400 dark:text-gray-500 mx-auto mb-2" />
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 No posts yet. Check back soon!
               </p>
             </div>
