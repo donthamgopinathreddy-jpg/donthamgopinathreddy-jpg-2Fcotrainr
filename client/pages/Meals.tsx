@@ -1001,7 +1001,9 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-gray-900">
+                    <span className={`text-xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-gray-900"
+                    }`}>
                       {Math.round((totalCalories / calorieGoal) * 100)}%
                     </span>
                   </div>
@@ -1043,7 +1045,9 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-gray-900">
+                    <span className={`text-xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-gray-900"
+                    }`}>
                       {Math.round((totalProtein / proteinGoal) * 100)}%
                     </span>
                   </div>
@@ -1083,7 +1087,9 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-gray-900">
+                    <span className={`text-xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-gray-900"
+                    }`}>
                       {Math.round((totalCarbs / carbsGoal) * 100)}%
                     </span>
                   </div>
@@ -1123,7 +1129,9 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-gray-900">
+                    <span className={`text-xl font-bold ${
+                      theme === "dark" ? "text-white" : "text-gray-900"
+                    }`}>
                       {Math.round((totalFat / fatGoal) * 100)}%
                     </span>
                   </div>
