@@ -155,6 +155,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       height_cm?: number;
       phone_number?: string;
       age?: number;
+      date_of_birth?: string;
     }
   ) => {
     try {
