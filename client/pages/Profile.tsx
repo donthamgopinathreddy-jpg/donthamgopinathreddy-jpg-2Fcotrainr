@@ -227,7 +227,7 @@ export default function Profile() {
 
         try {
           // Save data URL to database
-          await updateProfile({
+          await authUpdateProfile({
             profile_picture_url: dataUrl,
           });
 
