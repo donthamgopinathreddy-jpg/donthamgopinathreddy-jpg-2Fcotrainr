@@ -33,7 +33,14 @@ const TRAINER_CATEGORIES = [
   "Stretching",
 ];
 
-const NUTRITIONIST_CATEGORIES = ["All", "Weight Loss", "Sports Nutrition", "Diabetes", "PCOS", "General"];
+const NUTRITIONIST_CATEGORIES = [
+  "All",
+  "Weight Loss",
+  "Sports Nutrition",
+  "Diabetes",
+  "PCOS",
+  "General",
+];
 
 export default function Discover() {
   const { trainers, loading } = useTrainers();
@@ -51,8 +58,12 @@ export default function Discover() {
   const [touchEnd, setTouchEnd] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  const categories = activeTab === "trainers" ? TRAINER_CATEGORIES : NUTRITIONIST_CATEGORIES;
-  const hasActiveFilters = (filter.category && filter.category !== "All") || filter.verified || filter.distance < 20;
+  const categories =
+    activeTab === "trainers" ? TRAINER_CATEGORIES : NUTRITIONIST_CATEGORIES;
+  const hasActiveFilters =
+    (filter.category && filter.category !== "All") ||
+    filter.verified ||
+    filter.distance < 20;
 
   const selectCategory = (cat: string) => {
     setFilter({
@@ -75,11 +86,12 @@ export default function Discover() {
   const filteredTrainers = trainers.filter((trainer) => {
     // Check if trainer has a specialty matching the category (if category is not "All")
     if (filter.category && filter.category !== "All") {
-      const matchesCategory = trainer.specialties && trainer.specialties.length > 0
-        ? trainer.specialties.some(spec =>
-            spec.toLowerCase().includes(filter.category!.toLowerCase())
-          )
-        : false;
+      const matchesCategory =
+        trainer.specialties && trainer.specialties.length > 0
+          ? trainer.specialties.some((spec) =>
+              spec.toLowerCase().includes(filter.category!.toLowerCase()),
+            )
+          : false;
       if (!matchesCategory) return false;
     }
 
@@ -89,7 +101,10 @@ export default function Discover() {
     }
 
     // Check search query
-    if (searchQuery && !trainer.full_name.toLowerCase().includes(searchQuery.toLowerCase())) {
+    if (
+      searchQuery &&
+      !trainer.full_name.toLowerCase().includes(searchQuery.toLowerCase())
+    ) {
       return false;
     }
 
@@ -150,21 +165,27 @@ export default function Discover() {
   const { theme } = useTheme();
 
   return (
-    <div className={`min-h-screen pb-24 l-shape-bg ${
-      theme === "dark" ? "bg-gray-950" : "bg-white"
-    }`}>
+    <div
+      className={`min-h-screen pb-24 l-shape-bg ${
+        theme === "dark" ? "bg-gray-950" : "bg-white"
+      }`}
+    >
       {/* Header */}
-      <div className={`sticky top-0 z-40 border-b ${
-        theme === "dark"
-          ? "bg-gray-900 border-gray-800"
-          : "bg-white border-gray-200"
-      }`}>
+      <div
+        className={`sticky top-0 z-40 border-b ${
+          theme === "dark"
+            ? "bg-gray-900 border-gray-800"
+            : "bg-white border-gray-200"
+        }`}
+      >
         <div className="max-w-md mx-auto">
           {/* Title */}
           <div className="px-4 py-6">
-            <h1 className={`text-2xl font-bold ${
-              theme === "dark" ? "text-white" : "text-gray-900"
-            }`}>
+            <h1
+              className={`text-2xl font-bold ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
               Discover
             </h1>
           </div>
@@ -200,13 +221,17 @@ export default function Discover() {
           </div>
 
           {/* Search Bar */}
-          <div className={`px-4 py-4 border-b ${
-            theme === "dark" ? "border-gray-800" : "border-gray-200"
-          }`}>
+          <div
+            className={`px-4 py-4 border-b ${
+              theme === "dark" ? "border-gray-800" : "border-gray-200"
+            }`}
+          >
             <div className="relative">
-              <Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${
-                theme === "dark" ? "text-gray-500" : "text-gray-400"
-              }`} />
+              <Search
+                className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${
+                  theme === "dark" ? "text-gray-500" : "text-gray-400"
+                }`}
+              />
               <input
                 type="text"
                 placeholder={`Search ${activeTab}...`}
@@ -269,14 +294,24 @@ export default function Discover() {
             <div className="px-4 py-4 space-y-4 border-t border-border bg-card/50 backdrop-blur">
               {/* Price Range Filter */}
               <div>
-                <h3 className="text-sm font-semibold mb-3">Price Range: ₹{filter.priceRange[0]} - ₹{filter.priceRange[1]}</h3>
+                <h3 className="text-sm font-semibold mb-3">
+                  Price Range: ₹{filter.priceRange[0]} - ₹{filter.priceRange[1]}
+                </h3>
                 <div className="space-y-2">
                   <input
                     type="range"
                     min="0"
                     max="2000"
                     value={filter.priceRange[1]}
-                    onChange={(e) => setFilter({ ...filter, priceRange: [filter.priceRange[0], Number(e.target.value)] })}
+                    onChange={(e) =>
+                      setFilter({
+                        ...filter,
+                        priceRange: [
+                          filter.priceRange[0],
+                          Number(e.target.value),
+                        ],
+                      })
+                    }
                     className="w-full"
                   />
                 </div>
@@ -287,7 +322,9 @@ export default function Discover() {
                 <input
                   type="checkbox"
                   checked={filter.verified}
-                  onChange={(e) => setFilter({ ...filter, verified: e.target.checked })}
+                  onChange={(e) =>
+                    setFilter({ ...filter, verified: e.target.checked })
+                  }
                   className="w-4 h-4"
                 />
                 <span className="text-sm font-medium">Verified only</span>
@@ -298,7 +335,9 @@ export default function Discover() {
                 <h3 className="text-sm font-semibold mb-3">Sort by</h3>
                 <select
                   value={filter.sort}
-                  onChange={(e) => setFilter({ ...filter, sort: e.target.value as SortOption })}
+                  onChange={(e) =>
+                    setFilter({ ...filter, sort: e.target.value as SortOption })
+                  }
                   className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm"
                 >
                   <option value="distance">Distance (nearest)</option>
@@ -358,7 +397,9 @@ export default function Discover() {
                       {/* Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-bold text-foreground">{trainer.full_name}</h3>
+                          <h3 className="font-bold text-foreground">
+                            {trainer.full_name}
+                          </h3>
                           {trainer.verified && (
                             <div className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">
                               ✓ Verified
@@ -368,7 +409,8 @@ export default function Discover() {
 
                         <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                           <span className="font-medium">
-                            {trainer.specialties && trainer.specialties.length > 0
+                            {trainer.specialties &&
+                            trainer.specialties.length > 0
                               ? trainer.specialties[0]
                               : "Fitness"}
                           </span>
@@ -379,8 +421,12 @@ export default function Discover() {
                         <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
                           <div className="flex items-center gap-1">
                             <Star className="w-3 h-3 fill-primary text-primary" />
-                            <span className="font-semibold">{trainer.rating || 0}</span>
-                            <span className="text-muted-foreground">({trainer.reviews_count || 0})</span>
+                            <span className="font-semibold">
+                              {trainer.rating || 0}
+                            </span>
+                            <span className="text-muted-foreground">
+                              ({trainer.reviews_count || 0})
+                            </span>
                           </div>
                         </div>
 
@@ -389,7 +435,9 @@ export default function Discover() {
                             <MapPin className="w-3 h-3" />
                             <span>Nearby</span>
                           </div>
-                          <div className="font-semibold text-primary">₹{trainer.hourly_rate || 500}/hr</div>
+                          <div className="font-semibold text-primary">
+                            ₹{trainer.hourly_rate || 500}/hr
+                          </div>
                         </div>
 
                         {/* CTAs */}
@@ -417,8 +465,12 @@ export default function Discover() {
               <div className="w-12 h-12 bg-card rounded-full flex items-center justify-center mb-4">
                 <span className="text-2xl">🔍</span>
               </div>
-              <h3 className="font-bold text-foreground mb-1">No trainers found</h3>
-              <p className="text-muted-foreground text-sm">Try adjusting your filters or category</p>
+              <h3 className="font-bold text-foreground mb-1">
+                No trainers found
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                Try adjusting your filters or category
+              </p>
             </div>
           )}
         </div>

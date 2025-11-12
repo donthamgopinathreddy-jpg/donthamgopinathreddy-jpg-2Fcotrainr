@@ -56,7 +56,7 @@ export const useSearch = () => {
         const filtered = DEMO_USERS.filter(
           (u) =>
             u.username.toLowerCase().includes(query.toLowerCase()) ||
-            u.full_name.toLowerCase().includes(query.toLowerCase())
+            u.full_name.toLowerCase().includes(query.toLowerCase()),
         );
 
         setResults(filtered);
@@ -99,7 +99,7 @@ export const useSearch = () => {
 
       // Remove duplicates
       const uniqueUsers = Array.from(
-        new Map(allUsers.map((u) => [u.id, u])).values()
+        new Map(allUsers.map((u) => [u.id, u])).values(),
       ).slice(0, 20);
 
       // Transform results

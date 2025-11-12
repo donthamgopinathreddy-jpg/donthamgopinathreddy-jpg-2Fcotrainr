@@ -4,7 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useState, useMemo } from "react";
 
-const COLOR_MAP: Record<string, { gradient: string; text: string; lightBg: string; icon: string }> = {
+const COLOR_MAP: Record<
+  string,
+  { gradient: string; text: string; lightBg: string; icon: string }
+> = {
   steps: {
     gradient: "from-orange-400 to-orange-600",
     text: "text-orange-600",
@@ -62,7 +65,7 @@ export default function ActivityDetail() {
   const weekDates = useMemo(() => {
     const dates = [];
     const today = new Date();
-    
+
     const dayOfWeek = today.getDay();
     const startOfWeek = new Date(today);
     startOfWeek.setDate(today.getDate() - dayOfWeek);
@@ -72,19 +75,23 @@ export default function ActivityDetail() {
       date.setDate(date.getDate() + i);
       dates.push(date);
     }
-    
+
     return dates;
   }, []);
 
   // Get user stats
-  const stepsCompleted = userProfile?.bio ? parseInt(userProfile.bio.split("|")[0] || "0") : 0;
-  const waterConsumed = userProfile?.bio ? parseFloat(userProfile.bio.split("|")[1] || "0") : 0;
+  const stepsCompleted = userProfile?.bio
+    ? parseInt(userProfile.bio.split("|")[0] || "0")
+    : 0;
+  const waterConsumed = userProfile?.bio
+    ? parseFloat(userProfile.bio.split("|")[1] || "0")
+    : 0;
   const caloriesBurned = Math.round(stepsCompleted * 0.05);
 
   // Generate weekly data with real calendar dates
   const weeklyData: DayData[] = useMemo(() => {
     const data: DayData[] = [];
-    
+
     for (let i = 0; i < 7; i++) {
       const date = new Date(weekDates[i]);
       let value = 0;
@@ -101,7 +108,10 @@ export default function ActivityDetail() {
         }
       }
 
-      const dateStr = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      const dateStr = date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
 
       data.push({
         day: DAY_NAMES[date.getDay()],
@@ -116,7 +126,7 @@ export default function ActivityDetail() {
 
   // Calculate average steps for the week
   const averageSteps = Math.round(
-    weeklyData.reduce((sum, day) => sum + day.value, 0) / weeklyData.length
+    weeklyData.reduce((sum, day) => sum + day.value, 0) / weeklyData.length,
   );
   const totalSteps = weeklyData.reduce((sum, day) => sum + day.value, 0);
 
@@ -144,15 +154,19 @@ export default function ActivityDetail() {
   });
 
   return (
-    <div className={`min-h-screen pb-24 ${
-      theme === "dark" ? "bg-gray-950" : "bg-white"
-    }`}>
+    <div
+      className={`min-h-screen pb-24 ${
+        theme === "dark" ? "bg-gray-950" : "bg-white"
+      }`}
+    >
       {/* Header */}
-      <div className={`sticky top-0 z-40 border-b ${
-        theme === "dark"
-          ? "bg-gray-900 border-gray-800"
-          : "bg-white border-gray-200"
-      }`}>
+      <div
+        className={`sticky top-0 z-40 border-b ${
+          theme === "dark"
+            ? "bg-gray-900 border-gray-800"
+            : "bg-white border-gray-200"
+        }`}
+      >
         <div className="max-w-md mx-auto px-4 py-4 flex items-center gap-3">
           <button
             onClick={() => navigate(-1)}
@@ -165,23 +179,32 @@ export default function ActivityDetail() {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <h1
+              className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               {colors.icon} {getTitle()}
             </h1>
-            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+            <p
+              className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+            >
               {formattedDate}
             </p>
           </div>
         </div>
 
         {/* Week Day Picker with Real Dates */}
-        <div className={`max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-2 overflow-x-auto ${
-          theme === "dark" ? "border-gray-800 border-t" : "border-gray-200 border-t"
-        }`}>
+        <div
+          className={`max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-2 overflow-x-auto ${
+            theme === "dark"
+              ? "border-gray-800 border-t"
+              : "border-gray-200 border-t"
+          }`}
+        >
           {weekDates.map((date, idx) => {
-            const isSelected = date.toDateString() === selectedDate.toDateString();
+            const isSelected =
+              date.toDateString() === selectedDate.toDateString();
             const dayOffset = idx - new Date().getDay();
-            
+
             return (
               <button
                 key={idx}
@@ -190,11 +213,13 @@ export default function ActivityDetail() {
                   isSelected
                     ? "bg-orange-600 text-white"
                     : theme === "dark"
-                    ? "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      ? "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
-                <span className="text-xs font-semibold">{DAY_NAMES[date.getDay()]}</span>
+                <span className="text-xs font-semibold">
+                  {DAY_NAMES[date.getDay()]}
+                </span>
                 <span className="text-xs font-bold">{date.getDate()}</span>
               </button>
             );
@@ -205,11 +230,13 @@ export default function ActivityDetail() {
       {/* Content */}
       <div className="max-w-md mx-auto px-4 py-6 space-y-6">
         {/* Large Stats Card for Selected Day */}
-        <div className={`relative rounded-2xl overflow-hidden p-8 text-center space-y-4 ${
-          theme === "dark"
-            ? "bg-gradient-to-br from-gray-800 to-gray-900"
-            : "bg-gradient-to-br from-gray-50 to-white"
-        }`}>
+        <div
+          className={`relative rounded-2xl overflow-hidden p-8 text-center space-y-4 ${
+            theme === "dark"
+              ? "bg-gradient-to-br from-gray-800 to-gray-900"
+              : "bg-gradient-to-br from-gray-50 to-white"
+          }`}
+        >
           <div className="relative space-y-4">
             {/* Icon */}
             <div className="text-6xl">{colors.icon}</div>
@@ -217,78 +244,104 @@ export default function ActivityDetail() {
             {/* Main Value */}
             <div>
               <div className={`text-5xl font-bold ${colors.text}`}>
-                {type === "water" 
-                  ? selectedDate.toDateString() === new Date().toDateString() 
-                    ? waterConsumed.toFixed(1) 
+                {type === "water"
+                  ? selectedDate.toDateString() === new Date().toDateString()
+                    ? waterConsumed.toFixed(1)
                     : "0.0"
                   : type === "calories"
-                  ? selectedDate.toDateString() === new Date().toDateString()
-                    ? caloriesBurned
-                    : "0"
-                  : selectedDate.toDateString() === new Date().toDateString()
-                  ? stepsCompleted.toLocaleString()
-                  : "0"
-                }
+                    ? selectedDate.toDateString() === new Date().toDateString()
+                      ? caloriesBurned
+                      : "0"
+                    : selectedDate.toDateString() === new Date().toDateString()
+                      ? stepsCompleted.toLocaleString()
+                      : "0"}
               </div>
-              <div className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                {type === "water" ? "/ 2.5" : type === "calories" ? "/ 2500" : "/ 10,000"} {unit}
+              <div
+                className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              >
+                {type === "water"
+                  ? "/ 2.5"
+                  : type === "calories"
+                    ? "/ 2500"
+                    : "/ 10,000"}{" "}
+                {unit}
               </div>
             </div>
 
             {/* Progress Bar */}
-            <div className={`rounded-full h-2 overflow-hidden ${
-              theme === "dark" ? "bg-gray-700" : "bg-gray-200"
-            }`}>
+            <div
+              className={`rounded-full h-2 overflow-hidden ${
+                theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+              }`}
+            >
               <div
                 className={`h-full bg-gradient-to-r ${colors.gradient} transition-all duration-500`}
                 style={{
                   width: `${Math.min(
-                    ((selectedDate.toDateString() === new Date().toDateString()
+                    (selectedDate.toDateString() === new Date().toDateString()
                       ? type === "water"
                         ? waterConsumed / 2.5
                         : type === "calories"
-                        ? caloriesBurned / 2500
-                        : stepsCompleted / 10000
-                      : 0) * 100),
-                    100
+                          ? caloriesBurned / 2500
+                          : stepsCompleted / 10000
+                      : 0) * 100,
+                    100,
                   )}%`,
                 }}
               />
             </div>
 
             {/* Date Display */}
-            <div className={`text-xs font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-              {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+            <div
+              className={`text-xs font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+            >
+              {selectedDate.toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+              })}
             </div>
           </div>
         </div>
 
         {/* Weekly Breakdown with Vertical Bar Chart */}
-        <div className={`rounded-2xl p-6 space-y-4 ${
-          theme === "dark"
-            ? "bg-gray-800/50"
-            : "bg-white"
-        }`}>
+        <div
+          className={`rounded-2xl p-6 space-y-4 ${
+            theme === "dark" ? "bg-gray-800/50" : "bg-white"
+          }`}
+        >
           <div className="flex items-center justify-between">
-            <h3 className={`font-bold flex items-center gap-2 ${
-              theme === "dark" ? "text-white" : "text-gray-900"
-            }`}>
+            <h3
+              className={`font-bold flex items-center gap-2 ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
               <Calendar className={`w-5 h-5 ${colors.text}`} />
-              {type === "steps" ? "Weekly Steps" : type === "calories" ? "Weekly Calories" : "Weekly Water"}
+              {type === "steps"
+                ? "Weekly Steps"
+                : type === "calories"
+                  ? "Weekly Calories"
+                  : "Weekly Water"}
             </h3>
-            <span className={`text-xs ${
-              theme === "dark" ? "text-gray-400" : "text-gray-600"
-            }`}>
+            <span
+              className={`text-xs ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
               This Week
             </span>
           </div>
 
           {/* Summary Stats */}
-          <div className={`rounded-lg p-4 space-y-2 ${
-            theme === "dark" ? "bg-gray-900" : "bg-gray-50"
-          }`}>
+          <div
+            className={`rounded-lg p-4 space-y-2 ${
+              theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+            }`}
+          >
             <div className="flex items-center justify-between">
-              <span className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+              <span
+                className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              >
                 Weekly Average
               </span>
               <span className={`font-bold text-lg ${colors.text}`}>
@@ -296,7 +349,9 @@ export default function ActivityDetail() {
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+              <span
+                className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              >
                 Weekly Total
               </span>
               <span className={`font-bold text-lg ${colors.text}`}>
@@ -306,15 +361,21 @@ export default function ActivityDetail() {
           </div>
 
           {/* Vertical Standing Bar Chart */}
-          <div className={`rounded-lg p-6 ${
-            theme === "dark" ? "bg-gray-900" : "bg-gray-50"
-          }`}>
+          <div
+            className={`rounded-lg p-6 ${
+              theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+            }`}
+          >
             <div className="flex items-end justify-around gap-2 h-48">
               {weeklyData.map((dayData, idx) => {
-                const barHeightPercent = maxBarValue > 0 ? (dayData.value / maxBarValue) * 100 : 0;
-                
+                const barHeightPercent =
+                  maxBarValue > 0 ? (dayData.value / maxBarValue) * 100 : 0;
+
                 return (
-                  <div key={idx} className="flex flex-col items-center gap-2 flex-1">
+                  <div
+                    key={idx}
+                    className="flex flex-col items-center gap-2 flex-1"
+                  >
                     {/* Vertical Bar */}
                     <div className="w-full flex flex-col items-center justify-end h-full relative group">
                       <div
@@ -325,10 +386,12 @@ export default function ActivityDetail() {
                         }}
                         title={`${dayData.day} ${dayData.date}: ${dayData.value.toLocaleString()} ${unit}`}
                       />
-                      
+
                       {/* Value on top of bar */}
                       {barHeightPercent > 0 && (
-                        <div className={`absolute -top-6 text-xs font-bold ${colors.text}`}>
+                        <div
+                          className={`absolute -top-6 text-xs font-bold ${colors.text}`}
+                        >
                           {dayData.value.toLocaleString()}
                         </div>
                       )}
@@ -336,10 +399,14 @@ export default function ActivityDetail() {
 
                     {/* Day and Date Label */}
                     <div className="text-center">
-                      <div className={`text-xs font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}>
+                      <div
+                        className={`text-xs font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
+                      >
                         {dayData.day}
                       </div>
-                      <div className={`text-xs ${theme === "dark" ? "text-gray-500" : "text-gray-600"}`}>
+                      <div
+                        className={`text-xs ${theme === "dark" ? "text-gray-500" : "text-gray-600"}`}
+                      >
                         {dayData.date}
                       </div>
                     </div>
@@ -351,10 +418,17 @@ export default function ActivityDetail() {
 
           {/* Additional Info */}
           {type === "steps" && (
-            <div className={`rounded-lg p-4 text-center text-sm ${
-              theme === "dark" ? "bg-gray-900 text-gray-400" : "bg-gray-100 text-gray-600"
-            }`}>
-              <p>Only today's data is shown. Previous days' data will appear once logged.</p>
+            <div
+              className={`rounded-lg p-4 text-center text-sm ${
+                theme === "dark"
+                  ? "bg-gray-900 text-gray-400"
+                  : "bg-gray-100 text-gray-600"
+              }`}
+            >
+              <p>
+                Only today's data is shown. Previous days' data will appear once
+                logged.
+              </p>
             </div>
           )}
         </div>

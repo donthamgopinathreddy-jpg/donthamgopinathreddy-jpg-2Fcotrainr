@@ -77,16 +77,20 @@ export default function Subscription() {
   };
 
   return (
-    <div className={`min-h-screen pb-24 ${
-      theme === "light" ? "bg-white" : "bg-gray-950"
-    }`}>
+    <div
+      className={`min-h-screen pb-24 ${
+        theme === "light" ? "bg-white" : "bg-gray-950"
+      }`}
+    >
       <div className="max-w-md mx-auto">
         {/* Header */}
-        <div className={`sticky top-0 z-40 border-b px-4 py-4 flex items-center gap-3 ${
-          theme === "light"
-            ? "bg-white border-gray-200"
-            : "bg-gray-900 border-gray-800"
-        }`}>
+        <div
+          className={`sticky top-0 z-40 border-b px-4 py-4 flex items-center gap-3 ${
+            theme === "light"
+              ? "bg-white border-gray-200"
+              : "bg-gray-900 border-gray-800"
+          }`}
+        >
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -100,7 +104,9 @@ export default function Subscription() {
         <div className="px-4 py-8 space-y-6">
           {/* Header Text */}
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Unlock Premium</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              Unlock Premium
+            </h2>
             <p className="text-gray-600">
               Get unlimited access to trainers, chat, and exclusive features
             </p>
@@ -144,7 +150,9 @@ export default function Subscription() {
                   key={plan.id}
                   onClick={() => setSelectedPlan(plan.id)}
                   className={`relative p-6 rounded-2xl border-2 cursor-pointer transition-all ${
-                    isSelected ? `${style.selected} shadow-lg` : `${style.border} ${style.bg} hover:shadow-md`
+                    isSelected
+                      ? `${style.selected} shadow-lg`
+                      : `${style.border} ${style.bg} hover:shadow-md`
                   }`}
                 >
                   {/* Popular Badge */}
@@ -165,11 +173,17 @@ export default function Subscription() {
                   {/* Plan Header */}
                   <div className="flex items-start justify-between mb-4 pt-2">
                     <div>
-                      <h3 className={`text-xl font-bold ${style.text}`}>{plan.name}</h3>
-                      <p className={`text-sm ${style.accent}`}>{plan.duration}</p>
+                      <h3 className={`text-xl font-bold ${style.text}`}>
+                        {plan.name}
+                      </h3>
+                      <p className={`text-sm ${style.accent}`}>
+                        {plan.duration}
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className={`text-3xl font-bold ${style.text}`}>₹{plan.price}</p>
+                      <p className={`text-3xl font-bold ${style.text}`}>
+                        ₹{plan.price}
+                      </p>
                     </div>
                   </div>
 
@@ -177,8 +191,12 @@ export default function Subscription() {
                   <div className="space-y-2">
                     {plan.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2">
-                        <Check className={`w-4 h-4 ${style.accent} flex-shrink-0`} />
-                        <span className={`text-sm ${style.text}`}>{feature}</span>
+                        <Check
+                          className={`w-4 h-4 ${style.accent} flex-shrink-0`}
+                        />
+                        <span className={`text-sm ${style.text}`}>
+                          {feature}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -186,8 +204,12 @@ export default function Subscription() {
                   {/* Selected Indicator */}
                   {isSelected && (
                     <div className="absolute top-4 right-4">
-                      <div className={`w-5 h-5 rounded-full border-2 ${style.badge} flex items-center justify-center bg-white`}>
-                        <div className={`w-2 h-2 rounded-full ${style.badge}`} />
+                      <div
+                        className={`w-5 h-5 rounded-full border-2 ${style.badge} flex items-center justify-center bg-white`}
+                      >
+                        <div
+                          className={`w-2 h-2 rounded-full ${style.badge}`}
+                        />
                       </div>
                     </div>
                   )}
@@ -203,7 +225,9 @@ export default function Subscription() {
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 rounded-xl hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Zap className="w-5 h-5" />
-            {loading ? "Processing..." : `Get Premium - ₹${PLANS.find((p) => p.id === selectedPlan)?.price}`}
+            {loading
+              ? "Processing..."
+              : `Get Premium - ₹${PLANS.find((p) => p.id === selectedPlan)?.price}`}
           </button>
 
           {/* Benefits */}
@@ -222,21 +246,29 @@ export default function Subscription() {
           {/* FAQ */}
           <div className="space-y-3">
             <div>
-              <p className="font-semibold text-gray-900 mb-1">Can I cancel anytime?</p>
+              <p className="font-semibold text-gray-900 mb-1">
+                Can I cancel anytime?
+              </p>
               <p className="text-sm text-gray-600">
-                Yes, you can cancel your subscription anytime from your account settings.
+                Yes, you can cancel your subscription anytime from your account
+                settings.
               </p>
             </div>
             <div>
-              <p className="font-semibold text-gray-900 mb-1">Is there a free trial?</p>
+              <p className="font-semibold text-gray-900 mb-1">
+                Is there a free trial?
+              </p>
               <p className="text-sm text-gray-600">
                 Yes, you get 3 free 10-minute trial sessions with any trainer.
               </p>
             </div>
             <div>
-              <p className="font-semibold text-gray-900 mb-1">Secure payment?</p>
+              <p className="font-semibold text-gray-900 mb-1">
+                Secure payment?
+              </p>
               <p className="text-sm text-gray-600">
-                All payments are processed securely through Stripe. Your information is protected.
+                All payments are processed securely through Stripe. Your
+                information is protected.
               </p>
             </div>
           </div>

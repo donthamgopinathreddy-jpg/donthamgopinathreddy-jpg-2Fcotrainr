@@ -1,6 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, MessageCircle, Share2, Plus, UserPlus, UserCheck, Paperclip, X, AtSign, Search as SearchIcon, Loader } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  Share2,
+  Plus,
+  UserPlus,
+  UserCheck,
+  Paperclip,
+  X,
+  AtSign,
+  Search as SearchIcon,
+  Loader,
+} from "lucide-react";
 import { usePosts } from "@/hooks/usePosts";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -12,8 +24,13 @@ export default function Feed() {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
   const { theme } = useTheme();
-  const { posts, createPost, likePost, incrementComments, loading } = usePosts();
-  const { results: searchResults, loading: searchLoading, searchUsers } = useSearch();
+  const { posts, createPost, likePost, incrementComments, loading } =
+    usePosts();
+  const {
+    results: searchResults,
+    loading: searchLoading,
+    searchUsers,
+  } = useSearch();
   const { isFollowing, toggleFollow } = useFollows();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showNewPost, setShowNewPost] = useState(false);
@@ -68,7 +85,8 @@ export default function Feed() {
     if (!mentions.includes(userName)) {
       setMentions([...mentions, userName]);
       setNewPostContent((prev) => {
-        const withMention = prev + (prev ? " " : "") + `@${userName.replace(/\s+/g, "")}`;
+        const withMention =
+          prev + (prev ? " " : "") + `@${userName.replace(/\s+/g, "")}`;
         return withMention;
       });
     }
@@ -79,7 +97,7 @@ export default function Feed() {
   const filteredUsers = AVAILABLE_USERS.filter(
     (user) =>
       user.toLowerCase().includes(mentionSearch.toLowerCase()) &&
-      !mentions.includes(user)
+      !mentions.includes(user),
   );
 
   const handleNewPost = async () => {
@@ -92,8 +110,10 @@ export default function Feed() {
     try {
       await createPost({
         content: newPostContent,
-        image_url: mediaType === "image" ? selectedMedia || undefined : undefined,
-        video_url: mediaType === "video" ? selectedMedia || undefined : undefined,
+        image_url:
+          mediaType === "image" ? selectedMedia || undefined : undefined,
+        video_url:
+          mediaType === "video" ? selectedMedia || undefined : undefined,
       });
 
       setNewPostContent("");
@@ -143,9 +163,7 @@ export default function Feed() {
     try {
       const success = await toggleFollow(userId);
       if (success) {
-        toast.success(
-          isFollowing(userId) ? "Unfollowed" : "Following!"
-        );
+        toast.success(isFollowing(userId) ? "Unfollowed" : "Following!");
       } else {
         toast.error("Failed to update follow status");
       }
@@ -184,18 +202,30 @@ export default function Feed() {
   };
 
   return (
-    <div className={`min-h-screen pb-24 ${
-      theme === "light" ? "bg-white" : "bg-gray-950"
-    }`}>
+    <div
+      className={`min-h-screen pb-24 ${
+        theme === "light" ? "bg-white" : "bg-gray-950"
+      }`}
+    >
       <div className="max-w-md mx-auto">
         {/* Header */}
-        <div className={`sticky top-0 z-40 border-b px-4 py-6 ${
-          theme === "light"
-            ? "bg-white border-gray-200"
-            : "bg-gray-900 border-gray-800"
-        }`}>
-          <h1 className={`text-3xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}>Community Feed</h1>
-          <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-gray-400"}`}>Share your progress and inspiration</p>
+        <div
+          className={`sticky top-0 z-40 border-b px-4 py-6 ${
+            theme === "light"
+              ? "bg-white border-gray-200"
+              : "bg-gray-900 border-gray-800"
+          }`}
+        >
+          <h1
+            className={`text-3xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}
+          >
+            Community Feed
+          </h1>
+          <p
+            className={`text-sm ${theme === "light" ? "text-gray-600" : "text-gray-400"}`}
+          >
+            Share your progress and inspiration
+          </p>
 
           {/* Search Toggle */}
           <button
@@ -213,11 +243,13 @@ export default function Feed() {
 
         {/* Search Section */}
         {showSearch && (
-          <div className={`border-b px-4 py-4 ${
-            theme === "light"
-              ? "bg-gray-50 border-gray-200"
-              : "bg-gray-800/50 border-gray-700"
-          }`}>
+          <div
+            className={`border-b px-4 py-4 ${
+              theme === "light"
+                ? "bg-gray-50 border-gray-200"
+                : "bg-gray-800/50 border-gray-700"
+            }`}
+          >
             <input
               type="text"
               placeholder="Search by username or name..."
@@ -235,10 +267,13 @@ export default function Feed() {
               <div className="mt-4 space-y-2 max-h-64 overflow-y-auto">
                 {searchResults.length > 0 && (
                   <>
-                    <p className={`text-xs font-semibold ${
-                      theme === "light" ? "text-gray-600" : "text-gray-400"
-                    }`}>
-                      {searchResults.length} {searchResults.length === 1 ? "result" : "results"} found
+                    <p
+                      className={`text-xs font-semibold ${
+                        theme === "light" ? "text-gray-600" : "text-gray-400"
+                      }`}
+                    >
+                      {searchResults.length}{" "}
+                      {searchResults.length === 1 ? "result" : "results"} found
                     </p>
 
                     {searchResults.map((user) => (
@@ -254,20 +289,30 @@ export default function Feed() {
                         <div className="flex items-center gap-2 flex-1 min-w-0">
                           <div
                             className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs ${
-                              theme === "light" ? "bg-gray-300 text-gray-700" : "bg-gray-600 text-white"
+                              theme === "light"
+                                ? "bg-gray-300 text-gray-700"
+                                : "bg-gray-600 text-white"
                             }`}
                           >
                             {user.full_name.charAt(0)}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className={`text-sm font-semibold truncate ${
-                              theme === "light" ? "text-gray-900" : "text-white"
-                            }`}>
+                            <p
+                              className={`text-sm font-semibold truncate ${
+                                theme === "light"
+                                  ? "text-gray-900"
+                                  : "text-white"
+                              }`}
+                            >
                               {user.full_name}
                             </p>
-                            <p className={`text-xs truncate ${
-                              theme === "light" ? "text-gray-600" : "text-gray-300"
-                            }`}>
+                            <p
+                              className={`text-xs truncate ${
+                                theme === "light"
+                                  ? "text-gray-600"
+                                  : "text-gray-300"
+                              }`}
+                            >
                               @{user.username}
                             </p>
                           </div>
@@ -309,13 +354,17 @@ export default function Feed() {
                   </div>
                 )}
 
-                {!searchLoading && searchQuery && searchResults.length === 0 && (
-                  <p className={`text-xs text-center py-4 ${
-                    theme === "light" ? "text-gray-500" : "text-gray-400"
-                  }`}>
-                    No users found
-                  </p>
-                )}
+                {!searchLoading &&
+                  searchQuery &&
+                  searchResults.length === 0 && (
+                    <p
+                      className={`text-xs text-center py-4 ${
+                        theme === "light" ? "text-gray-500" : "text-gray-400"
+                      }`}
+                    >
+                      No users found
+                    </p>
+                  )}
               </div>
             )}
           </div>
@@ -382,7 +431,9 @@ export default function Feed() {
                         onClick={() => {
                           setMentions(mentions.filter((m) => m !== mention));
                           setNewPostContent((prev) =>
-                            prev.replace(`@${mention.replace(/\s+/g, "")}`, "").trim()
+                            prev
+                              .replace(`@${mention.replace(/\s+/g, "")}`, "")
+                              .trim(),
                           );
                         }}
                         className="hover:text-blue-900"
@@ -475,7 +526,9 @@ export default function Feed() {
           <div className="px-4 space-y-4 pb-4">
             {posts.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">No posts yet. Be the first to post!</p>
+                <p className="text-muted-foreground">
+                  No posts yet. Be the first to post!
+                </p>
               </div>
             ) : (
               posts.map((post) => (
@@ -489,10 +542,14 @@ export default function Feed() {
                       {getInitials(post.author_name)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-bold text-foreground text-sm">{post.author_name || "Unknown"}</p>
+                      <p className="font-bold text-foreground text-sm">
+                        {post.author_name || "Unknown"}
+                      </p>
                       <p className="text-xs text-muted-foreground">
-                        {post.author_role === "trainer" ? "🏋️ Trainer" : "👤 Client"} •{" "}
-                        {formatDate(post.created_at)}
+                        {post.author_role === "trainer"
+                          ? "🏋️ Trainer"
+                          : "👤 Client"}{" "}
+                        • {formatDate(post.created_at)}
                       </p>
                     </div>
                     <button className="flex items-center gap-1 px-3 py-1 rounded-lg font-semibold text-xs transition-all flex-shrink-0 bg-blue-600 text-white hover:bg-blue-700">
@@ -503,7 +560,9 @@ export default function Feed() {
 
                   {/* Post Content */}
                   <div className="px-4 py-2">
-                    <p className="text-foreground text-sm leading-relaxed">{post.content}</p>
+                    <p className="text-foreground text-sm leading-relaxed">
+                      {post.content}
+                    </p>
                   </div>
 
                   {/* Post Image */}
@@ -533,7 +592,9 @@ export default function Feed() {
                     <button
                       onClick={() => handleLike(post.id)}
                       className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                        likedPosts.has(post.id) ? "text-red-500" : "hover:text-red-500"
+                        likedPosts.has(post.id)
+                          ? "text-red-500"
+                          : "hover:text-red-500"
                       }`}
                     >
                       <Heart

@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, MapPin, Check, MessageCircle, Calendar } from "lucide-react";
+import {
+  ArrowLeft,
+  Star,
+  MapPin,
+  Check,
+  MessageCircle,
+  Calendar,
+} from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 
 interface TrainerDetails {
@@ -86,16 +93,20 @@ export default function TrainerProfile() {
   };
 
   return (
-    <div className={`min-h-screen pb-24 ${
-      theme === "light" ? "bg-white" : "bg-gray-950"
-    }`}>
+    <div
+      className={`min-h-screen pb-24 ${
+        theme === "light" ? "bg-white" : "bg-gray-950"
+      }`}
+    >
       <div className="max-w-md mx-auto">
         {/* Header with Back Button */}
-        <div className={`sticky top-0 z-40 backdrop-blur border-b px-4 py-4 flex items-center gap-3 ${
-          theme === "light"
-            ? "bg-white/80 border-gray-200"
-            : "bg-gray-900/80 border-gray-800"
-        }`}>
+        <div
+          className={`sticky top-0 z-40 backdrop-blur border-b px-4 py-4 flex items-center gap-3 ${
+            theme === "light"
+              ? "bg-white/80 border-gray-200"
+              : "bg-gray-900/80 border-gray-800"
+          }`}
+        >
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-card rounded-lg transition-colors"
@@ -122,7 +133,9 @@ export default function TrainerProfile() {
             </div>
             <div className="flex-1 pt-4">
               <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-xl font-bold text-foreground">{trainer.name}</h2>
+                <h2 className="text-xl font-bold text-foreground">
+                  {trainer.name}
+                </h2>
                 {trainer.verified && (
                   <div className="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full flex items-center gap-1">
                     <Check className="w-3 h-3" />
@@ -137,7 +150,9 @@ export default function TrainerProfile() {
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
                   <span className="font-bold">{trainer.rating}</span>
-                  <span className="text-muted-foreground">({trainer.ratingCount})</span>
+                  <span className="text-muted-foreground">
+                    ({trainer.ratingCount})
+                  </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <MapPin className="w-4 h-4 text-muted-foreground" />
@@ -150,15 +165,21 @@ export default function TrainerProfile() {
           {/* Stats Grid */}
           <div className="grid grid-cols-3 gap-3 mb-6">
             <div className="bg-card border border-border rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{trainer.totalSessions}</div>
+              <div className="text-2xl font-bold text-primary">
+                {trainer.totalSessions}
+              </div>
               <p className="text-xs text-muted-foreground">Sessions</p>
             </div>
             <div className="bg-card border border-border rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">₹{trainer.price}</div>
+              <div className="text-2xl font-bold text-primary">
+                ₹{trainer.price}
+              </div>
               <p className="text-xs text-muted-foreground">Per Session</p>
             </div>
             <div className="bg-card border border-border rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{trainer.yearsOfExperience}+</div>
+              <div className="text-2xl font-bold text-primary">
+                {trainer.yearsOfExperience}+
+              </div>
               <p className="text-xs text-muted-foreground">Years Exp.</p>
             </div>
           </div>
@@ -166,12 +187,16 @@ export default function TrainerProfile() {
           {/* Bio */}
           <div className="mb-6">
             <h3 className="text-sm font-bold text-foreground mb-2">About</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">{trainer.bio}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {trainer.bio}
+            </p>
           </div>
 
           {/* Specialties */}
           <div className="mb-6">
-            <h3 className="text-sm font-bold text-foreground mb-2">Specialties</h3>
+            <h3 className="text-sm font-bold text-foreground mb-2">
+              Specialties
+            </h3>
             <div className="flex flex-wrap gap-2">
               {trainer.specialties.map((spec) => (
                 <div
@@ -187,7 +212,9 @@ export default function TrainerProfile() {
           {/* Certifications */}
           {trainer.certifications && trainer.certifications.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-sm font-bold text-foreground mb-3">Certifications</h3>
+              <h3 className="text-sm font-bold text-foreground mb-3">
+                Certifications
+              </h3>
               <div className="space-y-2">
                 {trainer.certifications.map((cert, idx) => (
                   <div key={idx} className="flex items-start gap-2">
@@ -208,7 +235,11 @@ export default function TrainerProfile() {
                   key={idx}
                   className="h-24 rounded-lg overflow-hidden border border-border"
                 >
-                  <img src={img} alt="Gallery" className="w-full h-full object-cover" />
+                  <img
+                    src={img}
+                    alt="Gallery"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               ))}
             </div>
@@ -247,11 +278,15 @@ export default function TrainerProfile() {
           {showBookingModal && (
             <div className="fixed inset-0 bg-black/50 flex items-end z-50">
               <div className="w-full bg-card border-t border-border rounded-t-2xl p-6 space-y-4 max-h-96 overflow-y-auto">
-                <h3 className="font-bold text-lg text-foreground">Book a Session</h3>
+                <h3 className="font-bold text-lg text-foreground">
+                  Book a Session
+                </h3>
 
                 {/* Date Selection */}
                 <div>
-                  <p className="text-sm font-semibold text-foreground mb-2">Select Date</p>
+                  <p className="text-sm font-semibold text-foreground mb-2">
+                    Select Date
+                  </p>
                   <div className="flex gap-2 overflow-x-auto pb-2">
                     {["Today", "Tomorrow", "Mon", "Tue", "Wed"].map((day) => (
                       <button
@@ -271,7 +306,9 @@ export default function TrainerProfile() {
 
                 {/* Time Selection */}
                 <div>
-                  <p className="text-sm font-semibold text-foreground mb-2">Select Time</p>
+                  <p className="text-sm font-semibold text-foreground mb-2">
+                    Select Time
+                  </p>
                   <div className="grid grid-cols-3 gap-2">
                     {TIME_SLOTS.map((time) => (
                       <button

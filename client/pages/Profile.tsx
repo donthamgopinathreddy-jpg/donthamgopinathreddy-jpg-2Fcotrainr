@@ -80,7 +80,9 @@ export default function Profile() {
   });
   const [userPosts, setUserPosts] = useState<any[]>([]);
   const [postsLoading, setPostsLoading] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(
+    null,
+  );
 
   // Calculate age from date of birth
   const calculateAge = (dateOfBirth: string): number => {

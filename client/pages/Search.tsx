@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Search as SearchIcon, UserPlus, UserCheck, Star, Loader } from "lucide-react";
+import {
+  Search as SearchIcon,
+  UserPlus,
+  UserCheck,
+  Star,
+  Loader,
+} from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useSearch } from "@/hooks/useSearch";
 import { useFollows } from "@/hooks/useFollows";
@@ -8,7 +14,11 @@ import { toast } from "sonner";
 export default function Search() {
   const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
-  const { results: searchResults, loading: searchLoading, searchUsers } = useSearch();
+  const {
+    results: searchResults,
+    loading: searchLoading,
+    searchUsers,
+  } = useSearch();
   const { isFollowing, toggleFollow } = useFollows();
   const [isTogglingId, setIsTogglingId] = useState<string | null>(null);
 
@@ -28,9 +38,7 @@ export default function Search() {
     try {
       const success = await toggleFollow(userId);
       if (success) {
-        toast.success(
-          isFollowing(userId) ? "Unfollowed" : "Following!"
-        );
+        toast.success(isFollowing(userId) ? "Unfollowed" : "Following!");
       } else {
         toast.error("Failed to update follow status");
       }
@@ -110,7 +118,8 @@ export default function Search() {
                   theme === "dark" ? "text-gray-400" : "text-gray-600"
                 }`}
               >
-                {searchResults.length} {searchResults.length === 1 ? "result" : "results"} found
+                {searchResults.length}{" "}
+                {searchResults.length === 1 ? "result" : "results"} found
               </p>
 
               {searchResults.map((user) => (
@@ -246,7 +255,8 @@ export default function Search() {
                   theme === "dark" ? "text-gray-400" : "text-gray-600"
                 }`}
               >
-                💡 <strong>Tip:</strong> Search by username (e.g., @priya_singh) or full name to find and follow trainers and users.
+                💡 <strong>Tip:</strong> Search by username (e.g., @priya_singh)
+                or full name to find and follow trainers and users.
               </p>
             </div>
           )}

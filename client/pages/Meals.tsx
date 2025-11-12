@@ -638,9 +638,11 @@ export default function Meals() {
             }`}
           >
             <div className="flex items-center justify-between">
-              <h2 className={`text-lg font-bold ${
-                theme === "dark" ? "text-white" : "text-yellow-900"
-              }`}>
+              <h2
+                className={`text-lg font-bold ${
+                  theme === "dark" ? "text-white" : "text-yellow-900"
+                }`}
+              >
                 Today's Summary
               </h2>
               <button
@@ -659,8 +661,18 @@ export default function Meals() {
               {/* Calories Circle */}
               <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-24 h-24 flex items-center justify-center">
-                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" className="stroke-current text-white" strokeWidth="4" />
+                  <svg
+                    className="w-full h-full transform -rotate-90"
+                    viewBox="0 0 100 100"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      className="stroke-current text-white"
+                      strokeWidth="4"
+                    />
                     <circle
                       cx="50"
                       cy="50"
@@ -673,20 +685,36 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-gray-900">{Math.round((totalCalories / calorieGoal) * 100)}%</span>
+                    <span className="text-xl font-bold text-gray-900">
+                      {Math.round((totalCalories / calorieGoal) * 100)}%
+                    </span>
                   </div>
                 </div>
                 <div className="text-center">
-                  <p className="text-xs font-semibold text-gray-600">Calories</p>
-                  <p className="text-xs text-gray-500">{totalCalories}/{calorieGoal}</p>
+                  <p className="text-xs font-semibold text-gray-600">
+                    Calories
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {totalCalories}/{calorieGoal}
+                  </p>
                 </div>
               </div>
 
               {/* Protein Circle */}
               <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-24 h-24 flex items-center justify-center">
-                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" className="stroke-current text-white" strokeWidth="4" />
+                  <svg
+                    className="w-full h-full transform -rotate-90"
+                    viewBox="0 0 100 100"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      className="stroke-current text-white"
+                      strokeWidth="4"
+                    />
                     <circle
                       cx="50"
                       cy="50"
@@ -699,20 +727,34 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-gray-900">{Math.round((totalProtein / proteinGoal) * 100)}%</span>
+                    <span className="text-xl font-bold text-gray-900">
+                      {Math.round((totalProtein / proteinGoal) * 100)}%
+                    </span>
                   </div>
                 </div>
                 <div className="text-center">
                   <p className="text-xs font-semibold text-gray-600">Protein</p>
-                  <p className="text-xs text-gray-500">{totalProtein}g/{proteinGoal}g</p>
+                  <p className="text-xs text-gray-500">
+                    {totalProtein}g/{proteinGoal}g
+                  </p>
                 </div>
               </div>
 
               {/* Carbs Circle */}
               <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-24 h-24 flex items-center justify-center">
-                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" className="stroke-current text-white" strokeWidth="4" />
+                  <svg
+                    className="w-full h-full transform -rotate-90"
+                    viewBox="0 0 100 100"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      className="stroke-current text-white"
+                      strokeWidth="4"
+                    />
                     <circle
                       cx="50"
                       cy="50"
@@ -725,20 +767,34 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-gray-900">{Math.round((totalCarbs / carbsGoal) * 100)}%</span>
+                    <span className="text-xl font-bold text-gray-900">
+                      {Math.round((totalCarbs / carbsGoal) * 100)}%
+                    </span>
                   </div>
                 </div>
                 <div className="text-center">
                   <p className="text-xs font-semibold text-gray-600">Carbs</p>
-                  <p className="text-xs text-gray-500">{totalCarbs}g/{carbsGoal}g</p>
+                  <p className="text-xs text-gray-500">
+                    {totalCarbs}g/{carbsGoal}g
+                  </p>
                 </div>
               </div>
 
               {/* Fat Circle */}
               <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-24 h-24 flex items-center justify-center">
-                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" className="stroke-current text-white" strokeWidth="4" />
+                  <svg
+                    className="w-full h-full transform -rotate-90"
+                    viewBox="0 0 100 100"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      className="stroke-current text-white"
+                      strokeWidth="4"
+                    />
                     <circle
                       cx="50"
                       cy="50"
@@ -751,12 +807,16 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-gray-900">{Math.round((totalFat / fatGoal) * 100)}%</span>
+                    <span className="text-xl font-bold text-gray-900">
+                      {Math.round((totalFat / fatGoal) * 100)}%
+                    </span>
                   </div>
                 </div>
                 <div className="text-center">
                   <p className="text-xs font-semibold text-gray-600">Fat</p>
-                  <p className="text-xs text-gray-500">{totalFat}g/{fatGoal}g</p>
+                  <p className="text-xs text-gray-500">
+                    {totalFat}g/{fatGoal}g
+                  </p>
                 </div>
               </div>
             </div>
@@ -795,19 +855,31 @@ export default function Meals() {
                             }`}
                           >
                             <div className="flex-1">
-                              <p className={`font-medium ${
-                                theme === "dark" ? "text-gray-100" : "text-gray-900"
-                              }`}>
+                              <p
+                                className={`font-medium ${
+                                  theme === "dark"
+                                    ? "text-gray-100"
+                                    : "text-gray-900"
+                                }`}
+                              >
                                 {meal.name}
                               </p>
-                              <p className={`text-xs mb-1 ${
-                                theme === "dark" ? "text-gray-400" : "text-gray-600"
-                              }`}>
+                              <p
+                                className={`text-xs mb-1 ${
+                                  theme === "dark"
+                                    ? "text-gray-400"
+                                    : "text-gray-600"
+                                }`}
+                              >
                                 Weight: {meal.weight}g
                               </p>
-                              <p className={`text-xs ${
-                                theme === "dark" ? "text-gray-400" : "text-gray-600"
-                              }`}>
+                              <p
+                                className={`text-xs ${
+                                  theme === "dark"
+                                    ? "text-gray-400"
+                                    : "text-gray-600"
+                                }`}
+                              >
                                 {meal.calories} cal • P: {meal.protein}g • C:{" "}
                                 {meal.carbs}g • F: {meal.fat}g
                               </p>
@@ -849,9 +921,13 @@ export default function Meals() {
                   : "bg-gradient-to-br from-yellow-100/25 via-amber-100/25 to-yellow-100/25 backdrop-blur-2xl border border-yellow-200/20"
               }`}
             >
-              <h3 className={`font-bold ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}>Add Meal</h3>
+              <h3
+                className={`font-bold ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
+              >
+                Add Meal
+              </h3>
 
               {/* Meal Type Selection */}
               <div>

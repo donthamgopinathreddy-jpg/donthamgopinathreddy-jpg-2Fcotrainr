@@ -22,11 +22,9 @@ export const useFollows = () => {
 
       if (isDemo) {
         // Load from localStorage in demo mode
-        const demoFollowing = localStorage.getItem(
-          `following_${user.id}`
-        );
+        const demoFollowing = localStorage.getItem(`following_${user.id}`);
         setFollowedUsers(
-          demoFollowing ? new Set(JSON.parse(demoFollowing)) : new Set()
+          demoFollowing ? new Set(JSON.parse(demoFollowing)) : new Set(),
         );
         setLoading(false);
         return;
@@ -43,9 +41,7 @@ export const useFollows = () => {
         return;
       }
 
-      const following = new Set(
-        (data || []).map((item) => item.following_id)
-      );
+      const following = new Set((data || []).map((item) => item.following_id));
       setFollowedUsers(following);
     } catch (error) {
       console.error("Error in fetchFollowing:", error);
@@ -82,7 +78,7 @@ export const useFollows = () => {
           // Save to localStorage in demo mode
           localStorage.setItem(
             `following_${user.id}`,
-            JSON.stringify(Array.from(newFollowed))
+            JSON.stringify(Array.from(newFollowed)),
           );
         }
       } else {
@@ -90,14 +86,12 @@ export const useFollows = () => {
         newFollowed.add(targetUserId);
 
         if (!isDemo) {
-          const { error } = await supabase
-            .from("follows")
-            .insert([
-              {
-                follower_id: user.id,
-                following_id: targetUserId,
-              },
-            ]);
+          const { error } = await supabase.from("follows").insert([
+            {
+              follower_id: user.id,
+              following_id: targetUserId,
+            },
+          ]);
 
           if (error) {
             console.error("Error following user:", error);
@@ -107,7 +101,7 @@ export const useFollows = () => {
           // Save to localStorage in demo mode
           localStorage.setItem(
             `following_${user.id}`,
-            JSON.stringify(Array.from(newFollowed))
+            JSON.stringify(Array.from(newFollowed)),
           );
         }
       }

@@ -95,9 +95,7 @@ export default function UserProfile() {
     try {
       const success = await toggleFollow(userId);
       if (success) {
-        toast.success(
-          isFollowing(userId) ? "Unfollowed" : "Following!"
-        );
+        toast.success(isFollowing(userId) ? "Unfollowed" : "Following!");
       } else {
         toast.error("Failed to update follow status");
       }
@@ -257,7 +255,9 @@ export default function UserProfile() {
                 {user.full_name}
               </h1>
               <p
-                className={theme === "light" ? "text-gray-600" : "text-gray-400"}
+                className={
+                  theme === "light" ? "text-gray-600" : "text-gray-400"
+                }
               >
                 @{user.username}
               </p>
@@ -292,9 +292,7 @@ export default function UserProfile() {
               <div className="space-y-2">
                 <textarea
                   value={bioText}
-                  onChange={(e) =>
-                    setBioText(e.target.value.slice(0, 120))
-                  }
+                  onChange={(e) => setBioText(e.target.value.slice(0, 120))}
                   maxLength={120}
                   placeholder="Add a bio (max 120 characters)..."
                   className={`w-full px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary resize-none ${
@@ -368,7 +366,9 @@ export default function UserProfile() {
           {posts.length === 0 ? (
             <div className="text-center py-12">
               <p
-                className={theme === "light" ? "text-gray-500" : "text-gray-400"}
+                className={
+                  theme === "light" ? "text-gray-500" : "text-gray-400"
+                }
               >
                 No posts yet
               </p>
@@ -409,7 +409,9 @@ export default function UserProfile() {
 
                 <div className="flex items-center justify-between text-xs">
                   <span
-                    className={theme === "light" ? "text-gray-500" : "text-gray-400"}
+                    className={
+                      theme === "light" ? "text-gray-500" : "text-gray-400"
+                    }
                   >
                     {formatDate(post.created_at)}
                   </span>
@@ -428,17 +430,23 @@ export default function UserProfile() {
                         }`}
                       />
                       <span
-                        className={theme === "light" ? "text-gray-600" : "text-gray-400"}
+                        className={
+                          theme === "light" ? "text-gray-600" : "text-gray-400"
+                        }
                       >
                         {post.likes_count}
                       </span>
                     </button>
                     <button className="flex items-center gap-1 hover:text-blue-500 transition-colors">
                       <MessageCircle
-                        className={theme === "light" ? "text-gray-500" : "text-gray-400"}
+                        className={
+                          theme === "light" ? "text-gray-500" : "text-gray-400"
+                        }
                       />
                       <span
-                        className={theme === "light" ? "text-gray-600" : "text-gray-400"}
+                        className={
+                          theme === "light" ? "text-gray-600" : "text-gray-400"
+                        }
                       >
                         {post.comments_count}
                       </span>
