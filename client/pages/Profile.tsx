@@ -160,7 +160,7 @@ export default function Profile() {
     try {
       setIsSaving(true);
 
-      if (!user) {
+      if (!authUser) {
         toast.error("User not found");
         return;
       }
