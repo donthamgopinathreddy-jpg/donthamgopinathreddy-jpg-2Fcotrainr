@@ -634,12 +634,12 @@ export default function Meals() {
             className={`rounded-2xl p-6 space-y-5 ${
               theme === "dark"
                 ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                : "bg-gradient-to-br from-green-200 via-emerald-200 to-teal-200 border border-green-300"
+                : "bg-gradient-to-br from-yellow-200 via-amber-200 to-yellow-300 border border-yellow-400"
             }`}
           >
             <div className="flex items-center justify-between">
               <h2 className={`text-lg font-bold ${
-                theme === "dark" ? "text-white" : "text-green-900"
+                theme === "dark" ? "text-white" : "text-yellow-900"
               }`}>
                 Today's Summary
               </h2>
@@ -660,9 +660,7 @@ export default function Meals() {
               <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-24 h-24 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" className={`stroke-current ${
-                      theme === "dark" ? "text-gray-700" : "text-gray-300"
-                    }`} strokeWidth="4" />
+                    <circle cx="50" cy="50" r="45" fill="none" className="stroke-current text-white" strokeWidth="4" />
                     <circle
                       cx="50"
                       cy="50"
@@ -688,9 +686,7 @@ export default function Meals() {
               <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-24 h-24 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" className={`stroke-current ${
-                      theme === "dark" ? "text-gray-700" : "text-gray-300"
-                    }`} strokeWidth="4" />
+                    <circle cx="50" cy="50" r="45" fill="none" className="stroke-current text-white" strokeWidth="4" />
                     <circle
                       cx="50"
                       cy="50"
@@ -716,9 +712,7 @@ export default function Meals() {
               <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-24 h-24 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" className={`stroke-current ${
-                      theme === "dark" ? "text-gray-700" : "text-gray-300"
-                    }`} strokeWidth="4" />
+                    <circle cx="50" cy="50" r="45" fill="none" className="stroke-current text-white" strokeWidth="4" />
                     <circle
                       cx="50"
                       cy="50"
@@ -744,9 +738,7 @@ export default function Meals() {
               <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="relative w-24 h-24 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" className={`stroke-current ${
-                      theme === "dark" ? "text-gray-700" : "text-gray-300"
-                    }`} strokeWidth="4" />
+                    <circle cx="50" cy="50" r="45" fill="none" className="stroke-current text-white" strokeWidth="4" />
                     <circle
                       cx="50"
                       cy="50"
@@ -799,7 +791,7 @@ export default function Meals() {
                             className={`rounded-lg p-4 flex items-center justify-between transition-colors ${
                               theme === "dark"
                                 ? "bg-gray-700/40 border border-gray-600/40 hover:border-gray-600/60"
-                                : "bg-gradient-to-br from-green-100 to-teal-100 border border-green-200 hover:border-green-300"
+                                : "bg-gradient-to-br from-yellow-100 to-amber-100 border border-yellow-200 hover:border-yellow-300"
                             }`}
                           >
                             <div className="flex-1">
@@ -854,7 +846,7 @@ export default function Meals() {
               className={`rounded-xl p-4 space-y-3 ${
                 theme === "dark"
                   ? "bg-gray-700/50 border border-gray-600/50 backdrop-blur-xl"
-                  : "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 border border-green-200"
+                  : "bg-gradient-to-br from-yellow-100 via-amber-100 to-yellow-100 border border-yellow-300"
               }`}
             >
               <h3 className={`font-bold ${
