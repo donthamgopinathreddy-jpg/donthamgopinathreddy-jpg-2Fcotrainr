@@ -173,6 +173,18 @@ export const useMeals = () => {
     );
   };
 
+  // Auto-refresh meals every 30 seconds to stay in sync with database
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (user && !isDemoMode()) {
+        fetchTodayMeals();
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [user]);
+
+  // Initial fetch when user changes
   useEffect(() => {
     fetchTodayMeals();
   }, [user]);
