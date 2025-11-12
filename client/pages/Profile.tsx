@@ -259,19 +259,23 @@ export default function Profile() {
   };
 
   const isTrainer = user.role === "trainer";
+  const { theme } = useTheme();
 
   return (
-    <div className="min-h-screen bg-white pb-24 l-shape-bg fitness-gradient-1">
-      {/* Logo Header */}
-      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3 w-full">
-        <Logo size="sm" />
-      </div>
-
+    <div className={`min-h-screen pb-24 l-shape-bg fitness-gradient-1 ${
+      theme === "dark" ? "bg-gray-950" : "bg-white"
+    }`}>
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
         {/* Profile Header */}
-        <div className="bg-gradient-to-br from-blue-100 to-cyan-100 px-4 sm:px-6 py-12 text-center">
+        <div className={`px-4 sm:px-6 py-12 text-center ${
+          theme === "dark"
+            ? "bg-gradient-to-br from-gray-800 to-gray-900"
+            : "bg-gradient-to-br from-blue-100 to-cyan-100"
+        }`}>
           <div className="relative w-24 h-24 mx-auto mb-4 group">
-            <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
+            <div className={`w-24 h-24 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg ${
+              theme === "dark" ? "bg-gray-700" : "bg-gray-300"
+            }`}>
               {user.profilePhoto || userProfile?.profile_picture_url ? (
                 <img
                   src={user.profilePhoto || userProfile?.profile_picture_url}
@@ -279,7 +283,9 @@ export default function Profile() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <User className="w-12 h-12 text-gray-600" />
+                <User className={`w-12 h-12 ${
+                  theme === "dark" ? "text-gray-400" : "text-gray-600"
+                }`} />
               )}
             </div>
             <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-blue-700 transition-colors group-hover:scale-110">
@@ -292,25 +298,43 @@ export default function Profile() {
               />
             </label>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">{user.name}</h1>
+          <h1 className={`text-2xl font-bold mb-1 ${
+            theme === "dark" ? "text-white" : "text-gray-900"
+          }`}>
+            {user.name}
+          </h1>
           {isTrainer && (
-            <p className="text-sm text-gray-700 mb-3">
+            <p className={`text-sm mb-3 ${
+              theme === "dark" ? "text-gray-400" : "text-gray-700"
+            }`}>
               ⭐ {user.rating || 4.8} • {user.yearsExperience || 0}+ years
               experience
             </p>
           )}
           <div className="flex items-center justify-center gap-4">
             <div className="text-center">
-              <div className="text-lg font-bold text-gray-900">
+              <div className={`text-lg font-bold ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}>
                 {user.followers}
               </div>
-              <p className="text-xs text-gray-600">Followers</p>
+              <p className={`text-xs ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}>
+                Followers
+              </p>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-gray-900">
+              <div className={`text-lg font-bold ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}>
                 {user.following}
               </div>
-              <p className="text-xs text-gray-600">Following</p>
+              <p className={`text-xs ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}>
+                Following
+              </p>
             </div>
           </div>
         </div>
