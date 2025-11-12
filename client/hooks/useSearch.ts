@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface SearchUser {
   id: string;
@@ -15,6 +16,11 @@ export interface SearchUser {
 export const useSearch = () => {
   const [results, setResults] = useState<SearchUser[]>([]);
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+
+  const isDemoMode = () => {
+    return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
+  };
 
   const searchUsers = async (query: string) => {
     if (!query.trim()) {
@@ -24,6 +30,37 @@ export const useSearch = () => {
 
     setLoading(true);
     try {
+      // In demo mode, return mock results
+      if (isDemoMode()) {
+        const DEMO_USERS: SearchUser[] = [
+          {
+            id: "demo-trainer-1",
+            username: "demo_trainer",
+            full_name: "Demo Trainer",
+            profile_picture_url: undefined,
+            bio: "Demo trainer for testing",
+            role: "trainer",
+          },
+          {
+            id: "demo-user-1",
+            username: "demo_user",
+            full_name: "Demo User",
+            profile_picture_url: undefined,
+            bio: "Demo user for testing",
+            role: "client",
+          },
+        ];
+
+        const filtered = DEMO_USERS.filter(
+          (u) =>
+            u.username.toLowerCase().includes(query.toLowerCase()) ||
+            u.full_name.toLowerCase().includes(query.toLowerCase())
+        );
+
+        setResults(filtered);
+        setLoading(false);
+        return;
+      }
       const searchTerm = `%${query.toLowerCase()}%`;
 
       // Search by username
