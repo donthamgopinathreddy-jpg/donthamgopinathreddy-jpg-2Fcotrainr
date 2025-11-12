@@ -47,12 +47,21 @@ export default function Home() {
   // Sync user data from profile
   useEffect(() => {
     if (userProfile) {
-      if (userProfile.weight_kg) {
-        setStepsCompleted(parseInt(userProfile.bio?.split("|")[0] || "0") || 0);
-        setWaterConsumed(
-          parseFloat(userProfile.bio?.split("|")[1] || "0") || 0,
-        );
+      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+      let bioValue = userProfile.bio || "0|0";
+
+      // For demo mode, try to load from localStorage first
+      if (isDemoMode) {
+        const savedTargets = localStorage.getItem(`targets_${userProfile.id}`);
+        if (savedTargets) {
+          bioValue = savedTargets;
+        }
       }
+
+      const [steps, water] = bioValue.split("|");
+      setStepsCompleted(parseInt(steps || "0") || 0);
+      setWaterConsumed(parseFloat(water || "0") || 0);
+
       if (userProfile.cover_image_url) {
         setCoverImage(userProfile.cover_image_url);
       }
