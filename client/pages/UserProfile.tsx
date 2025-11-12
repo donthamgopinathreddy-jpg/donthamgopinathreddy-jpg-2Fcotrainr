@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Heart, MessageCircle, Loader, Edit2, Trash2, Send } from "lucide-react";
+import {
+  ArrowLeft,
+  Heart,
+  MessageCircle,
+  Loader,
+  Edit2,
+  Trash2,
+  Send,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -55,9 +63,15 @@ export default function UserProfile() {
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [editingBio, setEditingBio] = useState(false);
   const [bioText, setBioText] = useState("");
-  const [postComments, setPostComments] = useState<{ [key: string]: Comment[] }>({});
-  const [commentInput, setCommentInput] = useState<{ [key: string]: string }>({});
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [postComments, setPostComments] = useState<{
+    [key: string]: Comment[];
+  }>({});
+  const [commentInput, setCommentInput] = useState<{ [key: string]: string }>(
+    {},
+  );
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(
+    null,
+  );
   const [likeLoading, setLikeLoading] = useState<Set<string>>(new Set());
   const [commentLoading, setCommentLoading] = useState<Set<string>>(new Set());
 
@@ -98,7 +112,7 @@ export default function UserProfile() {
 
           // Fetch likes for current user if logged in
           if (currentUser?.id) {
-            const postIds = (postsData || []).map(p => p.id);
+            const postIds = (postsData || []).map((p) => p.id);
             if (postIds.length > 0) {
               const { data: likesData } = await supabase
                 .from("post_likes")
@@ -107,7 +121,7 @@ export default function UserProfile() {
                 .in("post_id", postIds);
 
               if (likesData) {
-                setLikedPosts(new Set(likesData.map(l => l.post_id)));
+                setLikedPosts(new Set(likesData.map((l) => l.post_id)));
               }
             }
           }
@@ -163,7 +177,7 @@ export default function UserProfile() {
           .eq("user_id", currentUser.id);
 
         // Update likes_count
-        const post = posts.find(p => p.id === postId);
+        const post = posts.find((p) => p.id === postId);
         if (post && post.likes_count > 0) {
           await supabase
             .from("posts")
@@ -179,20 +193,20 @@ export default function UserProfile() {
 
         setPosts((prev) =>
           prev.map((p) =>
-            p.id === postId ? { ...p, likes_count: Math.max(0, p.likes_count - 1) } : p
-          )
+            p.id === postId
+              ? { ...p, likes_count: Math.max(0, p.likes_count - 1) }
+              : p,
+          ),
         );
       } else {
         // Like: insert into post_likes table
-        await supabase
-          .from("post_likes")
-          .insert({
-            post_id: postId,
-            user_id: currentUser.id,
-          });
+        await supabase.from("post_likes").insert({
+          post_id: postId,
+          user_id: currentUser.id,
+        });
 
         // Update likes_count
-        const post = posts.find(p => p.id === postId);
+        const post = posts.find((p) => p.id === postId);
         if (post) {
           await supabase
             .from("posts")
@@ -204,8 +218,8 @@ export default function UserProfile() {
 
         setPosts((prev) =>
           prev.map((p) =>
-            p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p
-          )
+            p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p,
+          ),
         );
       }
     } catch (error) {
@@ -256,16 +270,10 @@ export default function UserProfile() {
 
     try {
       // Delete likes associated with post
-      await supabase
-        .from("post_likes")
-        .delete()
-        .eq("post_id", postId);
+      await supabase.from("post_likes").delete().eq("post_id", postId);
 
       // Delete comments associated with post
-      await supabase
-        .from("post_comments")
-        .delete()
-        .eq("post_id", postId);
+      await supabase.from("post_comments").delete().eq("post_id", postId);
 
       // Delete the post
       const { error } = await supabase
@@ -302,7 +310,7 @@ export default function UserProfile() {
       }
 
       // Fetch user info for comments
-      const userIds = [...new Set((commentsData || []).map(c => c.user_id))];
+      const userIds = [...new Set((commentsData || []).map((c) => c.user_id))];
       let userMap: { [key: string]: any } = {};
 
       if (userIds.length > 0) {
@@ -312,7 +320,7 @@ export default function UserProfile() {
           .in("id", userIds);
 
         if (usersData) {
-          userMap = Object.fromEntries(usersData.map(u => [u.id, u]));
+          userMap = Object.fromEntries(usersData.map((u) => [u.id, u]));
         }
       }
 
@@ -321,10 +329,12 @@ export default function UserProfile() {
         content: c.content,
         user_id: c.user_id,
         created_at: c.created_at,
-        author: userMap[c.user_id] ? {
-          username: userMap[c.user_id].username,
-          full_name: userMap[c.user_id].full_name,
-        } : undefined,
+        author: userMap[c.user_id]
+          ? {
+              username: userMap[c.user_id].username,
+              full_name: userMap[c.user_id].full_name,
+            }
+          : undefined,
       }));
 
       setPostComments((prev) => ({
@@ -369,7 +379,7 @@ export default function UserProfile() {
       }
 
       // Update comments_count
-      const post = posts.find(p => p.id === postId);
+      const post = posts.find((p) => p.id === postId);
       if (post) {
         await supabase
           .from("posts")
@@ -380,8 +390,8 @@ export default function UserProfile() {
       // Update local state
       setPosts((prev) =>
         prev.map((p) =>
-          p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p
-        )
+          p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p,
+        ),
       );
 
       const formattedComment = {
@@ -748,25 +758,38 @@ export default function UserProfile() {
 
                 {/* Comments Section */}
                 {postComments[post.id] && (
-                  <div className={`border-t pt-3 ${
-                    theme === "light" ? "border-gray-200" : "border-gray-700"
-                  }`}>
+                  <div
+                    className={`border-t pt-3 ${
+                      theme === "light" ? "border-gray-200" : "border-gray-700"
+                    }`}
+                  >
                     {postComments[post.id].length > 0 && (
                       <div className="space-y-2 mb-3 max-h-40 overflow-y-auto">
                         {postComments[post.id].map((comment) => (
-                          <div key={comment.id} className={`text-xs rounded p-2 ${
-                            theme === "light"
-                              ? "bg-gray-100"
-                              : "bg-gray-700/50"
-                          }`}>
-                            <p className={`font-semibold ${
-                              theme === "light" ? "text-gray-900" : "text-white"
-                            }`}>
+                          <div
+                            key={comment.id}
+                            className={`text-xs rounded p-2 ${
+                              theme === "light"
+                                ? "bg-gray-100"
+                                : "bg-gray-700/50"
+                            }`}
+                          >
+                            <p
+                              className={`font-semibold ${
+                                theme === "light"
+                                  ? "text-gray-900"
+                                  : "text-white"
+                              }`}
+                            >
                               {comment.author?.full_name || "Anonymous"}
                             </p>
-                            <p className={
-                              theme === "light" ? "text-gray-700" : "text-gray-300"
-                            }>
+                            <p
+                              className={
+                                theme === "light"
+                                  ? "text-gray-700"
+                                  : "text-gray-300"
+                              }
+                            >
                               {comment.content}
                             </p>
                           </div>
@@ -787,7 +810,10 @@ export default function UserProfile() {
                             }))
                           }
                           onKeyPress={(e) => {
-                            if (e.key === "Enter" && !commentLoading.has(post.id)) {
+                            if (
+                              e.key === "Enter" &&
+                              !commentLoading.has(post.id)
+                            ) {
                               handleAddComment(post.id);
                             }
                           }}
@@ -799,7 +825,10 @@ export default function UserProfile() {
                         />
                         <button
                           onClick={() => handleAddComment(post.id)}
-                          disabled={commentLoading.has(post.id) || !commentInput[post.id]?.trim()}
+                          disabled={
+                            commentLoading.has(post.id) ||
+                            !commentInput[post.id]?.trim()
+                          }
                           className="text-blue-500 hover:text-blue-700 transition-colors disabled:opacity-50 p-1"
                         >
                           <Send className="w-4 h-4" />
