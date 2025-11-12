@@ -770,6 +770,49 @@ export default function Profile() {
             </div>
           )}
 
+          {/* Theme Toggle Button */}
+          <div
+            className={`rounded-lg p-4 flex items-center justify-between ${
+              theme === "dark"
+                ? "bg-gray-800/50 border border-gray-700/50"
+                : "bg-gradient-to-br from-yellow-50/40 to-amber-50/40 border border-yellow-200/30 backdrop-blur-md"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              {theme === "light" ? (
+                <Sun className="w-5 h-5 text-orange-600" />
+              ) : (
+                <Moon className="w-5 h-5 text-blue-400" />
+              )}
+              <div>
+                <p
+                  className={`font-medium text-sm ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  {theme === "light" ? "Light Mode" : "Dark Mode"}
+                </p>
+                <p
+                  className={`text-xs ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  Tap to switch
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={toggleTheme}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors text-sm ${
+                theme === "dark"
+                  ? "bg-gray-700 text-white hover:bg-gray-600"
+                  : "bg-white text-gray-900 border border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              {theme === "light" ? "Dark" : "Light"}
+            </button>
+          </div>
+
           {/* Menu Items */}
           <div className="space-y-2">
             <button

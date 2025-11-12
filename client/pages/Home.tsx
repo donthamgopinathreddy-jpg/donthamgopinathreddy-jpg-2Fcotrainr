@@ -361,22 +361,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 pb-24">
-      {/* Theme Toggle Header */}
-      <div className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center justify-end px-4 py-3">
-        <button
-          onClick={toggleTheme}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-          title={
-            theme === "light" ? "Switch to dark mode" : "Switch to light mode"
-          }
-        >
-          {theme === "light" ? (
-            <Moon className="w-5 h-5 text-gray-900" />
-          ) : (
-            <Sun className="w-5 h-5 text-yellow-400" />
-          )}
-        </button>
-      </div>
 
       {/* Pending Meeting Invites */}
       {pendingMeetings.length > 0 && (
