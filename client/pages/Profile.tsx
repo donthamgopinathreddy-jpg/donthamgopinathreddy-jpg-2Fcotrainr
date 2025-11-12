@@ -398,8 +398,8 @@ export default function Profile() {
           <div
             className={`rounded-2xl p-6 space-y-3 ${
               theme === "dark"
-                ? "bg-gradient-to-br from-blue-100/80 via-cyan-100/80 to-teal-100/80 backdrop-blur-xl border border-blue-200/90"
-                : "bg-card border border-border"
+                ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
+                : "bg-gradient-to-br from-blue-100 via-cyan-100 to-teal-100 border border-cyan-200"
             }`}
           >
             <h3
@@ -439,8 +439,8 @@ export default function Profile() {
           <div
             className={`rounded-2xl p-6 space-y-3 ${
               theme === "dark"
-                ? "bg-gradient-to-br from-purple-100/80 via-violet-100/80 to-pink-100/80 backdrop-blur-xl border border-purple-200/90"
-                : "bg-card border border-border"
+                ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
+                : "bg-gradient-to-br from-purple-100 via-violet-100 to-pink-100 border border-purple-200"
             }`}
           >
             <h3
@@ -508,8 +508,8 @@ export default function Profile() {
                 <div
                   className={`rounded-2xl p-6 space-y-3 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-blue-100/80 via-indigo-100/80 to-purple-100/80 backdrop-blur-xl border border-blue-200/90"
-                      : "bg-card border border-border"
+                      ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
+                      : "bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 border border-indigo-200"
                   }`}
                 >
                   <h3
@@ -539,8 +539,8 @@ export default function Profile() {
                 <div
                   className={`rounded-2xl p-6 space-y-3 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-amber-100/80 via-orange-100/80 to-red-100/80 backdrop-blur-xl border border-amber-200/90"
-                      : "bg-card border border-border"
+                      ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
+                      : "bg-gradient-to-br from-amber-100 via-orange-100 to-red-100 border border-amber-200"
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-3">
@@ -571,8 +571,8 @@ export default function Profile() {
                 <div
                   className={`rounded-2xl p-4 flex items-center gap-3 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-green-100/80 via-emerald-100/80 to-teal-100/80 backdrop-blur-xl border border-green-200/90"
-                      : "bg-card border border-border"
+                      ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
+                      : "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 border border-green-200"
                   }`}
                 >
                   <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
@@ -599,8 +599,8 @@ export default function Profile() {
               <div
                 className={`rounded-xl p-4 text-center ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-blue-100/80 via-cyan-100/80 to-blue-100/80 backdrop-blur-xl border border-blue-200/90"
-                    : "bg-card border border-border"
+                    ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
+                    : "bg-gradient-to-br from-blue-100 to-cyan-100 border border-cyan-200"
                 }`}
               >
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
@@ -613,8 +613,8 @@ export default function Profile() {
               <div
                 className={`rounded-xl p-4 text-center ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-purple-100/80 via-violet-100/80 to-purple-100/80 backdrop-blur-xl border border-purple-200/90"
-                    : "bg-card border border-border"
+                    ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
+                    : "bg-gradient-to-br from-purple-100 to-violet-100 border border-purple-200"
                 }`}
               >
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
@@ -627,8 +627,8 @@ export default function Profile() {
               <div
                 className={`rounded-xl p-4 text-center ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-pink-100/80 via-rose-100/80 to-pink-100/80 backdrop-blur-xl border border-pink-200/90"
-                    : "bg-card border border-border"
+                    ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
+                    : "bg-gradient-to-br from-pink-100 to-rose-100 border border-pink-200"
                 }`}
               >
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
@@ -1166,8 +1166,8 @@ export default function Profile() {
                 <div
                   className={`rounded-lg p-4 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-green-100/80 via-emerald-100/80 to-teal-100/80 backdrop-blur-xl border border-green-200/90"
-                      : "bg-card border border-border"
+                      ? "bg-gray-800/50 border border-gray-700/50"
+                      : "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 border border-green-200"
                   }`}
                 >
                   <p
@@ -1376,8 +1376,8 @@ export default function Profile() {
                 <div
                   className={`rounded-lg p-4 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-blue-100/80 via-indigo-100/80 to-purple-100/80 backdrop-blur-xl border border-blue-200/90"
-                      : "bg-card border border-border"
+                      ? "bg-gray-800/50 border border-gray-700/50"
+                      : "bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 border border-indigo-200"
                   }`}
                 >
                   <p
