@@ -28,30 +28,12 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
   }
 }
 
-// Create a custom fetch function that properly handles response cloning
-const customFetch = async (url: string, options?: RequestInit) => {
-  const response = await fetch(url, options);
-
-  // Clone response to avoid "body stream already read" error
-  if (response.headers.get("content-type")?.includes("application/json")) {
-    const cloned = response.clone();
-    return cloned;
-  }
-
-  return response;
-};
-
-// Create client with options to handle requests better
+// Create client with minimal configuration to avoid response handling issues
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
     storage: storageImpl,
-  },
-  db: {
-    schema: "public",
-  },
-  global: {
-    fetch: customFetch,
+    detectSessionInUrl: true,
   },
 });
