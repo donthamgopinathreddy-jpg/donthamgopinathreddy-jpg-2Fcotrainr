@@ -20,9 +20,9 @@ export default defineConfig(({ mode }) => ({
     minify: "terser",
     rollupOptions: {
       output: {
-        manualChunks: undefined
-      }
-    }
+        manualChunks: undefined,
+      },
+    },
   },
   plugins: [react(), expressPlugin()],
   resolve: {
