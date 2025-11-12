@@ -338,7 +338,11 @@ export default function Meals() {
         {/* Content */}
         <div className="px-4 py-6 space-y-6">
           {/* Today's Summary Card */}
-          <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
+          <div className={`rounded-2xl p-6 space-y-5 ${
+            theme === "dark"
+              ? "bg-gradient-to-br from-green-500/20 via-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-green-500/30"
+              : "bg-card border border-border"
+          }`}>
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-foreground">Today's Summary</h2>
               <button
@@ -356,7 +360,9 @@ export default function Meals() {
                 <span className="text-sm font-semibold text-orange-600">Calories</span>
                 <span className="text-sm font-bold text-gray-900">{totalCalories} / {calorieGoal}</span>
               </div>
-              <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+              <div className={`w-full h-4 rounded-full overflow-hidden ${
+              theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
+            }`}>
                 <div
                   className="h-full bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 transition-all duration-500 shadow-lg shadow-orange-600/50"
                   style={{ width: `${caloriePercent}%` }}
@@ -370,7 +376,9 @@ export default function Meals() {
                 <span className="text-sm font-semibold text-red-600">Protein</span>
                 <span className="text-sm font-bold text-gray-900">{totalProtein}g / {proteinGoal}g</span>
               </div>
-              <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div className={`w-full h-3 rounded-full overflow-hidden ${
+                theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
+              }`}>
                 <div
                   className="h-full bg-gradient-to-r from-red-600 to-pink-600 transition-all duration-500 shadow-lg shadow-red-600/50"
                   style={{ width: `${proteinPercent}%` }}
@@ -384,7 +392,9 @@ export default function Meals() {
                 <span className="text-sm font-semibold text-blue-600">Carbs</span>
                 <span className="text-sm font-bold text-gray-900">{totalCarbs}g / {carbsGoal}g</span>
               </div>
-              <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div className={`w-full h-3 rounded-full overflow-hidden ${
+                theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
+              }`}>
                 <div
                   className="h-full bg-gradient-to-r from-blue-600 to-cyan-600 transition-all duration-500 shadow-lg shadow-blue-600/50"
                   style={{ width: `${carbsPercent}%` }}
@@ -398,7 +408,9 @@ export default function Meals() {
                 <span className="text-sm font-semibold text-amber-600">Fat</span>
                 <span className="text-sm font-bold text-gray-900">{totalFat}g / {fatGoal}g</span>
               </div>
-              <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div className={`w-full h-3 rounded-full overflow-hidden ${
+                theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
+              }`}>
                 <div
                   className="h-full bg-gradient-to-r from-amber-600 to-yellow-600 transition-all duration-500 shadow-lg shadow-amber-600/50"
                   style={{ width: `${fatPercent}%` }}
@@ -431,7 +443,11 @@ export default function Meals() {
                         {mealsOfType.map((meal) => (
                           <div
                             key={meal.id}
-                            className="bg-card border border-border rounded-lg p-4 flex items-center justify-between hover:border-primary transition-colors"
+                            className={`rounded-lg p-4 flex items-center justify-between transition-colors ${
+                              theme === "dark"
+                                ? "bg-green-500/10 border border-green-500/30 hover:border-green-500/50"
+                                : "bg-card border border-border hover:border-primary"
+                            }`}
                           >
                             <div className="flex-1">
                               <p className="font-medium text-foreground">{meal.name}</p>
@@ -470,7 +486,11 @@ export default function Meals() {
               Add Food
             </button>
           ) : (
-            <div className="bg-card border border-border rounded-xl p-4 space-y-3">
+            <div className={`rounded-xl p-4 space-y-3 ${
+              theme === "dark"
+                ? "bg-gradient-to-br from-green-500/20 via-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-green-500/30"
+                : "bg-card border border-border"
+            }`}>
               <h3 className="font-bold text-foreground">Add Meal</h3>
 
               {/* Meal Type Selection */}
