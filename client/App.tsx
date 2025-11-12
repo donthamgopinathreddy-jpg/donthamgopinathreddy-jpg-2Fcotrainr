@@ -29,6 +29,7 @@ import TrainerDashboard from "./pages/TrainerDashboard";
 import TrainerClientDetail from "./pages/TrainerClientDetail";
 import ActivityDetail from "./pages/ActivityDetail";
 import NotFound from "./pages/NotFound";
+import UserProfile from "./pages/UserProfile";
 import Navigation from "./components/Navigation";
 
 const queryClient = new QueryClient();
@@ -175,6 +176,16 @@ const AppRoutes = () => {
           <ProtectedRoute>
             <AppLayout>
               <Profile />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile/:userId"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <UserProfile />
             </AppLayout>
           </ProtectedRoute>
         }
