@@ -173,7 +173,8 @@ export default function Meals() {
   const mealsByType = useMemo(() => {
     const grouped: { [key: string]: typeof mealEntries } = {};
     MEAL_TYPES.forEach((type) => {
-      grouped[type.id] = mealEntries.filter((m) => m.mealType === type.id);
+      const key = `${type.label}-${type.time}`;
+      grouped[key] = mealEntries.filter((m) => m.mealType === type.id);
     });
     return grouped;
   }, [mealEntries]);
