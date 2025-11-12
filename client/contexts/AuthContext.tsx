@@ -288,7 +288,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const updateProfile = async (updates: Partial<UserProfile>) => {
+  const updateProfile = async (updates: Partial<UserProfile>, retryCount = 0) => {
     try {
       if (!user) throw new Error("No user logged in");
 
@@ -298,13 +298,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .eq("id", user.id);
 
       if (error) {
+        // Retry on "body stream already read" error
+        if (
+          error?.message?.includes("body stream already read") &&
+          retryCount < 2
+        ) {
+          console.warn(`Profile update retry attempt ${retryCount + 1}/2`);
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          return updateProfile(updates, retryCount + 1);
+        }
+
         const errorMsg = error?.message || error?.details || JSON.stringify(error) || "Unknown error";
         throw new Error(errorMsg);
       }
 
       setUserProfile((prev) => (prev ? { ...prev, ...updates } : null));
     } catch (error: any) {
-      const errorMsg = error?.message || error?.details || String(error) || "Failed to update profile";
+      // Retry on network errors
+      if (
+        error?.message?.includes("body stream already read") &&
+        retryCount < 2
+      ) {
+        console.warn(`Profile update retry attempt ${retryCount + 1}/2`);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        return updateProfile(updates, retryCount + 1);
+      }
+
+      const errorMsg = error?.message || String(error) || "Failed to update profile";
       console.error("Error updating profile:", errorMsg);
       throw new Error(errorMsg);
     }
