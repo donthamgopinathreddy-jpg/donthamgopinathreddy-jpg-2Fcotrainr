@@ -70,12 +70,33 @@ export const useMeals = () => {
     if (!user) return;
 
     try {
+      const isDemo = isDemoMode();
+      const loggedAt = new Date().toISOString();
+
+      if (isDemo) {
+        // Add to localStorage in demo mode
+        const newMeal: Meal = {
+          id: `local-${Date.now()}`,
+          user_id: user.id,
+          ...mealData,
+          logged_at: loggedAt,
+        };
+
+        const demoMeals = localStorage.getItem(`meals_demo_${user.id}`);
+        const existingMeals = demoMeals ? JSON.parse(demoMeals) : [];
+        const updatedMeals = [newMeal, ...existingMeals];
+
+        localStorage.setItem(`meals_demo_${user.id}`, JSON.stringify(updatedMeals));
+        setMeals((prev) => [newMeal, ...prev]);
+        return newMeal;
+      }
+
       const { data, error } = await supabase
         .from("meals")
         .insert({
           user_id: user.id,
           ...mealData,
-          logged_at: new Date().toISOString(),
+          logged_at: loggedAt,
         })
         .select()
         .single();
