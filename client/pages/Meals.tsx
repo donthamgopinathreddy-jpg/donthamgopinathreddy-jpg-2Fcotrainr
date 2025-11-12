@@ -405,7 +405,7 @@ export default function Meals() {
             </h3>
             <div className="space-y-6">
               {MEAL_TYPES.map((mealType) => {
-                const mealsOfType = mealsByType[mealType.id];
+                const mealsOfType = mealsByType[mealType.dbValue] || [];
                 return (
                   <div key={mealType.id}>
                     <div className="flex items-center justify-between mb-2">
