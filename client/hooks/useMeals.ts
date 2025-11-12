@@ -132,6 +132,20 @@ export const useMeals = () => {
     if (!user) return;
 
     try {
+      const isDemo = isDemoMode();
+
+      if (isDemo) {
+        // Delete from localStorage in demo mode
+        const demoMeals = localStorage.getItem(`meals_demo_${user.id}`);
+        if (demoMeals) {
+          const existingMeals = JSON.parse(demoMeals);
+          const updatedMeals = existingMeals.filter((m: Meal) => m.id !== mealId);
+          localStorage.setItem(`meals_demo_${user.id}`, JSON.stringify(updatedMeals));
+        }
+        setMeals((prev) => prev.filter((m) => m.id !== mealId));
+        return;
+      }
+
       const { error } = await supabase
         .from("meals")
         .delete()
