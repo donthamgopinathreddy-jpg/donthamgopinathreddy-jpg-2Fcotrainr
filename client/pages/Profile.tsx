@@ -482,15 +482,27 @@ export default function Profile() {
           {/* Stats */}
           {!isTrainer && (
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-card rounded-xl p-4 border border-border text-center">
+              <div className={`rounded-xl p-4 text-center ${
+                theme === "dark"
+                  ? "bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-blue-500/20 backdrop-blur-xl border border-blue-500/30"
+                  : "bg-card border border-border"
+              }`}>
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
                 <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Sessions</p>
               </div>
-              <div className="bg-card rounded-xl p-4 border border-border text-center">
+              <div className={`rounded-xl p-4 text-center ${
+                theme === "dark"
+                  ? "bg-gradient-to-br from-purple-500/20 via-violet-500/20 to-purple-500/20 backdrop-blur-xl border border-purple-500/30"
+                  : "bg-card border border-border"
+              }`}>
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
                 <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Hours</p>
               </div>
-              <div className="bg-card rounded-xl p-4 border border-border text-center">
+              <div className={`rounded-xl p-4 text-center ${
+                theme === "dark"
+                  ? "bg-gradient-to-br from-pink-500/20 via-rose-500/20 to-pink-500/20 backdrop-blur-xl border border-pink-500/30"
+                  : "bg-card border border-border"
+              }`}>
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
                 <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Streak</p>
               </div>
