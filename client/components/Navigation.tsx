@@ -16,6 +16,7 @@ const Navigation = () => {
   const location = useLocation();
   const { userProfile } = useAuth();
   const { theme } = useTheme();
+  const { unreadCount } = useNotifications();
 
   const isActive = (path: string) => location.pathname === path;
   const isTrainer = userProfile?.role === "trainer";
