@@ -48,6 +48,8 @@ export default function Home() {
   useEffect(() => {
     if (userProfile) {
       const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+
+      // Always start with bio from Supabase
       let bioValue = userProfile.bio || "0|0";
 
       // For demo mode, try to load from localStorage first
@@ -58,15 +60,19 @@ export default function Home() {
         }
       }
 
-      const [steps, water] = bioValue.split("|");
-      setStepsCompleted(parseInt(steps || "0") || 0);
-      setWaterConsumed(parseFloat(water || "0") || 0);
+      // Parse the bio value safely
+      const parts = bioValue.split("|");
+      const steps = parseInt(parts[0] || "0") || 0;
+      const water = parseFloat(parts[1] || "0") || 0;
+
+      setStepsCompleted(steps);
+      setWaterConsumed(water);
 
       if (userProfile.cover_image_url) {
         setCoverImage(userProfile.cover_image_url);
       }
     }
-  }, [userProfile]);
+  }, [userProfile?.id, userProfile?.bio, userProfile?.cover_image_url]);
 
   // Fetch latest feed
   useEffect(() => {
