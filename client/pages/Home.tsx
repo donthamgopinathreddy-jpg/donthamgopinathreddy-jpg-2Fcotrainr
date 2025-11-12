@@ -224,21 +224,19 @@ export default function Home() {
           {/* Profile Picture */}
           <div className="relative">
             <img
-              src={profileImage}
+              src={userProfile?.profile_picture_url || "https://api.dicebear.com/7.x/avataaars/svg?seed=" + userProfile?.username}
               alt="Profile"
               className="w-24 h-24 rounded-2xl border-4 border-white shadow-lg object-cover"
             />
-            <label className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 p-2 rounded-lg cursor-pointer shadow-lg transition-all">
+            <button
+              onClick={() => navigate("/profile")}
+              className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 p-2 rounded-lg shadow-lg transition-all"
+              title="Edit profile photo"
+            >
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleProfileImageChange}
-                className="hidden"
-              />
-            </label>
+            </button>
           </div>
 
           {/* Welcome Text */}
