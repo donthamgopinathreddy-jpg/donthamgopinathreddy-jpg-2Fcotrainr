@@ -359,7 +359,11 @@ export default function Profile() {
           )}
 
           {/* Account Info Card */}
-          <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
+          <div className={`rounded-2xl p-6 space-y-3 ${
+            theme === "dark"
+              ? "bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-teal-500/20 backdrop-blur-xl border border-blue-500/30"
+              : "bg-card border border-border"
+          }`}>
             <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Account Information</h3>
             <div className="space-y-3">
               <div>
@@ -378,7 +382,11 @@ export default function Profile() {
           </div>
 
           {/* Basic Info Card */}
-          <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
+          <div className={`rounded-2xl p-6 space-y-3 ${
+            theme === "dark"
+              ? "bg-gradient-to-br from-purple-500/20 via-violet-500/20 to-pink-500/20 backdrop-blur-xl border border-purple-500/30"
+              : "bg-card border border-border"
+          }`}>
             <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Basic Information</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -407,7 +415,11 @@ export default function Profile() {
             <>
               {/* Specialties */}
               {user.specialties && (
-                <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
+                <div className={`rounded-2xl p-6 space-y-3 ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-blue-500/20 via-indigo-500/20 to-purple-500/20 backdrop-blur-xl border border-blue-500/30"
+                    : "bg-card border border-border"
+                }`}>
                   <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Specialties</h3>
                   <div className="flex flex-wrap gap-2">
                     {user.specialties.map((spec) => (
@@ -428,7 +440,11 @@ export default function Profile() {
 
               {/* Qualifications */}
               {user.qualifications && user.qualifications.length > 0 && (
-                <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
+                <div className={`rounded-2xl p-6 space-y-3 ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-amber-500/20 via-orange-500/20 to-red-500/20 backdrop-blur-xl border border-amber-500/30"
+                    : "bg-card border border-border"
+                }`}>
                   <div className="flex items-center gap-2 mb-3">
                     <Award className="w-5 h-5 text-amber-600" />
                     <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Qualifications</h3>
@@ -446,7 +462,11 @@ export default function Profile() {
 
               {/* Location */}
               {user.location && (
-                <div className="bg-card border border-border rounded-2xl p-4 flex items-center gap-3">
+                <div className={`rounded-2xl p-4 flex items-center gap-3 ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-green-500/20 via-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-green-500/30"
+                    : "bg-card border border-border"
+                }`}>
                   <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <div>
                     <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Training Location</p>
