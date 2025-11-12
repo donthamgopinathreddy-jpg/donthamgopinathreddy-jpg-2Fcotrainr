@@ -127,10 +127,10 @@ export default function Login() {
           <div className="text-center space-y-3">
             <Logo size="lg" className="mx-auto" />
             <div>
-              <h1 className="text-3xl font-bold text-foreground">
+              <h1 className="text-3xl font-bold text-gray-900">
                 Welcome Back
               </h1>
-              <p className="text-muted-foreground text-sm mt-2">
+              <p className="text-gray-600 text-sm mt-2">
                 Sign in to your account to continue
               </p>
             </div>
@@ -140,7 +140,7 @@ export default function Login() {
             <>
               {/* Email/Username Input */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">
+                <label className="block text-sm font-medium text-gray-900">
                   Email or Username
                 </label>
                 <div className="relative">
@@ -158,7 +158,7 @@ export default function Login() {
 
               {/* Password Input */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">
+                <label className="block text-sm font-medium text-gray-900">
                   Password
                 </label>
                 <div className="relative">
@@ -169,7 +169,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   />
                 </div>
               </div>
@@ -177,7 +177,7 @@ export default function Login() {
               {/* Forgot Password Link */}
               <button
                 onClick={() => setShowForgotPassword(true)}
-                className="text-sm text-primary hover:text-primary/80 transition-colors font-medium"
+                className="text-sm text-blue-600 hover:text-blue-700 transition-colors font-medium"
               >
                 Forgot password?
               </button>
@@ -204,7 +204,7 @@ export default function Login() {
             <>
               {/* Forgot Password Form */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">
+                <label className="block text-sm font-medium text-gray-900">
                   Enter your email address
                 </label>
                 <div className="relative">
@@ -214,12 +214,12 @@ export default function Login() {
                     placeholder="Enter your email"
                     value={resetEmail}
                     onChange={(e) => setResetEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   />
                 </div>
               </div>
 
-              <p className="text-sm text-muted-foreground text-center">
+              <p className="text-sm text-gray-600 text-center">
                 We'll send a password reset link to your email address.
               </p>
 
