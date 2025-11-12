@@ -285,23 +285,25 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ThemeProvider>
-          <LanguageProvider>
-            <AuthProvider>
-              <BrowserRouter>
-                <AuthInitializer>
-                  <Toaster />
-                  <Sonner />
-                  <AppRoutes />
-                </AuthInitializer>
-              </BrowserRouter>
-            </AuthProvider>
-          </LanguageProvider>
-        </ThemeProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              <AuthProvider>
+                <BrowserRouter>
+                  <AuthInitializer>
+                    <Toaster />
+                    <Sonner />
+                    <AppRoutes />
+                  </AuthInitializer>
+                </BrowserRouter>
+              </AuthProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 
