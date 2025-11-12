@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, MapPin, MessageCircle, Utensils, User, BarChart3 } from "lucide-react";
+import { Home, MapPin, MessageCircle, Utensils, User, BarChart3, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -14,12 +14,14 @@ const Navigation = () => {
   const navItems = isTrainer
     ? [
         { path: "/", label: "Home", icon: Home },
+        { path: "/search", label: "Search", icon: Search },
         { path: "/messages", label: "Messages", icon: MessageCircle },
         { path: "/profile", label: "Profile", icon: User },
       ]
     : [
         { path: "/", label: "Home", icon: Home },
         { path: "/discover", label: "Discover", icon: MapPin },
+        { path: "/search", label: "Search", icon: Search },
         { path: "/messages", label: "Messages", icon: MessageCircle },
         { path: "/meals", label: "Tracker", icon: Utensils },
         { path: "/profile", label: "Profile", icon: User },
