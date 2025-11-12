@@ -1237,55 +1237,106 @@ export default function Profile() {
                   </select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label
-                      className={`block text-sm font-medium mb-1 ${
-                        theme === "dark" ? "text-gray-300" : "text-gray-900"
+                <div>
+                  <label
+                    className={`block text-sm font-medium mb-2 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
+                    }`}
+                  >
+                    Height
+                  </label>
+                  <div className="flex gap-2 mb-3">
+                    <button
+                      onClick={() => {
+                        if (heightUnit === "inches") {
+                          const inchValue = editForm.height;
+                          const cmValue = inchesToCm(inchValue);
+                          setEditForm((prev) => ({ ...prev, height: cmValue }));
+                        }
+                        setHeightUnit("cm");
+                      }}
+                      className={`flex-1 py-2 px-3 rounded-lg font-medium transition-all border-2 text-sm ${
+                        heightUnit === "cm"
+                          ? theme === "dark"
+                            ? "border-blue-600 bg-blue-600/20 text-white"
+                            : "border-blue-600 bg-blue-50 text-gray-900"
+                          : theme === "dark"
+                            ? "border-gray-700 bg-gray-900 text-gray-300 hover:border-blue-600/50"
+                            : "border-gray-300 bg-white text-gray-700 hover:border-blue-300"
                       }`}
                     >
-                      Height (cm)
-                    </label>
-                    <input
-                      type="number"
-                      value={editForm.height}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          height: Number(e.target.value),
-                        }))
-                      }
-                      className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                        theme === "dark"
-                          ? "border border-gray-700 bg-gray-900 text-white"
-                          : "border border-gray-300 bg-white text-gray-900"
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label
-                      className={`block text-sm font-medium mb-1 ${
-                        theme === "dark" ? "text-gray-300" : "text-gray-900"
+                      cm
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (heightUnit === "cm") {
+                          const cmValue = editForm.height;
+                          const inchValue = cmToInches(cmValue);
+                          setEditForm((prev) => ({ ...prev, height: inchValue }));
+                        }
+                        setHeightUnit("inches");
+                      }}
+                      className={`flex-1 py-2 px-3 rounded-lg font-medium transition-all border-2 text-sm ${
+                        heightUnit === "inches"
+                          ? theme === "dark"
+                            ? "border-blue-600 bg-blue-600/20 text-white"
+                            : "border-blue-600 bg-blue-50 text-gray-900"
+                          : theme === "dark"
+                            ? "border-gray-700 bg-gray-900 text-gray-300 hover:border-blue-600/50"
+                            : "border-gray-300 bg-white text-gray-700 hover:border-blue-300"
                       }`}
                     >
-                      Weight (kg)
-                    </label>
-                    <input
-                      type="number"
-                      value={editForm.weight}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          weight: Number(e.target.value),
-                        }))
-                      }
-                      className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                        theme === "dark"
-                          ? "border border-gray-700 bg-gray-900 text-white"
-                          : "border border-gray-300 bg-white text-gray-900"
-                      }`}
-                    />
+                      in
+                    </button>
                   </div>
+                  <input
+                    type="number"
+                    value={editForm.height}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        height: Number(e.target.value),
+                      }))
+                    }
+                    placeholder={heightUnit === "cm" ? "180" : "5.9"}
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
+                  />
+                  {editForm.height > 0 && (
+                    <p className={`text-xs mt-2 ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    }`}>
+                      ≈ {heightUnit === "cm" ? cmToInches(editForm.height).toFixed(1) : inchesToCm(editForm.height)} {heightUnit === "cm" ? "inches" : "cm"}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
+                    }`}
+                  >
+                    Weight (kg)
+                  </label>
+                  <input
+                    type="number"
+                    value={editForm.weight}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        weight: Number(e.target.value),
+                      }))
+                    }
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
+                  />
                 </div>
 
                 <div
