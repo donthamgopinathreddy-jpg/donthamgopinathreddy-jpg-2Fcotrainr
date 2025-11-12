@@ -110,23 +110,18 @@ const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType
 };
 
 const MEAL_TYPES = [
-  { id: "breakfast", label: "Early Breakfast", icon: Sunrise, time: "6-7 AM" },
-  { id: "snack", label: "Mid-Morning Snack", icon: Apple, time: "10-11 AM" },
-  { id: "lunch", label: "Lunch", icon: UtensilsCrossed, time: "12-2 PM" },
-  { id: "snack", label: "Afternoon Snack", icon: Apple, time: "4-5 PM" },
-  { id: "dinner", label: "Dinner", icon: Moon, time: "7-9 PM" },
-  { id: "snack", label: "Evening Snack", icon: Clock, time: "9+ PM" },
+  { id: "early-breakfast", dbValue: "breakfast", label: "Early Breakfast", icon: Sunrise, time: "6-7 AM" },
+  { id: "mid-snack", dbValue: "snack", label: "Mid-Morning Snack", icon: Apple, time: "10-11 AM" },
+  { id: "lunch", dbValue: "lunch", label: "Lunch", icon: UtensilsCrossed, time: "12-2 PM" },
+  { id: "afternoon-snack", dbValue: "snack", label: "Afternoon Snack", icon: Apple, time: "4-5 PM" },
+  { id: "dinner", dbValue: "dinner", label: "Dinner", icon: Moon, time: "7-9 PM" },
+  { id: "evening-snack", dbValue: "snack", label: "Evening Snack", icon: Clock, time: "9+ PM" },
 ];
 
 // Map meal type display IDs to valid Supabase enum values
 const getMealTypeForDB = (mealTypeId: string): "breakfast" | "lunch" | "dinner" | "snack" => {
-  const mapping: Record<string, "breakfast" | "lunch" | "dinner" | "snack"> = {
-    "breakfast": "breakfast",
-    "lunch": "lunch",
-    "dinner": "dinner",
-    "snack": "snack",
-  };
-  return mapping[mealTypeId] || "snack";
+  const type = MEAL_TYPES.find((t) => t.id === mealTypeId);
+  return (type?.dbValue || "snack") as "breakfast" | "lunch" | "dinner" | "snack";
 };
 
 export default function Meals() {
