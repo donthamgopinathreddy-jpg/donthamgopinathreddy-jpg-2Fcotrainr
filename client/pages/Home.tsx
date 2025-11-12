@@ -360,9 +360,17 @@ export default function Home() {
   const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 pb-24">
+    <div className={`min-h-screen pb-24 ${
+      theme === "light"
+        ? "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
+        : "bg-gray-950"
+    }`}>
       {/* Theme Toggle Header */}
-      <div className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center justify-end px-4 py-3">
+      <div className={`sticky top-0 z-40 border-b flex items-center justify-end px-4 py-3 ${
+        theme === "light"
+          ? "bg-gradient-to-r from-red-50 to-orange-50 border-orange-200"
+          : "bg-gray-900 border-gray-800"
+      }`}>
         <button
           onClick={toggleTheme}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"

@@ -599,7 +599,7 @@ export default function Meals() {
       className={`min-h-screen pb-24 ${
         theme === "dark"
           ? "l-shape-bg fitness-gradient-4 bg-gray-950"
-          : "bg-white"
+          : "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
       }`}
     >
       <div className="max-w-md mx-auto">
