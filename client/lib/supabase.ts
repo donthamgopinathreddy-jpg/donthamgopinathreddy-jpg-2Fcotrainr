@@ -28,21 +28,6 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
   }
 }
 
-// Custom fetch to handle proxy/middleware response body issues
-const customFetch = (url: string, options?: RequestInit) => {
-  return fetch(url, {
-    ...options,
-    cache: "no-store",
-    headers: {
-      ...options?.headers,
-      // Add headers to prevent proxy interference
-      "Cache-Control": "no-cache, no-store, must-revalidate",
-      "Pragma": "no-cache",
-      "Expires": "0",
-    },
-  });
-};
-
 // Create client with proper configuration
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -50,12 +35,5 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     storage: storageImpl,
     detectSessionInUrl: true,
-    flowType: "implicit",
-  },
-  global: {
-    fetch: customFetch,
-    headers: {
-      "Cache-Control": "no-cache",
-    },
   },
 });
