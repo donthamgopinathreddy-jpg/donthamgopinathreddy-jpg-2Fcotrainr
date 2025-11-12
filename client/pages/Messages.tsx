@@ -49,9 +49,7 @@ export default function Messages() {
   return (
     <div
       className={`min-h-screen pb-24 ${
-        theme === "dark"
-          ? "bg-gray-950"
-          : "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
+        theme === "dark" ? "bg-gray-950" : "bg-white"
       }`}
     >
       <div className="max-w-md mx-auto">
@@ -60,7 +58,7 @@ export default function Messages() {
           className={`sticky top-0 z-40 border-b px-4 py-6 flex items-center justify-between ${
             theme === "dark"
               ? "bg-gray-900 border-gray-800"
-              : "bg-gradient-to-r from-red-50 to-orange-50 border-orange-200"
+              : "bg-white border-gray-200"
           }`}
         >
           <div>

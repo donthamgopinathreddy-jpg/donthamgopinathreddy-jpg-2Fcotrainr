@@ -151,13 +151,13 @@ export default function Discover() {
 
   return (
     <div className={`min-h-screen pb-24 l-shape-bg ${
-      theme === "dark" ? "bg-gray-950" : "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
+      theme === "dark" ? "bg-gray-950" : "bg-white"
     }`}>
       {/* Header */}
       <div className={`sticky top-0 z-40 border-b ${
         theme === "dark"
           ? "bg-gray-900 border-gray-800"
-          : "bg-gradient-to-r from-red-50 to-orange-50 border-orange-200"
+          : "bg-white border-gray-200"
       }`}>
         <div className="max-w-md mx-auto">
           {/* Title */}

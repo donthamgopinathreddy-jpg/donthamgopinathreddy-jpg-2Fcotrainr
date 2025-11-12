@@ -96,9 +96,7 @@ export default function ChatMessages() {
   return (
     <div
       className={`min-h-screen flex flex-col pb-24 ${
-        theme === "dark"
-          ? "bg-gray-950"
-          : "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
+        theme === "dark" ? "bg-gray-950" : "bg-white"
       }`}
     >
       {/* Header */}
@@ -106,7 +104,7 @@ export default function ChatMessages() {
         className={`sticky top-0 z-40 px-4 py-4 flex items-center gap-3 border-b ${
           theme === "dark"
             ? "bg-gray-900 border-gray-800"
-            : "bg-gradient-to-r from-red-50 to-orange-50 border-orange-200"
+            : "bg-white border-gray-200"
         }`}
       >
         <button

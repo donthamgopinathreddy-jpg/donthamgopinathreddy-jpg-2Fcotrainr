@@ -148,15 +148,13 @@ export default function Feed() {
 
   return (
     <div className={`min-h-screen pb-24 ${
-      theme === "light"
-        ? "bg-gradient-to-br from-red-50 via-orange-50 to-amber-50"
-        : "bg-gray-950"
+      theme === "light" ? "bg-white" : "bg-gray-950"
     }`}>
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className={`sticky top-0 z-40 border-b px-4 py-6 ${
           theme === "light"
-            ? "bg-gradient-to-r from-red-50 to-orange-50 border-orange-200"
+            ? "bg-white border-gray-200"
             : "bg-gray-900 border-gray-800"
         }`}>
           <h1 className="text-3xl font-bold">Community Feed</h1>
