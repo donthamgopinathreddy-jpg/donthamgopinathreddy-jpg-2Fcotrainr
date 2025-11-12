@@ -216,7 +216,7 @@ export default function Onboarding() {
         full_name: formData.fullName,
         role: userRole,
         gender: formData.gender as Gender,
-        phone_number: formData.phoneNumber,
+        phone_number: `${formData.countryCode} ${formData.phoneNumber}`,
         age: parseInt(formData.age),
         weight_kg: parseFloat(formData.weight),
         height_cm: parseFloat(formData.height),
