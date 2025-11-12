@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, signIn: authSignIn } = useAuth();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +22,7 @@ export default function Login() {
       // User is already authenticated, redirect to home
       navigate("/", { replace: true });
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const isFormComplete = email && password && password.length >= 6;
 
