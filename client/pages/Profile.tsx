@@ -884,14 +884,22 @@ export default function Profile() {
 
               {/* Referral Info */}
               <div className="space-y-4">
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className={`text-sm leading-relaxed ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-600"
+                }`}>
                   Share your referral link with friends and earn rewards when
                   they join CoTrainr!
                 </p>
 
                 {/* Referral Link Card */}
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-4 space-y-3">
-                  <p className="text-xs font-semibold text-gray-700">
+                <div className={`rounded-2xl p-4 space-y-3 border-2 ${
+                  theme === "dark"
+                    ? "bg-green-900/30 border-green-800"
+                    : "bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
+                }`}>
+                  <p className={`text-xs font-semibold ${
+                    theme === "dark" ? "text-green-300" : "text-gray-700"
+                  }`}>
                     Your Referral Link
                   </p>
                   <div className="flex flex-col sm:flex-row gap-2">
