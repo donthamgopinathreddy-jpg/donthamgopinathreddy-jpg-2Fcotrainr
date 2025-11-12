@@ -7,7 +7,19 @@ import Logo from "@/components/Logo";
 import { supabase } from "@/lib/supabase";
 import { usePermissions } from "@/hooks/usePermissions";
 
-type OnboardingStep = "welcome" | "username" | "fullname" | "email" | "password" | "phone" | "role" | "gender" | "height" | "weight" | "dateOfBirth" | "permissions";
+type OnboardingStep =
+  | "welcome"
+  | "username"
+  | "fullname"
+  | "email"
+  | "password"
+  | "phone"
+  | "role"
+  | "gender"
+  | "height"
+  | "weight"
+  | "dateOfBirth"
+  | "permissions";
 type Gender = "male" | "female" | "other" | "";
 
 interface FormData {
@@ -46,7 +58,8 @@ const COUNTRY_CODES = [
 export default function Onboarding() {
   const navigate = useNavigate();
   const { signUp, demoMode } = useAuth();
-  const { requestAllPermissions, loading: permissionLoading } = usePermissions();
+  const { requestAllPermissions, loading: permissionLoading } =
+    usePermissions();
   const [step, setStep] = useState<OnboardingStep>("welcome");
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState<"client" | "trainer" | null>(null);
@@ -66,7 +79,9 @@ export default function Onboarding() {
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
 
   // Username availability checking
-  const [usernameStatus, setUsernameStatus] = useState<"checking" | "available" | "taken" | null>(null);
+  const [usernameStatus, setUsernameStatus] = useState<
+    "checking" | "available" | "taken" | null
+  >(null);
   const [usernameError, setUsernameError] = useState("");
 
   // Password validation state
@@ -98,7 +113,9 @@ export default function Onboarding() {
     // Allow special characters and numbers in username
     if (!/^[a-zA-Z0-9_\-\.]+$/.test(formData.username)) {
       setUsernameStatus("taken");
-      setUsernameError("Username can only contain letters, numbers, -, _, and .");
+      setUsernameError(
+        "Username can only contain letters, numbers, -, _, and .",
+      );
       return;
     }
 
@@ -144,7 +161,14 @@ export default function Onboarding() {
   }, [formData.password]);
 
   const handleNext = () => {
-    const steps: OnboardingStep[] = ["username", "fullname", "email", "password", "phone", "role"];
+    const steps: OnboardingStep[] = [
+      "username",
+      "fullname",
+      "email",
+      "password",
+      "phone",
+      "role",
+    ];
 
     if (step === "welcome") {
       setStep("username");
@@ -220,7 +244,10 @@ export default function Onboarding() {
         const birthDate = new Date(formData.dateOfBirth);
         age = today.getFullYear() - birthDate.getFullYear();
         const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        if (
+          monthDiff < 0 ||
+          (monthDiff === 0 && today.getDate() < birthDate.getDate())
+        ) {
           age--;
         }
       }
@@ -288,7 +315,8 @@ export default function Onboarding() {
 
           <div className="max-w-sm space-y-4 mb-12">
             <p className="text-foreground font-medium">
-              Connect with verified trainers, track your nutrition, and join a fitness community.
+              Connect with verified trainers, track your nutrition, and join a
+              fitness community.
             </p>
             <p className="text-sm text-muted-foreground">
               It all starts with getting to know you better.
@@ -341,28 +369,43 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Choose your username</h2>
-              <p className="text-muted-foreground">This is how other users will identify you</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                Choose your username
+              </h2>
+              <p className="text-muted-foreground">
+                This is how other users will identify you
+              </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Username</label>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Username
+              </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="john_doe123"
                   value={formData.username}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, username: e.target.value.toLowerCase() }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      username: e.target.value.toLowerCase(),
+                    }))
+                  }
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
 
               {usernameStatus === "checking" && (
-                <p className="text-sm text-amber-600 mt-2">Checking availability...</p>
+                <p className="text-sm text-amber-600 mt-2">
+                  Checking availability...
+                </p>
               )}
               {usernameStatus === "available" && (
-                <p className="text-sm text-green-600 mt-2">✓ Username available</p>
+                <p className="text-sm text-green-600 mt-2">
+                  ✓ Username available
+                </p>
               )}
               {usernameStatus === "taken" && (
                 <p className="text-sm text-red-600 mt-2">✗ {usernameError}</p>
@@ -389,17 +432,25 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">What's your name?</h2>
-              <p className="text-muted-foreground">We'll use this to personalize your experience</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                What's your name?
+              </h2>
+              <p className="text-muted-foreground">
+                We'll use this to personalize your experience
+              </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Full Name
+              </label>
               <input
                 type="text"
                 placeholder="John Doe"
                 value={formData.fullName}
-                onChange={(e) => setFormData((prev) => ({ ...prev, fullName: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, fullName: e.target.value }))
+                }
                 className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
@@ -420,19 +471,27 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">What's your email?</h2>
-              <p className="text-muted-foreground">You'll use this to sign in</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                What's your email?
+              </h2>
+              <p className="text-muted-foreground">
+                You'll use this to sign in
+              </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Email Address</label>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Email Address
+              </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type="email"
                   placeholder="john@example.com"
                   value={formData.email}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, email: e.target.value }))
+                  }
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
@@ -454,35 +513,56 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Create a password</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                Create a password
+              </h2>
               <p className="text-muted-foreground">Keep your account secure</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Password</label>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Password
+              </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type="password"
                   placeholder="Enter a strong password"
                   value={formData.password}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
 
               <div className="space-y-2 mt-4">
                 <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${passwordFeedback.hasMinLength ? "bg-green-500" : "bg-gray-300"}`} />
-                  <span className="text-sm text-muted-foreground">At least 8 characters</span>
+                  <div
+                    className={`w-2 h-2 rounded-full ${passwordFeedback.hasMinLength ? "bg-green-500" : "bg-gray-300"}`}
+                  />
+                  <span className="text-sm text-muted-foreground">
+                    At least 8 characters
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${passwordFeedback.hasUpperCase ? "bg-green-500" : "bg-gray-300"}`} />
-                  <span className="text-sm text-muted-foreground">At least one uppercase letter (A-Z)</span>
+                  <div
+                    className={`w-2 h-2 rounded-full ${passwordFeedback.hasUpperCase ? "bg-green-500" : "bg-gray-300"}`}
+                  />
+                  <span className="text-sm text-muted-foreground">
+                    At least one uppercase letter (A-Z)
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${passwordFeedback.hasSpecialChar ? "bg-green-500" : "bg-gray-300"}`} />
-                  <span className="text-sm text-muted-foreground">At least one special character (!@#$%^&*)</span>
+                  <div
+                    className={`w-2 h-2 rounded-full ${passwordFeedback.hasSpecialChar ? "bg-green-500" : "bg-gray-300"}`}
+                  />
+                  <span className="text-sm text-muted-foreground">
+                    At least one special character (!@#$%^&*)
+                  </span>
                 </div>
               </div>
             </div>
@@ -503,12 +583,18 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">What's your phone number?</h2>
-              <p className="text-muted-foreground">We'll use this for contact and bookings</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                What's your phone number?
+              </h2>
+              <p className="text-muted-foreground">
+                We'll use this for contact and bookings
+              </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Phone Number</label>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Phone Number
+              </label>
               <div className="flex gap-2">
                 {/* Country Code Dropdown */}
                 <div className="relative">
@@ -525,7 +611,10 @@ export default function Onboarding() {
                         <button
                           key={country.code}
                           onClick={() => {
-                            setFormData((prev) => ({ ...prev, countryCode: country.code }));
+                            setFormData((prev) => ({
+                              ...prev,
+                              countryCode: country.code,
+                            }));
                             setShowCountryDropdown(false);
                           }}
                           className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-sm text-foreground"
@@ -545,7 +634,12 @@ export default function Onboarding() {
                     type="tel"
                     placeholder="123 456 7890"
                     value={formData.phoneNumber}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, phoneNumber: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        phoneNumber: e.target.value,
+                      }))
+                    }
                     className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
@@ -571,8 +665,12 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">What's your role?</h2>
-              <p className="text-muted-foreground">Choose how you'll use CoTrainr</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                What's your role?
+              </h2>
+              <p className="text-muted-foreground">
+                Choose how you'll use CoTrainr
+              </p>
             </div>
 
             <div className="space-y-3">
@@ -584,7 +682,9 @@ export default function Onboarding() {
                 className="w-full p-4 rounded-lg border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all text-left"
               >
                 <h3 className="font-semibold text-foreground">Client</h3>
-                <p className="text-sm text-muted-foreground mt-1">Get fit with personalized training</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Get fit with personalized training
+                </p>
               </button>
 
               <button
@@ -595,7 +695,9 @@ export default function Onboarding() {
                 className="w-full p-4 rounded-lg border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all text-left"
               >
                 <h3 className="font-semibold text-foreground">Trainer</h3>
-                <p className="text-sm text-muted-foreground mt-1">Build your coaching business</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Build your coaching business
+                </p>
               </button>
             </div>
           </div>
@@ -607,8 +709,12 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">What's your gender?</h2>
-              <p className="text-muted-foreground">This helps us tailor recommendations</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                What's your gender?
+              </h2>
+              <p className="text-muted-foreground">
+                This helps us tailor recommendations
+              </p>
             </div>
 
             <div className="space-y-3">
@@ -616,7 +722,10 @@ export default function Onboarding() {
                 <button
                   key={gender}
                   onClick={() => {
-                    setFormData((prev) => ({ ...prev, gender: gender as Gender }));
+                    setFormData((prev) => ({
+                      ...prev,
+                      gender: gender as Gender,
+                    }));
                     setStep("height");
                   }}
                   className={`w-full p-4 rounded-lg border-2 transition-all font-medium ${
@@ -638,17 +747,23 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">What's your height?</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                What's your height?
+              </h2>
               <p className="text-muted-foreground">Enter in centimeters</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Height (cm)</label>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Height (cm)
+              </label>
               <input
                 type="number"
                 placeholder="180"
                 value={formData.height}
-                onChange={(e) => setFormData((prev) => ({ ...prev, height: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, height: e.target.value }))
+                }
                 className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
@@ -669,17 +784,23 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">What's your weight?</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                What's your weight?
+              </h2>
               <p className="text-muted-foreground">Enter in kilograms</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Weight (kg)</label>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Weight (kg)
+              </label>
               <input
                 type="number"
                 placeholder="75"
                 value={formData.weight}
-                onChange={(e) => setFormData((prev) => ({ ...prev, weight: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, weight: e.target.value }))
+                }
                 className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
@@ -700,16 +821,27 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">What's your date of birth?</h2>
-              <p className="text-muted-foreground">This helps us create personalized workout recommendations</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                What's your date of birth?
+              </h2>
+              <p className="text-muted-foreground">
+                This helps us create personalized workout recommendations
+              </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Date of Birth</label>
+              <label className="block text-sm font-medium text-foreground mb-2">
+                Date of Birth
+              </label>
               <input
                 type="date"
                 value={formData.dateOfBirth}
-                onChange={(e) => setFormData((prev) => ({ ...prev, dateOfBirth: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    dateOfBirth: e.target.value,
+                  }))
+                }
                 className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
@@ -717,17 +849,21 @@ export default function Onboarding() {
             {formData.dateOfBirth && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                 <p className="text-sm text-blue-900">
-                  <strong>Age:</strong> {(() => {
+                  <strong>Age:</strong>{" "}
+                  {(() => {
                     const today = new Date();
                     const birthDate = new Date(formData.dateOfBirth);
                     let age = today.getFullYear() - birthDate.getFullYear();
                     const monthDiff = today.getMonth() - birthDate.getMonth();
-                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    if (
+                      monthDiff < 0 ||
+                      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+                    ) {
                       age--;
                     }
                     return age;
-                  })()}
-                  {" "} years
+                  })()}{" "}
+                  years
                 </p>
               </div>
             )}
@@ -748,7 +884,9 @@ export default function Onboarding() {
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Enable Camera & Microphone</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                Enable Camera & Microphone
+              </h2>
               <p className="text-muted-foreground">
                 This helps trainers see you during video sessions
               </p>
@@ -756,8 +894,9 @@ export default function Onboarding() {
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
               <p className="text-sm text-blue-900">
-                <span className="font-semibold">Why we need this:</span> Video calls with trainers
-                require camera and microphone access to work properly.
+                <span className="font-semibold">Why we need this:</span> Video
+                calls with trainers require camera and microphone access to work
+                properly.
               </p>
             </div>
 

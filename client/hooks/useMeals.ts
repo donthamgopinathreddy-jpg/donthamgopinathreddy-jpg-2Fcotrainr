@@ -51,13 +51,20 @@ export const useMeals = () => {
         .order("logged_at", { ascending: false });
 
       if (error) {
-        console.error("Supabase error fetching meals:", error?.message || JSON.stringify(error));
+        console.error(
+          "Supabase error fetching meals:",
+          error?.message || JSON.stringify(error),
+        );
         setMeals([]);
       } else {
         setMeals(data || []);
       }
     } catch (error: any) {
-      const errorMsg = error?.message || error?.code || String(error) || 'Failed to fetch meals';
+      const errorMsg =
+        error?.message ||
+        error?.code ||
+        String(error) ||
+        "Failed to fetch meals";
       console.error("Error fetching meals:", errorMsg);
       setMeals([]);
     } finally {
@@ -66,7 +73,9 @@ export const useMeals = () => {
   };
 
   // Add a new meal
-  const addMeal = async (mealData: Omit<Meal, "id" | "user_id" | "logged_at">) => {
+  const addMeal = async (
+    mealData: Omit<Meal, "id" | "user_id" | "logged_at">,
+  ) => {
     if (!user) return;
 
     try {
@@ -86,7 +95,10 @@ export const useMeals = () => {
         const existingMeals = demoMeals ? JSON.parse(demoMeals) : [];
         const updatedMeals = [newMeal, ...existingMeals];
 
-        localStorage.setItem(`meals_demo_${user.id}`, JSON.stringify(updatedMeals));
+        localStorage.setItem(
+          `meals_demo_${user.id}`,
+          JSON.stringify(updatedMeals),
+        );
         setMeals((prev) => [newMeal, ...prev]);
         return newMeal;
       }
@@ -108,7 +120,8 @@ export const useMeals = () => {
       setMeals((prev) => [data, ...prev]);
       return data;
     } catch (error: any) {
-      const errorMsg = error?.message || error?.code || String(error) || "Failed to add meal";
+      const errorMsg =
+        error?.message || error?.code || String(error) || "Failed to add meal";
       console.error("Error adding meal:", errorMsg);
       throw new Error(errorMsg);
     }
@@ -142,7 +155,7 @@ export const useMeals = () => {
         carbs_g: acc.carbs_g + meal.carbs_g,
         fat_g: acc.fat_g + meal.fat_g,
       }),
-      { calories: 0, protein_g: 0, carbs_g: 0, fat_g: 0 }
+      { calories: 0, protein_g: 0, carbs_g: 0, fat_g: 0 },
     );
   };
 

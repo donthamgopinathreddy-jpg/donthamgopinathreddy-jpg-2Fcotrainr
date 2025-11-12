@@ -2,7 +2,20 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
-import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase, Settings, Activity, Upload } from "lucide-react";
+import {
+  Dumbbell,
+  Apple,
+  MessageCircle,
+  Utensils,
+  Flame,
+  Footprints,
+  Droplets,
+  Newspaper,
+  Briefcase,
+  Settings,
+  Activity,
+  Upload,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
@@ -20,7 +33,7 @@ export default function Home() {
   const { userProfile, updateProfile } = useAuth();
 
   const [coverImage, setCoverImage] = useState(
-    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop"
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop",
   );
   const [showTargetsModal, setShowTargetsModal] = useState(false);
   const [stepsTarget, setStepsTarget] = useState(10000);
@@ -36,7 +49,9 @@ export default function Home() {
     if (userProfile) {
       if (userProfile.weight_kg) {
         setStepsCompleted(parseInt(userProfile.bio?.split("|")[0] || "0") || 0);
-        setWaterConsumed(parseFloat(userProfile.bio?.split("|")[1] || "0") || 0);
+        setWaterConsumed(
+          parseFloat(userProfile.bio?.split("|")[1] || "0") || 0,
+        );
       }
       if (userProfile.cover_image_url) {
         setCoverImage(userProfile.cover_image_url);
@@ -66,7 +81,9 @@ export default function Home() {
     fetchLatestFeed();
   }, []);
 
-  const handleCoverImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoverImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     if (!e.target.files?.[0] || !userProfile?.id) return;
 
     const file = e.target.files[0];
@@ -99,12 +116,13 @@ export default function Home() {
   };
 
   // Mock data
-  const quote = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
+  const quote =
+    MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
   const userWeight = userProfile?.weight_kg || 75;
   const userHeight = userProfile?.height_cm || 175;
 
   // Calculate water goal based on weight: roughly 30ml per kg
-  const waterGoal = Math.round((userWeight * 30) / 1000 * 10) / 10;
+  const waterGoal = Math.round(((userWeight * 30) / 1000) * 10) / 10;
 
   const stepsGoal = stepsTarget;
 
@@ -113,12 +131,28 @@ export default function Home() {
 
   // Calculate BMI
   const heightInMeters = userHeight / 100;
-  const bmi = Math.round((userWeight / (heightInMeters * heightInMeters)) * 10) / 10;
+  const bmi =
+    Math.round((userWeight / (heightInMeters * heightInMeters)) * 10) / 10;
 
   const getBMICategory = (bmi: number) => {
-    if (bmi < 18.5) return { category: "Underweight", color: "text-blue-600", bgColor: "bg-blue-50" };
-    if (bmi < 25) return { category: "Normal", color: "text-green-600", bgColor: "bg-green-50" };
-    if (bmi < 30) return { category: "Overweight", color: "text-orange-600", bgColor: "bg-orange-50" };
+    if (bmi < 18.5)
+      return {
+        category: "Underweight",
+        color: "text-blue-600",
+        bgColor: "bg-blue-50",
+      };
+    if (bmi < 25)
+      return {
+        category: "Normal",
+        color: "text-green-600",
+        bgColor: "bg-green-50",
+      };
+    if (bmi < 30)
+      return {
+        category: "Overweight",
+        color: "text-orange-600",
+        bgColor: "bg-orange-50",
+      };
     return { category: "Obese", color: "text-red-600", bgColor: "bg-red-50" };
   };
 
@@ -132,12 +166,12 @@ export default function Home() {
 
   const handleJoinMeeting = (meetingId: string) => {
     navigate(`/video-meeting?room=${meetingId}`);
-    setPendingMeetings(pendingMeetings.filter(m => m.id !== meetingId));
+    setPendingMeetings(pendingMeetings.filter((m) => m.id !== meetingId));
     toast.success("Joining meeting...");
   };
 
   const handleDeclineMeeting = (meetingId: string) => {
-    setPendingMeetings(pendingMeetings.filter(m => m.id !== meetingId));
+    setPendingMeetings(pendingMeetings.filter((m) => m.id !== meetingId));
     toast.success("Meeting declined");
   };
 
@@ -156,7 +190,9 @@ export default function Home() {
       {pendingMeetings.length > 0 && (
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-b-2 border-orange-200 px-4 py-4">
           <div className="max-w-md mx-auto">
-            <h3 className="text-sm font-bold text-gray-900 mb-3">Meeting Invites</h3>
+            <h3 className="text-sm font-bold text-gray-900 mb-3">
+              Meeting Invites
+            </h3>
             <div className="space-y-2">
               {pendingMeetings.map((meeting) => (
                 <div
@@ -164,8 +200,12 @@ export default function Home() {
                   className="bg-white border-2 border-orange-400 rounded-lg p-3 flex items-center justify-between gap-2 shadow-md hover:shadow-lg transition-shadow"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-sm text-gray-900">{meeting.title}</p>
-                    <p className="text-xs text-gray-600">{meeting.trainer} • {meeting.time}</p>
+                    <p className="font-bold text-sm text-gray-900">
+                      {meeting.title}
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      {meeting.trainer} • {meeting.time}
+                    </p>
                   </div>
                   <div className="flex gap-2 flex-shrink-0">
                     <button
@@ -199,9 +239,24 @@ export default function Home() {
 
         {/* Edit Cover Button */}
         <label className="absolute top-4 right-4 bg-white/90 hover:bg-white p-3 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all">
-          <svg className="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+          <svg
+            className="w-5 h-5 text-gray-900"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+            />
           </svg>
           <input
             type="file"
@@ -223,7 +278,11 @@ export default function Home() {
           {/* Profile Picture */}
           <div className="relative">
             <img
-              src={userProfile?.profile_picture_url || "https://api.dicebear.com/7.x/avataaars/svg?seed=" + userProfile?.username}
+              src={
+                userProfile?.profile_picture_url ||
+                "https://api.dicebear.com/7.x/avataaars/svg?seed=" +
+                  userProfile?.username
+              }
               alt="Profile"
               className="w-24 h-24 rounded-2xl border-4 border-white shadow-lg object-cover"
             />
@@ -232,8 +291,18 @@ export default function Home() {
               className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 p-2 rounded-lg shadow-lg transition-all"
               title="Edit profile photo"
             >
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              <svg
+                className="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                />
               </svg>
             </button>
           </div>
@@ -273,7 +342,9 @@ export default function Home() {
                 <Footprints className="w-5 h-5 text-orange-600" />
                 <span className="font-semibold text-gray-900">Steps</span>
               </div>
-              <span className="text-sm font-bold text-orange-600">{stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}</span>
+              <span className="text-sm font-bold text-orange-600">
+                {stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}
+              </span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
@@ -281,7 +352,9 @@ export default function Home() {
                 style={{ width: `${Math.min(stepsPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-gray-600 mt-1">{stepsPercent}% of daily goal</p>
+            <p className="text-xs text-gray-600 mt-1">
+              {stepsPercent}% of daily goal
+            </p>
           </button>
 
           {/* Calories Progress */}
@@ -292,9 +365,13 @@ export default function Home() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Flame className="w-5 h-5 text-red-600" />
-                <span className="font-semibold text-gray-900">Calories Burned</span>
+                <span className="font-semibold text-gray-900">
+                  Calories Burned
+                </span>
               </div>
-              <span className="text-sm font-bold text-red-600">{caloriesBurned} cal</span>
+              <span className="text-sm font-bold text-red-600">
+                {caloriesBurned} cal
+              </span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
@@ -302,7 +379,9 @@ export default function Home() {
                 style={{ width: `${Math.min(caloriesPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-gray-600 mt-1">~{caloriesBurned} cal from {stepsCompleted} steps</p>
+            <p className="text-xs text-gray-600 mt-1">
+              ~{caloriesBurned} cal from {stepsCompleted} steps
+            </p>
           </button>
 
           {/* Water Intake Progress */}
@@ -315,7 +394,9 @@ export default function Home() {
                 <Droplets className="w-5 h-5 text-cyan-600" />
                 <span className="font-semibold text-gray-900">Water</span>
               </div>
-              <span className="text-sm font-bold text-cyan-600">{waterConsumed}L / {waterGoal}L</span>
+              <span className="text-sm font-bold text-cyan-600">
+                {waterConsumed}L / {waterGoal}L
+              </span>
             </div>
             <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
@@ -323,12 +404,16 @@ export default function Home() {
                 style={{ width: `${Math.min(waterPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-gray-600 mt-1">{waterPercent}% of daily goal</p>
+            <p className="text-xs text-gray-600 mt-1">
+              {waterPercent}% of daily goal
+            </p>
           </button>
         </div>
 
         {/* BMI Index Card */}
-        <div className={`${bmiStatus.bgColor} border-2 border-gray-200 rounded-2xl p-6 space-y-4`}>
+        <div
+          className={`${bmiStatus.bgColor} border-2 border-gray-200 rounded-2xl p-6 space-y-4`}
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Activity className={`w-6 h-6 ${bmiStatus.color}`} />
@@ -336,9 +421,15 @@ export default function Home() {
             </div>
           </div>
           <div className="text-center">
-            <div className={`text-4xl font-bold ${bmiStatus.color} mb-2`}>{bmi}</div>
-            <p className={`text-sm font-semibold ${bmiStatus.color} mb-3`}>{bmiStatus.category}</p>
-            <p className="text-xs text-gray-600">Height: {userHeight}cm | Weight: {userWeight}kg</p>
+            <div className={`text-4xl font-bold ${bmiStatus.color} mb-2`}>
+              {bmi}
+            </div>
+            <p className={`text-sm font-semibold ${bmiStatus.color} mb-3`}>
+              {bmiStatus.category}
+            </p>
+            <p className="text-xs text-gray-600">
+              Height: {userHeight}cm | Weight: {userWeight}kg
+            </p>
           </div>
           <div className="flex gap-2 text-xs text-gray-700">
             <div className="flex-1 text-center">
@@ -391,9 +482,10 @@ export default function Home() {
             onClick={() => navigate("/trainer-signup")}
             className="relative overflow-hidden rounded-2xl p-4 py-5 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-lg hover:shadow-2xl"
             style={{
-              background: "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 25%, #FFA502 50%, #FFB700 75%, #FF6B6B 100%)",
+              background:
+                "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 25%, #FFA502 50%, #FFB700 75%, #FF6B6B 100%)",
               backgroundSize: "300% 300%",
-              animation: "gradientFlow 8s ease infinite"
+              animation: "gradientFlow 8s ease infinite",
             }}
           >
             <style>{`
@@ -431,17 +523,24 @@ export default function Home() {
                   <Briefcase className="w-6 h-6 text-gray-900" />
                 </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-0.5">Become a Trainer</h3>
-              <p className="text-xs text-gray-800">Share your expertise and earn</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-0.5">
+                Become a Trainer
+              </h3>
+              <p className="text-xs text-gray-800">
+                Share your expertise and earn
+              </p>
             </div>
           </div>
         </div>
 
         {/* Promo Card */}
         <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 border border-purple-200 l-shape-bg fitness-gradient-3">
-          <h3 className="text-lg font-bold text-gray-900 mb-2">Unlock Premium</h3>
+          <h3 className="text-lg font-bold text-gray-900 mb-2">
+            Unlock Premium
+          </h3>
           <p className="text-sm text-gray-700 mb-4">
-            Unlimited video sessions, full meal tracking, and priority chat support.
+            Unlimited video sessions, full meal tracking, and priority chat
+            support.
           </p>
           <button
             onClick={() => navigate("/subscription")}
@@ -453,7 +552,9 @@ export default function Home() {
 
         {/* Latest Feed Posts */}
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-foreground px-2">📰 Latest Posts</h3>
+          <h3 className="text-lg font-bold text-foreground px-2">
+            📰 Latest Posts
+          </h3>
           {loadingFeed ? (
             <div className="text-center py-8">
               <div className="inline-block animate-spin h-8 w-8 text-primary">
@@ -483,21 +584,31 @@ export default function Home() {
             </div>
           ) : latestFeed.length > 0 ? (
             latestFeed.map((post) => (
-              <div key={post.id} className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow">
+              <div
+                key={post.id}
+                className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition-shadow"
+              >
                 <div className="flex items-center gap-3 mb-3">
                   <img
-                    src={post.users?.profile_picture_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${post.user_id}`}
+                    src={
+                      post.users?.profile_picture_url ||
+                      `https://api.dicebear.com/7.x/avataaars/svg?seed=${post.user_id}`
+                    }
                     alt={post.users?.full_name || "User"}
                     className="w-10 h-10 rounded-full object-cover"
                   />
                   <div>
-                    <p className="font-semibold text-sm text-foreground">{post.users?.full_name || "User"}</p>
+                    <p className="font-semibold text-sm text-foreground">
+                      {post.users?.full_name || "User"}
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(post.created_at).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
-                <p className="text-sm text-foreground mb-3 line-clamp-3">{post.content}</p>
+                <p className="text-sm text-foreground mb-3 line-clamp-3">
+                  {post.content}
+                </p>
                 {post.image_url && (
                   <img
                     src={post.image_url}
@@ -516,7 +627,9 @@ export default function Home() {
           ) : (
             <div className="bg-card border border-border rounded-xl p-6 text-center">
               <Newspaper className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">No posts yet. Check back soon!</p>
+              <p className="text-sm text-muted-foreground">
+                No posts yet. Check back soon!
+              </p>
             </div>
           )}
         </div>
@@ -526,19 +639,32 @@ export default function Home() {
       {showTargetsModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
-            <h2 className="text-lg font-bold text-gray-900">Edit Daily Steps Target</h2>
-            <p className="text-sm text-gray-600">Set your daily step goal. Calories burned and water intake are calculated automatically.</p>
+            <h2 className="text-lg font-bold text-gray-900">
+              Edit Daily Steps Target
+            </h2>
+            <p className="text-sm text-gray-600">
+              Set your daily step goal. Calories burned and water intake are
+              calculated automatically.
+            </p>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Steps Goal</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Daily Steps Goal
+              </label>
               <input
                 type="number"
                 value={editStepsTarget}
-                onChange={(e) => setEditStepsTarget(parseInt(e.target.value) || 0)}
+                onChange={(e) =>
+                  setEditStepsTarget(parseInt(e.target.value) || 0)
+                }
                 className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
               />
-              <p className="text-xs text-gray-500 mt-2">• Calories burned = steps × 0.05 cal</p>
-              <p className="text-xs text-gray-500">• Water goal = weight × 30ml (currently {waterGoal}L)</p>
+              <p className="text-xs text-gray-500 mt-2">
+                • Calories burned = steps × 0.05 cal
+              </p>
+              <p className="text-xs text-gray-500">
+                • Water goal = weight × 30ml (currently {waterGoal}L)
+              </p>
             </div>
 
             <div className="flex gap-2 pt-2">
@@ -558,7 +684,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

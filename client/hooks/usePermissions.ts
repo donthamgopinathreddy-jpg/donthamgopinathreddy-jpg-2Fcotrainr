@@ -72,7 +72,7 @@ export const usePermissions = () => {
             () => {
               setPermissions((prev) => ({ ...prev, geolocation: "denied" }));
               resolve(false);
-            }
+            },
           );
         });
       }

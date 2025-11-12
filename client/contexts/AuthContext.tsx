@@ -40,7 +40,9 @@ interface AuthContextType {
   demoMode: () => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -65,7 +67,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         const authPromise = (async () => {
           // First check if there's a session
-          const { data: { session } } = await supabase.auth.getSession();
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
           console.log("Session found:", session?.user?.email);
 
           if (session?.user) {
@@ -73,7 +77,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             await fetchUserProfile(session.user.id);
           } else {
             // If no session, try getUser as backup
-            const { data: { user } } = await supabase.auth.getUser();
+            const {
+              data: { user },
+            } = await supabase.auth.getUser();
             if (user) {
               setUser(user);
               await fetchUserProfile(user.id);
@@ -159,7 +165,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       phone_number?: string;
       age?: number;
       date_of_birth?: string;
-    }
+    },
   ) => {
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -196,18 +202,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           });
 
           if (profileError) {
-            const errorMsg = profileError?.message || profileError?.details || String(profileError);
+            const errorMsg =
+              profileError?.message ||
+              profileError?.details ||
+              String(profileError);
             console.warn("Profile creation error:", errorMsg);
           }
 
           // Create trainer profile if role is trainer
           if (userData.role === "trainer") {
-            const { error: trainerError } = await supabase.from("trainers").insert({
-              id: data.user.id,
-              years_of_experience: 0,
-            });
+            const { error: trainerError } = await supabase
+              .from("trainers")
+              .insert({
+                id: data.user.id,
+                years_of_experience: 0,
+              });
             if (trainerError) {
-              const errorMsg = trainerError?.message || trainerError?.details || String(trainerError);
+              const errorMsg =
+                trainerError?.message ||
+                trainerError?.details ||
+                String(trainerError);
               console.warn("Trainer profile error:", errorMsg);
             }
           }
@@ -217,7 +231,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         // Wait a bit for the database to process
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Fetch the created profile
         await fetchUserProfile(data.user.id);
@@ -302,7 +316,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // Create a demo user object
       const demoUser: DemoUser = {
         id: "demo-user-" + Math.random().toString(36).substring(7),
-        email: role === "trainer" ? "demo-trainer@cotrainr.app" : "demo@cotrainr.app",
+        email:
+          role === "trainer"
+            ? "demo-trainer@cotrainr.app"
+            : "demo@cotrainr.app",
         user_metadata: {
           username: role === "trainer" ? "demo_trainer" : "demo_user",
           full_name: role === "trainer" ? "Demo Trainer" : "Demo User",
@@ -314,7 +331,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         id: demoUser.id,
         username: role === "trainer" ? "demo_trainer" : "demo_user",
         full_name: role === "trainer" ? "Demo Trainer" : "Demo User",
-        email: role === "trainer" ? "demo-trainer@cotrainr.app" : "demo@cotrainr.app",
+        email:
+          role === "trainer"
+            ? "demo-trainer@cotrainr.app"
+            : "demo@cotrainr.app",
         role,
         gender: role === "trainer" ? "male" : "male",
         weight_kg: 75,

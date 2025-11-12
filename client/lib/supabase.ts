@@ -5,7 +5,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(
-    "Missing Supabase URL or Anon Key. Check your environment variables."
+    "Missing Supabase URL or Anon Key. Check your environment variables.",
   );
 }
 
@@ -18,13 +18,17 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
     const { Preferences } = (window as any).Capacitor.Plugins;
     if (Preferences) {
       storageImpl = {
-        getItem: (key: string) => Preferences.get({ key }).then((result: any) => result.value),
-        setItem: (key: string, value: string) => Preferences.set({ key, value }),
+        getItem: (key: string) =>
+          Preferences.get({ key }).then((result: any) => result.value),
+        setItem: (key: string, value: string) =>
+          Preferences.set({ key, value }),
         removeItem: (key: string) => Preferences.remove({ key }),
       };
     }
   } catch (error) {
-    console.warn("Could not initialize Capacitor storage, falling back to localStorage");
+    console.warn(
+      "Could not initialize Capacitor storage, falling back to localStorage",
+    );
   }
 }
 
