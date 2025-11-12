@@ -488,6 +488,28 @@ export default function Home() {
             </button>
           </div>
 
+          {/* Quick Add Water Buttons */}
+          <div className="flex gap-2 pt-2">
+            <button
+              onClick={() => handleAddWater(0.2)}
+              className="flex-1 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+            >
+              +200ml
+            </button>
+            <button
+              onClick={() => handleAddWater(0.5)}
+              className="flex-1 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+            >
+              +500ml
+            </button>
+            <button
+              onClick={() => handleAddWater(1)}
+              className="flex-1 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+            >
+              +1L
+            </button>
+          </div>
+
           {/* Calories Progress */}
           <button
             onClick={() => navigate("/activity/calories")}
