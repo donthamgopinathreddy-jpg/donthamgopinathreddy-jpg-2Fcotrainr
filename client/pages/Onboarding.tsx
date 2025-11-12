@@ -112,21 +112,12 @@ export default function Onboarding() {
     return Math.round(inches * 2.54);
   };
 
+  // Get height value in centimeters for storage
   const getHeightInCm = (): number => {
     if (!formData.height.trim()) return 0;
-    if (heightUnit === "inches") {
-      return inchesToCm(parseFloat(formData.height));
-    }
-    return parseFloat(formData.height);
-  };
-
-  const getHeightDisplay = (): string => {
-    if (!formData.height.trim()) return "";
-    if (heightUnit === "cm") {
-      return formData.height;
-    } else {
-      return cmToInches(parseFloat(formData.height)).toString();
-    }
+    const heightValue = parseFloat(formData.height);
+    if (isNaN(heightValue)) return 0;
+    return heightUnit === "inches" ? inchesToCm(heightValue) : heightValue;
   };
 
   // Check username availability
