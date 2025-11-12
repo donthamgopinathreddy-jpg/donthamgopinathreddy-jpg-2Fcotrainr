@@ -174,6 +174,11 @@ export default function Profile() {
     try {
       setIsSaving(true);
 
+      if (!user) {
+        toast.error("User not found");
+        return;
+      }
+
       // Calculate age from date of birth if provided
       let ageValue = editForm.age;
       if (editForm.dateOfBirth) {
@@ -189,8 +194,8 @@ export default function Profile() {
         }
       }
 
-      // Update profile in database
-      await updateProfile({
+      // Update profile using AuthContext method
+      await authUpdateProfile({
         full_name: editForm.name,
         email: editForm.email,
         phone_number: editForm.phone,
