@@ -174,34 +174,13 @@ export default function Home() {
         return;
       }
 
-      // Check if demo mode
-      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
-
-      // Save steps completed and water to Supabase in bio field (format: "steps|water")
-      // Important: bio field stores COMPLETED steps, not the target!
-      const bioValue = `${stepsCompleted}|${waterConsumed}`;
-
-      if (isDemoMode) {
-        // Save to localStorage in demo mode
-        localStorage.setItem(`targets_${userProfile.id}`, bioValue);
-        setStepsTarget(editStepsTarget);
-        setShowTargetsModal(false);
-        toast.success("✓ Target updated!");
-        return;
-      }
-
-      const { error } = await supabase
-        .from("users")
-        .update({ bio: bioValue })
-        .eq("id", userProfile.id);
-
-      if (error) throw error;
-
+      // Update the steps target only (the goal)
+      // Don't change the bio field - that stores actual completed steps and water
       setStepsTarget(editStepsTarget);
       setShowTargetsModal(false);
-      toast.success("✓ Target updated!");
+      toast.success("✓ Steps target updated!");
     } catch (error) {
-      console.error("Error saving targets:", error);
+      console.error("Error saving target:", error);
       toast.error("Failed to save target");
     }
   };
