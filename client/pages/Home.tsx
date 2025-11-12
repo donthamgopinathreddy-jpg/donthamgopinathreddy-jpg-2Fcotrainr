@@ -211,21 +211,38 @@ export default function Home() {
       const bioValue = `0|${waterConsumed}`;
 
       if (!isDemoMode) {
-        const { error } = await supabase
+        // Update Supabase
+        const { error: updateError } = await supabase
           .from("users")
           .update({ bio: bioValue })
           .eq("id", userProfile.id);
 
-        if (error) {
-          console.error("Supabase error:", error);
-          throw error;
+        if (updateError) {
+          console.error("Supabase error:", updateError);
+          throw updateError;
+        }
+
+        // Verify the update by fetching fresh data
+        const { data: updatedProfile, error: fetchError } = await supabase
+          .from("users")
+          .select("*")
+          .eq("id", userProfile.id)
+          .single();
+
+        if (fetchError) {
+          console.error("Error fetching updated profile:", fetchError);
+        } else if (updatedProfile) {
+          // Update local state with fresh data from Supabase
+          const [steps, water] = (updatedProfile.bio || "0|0").split("|");
+          setStepsCompleted(parseInt(steps || "0") || 0);
+          setWaterConsumed(parseFloat(water || "0") || 0);
         }
       } else {
         localStorage.setItem(`targets_${userProfile.id}`, bioValue);
+        setStepsCompleted(0);
+        setWaterConsumed(parseFloat(waterConsumed.toString()) || 0);
       }
 
-      // Update local state only after successful DB save
-      setStepsCompleted(0);
       setShowTargetsModal(false);
       toast.success("✓ Steps reset to 0!");
     } catch (error) {
