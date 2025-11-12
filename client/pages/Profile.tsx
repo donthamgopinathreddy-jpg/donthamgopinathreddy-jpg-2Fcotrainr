@@ -241,7 +241,8 @@ export default function Profile() {
           toast.success("✓ Profile photo updated!");
         } catch (error: any) {
           console.error("Error saving profile photo:", error);
-          toast.error("Failed to save profile photo");
+          const errorMsg = error?.message || String(error) || "Failed to save profile photo";
+          toast.error(errorMsg);
         } finally {
           setIsSaving(false);
         }
@@ -249,7 +250,8 @@ export default function Profile() {
       reader.readAsDataURL(file);
     } catch (error: any) {
       console.error("Error processing profile photo:", error);
-      toast.error("Failed to process profile photo");
+      const errorMsg = error?.message || String(error) || "Failed to process profile photo";
+      toast.error(errorMsg);
       setIsSaving(false);
     }
   };
