@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import {
   Dumbbell,
@@ -352,9 +351,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 pb-24">
-      {/* Logo Header */}
-      <div className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-4 py-3">
-        <Logo size="sm" />
+      {/* Theme Toggle Header */}
+      <div className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center justify-end px-4 py-3">
         <button
           onClick={toggleTheme}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"

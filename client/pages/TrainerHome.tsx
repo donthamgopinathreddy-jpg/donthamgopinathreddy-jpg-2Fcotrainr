@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
 import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User, Heart, Share2, MessageCircle as MessageIcon, Newspaper, MapPin, UserCheck, Settings, Copy, Check, Play, Clock, X } from "lucide-react";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
@@ -258,10 +257,6 @@ export default function TrainerHome() {
 
   return (
     <div className="min-h-screen bg-white pb-36">
-      {/* Logo Header */}
-      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-center py-3">
-        <Logo size="sm" />
-      </div>
 
       {/* Conditional View Rendering */}
       {view === "stats" ? (
