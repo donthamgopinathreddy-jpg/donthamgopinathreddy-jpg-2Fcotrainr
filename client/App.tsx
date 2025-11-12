@@ -181,6 +181,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/search"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Search />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/feed"
         element={
           <ProtectedRoute>
