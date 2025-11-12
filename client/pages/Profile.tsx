@@ -764,7 +764,9 @@ export default function Profile() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-1">
+                    <label className={`block text-sm font-medium mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
+                    }`}>
                       Height (cm)
                     </label>
                     <input
@@ -776,11 +778,17 @@ export default function Profile() {
                           height: Number(e.target.value),
                         }))
                       }
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                        theme === "dark"
+                          ? "border border-gray-700 bg-gray-900 text-white"
+                          : "border border-gray-300 bg-white text-gray-900"
+                      }`}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-1">
+                    <label className={`block text-sm font-medium mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
+                    }`}>
                       Weight (kg)
                     </label>
                     <input
@@ -792,16 +800,28 @@ export default function Profile() {
                           weight: Number(e.target.value),
                         }))
                       }
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                        theme === "dark"
+                          ? "border border-gray-700 bg-gray-900 text-white"
+                          : "border border-gray-300 bg-white text-gray-900"
+                      }`}
                     />
                   </div>
                 </div>
 
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                  <p className="text-xs text-blue-700">
+                <div className={`rounded-lg p-3 ${
+                  theme === "dark"
+                    ? "bg-blue-900/30 border border-blue-800"
+                    : "bg-blue-50 border border-blue-200"
+                }`}>
+                  <p className={`text-xs ${
+                    theme === "dark" ? "text-blue-300" : "text-blue-700"
+                  }`}>
                     <strong>Age:</strong> {editForm.age} years
                   </p>
-                  <p className="text-xs text-blue-600 mt-1">
+                  <p className={`text-xs mt-1 ${
+                    theme === "dark" ? "text-blue-300" : "text-blue-600"
+                  }`}>
                     Age auto-updates from your date of birth
                   </p>
                 </div>
@@ -811,7 +831,11 @@ export default function Profile() {
                 <button
                   onClick={() => setShowEditModal(false)}
                   disabled={isSaving}
-                  className="flex-1 bg-gray-200 text-gray-900 font-medium py-3 rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50"
+                  className={`flex-1 font-medium py-3 rounded-lg transition-colors disabled:opacity-50 ${
+                    theme === "dark"
+                      ? "bg-gray-700 text-white hover:bg-gray-600"
+                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                  }`}
                 >
                   Cancel
                 </button>
