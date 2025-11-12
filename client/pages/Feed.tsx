@@ -194,16 +194,16 @@ export default function Feed() {
             ? "bg-white border-gray-200"
             : "bg-gray-900 border-gray-800"
         }`}>
-          <h1 className="text-3xl font-bold">Community Feed</h1>
-          <p className="text-muted-foreground text-sm">Share your progress and inspiration</p>
+          <h1 className={`text-3xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}>Community Feed</h1>
+          <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-gray-400"}`}>Share your progress and inspiration</p>
 
           {/* Search Toggle */}
           <button
             onClick={() => setShowSearch(!showSearch)}
             className={`mt-4 w-full flex items-center gap-2 px-4 py-2 rounded-lg border transition-all ${
               theme === "light"
-                ? "bg-gray-50 border-gray-300 hover:bg-gray-100"
-                : "bg-gray-800 border-gray-700 hover:bg-gray-700"
+                ? "bg-gray-50 border-gray-300 hover:bg-gray-100 text-gray-900"
+                : "bg-gray-800 border-gray-700 hover:bg-gray-700 text-white"
             }`}
           >
             <SearchIcon className="w-4 h-4" />
@@ -250,10 +250,11 @@ export default function Feed() {
                     {searchResults.map((user) => (
                       <div
                         key={user.id}
-                        className={`flex items-center justify-between p-3 rounded-lg ${
+                        onClick={() => navigate(`/profile/${user.id}`)}
+                        className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${
                           theme === "light"
-                            ? "bg-white border border-gray-200"
-                            : "bg-gray-700 border border-gray-600"
+                            ? "bg-white border border-gray-200 hover:bg-gray-50"
+                            : "bg-gray-700 border border-gray-600 hover:bg-gray-600"
                         }`}
                       >
                         <div className="flex items-center gap-2 flex-1 min-w-0">
