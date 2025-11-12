@@ -70,7 +70,20 @@ export default function Login() {
       }
     } catch (error: any) {
       console.error("Login error:", error);
-      const errorMsg = error?.message || error?.status || "Failed to login";
+
+      // Handle specific errors
+      let errorMsg = "Failed to login";
+
+      if (error?.message?.includes("body stream already read")) {
+        errorMsg = "Network error - please try again in a moment";
+      } else if (error?.message?.includes("Invalid login credentials")) {
+        errorMsg = "Invalid email/username or password";
+      } else if (error?.message?.includes("Email not confirmed")) {
+        errorMsg = "Please confirm your email address first";
+      } else if (error?.message) {
+        errorMsg = error.message;
+      }
+
       toast.error(errorMsg);
     } finally {
       setLoading(false);
