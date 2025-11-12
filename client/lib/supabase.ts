@@ -34,10 +34,6 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     autoRefreshToken: true,
     storage: storageImpl,
-  },
-  global: {
-    headers: {
-      "Content-Type": "application/json",
-    },
+    flowType: "pkce",
   },
 });
