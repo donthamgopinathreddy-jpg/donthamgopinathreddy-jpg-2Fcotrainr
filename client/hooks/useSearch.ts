@@ -71,49 +71,45 @@ export const useSearch = () => {
       }
 
       // Get followers count and rating for each user
-      if (data && data.length > 0) {
-        const usersWithStats = await Promise.all(
-          data.map(async (user) => {
-            try {
-              // Get followers count
-              const { count: followersCount } = await supabase
-                .from("follows")
-                .select("*", { count: "exact" })
-                .eq("following_id", user.id);
+      const usersWithStats = await Promise.all(
+        uniqueData.map(async (user) => {
+          try {
+            // Get followers count
+            const { count: followersCount } = await supabase
+              .from("follows")
+              .select("*", { count: "exact" })
+              .eq("following_id", user.id);
 
-              // Get rating from trainer profile if exists
-              let rating = undefined;
-              if (user.role === "trainer") {
-                const { data: trainerData } = await supabase
-                  .from("trainers")
-                  .select("rating")
-                  .eq("id", user.id)
-                  .single();
+            // Get rating from trainer profile if exists
+            let rating = undefined;
+            if (user.role === "trainer") {
+              const { data: trainerData } = await supabase
+                .from("trainers")
+                .select("rating")
+                .eq("id", user.id)
+                .single();
 
-                rating = trainerData?.rating;
-              }
-
-              return {
-                ...user,
-                followers_count: followersCount || 0,
-                rating: rating,
-              };
-            } catch (err) {
-              const errMsg = err instanceof Error ? err.message : String(err);
-              console.error(`Error getting stats for user ${user.id}:`, errMsg);
-              return {
-                ...user,
-                followers_count: 0,
-                rating: undefined,
-              };
+              rating = trainerData?.rating;
             }
-          })
-        );
 
-        setResults(usersWithStats as SearchUser[]);
-      } else {
-        setResults([]);
-      }
+            return {
+              ...user,
+              followers_count: followersCount || 0,
+              rating: rating,
+            };
+          } catch (err) {
+            const errMsg = err instanceof Error ? err.message : String(err);
+            console.error(`Error getting stats for user ${user.id}:`, errMsg);
+            return {
+              ...user,
+              followers_count: 0,
+              rating: undefined,
+            };
+          }
+        })
+      );
+
+      setResults(usersWithStats as SearchUser[]);
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : JSON.stringify(error);
       console.error("Search error:", errorMsg);
