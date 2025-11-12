@@ -628,50 +628,78 @@ export default function Meals() {
         {/* Goals Edit Modal */}
         {showGoalsModal && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
-              <h2 className="text-lg font-bold text-gray-900">Edit Daily Goals</h2>
+            <div className={`rounded-2xl max-w-sm w-full p-6 space-y-4 ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}>
+              <h2 className={`text-lg font-bold ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}>Edit Daily Goals</h2>
 
               {/* Calories */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Daily Calories</label>
+                <label className={`block text-sm font-medium mb-1 ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-700"
+                }`}>Daily Calories</label>
                 <input
                   type="number"
                   value={editGoals.calories}
                   onChange={(e) => setEditGoals({ ...editGoals, calories: parseInt(e.target.value) || 0 })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary ${
+                    theme === "dark"
+                      ? "bg-gray-900 border border-gray-700 text-white"
+                      : "bg-gray-50 border border-gray-300 text-gray-900"
+                  }`}
                 />
               </div>
 
               {/* Protein */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Daily Protein (g)</label>
+                <label className={`block text-sm font-medium mb-1 ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-700"
+                }`}>Daily Protein (g)</label>
                 <input
                   type="number"
                   value={editGoals.protein}
                   onChange={(e) => setEditGoals({ ...editGoals, protein: parseInt(e.target.value) || 0 })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary ${
+                    theme === "dark"
+                      ? "bg-gray-900 border border-gray-700 text-white"
+                      : "bg-gray-50 border border-gray-300 text-gray-900"
+                  }`}
                 />
               </div>
 
               {/* Carbs */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Daily Carbs (g)</label>
+                <label className={`block text-sm font-medium mb-1 ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-700"
+                }`}>Daily Carbs (g)</label>
                 <input
                   type="number"
                   value={editGoals.carbs}
                   onChange={(e) => setEditGoals({ ...editGoals, carbs: parseInt(e.target.value) || 0 })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary ${
+                    theme === "dark"
+                      ? "bg-gray-900 border border-gray-700 text-white"
+                      : "bg-gray-50 border border-gray-300 text-gray-900"
+                  }`}
                 />
               </div>
 
               {/* Fat */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Daily Fat (g)</label>
+                <label className={`block text-sm font-medium mb-1 ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-700"
+                }`}>Daily Fat (g)</label>
                 <input
                   type="number"
                   value={editGoals.fat}
                   onChange={(e) => setEditGoals({ ...editGoals, fat: parseInt(e.target.value) || 0 })}
-                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary ${
+                    theme === "dark"
+                      ? "bg-gray-900 border border-gray-700 text-white"
+                      : "bg-gray-50 border border-gray-300 text-gray-900"
+                  }`}
                 />
               </div>
 
@@ -679,7 +707,11 @@ export default function Meals() {
               <div className="flex gap-2 pt-2">
                 <button
                   onClick={() => setShowGoalsModal(false)}
-                  className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                  className={`flex-1 font-medium py-2 rounded-lg transition-colors ${
+                    theme === "dark"
+                      ? "bg-gray-700 text-white hover:bg-gray-600"
+                      : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                  }`}
                 >
                   Cancel
                 </button>
