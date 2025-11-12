@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowLeft, Send, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface Message {
   id: string;
@@ -44,6 +45,7 @@ const DEMO_CHAT: ChatThread = {
 
 export default function ChatMessages() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [messages, setMessages] = useState<Message[]>(DEMO_CHAT.messages);
   const [newMessage, setNewMessage] = useState("");
   const [isPremium] = useState(false);
@@ -89,18 +91,32 @@ export default function ChatMessages() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col pb-24">
+    <div className={`min-h-screen flex flex-col pb-24 ${
+      theme === "dark" ? "bg-gray-950" : "bg-white"
+    }`}>
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3">
+      <div className={`sticky top-0 z-40 px-4 py-4 flex items-center gap-3 ${
+        theme === "dark"
+          ? "bg-gray-900 border-gray-800"
+          : "bg-white border-gray-200"
+      } border-b`}>
         <button
           onClick={() => navigate("/messages")}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className={`p-2 rounded-lg transition-colors ${
+            theme === "dark"
+              ? "hover:bg-gray-800"
+              : "hover:bg-gray-100"
+          }`}
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="flex-1">
-          <h1 className="text-lg font-bold text-gray-900">{DEMO_CHAT.trainerName}</h1>
-          <p className="text-xs text-gray-500">🏋️ Trainer</p>
+          <h1 className={`text-lg font-bold ${
+            theme === "dark" ? "text-white" : "text-gray-900"
+          }`}>{DEMO_CHAT.trainerName}</h1>
+          <p className={`text-xs ${
+            theme === "dark" ? "text-gray-400" : "text-gray-500"
+          }`}>🏋️ Trainer</p>
         </div>
       </div>
 
@@ -115,11 +131,13 @@ export default function ChatMessages() {
               className={`max-w-xs px-4 py-2 rounded-2xl ${
                 msg.senderId === "user"
                   ? "bg-blue-500 text-white rounded-br-none"
-                  : "bg-gray-100 text-gray-900 rounded-bl-none"
+                  : theme === "dark"
+                    ? "bg-gray-800 text-gray-100 rounded-bl-none"
+                    : "bg-gray-100 text-gray-900 rounded-bl-none"
               }`}
             >
               <p className="text-sm">{msg.content}</p>
-              <p className={`text-xs mt-1 ${msg.senderId === "user" ? "text-blue-100" : "text-gray-500"}`}>
+              <p className={`text-xs mt-1 ${msg.senderId === "user" ? "text-blue-100" : theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
                 {msg.timestamp}
               </p>
             </div>
@@ -129,14 +147,22 @@ export default function ChatMessages() {
 
       {/* Message Limit Banner (if free user) */}
       {!isPremium && (
-        <div className="px-4 py-3 bg-blue-50 border-t border-blue-100">
+        <div className={`px-4 py-3 border-t ${
+          theme === "dark"
+            ? "bg-blue-900/30 border-blue-800"
+            : "bg-blue-50 border-blue-100"
+        }`}>
           <div className="flex items-center gap-2 mb-2">
             <Lock className="w-4 h-4 text-blue-600" />
-            <p className="text-sm font-semibold text-blue-900">
+            <p className={`text-sm font-semibold ${
+              theme === "dark" ? "text-blue-300" : "text-blue-900"
+            }`}>
               {messagesLimit - messagesUsed} messages left this week
             </p>
           </div>
-          <p className="text-xs text-blue-800 mb-2">
+          <p className={`text-xs mb-2 ${
+            theme === "dark" ? "text-blue-300" : "text-blue-800"
+          }`}>
             Upgrade to premium for unlimited chat with all trainers
           </p>
           <button className="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors">
@@ -146,7 +172,11 @@ export default function ChatMessages() {
       )}
 
       {/* Message Input */}
-      <div className="border-t border-gray-200 bg-white px-4 py-3 flex gap-2">
+      <div className={`border-t px-4 py-3 flex gap-2 ${
+        theme === "dark"
+          ? "bg-gray-900 border-gray-800"
+          : "bg-white border-gray-200"
+      }`}>
         <input
           type="text"
           placeholder="Type a message..."
