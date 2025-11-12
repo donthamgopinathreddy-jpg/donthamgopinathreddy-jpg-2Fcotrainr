@@ -360,17 +360,17 @@ export default function Profile() {
 
           {/* Account Info Card */}
           <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
-            <h3 className="font-bold text-gray-900">Account Information</h3>
+            <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Account Information</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-xs text-gray-600 mb-1">Username</p>
-                <p className="font-semibold text-gray-900 break-all">
+                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Username</p>
+                <p className={`font-semibold break-all ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
                   {userProfile?.username || "Not set"}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-600 mb-1">Email Address</p>
-                <p className="font-semibold text-gray-900 break-all">
+                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Email Address</p>
+                <p className={`font-semibold break-all ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
                   {userProfile?.email || "Not set"}
                 </p>
               </div>
@@ -379,23 +379,23 @@ export default function Profile() {
 
           {/* Basic Info Card */}
           <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
-            <h3 className="font-bold text-gray-900">Basic Information</h3>
+            <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Basic Information</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-gray-600 mb-1">Gender</p>
-                <p className="font-semibold text-gray-900">{user.gender}</p>
+                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Gender</p>
+                <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>{user.gender}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-600 mb-1">Height</p>
-                <p className="font-semibold text-gray-900">{user.height} cm</p>
+                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Height</p>
+                <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>{user.height} cm</p>
               </div>
               <div>
-                <p className="text-xs text-gray-600 mb-1">Weight</p>
-                <p className="font-semibold text-gray-900">{user.weight} kg</p>
+                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Weight</p>
+                <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>{user.weight} kg</p>
               </div>
               <div>
-                <p className="text-xs text-gray-600 mb-1">BMI</p>
-                <p className="font-semibold text-gray-900">
+                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>BMI</p>
+                <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
                   {(user.weight / (user.height / 100) ** 2).toFixed(1)}
                 </p>
               </div>
@@ -408,12 +408,16 @@ export default function Profile() {
               {/* Specialties */}
               {user.specialties && (
                 <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
-                  <h3 className="font-bold text-gray-900">Specialties</h3>
+                  <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Specialties</h3>
                   <div className="flex flex-wrap gap-2">
                     {user.specialties.map((spec) => (
                       <span
                         key={spec}
-                        className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium"
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          theme === "dark"
+                            ? "bg-blue-900/30 text-blue-300"
+                            : "bg-blue-100 text-blue-700"
+                        }`}
                       >
                         {spec}
                       </span>
@@ -427,13 +431,13 @@ export default function Profile() {
                 <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
                   <div className="flex items-center gap-2 mb-3">
                     <Award className="w-5 h-5 text-amber-600" />
-                    <h3 className="font-bold text-gray-900">Qualifications</h3>
+                    <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Qualifications</h3>
                   </div>
                   <ul className="space-y-2">
                     {user.qualifications.map((qual, idx) => (
                       <li key={idx} className="flex items-start gap-2">
                         <span className="text-amber-600 mt-1">✓</span>
-                        <span className="text-sm text-gray-700">{qual}</span>
+                        <span className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{qual}</span>
                       </li>
                     ))}
                   </ul>
@@ -445,8 +449,8 @@ export default function Profile() {
                 <div className="bg-card border border-border rounded-2xl p-4 flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <div>
-                    <p className="text-xs text-gray-600">Training Location</p>
-                    <p className="font-semibold text-gray-900">
+                    <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Training Location</p>
+                    <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
                       {user.location}
                     </p>
                   </div>
@@ -460,15 +464,15 @@ export default function Profile() {
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-card rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
-                <p className="text-xs text-gray-600">Sessions</p>
+                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Sessions</p>
               </div>
               <div className="bg-card rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
-                <p className="text-xs text-gray-600">Hours</p>
+                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Hours</p>
               </div>
               <div className="bg-card rounded-xl p-4 border border-border text-center">
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
-                <p className="text-xs text-gray-600">Streak</p>
+                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Streak</p>
               </div>
             </div>
           )}
@@ -515,10 +519,10 @@ export default function Profile() {
                     <div className="p-2 bg-green-600/20 rounded-full">
                       <Users className="w-5 h-5 text-green-700" />
                     </div>
-                    <h4 className="font-bold text-gray-900 text-sm">
+                    <h4 className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}>
                       Invite Friends
                     </h4>
-                    <p className="text-xs text-gray-700">Earn rewards</p>
+                    <p className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}>Earn rewards</p>
                   </div>
                 </div>
 
@@ -531,10 +535,10 @@ export default function Profile() {
                     <div className="p-2 bg-orange-600/20 rounded-full">
                       <CheckCircle className="w-5 h-5 text-orange-700" />
                     </div>
-                    <h4 className="font-bold text-gray-900 text-sm">
+                    <h4 className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}>
                       Go Premium
                     </h4>
-                    <p className="text-xs text-gray-700">Unlock all</p>
+                    <p className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}>Unlock all</p>
                   </div>
                 </div>
               </div>
@@ -553,10 +557,10 @@ export default function Profile() {
                   <div className="p-2 bg-blue-600/20 rounded-full">
                     <Briefcase className="w-5 h-5 text-blue-700" />
                   </div>
-                  <h4 className="font-bold text-gray-900 text-sm">
+                  <h4 className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}>
                     Refer Trainer
                   </h4>
-                  <p className="text-xs text-gray-700">Earn bonus</p>
+                  <p className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}>Earn bonus</p>
                 </div>
               </div>
 
@@ -569,10 +573,10 @@ export default function Profile() {
                   <div className="p-2 bg-orange-600/20 rounded-full">
                     <CheckCircle className="w-5 h-5 text-orange-700" />
                   </div>
-                  <h4 className="font-bold text-gray-900 text-sm">
+                  <h4 className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}>
                     Go Premium
                   </h4>
-                  <p className="text-xs text-gray-700">More features</p>
+                  <p className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}>More features</p>
                 </div>
               </div>
             </div>
@@ -582,10 +586,14 @@ export default function Profile() {
           <div className="space-y-2">
             <button
               onClick={() => setShowEditModal(true)}
-              className="w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+              className={`w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 transition-colors ${
+                theme === "dark"
+                  ? "hover:bg-gray-800"
+                  : "hover:bg-gray-50"
+              }`}
             >
-              <Edit2 className="w-5 h-5 text-gray-600" />
-              <span className="font-medium text-gray-900">Edit Profile</span>
+              <Edit2 className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`} />
+              <span className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Edit Profile</span>
             </button>
 
             <button
