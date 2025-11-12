@@ -46,9 +46,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Check auth state on mount
   useEffect(() => {
-    // Mark loading as done immediately - auth check happens in background
-    setLoading(false);
-
     const checkAuth = async () => {
       try {
         console.log("Checking auth state...");
@@ -73,10 +70,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (error) {
         console.error("Error checking auth:", error);
         setUser(null);
+      } finally {
+        // Mark loading as done AFTER auth check completes
+        setLoading(false);
       }
     };
 
-    // Run auth check in background without blocking
     checkAuth();
 
     // Listen for auth changes
