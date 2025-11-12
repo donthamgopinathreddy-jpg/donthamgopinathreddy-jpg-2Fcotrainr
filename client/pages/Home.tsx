@@ -500,9 +500,9 @@ export default function Home() {
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 -mt-8 pb-24 relative z-20 space-y-6">
         {/* Progress Bars Card */}
-        <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-foreground">Today's Stats</h2>
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white">Today's Stats</h2>
             <button
               onClick={() => {
                 setEditStepsTarget(stepsTarget);
