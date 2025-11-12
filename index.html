@@ -17,7 +17,14 @@
     <div id="root"></div>
 
     <script type="module" src="/client/main.tsx"></script>
-    <!-- Capacitor initialization script - loads after app -->
-    <script src="capacitor://bridge"></script>
+    <!-- Capacitor initialization script - loads only on mobile -->
+    <script>
+      // Only load Capacitor bridge on mobile/app environment
+      if (typeof window !== 'undefined' && window.location.protocol === 'capacitor://') {
+        const script = document.createElement('script');
+        script.src = 'capacitor://bridge';
+        document.body.appendChild(script);
+      }
+    </script>
   </body>
 </html>
