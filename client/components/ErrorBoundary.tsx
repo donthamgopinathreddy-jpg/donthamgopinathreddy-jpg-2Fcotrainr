@@ -19,7 +19,7 @@ export class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error) {
-    console.error("Error boundary caught:", error);
+    console.error("Error boundary caught error:", error);
   }
 
   render() {
@@ -40,13 +40,13 @@ export class ErrorBoundary extends React.Component<
             <h1 style={{ color: "#333", marginBottom: "20px" }}>
               Something went wrong
             </h1>
-            <p style={{ color: "#666", marginBottom: "20px" }}>
+            <p style={{ color: "#666", marginBottom: "20px", fontSize: "14px" }}>
               {this.state.error?.message || "An unexpected error occurred"}
             </p>
             <button
               onClick={() => {
-                this.setState({ hasError: false, error: null });
-                window.location.reload();
+                // Simply reload the page
+                window.location.href = window.location.href;
               }}
               style={{
                 padding: "10px 20px",
