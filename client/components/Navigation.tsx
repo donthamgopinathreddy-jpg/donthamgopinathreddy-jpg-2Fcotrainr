@@ -6,6 +6,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 const Navigation = () => {
   const location = useLocation();
   const { userProfile } = useAuth();
+  const { theme } = useTheme();
 
   const isActive = (path: string) => location.pathname === path;
   const isTrainer = userProfile?.role === "trainer";
