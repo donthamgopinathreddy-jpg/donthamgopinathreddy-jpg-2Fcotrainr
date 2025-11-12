@@ -1,6 +1,23 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 
-export type LanguageCode = "en" | "hi" | "ta" | "te" | "kn" | "bn" | "mr" | "gu" | "pa" | "or" | "ur";
+export type LanguageCode =
+  | "en"
+  | "hi"
+  | "ta"
+  | "te"
+  | "kn"
+  | "bn"
+  | "mr"
+  | "gu"
+  | "pa"
+  | "or"
+  | "ur";
 
 const INDIAN_LANGUAGES: { code: LanguageCode; name: string }[] = [
   { code: "en", name: "English" },
@@ -24,7 +41,9 @@ interface LanguageContextType {
   translations: Record<string, any>;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined,
+);
 
 // Import all translations
 import enTranslations from "@/translations/en.json";
@@ -53,12 +72,18 @@ const allTranslations: Record<LanguageCode, Record<string, any>> = {
   ur: urTranslations,
 };
 
-export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
+export const LanguageProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [language, setLanguageState] = useState<LanguageCode>("en");
 
   useEffect(() => {
     try {
-      const savedLanguage = localStorage.getItem("userLanguage") as LanguageCode | null;
+      const savedLanguage = localStorage.getItem(
+        "userLanguage",
+      ) as LanguageCode | null;
       const defaultLanguage = savedLanguage || "en";
       setLanguageState(defaultLanguage);
       if (document?.documentElement) {
@@ -118,16 +143,19 @@ export const useTranslation = () => {
   const { translations, language } = context;
 
   // Create t function that explicitly depends on both language and translations
-  const t = useCallback((key: string, fallback?: string) => {
-    const keys = key.split(".");
-    let value: any = translations;
+  const t = useCallback(
+    (key: string, fallback?: string) => {
+      const keys = key.split(".");
+      let value: any = translations;
 
-    for (const k of keys) {
-      value = value?.[k];
-    }
+      for (const k of keys) {
+        value = value?.[k];
+      }
 
-    return typeof value === "string" ? value : fallback || key;
-  }, [language, translations]); // Explicit dependency on language and translations
+      return typeof value === "string" ? value : fallback || key;
+    },
+    [language, translations],
+  ); // Explicit dependency on language and translations
 
   return { t, language };
 };
