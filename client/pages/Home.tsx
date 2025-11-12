@@ -864,19 +864,27 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex gap-2 pt-2">
+            <div className="flex flex-col gap-2 pt-2">
               <button
-                onClick={() => setShowTargetsModal(false)}
-                className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                onClick={handleResetSteps}
+                className="w-full bg-red-100 hover:bg-red-200 text-red-700 font-medium py-2 rounded-lg transition-colors text-sm"
               >
-                Cancel
+                Reset Steps to 0
               </button>
-              <button
-                onClick={handleSaveTargets}
-                className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
-              >
-                Save
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowTargetsModal(false)}
+                  className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveTargets}
+                  className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
         </div>
