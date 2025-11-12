@@ -84,15 +84,23 @@ export default function Home() {
     const fetchLatestFeed = async () => {
       setLoadingFeed(true);
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("posts")
           .select("*, users(full_name, profile_picture_url)")
           .order("created_at", { ascending: false })
           .limit(3);
 
-        setLatestFeed(data || []);
+        if (error) {
+          // Silently handle error - app can work without feed
+          console.debug("Feed unavailable:", error.message);
+          setLatestFeed([]);
+        } else {
+          setLatestFeed(data || []);
+        }
       } catch (error) {
-        console.error("Error fetching feed:", error);
+        // Silently handle network errors - app can work without feed
+        console.debug("Error fetching feed - continuing without it");
+        setLatestFeed([]);
       } finally {
         setLoadingFeed(false);
       }
