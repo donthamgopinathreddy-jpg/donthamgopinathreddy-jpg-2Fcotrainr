@@ -15,12 +15,32 @@ interface FormData {
   fullName: string;
   email: string;
   password: string;
+  countryCode: string;
   phoneNumber: string;
   gender: Gender;
   height: string;
   weight: string;
   age: string;
 }
+
+const COUNTRY_CODES = [
+  { name: "India", code: "+91", flag: "🇮🇳" },
+  { name: "United States", code: "+1", flag: "🇺🇸" },
+  { name: "United Kingdom", code: "+44", flag: "🇬🇧" },
+  { name: "Canada", code: "+1", flag: "🇨🇦" },
+  { name: "Australia", code: "+61", flag: "🇦🇺" },
+  { name: "Germany", code: "+49", flag: "🇩🇪" },
+  { name: "France", code: "+33", flag: "🇫🇷" },
+  { name: "Japan", code: "+81", flag: "🇯🇵" },
+  { name: "China", code: "+86", flag: "🇨🇳" },
+  { name: "Brazil", code: "+55", flag: "🇧🇷" },
+  { name: "Mexico", code: "+52", flag: "🇲🇽" },
+  { name: "South Korea", code: "+82", flag: "🇰🇷" },
+  { name: "Singapore", code: "+65", flag: "🇸🇬" },
+  { name: "Dubai", code: "+971", flag: "🇦🇪" },
+  { name: "Pakistan", code: "+92", flag: "🇵🇰" },
+  { name: "Bangladesh", code: "+880", flag: "🇧🇩" },
+];
 
 export default function Onboarding() {
   const navigate = useNavigate();
@@ -34,12 +54,14 @@ export default function Onboarding() {
     fullName: "",
     email: "",
     password: "",
+    countryCode: "+91",
     phoneNumber: "",
     gender: "",
     height: "",
     weight: "",
     age: "",
   });
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
 
   // Username availability checking
   const [usernameStatus, setUsernameStatus] = useState<"checking" | "available" | "taken" | null>(null);
