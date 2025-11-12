@@ -262,8 +262,8 @@ export default function Profile() {
   const { theme } = useTheme();
 
   return (
-    <div className={`min-h-screen pb-24 l-shape-bg fitness-gradient-1 ${
-      theme === "dark" ? "bg-gray-950" : "bg-white"
+    <div className={`min-h-screen pb-24 ${
+      theme === "dark" ? "l-shape-bg fitness-gradient-1 bg-gray-950" : "bg-white"
     }`}>
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
         {/* Profile Header */}

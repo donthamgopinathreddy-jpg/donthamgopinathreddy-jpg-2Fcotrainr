@@ -315,8 +315,8 @@ export default function Meals() {
   const { theme } = useTheme();
 
   return (
-    <div className={`min-h-screen pb-24 l-shape-bg fitness-gradient-4 ${
-      theme === "dark" ? "bg-gray-950" : "bg-white"
+    <div className={`min-h-screen pb-24 ${
+      theme === "dark" ? "l-shape-bg fitness-gradient-4 bg-gray-950" : "bg-white"
     }`}>
       <div className="max-w-md mx-auto">
         {/* Header */}
