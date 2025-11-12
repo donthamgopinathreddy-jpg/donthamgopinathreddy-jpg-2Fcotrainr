@@ -164,11 +164,13 @@ export default function Meals() {
     [meals]
   );
 
-  // Group meals by type
+  // Group meals by type (using database values)
   const mealsByType = useMemo(() => {
     const grouped: { [key: string]: typeof mealEntries } = {};
-    MEAL_TYPES.forEach((type) => {
-      grouped[type.id] = mealEntries.filter((m) => m.mealType === type.dbValue);
+    // Create groups for each unique meal type in MEAL_TYPES
+    const uniqueDbValues = Array.from(new Set(MEAL_TYPES.map((t) => t.dbValue)));
+    uniqueDbValues.forEach((dbValue) => {
+      grouped[dbValue] = mealEntries.filter((m) => m.mealType === dbValue);
     });
     return grouped;
   }, [mealEntries]);
