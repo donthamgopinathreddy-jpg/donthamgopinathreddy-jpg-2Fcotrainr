@@ -283,25 +283,32 @@ const AppRoutes = () => {
 };
 
 const App = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ThemeProvider>
-          <LanguageProvider>
-            <AuthProvider>
-              <BrowserRouter>
-                <AuthInitializer>
-                  <Toaster />
-                  <Sonner />
-                  <AppRoutes />
-                </AuthInitializer>
-              </BrowserRouter>
-            </AuthProvider>
-          </LanguageProvider>
-        </ThemeProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
+  console.log("App component rendering");
+
+  try {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              <AuthProvider>
+                <BrowserRouter>
+                  <AuthInitializer>
+                    <Toaster />
+                    <Sonner />
+                    <AppRoutes />
+                  </AuthInitializer>
+                </BrowserRouter>
+              </AuthProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    );
+  } catch (error) {
+    console.error("App component error:", error);
+    throw error;
+  }
 };
 
 export default App;
