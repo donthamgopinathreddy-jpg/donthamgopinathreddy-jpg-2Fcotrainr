@@ -15,6 +15,8 @@ import {
   Copy,
   Check,
   Loader,
+  Sun,
+  Moon,
 } from "lucide-react";
 import GlassyTile from "@/components/GlassyTile";
 import { useAuth } from "@/contexts/AuthContext";
@@ -273,7 +275,7 @@ export default function Profile() {
   };
 
   const isTrainer = user.role === "trainer";
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div
