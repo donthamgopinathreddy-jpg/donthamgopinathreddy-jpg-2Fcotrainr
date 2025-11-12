@@ -50,37 +50,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         console.log("Checking auth state...");
 
-        // Add timeout to prevent hanging (15 seconds for Fly.dev slowness)
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Auth check timeout")), 15000)
-        );
+        // First check if there's a session
+        const { data: { session } } = await supabase.auth.getSession();
+        console.log("Session found:", session?.user?.email);
 
-        const authPromise = (async () => {
-          // First check if there's a session
-          const { data: { session } } = await supabase.auth.getSession();
-          console.log("Session found:", session?.user?.email);
-
-          if (session?.user) {
-            setUser(session.user);
-            await fetchUserProfile(session.user.id);
+        if (session?.user) {
+          setUser(session.user);
+          await fetchUserProfile(session.user.id);
+        } else {
+          // If no session, try getUser as backup
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            setUser(user);
+            await fetchUserProfile(user.id);
           } else {
-            // If no session, try getUser as backup
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-              setUser(user);
-              await fetchUserProfile(user.id);
-            } else {
-              setUser(null);
-            }
+            setUser(null);
           }
-        })();
-
-        await Promise.race([authPromise, timeoutPromise]);
+        }
       } catch (error) {
         console.error("Error checking auth:", error);
         setUser(null);
       } finally {
-        setLoading(false);
+        // Don't wait indefinitely - mark loading as done after 3 seconds max
+        setTimeout(() => setLoading(false), 3000);
       }
     };
 
