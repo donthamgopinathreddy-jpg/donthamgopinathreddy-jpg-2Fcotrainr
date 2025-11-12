@@ -75,10 +75,8 @@ export default function Login() {
 
       if (data.user) {
         toast.success("Login successful!");
-        // Wait longer for auth context to update via onAuthStateChange listener
-        setTimeout(() => {
-          navigate("/", { replace: true });
-        }, 1500);
+        // Don't navigate here - let useEffect handle it when user state updates
+        // This ensures AuthContext has time to process the login
       }
     } catch (error: any) {
       console.error("Login error:", error);
