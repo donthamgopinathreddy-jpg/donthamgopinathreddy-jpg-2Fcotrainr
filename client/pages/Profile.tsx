@@ -984,11 +984,19 @@ export default function Profile() {
                   </div>
 
                   {/* Your Benefits */}
-                  <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 space-y-2">
-                    <p className="text-sm font-semibold text-gray-900">
+                  <div className={`rounded-xl p-4 space-y-2 border ${
+                    theme === "dark"
+                      ? "bg-purple-900/30 border-purple-800"
+                      : "bg-purple-50 border-purple-200"
+                  }`}>
+                    <p className={`text-sm font-semibold ${
+                      theme === "dark" ? "text-purple-300" : "text-gray-900"
+                    }`}>
                       You Get
                     </p>
-                    <ul className="space-y-1 text-xs text-gray-700">
+                    <ul className={`space-y-1 text-xs ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    }`}>
                       <li className="flex items-start gap-2">
                         <span className="text-purple-600 mt-0.5 flex-shrink-0">
                           ✓
@@ -1010,7 +1018,11 @@ export default function Profile() {
               <div className="flex gap-2 pt-2 sm:pt-4">
                 <button
                   onClick={() => setShowReferralModal(false)}
-                  className="flex-1 bg-gray-200 text-gray-900 font-medium py-2.5 md:py-3 rounded-lg hover:bg-gray-300 transition-colors text-sm md:text-base"
+                  className={`flex-1 font-medium py-2.5 md:py-3 rounded-lg transition-colors text-sm md:text-base ${
+                    theme === "dark"
+                      ? "bg-gray-700 text-white hover:bg-gray-600"
+                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                  }`}
                 >
                   Close
                 </button>
