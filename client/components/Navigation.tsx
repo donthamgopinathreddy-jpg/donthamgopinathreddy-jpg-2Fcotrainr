@@ -6,9 +6,11 @@ import {
   Utensils,
   User,
   BarChart3,
+  Bell,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useNotifications } from "@/hooks/useNotifications";
 
 const Navigation = () => {
   const location = useLocation();
