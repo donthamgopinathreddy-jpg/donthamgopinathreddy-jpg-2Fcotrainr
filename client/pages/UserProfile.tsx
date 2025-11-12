@@ -95,6 +95,22 @@ export default function UserProfile() {
           setPosts([]);
         } else {
           setPosts(postsData || []);
+
+          // Fetch likes for current user if logged in
+          if (currentUser?.id) {
+            const postIds = (postsData || []).map(p => p.id);
+            if (postIds.length > 0) {
+              const { data: likesData } = await supabase
+                .from("post_likes")
+                .select("post_id")
+                .eq("user_id", currentUser.id)
+                .in("post_id", postIds);
+
+              if (likesData) {
+                setLikedPosts(new Set(likesData.map(l => l.post_id)));
+              }
+            }
+          }
         }
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -106,7 +122,7 @@ export default function UserProfile() {
     };
 
     fetchUserProfile();
-  }, [userId, navigate]);
+  }, [userId, navigate, currentUser?.id]);
 
   const handleFollow = async () => {
     if (!userId) return;
