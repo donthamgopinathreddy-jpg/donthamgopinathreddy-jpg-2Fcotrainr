@@ -128,6 +128,36 @@ export default function Profile() {
     }
   }, [userProfile]);
 
+  // Fetch user's own posts
+  useEffect(() => {
+    if (!userProfile?.id) return;
+
+    const fetchUserPosts = async () => {
+      setPostsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("posts")
+          .select("*")
+          .eq("user_id", userProfile.id)
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Error fetching posts:", error);
+          setUserPosts([]);
+        } else {
+          setUserPosts(data || []);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setUserPosts([]);
+      } finally {
+        setPostsLoading(false);
+      }
+    };
+
+    fetchUserPosts();
+  }, [userProfile?.id]);
+
   // Generate referral link
   const referralCode =
     userProfile?.id?.substring(0, 8).toUpperCase() || "REFER";
