@@ -1274,22 +1274,38 @@ export default function Meals() {
                   placeholder="Food name (e.g., Chicken, Rice, Eggs)"
                   value={newFood.name}
                   onChange={(e) => handleFoodNameChange(e.target.value)}
-                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary text-sm border ${
+                    theme === "dark"
+                      ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                      : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
+                  }`}
                 />
                 {suggestions.length > 0 && (
-                  <div className="absolute z-10 top-full left-0 right-0 bg-white border border-border rounded-lg mt-1 shadow-lg">
+                  <div className={`absolute z-10 top-full left-0 right-0 rounded-lg mt-1 shadow-lg border ${
+                    theme === "dark"
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-300"
+                  }`}>
                     {suggestions.map((food) => {
                       const foodInfo = FOOD_DATABASE[food.toLowerCase()];
                       return (
                         <button
                           key={food}
                           onClick={() => handleSelectSuggestion(food)}
-                          className="w-full text-left px-3 py-2 hover:bg-primary/10 text-sm text-foreground first:rounded-t-lg last:rounded-b-lg transition-colors capitalize"
+                          className={`w-full text-left px-3 py-2 text-sm first:rounded-t-lg last:rounded-b-lg transition-colors capitalize ${
+                            theme === "dark"
+                              ? "text-gray-100 hover:bg-gray-700"
+                              : "text-gray-900 hover:bg-gray-100"
+                          }`}
                         >
                           <div className="flex justify-between items-center">
                             <span>{food}</span>
                             {foodInfo.inputType === "quantity" && (
-                              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">
+                              <span className={`text-xs px-2 py-0.5 rounded ${
+                                theme === "dark"
+                                  ? "bg-blue-900 text-blue-300"
+                                  : "bg-blue-100 text-blue-700"
+                              }`}>
                                 {foodInfo.unitName}
                               </span>
                             )}
