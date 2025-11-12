@@ -233,13 +233,7 @@ export default function Feed() {
             {/* Search Results */}
             {searchQuery && (
               <div className="mt-4 space-y-2 max-h-64 overflow-y-auto">
-                {searchLoading && (
-                  <div className="flex items-center justify-center py-4">
-                    <Loader className="w-5 h-5 animate-spin text-primary" />
-                  </div>
-                )}
-
-                {!searchLoading && searchResults.length > 0 && (
+                {searchResults.length > 0 && (
                   <>
                     <p className={`text-xs font-semibold ${
                       theme === "light" ? "text-gray-600" : "text-gray-400"
@@ -307,6 +301,12 @@ export default function Feed() {
                       </div>
                     ))}
                   </>
+                )}
+
+                {searchLoading && searchResults.length === 0 && (
+                  <div className="flex items-center justify-center py-4">
+                    <Loader className="w-5 h-5 animate-spin text-primary" />
+                  </div>
                 )}
 
                 {!searchLoading && searchQuery && searchResults.length === 0 && (
