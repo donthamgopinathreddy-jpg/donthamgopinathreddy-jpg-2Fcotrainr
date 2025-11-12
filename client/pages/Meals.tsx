@@ -654,99 +654,118 @@ export default function Meals() {
               </button>
             </div>
 
-            {/* Calories Bar */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-orange-600">
-                  Calories
-                </span>
-                <span className={`text-sm font-bold ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-800"
-                }`}>
-                  {totalCalories} / {calorieGoal}
-                </span>
+            {/* Circular Nutrition Grid 2x2 */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Calories Circle */}
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <div className="relative w-24 h-24 flex items-center justify-center">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="none" className={`stroke-current ${
+                      theme === "dark" ? "text-gray-700" : "text-gray-300"
+                    }`} strokeWidth="4" />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      className="stroke-current text-orange-500 transition-all duration-500"
+                      strokeWidth="4"
+                      strokeDasharray={`${(caloriePercent / 100) * 283} 283`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center justify-center">
+                    <span className="text-xl font-bold text-gray-900">{Math.round((totalCalories / calorieGoal) * 100)}%</span>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs font-semibold text-gray-600">Calories</p>
+                  <p className="text-xs text-gray-500">{totalCalories}/{calorieGoal}</p>
+                </div>
               </div>
-              <div
-                className={`w-full h-4 rounded-full overflow-hidden ${
-                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
-                }`}
-              >
-                <div
-                  className="h-full bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 transition-all duration-500 shadow-lg shadow-orange-600/50"
-                  style={{ width: `${caloriePercent}%` }}
-                />
-              </div>
-            </div>
 
-            {/* Protein Bar */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-red-600">
-                  Protein
-                </span>
-                <span className={`text-sm font-bold ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-800"
-                }`}>
-                  {totalProtein}g / {proteinGoal}g
-                </span>
+              {/* Protein Circle */}
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <div className="relative w-24 h-24 flex items-center justify-center">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="none" className={`stroke-current ${
+                      theme === "dark" ? "text-gray-700" : "text-gray-300"
+                    }`} strokeWidth="4" />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      className="stroke-current text-red-500 transition-all duration-500"
+                      strokeWidth="4"
+                      strokeDasharray={`${(proteinPercent / 100) * 283} 283`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center justify-center">
+                    <span className="text-xl font-bold text-gray-900">{Math.round((totalProtein / proteinGoal) * 100)}%</span>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs font-semibold text-gray-600">Protein</p>
+                  <p className="text-xs text-gray-500">{totalProtein}g/{proteinGoal}g</p>
+                </div>
               </div>
-              <div
-                className={`w-full h-3 rounded-full overflow-hidden ${
-                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
-                }`}
-              >
-                <div
-                  className="h-full bg-gradient-to-r from-red-600 to-pink-600 transition-all duration-500 shadow-lg shadow-red-600/50"
-                  style={{ width: `${proteinPercent}%` }}
-                />
-              </div>
-            </div>
 
-            {/* Carbs Bar */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-blue-600">
-                  Carbs
-                </span>
-                <span className={`text-sm font-bold ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-800"
-                }`}>
-                  {totalCarbs}g / {carbsGoal}g
-                </span>
+              {/* Carbs Circle */}
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <div className="relative w-24 h-24 flex items-center justify-center">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="none" className={`stroke-current ${
+                      theme === "dark" ? "text-gray-700" : "text-gray-300"
+                    }`} strokeWidth="4" />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      className="stroke-current text-blue-500 transition-all duration-500"
+                      strokeWidth="4"
+                      strokeDasharray={`${(carbsPercent / 100) * 283} 283`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center justify-center">
+                    <span className="text-xl font-bold text-gray-900">{Math.round((totalCarbs / carbsGoal) * 100)}%</span>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs font-semibold text-gray-600">Carbs</p>
+                  <p className="text-xs text-gray-500">{totalCarbs}g/{carbsGoal}g</p>
+                </div>
               </div>
-              <div
-                className={`w-full h-3 rounded-full overflow-hidden ${
-                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
-                }`}
-              >
-                <div
-                  className="h-full bg-gradient-to-r from-blue-600 to-cyan-600 transition-all duration-500 shadow-lg shadow-blue-600/50"
-                  style={{ width: `${carbsPercent}%` }}
-                />
-              </div>
-            </div>
 
-            {/* Fat Bar */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-amber-600">
-                  Fat
-                </span>
-                <span className={`text-sm font-bold ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-800"
-                }`}>
-                  {totalFat}g / {fatGoal}g
-                </span>
-              </div>
-              <div
-                className={`w-full h-3 rounded-full overflow-hidden ${
-                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
-                }`}
-              >
-                <div
-                  className="h-full bg-gradient-to-r from-amber-600 to-yellow-600 transition-all duration-500 shadow-lg shadow-amber-600/50"
-                  style={{ width: `${fatPercent}%` }}
-                />
+              {/* Fat Circle */}
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <div className="relative w-24 h-24 flex items-center justify-center">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="none" className={`stroke-current ${
+                      theme === "dark" ? "text-gray-700" : "text-gray-300"
+                    }`} strokeWidth="4" />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      className="stroke-current text-amber-500 transition-all duration-500"
+                      strokeWidth="4"
+                      strokeDasharray={`${(fatPercent / 100) * 283} 283`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center justify-center">
+                    <span className="text-xl font-bold text-gray-900">{Math.round((totalFat / fatGoal) * 100)}%</span>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs font-semibold text-gray-600">Fat</p>
+                  <p className="text-xs text-gray-500">{totalFat}g/{fatGoal}g</p>
+                </div>
               </div>
             </div>
           </div>
@@ -780,7 +799,7 @@ export default function Meals() {
                             className={`rounded-lg p-4 flex items-center justify-between transition-colors ${
                               theme === "dark"
                                 ? "bg-gray-700/40 border border-gray-600/40 hover:border-gray-600/60"
-                                : "bg-gradient-to-br from-green-50 to-teal-50 border border-green-200 hover:border-green-300"
+                                : "bg-gradient-to-br from-purple-100 to-pink-100 border border-purple-200 hover:border-purple-300"
                             }`}
                           >
                             <div className="flex-1">
@@ -835,7 +854,7 @@ export default function Meals() {
               className={`rounded-xl p-4 space-y-3 ${
                 theme === "dark"
                   ? "bg-gray-700/50 border border-gray-600/50 backdrop-blur-xl"
-                  : "bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border border-green-200"
+                  : "bg-gradient-to-br from-purple-100 via-violet-100 to-pink-100 border border-purple-200"
               }`}
             >
               <h3 className={`font-bold ${
