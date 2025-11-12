@@ -858,17 +858,17 @@ export default function Home() {
       {/* Targets Edit Modal */}
       {showTargetsModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
-            <h2 className="text-lg font-bold text-gray-900">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-sm w-full p-6 space-y-4">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
               Edit Daily Targets
             </h2>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Set your daily goals. Calories burned are calculated from steps.
             </p>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Daily Steps Goal
                 </label>
                 <input
@@ -877,16 +877,16 @@ export default function Home() {
                   onChange={(e) =>
                     setEditStepsTarget(parseInt(e.target.value) || 0)
                   }
-                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="e.g., 10000"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Calories burned = steps × 0.05 cal
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Water Consumed Today (L)
                 </label>
                 <input
@@ -897,10 +897,10 @@ export default function Home() {
                   onChange={(e) =>
                     setWaterConsumed(parseFloat(e.target.value) || 0)
                   }
-                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="e.g., 2.5"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Daily goal: {waterGoal}L (based on your weight)
                 </p>
               </div>
@@ -909,14 +909,14 @@ export default function Home() {
             <div className="flex flex-col gap-2 pt-2">
               <button
                 onClick={handleResetSteps}
-                className="w-full bg-red-100 hover:bg-red-200 text-red-700 font-medium py-2 rounded-lg transition-colors text-sm"
+                className="w-full bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 font-medium py-2 rounded-lg transition-colors text-sm"
               >
                 Reset Steps to 0
               </button>
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowTargetsModal(false)}
-                  className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="flex-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-medium py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 >
                   Cancel
                 </button>
