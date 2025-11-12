@@ -769,7 +769,7 @@ export default function Meals() {
                             key={meal.id}
                             className={`rounded-lg p-4 flex items-center justify-between transition-colors ${
                               theme === "dark"
-                                ? "bg-green-200/50 border border-green-200/70 hover:border-green-200/80"
+                                ? "bg-green-200/70 border border-green-200/80 hover:border-green-200/90"
                                 : "bg-card border border-border hover:border-primary"
                             }`}
                           >
@@ -818,7 +818,7 @@ export default function Meals() {
             <div
               className={`rounded-xl p-4 space-y-3 ${
                 theme === "dark"
-                  ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
+                  ? "bg-gradient-to-br from-green-100/80 via-emerald-100/80 to-teal-100/80 backdrop-blur-xl border border-green-200/90"
                   : "bg-card border border-border"
               }`}
             >
