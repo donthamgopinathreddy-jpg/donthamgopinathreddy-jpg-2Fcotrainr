@@ -892,6 +892,24 @@ export default function Profile() {
           {/* Menu Items */}
           <div className="space-y-2">
             <button
+              onClick={() => navigate(`/profile/${userProfile?.id}`)}
+              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
+                theme === "dark"
+                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
+                  : "bg-white border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              <Eye
+                className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              />
+              <span
+                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
+                View My Public Profile
+              </span>
+            </button>
+
+            <button
               onClick={() => setShowEditModal(true)}
               className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
                 theme === "dark"
