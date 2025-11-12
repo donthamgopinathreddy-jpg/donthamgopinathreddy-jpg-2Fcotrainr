@@ -1,23 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, ArrowLeft, Users, Award } from "lucide-react";
+import { ChevronRight, ArrowLeft, Mail, Lock, Phone, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
-import GlassyTile from "@/components/GlassyTile";
+import { supabase } from "@/lib/supabase";
 import { usePermissions } from "@/hooks/usePermissions";
 
-type OnboardingStep = "welcome" | "form" | "role" | "permissions";
-type Gender = "male" | "female" | "other";
+type OnboardingStep = "welcome" | "username" | "fullname" | "email" | "password" | "phone" | "role" | "gender" | "height" | "weight" | "age" | "permissions";
+type Gender = "male" | "female" | "other" | "";
 
 interface FormData {
   username: string;
   fullName: string;
   email: string;
   password: string;
-  gender: Gender | "";
+  phoneNumber: string;
+  gender: Gender;
   height: string;
   weight: string;
+  age: string;
 }
 
 export default function Onboarding() {
@@ -32,41 +34,158 @@ export default function Onboarding() {
     fullName: "",
     email: "",
     password: "",
+    phoneNumber: "",
     gender: "",
     height: "",
     weight: "",
+    age: "",
   });
 
-  const isFormComplete =
-    formData.username &&
-    formData.fullName &&
-    formData.email &&
-    formData.password &&
-    formData.password.length >= 6 &&
-    formData.gender &&
-    formData.height &&
-    formData.weight;
+  // Username availability checking
+  const [usernameStatus, setUsernameStatus] = useState<"checking" | "available" | "taken" | null>(null);
+  const [usernameError, setUsernameError] = useState("");
 
-  const handleContinue = () => {
+  // Password validation state
+  const [passwordFeedback, setPasswordFeedback] = useState({
+    hasMinLength: false,
+    hasUpperCase: false,
+    hasSpecialChar: false,
+  });
+
+  const passwordRegex = {
+    minLength: /.{8,}/,
+    upperCase: /[A-Z]/,
+    specialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,
+  };
+
+  const isPasswordValid =
+    passwordRegex.minLength.test(formData.password) &&
+    passwordRegex.upperCase.test(formData.password) &&
+    passwordRegex.specialChar.test(formData.password);
+
+  // Check username availability
+  useEffect(() => {
+    if (!formData.username) {
+      setUsernameStatus(null);
+      setUsernameError("");
+      return;
+    }
+
+    // Allow special characters and numbers in username
+    if (!/^[a-zA-Z0-9_\-\.]+$/.test(formData.username)) {
+      setUsernameStatus("taken");
+      setUsernameError("Username can only contain letters, numbers, -, _, and .");
+      return;
+    }
+
+    const checkAvailability = async () => {
+      setUsernameStatus("checking");
+      try {
+        const { data } = await supabase
+          .from("users")
+          .select("id")
+          .eq("username", formData.username.toLowerCase())
+          .single();
+
+        if (data) {
+          setUsernameStatus("taken");
+          setUsernameError("This username is already taken");
+        } else {
+          setUsernameStatus("available");
+          setUsernameError("");
+        }
+      } catch (error: any) {
+        if (error?.code === "PGRST116") {
+          // No rows returned = username available
+          setUsernameStatus("available");
+          setUsernameError("");
+        } else {
+          setUsernameStatus("taken");
+          setUsernameError("Error checking availability");
+        }
+      }
+    };
+
+    const timer = setTimeout(checkAvailability, 500);
+    return () => clearTimeout(timer);
+  }, [formData.username]);
+
+  // Update password feedback
+  useEffect(() => {
+    setPasswordFeedback({
+      hasMinLength: passwordRegex.minLength.test(formData.password),
+      hasUpperCase: passwordRegex.upperCase.test(formData.password),
+      hasSpecialChar: passwordRegex.specialChar.test(formData.password),
+    });
+  }, [formData.password]);
+
+  const handleNext = () => {
+    const steps: OnboardingStep[] = ["username", "fullname", "email", "password", "phone", "role"];
+
     if (step === "welcome") {
-      setStep("form");
-    } else if (step === "form" && isFormComplete) {
+      setStep("username");
+    } else if (step === "username" && usernameStatus === "available") {
+      setStep("fullname");
+    } else if (step === "fullname" && formData.fullName.trim()) {
+      setStep("email");
+    } else if (step === "email" && formData.email.includes("@")) {
+      setStep("password");
+    } else if (step === "password" && isPasswordValid) {
+      setStep("phone");
+    } else if (step === "phone" && formData.phoneNumber.trim()) {
       setStep("role");
-    } else if (step === "role") {
+    } else if (step === "role" && userRole) {
+      if (userRole === "trainer") {
+        setStep("gender");
+      } else {
+        setStep("gender");
+      }
+    } else if (step === "gender" && formData.gender) {
+      setStep("height");
+    } else if (step === "height" && formData.height.trim()) {
+      setStep("weight");
+    } else if (step === "weight" && formData.weight.trim()) {
+      setStep("age");
+    } else if (step === "age" && formData.age.trim()) {
       setStep("permissions");
     }
   };
 
-  const handlePermissionsSkip = async () => {
-    await handleRoleSelectComplete();
+  const handleBack = () => {
+    const backSequence: Record<OnboardingStep, OnboardingStep> = {
+      username: "welcome",
+      fullname: "username",
+      email: "fullname",
+      password: "email",
+      phone: "password",
+      role: "phone",
+      gender: "role",
+      height: "gender",
+      weight: "height",
+      age: "weight",
+      permissions: "age",
+      welcome: "welcome",
+    };
+
+    setStep(backSequence[step]);
+    if (step === "role") setUserRole(null);
   };
 
-  const handlePermissionsAllow = async () => {
-    await requestAllPermissions();
-    await handleRoleSelectComplete();
+  const handleDemoMode = async (demoRole: "client" | "trainer" = "client") => {
+    setLoading(true);
+    try {
+      await demoMode(demoRole);
+      toast.success(`Entered ${demoRole} demo mode!`);
+      navigate(demoRole === "trainer" ? "/trainer-dashboard" : "/");
+    } catch (error: any) {
+      console.error("Demo mode error:", error);
+      toast.error("Failed to enter demo mode");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRoleSelectComplete = async () => {
+  const handleCompleteSignup = async () => {
     if (!userRole) return;
     setLoading(true);
     try {
@@ -75,6 +194,8 @@ export default function Onboarding() {
         full_name: formData.fullName,
         role: userRole,
         gender: formData.gender as Gender,
+        phone_number: formData.phoneNumber,
+        age: parseInt(formData.age),
         weight_kg: parseFloat(formData.weight),
         height_cm: parseFloat(formData.height),
       });
@@ -94,41 +215,22 @@ export default function Onboarding() {
     }
   };
 
-  const handleRoleSelect = (role: "client" | "trainer") => {
-    setUserRole(role);
-    setStep("permissions");
+  const handlePermissionsAllow = async () => {
+    await requestAllPermissions();
+    await handleCompleteSignup();
   };
 
-  const handleDemoMode = async (demoRole: "client" | "trainer" = "client") => {
-    setLoading(true);
-    try {
-      await demoMode(demoRole);
-      toast.success(`Entered ${demoRole} demo mode!`);
-      navigate(demoRole === "trainer" ? "/trainer-dashboard" : "/");
-    } catch (error: any) {
-      console.error("Demo mode error:", error);
-      toast.error("Failed to enter demo mode");
-    } finally {
-      setLoading(false);
-    }
+  const handlePermissionsSkip = async () => {
+    await handleCompleteSignup();
   };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Progress Indicator */}
+      {/* Header with Back Button */}
       {step !== "welcome" && (
         <div className="px-4 py-4 border-b border-border">
           <button
-            onClick={() => {
-              if (step === "form") {
-                setStep("welcome");
-              } else if (step === "role") {
-                setStep("form");
-              } else if (step === "permissions") {
-                setStep("role");
-                setUserRole(null);
-              }
-            }}
+            onClick={handleBack}
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -157,7 +259,7 @@ export default function Onboarding() {
           </div>
 
           <button
-            onClick={handleContinue}
+            onClick={handleNext}
             className="w-full max-w-sm bg-gradient-primary text-gray-900 font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-orange-500/30 transition-all"
           >
             Get Started
@@ -165,7 +267,7 @@ export default function Onboarding() {
           </button>
 
           {import.meta.env.DEV && (
-            <div className="w-full max-w-sm space-y-2">
+            <div className="w-full max-w-sm space-y-2 pt-4">
               <button
                 onClick={() => handleDemoMode("client")}
                 disabled={loading}
@@ -197,126 +299,195 @@ export default function Onboarding() {
         </div>
       )}
 
-      {/* Registration Form Step */}
-      {step === "form" && (
+      {/* Username Step */}
+      {step === "username" && (
         <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Tell us about you</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2">Choose your username</h2>
+              <p className="text-muted-foreground">This is how other users will identify you</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Username</label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="john_doe123"
+                  value={formData.username}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, username: e.target.value.toLowerCase() }))}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+              </div>
+
+              {usernameStatus === "checking" && (
+                <p className="text-sm text-amber-600 mt-2">Checking availability...</p>
+              )}
+              {usernameStatus === "available" && (
+                <p className="text-sm text-green-600 mt-2">✓ Username available</p>
+              )}
+              {usernameStatus === "taken" && (
+                <p className="text-sm text-red-600 mt-2">✗ {usernameError}</p>
+              )}
+
+              <p className="text-xs text-muted-foreground mt-2">
+                Letters, numbers, dots, hyphens, and underscores allowed
+              </p>
+            </div>
+
+            <button
+              onClick={handleNext}
+              disabled={usernameStatus !== "available" || loading}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Full Name Step */}
+      {step === "fullname" && (
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-2">What's your name?</h2>
               <p className="text-muted-foreground">We'll use this to personalize your experience</p>
             </div>
 
-            {/* Username */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Username</label>
-              <input
-                type="text"
-                placeholder="johndoe"
-                value={formData?.username ?? ""}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, username: e.target.value }))
-                }
-                className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-
-            {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
               <input
                 type="text"
                 placeholder="John Doe"
-                value={formData?.fullName ?? ""}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, fullName: e.target.value }))
-                }
-                className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                value={formData.fullName}
+                onChange={(e) => setFormData((prev) => ({ ...prev, fullName: e.target.value }))}
+                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
 
-            {/* Email */}
+            <button
+              onClick={handleNext}
+              disabled={!formData.fullName.trim() || loading}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Email Step */}
+      {step === "email" && (
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Email</label>
-              <input
-                type="email"
-                placeholder="john@example.com"
-                value={formData?.email ?? ""}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, email: e.target.value }))
-                }
-                className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
+              <h2 className="text-2xl font-bold text-foreground mb-2">What's your email?</h2>
+              <p className="text-muted-foreground">You'll use this to sign in</p>
             </div>
 
-            {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Password</label>
-              <input
-                type="password"
-                placeholder="At least 6 characters"
-                value={formData?.password ?? ""}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, password: e.target.value }))
-                }
-                className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              {(formData?.password ?? "").length > 0 && (formData?.password ?? "").length < 6 && (
-                <p className="text-xs text-red-500 mt-1">Password must be at least 6 characters</p>
-              )}
-            </div>
-
-            {/* Gender */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Gender</label>
-              <div className="flex gap-2">
-                {(["male", "female", "other"] as const).map((gender) => (
-                  <button
-                    key={gender}
-                    onClick={() => setFormData((prev) => ({ ...prev, gender }))}
-                    className={`flex-1 py-3 rounded-lg font-medium transition-all ${
-                      formData?.gender === gender
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-card border border-border text-foreground hover:border-primary"
-                    }`}
-                  >
-                    {gender.charAt(0).toUpperCase() + gender.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Height & Weight */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Height (cm)</label>
+              <label className="block text-sm font-medium text-foreground mb-2">Email Address</label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
-                  type="number"
-                  placeholder="170"
-                  value={formData?.height ?? ""}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, height: e.target.value }))
-                  }
-                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Weight (kg)</label>
-                <input
-                  type="number"
-                  placeholder="75"
-                  value={formData?.weight ?? ""}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, weight: e.target.value }))
-                  }
-                  className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
             </div>
 
             <button
-              onClick={handleContinue}
-              disabled={!isFormComplete}
-              className="w-full bg-gradient-primary text-gray-900 font-bold py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-orange-500/30 transition-all mt-8"
+              onClick={handleNext}
+              disabled={!formData.email.includes("@") || loading}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Password Step */}
+      {step === "password" && (
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-2">Create a password</h2>
+              <p className="text-muted-foreground">Keep your account secure</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Password</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="password"
+                  placeholder="Enter a strong password"
+                  value={formData.password}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+              </div>
+
+              <div className="space-y-2 mt-4">
+                <div className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full ${passwordFeedback.hasMinLength ? "bg-green-500" : "bg-gray-300"}`} />
+                  <span className="text-sm text-muted-foreground">At least 8 characters</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full ${passwordFeedback.hasUpperCase ? "bg-green-500" : "bg-gray-300"}`} />
+                  <span className="text-sm text-muted-foreground">At least one uppercase letter (A-Z)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full ${passwordFeedback.hasSpecialChar ? "bg-green-500" : "bg-gray-300"}`} />
+                  <span className="text-sm text-muted-foreground">At least one special character (!@#$%^&*)</span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={handleNext}
+              disabled={!isPasswordValid || loading}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Phone Number Step */}
+      {step === "phone" && (
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-2">What's your phone number?</h2>
+              <p className="text-muted-foreground">We'll use this for contact and bookings</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Phone Number</label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="tel"
+                  placeholder="+1 (555) 123-4567"
+                  value={formData.phoneNumber}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, phoneNumber: e.target.value }))}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={handleNext}
+              disabled={!formData.phoneNumber.trim() || loading}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
             >
               Continue
             </button>
@@ -326,74 +497,199 @@ export default function Onboarding() {
 
       {/* Role Selection Step */}
       {step === "role" && (
-        <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
-          <div className="max-w-md w-full space-y-6">
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">What brings you here?</h2>
-              <p className="text-muted-foreground">Choose your account type to get started</p>
+              <h2 className="text-2xl font-bold text-foreground mb-2">What's your role?</h2>
+              <p className="text-muted-foreground">Choose how you'll use CoTrainr</p>
             </div>
 
-            <GlassyTile
-              icon={<Users className="w-8 h-8 text-cyan-600" />}
-              title="I'm a Client"
-              subtitle="I want to find trainers and improve my fitness"
-              onClick={() => handleRoleSelect("client")}
-              className="text-left cursor-pointer"
-              variant="primary"
-            />
+            <div className="space-y-3">
+              <button
+                onClick={() => {
+                  setUserRole("client");
+                  setStep("gender");
+                }}
+                className="w-full p-4 rounded-lg border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all text-left"
+              >
+                <h3 className="font-semibold text-foreground">Client</h3>
+                <p className="text-sm text-muted-foreground mt-1">Get fit with personalized training</p>
+              </button>
 
-            <GlassyTile
-              icon={<Award className="w-8 h-8 text-amber-600" />}
-              title="I'm a Trainer"
-              subtitle="I want to share my expertise and earn"
-              onClick={() => handleRoleSelect("trainer")}
-              className="text-left cursor-pointer"
-              variant="secondary"
-            />
+              <button
+                onClick={() => {
+                  setUserRole("trainer");
+                  setStep("gender");
+                }}
+                className="w-full p-4 rounded-lg border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all text-left"
+              >
+                <h3 className="font-semibold text-foreground">Trainer</h3>
+                <p className="text-sm text-muted-foreground mt-1">Build your coaching business</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Gender Step */}
+      {step === "gender" && (
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-2">What's your gender?</h2>
+              <p className="text-muted-foreground">This helps us tailor recommendations</p>
+            </div>
+
+            <div className="space-y-3">
+              {["male", "female", "other"].map((gender) => (
+                <button
+                  key={gender}
+                  onClick={() => {
+                    setFormData((prev) => ({ ...prev, gender: gender as Gender }));
+                    setStep("height");
+                  }}
+                  className={`w-full p-4 rounded-lg border-2 transition-all font-medium ${
+                    formData.gender === gender
+                      ? "border-primary bg-primary/10 text-foreground"
+                      : "border-border bg-card hover:border-primary/50"
+                  }`}
+                >
+                  {gender.charAt(0).toUpperCase() + gender.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Height Step */}
+      {step === "height" && (
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-2">What's your height?</h2>
+              <p className="text-muted-foreground">Enter in centimeters</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Height (cm)</label>
+              <input
+                type="number"
+                placeholder="180"
+                value={formData.height}
+                onChange={(e) => setFormData((prev) => ({ ...prev, height: e.target.value }))}
+                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
+            </div>
+
+            <button
+              onClick={handleNext}
+              disabled={!formData.height.trim() || loading}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Weight Step */}
+      {step === "weight" && (
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-2">What's your weight?</h2>
+              <p className="text-muted-foreground">Enter in kilograms</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Weight (kg)</label>
+              <input
+                type="number"
+                placeholder="75"
+                value={formData.weight}
+                onChange={(e) => setFormData((prev) => ({ ...prev, weight: e.target.value }))}
+                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
+            </div>
+
+            <button
+              onClick={handleNext}
+              disabled={!formData.weight.trim() || loading}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Age Step */}
+      {step === "age" && (
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-2">How old are you?</h2>
+              <p className="text-muted-foreground">This helps us suggest appropriate workouts</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Age</label>
+              <input
+                type="number"
+                placeholder="25"
+                value={formData.age}
+                onChange={(e) => setFormData((prev) => ({ ...prev, age: e.target.value }))}
+                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
+            </div>
+
+            <button
+              onClick={handleNext}
+              disabled={!formData.age.trim() || loading}
+              className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+            >
+              Continue
+            </button>
           </div>
         </div>
       )}
 
       {/* Permissions Step */}
       {step === "permissions" && (
-        <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
-          <div className="max-w-md w-full space-y-6">
+        <div className="flex-1 flex flex-col px-4 py-8 overflow-y-auto">
+          <div className="max-w-md mx-auto w-full space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Enable Permissions</h2>
-              <p className="text-muted-foreground mb-6">
-                To provide the best experience, we need access to:
+              <h2 className="text-2xl font-bold text-foreground mb-2">Enable Camera & Microphone</h2>
+              <p className="text-muted-foreground">
+                This helps trainers see you during video sessions
               </p>
-              <ul className="text-left space-y-3 mb-8 text-sm">
-                <li className="flex items-center gap-3 text-foreground">
-                  <span className="text-orange-500 font-bold">✓</span>
-                  <span><strong>Location</strong> - Find nearby trainers</span>
-                </li>
-                <li className="flex items-center gap-3 text-foreground">
-                  <span className="text-orange-500 font-bold">✓</span>
-                  <span><strong>Camera</strong> - Video training sessions</span>
-                </li>
-                <li className="flex items-center gap-3 text-foreground">
-                  <span className="text-orange-500 font-bold">✓</span>
-                  <span><strong>Microphone</strong> - Audio during calls</span>
-                </li>
-              </ul>
             </div>
 
-            <button
-              onClick={handlePermissionsAllow}
-              disabled={loading || permissionLoading}
-              className="w-full bg-gradient-primary text-gray-900 font-bold py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-orange-500/30 transition-all"
-            >
-              {permissionLoading ? "Requesting..." : "Enable Permissions"}
-            </button>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
+              <p className="text-sm text-blue-900">
+                <span className="font-semibold">Why we need this:</span> Video calls with trainers
+                require camera and microphone access to work properly.
+              </p>
+            </div>
 
-            <button
-              onClick={handlePermissionsSkip}
-              disabled={loading}
-              className="w-full bg-gray-100 text-gray-900 font-bold py-4 rounded-xl hover:bg-gray-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Creating account..." : "Skip for Now"}
-            </button>
+            <div className="space-y-3">
+              <button
+                onClick={handlePermissionsAllow}
+                disabled={loading || permissionLoading}
+                className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {permissionLoading ? "Requesting..." : "Allow Access"}
+              </button>
+
+              <button
+                onClick={handlePermissionsSkip}
+                disabled={loading}
+                className="w-full bg-transparent border-2 border-muted-foreground text-muted-foreground font-bold py-3 rounded-xl hover:bg-muted/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Skip for Now
+              </button>
+            </div>
           </div>
         </div>
       )}
