@@ -75,8 +75,11 @@ export default function Login() {
 
       if (data.user) {
         toast.success("Login successful!");
-        // Don't navigate here - let useEffect handle it when user state updates
-        // This ensures AuthContext has time to process the login
+        // Navigate directly since Supabase confirms the login
+        // Give auth context a moment to update, then navigate
+        setTimeout(() => {
+          navigate("/", { replace: true });
+        }, 2000);
       }
     } catch (error: any) {
       console.error("Login error:", error);
