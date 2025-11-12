@@ -15,6 +15,8 @@ import {
   Copy,
   Check,
   Loader,
+  Eye,
+  Trash2,
 } from "lucide-react";
 import GlassyTile from "@/components/GlassyTile";
 import { useAuth } from "@/contexts/AuthContext";
@@ -76,6 +78,9 @@ export default function Profile() {
     dateOfBirth: userProfile?.date_of_birth || "",
     age: userProfile?.age || 25,
   });
+  const [userPosts, setUserPosts] = useState<any[]>([]);
+  const [postsLoading, setPostsLoading] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
 
   // Calculate age from date of birth
   const calculateAge = (dateOfBirth: string): number => {
