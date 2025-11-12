@@ -539,13 +539,13 @@ export default function Profile() {
 
         {/* Edit Profile Modal */}
         {showEditModal && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
-            <div className="w-full bg-white rounded-t-3xl p-6 space-y-4 max-h-96 overflow-y-auto">
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div className="w-full max-w-md bg-white rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-gray-900">Edit Profile</h2>
+                <h2 className="text-xl font-bold text-gray-900">Edit Profile</h2>
                 <button
                   onClick={() => setShowEditModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
                 >
                   ✕
                 </button>
@@ -553,11 +553,42 @@ export default function Profile() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">Name</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-1">Full Name</label>
                   <input
                     type="text"
                     value={editForm.name}
                     onChange={(e) => setEditForm((prev) => ({ ...prev, name: e.target.value }))}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-1">Email Address</label>
+                  <input
+                    type="email"
+                    value={editForm.email}
+                    onChange={(e) => setEditForm((prev) => ({ ...prev, email: e.target.value }))}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-1">Phone Number</label>
+                  <input
+                    type="tel"
+                    value={editForm.phone}
+                    onChange={(e) => setEditForm((prev) => ({ ...prev, phone: e.target.value }))}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    placeholder="+91 9876543210"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-1">Date of Birth</label>
+                  <input
+                    type="date"
+                    value={editForm.dateOfBirth}
+                    onChange={(e) => setEditForm((prev) => ({ ...prev, dateOfBirth: e.target.value }))}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
                   />
                 </div>
@@ -594,6 +625,11 @@ export default function Profile() {
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
                     />
                   </div>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <p className="text-xs text-blue-700"><strong>Age:</strong> {editForm.age} years</p>
+                  <p className="text-xs text-blue-600 mt-1">Age auto-updates from your date of birth</p>
                 </div>
               </div>
 
