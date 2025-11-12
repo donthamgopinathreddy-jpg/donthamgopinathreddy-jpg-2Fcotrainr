@@ -398,7 +398,7 @@ export default function Profile() {
           <div
             className={`rounded-2xl p-6 space-y-3 ${
               theme === "dark"
-                ? "bg-gradient-to-br from-blue-200/70 via-cyan-200/70 to-teal-200/70 backdrop-blur-xl border border-blue-200/80"
+                ? "bg-gradient-to-br from-blue-100/80 via-cyan-100/80 to-teal-100/80 backdrop-blur-xl border border-blue-200/90"
                 : "bg-card border border-border"
             }`}
           >
@@ -439,7 +439,7 @@ export default function Profile() {
           <div
             className={`rounded-2xl p-6 space-y-3 ${
               theme === "dark"
-                ? "bg-gradient-to-br from-purple-200/70 via-violet-200/70 to-pink-200/70 backdrop-blur-xl border border-purple-200/80"
+                ? "bg-gradient-to-br from-purple-100/80 via-violet-100/80 to-pink-100/80 backdrop-blur-xl border border-purple-200/90"
                 : "bg-card border border-border"
             }`}
           >
@@ -508,7 +508,7 @@ export default function Profile() {
                 <div
                   className={`rounded-2xl p-6 space-y-3 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-blue-200/70 via-indigo-200/70 to-purple-200/70 backdrop-blur-xl border border-blue-200/80"
+                      ? "bg-gradient-to-br from-blue-100/80 via-indigo-100/80 to-purple-100/80 backdrop-blur-xl border border-blue-200/90"
                       : "bg-card border border-border"
                   }`}
                 >
@@ -539,7 +539,7 @@ export default function Profile() {
                 <div
                   className={`rounded-2xl p-6 space-y-3 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-amber-200/70 via-orange-200/70 to-red-200/70 backdrop-blur-xl border border-amber-200/80"
+                      ? "bg-gradient-to-br from-amber-100/80 via-orange-100/80 to-red-100/80 backdrop-blur-xl border border-amber-200/90"
                       : "bg-card border border-border"
                   }`}
                 >
@@ -571,7 +571,7 @@ export default function Profile() {
                 <div
                   className={`rounded-2xl p-4 flex items-center gap-3 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
+                      ? "bg-gradient-to-br from-green-100/80 via-emerald-100/80 to-teal-100/80 backdrop-blur-xl border border-green-200/90"
                       : "bg-card border border-border"
                   }`}
                 >
@@ -599,7 +599,7 @@ export default function Profile() {
               <div
                 className={`rounded-xl p-4 text-center ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-blue-200/70 via-cyan-200/70 to-blue-200/70 backdrop-blur-xl border border-blue-200/80"
+                    ? "bg-gradient-to-br from-blue-100/80 via-cyan-100/80 to-blue-100/80 backdrop-blur-xl border border-blue-200/90"
                     : "bg-card border border-border"
                 }`}
               >
@@ -613,7 +613,7 @@ export default function Profile() {
               <div
                 className={`rounded-xl p-4 text-center ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-purple-200/70 via-violet-200/70 to-purple-200/70 backdrop-blur-xl border border-purple-200/80"
+                    ? "bg-gradient-to-br from-purple-100/80 via-violet-100/80 to-purple-100/80 backdrop-blur-xl border border-purple-200/90"
                     : "bg-card border border-border"
                 }`}
               >
@@ -627,7 +627,7 @@ export default function Profile() {
               <div
                 className={`rounded-xl p-4 text-center ${
                   theme === "dark"
-                    ? "bg-gradient-to-br from-pink-200/70 via-rose-200/70 to-pink-200/70 backdrop-blur-xl border border-pink-200/80"
+                    ? "bg-gradient-to-br from-pink-100/80 via-rose-100/80 to-pink-100/80 backdrop-blur-xl border border-pink-200/90"
                     : "bg-card border border-border"
                 }`}
               >
@@ -1166,7 +1166,7 @@ export default function Profile() {
                 <div
                   className={`rounded-lg p-4 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
+                      ? "bg-gradient-to-br from-green-100/80 via-emerald-100/80 to-teal-100/80 backdrop-blur-xl border border-green-200/90"
                       : "bg-card border border-border"
                   }`}
                 >
@@ -1376,7 +1376,7 @@ export default function Profile() {
                 <div
                   className={`rounded-lg p-4 ${
                     theme === "dark"
-                      ? "bg-gradient-to-br from-blue-200/70 via-indigo-200/70 to-purple-200/70 backdrop-blur-xl border border-blue-200/80"
+                      ? "bg-gradient-to-br from-blue-100/80 via-indigo-100/80 to-purple-100/80 backdrop-blur-xl border border-blue-200/90"
                       : "bg-card border border-border"
                   }`}
                 >
