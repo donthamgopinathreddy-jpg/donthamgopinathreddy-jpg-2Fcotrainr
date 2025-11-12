@@ -74,10 +74,10 @@ export default function Login() {
 
       if (data.user) {
         toast.success("Login successful!");
-        // Wait a bit for auth state to propagate, then navigate
+        // Wait longer for auth context to update via onAuthStateChange listener
         setTimeout(() => {
           navigate("/", { replace: true });
-        }, 500);
+        }, 1500);
       }
     } catch (error: any) {
       console.error("Login error:", error);
