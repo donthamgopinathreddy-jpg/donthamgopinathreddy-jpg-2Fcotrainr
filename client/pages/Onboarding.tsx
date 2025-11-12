@@ -186,8 +186,8 @@ export default function Onboarding() {
       gender: "role",
       height: "gender",
       weight: "height",
-      age: "weight",
-      permissions: "age",
+      dateOfBirth: "weight",
+      permissions: "dateOfBirth",
       welcome: "welcome",
     };
 
