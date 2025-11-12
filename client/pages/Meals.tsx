@@ -1324,7 +1324,11 @@ export default function Meals() {
                     placeholder={`Quantity (${selectedFood.unitName})`}
                     value={newFood.quantity}
                     onChange={(e) => handleQuantityChange(e.target.value)}
-                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary text-sm border ${
+                      theme === "dark"
+                        ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                        : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
+                    }`}
                   />
                 ) : (
                   <input
@@ -1332,7 +1336,11 @@ export default function Meals() {
                     placeholder="Weight (grams)"
                     value={newFood.weight}
                     onChange={(e) => handleWeightChange(e.target.value)}
-                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary text-sm border ${
+                      theme === "dark"
+                        ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400"
+                        : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
+                    }`}
                   />
                 ))}
 
