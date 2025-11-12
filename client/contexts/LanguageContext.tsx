@@ -95,7 +95,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
         language,
         setLanguage,
         languages: INDIAN_LANGUAGES,
-        isInitialized,
+        isInitialized: true,
         translations: getCurrentTranslations(),
       }}
     >
