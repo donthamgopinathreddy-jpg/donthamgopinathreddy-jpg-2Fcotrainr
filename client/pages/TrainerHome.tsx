@@ -1,7 +1,35 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
-import { Footprints, Droplets, Flame, Users, Briefcase, Activity, MessageSquare, ChevronDown, TrendingUp, Award, Calendar, Target, Video, CheckCircle, User, Heart, Share2, MessageCircle as MessageIcon, Newspaper, MapPin, UserCheck, Settings, Copy, Check, Play, Clock, X } from "lucide-react";
+import {
+  Footprints,
+  Droplets,
+  Flame,
+  Users,
+  Briefcase,
+  Activity,
+  MessageSquare,
+  ChevronDown,
+  TrendingUp,
+  Award,
+  Calendar,
+  Target,
+  Video,
+  CheckCircle,
+  User,
+  Heart,
+  Share2,
+  MessageCircle as MessageIcon,
+  Newspaper,
+  MapPin,
+  UserCheck,
+  Settings,
+  Copy,
+  Check,
+  Play,
+  Clock,
+  X,
+} from "lucide-react";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
 import { toast } from "sonner";
 
@@ -39,8 +67,10 @@ const LATEST_POSTS: PostData[] = [
     authorName: "Priya Singh",
     authorRole: "trainer",
     authorAvatar: "PS",
-    content: "🔥 New transformation! Check out my client Rahul's amazing 12-week journey. Consistency is key! #FitnessJourney",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=500&fit=crop",
+    content:
+      "🔥 New transformation! Check out my client Rahul's amazing 12-week journey. Consistency is key! #FitnessJourney",
+    image:
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=500&fit=crop",
     likes: 324,
     comments: 47,
     shares: 23,
@@ -53,8 +83,10 @@ const LATEST_POSTS: PostData[] = [
     authorName: "Amit Kumar",
     authorRole: "client",
     authorAvatar: "AK",
-    content: "Day 30 of my fitness journey! Started with my trainer Raj at CrossFit. Already seeing results 💪",
-    image: "https://images.unsplash.com/photo-1552672260-7bdde322fa4f?w=500&h=500&fit=crop",
+    content:
+      "Day 30 of my fitness journey! Started with my trainer Raj at CrossFit. Already seeing results 💪",
+    image:
+      "https://images.unsplash.com/photo-1552672260-7bdde322fa4f?w=500&h=500&fit=crop",
     likes: 156,
     comments: 28,
     shares: 12,
@@ -67,7 +99,8 @@ const LATEST_POSTS: PostData[] = [
     authorName: "Neha Verma",
     authorRole: "trainer",
     authorAvatar: "NV",
-    content: "💡 Tip: Start your workout with a 5-min warm-up. It increases blood flow and prevents injuries. Tag someone who needs this!",
+    content:
+      "💡 Tip: Start your workout with a 5-min warm-up. It increases blood flow and prevents injuries. Tag someone who needs this!",
     likes: 542,
     comments: 89,
     shares: 156,
@@ -92,9 +125,11 @@ export default function TrainerHome() {
   const [latestPosts, setLatestPosts] = useState<PostData[]>(LATEST_POSTS);
 
   const [coverImage, setCoverImage] = useState(
-    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop"
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop",
   );
-  const [profileImage, setProfileImage] = useState("https://api.dicebear.com/7.x/avataaars/svg?seed=Trainer");
+  const [profileImage, setProfileImage] = useState(
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Trainer",
+  );
 
   const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -121,13 +156,16 @@ export default function TrainerHome() {
   const [showTargetsModal, setShowTargetsModal] = useState(false);
   const [stepsTarget, setStepsTarget] = useState(10000);
   const [editStepsTarget, setEditStepsTarget] = useState(stepsTarget);
-  const [showScheduleMeetingModal, setShowScheduleMeetingModal] = useState(false);
+  const [showScheduleMeetingModal, setShowScheduleMeetingModal] =
+    useState(false);
   const [meetingTitle, setMeetingTitle] = useState("");
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
   const [generatedMeetingLink, setGeneratedMeetingLink] = useState("");
-  const [scheduledMeetings, setScheduledMeetings] = useState<ScheduledMeeting[]>(() => {
+  const [scheduledMeetings, setScheduledMeetings] = useState<
+    ScheduledMeeting[]
+  >(() => {
     try {
       const saved = localStorage.getItem("scheduledMeetings");
       return saved ? JSON.parse(saved) : [];
@@ -166,24 +204,43 @@ export default function TrainerHome() {
   };
 
   const handleStartMeeting = (meeting: ScheduledMeeting) => {
-    navigate(`/video-meeting?room=${meeting.roomId}&title=${encodeURIComponent(meeting.title)}`);
+    navigate(
+      `/video-meeting?room=${meeting.roomId}&title=${encodeURIComponent(meeting.title)}`,
+    );
     toast.success("Starting meeting...");
   };
 
   // Calculate trainer's personal stats
-  const quote = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
+  const quote =
+    MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
   const trainerWeight = 78;
   const trainerHeight = 178; // cm
-  const waterGoal = Math.round((trainerWeight * 30) / 1000 * 10) / 10;
+  const waterGoal = Math.round(((trainerWeight * 30) / 1000) * 10) / 10;
 
   // Calculate BMI
   const heightInMeters = trainerHeight / 100;
-  const bmi = Math.round((trainerWeight / (heightInMeters * heightInMeters)) * 10) / 10;
+  const bmi =
+    Math.round((trainerWeight / (heightInMeters * heightInMeters)) * 10) / 10;
 
   const getBMICategory = (bmi: number) => {
-    if (bmi < 18.5) return { category: "Underweight", color: "text-blue-600", bgColor: "bg-blue-50" };
-    if (bmi < 25) return { category: "Normal", color: "text-green-600", bgColor: "bg-green-50" };
-    if (bmi < 30) return { category: "Overweight", color: "text-orange-600", bgColor: "bg-orange-50" };
+    if (bmi < 18.5)
+      return {
+        category: "Underweight",
+        color: "text-blue-600",
+        bgColor: "bg-blue-50",
+      };
+    if (bmi < 25)
+      return {
+        category: "Normal",
+        color: "text-green-600",
+        bgColor: "bg-green-50",
+      };
+    if (bmi < 30)
+      return {
+        category: "Overweight",
+        color: "text-orange-600",
+        bgColor: "bg-orange-50",
+      };
     return { category: "Obese", color: "text-red-600", bgColor: "bg-red-50" };
   };
 
@@ -208,9 +265,12 @@ export default function TrainerHome() {
   const totalClients = clients.length;
   const activeClients = clients.filter((c) => c.progress_percentage > 0).length;
   const avgProgress = Math.round(
-    clients.reduce((sum, c) => sum + c.progress_percentage, 0) / clients.length
+    clients.reduce((sum, c) => sum + c.progress_percentage, 0) / clients.length,
   );
-  const totalVideoSessions = clients.reduce((sum, c) => sum + c.video_session_count, 0);
+  const totalVideoSessions = clients.reduce(
+    (sum, c) => sum + c.video_session_count,
+    0,
+  );
 
   const handleClientClick = (clientId: string) => {
     const client = clients.find((c) => c.id === clientId);
@@ -240,9 +300,11 @@ export default function TrainerHome() {
       return;
     }
     const clientNames = selectedClients
-      .map(id => clients.find(c => c.id === id)?.name || "Unknown")
+      .map((id) => clients.find((c) => c.id === id)?.name || "Unknown")
       .join(", ");
-    alert(`Meeting link sent to: ${clientNames}\n\nLink: ${generatedMeetingLink}`);
+    alert(
+      `Meeting link sent to: ${clientNames}\n\nLink: ${generatedMeetingLink}`,
+    );
     toast.success(`Sent to ${selectedClients.length} client(s)`);
   };
 
@@ -257,7 +319,6 @@ export default function TrainerHome() {
 
   return (
     <div className="min-h-screen bg-white pb-36">
-
       {/* Conditional View Rendering */}
       {view === "stats" ? (
         <>
@@ -270,9 +331,24 @@ export default function TrainerHome() {
             />
 
             <label className="absolute top-4 right-4 bg-white/90 hover:bg-white p-3 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all">
-              <svg className="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              <svg
+                className="w-5 h-5 text-gray-900"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
               </svg>
               <input
                 type="file"
@@ -297,8 +373,18 @@ export default function TrainerHome() {
                   className="w-24 h-24 rounded-2xl border-4 border-white shadow-lg object-cover"
                 />
                 <label className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 p-2 rounded-lg cursor-pointer shadow-lg transition-all">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  <svg
+                    className="w-4 h-4 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
                   </svg>
                   <input
                     type="file"
@@ -310,7 +396,9 @@ export default function TrainerHome() {
               </div>
 
               <div className="pb-2">
-                <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Welcome Back
+                </h1>
                 <p className="text-gray-600 text-sm">Coach, stay fit! 💪</p>
               </div>
             </div>
@@ -321,7 +409,9 @@ export default function TrainerHome() {
             {/* Progress Bars Card */}
             <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-foreground">Today's Stats</h2>
+                <h2 className="text-lg font-bold text-foreground">
+                  Today's Stats
+                </h2>
                 <button
                   onClick={() => {
                     setEditStepsTarget(stepsTarget);
@@ -354,7 +444,9 @@ export default function TrainerHome() {
                     style={{ width: `${Math.min(stepsPercent, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600 mt-1">{stepsPercent}% of daily goal</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  {stepsPercent}% of daily goal
+                </p>
               </button>
 
               {/* Calories Progress */}
@@ -365,7 +457,9 @@ export default function TrainerHome() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Flame className="w-5 h-5 text-red-600" />
-                    <span className="font-semibold text-gray-900">Calories Burned</span>
+                    <span className="font-semibold text-gray-900">
+                      Calories Burned
+                    </span>
                   </div>
                   <span className="text-sm font-bold text-red-600">
                     620 cal
@@ -377,7 +471,9 @@ export default function TrainerHome() {
                     style={{ width: `${Math.min(caloriesPercent, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600 mt-1">~620 cal from 12500 steps</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  ~620 cal from 12500 steps
+                </p>
               </button>
 
               {/* Water Progress */}
@@ -400,12 +496,16 @@ export default function TrainerHome() {
                     style={{ width: `${Math.min(waterPercent, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600 mt-1">{waterPercent}% of daily goal</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  {waterPercent}% of daily goal
+                </p>
               </button>
             </div>
 
             {/* BMI Index Card */}
-            <div className={`${bmiStatus.bgColor} border-2 border-gray-200 rounded-2xl p-6 space-y-4`}>
+            <div
+              className={`${bmiStatus.bgColor} border-2 border-gray-200 rounded-2xl p-6 space-y-4`}
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Activity className={`w-6 h-6 ${bmiStatus.color}`} />
@@ -413,9 +513,15 @@ export default function TrainerHome() {
                 </div>
               </div>
               <div className="text-center">
-                <div className={`text-4xl font-bold ${bmiStatus.color} mb-2`}>{bmi}</div>
-                <p className={`text-sm font-semibold ${bmiStatus.color} mb-3`}>{bmiStatus.category}</p>
-                <p className="text-xs text-gray-600">Height: {trainerHeight}cm | Weight: {trainerWeight}kg</p>
+                <div className={`text-4xl font-bold ${bmiStatus.color} mb-2`}>
+                  {bmi}
+                </div>
+                <p className={`text-sm font-semibold ${bmiStatus.color} mb-3`}>
+                  {bmiStatus.category}
+                </p>
+                <p className="text-xs text-gray-600">
+                  Height: {trainerHeight}cm | Weight: {trainerWeight}kg
+                </p>
               </div>
               <div className="flex gap-2 text-xs text-gray-700">
                 <div className="flex-1 text-center">
@@ -431,7 +537,9 @@ export default function TrainerHome() {
 
             {/* Quick Access Tiles */}
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Access</h2>
+              <h2 className="text-lg font-bold text-gray-900 mb-4">
+                Quick Access
+              </h2>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => navigate("/meals")}
@@ -446,7 +554,9 @@ export default function TrainerHome() {
                   className="bg-gradient-to-br from-cyan-100 via-blue-100 to-teal-100 rounded-2xl p-5 border border-cyan-200 hover:shadow-lg hover:shadow-cyan-300/50 transition-all transform hover:scale-105"
                 >
                   <Users className="w-7 h-7 text-cyan-600 mb-2" />
-                  <p className="font-bold text-gray-900 text-sm">View Clients</p>
+                  <p className="font-bold text-gray-900 text-sm">
+                    View Clients
+                  </p>
                   <p className="text-xs text-gray-600">Manage team</p>
                 </button>
                 <button
@@ -470,8 +580,12 @@ export default function TrainerHome() {
                   className="w-full bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 rounded-2xl p-5 border border-blue-200 hover:shadow-lg hover:shadow-blue-300/50 transition-all transform hover:scale-105 text-left"
                 >
                   <Video className="w-7 h-7 text-blue-600 mb-2" />
-                  <p className="font-bold text-gray-900 text-sm">Video Session</p>
-                  <p className="text-xs text-gray-600">Schedule or join meetings</p>
+                  <p className="font-bold text-gray-900 text-sm">
+                    Video Session
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    Schedule or join meetings
+                  </p>
                 </button>
               </div>
             </div>
@@ -479,7 +593,9 @@ export default function TrainerHome() {
             {/* Latest Posts Section */}
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-gray-900">Latest Posts</h2>
+                <h2 className="text-lg font-bold text-gray-900">
+                  Latest Posts
+                </h2>
                 <button
                   onClick={() => navigate("/feed")}
                   className="text-blue-600 hover:text-blue-700 text-sm font-semibold"
@@ -500,15 +616,21 @@ export default function TrainerHome() {
                           {post.authorAvatar}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-gray-900 text-sm">{post.authorName}</p>
-                          <p className="text-xs text-gray-500">{post.createdAt}</p>
+                          <p className="font-semibold text-gray-900 text-sm">
+                            {post.authorName}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {post.createdAt}
+                          </p>
                         </div>
                         <button
                           onClick={() =>
                             setLatestPosts(
                               latestPosts.map((p) =>
-                                p.id === post.id ? { ...p, followed: !p.followed } : p
-                              )
+                                p.id === post.id
+                                  ? { ...p, followed: !p.followed }
+                                  : p,
+                              ),
                             )
                           }
                           className={`flex items-center gap-1 px-2 py-1 rounded-lg font-semibold text-xs transition-all flex-shrink-0 ${
@@ -532,7 +654,9 @@ export default function TrainerHome() {
                       </div>
 
                       {/* Post Content */}
-                      <p className="text-sm text-gray-700 mb-3 line-clamp-2">{post.content}</p>
+                      <p className="text-sm text-gray-700 mb-3 line-clamp-2">
+                        {post.content}
+                      </p>
 
                       {/* Post Image */}
                       {post.image && (
@@ -546,7 +670,9 @@ export default function TrainerHome() {
                       {/* Post Stats */}
                       <div className="flex items-center justify-between text-xs text-gray-600 border-t border-gray-100 pt-3">
                         <button className="flex items-center gap-1 hover:text-red-600 transition-colors">
-                          <Heart className={`w-4 h-4 ${post.liked ? "fill-red-600 text-red-600" : ""}`} />
+                          <Heart
+                            className={`w-4 h-4 ${post.liked ? "fill-red-600 text-red-600" : ""}`}
+                          />
                           <span>{post.likes}</span>
                         </button>
                         <button className="flex items-center gap-1 hover:text-blue-600 transition-colors">
@@ -574,7 +700,9 @@ export default function TrainerHome() {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Manage Clients 👥
               </h1>
-              <p className="text-gray-600">Track your clients' progress and growth</p>
+              <p className="text-gray-600">
+                Track your clients' progress and growth
+              </p>
             </div>
 
             {/* Stats Overview */}
@@ -582,34 +710,50 @@ export default function TrainerHome() {
               <div className="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Users className="w-5 h-5 text-cyan-700" />
-                  <p className="text-xs text-cyan-700 font-medium">Total Clients</p>
+                  <p className="text-xs text-cyan-700 font-medium">
+                    Total Clients
+                  </p>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">{totalClients}</p>
-                <p className="text-xs text-gray-600 mt-1">{activeClients} active</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {totalClients}
+                </p>
+                <p className="text-xs text-gray-600 mt-1">
+                  {activeClients} active
+                </p>
               </div>
 
               <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp className="w-5 h-5 text-purple-700" />
-                  <p className="text-xs text-purple-700 font-medium">Avg Progress</p>
+                  <p className="text-xs text-purple-700 font-medium">
+                    Avg Progress
+                  </p>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">{avgProgress}%</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {avgProgress}%
+                </p>
                 <p className="text-xs text-gray-600 mt-1">Overall completion</p>
               </div>
 
               <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Video className="w-5 h-5 text-green-700" />
-                  <p className="text-xs text-green-700 font-medium">Video Sessions</p>
+                  <p className="text-xs text-green-700 font-medium">
+                    Video Sessions
+                  </p>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">{totalVideoSessions}</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {totalVideoSessions}
+                </p>
                 <p className="text-xs text-gray-600 mt-1">Completed</p>
               </div>
 
               <div className="bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Award className="w-5 h-5 text-amber-700" />
-                  <p className="text-xs text-amber-700 font-medium">Milestones</p>
+                  <p className="text-xs text-amber-700 font-medium">
+                    Milestones
+                  </p>
                 </div>
                 <p className="text-3xl font-bold text-gray-900">
                   {clients.filter((c) => c.progress_percentage >= 80).length}
@@ -620,7 +764,9 @@ export default function TrainerHome() {
 
             {/* Clients List */}
             <div className="mb-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Your Clients</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                Your Clients
+              </h2>
               <div className="space-y-3">
                 {clients.map((client) => (
                   <div
@@ -629,9 +775,11 @@ export default function TrainerHome() {
                   >
                     {/* Client Header */}
                     <div
-                      onClick={() => setExpandedClient(
-                        expandedClient === client.id ? null : client.id
-                      )}
+                      onClick={() =>
+                        setExpandedClient(
+                          expandedClient === client.id ? null : client.id,
+                        )
+                      }
                       className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                     >
                       <div className="flex items-start justify-between">
@@ -642,8 +790,12 @@ export default function TrainerHome() {
                             className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
                           />
                           <div className="flex-1">
-                            <h3 className="font-bold text-gray-900">{client.name}</h3>
-                            <p className="text-xs text-gray-600">{client.goal_type.replace("_", " ")}</p>
+                            <h3 className="font-bold text-gray-900">
+                              {client.name}
+                            </h3>
+                            <p className="text-xs text-gray-600">
+                              {client.goal_type.replace("_", " ")}
+                            </p>
                           </div>
                         </div>
                         <div className="text-right">
@@ -673,20 +825,29 @@ export default function TrainerHome() {
                         {/* Key Metrics */}
                         <div className="grid grid-cols-2 gap-3">
                           <div className="bg-white rounded-lg p-3 border border-gray-200">
-                            <p className="text-xs text-gray-600 mb-1">Weight Progress</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              Weight Progress
+                            </p>
                             <p className="text-lg font-bold text-gray-900">
-                              {client.current_stats.weight_progress_kg > 0 ? "+" : ""}
+                              {client.current_stats.weight_progress_kg > 0
+                                ? "+"
+                                : ""}
                               {client.current_stats.weight_progress_kg} kg
                             </p>
                           </div>
                           <div className="bg-white rounded-lg p-3 border border-gray-200">
-                            <p className="text-xs text-gray-600 mb-1">Sessions</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              Sessions
+                            </p>
                             <p className="text-lg font-bold text-gray-900">
-                              {client.sessions_completed}/{client.total_sessions}
+                              {client.sessions_completed}/
+                              {client.total_sessions}
                             </p>
                           </div>
                           <div className="bg-white rounded-lg p-3 border border-gray-200">
-                            <p className="text-xs text-gray-600 mb-1">Meal Logs</p>
+                            <p className="text-xs text-gray-600 mb-1">
+                              Meal Logs
+                            </p>
                             <p className="text-lg font-bold text-gray-900">
                               {client.meal_logs_this_week}/21
                             </p>
@@ -727,19 +888,32 @@ export default function TrainerHome() {
       {showTargetsModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
-            <h2 className="text-lg font-bold text-gray-900">Edit Daily Steps Target</h2>
-            <p className="text-sm text-gray-600">Set your daily step goal. Calories burned and water intake are calculated automatically.</p>
+            <h2 className="text-lg font-bold text-gray-900">
+              Edit Daily Steps Target
+            </h2>
+            <p className="text-sm text-gray-600">
+              Set your daily step goal. Calories burned and water intake are
+              calculated automatically.
+            </p>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Daily Steps Goal</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Daily Steps Goal
+              </label>
               <input
                 type="number"
                 value={editStepsTarget}
-                onChange={(e) => setEditStepsTarget(parseInt(e.target.value) || 0)}
+                onChange={(e) =>
+                  setEditStepsTarget(parseInt(e.target.value) || 0)
+                }
                 className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
               />
-              <p className="text-xs text-gray-500 mt-2">• Calories burned = steps × 0.05 cal</p>
-              <p className="text-xs text-gray-500">• Water goal = weight × 30ml (currently {waterGoal}L)</p>
+              <p className="text-xs text-gray-500 mt-2">
+                • Calories burned = steps × 0.05 cal
+              </p>
+              <p className="text-xs text-gray-500">
+                • Water goal = weight × 30ml (currently {waterGoal}L)
+              </p>
             </div>
 
             <div className="flex gap-2 pt-2">
@@ -764,11 +938,15 @@ export default function TrainerHome() {
       {showScheduleMeetingModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 max-h-screen overflow-y-auto">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 my-4">
-            <h2 className="text-lg font-bold text-gray-900">Schedule Video Meeting</h2>
+            <h2 className="text-lg font-bold text-gray-900">
+              Schedule Video Meeting
+            </h2>
 
             {/* Meeting Title */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Meeting Title</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Meeting Title
+              </label>
               <input
                 type="text"
                 placeholder="e.g., Group Training Session"
@@ -780,7 +958,9 @@ export default function TrainerHome() {
 
             {/* Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Date
+              </label>
               <input
                 type="date"
                 value={meetingDate}
@@ -791,7 +971,9 @@ export default function TrainerHome() {
 
             {/* Time */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Time
+              </label>
               <input
                 type="time"
                 value={meetingTime}
@@ -803,38 +985,58 @@ export default function TrainerHome() {
             {/* Client Selection */}
             {!generatedMeetingLink && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Select Clients to Invite</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Clients to Invite
+                </label>
                 <div className="space-y-2 max-h-48 overflow-y-auto bg-gray-50 p-3 rounded-lg">
                   {clients.length > 0 ? (
                     clients.map((client) => (
-                      <label key={client.id} className="flex items-center gap-2 cursor-pointer">
+                      <label
+                        key={client.id}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
                         <input
                           type="checkbox"
                           checked={selectedClients.includes(client.id)}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              setSelectedClients([...selectedClients, client.id]);
+                              setSelectedClients([
+                                ...selectedClients,
+                                client.id,
+                              ]);
                             } else {
-                              setSelectedClients(selectedClients.filter(id => id !== client.id));
+                              setSelectedClients(
+                                selectedClients.filter(
+                                  (id) => id !== client.id,
+                                ),
+                              );
                             }
                           }}
                           className="w-4 h-4 rounded border-gray-300"
                         />
-                        <span className="text-sm text-gray-900">{client.name}</span>
+                        <span className="text-sm text-gray-900">
+                          {client.name}
+                        </span>
                       </label>
                     ))
                   ) : (
-                    <p className="text-xs text-gray-500">No clients available</p>
+                    <p className="text-xs text-gray-500">
+                      No clients available
+                    </p>
                   )}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">{selectedClients.length} client(s) selected</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {selectedClients.length} client(s) selected
+                </p>
               </div>
             )}
 
             {/* Generated Link Display */}
             {generatedMeetingLink && (
               <div className="bg-green-50 border border-green-200 rounded-lg p-3 space-y-2">
-                <p className="text-sm font-semibold text-gray-900">Meeting Link Generated!</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  Meeting Link Generated!
+                </p>
                 <div className="flex items-center gap-2 bg-white border border-gray-300 rounded px-3 py-2">
                   <input
                     type="text"
@@ -919,8 +1121,6 @@ export default function TrainerHome() {
           </div>
         </div>
       )}
-
-
     </div>
   );
 }

@@ -146,7 +146,9 @@
     /* Safe area support for native/PWA apps */
     --safe-area-bottom: env(safe-area-inset-bottom);
     /* Smooth theme transition */
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   body {
@@ -154,14 +156,19 @@
     /* Support for notch and home indicator */
     padding-bottom: max(0px, env(safe-area-inset-bottom));
     /* Smooth theme transition */
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
     overflow-wrap: anywhere;
     word-break: break-word;
     /* Smooth theme transition */
-    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    transition:
+      color 0.3s ease,
+      background-color 0.3s ease,
+      border-color 0.3s ease;
   }
 
   pre,
@@ -225,9 +232,15 @@
 }
 
 @keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* L-Shape fitness-themed backgrounds */
@@ -237,40 +250,64 @@
 }
 
 .l-shape-bg::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   right: 0;
   width: 150px;
   height: 150px;
-  background: linear-gradient(135deg, transparent 50%, rgba(255, 107, 107, 0.08) 50%);
+  background: linear-gradient(
+    135deg,
+    transparent 50%,
+    rgba(255, 107, 107, 0.08) 50%
+  );
   pointer-events: none;
 }
 
 .l-shape-bg::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 150px;
   height: 150px;
-  background: linear-gradient(135deg, rgba(255, 165, 0, 0.08) 50%, transparent 50%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 165, 0, 0.08) 50%,
+    transparent 50%
+  );
   pointer-events: none;
 }
 
 /* Fitness gradient backgrounds */
 .fitness-gradient-1 {
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.1) 0%,
+    rgba(255, 165, 0, 0.1) 100%
+  );
 }
 
 .fitness-gradient-2 {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(6, 182, 212, 0.1) 100%
+  );
 }
 
 .fitness-gradient-3 {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.1) 0%,
+    rgba(236, 72, 153, 0.1) 100%
+  );
 }
 
 .fitness-gradient-4 {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.1) 0%,
+    rgba(16, 185, 129, 0.1) 100%
+  );
 }

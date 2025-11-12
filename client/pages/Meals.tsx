@@ -1,5 +1,15 @@
 import { useState, useMemo } from "react";
-import { Plus, Minus, TrendingUp, Sunrise, Apple, UtensilsCrossed, Moon, Clock, Settings } from "lucide-react";
+import {
+  Plus,
+  Minus,
+  TrendingUp,
+  Sunrise,
+  Apple,
+  UtensilsCrossed,
+  Moon,
+  Clock,
+  Settings,
+} from "lucide-react";
 import { useMeals } from "@/hooks/useMeals";
 import { useTheme } from "@/contexts/ThemeContext";
 import { toast } from "sonner";
@@ -26,41 +36,231 @@ interface FoodInfo {
 }
 
 const FOOD_DATABASE: Record<string, FoodInfo> = {
-  "chicken breast": { calories: 165, protein: 31, carbs: 0, fat: 3.6, inputType: "weight" },
-  "rice": { calories: 130, protein: 2.7, carbs: 28, fat: 0.3, inputType: "weight" },
-  "oatmeal": { calories: 389, protein: 17, carbs: 66, fat: 6.9, inputType: "weight" },
-  "berries": { calories: 57, protein: 0.7, carbs: 14, fat: 0.3, inputType: "weight" },
-  "greek yogurt": { calories: 59, protein: 10, carbs: 3.3, fat: 0.4, inputType: "weight" },
-  "eggs": { calories: 155, protein: 13, carbs: 1.1, fat: 11, inputType: "quantity", unitName: "per egg", unitWeight: 50 },
-  "milk": { calories: 61, protein: 3.2, carbs: 4.8, fat: 3.3, inputType: "weight" },
-  "bread": { calories: 265, protein: 9, carbs: 49, fat: 3.3, inputType: "quantity", unitName: "per slice", unitWeight: 30 },
-  "banana": { calories: 89, protein: 1.1, carbs: 23, fat: 0.3, inputType: "quantity", unitName: "per banana", unitWeight: 120 },
-  "apple": { calories: 52, protein: 0.3, carbs: 14, fat: 0.2, inputType: "quantity", unitName: "per apple", unitWeight: 182 },
-  "broccoli": { calories: 34, protein: 2.8, carbs: 7, fat: 0.4, inputType: "weight" },
-  "salmon": { calories: 208, protein: 20, carbs: 0, fat: 13, inputType: "weight" },
-  "almonds": { calories: 579, protein: 21, carbs: 22, fat: 50, inputType: "quantity", unitName: "per handful", unitWeight: 30 },
-  "sweet potato": { calories: 86, protein: 1.6, carbs: 20, fat: 0.1, inputType: "weight" },
-  "peanut butter": { calories: 588, protein: 25, carbs: 20, fat: 50, inputType: "weight" },
-  "orange": { calories: 47, protein: 0.9, carbs: 12, fat: 0.3, inputType: "quantity", unitName: "per orange", unitWeight: 150 },
-  "carrot": { calories: 41, protein: 0.9, carbs: 10, fat: 0.2, inputType: "quantity", unitName: "per carrot", unitWeight: 61 },
-  "cheese": { calories: 402, protein: 25, carbs: 1.3, fat: 33, inputType: "quantity", unitName: "per slice", unitWeight: 30 },
-  "butter": { calories: 717, protein: 0.9, carbs: 0.1, fat: 81, inputType: "weight" },
-  "honey": { calories: 304, protein: 0.3, carbs: 82, fat: 0, inputType: "weight" },
-  "pasta": { calories: 131, protein: 5, carbs: 25, fat: 1.1, inputType: "weight" },
-  "tomato": { calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2, inputType: "quantity", unitName: "per tomato", unitWeight: 123 },
-  "lettuce": { calories: 15, protein: 1.4, carbs: 2.9, fat: 0.3, inputType: "weight" },
-  "chicken thigh": { calories: 209, protein: 26, carbs: 0, fat: 11, inputType: "weight" },
-  "tuna": { calories: 144, protein: 30, carbs: 0, fat: 1.3, inputType: "weight" },
+  "chicken breast": {
+    calories: 165,
+    protein: 31,
+    carbs: 0,
+    fat: 3.6,
+    inputType: "weight",
+  },
+  rice: {
+    calories: 130,
+    protein: 2.7,
+    carbs: 28,
+    fat: 0.3,
+    inputType: "weight",
+  },
+  oatmeal: {
+    calories: 389,
+    protein: 17,
+    carbs: 66,
+    fat: 6.9,
+    inputType: "weight",
+  },
+  berries: {
+    calories: 57,
+    protein: 0.7,
+    carbs: 14,
+    fat: 0.3,
+    inputType: "weight",
+  },
+  "greek yogurt": {
+    calories: 59,
+    protein: 10,
+    carbs: 3.3,
+    fat: 0.4,
+    inputType: "weight",
+  },
+  eggs: {
+    calories: 155,
+    protein: 13,
+    carbs: 1.1,
+    fat: 11,
+    inputType: "quantity",
+    unitName: "per egg",
+    unitWeight: 50,
+  },
+  milk: {
+    calories: 61,
+    protein: 3.2,
+    carbs: 4.8,
+    fat: 3.3,
+    inputType: "weight",
+  },
+  bread: {
+    calories: 265,
+    protein: 9,
+    carbs: 49,
+    fat: 3.3,
+    inputType: "quantity",
+    unitName: "per slice",
+    unitWeight: 30,
+  },
+  banana: {
+    calories: 89,
+    protein: 1.1,
+    carbs: 23,
+    fat: 0.3,
+    inputType: "quantity",
+    unitName: "per banana",
+    unitWeight: 120,
+  },
+  apple: {
+    calories: 52,
+    protein: 0.3,
+    carbs: 14,
+    fat: 0.2,
+    inputType: "quantity",
+    unitName: "per apple",
+    unitWeight: 182,
+  },
+  broccoli: {
+    calories: 34,
+    protein: 2.8,
+    carbs: 7,
+    fat: 0.4,
+    inputType: "weight",
+  },
+  salmon: {
+    calories: 208,
+    protein: 20,
+    carbs: 0,
+    fat: 13,
+    inputType: "weight",
+  },
+  almonds: {
+    calories: 579,
+    protein: 21,
+    carbs: 22,
+    fat: 50,
+    inputType: "quantity",
+    unitName: "per handful",
+    unitWeight: 30,
+  },
+  "sweet potato": {
+    calories: 86,
+    protein: 1.6,
+    carbs: 20,
+    fat: 0.1,
+    inputType: "weight",
+  },
+  "peanut butter": {
+    calories: 588,
+    protein: 25,
+    carbs: 20,
+    fat: 50,
+    inputType: "weight",
+  },
+  orange: {
+    calories: 47,
+    protein: 0.9,
+    carbs: 12,
+    fat: 0.3,
+    inputType: "quantity",
+    unitName: "per orange",
+    unitWeight: 150,
+  },
+  carrot: {
+    calories: 41,
+    protein: 0.9,
+    carbs: 10,
+    fat: 0.2,
+    inputType: "quantity",
+    unitName: "per carrot",
+    unitWeight: 61,
+  },
+  cheese: {
+    calories: 402,
+    protein: 25,
+    carbs: 1.3,
+    fat: 33,
+    inputType: "quantity",
+    unitName: "per slice",
+    unitWeight: 30,
+  },
+  butter: {
+    calories: 717,
+    protein: 0.9,
+    carbs: 0.1,
+    fat: 81,
+    inputType: "weight",
+  },
+  honey: {
+    calories: 304,
+    protein: 0.3,
+    carbs: 82,
+    fat: 0,
+    inputType: "weight",
+  },
+  pasta: {
+    calories: 131,
+    protein: 5,
+    carbs: 25,
+    fat: 1.1,
+    inputType: "weight",
+  },
+  tomato: {
+    calories: 18,
+    protein: 0.9,
+    carbs: 3.9,
+    fat: 0.2,
+    inputType: "quantity",
+    unitName: "per tomato",
+    unitWeight: 123,
+  },
+  lettuce: {
+    calories: 15,
+    protein: 1.4,
+    carbs: 2.9,
+    fat: 0.3,
+    inputType: "weight",
+  },
+  "chicken thigh": {
+    calories: 209,
+    protein: 26,
+    carbs: 0,
+    fat: 11,
+    inputType: "weight",
+  },
+  tuna: { calories: 144, protein: 30, carbs: 0, fat: 1.3, inputType: "weight" },
 };
 
 const DEMO_MEALS: MealEntry[] = [
-  { id: "1", name: "Oatmeal with berries", weight: 250, calories: 350, protein: 12, carbs: 52, fat: 8 },
-  { id: "2", name: "Chicken breast rice", weight: 300, calories: 520, protein: 45, carbs: 48, fat: 6 },
-  { id: "3", name: "Greek yogurt", weight: 200, calories: 150, protein: 18, carbs: 10, fat: 5 },
+  {
+    id: "1",
+    name: "Oatmeal with berries",
+    weight: 250,
+    calories: 350,
+    protein: 12,
+    carbs: 52,
+    fat: 8,
+  },
+  {
+    id: "2",
+    name: "Chicken breast rice",
+    weight: 300,
+    calories: 520,
+    protein: 45,
+    carbs: 48,
+    fat: 6,
+  },
+  {
+    id: "3",
+    name: "Greek yogurt",
+    weight: 200,
+    calories: 150,
+    protein: 18,
+    carbs: 10,
+    fat: 5,
+  },
 ];
 
 // Function to find closest food match and calculate macros
-const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType: "weight" | "quantity" = "weight") => {
+const calculateMacrosFromFood = (
+  foodName: string,
+  inputValue: number,
+  inputType: "weight" | "quantity" = "weight",
+) => {
   const normalizedFood = foodName.toLowerCase().trim();
 
   // Try exact match first
@@ -69,7 +269,11 @@ const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType
     let weightInGrams = inputValue;
 
     // If input is quantity and food has unitWeight, convert to grams
-    if (inputType === "quantity" && food.inputType === "quantity" && food.unitWeight) {
+    if (
+      inputType === "quantity" &&
+      food.inputType === "quantity" &&
+      food.unitWeight
+    ) {
       weightInGrams = inputValue * food.unitWeight;
     }
 
@@ -89,7 +293,11 @@ const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType
     if (normalizedFood.includes(key) || key.includes(normalizedFood)) {
       let weightInGrams = inputValue;
 
-      if (inputType === "quantity" && value.inputType === "quantity" && value.unitWeight) {
+      if (
+        inputType === "quantity" &&
+        value.inputType === "quantity" &&
+        value.unitWeight
+      ) {
         weightInGrams = inputValue * value.unitWeight;
       }
 
@@ -106,22 +314,71 @@ const calculateMacrosFromFood = (foodName: string, inputValue: number, inputType
   }
 
   // Default values if not found
-  return { calories: 0, protein: 0, carbs: 0, fat: 0, inputType: "weight", unitName: undefined };
+  return {
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+    inputType: "weight",
+    unitName: undefined,
+  };
 };
 
 const MEAL_TYPES = [
-  { id: "early-breakfast", dbValue: "breakfast", label: "Early Breakfast", icon: Sunrise, time: "6-7 AM" },
-  { id: "mid-snack", dbValue: "snack", label: "Mid-Morning Snack", icon: Apple, time: "10-11 AM" },
-  { id: "lunch", dbValue: "lunch", label: "Lunch", icon: UtensilsCrossed, time: "12-2 PM" },
-  { id: "afternoon-snack", dbValue: "snack", label: "Afternoon Snack", icon: Apple, time: "4-5 PM" },
-  { id: "dinner", dbValue: "dinner", label: "Dinner", icon: Moon, time: "7-9 PM" },
-  { id: "evening-snack", dbValue: "snack", label: "Evening Snack", icon: Clock, time: "9+ PM" },
+  {
+    id: "early-breakfast",
+    dbValue: "breakfast",
+    label: "Early Breakfast",
+    icon: Sunrise,
+    time: "6-7 AM",
+  },
+  {
+    id: "mid-snack",
+    dbValue: "snack",
+    label: "Mid-Morning Snack",
+    icon: Apple,
+    time: "10-11 AM",
+  },
+  {
+    id: "lunch",
+    dbValue: "lunch",
+    label: "Lunch",
+    icon: UtensilsCrossed,
+    time: "12-2 PM",
+  },
+  {
+    id: "afternoon-snack",
+    dbValue: "snack",
+    label: "Afternoon Snack",
+    icon: Apple,
+    time: "4-5 PM",
+  },
+  {
+    id: "dinner",
+    dbValue: "dinner",
+    label: "Dinner",
+    icon: Moon,
+    time: "7-9 PM",
+  },
+  {
+    id: "evening-snack",
+    dbValue: "snack",
+    label: "Evening Snack",
+    icon: Clock,
+    time: "9+ PM",
+  },
 ];
 
 // Map meal type display IDs to valid Supabase enum values
-const getMealTypeForDB = (mealTypeId: string): "breakfast" | "lunch" | "dinner" | "snack" => {
+const getMealTypeForDB = (
+  mealTypeId: string,
+): "breakfast" | "lunch" | "dinner" | "snack" => {
   const type = MEAL_TYPES.find((t) => t.id === mealTypeId);
-  return (type?.dbValue || "snack") as "breakfast" | "lunch" | "dinner" | "snack";
+  return (type?.dbValue || "snack") as
+    | "breakfast"
+    | "lunch"
+    | "dinner"
+    | "snack";
 };
 
 export default function Meals() {
@@ -150,32 +407,38 @@ export default function Meals() {
   const [editGoals, setEditGoals] = useState({ ...goals });
 
   // Convert Supabase meals to local format for display
-  const mealEntries = useMemo(() =>
-    meals.map((meal) => ({
-      id: meal.id,
-      name: meal.food_name,
-      weight: meal.weight_g,
-      calories: meal.calories,
-      protein: meal.protein_g,
-      carbs: meal.carbs_g,
-      fat: meal.fat_g,
-      mealType: meal.meal_type || "snack",
-    })),
-    [meals]
+  const mealEntries = useMemo(
+    () =>
+      meals.map((meal) => ({
+        id: meal.id,
+        name: meal.food_name,
+        weight: meal.weight_g,
+        calories: meal.calories,
+        protein: meal.protein_g,
+        carbs: meal.carbs_g,
+        fat: meal.fat_g,
+        mealType: meal.meal_type || "snack",
+      })),
+    [meals],
   );
 
   // Group meals by type (using database values)
   const mealsByType = useMemo(() => {
     const grouped: { [key: string]: typeof mealEntries } = {};
     // Create groups for each unique meal type in MEAL_TYPES
-    const uniqueDbValues = Array.from(new Set(MEAL_TYPES.map((t) => t.dbValue)));
+    const uniqueDbValues = Array.from(
+      new Set(MEAL_TYPES.map((t) => t.dbValue)),
+    );
     uniqueDbValues.forEach((dbValue) => {
       grouped[dbValue] = mealEntries.filter((m) => m.mealType === dbValue);
     });
     return grouped;
   }, [mealEntries]);
 
-  const totalCalories = mealEntries.reduce((sum, meal) => sum + meal.calories, 0);
+  const totalCalories = mealEntries.reduce(
+    (sum, meal) => sum + meal.calories,
+    0,
+  );
   const totalProtein = mealEntries.reduce((sum, meal) => sum + meal.protein, 0);
   const totalCarbs = mealEntries.reduce((sum, meal) => sum + meal.carbs, 0);
   const totalFat = mealEntries.reduce((sum, meal) => sum + meal.fat, 0);
@@ -202,7 +465,7 @@ export default function Meals() {
     // Show suggestions
     if (name.length > 0) {
       const matches = Object.keys(FOOD_DATABASE).filter((food) =>
-        food.includes(name.toLowerCase())
+        food.includes(name.toLowerCase()),
       );
       setSuggestions(matches);
     } else {
@@ -215,7 +478,11 @@ export default function Meals() {
 
     // Auto-calculate macros if both food name and quantity are provided
     if (newFood.name && quantity && selectedFood) {
-      const macros = calculateMacrosFromFood(newFood.name, Number(quantity), "quantity");
+      const macros = calculateMacrosFromFood(
+        newFood.name,
+        Number(quantity),
+        "quantity",
+      );
       setNewFood((prev) => ({
         ...prev,
         quantity,
@@ -234,7 +501,11 @@ export default function Meals() {
 
     // Auto-calculate macros if both food name and weight are provided
     if (newFood.name && weight && selectedFood?.inputType === "weight") {
-      const macros = calculateMacrosFromFood(newFood.name, Number(weight), "weight");
+      const macros = calculateMacrosFromFood(
+        newFood.name,
+        Number(weight),
+        "weight",
+      );
       setNewFood((prev) => ({
         ...prev,
         weight,
@@ -273,9 +544,10 @@ export default function Meals() {
 
     const macros = calculateMacrosFromFood(newFood.name, inputValue, inputType);
 
-    const actualWeight = selectedFood?.inputType === "quantity" && selectedFood.unitWeight
-      ? Number(newFood.quantity) * selectedFood.unitWeight
-      : Number(newFood.weight);
+    const actualWeight =
+      selectedFood?.inputType === "quantity" && selectedFood.unitWeight
+        ? Number(newFood.quantity) * selectedFood.unitWeight
+        : Number(newFood.weight);
 
     setAddingMeal(true);
     try {
@@ -290,7 +562,15 @@ export default function Meals() {
       });
 
       toast.success("✓ Meal added successfully!");
-      setNewFood({ name: "", weight: "", quantity: "", calories: "", protein: "", carbs: "", fat: "" });
+      setNewFood({
+        name: "",
+        weight: "",
+        quantity: "",
+        calories: "",
+        protein: "",
+        carbs: "",
+        fat: "",
+      });
       setSelectedFood(null);
       setSuggestions([]);
       setShowAddFood(false);
@@ -315,22 +595,34 @@ export default function Meals() {
   const { theme } = useTheme();
 
   return (
-    <div className={`min-h-screen pb-24 ${
-      theme === "dark" ? "l-shape-bg fitness-gradient-4 bg-gray-950" : "bg-white"
-    }`}>
+    <div
+      className={`min-h-screen pb-24 ${
+        theme === "dark"
+          ? "l-shape-bg fitness-gradient-4 bg-gray-950"
+          : "bg-white"
+      }`}
+    >
       <div className="max-w-md mx-auto">
         {/* Header */}
-        <div className={`sticky top-0 z-40 ${
-          theme === "dark" ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"
-        } border-b px-4 py-6`}>
-          <h1 className={`text-3xl font-bold ${
-            theme === "dark" ? "text-white" : "text-gray-900"
-          }`}>
+        <div
+          className={`sticky top-0 z-40 ${
+            theme === "dark"
+              ? "bg-gray-900 border-gray-800"
+              : "bg-white border-gray-200"
+          } border-b px-4 py-6`}
+        >
+          <h1
+            className={`text-3xl font-bold ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
+          >
             Meal Tracker
           </h1>
-          <p className={`text-sm ${
-            theme === "dark" ? "text-gray-400" : "text-gray-600"
-          }`}>
+          <p
+            className={`text-sm ${
+              theme === "dark" ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
             Log your meals and track nutrition
           </p>
         </div>
@@ -338,15 +630,21 @@ export default function Meals() {
         {/* Content */}
         <div className="px-4 py-6 space-y-6">
           {/* Today's Summary Card */}
-          <div className={`rounded-2xl p-6 space-y-5 ${
-            theme === "dark"
-              ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
-              : "bg-card border border-border"
-          }`}>
+          <div
+            className={`rounded-2xl p-6 space-y-5 ${
+              theme === "dark"
+                ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
+                : "bg-card border border-border"
+            }`}
+          >
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-foreground">Today's Summary</h2>
+              <h2 className="text-lg font-bold text-foreground">
+                Today's Summary
+              </h2>
               <button
-                onClick={() => setEditGoals({ ...goals }) || setShowGoalsModal(true)}
+                onClick={() =>
+                  setEditGoals({ ...goals }) || setShowGoalsModal(true)
+                }
                 className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
               >
                 <Settings className="w-4 h-4" />
@@ -357,12 +655,18 @@ export default function Meals() {
             {/* Calories Bar */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-orange-600">Calories</span>
-                <span className="text-sm font-bold text-gray-900">{totalCalories} / {calorieGoal}</span>
+                <span className="text-sm font-semibold text-orange-600">
+                  Calories
+                </span>
+                <span className="text-sm font-bold text-gray-900">
+                  {totalCalories} / {calorieGoal}
+                </span>
               </div>
-              <div className={`w-full h-4 rounded-full overflow-hidden ${
-              theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
-            }`}>
+              <div
+                className={`w-full h-4 rounded-full overflow-hidden ${
+                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
+                }`}
+              >
                 <div
                   className="h-full bg-gradient-to-r from-orange-600 via-amber-500 to-orange-600 transition-all duration-500 shadow-lg shadow-orange-600/50"
                   style={{ width: `${caloriePercent}%` }}
@@ -373,12 +677,18 @@ export default function Meals() {
             {/* Protein Bar */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-red-600">Protein</span>
-                <span className="text-sm font-bold text-gray-900">{totalProtein}g / {proteinGoal}g</span>
+                <span className="text-sm font-semibold text-red-600">
+                  Protein
+                </span>
+                <span className="text-sm font-bold text-gray-900">
+                  {totalProtein}g / {proteinGoal}g
+                </span>
               </div>
-              <div className={`w-full h-3 rounded-full overflow-hidden ${
-                theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
-              }`}>
+              <div
+                className={`w-full h-3 rounded-full overflow-hidden ${
+                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
+                }`}
+              >
                 <div
                   className="h-full bg-gradient-to-r from-red-600 to-pink-600 transition-all duration-500 shadow-lg shadow-red-600/50"
                   style={{ width: `${proteinPercent}%` }}
@@ -389,12 +699,18 @@ export default function Meals() {
             {/* Carbs Bar */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-blue-600">Carbs</span>
-                <span className="text-sm font-bold text-gray-900">{totalCarbs}g / {carbsGoal}g</span>
+                <span className="text-sm font-semibold text-blue-600">
+                  Carbs
+                </span>
+                <span className="text-sm font-bold text-gray-900">
+                  {totalCarbs}g / {carbsGoal}g
+                </span>
               </div>
-              <div className={`w-full h-3 rounded-full overflow-hidden ${
-                theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
-              }`}>
+              <div
+                className={`w-full h-3 rounded-full overflow-hidden ${
+                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
+                }`}
+              >
                 <div
                   className="h-full bg-gradient-to-r from-blue-600 to-cyan-600 transition-all duration-500 shadow-lg shadow-blue-600/50"
                   style={{ width: `${carbsPercent}%` }}
@@ -405,12 +721,18 @@ export default function Meals() {
             {/* Fat Bar */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-amber-600">Fat</span>
-                <span className="text-sm font-bold text-gray-900">{totalFat}g / {fatGoal}g</span>
+                <span className="text-sm font-semibold text-amber-600">
+                  Fat
+                </span>
+                <span className="text-sm font-bold text-gray-900">
+                  {totalFat}g / {fatGoal}g
+                </span>
               </div>
-              <div className={`w-full h-3 rounded-full overflow-hidden ${
-                theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
-              }`}>
+              <div
+                className={`w-full h-3 rounded-full overflow-hidden ${
+                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-200"
+                }`}
+              >
                 <div
                   className="h-full bg-gradient-to-r from-amber-600 to-yellow-600 transition-all duration-500 shadow-lg shadow-amber-600/50"
                   style={{ width: `${fatPercent}%` }}
@@ -436,7 +758,9 @@ export default function Meals() {
                           {mealType.label}
                         </h4>
                       </div>
-                      <span className="text-xs text-muted-foreground">{mealType.time}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {mealType.time}
+                      </span>
                     </div>
                     {mealsOfType.length > 0 ? (
                       <div className="space-y-2">
@@ -450,12 +774,15 @@ export default function Meals() {
                             }`}
                           >
                             <div className="flex-1">
-                              <p className="font-medium text-foreground">{meal.name}</p>
+                              <p className="font-medium text-foreground">
+                                {meal.name}
+                              </p>
                               <p className="text-xs text-muted-foreground mb-1">
                                 Weight: {meal.weight}g
                               </p>
                               <p className="text-xs text-muted-foreground">
-                                {meal.calories} cal • P: {meal.protein}g • C: {meal.carbs}g • F: {meal.fat}g
+                                {meal.calories} cal • P: {meal.protein}g • C:{" "}
+                                {meal.carbs}g • F: {meal.fat}g
                               </p>
                             </div>
                             <button
@@ -468,7 +795,9 @@ export default function Meals() {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-xs text-muted-foreground italic">No meals logged</p>
+                      <p className="text-xs text-muted-foreground italic">
+                        No meals logged
+                      </p>
                     )}
                   </div>
                 );
@@ -486,16 +815,20 @@ export default function Meals() {
               Add Food
             </button>
           ) : (
-            <div className={`rounded-xl p-4 space-y-3 ${
-              theme === "dark"
-                ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
-                : "bg-card border border-border"
-            }`}>
+            <div
+              className={`rounded-xl p-4 space-y-3 ${
+                theme === "dark"
+                  ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
+                  : "bg-card border border-border"
+              }`}
+            >
               <h3 className="font-bold text-foreground">Add Meal</h3>
 
               {/* Meal Type Selection */}
               <div>
-                <label className="text-xs font-semibold text-muted-foreground block mb-2">Meal Type</label>
+                <label className="text-xs font-semibold text-muted-foreground block mb-2">
+                  Meal Type
+                </label>
                 <div className="grid grid-cols-5 gap-2">
                   {MEAL_TYPES.map((type) => (
                     <button
@@ -547,8 +880,8 @@ export default function Meals() {
                 )}
               </div>
 
-              {selectedFood && (
-                selectedFood.inputType === "quantity" ? (
+              {selectedFood &&
+                (selectedFood.inputType === "quantity" ? (
                   <input
                     type="number"
                     placeholder={`Quantity (${selectedFood.unitName})`}
@@ -564,29 +897,39 @@ export default function Meals() {
                     onChange={(e) => handleWeightChange(e.target.value)}
                     className="w-full bg-background border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                   />
-                )
-              )}
+                ))}
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2">
-                <p className="text-xs font-semibold text-blue-900">Auto-calculated nutrition:</p>
+                <p className="text-xs font-semibold text-blue-900">
+                  Auto-calculated nutrition:
+                </p>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div>
-                    <p className="text-blue-700 font-medium">{newFood.calories || "0"} cal</p>
+                    <p className="text-blue-700 font-medium">
+                      {newFood.calories || "0"} cal
+                    </p>
                   </div>
                   <div>
-                    <p className="text-blue-700 font-medium">P: {newFood.protein || "0"}g</p>
+                    <p className="text-blue-700 font-medium">
+                      P: {newFood.protein || "0"}g
+                    </p>
                   </div>
                   <div>
-                    <p className="text-blue-700 font-medium">C: {newFood.carbs || "0"}g</p>
+                    <p className="text-blue-700 font-medium">
+                      C: {newFood.carbs || "0"}g
+                    </p>
                   </div>
                   <div>
-                    <p className="text-blue-700 font-medium">F: {newFood.fat || "0"}g</p>
+                    <p className="text-blue-700 font-medium">
+                      F: {newFood.fat || "0"}g
+                    </p>
                   </div>
                 </div>
               </div>
 
               <p className="text-xs text-muted-foreground">
-                💡 Type a food name and weight to auto-calculate nutrition. Can be manually edited.
+                💡 Type a food name and weight to auto-calculate nutrition. Can
+                be manually edited.
               </p>
 
               <div className="grid grid-cols-3 gap-2">
@@ -594,21 +937,27 @@ export default function Meals() {
                   type="number"
                   placeholder="Protein (g)"
                   value={newFood.protein}
-                  onChange={(e) => setNewFood((prev) => ({ ...prev, protein: e.target.value }))}
+                  onChange={(e) =>
+                    setNewFood((prev) => ({ ...prev, protein: e.target.value }))
+                  }
                   className="w-full bg-background border border-border rounded-lg px-2 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-xs"
                 />
                 <input
                   type="number"
                   placeholder="Carbs (g)"
                   value={newFood.carbs}
-                  onChange={(e) => setNewFood((prev) => ({ ...prev, carbs: e.target.value }))}
+                  onChange={(e) =>
+                    setNewFood((prev) => ({ ...prev, carbs: e.target.value }))
+                  }
                   className="w-full bg-background border border-border rounded-lg px-2 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-xs"
                 />
                 <input
                   type="number"
                   placeholder="Fat (g)"
                   value={newFood.fat}
-                  onChange={(e) => setNewFood((prev) => ({ ...prev, fat: e.target.value }))}
+                  onChange={(e) =>
+                    setNewFood((prev) => ({ ...prev, fat: e.target.value }))
+                  }
                   className="w-full bg-background border border-border rounded-lg px-2 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-xs"
                 />
               </div>
@@ -617,7 +966,15 @@ export default function Meals() {
                 <button
                   onClick={() => {
                     setShowAddFood(false);
-                    setNewFood({ name: "", weight: "", quantity: "", calories: "", protein: "", carbs: "", fat: "" });
+                    setNewFood({
+                      name: "",
+                      weight: "",
+                      quantity: "",
+                      calories: "",
+                      protein: "",
+                      carbs: "",
+                      fat: "",
+                    });
                     setSelectedFood(null);
                     setSuggestions([]);
                     setSelectedMealType("breakfast");
@@ -628,7 +985,9 @@ export default function Meals() {
                 </button>
                 <button
                   onClick={handleAddMeal}
-                  disabled={!newFood.name || (!newFood.weight && !newFood.quantity)}
+                  disabled={
+                    !newFood.name || (!newFood.weight && !newFood.quantity)
+                  }
                   className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity text-sm"
                 >
                   Save Meal
@@ -640,7 +999,11 @@ export default function Meals() {
           {/* Note */}
           <div className="bg-gradient-to-br from-green-500/10 to-teal-500/10 rounded-lg p-4 border border-green-500/20">
             <p className="text-xs text-muted-foreground">
-              ✨ Meal tracking is <span className="font-bold text-green-500">FREE for all users!</span> No premium required.
+              ✨ Meal tracking is{" "}
+              <span className="font-bold text-green-500">
+                FREE for all users!
+              </span>{" "}
+              No premium required.
             </p>
           </div>
         </div>
@@ -648,22 +1011,37 @@ export default function Meals() {
         {/* Goals Edit Modal */}
         {showGoalsModal && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className={`rounded-2xl max-w-sm w-full p-6 space-y-4 ${
-              theme === "dark" ? "bg-gray-800" : "bg-white"
-            }`}>
-              <h2 className={`text-lg font-bold ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}>Edit Daily Goals</h2>
+            <div
+              className={`rounded-2xl max-w-sm w-full p-6 space-y-4 ${
+                theme === "dark" ? "bg-gray-800" : "bg-white"
+              }`}
+            >
+              <h2
+                className={`text-lg font-bold ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
+              >
+                Edit Daily Goals
+              </h2>
 
               {/* Calories */}
               <div>
-                <label className={`block text-sm font-medium mb-1 ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-700"
-                }`}>Daily Calories</label>
+                <label
+                  className={`block text-sm font-medium mb-1 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
+                  Daily Calories
+                </label>
                 <input
                   type="number"
                   value={editGoals.calories}
-                  onChange={(e) => setEditGoals({ ...editGoals, calories: parseInt(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setEditGoals({
+                      ...editGoals,
+                      calories: parseInt(e.target.value) || 0,
+                    })
+                  }
                   className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary ${
                     theme === "dark"
                       ? "bg-gray-900 border border-gray-700 text-white"
@@ -674,13 +1052,22 @@ export default function Meals() {
 
               {/* Protein */}
               <div>
-                <label className={`block text-sm font-medium mb-1 ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-700"
-                }`}>Daily Protein (g)</label>
+                <label
+                  className={`block text-sm font-medium mb-1 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
+                  Daily Protein (g)
+                </label>
                 <input
                   type="number"
                   value={editGoals.protein}
-                  onChange={(e) => setEditGoals({ ...editGoals, protein: parseInt(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setEditGoals({
+                      ...editGoals,
+                      protein: parseInt(e.target.value) || 0,
+                    })
+                  }
                   className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary ${
                     theme === "dark"
                       ? "bg-gray-900 border border-gray-700 text-white"
@@ -691,13 +1078,22 @@ export default function Meals() {
 
               {/* Carbs */}
               <div>
-                <label className={`block text-sm font-medium mb-1 ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-700"
-                }`}>Daily Carbs (g)</label>
+                <label
+                  className={`block text-sm font-medium mb-1 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
+                  Daily Carbs (g)
+                </label>
                 <input
                   type="number"
                   value={editGoals.carbs}
-                  onChange={(e) => setEditGoals({ ...editGoals, carbs: parseInt(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setEditGoals({
+                      ...editGoals,
+                      carbs: parseInt(e.target.value) || 0,
+                    })
+                  }
                   className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary ${
                     theme === "dark"
                       ? "bg-gray-900 border border-gray-700 text-white"
@@ -708,13 +1104,22 @@ export default function Meals() {
 
               {/* Fat */}
               <div>
-                <label className={`block text-sm font-medium mb-1 ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-700"
-                }`}>Daily Fat (g)</label>
+                <label
+                  className={`block text-sm font-medium mb-1 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
+                  Daily Fat (g)
+                </label>
                 <input
                   type="number"
                   value={editGoals.fat}
-                  onChange={(e) => setEditGoals({ ...editGoals, fat: parseInt(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setEditGoals({
+                      ...editGoals,
+                      fat: parseInt(e.target.value) || 0,
+                    })
+                  }
                   className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary ${
                     theme === "dark"
                       ? "bg-gray-900 border border-gray-700 text-white"

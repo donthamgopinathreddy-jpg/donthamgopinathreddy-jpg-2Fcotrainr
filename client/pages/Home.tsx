@@ -50,7 +50,9 @@ export default function Home() {
   // Sync user data from profile
   useEffect(() => {
     if (userProfile) {
-      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+      const isDemoMode =
+        userProfile.id.startsWith("demo-user") ||
+        userProfile.id.includes("demo");
 
       // Always start with bio from Supabase
       let bioValue = userProfile.bio || "0|0";
@@ -187,7 +189,9 @@ export default function Home() {
       setStepsTarget(editStepsTarget);
 
       // Save water consumed to Supabase (in case it was edited)
-      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+      const isDemoMode =
+        userProfile.id.startsWith("demo-user") ||
+        userProfile.id.includes("demo");
       const bioValue = `${stepsCompleted}|${waterConsumed}`;
 
       if (!isDemoMode) {
@@ -216,7 +220,9 @@ export default function Home() {
         return;
       }
 
-      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+      const isDemoMode =
+        userProfile.id.startsWith("demo-user") ||
+        userProfile.id.includes("demo");
       const bioValue = `0|${waterConsumed}`;
 
       if (!isDemoMode) {
@@ -271,7 +277,9 @@ export default function Home() {
       setStepsCompleted(newSteps);
 
       // Check if demo mode
-      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+      const isDemoMode =
+        userProfile.id.startsWith("demo-user") ||
+        userProfile.id.includes("demo");
 
       // Save to Supabase
       const bioValue = `${newSteps}|${waterConsumed}`;
@@ -308,7 +316,9 @@ export default function Home() {
       setWaterConsumed(newWater);
 
       // Check if demo mode
-      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+      const isDemoMode =
+        userProfile.id.startsWith("demo-user") ||
+        userProfile.id.includes("demo");
 
       // Save to Supabase
       const bioValue = `${stepsCompleted}|${newWater}`;
@@ -356,7 +366,9 @@ export default function Home() {
         <button
           onClick={toggleTheme}
           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-          title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+          title={
+            theme === "light" ? "Switch to dark mode" : "Switch to light mode"
+          }
         >
           {theme === "light" ? (
             <Moon className="w-5 h-5 text-gray-900" />
@@ -500,7 +512,9 @@ export default function Home() {
         {/* Progress Bars Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">Today's Stats</h2>
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+              Today's Stats
+            </h2>
             <button
               onClick={() => {
                 setEditStepsTarget(stepsTarget);
@@ -520,7 +534,9 @@ export default function Home() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Footprints className="w-5 h-5 text-orange-600" />
-                <span className="font-semibold text-gray-900 dark:text-white">Steps</span>
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  Steps
+                </span>
               </div>
               <span className="text-sm font-bold text-orange-600">
                 {stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}
@@ -588,7 +604,9 @@ export default function Home() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Droplets className="w-5 h-5 text-cyan-600" />
-                <span className="font-semibold text-gray-900 dark:text-white">Water</span>
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  Water
+                </span>
               </div>
               <span className="text-sm font-bold text-cyan-600">
                 {waterConsumed}L / {waterGoal}L
@@ -635,7 +653,9 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Activity className={`w-6 h-6 ${bmiStatus.color}`} />
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">BMI Index</h2>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+                BMI Index
+              </h2>
             </div>
           </div>
           <div className="text-center">

@@ -41,7 +41,12 @@ interface UserType {
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { user: authUser, userProfile, signOut, updateProfile: authUpdateProfile } = useAuth();
+  const {
+    user: authUser,
+    userProfile,
+    signOut,
+    updateProfile: authUpdateProfile,
+  } = useAuth();
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
@@ -79,7 +84,10 @@ export default function Profile() {
     const birthDate = new Date(dateOfBirth);
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
     return Math.max(0, age);
@@ -99,7 +107,9 @@ export default function Profile() {
         following: 0,
       };
       setUser(newUserState);
-      const calculatedAge = userProfile.date_of_birth ? calculateAge(userProfile.date_of_birth) : (userProfile.age || 25);
+      const calculatedAge = userProfile.date_of_birth
+        ? calculateAge(userProfile.date_of_birth)
+        : userProfile.age || 25;
       setEditForm({
         name: userProfile.full_name || "User",
         email: userProfile.email || "",
@@ -169,7 +179,6 @@ export default function Profile() {
     }));
   };
 
-
   const handleSaveEdit = async () => {
     try {
       setIsSaving(true);
@@ -180,7 +189,9 @@ export default function Profile() {
       }
 
       // Calculate age from date of birth - use the calculated value
-      const ageValue = editForm.dateOfBirth ? calculateAge(editForm.dateOfBirth) : editForm.age;
+      const ageValue = editForm.dateOfBirth
+        ? calculateAge(editForm.dateOfBirth)
+        : editForm.age;
 
       // Update profile using AuthContext method
       await authUpdateProfile({
@@ -207,7 +218,8 @@ export default function Profile() {
       setShowEditModal(false);
     } catch (error: any) {
       console.error("Error saving profile:", error);
-      const errorMsg = error?.message || String(error) || "Failed to update profile";
+      const errorMsg =
+        error?.message || String(error) || "Failed to update profile";
       toast.error(errorMsg);
     } finally {
       setIsSaving(false);
@@ -243,7 +255,8 @@ export default function Profile() {
           toast.success("✓ Profile photo updated!");
         } catch (error: any) {
           console.error("Error saving profile photo:", error);
-          const errorMsg = error?.message || String(error) || "Failed to save profile photo";
+          const errorMsg =
+            error?.message || String(error) || "Failed to save profile photo";
           toast.error(errorMsg);
         } finally {
           setIsSaving(false);
@@ -252,7 +265,8 @@ export default function Profile() {
       reader.readAsDataURL(file);
     } catch (error: any) {
       console.error("Error processing profile photo:", error);
-      const errorMsg = error?.message || String(error) || "Failed to process profile photo";
+      const errorMsg =
+        error?.message || String(error) || "Failed to process profile photo";
       toast.error(errorMsg);
       setIsSaving(false);
     }
@@ -262,20 +276,28 @@ export default function Profile() {
   const { theme } = useTheme();
 
   return (
-    <div className={`min-h-screen pb-24 ${
-      theme === "dark" ? "l-shape-bg fitness-gradient-1 bg-gray-950" : "bg-white"
-    }`}>
+    <div
+      className={`min-h-screen pb-24 ${
+        theme === "dark"
+          ? "l-shape-bg fitness-gradient-1 bg-gray-950"
+          : "bg-white"
+      }`}
+    >
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
         {/* Profile Header */}
-        <div className={`px-4 sm:px-6 py-12 text-center ${
-          theme === "dark"
-            ? "bg-gradient-to-br from-gray-800 to-gray-900"
-            : "bg-gradient-to-br from-blue-100 to-cyan-100"
-        }`}>
+        <div
+          className={`px-4 sm:px-6 py-12 text-center ${
+            theme === "dark"
+              ? "bg-gradient-to-br from-gray-800 to-gray-900"
+              : "bg-gradient-to-br from-blue-100 to-cyan-100"
+          }`}
+        >
           <div className="relative w-24 h-24 mx-auto mb-4 group">
-            <div className={`w-24 h-24 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg ${
-              theme === "dark" ? "bg-gray-700" : "bg-gray-300"
-            }`}>
+            <div
+              className={`w-24 h-24 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg ${
+                theme === "dark" ? "bg-gray-700" : "bg-gray-300"
+              }`}
+            >
               {user.profilePhoto || userProfile?.profile_picture_url ? (
                 <img
                   src={user.profilePhoto || userProfile?.profile_picture_url}
@@ -283,9 +305,11 @@ export default function Profile() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <User className={`w-12 h-12 ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`} />
+                <User
+                  className={`w-12 h-12 ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}
+                />
               )}
             </div>
             <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-blue-700 transition-colors group-hover:scale-110">
@@ -298,41 +322,53 @@ export default function Profile() {
               />
             </label>
           </div>
-          <h1 className={`text-2xl font-bold mb-1 ${
-            theme === "dark" ? "text-white" : "text-gray-900"
-          }`}>
+          <h1
+            className={`text-2xl font-bold mb-1 ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
+          >
             {user.name}
           </h1>
           {isTrainer && (
-            <p className={`text-sm mb-3 ${
-              theme === "dark" ? "text-gray-400" : "text-gray-700"
-            }`}>
+            <p
+              className={`text-sm mb-3 ${
+                theme === "dark" ? "text-gray-400" : "text-gray-700"
+              }`}
+            >
               ⭐ {user.rating || 4.8} • {user.yearsExperience || 0}+ years
               experience
             </p>
           )}
           <div className="flex items-center justify-center gap-4">
             <div className="text-center">
-              <div className={`text-lg font-bold ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}>
+              <div
+                className={`text-lg font-bold ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
+              >
                 {user.followers}
               </div>
-              <p className={`text-xs ${
-                theme === "dark" ? "text-gray-400" : "text-gray-600"
-              }`}>
+              <p
+                className={`text-xs ${
+                  theme === "dark" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
                 Followers
               </p>
             </div>
             <div className="text-center">
-              <div className={`text-lg font-bold ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}>
+              <div
+                className={`text-lg font-bold ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
+              >
                 {user.following}
               </div>
-              <p className={`text-xs ${
-                theme === "dark" ? "text-gray-400" : "text-gray-600"
-              }`}>
+              <p
+                className={`text-xs ${
+                  theme === "dark" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
                 Following
               </p>
             </div>
@@ -359,22 +395,40 @@ export default function Profile() {
           )}
 
           {/* Account Info Card */}
-          <div className={`rounded-2xl p-6 space-y-3 ${
-            theme === "dark"
-              ? "bg-gradient-to-br from-blue-200/70 via-cyan-200/70 to-teal-200/70 backdrop-blur-xl border border-blue-200/80"
-              : "bg-card border border-border"
-          }`}>
-            <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Account Information</h3>
+          <div
+            className={`rounded-2xl p-6 space-y-3 ${
+              theme === "dark"
+                ? "bg-gradient-to-br from-blue-200/70 via-cyan-200/70 to-teal-200/70 backdrop-blur-xl border border-blue-200/80"
+                : "bg-card border border-border"
+            }`}
+          >
+            <h3
+              className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              Account Information
+            </h3>
             <div className="space-y-3">
               <div>
-                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Username</p>
-                <p className={`font-semibold break-all ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                <p
+                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Username
+                </p>
+                <p
+                  className={`font-semibold break-all ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                >
                   {userProfile?.username || "Not set"}
                 </p>
               </div>
               <div>
-                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Email Address</p>
-                <p className={`font-semibold break-all ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                <p
+                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Email Address
+                </p>
+                <p
+                  className={`font-semibold break-all ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                >
                   {userProfile?.email || "Not set"}
                 </p>
               </div>
@@ -382,28 +436,64 @@ export default function Profile() {
           </div>
 
           {/* Basic Info Card */}
-          <div className={`rounded-2xl p-6 space-y-3 ${
-            theme === "dark"
-              ? "bg-gradient-to-br from-purple-200/70 via-violet-200/70 to-pink-200/70 backdrop-blur-xl border border-purple-200/80"
-              : "bg-card border border-border"
-          }`}>
-            <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Basic Information</h3>
+          <div
+            className={`rounded-2xl p-6 space-y-3 ${
+              theme === "dark"
+                ? "bg-gradient-to-br from-purple-200/70 via-violet-200/70 to-pink-200/70 backdrop-blur-xl border border-purple-200/80"
+                : "bg-card border border-border"
+            }`}
+          >
+            <h3
+              className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              Basic Information
+            </h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Gender</p>
-                <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>{user.gender}</p>
+                <p
+                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Gender
+                </p>
+                <p
+                  className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                >
+                  {user.gender}
+                </p>
               </div>
               <div>
-                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Height</p>
-                <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>{user.height} cm</p>
+                <p
+                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Height
+                </p>
+                <p
+                  className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                >
+                  {user.height} cm
+                </p>
               </div>
               <div>
-                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Weight</p>
-                <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>{user.weight} kg</p>
+                <p
+                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Weight
+                </p>
+                <p
+                  className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                >
+                  {user.weight} kg
+                </p>
               </div>
               <div>
-                <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>BMI</p>
-                <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                <p
+                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  BMI
+                </p>
+                <p
+                  className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                >
                   {(user.weight / (user.height / 100) ** 2).toFixed(1)}
                 </p>
               </div>
@@ -415,12 +505,18 @@ export default function Profile() {
             <>
               {/* Specialties */}
               {user.specialties && (
-                <div className={`rounded-2xl p-6 space-y-3 ${
-                  theme === "dark"
-                    ? "bg-gradient-to-br from-blue-200/70 via-indigo-200/70 to-purple-200/70 backdrop-blur-xl border border-blue-200/80"
-                    : "bg-card border border-border"
-                }`}>
-                  <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Specialties</h3>
+                <div
+                  className={`rounded-2xl p-6 space-y-3 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-br from-blue-200/70 via-indigo-200/70 to-purple-200/70 backdrop-blur-xl border border-blue-200/80"
+                      : "bg-card border border-border"
+                  }`}
+                >
+                  <h3
+                    className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                  >
+                    Specialties
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {user.specialties.map((spec) => (
                       <span
@@ -440,20 +536,30 @@ export default function Profile() {
 
               {/* Qualifications */}
               {user.qualifications && user.qualifications.length > 0 && (
-                <div className={`rounded-2xl p-6 space-y-3 ${
-                  theme === "dark"
-                    ? "bg-gradient-to-br from-amber-200/70 via-orange-200/70 to-red-200/70 backdrop-blur-xl border border-amber-200/80"
-                    : "bg-card border border-border"
-                }`}>
+                <div
+                  className={`rounded-2xl p-6 space-y-3 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-br from-amber-200/70 via-orange-200/70 to-red-200/70 backdrop-blur-xl border border-amber-200/80"
+                      : "bg-card border border-border"
+                  }`}
+                >
                   <div className="flex items-center gap-2 mb-3">
                     <Award className="w-5 h-5 text-amber-600" />
-                    <h3 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Qualifications</h3>
+                    <h3
+                      className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                    >
+                      Qualifications
+                    </h3>
                   </div>
                   <ul className="space-y-2">
                     {user.qualifications.map((qual, idx) => (
                       <li key={idx} className="flex items-start gap-2">
                         <span className="text-amber-600 mt-1">✓</span>
-                        <span className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>{qual}</span>
+                        <span
+                          className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
+                        >
+                          {qual}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -462,15 +568,23 @@ export default function Profile() {
 
               {/* Location */}
               {user.location && (
-                <div className={`rounded-2xl p-4 flex items-center gap-3 ${
-                  theme === "dark"
-                    ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
-                    : "bg-card border border-border"
-                }`}>
+                <div
+                  className={`rounded-2xl p-4 flex items-center gap-3 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
+                      : "bg-card border border-border"
+                  }`}
+                >
                   <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   <div>
-                    <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Training Location</p>
-                    <p className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                    <p
+                      className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                    >
+                      Training Location
+                    </p>
+                    <p
+                      className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                    >
                       {user.location}
                     </p>
                   </div>
@@ -482,29 +596,47 @@ export default function Profile() {
           {/* Stats */}
           {!isTrainer && (
             <div className="grid grid-cols-3 gap-3">
-              <div className={`rounded-xl p-4 text-center ${
-                theme === "dark"
-                  ? "bg-gradient-to-br from-blue-200/70 via-cyan-200/70 to-blue-200/70 backdrop-blur-xl border border-blue-200/80"
-                  : "bg-card border border-border"
-              }`}>
+              <div
+                className={`rounded-xl p-4 text-center ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-blue-200/70 via-cyan-200/70 to-blue-200/70 backdrop-blur-xl border border-blue-200/80"
+                    : "bg-card border border-border"
+                }`}
+              >
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
-                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Sessions</p>
+                <p
+                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Sessions
+                </p>
               </div>
-              <div className={`rounded-xl p-4 text-center ${
-                theme === "dark"
-                  ? "bg-gradient-to-br from-purple-200/70 via-violet-200/70 to-purple-200/70 backdrop-blur-xl border border-purple-200/80"
-                  : "bg-card border border-border"
-              }`}>
+              <div
+                className={`rounded-xl p-4 text-center ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-purple-200/70 via-violet-200/70 to-purple-200/70 backdrop-blur-xl border border-purple-200/80"
+                    : "bg-card border border-border"
+                }`}
+              >
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
-                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Hours</p>
+                <p
+                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Hours
+                </p>
               </div>
-              <div className={`rounded-xl p-4 text-center ${
-                theme === "dark"
-                  ? "bg-gradient-to-br from-pink-200/70 via-rose-200/70 to-pink-200/70 backdrop-blur-xl border border-pink-200/80"
-                  : "bg-card border border-border"
-              }`}>
+              <div
+                className={`rounded-xl p-4 text-center ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-pink-200/70 via-rose-200/70 to-pink-200/70 backdrop-blur-xl border border-pink-200/80"
+                    : "bg-card border border-border"
+                }`}
+              >
                 <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
-                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Streak</p>
+                <p
+                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Streak
+                </p>
               </div>
             </div>
           )}
@@ -551,10 +683,16 @@ export default function Profile() {
                     <div className="p-2 bg-green-600/20 rounded-full">
                       <Users className="w-5 h-5 text-green-700" />
                     </div>
-                    <h4 className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}>
+                    <h4
+                      className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}
+                    >
                       Invite Friends
                     </h4>
-                    <p className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}>Earn rewards</p>
+                    <p
+                      className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}
+                    >
+                      Earn rewards
+                    </p>
                   </div>
                 </div>
 
@@ -567,10 +705,16 @@ export default function Profile() {
                     <div className="p-2 bg-orange-600/20 rounded-full">
                       <CheckCircle className="w-5 h-5 text-orange-700" />
                     </div>
-                    <h4 className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}>
+                    <h4
+                      className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}
+                    >
                       Go Premium
                     </h4>
-                    <p className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}>Unlock all</p>
+                    <p
+                      className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}
+                    >
+                      Unlock all
+                    </p>
                   </div>
                 </div>
               </div>
@@ -589,10 +733,16 @@ export default function Profile() {
                   <div className="p-2 bg-blue-600/20 rounded-full">
                     <Briefcase className="w-5 h-5 text-blue-700" />
                   </div>
-                  <h4 className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}>
+                  <h4
+                    className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}
+                  >
                     Refer Trainer
                   </h4>
-                  <p className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}>Earn bonus</p>
+                  <p
+                    className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}
+                  >
+                    Earn bonus
+                  </p>
                 </div>
               </div>
 
@@ -605,10 +755,16 @@ export default function Profile() {
                   <div className="p-2 bg-orange-600/20 rounded-full">
                     <CheckCircle className="w-5 h-5 text-orange-700" />
                   </div>
-                  <h4 className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}>
+                  <h4
+                    className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}
+                  >
                     Go Premium
                   </h4>
-                  <p className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}>More features</p>
+                  <p
+                    className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}
+                  >
+                    More features
+                  </p>
                 </div>
               </div>
             </div>
@@ -619,13 +775,17 @@ export default function Profile() {
             <button
               onClick={() => setShowEditModal(true)}
               className={`w-full flex items-center gap-3 bg-card border border-border rounded-lg p-4 transition-colors ${
-                theme === "dark"
-                  ? "hover:bg-gray-800"
-                  : "hover:bg-gray-50"
+                theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-50"
               }`}
             >
-              <Edit2 className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`} />
-              <span className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Edit Profile</span>
+              <Edit2
+                className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              />
+              <span
+                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
+                Edit Profile
+              </span>
             </button>
 
             <button
@@ -653,13 +813,17 @@ export default function Profile() {
         {/* Edit Profile Modal */}
         {showEditModal && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className={`w-full max-w-md rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto ${
-              theme === "dark" ? "bg-gray-800" : "bg-white"
-            }`}>
+            <div
+              className={`w-full max-w-md rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto ${
+                theme === "dark" ? "bg-gray-800" : "bg-white"
+              }`}
+            >
               <div className="flex items-center justify-between mb-4">
-                <h2 className={`text-xl font-bold ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}>
+                <h2
+                  className={`text-xl font-bold ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}
+                >
                   Edit Profile
                 </h2>
                 <button
@@ -676,9 +840,11 @@ export default function Profile() {
 
               <div className="space-y-4">
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-900"
-                  }`}>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
+                    }`}
+                  >
                     Full Name
                   </label>
                   <input
@@ -696,9 +862,11 @@ export default function Profile() {
                 </div>
 
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-900"
-                  }`}>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
+                    }`}
+                  >
                     Email Address
                   </label>
                   <input
@@ -719,9 +887,11 @@ export default function Profile() {
                 </div>
 
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-900"
-                  }`}>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
+                    }`}
+                  >
                     Phone Number
                   </label>
                   <input
@@ -743,9 +913,11 @@ export default function Profile() {
                 </div>
 
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-900"
-                  }`}>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
+                    }`}
+                  >
                     Date of Birth
                   </label>
                   <input
@@ -769,9 +941,11 @@ export default function Profile() {
                 </div>
 
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-900"
-                  }`}>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
+                    }`}
+                  >
                     Gender
                   </label>
                   <select
@@ -796,9 +970,11 @@ export default function Profile() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className={`block text-sm font-medium mb-1 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}>
+                    <label
+                      className={`block text-sm font-medium mb-1 ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-900"
+                      }`}
+                    >
                       Height (cm)
                     </label>
                     <input
@@ -818,9 +994,11 @@ export default function Profile() {
                     />
                   </div>
                   <div>
-                    <label className={`block text-sm font-medium mb-1 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}>
+                    <label
+                      className={`block text-sm font-medium mb-1 ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-900"
+                      }`}
+                    >
                       Weight (kg)
                     </label>
                     <input
@@ -841,19 +1019,25 @@ export default function Profile() {
                   </div>
                 </div>
 
-                <div className={`rounded-lg p-3 ${
-                  theme === "dark"
-                    ? "bg-blue-900/30 border border-blue-800"
-                    : "bg-blue-50 border border-blue-200"
-                }`}>
-                  <p className={`text-xs ${
-                    theme === "dark" ? "text-blue-300" : "text-blue-700"
-                  }`}>
+                <div
+                  className={`rounded-lg p-3 ${
+                    theme === "dark"
+                      ? "bg-blue-900/30 border border-blue-800"
+                      : "bg-blue-50 border border-blue-200"
+                  }`}
+                >
+                  <p
+                    className={`text-xs ${
+                      theme === "dark" ? "text-blue-300" : "text-blue-700"
+                    }`}
+                  >
                     <strong>Age:</strong> {editForm.age} years
                   </p>
-                  <p className={`text-xs mt-1 ${
-                    theme === "dark" ? "text-blue-300" : "text-blue-600"
-                  }`}>
+                  <p
+                    className={`text-xs mt-1 ${
+                      theme === "dark" ? "text-blue-300" : "text-blue-600"
+                    }`}
+                  >
                     Age auto-updates from your date of birth
                   </p>
                 </div>
@@ -893,13 +1077,17 @@ export default function Profile() {
         {/* Referral Modal */}
         {showReferralModal && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center p-0 md:p-4">
-            <div className={`w-full md:max-w-md rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto ${
-              theme === "dark" ? "bg-gray-800" : "bg-white"
-            }`}>
+            <div
+              className={`w-full md:max-w-md rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto ${
+                theme === "dark" ? "bg-gray-800" : "bg-white"
+              }`}
+            >
               <div className="flex items-center justify-between">
-                <h2 className={`text-lg md:text-xl font-bold ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}>
+                <h2
+                  className={`text-lg md:text-xl font-bold ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}
+                >
                   Invite Friends
                 </h2>
                 <button
@@ -916,22 +1104,28 @@ export default function Profile() {
 
               {/* Referral Info */}
               <div className="space-y-4">
-                <p className={`text-sm leading-relaxed ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-600"
-                }`}>
+                <p
+                  className={`text-sm leading-relaxed ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-600"
+                  }`}
+                >
                   Share your referral link with friends and earn rewards when
                   they join CoTrainr!
                 </p>
 
                 {/* Referral Link Card */}
-                <div className={`rounded-2xl p-4 space-y-3 border-2 ${
-                  theme === "dark"
-                    ? "bg-green-900/30 border-green-800"
-                    : "bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
-                }`}>
-                  <p className={`text-xs font-semibold ${
-                    theme === "dark" ? "text-green-300" : "text-gray-700"
-                  }`}>
+                <div
+                  className={`rounded-2xl p-4 space-y-3 border-2 ${
+                    theme === "dark"
+                      ? "bg-green-900/30 border-green-800"
+                      : "bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
+                  }`}
+                >
+                  <p
+                    className={`text-xs font-semibold ${
+                      theme === "dark" ? "text-green-300" : "text-gray-700"
+                    }`}
+                  >
                     Your Referral Link
                   </p>
                   <div className="flex flex-col sm:flex-row gap-2">
@@ -969,17 +1163,25 @@ export default function Profile() {
                 </div>
 
                 {/* Referral Code */}
-                <div className={`rounded-lg p-4 ${
-                  theme === "dark"
-                    ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
-                    : "bg-card border border-border"
-                }`}>
-                  <p className={`text-xs mb-2 ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }`}>Referral Code</p>
-                  <p className={`text-base md:text-lg font-bold ${
-                    theme === "dark" ? "text-green-400" : "text-green-600"
-                  }`}>
+                <div
+                  className={`rounded-lg p-4 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-br from-green-200/70 via-emerald-200/70 to-teal-200/70 backdrop-blur-xl border border-green-200/80"
+                      : "bg-card border border-border"
+                  }`}
+                >
+                  <p
+                    className={`text-xs mb-2 ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
+                    Referral Code
+                  </p>
+                  <p
+                    className={`text-base md:text-lg font-bold ${
+                      theme === "dark" ? "text-green-400" : "text-green-600"
+                    }`}
+                  >
                     {referralCode}
                   </p>
                 </div>
@@ -987,19 +1189,25 @@ export default function Profile() {
                 {/* Benefits */}
                 <div className="space-y-3">
                   {/* Friend Benefits */}
-                  <div className={`rounded-xl p-4 space-y-2 border ${
-                    theme === "dark"
-                      ? "bg-green-900/30 border-green-800"
-                      : "bg-green-50 border-green-200"
-                  }`}>
-                    <p className={`text-sm font-semibold ${
-                      theme === "dark" ? "text-green-300" : "text-gray-900"
-                    }`}>
+                  <div
+                    className={`rounded-xl p-4 space-y-2 border ${
+                      theme === "dark"
+                        ? "bg-green-900/30 border-green-800"
+                        : "bg-green-50 border-green-200"
+                    }`}
+                  >
+                    <p
+                      className={`text-sm font-semibold ${
+                        theme === "dark" ? "text-green-300" : "text-gray-900"
+                      }`}
+                    >
                       Friend Gets
                     </p>
-                    <ul className={`space-y-1 text-xs ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <ul
+                      className={`space-y-1 text-xs ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       <li className="flex items-start gap-2">
                         <span className="text-green-600 mt-0.5 flex-shrink-0">
                           ✓
@@ -1016,19 +1224,25 @@ export default function Profile() {
                   </div>
 
                   {/* Your Benefits */}
-                  <div className={`rounded-xl p-4 space-y-2 border ${
-                    theme === "dark"
-                      ? "bg-purple-900/30 border-purple-800"
-                      : "bg-purple-50 border-purple-200"
-                  }`}>
-                    <p className={`text-sm font-semibold ${
-                      theme === "dark" ? "text-purple-300" : "text-gray-900"
-                    }`}>
+                  <div
+                    className={`rounded-xl p-4 space-y-2 border ${
+                      theme === "dark"
+                        ? "bg-purple-900/30 border-purple-800"
+                        : "bg-purple-50 border-purple-200"
+                    }`}
+                  >
+                    <p
+                      className={`text-sm font-semibold ${
+                        theme === "dark" ? "text-purple-300" : "text-gray-900"
+                      }`}
+                    >
                       You Get
                     </p>
-                    <ul className={`space-y-1 text-xs ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <ul
+                      className={`space-y-1 text-xs ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       <li className="flex items-start gap-2">
                         <span className="text-purple-600 mt-0.5 flex-shrink-0">
                           ✓
@@ -1073,13 +1287,17 @@ export default function Profile() {
         {/* Trainer Referral Modal */}
         {showTrainerReferralModal && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center p-0 md:p-4">
-            <div className={`w-full md:max-w-md rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto ${
-              theme === "dark" ? "bg-gray-800" : "bg-white"
-            }`}>
+            <div
+              className={`w-full md:max-w-md rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto ${
+                theme === "dark" ? "bg-gray-800" : "bg-white"
+              }`}
+            >
               <div className="flex items-center justify-between">
-                <h2 className={`text-lg md:text-xl font-bold ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}>
+                <h2
+                  className={`text-lg md:text-xl font-bold ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}
+                >
                   Refer a Cotrainer
                 </h2>
                 <button
@@ -1096,22 +1314,28 @@ export default function Profile() {
 
               {/* Referral Info */}
               <div className="space-y-4">
-                <p className={`text-sm leading-relaxed ${
-                  theme === "dark" ? "text-gray-300" : "text-gray-600"
-                }`}>
+                <p
+                  className={`text-sm leading-relaxed ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-600"
+                  }`}
+                >
                   Share your trainer code with other trainers and earn
                   commission when they join CoTrainr!
                 </p>
 
                 {/* Trainer Referral Link Card */}
-                <div className={`rounded-2xl p-4 space-y-3 border-2 ${
-                  theme === "dark"
-                    ? "bg-blue-900/30 border-blue-800"
-                    : "bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
-                }`}>
-                  <p className={`text-xs font-semibold ${
-                    theme === "dark" ? "text-blue-300" : "text-gray-700"
-                  }`}>
+                <div
+                  className={`rounded-2xl p-4 space-y-3 border-2 ${
+                    theme === "dark"
+                      ? "bg-blue-900/30 border-blue-800"
+                      : "bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
+                  }`}
+                >
+                  <p
+                    className={`text-xs font-semibold ${
+                      theme === "dark" ? "text-blue-300" : "text-gray-700"
+                    }`}
+                  >
                     Your Trainer Referral Link
                   </p>
                   <div className="flex flex-col sm:flex-row gap-2">
@@ -1149,17 +1373,25 @@ export default function Profile() {
                 </div>
 
                 {/* Trainer Referral Code */}
-                <div className={`rounded-lg p-4 ${
-                  theme === "dark"
-                    ? "bg-gradient-to-br from-blue-200/70 via-indigo-200/70 to-purple-200/70 backdrop-blur-xl border border-blue-200/80"
-                    : "bg-card border border-border"
-                }`}>
-                  <p className={`text-xs mb-2 ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }`}>Coach Code</p>
-                  <p className={`text-base md:text-lg font-bold ${
-                    theme === "dark" ? "text-blue-400" : "text-blue-600"
-                  }`}>
+                <div
+                  className={`rounded-lg p-4 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-br from-blue-200/70 via-indigo-200/70 to-purple-200/70 backdrop-blur-xl border border-blue-200/80"
+                      : "bg-card border border-border"
+                  }`}
+                >
+                  <p
+                    className={`text-xs mb-2 ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
+                    Coach Code
+                  </p>
+                  <p
+                    className={`text-base md:text-lg font-bold ${
+                      theme === "dark" ? "text-blue-400" : "text-blue-600"
+                    }`}
+                  >
                     {trainerReferralCode}
                   </p>
                 </div>
@@ -1167,19 +1399,25 @@ export default function Profile() {
                 {/* Benefits */}
                 <div className="space-y-3">
                   {/* Referred Trainer Benefits */}
-                  <div className={`rounded-xl p-4 space-y-2 border ${
-                    theme === "dark"
-                      ? "bg-blue-900/30 border-blue-800"
-                      : "bg-blue-50 border-blue-200"
-                  }`}>
-                    <p className={`text-sm font-semibold ${
-                      theme === "dark" ? "text-blue-300" : "text-gray-900"
-                    }`}>
+                  <div
+                    className={`rounded-xl p-4 space-y-2 border ${
+                      theme === "dark"
+                        ? "bg-blue-900/30 border-blue-800"
+                        : "bg-blue-50 border-blue-200"
+                    }`}
+                  >
+                    <p
+                      className={`text-sm font-semibold ${
+                        theme === "dark" ? "text-blue-300" : "text-gray-900"
+                      }`}
+                    >
                       New Trainer Gets
                     </p>
-                    <ul className={`space-y-1 text-xs ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <ul
+                      className={`space-y-1 text-xs ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       <li className="flex items-start gap-2">
                         <span className="text-blue-600 mt-0.5 flex-shrink-0">
                           ✓
@@ -1196,19 +1434,25 @@ export default function Profile() {
                   </div>
 
                   {/* Your Benefits as Referrer */}
-                  <div className={`rounded-xl p-4 space-y-2 border ${
-                    theme === "dark"
-                      ? "bg-indigo-900/30 border-indigo-800"
-                      : "bg-indigo-50 border-indigo-200"
-                  }`}>
-                    <p className={`text-sm font-semibold ${
-                      theme === "dark" ? "text-indigo-300" : "text-gray-900"
-                    }`}>
+                  <div
+                    className={`rounded-xl p-4 space-y-2 border ${
+                      theme === "dark"
+                        ? "bg-indigo-900/30 border-indigo-800"
+                        : "bg-indigo-50 border-indigo-200"
+                    }`}
+                  >
+                    <p
+                      className={`text-sm font-semibold ${
+                        theme === "dark" ? "text-indigo-300" : "text-gray-900"
+                      }`}
+                    >
                       You Get
                     </p>
-                    <ul className={`space-y-1 text-xs ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <ul
+                      className={`space-y-1 text-xs ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       <li className="flex items-start gap-2">
                         <span className="text-indigo-600 mt-0.5 flex-shrink-0">
                           ✓
