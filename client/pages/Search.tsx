@@ -1,112 +1,45 @@
-import { useState, useMemo } from "react";
-import { Search as SearchIcon, UserPlus, UserCheck, MapPin, Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search as SearchIcon, UserPlus, UserCheck, MapPin, Star, Loader } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useSearch } from "@/hooks/useSearch";
+import { useFollows } from "@/hooks/useFollows";
 import { toast } from "sonner";
-
-interface User {
-  id: string;
-  username: string;
-  full_name: string;
-  profile_picture_url?: string;
-  location?: string;
-  bio?: string;
-  followers?: number;
-  rating?: number;
-  verified?: boolean;
-  role: "client" | "trainer";
-}
-
-// Mock user data - in production, this would come from Supabase
-const MOCK_USERS: User[] = [
-  {
-    id: "user_1",
-    username: "priya_singh",
-    full_name: "Priya Singh",
-    profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya",
-    location: "Mumbai, India",
-    bio: "Fitness enthusiast | Personal trainer",
-    followers: 234,
-    rating: 4.8,
-    verified: true,
-    role: "trainer",
-  },
-  {
-    id: "user_2",
-    username: "amit_kumar",
-    full_name: "Amit Kumar",
-    profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Amit",
-    location: "Delhi, India",
-    bio: "Gym & CrossFit trainer",
-    followers: 456,
-    rating: 4.9,
-    verified: true,
-    role: "trainer",
-  },
-  {
-    id: "user_3",
-    username: "neha_verma",
-    full_name: "Neha Verma",
-    profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Neha",
-    location: "Bangalore, India",
-    bio: "Yoga instructor & wellness coach",
-    followers: 321,
-    rating: 4.7,
-    verified: true,
-    role: "trainer",
-  },
-  {
-    id: "user_4",
-    username: "rahul_fitness",
-    full_name: "Rahul Sharma",
-    profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul",
-    location: "Pune, India",
-    bio: "Strength & conditioning coach",
-    followers: 189,
-    rating: 4.6,
-    verified: false,
-    role: "trainer",
-  },
-  {
-    id: "user_5",
-    username: "sarah_wellness",
-    full_name: "Sarah Williams",
-    profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-    location: "Hyderabad, India",
-    bio: "Nutrition & fitness expert",
-    followers: 267,
-    rating: 4.9,
-    verified: true,
-    role: "trainer",
-  },
-];
 
 export default function Search() {
   const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
-  const [followedUsers, setFollowedUsers] = useState<Set<string>>(new Set());
+  const { results: searchResults, loading: searchLoading, searchUsers } = useSearch();
+  const { isFollowing, toggleFollow, loading: toggleLoading } = useFollows();
+  const [isTogglingId, setIsTogglingId] = useState<string | null>(null);
 
-  // Search users by username or full name
-  const searchResults = useMemo(() => {
-    if (!searchQuery.trim()) return MOCK_USERS;
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery.trim()) {
+        searchUsers(searchQuery);
+      }
+    }, 300); // 300ms debounce
 
-    const query = searchQuery.toLowerCase();
-    return MOCK_USERS.filter(
-      (user) =>
-        user.username.toLowerCase().includes(query) ||
-        user.full_name.toLowerCase().includes(query)
-    );
-  }, [searchQuery]);
+    return () => clearTimeout(timer);
+  }, [searchQuery, searchUsers]);
 
-  const handleFollow = (userId: string) => {
-    const newFollowed = new Set(followedUsers);
-    if (newFollowed.has(userId)) {
-      newFollowed.delete(userId);
-      toast.success("Unfollowed");
-    } else {
-      newFollowed.add(userId);
-      toast.success("Following!");
+  const handleFollow = async (userId: string) => {
+    setIsTogglingId(userId);
+    try {
+      const success = await toggleFollow(userId);
+      if (success) {
+        toast.success(
+          isFollowing(userId) ? "Unfollowed" : "Following!"
+        );
+      } else {
+        toast.error("Failed to update follow status");
+      }
+    } catch (error) {
+      console.error("Error toggling follow:", error);
+      toast.error("Something went wrong");
+    } finally {
+      setIsTogglingId(null);
     }
-    setFollowedUsers(newFollowed);
   };
 
   return (
