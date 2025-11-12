@@ -3,25 +3,19 @@ import App from "./App";
 
 createRoot(document.getElementById("root")!).render(<App />);
 
-// Completely disable service worker to prevent conflicts with Supabase API calls
+// Disable service worker to prevent conflicts with Supabase API calls
+// Run asynchronously to not block app rendering
 if ("serviceWorker" in navigator) {
-  // Unregister all existing service workers
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
-    registrations.forEach((registration) => {
-      registration.unregister().catch((error) => {
-        console.log("Error unregistering service worker:", error);
-      });
-    });
-  });
-
-  // Clear all caches
-  if ("caches" in window) {
-    caches.keys().then((cacheNames) => {
-      cacheNames.forEach((cacheName) => {
-        caches.delete(cacheName).catch((error) => {
-          console.log("Error clearing cache:", error);
+  // Defer cleanup to prevent blocking the app
+  setTimeout(() => {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister().catch(() => {
+          // Silently ignore errors
         });
       });
+    }).catch(() => {
+      // Silently ignore errors
     });
-  }
+  }, 1000);
 }
