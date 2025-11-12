@@ -1041,14 +1041,22 @@ export default function Profile() {
         {/* Trainer Referral Modal */}
         {showTrainerReferralModal && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center p-0 md:p-4">
-            <div className="w-full md:max-w-md bg-white rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto">
+            <div className={`w-full md:max-w-md rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}>
               <div className="flex items-center justify-between">
-                <h2 className="text-lg md:text-xl font-bold text-gray-900">
+                <h2 className={`text-lg md:text-xl font-bold ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}>
                   Refer a Cotrainer
                 </h2>
                 <button
                   onClick={() => setShowTrainerReferralModal(false)}
-                  className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                  className={`text-2xl leading-none ${
+                    theme === "dark"
+                      ? "text-gray-400 hover:text-gray-300"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
                 >
                   ✕
                 </button>
@@ -1056,14 +1064,22 @@ export default function Profile() {
 
               {/* Referral Info */}
               <div className="space-y-4">
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className={`text-sm leading-relaxed ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-600"
+                }`}>
                   Share your trainer code with other trainers and earn
                   commission when they join CoTrainr!
                 </p>
 
                 {/* Trainer Referral Link Card */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-4 space-y-3">
-                  <p className="text-xs font-semibold text-gray-700">
+                <div className={`rounded-2xl p-4 space-y-3 border-2 ${
+                  theme === "dark"
+                    ? "bg-blue-900/30 border-blue-800"
+                    : "bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
+                }`}>
+                  <p className={`text-xs font-semibold ${
+                    theme === "dark" ? "text-blue-300" : "text-gray-700"
+                  }`}>
                     Your Trainer Referral Link
                   </p>
                   <div className="flex flex-col sm:flex-row gap-2">
@@ -1071,7 +1087,11 @@ export default function Profile() {
                       type="text"
                       readOnly
                       value={trainerReferralLink}
-                      className="flex-1 bg-white border border-blue-300 rounded-lg px-3 py-2 text-xs md:text-sm text-gray-700 focus:outline-none overflow-hidden text-ellipsis"
+                      className={`flex-1 rounded-lg px-3 py-2 text-xs md:text-sm focus:outline-none overflow-hidden text-ellipsis ${
+                        theme === "dark"
+                          ? "bg-gray-900 border border-blue-700 text-gray-300"
+                          : "bg-white border border-blue-300 text-gray-700"
+                      }`}
                     />
                     <button
                       onClick={handleCopyTrainerReferralLink}
@@ -1097,9 +1117,17 @@ export default function Profile() {
                 </div>
 
                 {/* Trainer Referral Code */}
-                <div className="bg-card border border-border rounded-lg p-4">
-                  <p className="text-xs text-gray-600 mb-2">Coach Code</p>
-                  <p className="text-base md:text-lg font-bold text-blue-600">
+                <div className={`rounded-lg p-4 ${
+                  theme === "dark"
+                    ? "bg-gray-700 border border-gray-600"
+                    : "bg-card border border-border"
+                }`}>
+                  <p className={`text-xs mb-2 ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}>Coach Code</p>
+                  <p className={`text-base md:text-lg font-bold ${
+                    theme === "dark" ? "text-blue-400" : "text-blue-600"
+                  }`}>
                     {trainerReferralCode}
                   </p>
                 </div>
@@ -1107,11 +1135,19 @@ export default function Profile() {
                 {/* Benefits */}
                 <div className="space-y-3">
                   {/* Referred Trainer Benefits */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-2">
-                    <p className="text-sm font-semibold text-gray-900">
+                  <div className={`rounded-xl p-4 space-y-2 border ${
+                    theme === "dark"
+                      ? "bg-blue-900/30 border-blue-800"
+                      : "bg-blue-50 border-blue-200"
+                  }`}>
+                    <p className={`text-sm font-semibold ${
+                      theme === "dark" ? "text-blue-300" : "text-gray-900"
+                    }`}>
                       New Trainer Gets
                     </p>
-                    <ul className="space-y-1 text-xs text-gray-700">
+                    <ul className={`space-y-1 text-xs ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    }`}>
                       <li className="flex items-start gap-2">
                         <span className="text-blue-600 mt-0.5 flex-shrink-0">
                           ✓
@@ -1128,11 +1164,19 @@ export default function Profile() {
                   </div>
 
                   {/* Your Benefits as Referrer */}
-                  <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 space-y-2">
-                    <p className="text-sm font-semibold text-gray-900">
+                  <div className={`rounded-xl p-4 space-y-2 border ${
+                    theme === "dark"
+                      ? "bg-indigo-900/30 border-indigo-800"
+                      : "bg-indigo-50 border-indigo-200"
+                  }`}>
+                    <p className={`text-sm font-semibold ${
+                      theme === "dark" ? "text-indigo-300" : "text-gray-900"
+                    }`}>
                       You Get
                     </p>
-                    <ul className="space-y-1 text-xs text-gray-700">
+                    <ul className={`space-y-1 text-xs ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    }`}>
                       <li className="flex items-start gap-2">
                         <span className="text-indigo-600 mt-0.5 flex-shrink-0">
                           ✓
@@ -1154,7 +1198,11 @@ export default function Profile() {
               <div className="flex gap-2 pt-2 sm:pt-4">
                 <button
                   onClick={() => setShowTrainerReferralModal(false)}
-                  className="flex-1 bg-gray-200 text-gray-900 font-medium py-2.5 md:py-3 rounded-lg hover:bg-gray-300 transition-colors text-sm md:text-base"
+                  className={`flex-1 font-medium py-2.5 md:py-3 rounded-lg transition-colors text-sm md:text-base ${
+                    theme === "dark"
+                      ? "bg-gray-700 text-white hover:bg-gray-600"
+                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                  }`}
                 >
                   Close
                 </button>
