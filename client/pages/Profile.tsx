@@ -280,6 +280,21 @@ export default function Profile() {
             </button>
           )}
 
+          {/* Account Info Card */}
+          <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
+            <h3 className="font-bold text-gray-900">Account Information</h3>
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-gray-600 mb-1">Username</p>
+                <p className="font-semibold text-gray-900 break-all">{userProfile?.username || "Not set"}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-600 mb-1">Email Address</p>
+                <p className="font-semibold text-gray-900 break-all">{userProfile?.email || "Not set"}</p>
+              </div>
+            </div>
+          </div>
+
           {/* Basic Info Card */}
           <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
             <h3 className="font-bold text-gray-900">Basic Information</h3>
