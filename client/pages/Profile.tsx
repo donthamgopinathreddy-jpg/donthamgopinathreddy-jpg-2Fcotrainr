@@ -156,12 +156,28 @@ export default function Profile() {
     try {
       setIsSaving(true);
 
+      // Calculate age from date of birth if provided
+      let ageValue = editForm.age;
+      if (editForm.dateOfBirth) {
+        const today = new Date();
+        const birthDate = new Date(editForm.dateOfBirth);
+        ageValue = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          ageValue--;
+        }
+      }
+
       // Update profile in database
       await updateProfile({
         full_name: editForm.name,
+        email: editForm.email,
+        phone_number: editForm.phone,
         gender: editForm.gender,
         height_cm: editForm.height,
         weight_kg: editForm.weight,
+        date_of_birth: editForm.dateOfBirth,
+        age: ageValue,
       });
 
       // Update local state
