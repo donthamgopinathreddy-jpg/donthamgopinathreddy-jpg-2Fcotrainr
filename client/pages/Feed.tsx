@@ -62,6 +62,48 @@ export default function Feed() {
     return () => clearTimeout(timer);
   }, [searchQuery, searchUsers]);
 
+  // Fetch posts for the selected user
+  const fetchUserPosts = async (userId: string) => {
+    setLoadingUserPosts(true);
+    try {
+      const { data, error } = await supabase
+        .from("posts")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      if (data) {
+        // Enrich with user details
+        const { data: userData } = await supabase
+          .from("users")
+          .select("id, full_name, profile_picture_url, role")
+          .eq("id", userId)
+          .single();
+
+        const enriched: Post[] = data.map((post) => ({
+          ...post,
+          author_name: userData?.full_name || "Unknown",
+          author_avatar: userData?.profile_picture_url,
+          author_role: userData?.role as "trainer" | "client" | undefined,
+        }));
+
+        setUserPosts(enriched);
+      }
+    } catch (error) {
+      console.error("Error fetching user posts:", error);
+      setUserPosts([]);
+    } finally {
+      setLoadingUserPosts(false);
+    }
+  };
+
+  const handleSelectSearchUser = (user: SearchUser) => {
+    setSelectedSearchUser(user);
+    fetchUserPosts(user.id);
+  };
+
   const AVAILABLE_USERS = [
     "Priya Singh",
     "Amit Kumar",
