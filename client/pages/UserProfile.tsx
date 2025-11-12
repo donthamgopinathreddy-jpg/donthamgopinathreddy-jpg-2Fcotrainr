@@ -232,6 +232,16 @@ export default function UserProfile() {
             .from("posts")
             .update({ likes_count: post.likes_count + 1 })
             .eq("id", postId);
+
+          // Create notification for the post owner (if not liking own post)
+          if (post.user_id !== currentUser.id) {
+            await supabase.from("notifications").insert({
+              user_id: post.user_id,
+              actor_id: currentUser.id,
+              type: "like",
+              post_id: postId,
+            });
+          }
         }
 
         setLikedPosts((prev) => new Set(prev).add(postId));
