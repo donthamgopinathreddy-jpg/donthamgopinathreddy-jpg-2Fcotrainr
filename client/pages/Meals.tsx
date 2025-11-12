@@ -1344,35 +1344,51 @@ export default function Meals() {
                   />
                 ))}
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-2">
-                <p className="text-xs font-semibold text-blue-900">
+              <div className={`rounded-lg p-3 space-y-2 border ${
+                theme === "dark"
+                  ? "bg-blue-900/30 border-blue-800"
+                  : "bg-blue-50 border-blue-200"
+              }`}>
+                <p className={`text-xs font-semibold ${
+                  theme === "dark" ? "text-blue-300" : "text-blue-900"
+                }`}>
                   Auto-calculated nutrition:
                 </p>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div>
-                    <p className="text-blue-700 font-medium">
+                    <p className={`font-medium ${
+                      theme === "dark" ? "text-blue-300" : "text-blue-700"
+                    }`}>
                       {newFood.calories || "0"} cal
                     </p>
                   </div>
                   <div>
-                    <p className="text-blue-700 font-medium">
+                    <p className={`font-medium ${
+                      theme === "dark" ? "text-blue-300" : "text-blue-700"
+                    }`}>
                       P: {newFood.protein || "0"}g
                     </p>
                   </div>
                   <div>
-                    <p className="text-blue-700 font-medium">
+                    <p className={`font-medium ${
+                      theme === "dark" ? "text-blue-300" : "text-blue-700"
+                    }`}>
                       C: {newFood.carbs || "0"}g
                     </p>
                   </div>
                   <div>
-                    <p className="text-blue-700 font-medium">
+                    <p className={`font-medium ${
+                      theme === "dark" ? "text-blue-300" : "text-blue-700"
+                    }`}>
                       F: {newFood.fat || "0"}g
                     </p>
                   </div>
                 </div>
               </div>
 
-              <p className="text-xs text-muted-foreground">
+              <p className={`text-xs ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}>
                 💡 Type a food name and weight to auto-calculate nutrition. Can
                 be manually edited.
               </p>
