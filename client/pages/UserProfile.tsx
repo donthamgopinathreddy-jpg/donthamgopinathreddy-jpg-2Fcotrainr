@@ -639,13 +639,26 @@ export default function UserProfile() {
                     : "bg-gray-800 border-gray-700"
                 }`}
               >
-                <p
-                  className={`text-sm mb-3 ${
-                    theme === "light" ? "text-gray-900" : "text-white"
-                  }`}
-                >
-                  {post.content}
-                </p>
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <p
+                      className={`text-sm ${
+                        theme === "light" ? "text-gray-900" : "text-white"
+                      }`}
+                    >
+                      {post.content}
+                    </p>
+                  </div>
+                  {currentUser?.id === userId && (
+                    <button
+                      onClick={() => setShowDeleteConfirm(post.id)}
+                      className="text-red-500 hover:text-red-700 transition-colors p-1 flex-shrink-0 ml-2"
+                      title="Delete post"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
 
                 {post.image_url && (
                   <img
@@ -663,7 +676,7 @@ export default function UserProfile() {
                   />
                 )}
 
-                <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center justify-between text-xs mb-3">
                   <span
                     className={
                       theme === "light" ? "text-gray-500" : "text-gray-400"
@@ -674,7 +687,8 @@ export default function UserProfile() {
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => handleLike(post.id)}
-                      className="flex items-center gap-1 hover:text-red-500 transition-colors"
+                      disabled={likeLoading.has(post.id)}
+                      className="flex items-center gap-1 hover:text-red-500 transition-colors disabled:opacity-50"
                     >
                       <Heart
                         className={`w-4 h-4 ${
@@ -693,7 +707,14 @@ export default function UserProfile() {
                         {post.likes_count}
                       </span>
                     </button>
-                    <button className="flex items-center gap-1 hover:text-blue-500 transition-colors">
+                    <button
+                      onClick={() => {
+                        if (!postComments[post.id]) {
+                          fetchPostComments(post.id);
+                        }
+                      }}
+                      className="flex items-center gap-1 hover:text-blue-500 transition-colors"
+                    >
                       <MessageCircle
                         className={
                           theme === "light" ? "text-gray-500" : "text-gray-400"
@@ -709,6 +730,69 @@ export default function UserProfile() {
                     </button>
                   </div>
                 </div>
+
+                {/* Comments Section */}
+                {postComments[post.id] && (
+                  <div className={`border-t pt-3 ${
+                    theme === "light" ? "border-gray-200" : "border-gray-700"
+                  }`}>
+                    {postComments[post.id].length > 0 && (
+                      <div className="space-y-2 mb-3 max-h-40 overflow-y-auto">
+                        {postComments[post.id].map((comment) => (
+                          <div key={comment.id} className={`text-xs rounded p-2 ${
+                            theme === "light"
+                              ? "bg-gray-100"
+                              : "bg-gray-700/50"
+                          }`}>
+                            <p className={`font-semibold ${
+                              theme === "light" ? "text-gray-900" : "text-white"
+                            }`}>
+                              {comment.author?.full_name || "Anonymous"}
+                            </p>
+                            <p className={
+                              theme === "light" ? "text-gray-700" : "text-gray-300"
+                            }>
+                              {comment.content}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {currentUser?.id && (
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Add a comment..."
+                          value={commentInput[post.id] || ""}
+                          onChange={(e) =>
+                            setCommentInput((prev) => ({
+                              ...prev,
+                              [post.id]: e.target.value,
+                            }))
+                          }
+                          onKeyPress={(e) => {
+                            if (e.key === "Enter" && !commentLoading.has(post.id)) {
+                              handleAddComment(post.id);
+                            }
+                          }}
+                          className={`flex-1 rounded px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                            theme === "light"
+                              ? "bg-gray-100 text-gray-900 border border-gray-300"
+                              : "bg-gray-700 text-white border border-gray-600"
+                          }`}
+                        />
+                        <button
+                          onClick={() => handleAddComment(post.id)}
+                          disabled={commentLoading.has(post.id) || !commentInput[post.id]?.trim()}
+                          className="text-blue-500 hover:text-blue-700 transition-colors disabled:opacity-50 p-1"
+                        >
+                          <Send className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             ))
           )}
