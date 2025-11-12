@@ -621,14 +621,22 @@ export default function Profile() {
         {/* Edit Profile Modal */}
         {showEditModal && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className={`w-full max-w-md rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-gray-900">
+                <h2 className={`text-xl font-bold ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}>
                   Edit Profile
                 </h2>
                 <button
                   onClick={() => setShowEditModal(false)}
-                  className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                  className={`text-2xl leading-none ${
+                    theme === "dark"
+                      ? "text-gray-400 hover:text-gray-300"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
                 >
                   ✕
                 </button>
@@ -636,7 +644,9 @@ export default function Profile() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className={`block text-sm font-medium mb-1 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-900"
+                  }`}>
                     Full Name
                   </label>
                   <input
@@ -645,12 +655,18 @@ export default function Profile() {
                     onChange={(e) =>
                       setEditForm((prev) => ({ ...prev, name: e.target.value }))
                     }
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className={`block text-sm font-medium mb-1 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-900"
+                  }`}>
                     Email Address
                   </label>
                   <input
@@ -662,12 +678,18 @@ export default function Profile() {
                         email: e.target.value,
                       }))
                     }
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className={`block text-sm font-medium mb-1 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-900"
+                  }`}>
                     Phone Number
                   </label>
                   <input
@@ -679,13 +701,19 @@ export default function Profile() {
                         phone: e.target.value,
                       }))
                     }
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
                     placeholder="+91 9876543210"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className={`block text-sm font-medium mb-1 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-900"
+                  }`}>
                     Date of Birth
                   </label>
                   <input
@@ -700,12 +728,18 @@ export default function Profile() {
                         age: newAge,
                       }));
                     }}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">
+                  <label className={`block text-sm font-medium mb-1 ${
+                    theme === "dark" ? "text-gray-300" : "text-gray-900"
+                  }`}>
                     Gender
                   </label>
                   <select
@@ -716,7 +750,11 @@ export default function Profile() {
                         gender: e.target.value,
                       }))
                     }
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
