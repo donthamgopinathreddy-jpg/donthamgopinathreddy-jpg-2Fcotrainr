@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search as SearchIcon, UserPlus, UserCheck, MapPin, Star, Loader } from "lucide-react";
+import { Search as SearchIcon, UserPlus, UserCheck, Star, Loader } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useSearch } from "@/hooks/useSearch";
 import { useFollows } from "@/hooks/useFollows";
@@ -170,26 +170,12 @@ export default function Search() {
                       </p>
 
                       {/* User Details */}
-                      <div className="flex items-center gap-3 mt-1 text-xs">
-                        {user.location && (
-                          <div
-                            className={`flex items-center gap-1 ${
-                              theme === "dark"
-                                ? "text-gray-500"
-                                : "text-gray-500"
-                            }`}
-                          >
-                            <MapPin className="w-3 h-3" />
-                            <span>{user.location}</span>
-                          </div>
-                        )}
-                        {user.rating && (
-                          <div className="flex items-center gap-1 text-yellow-500">
-                            <Star className="w-3 h-3 fill-current" />
-                            <span>{user.rating}</span>
-                          </div>
-                        )}
-                      </div>
+                      {user.rating && (
+                        <div className="flex items-center gap-1 mt-2 text-xs text-yellow-500">
+                          <Star className="w-3 h-3 fill-current" />
+                          <span>{user.rating.toFixed(1)}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
