@@ -117,11 +117,11 @@ export default function UserProfile() {
         setUser(userData as UserData);
         setBioText(userData.bio || "");
 
-        // Fetch user's posts
+        // Fetch user's posts using the actual user ID from userData
         const { data: postsData, error: postsError } = await supabase
           .from("posts")
           .select("*")
-          .eq("user_id", userId)
+          .eq("user_id", userData.id)
           .order("created_at", { ascending: false });
 
         if (postsError) {
