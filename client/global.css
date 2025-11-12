@@ -145,12 +145,16 @@
   html {
     /* Safe area support for native/PWA apps */
     --safe-area-bottom: env(safe-area-inset-bottom);
+    /* Smooth theme transition */
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   body {
     @apply bg-background text-foreground;
     /* Support for notch and home indicator */
     padding-bottom: max(0px, env(safe-area-inset-bottom));
+    /* Smooth theme transition */
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
