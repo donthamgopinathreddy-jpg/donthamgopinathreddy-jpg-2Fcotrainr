@@ -6,7 +6,6 @@ export interface SearchUser {
   username: string;
   full_name: string;
   profile_picture_url?: string;
-  location?: string;
   bio?: string;
   followers_count?: number;
   rating?: number;
@@ -28,16 +27,16 @@ export const useSearch = () => {
     try {
       const searchTerm = `%${query.toLowerCase()}%`;
 
-      // Single query to search both username and full_name
+      // Query only columns that exist in the users table
       const { data, error } = await supabase
         .from("users")
-        .select("*")
+        .select("id, username, full_name, profile_picture_url, bio, role")
         .or(`username.ilike.${searchTerm},full_name.ilike.${searchTerm}`)
         .limit(20);
 
       if (error) {
         const errorMsg = error?.message || "Failed to search users";
-        console.error("Error searching users:", errorMsg);
+        console.error("Search error:", errorMsg);
         setResults([]);
         setLoading(false);
         return;
@@ -49,19 +48,43 @@ export const useSearch = () => {
         return;
       }
 
-      // Transform results without making additional queries
-      const transformedResults: SearchUser[] = data.map((user) => ({
-        id: user.id,
-        username: user.username || "",
-        full_name: user.full_name || "",
-        profile_picture_url: user.profile_picture_url,
-        location: user.location,
-        bio: user.bio,
-        followers_count: user.followers_count || 0,
-        rating: user.rating,
-        verified: user.verified || false,
-        role: user.role || "client",
-      }));
+      // Transform results and get trainer details for trainers
+      const transformedResults: SearchUser[] = await Promise.all(
+        data.map(async (user) => {
+          let verified = false;
+          let rating = undefined;
+
+          // Get trainer details if user is a trainer
+          if (user.role === "trainer") {
+            try {
+              const { data: trainerData } = await supabase
+                .from("trainers")
+                .select("verified, rating")
+                .eq("id", user.id)
+                .single();
+
+              if (trainerData) {
+                verified = trainerData.verified || false;
+                rating = trainerData.rating;
+              }
+            } catch (err) {
+              console.debug(`Could not fetch trainer details for ${user.id}`);
+            }
+          }
+
+          return {
+            id: user.id,
+            username: user.username || "",
+            full_name: user.full_name || "",
+            profile_picture_url: user.profile_picture_url,
+            bio: user.bio,
+            followers_count: 0,
+            rating: rating,
+            verified: verified,
+            role: user.role || "client",
+          };
+        })
+      );
 
       setResults(transformedResults);
     } catch (error) {
