@@ -41,7 +41,7 @@ interface UserType {
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { user, userProfile, signOut, updateProfile: authUpdateProfile } = useAuth();
+  const { user: authUser, userProfile, signOut, updateProfile: authUpdateProfile } = useAuth();
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
