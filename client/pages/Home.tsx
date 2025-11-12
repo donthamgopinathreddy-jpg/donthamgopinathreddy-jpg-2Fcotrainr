@@ -27,7 +27,7 @@ const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
   "You're doing amazing, keep it up! 💪",
   "Progress over perfection! 🎯",
-  "Your body is a temple, treat it right! 🏛️",
+  "Your body is a temple, treat it right! ��️",
   "One day or day one, you decide! ��",
 ];
 
@@ -517,24 +517,24 @@ export default function Home() {
           {/* Steps Progress */}
           <button
             onClick={() => navigate("/activity/steps")}
-            className="w-full text-left hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
+            className="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Footprints className="w-5 h-5 text-orange-600" />
-                <span className="font-semibold text-gray-900">Steps</span>
+                <span className="font-semibold text-gray-900 dark:text-white">Steps</span>
               </div>
               <span className="text-sm font-bold text-orange-600">
                 {stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}
               </span>
             </div>
-            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-orange-600 to-amber-500 transition-all duration-500 shadow-lg shadow-orange-600/50"
                 style={{ width: `${Math.min(stepsPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-gray-600 mt-1">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
               {stepsPercent}% of daily goal
             </p>
           </button>
@@ -543,13 +543,13 @@ export default function Home() {
           <div className="flex gap-2 pt-2">
             <button
               onClick={() => handleAddSteps(100)}
-              className="flex-1 bg-orange-100 hover:bg-orange-200 text-orange-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+              className="flex-1 bg-orange-100 dark:bg-orange-900/30 hover:bg-orange-200 dark:hover:bg-orange-900/50 text-orange-700 dark:text-orange-400 font-semibold py-2 rounded-lg transition-colors text-sm"
             >
               +100 steps
             </button>
             <button
               onClick={() => handleAddSteps(500)}
-              className="flex-1 bg-orange-100 hover:bg-orange-200 text-orange-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+              className="flex-1 bg-orange-100 dark:bg-orange-900/30 hover:bg-orange-200 dark:hover:bg-orange-900/50 text-orange-700 dark:text-orange-400 font-semibold py-2 rounded-lg transition-colors text-sm"
             >
               +500 steps
             </button>
@@ -558,12 +558,12 @@ export default function Home() {
           {/* Calories Progress */}
           <button
             onClick={() => navigate("/activity/calories")}
-            className="w-full text-left hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
+            className="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Flame className="w-5 h-5 text-red-600" />
-                <span className="font-semibold text-gray-900">
+                <span className="font-semibold text-gray-900 dark:text-white">
                   Calories Burned
                 </span>
               </div>
@@ -571,13 +571,13 @@ export default function Home() {
                 {caloriesBurned} cal
               </span>
             </div>
-            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-red-600 via-red-500 to-red-600 transition-all duration-500 shadow-lg shadow-red-600/50"
                 style={{ width: `${Math.min(caloriesPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-gray-600 mt-1">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
               ~{caloriesBurned} cal from {stepsCompleted} steps
             </p>
           </button>
@@ -585,24 +585,24 @@ export default function Home() {
           {/* Water Intake Progress */}
           <button
             onClick={() => navigate("/activity/water")}
-            className="w-full text-left hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors"
+            className="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Droplets className="w-5 h-5 text-cyan-600" />
-                <span className="font-semibold text-gray-900">Water</span>
+                <span className="font-semibold text-gray-900 dark:text-white">Water</span>
               </div>
               <span className="text-sm font-bold text-cyan-600">
                 {waterConsumed}L / {waterGoal}L
               </span>
             </div>
-            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-cyan-600 to-blue-600 transition-all duration-500 shadow-lg shadow-cyan-600/50"
                 style={{ width: `${Math.min(waterPercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-gray-600 mt-1">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
               {waterPercent}% of daily goal
             </p>
           </button>
@@ -611,19 +611,19 @@ export default function Home() {
           <div className="flex gap-2 pt-2">
             <button
               onClick={() => handleAddWater(0.2)}
-              className="flex-1 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+              className="flex-1 bg-cyan-100 dark:bg-cyan-900/30 hover:bg-cyan-200 dark:hover:bg-cyan-900/50 text-cyan-700 dark:text-cyan-400 font-semibold py-2 rounded-lg transition-colors text-sm"
             >
               +200ml
             </button>
             <button
               onClick={() => handleAddWater(0.5)}
-              className="flex-1 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+              className="flex-1 bg-cyan-100 dark:bg-cyan-900/30 hover:bg-cyan-200 dark:hover:bg-cyan-900/50 text-cyan-700 dark:text-cyan-400 font-semibold py-2 rounded-lg transition-colors text-sm"
             >
               +500ml
             </button>
             <button
               onClick={() => handleAddWater(1)}
-              className="flex-1 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 font-semibold py-2 rounded-lg transition-colors text-sm"
+              className="flex-1 bg-cyan-100 dark:bg-cyan-900/30 hover:bg-cyan-200 dark:hover:bg-cyan-900/50 text-cyan-700 dark:text-cyan-400 font-semibold py-2 rounded-lg transition-colors text-sm"
             >
               +1L
             </button>
