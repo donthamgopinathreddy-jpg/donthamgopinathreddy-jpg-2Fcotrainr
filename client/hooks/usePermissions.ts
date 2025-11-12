@@ -97,8 +97,9 @@ export const usePermissions = () => {
         return true;
       }
       return false;
-    } catch (error) {
-      console.error("Error requesting camera:", error);
+    } catch (error: any) {
+      const message = error?.message || String(error);
+      console.warn("Camera permission denied:", message);
       setPermissions((prev) => ({ ...prev, camera: "denied" }));
       return false;
     } finally {
@@ -118,8 +119,9 @@ export const usePermissions = () => {
         return true;
       }
       return false;
-    } catch (error) {
-      console.error("Error requesting microphone:", error);
+    } catch (error: any) {
+      const message = error?.message || String(error);
+      console.warn("Microphone permission denied:", message);
       setPermissions((prev) => ({ ...prev, microphone: "denied" }));
       return false;
     } finally {
