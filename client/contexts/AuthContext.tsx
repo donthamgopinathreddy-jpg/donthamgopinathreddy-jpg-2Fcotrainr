@@ -297,12 +297,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .update(updates)
         .eq("id", user.id);
 
-      if (error) throw error;
+      if (error) {
+        const errorMsg = error?.message || error?.details || JSON.stringify(error) || "Unknown error";
+        throw new Error(errorMsg);
+      }
 
       setUserProfile((prev) => (prev ? { ...prev, ...updates } : null));
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      throw error;
+    } catch (error: any) {
+      const errorMsg = error?.message || error?.details || String(error) || "Failed to update profile";
+      console.error("Error updating profile:", errorMsg);
+      throw new Error(errorMsg);
     }
   };
 
