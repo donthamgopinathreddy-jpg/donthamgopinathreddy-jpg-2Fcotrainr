@@ -25,7 +25,7 @@ const MOTIVATIONAL_QUOTES = [
   "You're doing amazing, keep it up! 💪",
   "Progress over perfection! 🎯",
   "Your body is a temple, treat it right! 🏛️",
-  "One day or day one, you decide! ⚡",
+  "One day or day one, you decide! ��",
 ];
 
 export default function Home() {
@@ -174,14 +174,29 @@ export default function Home() {
         return;
       }
 
-      // Update the steps target only (the goal)
-      // Don't change the bio field - that stores actual completed steps and water
+      // Update the steps target (the goal)
       setStepsTarget(editStepsTarget);
+
+      // Save water consumed to Supabase (in case it was edited)
+      const isDemoMode = userProfile.id.startsWith("demo-user") || userProfile.id.includes("demo");
+      const bioValue = `${stepsCompleted}|${waterConsumed}`;
+
+      if (!isDemoMode) {
+        const { error } = await supabase
+          .from("users")
+          .update({ bio: bioValue })
+          .eq("id", userProfile.id);
+
+        if (error) throw error;
+      } else {
+        localStorage.setItem(`targets_${userProfile.id}`, bioValue);
+      }
+
       setShowTargetsModal(false);
-      toast.success("✓ Steps target updated!");
+      toast.success("✓ Targets updated!");
     } catch (error) {
-      console.error("Error saving target:", error);
-      toast.error("Failed to save target");
+      console.error("Error saving targets:", error);
+      toast.error("Failed to save targets");
     }
   };
 
