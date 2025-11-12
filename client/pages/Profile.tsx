@@ -937,9 +937,17 @@ export default function Profile() {
                 </div>
 
                 {/* Referral Code */}
-                <div className="bg-card border border-border rounded-lg p-4">
-                  <p className="text-xs text-gray-600 mb-2">Referral Code</p>
-                  <p className="text-base md:text-lg font-bold text-green-600">
+                <div className={`rounded-lg p-4 ${
+                  theme === "dark"
+                    ? "bg-gray-700 border border-gray-600"
+                    : "bg-card border border-border"
+                }`}>
+                  <p className={`text-xs mb-2 ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}>Referral Code</p>
+                  <p className={`text-base md:text-lg font-bold ${
+                    theme === "dark" ? "text-green-400" : "text-green-600"
+                  }`}>
                     {referralCode}
                   </p>
                 </div>
@@ -947,11 +955,19 @@ export default function Profile() {
                 {/* Benefits */}
                 <div className="space-y-3">
                   {/* Friend Benefits */}
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-4 space-y-2">
-                    <p className="text-sm font-semibold text-gray-900">
+                  <div className={`rounded-xl p-4 space-y-2 border ${
+                    theme === "dark"
+                      ? "bg-green-900/30 border-green-800"
+                      : "bg-green-50 border-green-200"
+                  }`}>
+                    <p className={`text-sm font-semibold ${
+                      theme === "dark" ? "text-green-300" : "text-gray-900"
+                    }`}>
                       Friend Gets
                     </p>
-                    <ul className="space-y-1 text-xs text-gray-700">
+                    <ul className={`space-y-1 text-xs ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    }`}>
                       <li className="flex items-start gap-2">
                         <span className="text-green-600 mt-0.5 flex-shrink-0">
                           ✓
