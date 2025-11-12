@@ -80,14 +80,34 @@ export default function UserProfile() {
 
     const fetchUserProfile = async () => {
       try {
-        // Fetch user data
-        const { data: userData, error: userError } = await supabase
-          .from("users")
-          .select("id, username, full_name, profile_picture_url, bio, role")
-          .eq("id", userId)
-          .single();
+        // Try to fetch user data by ID first
+        let userData = null;
+        let userError = null;
 
-        if (userError) {
+        // Check if userId looks like a UUID (contains hyphens) or is a username
+        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId);
+
+        if (isUUID) {
+          // Search by ID
+          const result = await supabase
+            .from("users")
+            .select("id, username, full_name, profile_picture_url, bio, role")
+            .eq("id", userId)
+            .single();
+          userData = result.data;
+          userError = result.error;
+        } else {
+          // Search by username
+          const result = await supabase
+            .from("users")
+            .select("id, username, full_name, profile_picture_url, bio, role")
+            .eq("username", userId.toLowerCase())
+            .single();
+          userData = result.data;
+          userError = result.error;
+        }
+
+        if (userError || !userData) {
           console.error("Error fetching user:", userError);
           toast.error("User not found");
           navigate("/feed");
