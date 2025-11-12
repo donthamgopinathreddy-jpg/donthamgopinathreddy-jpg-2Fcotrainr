@@ -27,6 +27,21 @@ interface Post {
   user_id: string;
 }
 
+interface Comment {
+  id: string;
+  content: string;
+  user_id: string;
+  created_at: string;
+  author?: {
+    username: string;
+    full_name: string;
+  };
+}
+
+interface Like {
+  user_id: string;
+}
+
 export default function UserProfile() {
   const { userId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
