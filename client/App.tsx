@@ -285,30 +285,15 @@ const AppRoutes = () => {
 const App = () => {
   console.log("App component rendering");
 
-  try {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <ThemeProvider>
-            <LanguageProvider>
-              <AuthProvider>
-                <BrowserRouter>
-                  <AuthInitializer>
-                    <Toaster />
-                    <Sonner />
-                    <AppRoutes />
-                  </AuthInitializer>
-                </BrowserRouter>
-              </AuthProvider>
-            </LanguageProvider>
-          </ThemeProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    );
-  } catch (error) {
-    console.error("App component error:", error);
-    throw error;
-  }
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ textAlign: "center" }}>
+        <h1>Testing App Load</h1>
+        <p>If you see this, React is working</p>
+        <p>Now loading providers...</p>
+      </div>
+    </div>
+  );
 };
 
 export default App;
