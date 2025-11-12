@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/components/Logo";
 import GlassyTile from "@/components/GlassyTile";
-import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase, Settings, Activity } from "lucide-react";
+import { Dumbbell, Apple, MessageCircle, Utensils, Flame, Footprints, Droplets, Newspaper, Briefcase, Settings, Activity, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
@@ -21,15 +22,14 @@ export default function Home() {
   const [coverImage, setCoverImage] = useState(
     "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop"
   );
-  const [profileImage, setProfileImage] = useState("https://api.dicebear.com/7.x/avataaars/svg?seed=Admin");
   const [showTargetsModal, setShowTargetsModal] = useState(false);
   const [stepsTarget, setStepsTarget] = useState(10000);
   const [editStepsTarget, setEditStepsTarget] = useState(stepsTarget);
   const [stepsCompleted, setStepsCompleted] = useState(0);
   const [waterConsumed, setWaterConsumed] = useState(0);
-  const [pendingMeetings, setPendingMeetings] = useState([
-    { id: "MEET123", title: "Group Training", trainer: "Priya Singh", time: "3:00 PM", date: "Today" },
-  ]);
+  const [pendingMeetings, setPendingMeetings] = useState<any[]>([]);
+  const [latestFeed, setLatestFeed] = useState<any[]>([]);
+  const [loadingFeed, setLoadingFeed] = useState(false);
 
   // Sync user data from profile
   useEffect(() => {
@@ -38,26 +38,64 @@ export default function Home() {
         setStepsCompleted(parseInt(userProfile.bio?.split("|")[0] || "0") || 0);
         setWaterConsumed(parseFloat(userProfile.bio?.split("|")[1] || "0") || 0);
       }
+      if (userProfile.cover_image_url) {
+        setCoverImage(userProfile.cover_image_url);
+      }
     }
   }, [userProfile]);
 
-  const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setCoverImage(event.target?.result as string);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
+  // Fetch latest feed
+  useEffect(() => {
+    const fetchLatestFeed = async () => {
+      setLoadingFeed(true);
+      try {
+        const { data } = await supabase
+          .from("posts")
+          .select("*, users(full_name, profile_picture_url)")
+          .order("created_at", { ascending: false })
+          .limit(3);
 
-  const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setProfileImage(event.target?.result as string);
-      };
-      reader.readAsDataURL(e.target.files[0]);
+        setLatestFeed(data || []);
+      } catch (error) {
+        console.error("Error fetching feed:", error);
+      } finally {
+        setLoadingFeed(false);
+      }
+    };
+
+    fetchLatestFeed();
+  }, []);
+
+  const handleCoverImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.[0] || !userProfile?.id) return;
+
+    const file = e.target.files[0];
+    try {
+      // Upload to Supabase Storage
+      const fileName = `cover-${userProfile.id}-${Date.now()}-${file.name}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("cover-images")
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from("cover-images")
+        .getPublicUrl(uploadData.path);
+
+      // Update database
+      if (updateProfile) {
+        await updateProfile({
+          cover_image_url: urlData.publicUrl,
+        });
+      }
+
+      setCoverImage(urlData.publicUrl);
+      toast.success("✓ Cover image updated!");
+    } catch (error) {
+      console.error("Error uploading cover image:", error);
+      toast.error("Failed to upload cover image");
     }
   };
 
