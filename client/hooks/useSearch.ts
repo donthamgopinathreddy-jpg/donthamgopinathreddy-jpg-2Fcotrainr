@@ -15,46 +15,77 @@ export interface SearchUser {
 export const useSearch = () => {
   const [results, setResults] = useState<SearchUser[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const searchUsers = async (query: string) => {
     if (!query.trim()) {
       setResults([]);
+      setError(null);
       return;
     }
 
     setLoading(true);
+    setError(null);
+
     try {
+      // Add timeout to prevent hanging
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
       const searchTerm = `%${query.toLowerCase()}%`;
 
-      // Search by username
-      const { data: usernameResults, error: error1 } = await supabase
-        .from("users")
-        .select("id, username, full_name, profile_picture_url, bio, role")
-        .ilike("username", searchTerm);
-
-      // Search by full_name
-      const { data: nameResults, error: error2 } = await supabase
-        .from("users")
-        .select("id, username, full_name, profile_picture_url, bio, role")
-        .ilike("full_name", searchTerm);
-
-      if (error1) {
-        console.error("Username search error:", error1.message);
+      // Search by username - with timeout handling
+      let usernameResults: any[] = [];
+      try {
+        const response = await Promise.race([
+          supabase
+            .from("users")
+            .select("id, username, full_name, profile_picture_url, bio, role")
+            .ilike("username", searchTerm)
+            .limit(10),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Username search timeout")), 5000)
+          ),
+        ]);
+        
+        if (response && !response.error) {
+          usernameResults = response.data || [];
+        }
+      } catch (err: any) {
+        console.warn("Username search failed:", err?.message);
       }
 
-      if (error2) {
-        console.error("Name search error:", error2.message);
+      // Search by full_name - with timeout handling
+      let nameResults: any[] = [];
+      try {
+        const response = await Promise.race([
+          supabase
+            .from("users")
+            .select("id, username, full_name, profile_picture_url, bio, role")
+            .ilike("full_name", searchTerm)
+            .limit(10),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Name search timeout")), 5000)
+          ),
+        ]);
+
+        if (response && !response.error) {
+          nameResults = response.data || [];
+        }
+      } catch (err: any) {
+        console.warn("Name search failed:", err?.message);
       }
+
+      clearTimeout(timeoutId);
 
       // Combine results and remove duplicates
-      const allUsers = [...(usernameResults || []), ...(nameResults || [])];
+      const allUsers = [...usernameResults, ...nameResults];
       const uniqueUsers = Array.from(
         new Map(allUsers.map((u) => [u.id, u])).values()
       ).slice(0, 20);
 
       if (uniqueUsers.length === 0) {
         setResults([]);
-        setLoading(false);
         return;
       }
 
@@ -71,9 +102,11 @@ export const useSearch = () => {
       }));
 
       setResults(transformedResults);
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      console.error("Search exception:", errorMsg);
+    } catch (err: any) {
+      const errorMsg =
+        err instanceof Error ? err.message : String(err) || "Search failed";
+      console.error("Search error:", errorMsg);
+      setError("Failed to search. Please check your connection and try again.");
       setResults([]);
     } finally {
       setLoading(false);
@@ -83,6 +116,7 @@ export const useSearch = () => {
   return {
     results,
     loading,
+    error,
     searchUsers,
   };
 };
