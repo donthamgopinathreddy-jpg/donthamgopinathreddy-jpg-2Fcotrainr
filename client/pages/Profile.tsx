@@ -155,20 +155,6 @@ export default function Profile() {
     }));
   };
 
-  const updateProfile = async (updates: Record<string, any>) => {
-    if (!userProfile?.id) {
-      throw new Error("User not found");
-    }
-
-    const { error } = await supabase
-      .from("users")
-      .update(updates)
-      .eq("id", userProfile.id);
-
-    if (error) {
-      throw error;
-    }
-  };
 
   const handleSaveEdit = async () => {
     try {
