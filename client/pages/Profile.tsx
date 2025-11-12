@@ -179,20 +179,8 @@ export default function Profile() {
         return;
       }
 
-      // Calculate age from date of birth if provided
-      let ageValue = editForm.age;
-      if (editForm.dateOfBirth) {
-        const today = new Date();
-        const birthDate = new Date(editForm.dateOfBirth);
-        ageValue = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (
-          monthDiff < 0 ||
-          (monthDiff === 0 && today.getDate() < birthDate.getDate())
-        ) {
-          ageValue--;
-        }
-      }
+      // Calculate age from date of birth - use the calculated value
+      const ageValue = editForm.dateOfBirth ? calculateAge(editForm.dateOfBirth) : editForm.age;
 
       // Update profile using AuthContext method
       await authUpdateProfile({
