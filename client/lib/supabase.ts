@@ -34,6 +34,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     autoRefreshToken: true,
     storage: storageImpl,
-    flowType: "pkce",
+  },
+  db: {
+    schema: "public",
   },
 });
