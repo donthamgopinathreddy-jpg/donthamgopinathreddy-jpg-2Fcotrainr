@@ -29,6 +29,7 @@ import TrainerDashboard from "./pages/TrainerDashboard";
 import TrainerClientDetail from "./pages/TrainerClientDetail";
 import ActivityDetail from "./pages/ActivityDetail";
 import NotFound from "./pages/NotFound";
+import Search from "./pages/Search";
 import Navigation from "./components/Navigation";
 
 const queryClient = new QueryClient();
