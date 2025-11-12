@@ -184,7 +184,11 @@ export default function ChatMessages() {
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
           disabled={!isPremium && messagesUsed >= messagesLimit}
-          className="flex-1 bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+          className={`flex-1 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 ${
+            theme === "dark"
+              ? "bg-gray-800 border border-gray-700 text-white placeholder-gray-500"
+              : "bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500"
+          }`}
         />
         <button
           onClick={handleSendMessage}
