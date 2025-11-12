@@ -7,7 +7,7 @@ import Logo from "@/components/Logo";
 import { supabase } from "@/lib/supabase";
 import { usePermissions } from "@/hooks/usePermissions";
 
-type OnboardingStep = "welcome" | "username" | "fullname" | "email" | "password" | "phone" | "role" | "gender" | "height" | "weight" | "age" | "permissions";
+type OnboardingStep = "welcome" | "username" | "fullname" | "email" | "password" | "phone" | "role" | "gender" | "height" | "weight" | "dateOfBirth" | "permissions";
 type Gender = "male" | "female" | "other" | "";
 
 interface FormData {
@@ -21,6 +21,7 @@ interface FormData {
   height: string;
   weight: string;
   age: string;
+  dateOfBirth: string;
 }
 
 const COUNTRY_CODES = [
