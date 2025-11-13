@@ -77,9 +77,9 @@ const Navigation = () => {
                 <Icon
                   className={`w-6 h-6 mb-1 transition-all ${active ? "scale-110" : "scale-100"}`}
                 />
-                {path === "/messages" && unreadCount > 0 && (
+                {path === "/messages" && totalUnreadMessages > 0 && (
                   <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {unreadCount > 9 ? "9+" : unreadCount}
+                    {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
                   </div>
                 )}
               </div>
