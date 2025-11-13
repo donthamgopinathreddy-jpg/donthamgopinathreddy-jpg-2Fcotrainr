@@ -1,4 +1,4 @@
-import { MessageCircle, Plus } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useMessages } from "@/hooks/useMessages";
@@ -58,11 +58,15 @@ export default function Messages() {
 
         {/* Conversations List */}
         <div className="px-4 py-4 space-y-2">
-          {DEMO_CONVERSATIONS.length > 0 ? (
-            DEMO_CONVERSATIONS.map((conv) => (
+          {loading && displayConversations.length === 0 ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader className="w-6 h-6 animate-spin text-primary" />
+            </div>
+          ) : displayConversations.length > 0 ? (
+            displayConversations.map((conv) => (
               <button
-                key={conv.trainerId}
-                onClick={() => navigate(`/chat/${conv.trainerId}`)}
+                key={conv.id}
+                onClick={() => navigate(`/chat/${conv.other_user_id}`)}
                 className={`w-full flex items-start gap-3 p-4 rounded-xl transition-colors text-left border ${
                   theme === "dark"
                     ? "bg-gray-800 hover:bg-gray-700 border-gray-700"
@@ -71,7 +75,7 @@ export default function Messages() {
               >
                 {/* Avatar */}
                 <div className="w-12 h-12 bg-gradient-to-br from-pink-300 to-rose-300 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0">
-                  {conv.trainerAvatar}
+                  {conv.other_user_name?.charAt(0) || "?"}
                 </div>
 
                 {/* Info */}
@@ -82,36 +86,29 @@ export default function Messages() {
                         theme === "dark" ? "text-white" : "text-gray-900"
                       }`}
                     >
-                      {conv.trainerName}
+                      {conv.other_user_name || "Unknown"}
                     </h3>
                     <span
                       className={`text-xs ${
                         theme === "dark" ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
-                      {conv.timestamp}
+                      {conv.last_message_time || ""}
                     </span>
                   </div>
-                  <p
-                    className={`text-xs mb-1 ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
-                    {conv.category}
-                  </p>
                   <p
                     className={`text-sm truncate ${
                       theme === "dark" ? "text-gray-300" : "text-gray-700"
                     }`}
                   >
-                    {conv.lastMessage}
+                    {conv.last_message || "No messages yet"}
                   </p>
                 </div>
 
                 {/* Unread Badge */}
-                {conv.unread > 0 && (
+                {conv.unread_count > 0 && (
                   <div className="w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">
-                    {conv.unread}
+                    {conv.unread_count}
                   </div>
                 )}
               </button>
