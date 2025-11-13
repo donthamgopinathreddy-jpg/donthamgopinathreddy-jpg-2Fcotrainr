@@ -174,6 +174,8 @@ export default function UserProfile() {
       const success = await toggleFollow(user.id);
       if (success) {
         toast.success(isFollowing(user.id) ? "Unfollowed" : "Following!");
+        // Refetch follower counts after follow action
+        await refetchCounts(user.id);
       } else {
         toast.error("Failed to update follow status");
       }
