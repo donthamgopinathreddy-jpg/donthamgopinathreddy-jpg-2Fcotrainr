@@ -687,22 +687,24 @@ export default function UserProfile() {
             </div>
           </div>
 
-          {/* Follow Button */}
-          <div className="mb-4">
-            <button
-              onClick={handleFollow}
-              disabled={isTogglingFollow}
-              className={`w-full px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${
-                isFollowing(user.id)
-                  ? theme === "light"
-                    ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    : "bg-gray-700 text-white hover:bg-gray-600"
-                  : "bg-primary text-primary-foreground hover:opacity-90"
-              }`}
-            >
-              {isFollowing(user.id) ? "Following" : "Follow"}
-            </button>
-          </div>
+          {/* Follow Button (only show for other users, not own profile) */}
+          {currentUser?.id !== user?.id && (
+            <div className="mb-4">
+              <button
+                onClick={handleFollow}
+                disabled={isTogglingFollow}
+                className={`w-full px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${
+                  isFollowing(user.id)
+                    ? theme === "light"
+                      ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      : "bg-gray-700 text-white hover:bg-gray-600"
+                    : "bg-primary text-primary-foreground hover:opacity-90"
+                }`}
+              >
+                {isFollowing(user.id) ? "Following" : "Follow"}
+              </button>
+            </div>
+          )}
 
           {/* Bio Section */}
           <div className="mb-4">
