@@ -46,11 +46,16 @@ export const useMessages = (recipientId?: string) => {
         const demoConversations = localStorage.getItem(
           `conversations_demo_${user.id}`,
         );
-        const conversations = demoConversations ? JSON.parse(demoConversations) : [];
+        const conversations = demoConversations
+          ? JSON.parse(demoConversations)
+          : [];
         setConversations(conversations);
 
         // Calculate total unread messages from demo conversations
-        const totalUnread = conversations.reduce((sum: number, conv: Conversation) => sum + (conv.unread_count || 0), 0);
+        const totalUnread = conversations.reduce(
+          (sum: number, conv: Conversation) => sum + (conv.unread_count || 0),
+          0,
+        );
         setTotalUnreadMessages(totalUnread);
         setLoading(false);
         return;
@@ -245,7 +250,10 @@ export const useMessages = (recipientId?: string) => {
 
   // Recalculate total unread messages whenever conversations change
   useEffect(() => {
-    const total = conversations.reduce((sum, conv) => sum + conv.unread_count, 0);
+    const total = conversations.reduce(
+      (sum, conv) => sum + conv.unread_count,
+      0,
+    );
     setTotalUnreadMessages(total);
   }, [conversations]);
 

@@ -130,7 +130,6 @@ export default function Profile() {
     }
   }, [userProfile, followerCounts]);
 
-
   // Generate referral link
   const referralCode =
     userProfile?.id?.substring(0, 8).toUpperCase() || "REFER";
@@ -279,8 +278,6 @@ export default function Profile() {
       setIsSaving(false);
     }
   };
-
-
 
   const isTrainer = user.role === "trainer";
   const { theme, toggleTheme } = useTheme();
@@ -890,8 +887,6 @@ export default function Profile() {
             </button>
           </div>
         </div>
-
-
 
         {/* Edit Profile Modal */}
         {showEditModal && (
