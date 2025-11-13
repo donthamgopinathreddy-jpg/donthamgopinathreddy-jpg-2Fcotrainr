@@ -717,10 +717,16 @@ export default function Feed() {
                 >
                   {/* Post Header */}
                   <div className="px-4 pt-4 pb-3 flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-sm flex-shrink-0">
+                    <button
+                      onClick={() => navigate(`/user/${post.user_id}`)}
+                      className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center font-bold text-gray-900 text-sm flex-shrink-0 hover:opacity-80 transition-opacity"
+                    >
                       {getInitials(post.author_name)}
-                    </div>
-                    <div className="flex-1 min-w-0">
+                    </button>
+                    <div
+                      className="flex-1 min-w-0 cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => navigate(`/user/${post.user_id}`)}
+                    >
                       <p className="font-bold text-foreground text-sm">
                         {post.author_name || "Unknown"}
                       </p>
