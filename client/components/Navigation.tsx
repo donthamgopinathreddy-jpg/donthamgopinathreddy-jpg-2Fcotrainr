@@ -7,6 +7,7 @@ import {
   User,
   BarChart3,
   Bell,
+  Trophy,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
