@@ -339,16 +339,26 @@ export default function Feed() {
                           }`}
                         >
                           <div className="flex items-center gap-2 flex-1 min-w-0">
-                            <div
-                              className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs ${
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/user/${user.id}`);
+                              }}
+                              className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs hover:opacity-80 transition-opacity ${
                                 theme === "light"
                                   ? "bg-gray-300 text-gray-700"
                                   : "bg-gray-600 text-white"
                               }`}
                             >
                               {user.full_name.charAt(0)}
-                            </div>
-                            <div className="flex-1 min-w-0">
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/user/${user.id}`);
+                              }}
+                              className="flex-1 min-w-0 text-left hover:opacity-80 transition-opacity"
+                            >
                               <p
                                 className={`text-sm font-semibold truncate ${
                                   theme === "light"
@@ -367,7 +377,7 @@ export default function Feed() {
                               >
                                 @{user.username}
                               </p>
-                            </div>
+                            </button>
                           </div>
 
                           <button
