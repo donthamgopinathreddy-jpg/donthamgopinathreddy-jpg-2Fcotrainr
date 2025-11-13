@@ -4,6 +4,7 @@ export interface PermissionStatus {
   camera: "granted" | "denied" | "prompt" | "unknown";
   microphone: "granted" | "denied" | "prompt" | "unknown";
   notifications: "granted" | "denied" | "prompt" | "unknown";
+  location: "granted" | "denied" | "prompt" | "unknown";
 }
 
 export const usePermissions = () => {
