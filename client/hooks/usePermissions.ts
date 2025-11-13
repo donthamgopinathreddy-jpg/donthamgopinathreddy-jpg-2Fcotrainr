@@ -12,6 +12,7 @@ export const usePermissions = () => {
     camera: "prompt",
     microphone: "prompt",
     notifications: "prompt",
+    location: "prompt",
   });
   const [loading, setLoading] = useState(false);
 
