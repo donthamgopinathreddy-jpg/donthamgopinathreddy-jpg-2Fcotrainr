@@ -241,5 +241,6 @@ export const useMessages = (recipientId?: string) => {
     fetchMessages,
     fetchConversations,
     sendMessage,
+    totalUnreadMessages,
   };
 };
