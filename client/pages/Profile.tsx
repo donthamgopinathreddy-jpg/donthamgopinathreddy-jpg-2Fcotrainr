@@ -25,6 +25,8 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { cmToFeetInchesString, cmToFeetInches, inchesToCm } from "@/lib/utils";
 import { useFollowerCounts } from "@/hooks/useFollowerCounts";
+import { useReferrals } from "@/hooks/useReferrals";
+import AchievementBadges from "@/components/AchievementBadges";
 
 interface UserType {
   role: "client" | "trainer";
