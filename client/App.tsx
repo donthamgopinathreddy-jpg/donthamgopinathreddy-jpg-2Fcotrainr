@@ -30,6 +30,7 @@ import TrainerClientDetail from "./pages/TrainerClientDetail";
 import ActivityDetail from "./pages/ActivityDetail";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
+import Leaderboard from "./pages/Leaderboard";
 import Navigation from "./components/Navigation";
 
 const queryClient = new QueryClient();
