@@ -187,6 +187,7 @@ export const usePermissions = () => {
     requestCamera,
     requestMicrophone,
     requestNotification,
+    requestLocation,
     requestAllPermissions,
     checkPermissions,
   };
