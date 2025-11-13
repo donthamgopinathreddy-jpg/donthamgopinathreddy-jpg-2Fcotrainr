@@ -547,7 +547,7 @@ export default function Profile() {
                 <p
                   className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
                 >
-                  {user.height} cm
+                  {cmToFeetInchesString(user.height)}
                 </p>
               </div>
               <div>
