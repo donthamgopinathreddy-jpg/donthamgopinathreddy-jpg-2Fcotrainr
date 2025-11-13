@@ -143,6 +143,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/trainer/:trainerId/payment"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <TrainerBookingPayment />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/messages"
         element={
           <ProtectedRoute>
