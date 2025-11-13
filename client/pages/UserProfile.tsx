@@ -80,7 +80,12 @@ export default function UserProfile() {
   const [commentLoading, setCommentLoading] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    console.log("=== UserProfile mounted, userId from URL:", userId, "Length:", userId?.length);
+    console.log(
+      "=== UserProfile mounted, userId from URL:",
+      userId,
+      "Length:",
+      userId?.length,
+    );
 
     if (!userId) {
       console.warn("No userId provided to UserProfile");
