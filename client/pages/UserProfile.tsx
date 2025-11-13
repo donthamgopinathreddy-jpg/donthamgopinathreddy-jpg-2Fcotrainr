@@ -61,6 +61,9 @@ export default function UserProfile() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [isTogglingFollow, setIsTogglingFollow] = useState(false);
+  const [displayUserId, setDisplayUserId] = useState<string | undefined>();
+  const { counts: followerCounts, refetch: refetchCounts } =
+    useFollowerCounts(displayUserId);
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [editingBio, setEditingBio] = useState(false);
   const [bioText, setBioText] = useState("");
