@@ -1238,71 +1238,65 @@ export default function Profile() {
                   >
                     Height
                   </label>
-                  <div className="flex gap-2 mb-3">
-                    <button
-                      onClick={() => {
-                        if (heightUnit === "inches") {
-                          const inchValue = editForm.height;
-                          const cmValue = inchesToCm(inchValue);
-                          setEditForm((prev) => ({ ...prev, height: cmValue }));
-                        }
-                        setHeightUnit("cm");
-                      }}
-                      className={`flex-1 py-2 px-3 rounded-lg font-medium transition-all border-2 text-sm ${
-                        heightUnit === "cm"
-                          ? theme === "dark"
-                            ? "border-blue-600 bg-blue-600/20 text-white"
-                            : "border-blue-600 bg-blue-50 text-gray-900"
-                          : theme === "dark"
-                            ? "border-gray-700 bg-gray-900 text-gray-300 hover:border-blue-600/50"
-                            : "border-gray-300 bg-white text-gray-700 hover:border-blue-300"
-                      }`}
-                    >
-                      cm
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (heightUnit === "cm") {
-                          const cmValue = editForm.height;
-                          const inchValue = cmToInches(cmValue);
-                          setEditForm((prev) => ({ ...prev, height: inchValue }));
-                        }
-                        setHeightUnit("inches");
-                      }}
-                      className={`flex-1 py-2 px-3 rounded-lg font-medium transition-all border-2 text-sm ${
-                        heightUnit === "inches"
-                          ? theme === "dark"
-                            ? "border-blue-600 bg-blue-600/20 text-white"
-                            : "border-blue-600 bg-blue-50 text-gray-900"
-                          : theme === "dark"
-                            ? "border-gray-700 bg-gray-900 text-gray-300 hover:border-blue-600/50"
-                            : "border-gray-300 bg-white text-gray-700 hover:border-blue-300"
-                      }`}
-                    >
-                      in
-                    </button>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">
+                        Feet
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="5"
+                        min="0"
+                        max="10"
+                        value={editForm.height > 0 ? cmToFeetInches(editForm.height).feet : ""}
+                        onChange={(e) => {
+                          const feet = parseInt(e.target.value) || 0;
+                          const inches = editForm.height > 0 ? cmToFeetInches(editForm.height).inches : 0;
+                          const totalInches = feet * 12 + inches;
+                          setEditForm((prev) => ({
+                            ...prev,
+                            height: inchesToCm(totalInches),
+                          }));
+                        }}
+                        className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                          theme === "dark"
+                            ? "border border-gray-700 bg-gray-900 text-white"
+                            : "border border-gray-300 bg-white text-gray-900"
+                        }`}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">
+                        Inches
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="11"
+                        min="0"
+                        max="11"
+                        value={editForm.height > 0 ? cmToFeetInches(editForm.height).inches : ""}
+                        onChange={(e) => {
+                          const feet = editForm.height > 0 ? cmToFeetInches(editForm.height).feet : 0;
+                          const inches = parseInt(e.target.value) || 0;
+                          const totalInches = feet * 12 + inches;
+                          setEditForm((prev) => ({
+                            ...prev,
+                            height: inchesToCm(totalInches),
+                          }));
+                        }}
+                        className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                          theme === "dark"
+                            ? "border border-gray-700 bg-gray-900 text-white"
+                            : "border border-gray-300 bg-white text-gray-900"
+                        }`}
+                      />
+                    </div>
                   </div>
-                  <input
-                    type="number"
-                    value={editForm.height}
-                    onChange={(e) =>
-                      setEditForm((prev) => ({
-                        ...prev,
-                        height: Number(e.target.value),
-                      }))
-                    }
-                    placeholder={heightUnit === "cm" ? "180" : "5.9"}
-                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                      theme === "dark"
-                        ? "border border-gray-700 bg-gray-900 text-white"
-                        : "border border-gray-300 bg-white text-gray-900"
-                    }`}
-                  />
                   {editForm.height > 0 && (
                     <p className={`text-xs mt-2 ${
                       theme === "dark" ? "text-gray-400" : "text-gray-600"
                     }`}>
-                      ≈ {heightUnit === "cm" ? cmToInches(editForm.height).toFixed(1) : inchesToCm(editForm.height)} {heightUnit === "cm" ? "inches" : "cm"}
+                      {cmToFeetInchesString(editForm.height)} ({editForm.height} cm)
                     </p>
                   )}
                 </div>
