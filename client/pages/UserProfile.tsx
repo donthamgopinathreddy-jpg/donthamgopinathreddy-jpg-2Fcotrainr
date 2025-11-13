@@ -86,7 +86,6 @@ export default function UserProfile() {
       try {
         // Try to fetch user data by ID first
         let userData = null;
-        let userError = null;
 
         // Check if userId looks like a UUID (contains hyphens) or is a username
         const isUUID =
@@ -96,26 +95,45 @@ export default function UserProfile() {
 
         if (isUUID) {
           // Search by ID
-          const result = await supabase
+          const { data, error } = await supabase
             .from("users")
-            .select("id, username, full_name, profile_picture_url, bio, role")
-            .eq("id", userId)
-            .single();
-          userData = result.data;
-          userError = result.error;
+            .select("id, username, full_name, profile_picture_url, bio, role, gender, weight_kg, height_cm, age, date_of_birth")
+            .eq("id", userId);
+
+          if (!error && data && data.length > 0) {
+            userData = data[0];
+          } else if (error) {
+            console.error("Error fetching user by ID:", error);
+          }
         } else {
           // Search by username
-          const result = await supabase
+          const { data, error } = await supabase
             .from("users")
-            .select("id, username, full_name, profile_picture_url, bio, role")
-            .eq("username", userId.toLowerCase())
-            .single();
-          userData = result.data;
-          userError = result.error;
+            .select("id, username, full_name, profile_picture_url, bio, role, gender, weight_kg, height_cm, age, date_of_birth")
+            .eq("username", userId.toLowerCase());
+
+          if (!error && data && data.length > 0) {
+            userData = data[0];
+          } else if (error) {
+            console.error("Error fetching user by username:", error);
+          }
         }
 
-        if (userError || !userData) {
-          console.error("Error fetching user:", userError);
+        // If still not found, try searching by partial username
+        if (!userData && !isUUID) {
+          const { data, error } = await supabase
+            .from("users")
+            .select("id, username, full_name, profile_picture_url, bio, role, gender, weight_kg, height_cm, age, date_of_birth")
+            .ilike("username", `%${userId}%`)
+            .limit(1);
+
+          if (!error && data && data.length > 0) {
+            userData = data[0];
+          }
+        }
+
+        if (!userData) {
+          console.error("User not found:", userId);
           toast.error("User not found");
           navigate("/feed");
           return;
