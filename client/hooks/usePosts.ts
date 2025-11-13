@@ -189,6 +189,28 @@ export const usePosts = () => {
     }
   };
 
+  // Create notification helper
+  const createNotification = async (
+    postId: string,
+    type: "like" | "comment",
+  ) => {
+    if (!user) return;
+
+    try {
+      const post = posts.find((p) => p.id === postId);
+      if (!post || post.user_id === user.id) return;
+
+      await supabase.from("notifications").insert({
+        user_id: post.user_id,
+        actor_id: user.id,
+        type,
+        post_id: postId,
+      });
+    } catch (error) {
+      console.warn("Error creating notification:", error);
+    }
+  };
+
   // Like a post (optimistic update)
   const likePost = async (postId: string) => {
     try {
@@ -250,6 +272,11 @@ export const usePosts = () => {
         .eq("id", postId);
 
       if (updateError) throw updateError;
+
+      // Create notification for like only
+      if (!isLiked && delta === 1) {
+        await createNotification(postId, "like");
+      }
     } catch (error) {
       console.error("Error liking post:", error);
       // Revert optimistic update
