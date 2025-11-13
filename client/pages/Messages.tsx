@@ -1,50 +1,27 @@
 import { MessageCircle, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
-
-interface ChatConversation {
-  trainerId: string;
-  trainerName: string;
-  trainerAvatar: string;
-  category: string;
-  lastMessage: string;
-  timestamp: string;
-  unread: number;
-}
-
-const DEMO_CONVERSATIONS: ChatConversation[] = [
-  {
-    trainerId: "1",
-    trainerName: "Priya Singh",
-    trainerAvatar: "PS",
-    category: "Gym Trainer",
-    lastMessage: "Great! I have a perfect plan for you.",
-    timestamp: "2 hours ago",
-    unread: 0,
-  },
-  {
-    trainerId: "2",
-    trainerName: "Raj Patel",
-    trainerAvatar: "RP",
-    category: "CrossFit Coach",
-    lastMessage: "Ready for tomorrow's session?",
-    timestamp: "5 hours ago",
-    unread: 1,
-  },
-  {
-    trainerId: "3",
-    trainerName: "Neha Verma",
-    trainerAvatar: "NV",
-    category: "Strength Trainer",
-    lastMessage: "Your progress is amazing! Keep it up 💪",
-    timestamp: "1 day ago",
-    unread: 0,
-  },
-];
+import { useMessages } from "@/hooks/useMessages";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { Loader } from "lucide-react";
 
 export default function Messages() {
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { userProfile } = useAuth();
+  const { conversations, loading, fetchConversations } = useMessages();
+  const [displayConversations, setDisplayConversations] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (userProfile?.id) {
+      fetchConversations();
+    }
+  }, [userProfile?.id]);
+
+  useEffect(() => {
+    setDisplayConversations(conversations);
+  }, [conversations]);
 
   return (
     <div
