@@ -132,7 +132,7 @@ export default function Profile() {
         age: calculatedAge,
       });
     }
-  }, [userProfile]);
+  }, [userProfile, followerCounts]);
 
   // Fetch user's own posts
   useEffect(() => {
