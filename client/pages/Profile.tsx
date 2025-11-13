@@ -51,8 +51,9 @@ export default function Profile() {
     signOut,
     updateProfile: authUpdateProfile,
   } = useAuth();
-  const { counts: followerCounts, refetch: refetchCounts } =
-    useFollowerCounts(userProfile?.id);
+  const { counts: followerCounts, refetch: refetchCounts } = useFollowerCounts(
+    userProfile?.id,
+  );
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",

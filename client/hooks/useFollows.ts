@@ -121,7 +121,10 @@ export const useFollows = () => {
               type: "follow",
             });
           } catch (notificationError) {
-            console.warn("Error creating follow notification:", notificationError);
+            console.warn(
+              "Error creating follow notification:",
+              notificationError,
+            );
           }
 
           // Update follower/following counts
