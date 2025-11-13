@@ -74,6 +74,21 @@ export const useFollows = () => {
             console.error("Error unfollowing user:", error);
             return false;
           }
+
+          // Update follower/following counts
+          try {
+            // Decrement target user's followers_count
+            await supabase.rpc("decrement_followers_count", {
+              user_id: targetUserId,
+            });
+
+            // Decrement current user's following_count
+            await supabase.rpc("decrement_following_count", {
+              user_id: user.id,
+            });
+          } catch (countError) {
+            console.warn("Error updating follow counts:", countError);
+          }
         } else {
           // Save to localStorage in demo mode
           localStorage.setItem(
@@ -96,6 +111,32 @@ export const useFollows = () => {
           if (error) {
             console.error("Error following user:", error);
             return false;
+          }
+
+          // Create follow notification
+          try {
+            await supabase.from("notifications").insert({
+              user_id: targetUserId,
+              actor_id: user.id,
+              type: "follow",
+            });
+          } catch (notificationError) {
+            console.warn("Error creating follow notification:", notificationError);
+          }
+
+          // Update follower/following counts
+          try {
+            // Increment target user's followers_count
+            await supabase.rpc("increment_followers_count", {
+              user_id: targetUserId,
+            });
+
+            // Increment current user's following_count
+            await supabase.rpc("increment_following_count", {
+              user_id: user.id,
+            });
+          } catch (countError) {
+            console.warn("Error updating follow counts:", countError);
           }
         } else {
           // Save to localStorage in demo mode
