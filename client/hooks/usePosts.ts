@@ -325,6 +325,9 @@ export const usePosts = () => {
         .from("posts")
         .update({ comments_count: data.comments_count + 1 })
         .eq("id", postId);
+
+      // Create notification for comment
+      await createNotification(postId, "comment");
     } catch (error) {
       console.error("Error incrementing comments:", error);
       await fetchPosts();
@@ -342,6 +345,7 @@ export const usePosts = () => {
     deletePost,
     likePost,
     incrementComments,
+    createNotification,
     refetch: fetchPosts,
   };
 };
