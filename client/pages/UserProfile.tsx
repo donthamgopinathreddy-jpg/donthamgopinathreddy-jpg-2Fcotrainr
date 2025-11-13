@@ -133,7 +133,7 @@ export default function UserProfile() {
         if (!userData && !isUUID) {
           const { data, error } = await supabase
             .from("users")
-            .select("id, username, full_name, profile_picture_url, bio, role, gender, weight_kg, height_cm, age, date_of_birth")
+            .select("id, username, full_name, profile_picture_url, bio, role")
             .ilike("username", `%${userId}%`)
             .limit(1);
 
