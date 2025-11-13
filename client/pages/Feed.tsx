@@ -79,13 +79,13 @@ export default function Feed() {
         // Enrich with user details
         const { data: userData } = await supabase
           .from("users")
-          .select("id, full_name, profile_picture_url, role")
+          .select("id, full_name, username, profile_picture_url, role")
           .eq("id", userId)
           .single();
 
         const enriched: Post[] = data.map((post) => ({
           ...post,
-          author_name: userData?.full_name || "Unknown",
+          author_name: userData?.full_name || userData?.username || "Unknown",
           author_avatar: userData?.profile_picture_url,
           author_role: userData?.role as "trainer" | "client" | undefined,
         }));
