@@ -384,22 +384,6 @@ export default function Profile() {
 
         {/* Profile Content */}
         <div className="px-4 sm:px-6 py-8 space-y-4 sm:space-y-6">
-          {/* Follow Button (if not own profile) */}
-          {!isTrainer && (
-            <button
-              onClick={handleFollow}
-              className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold transition-all ${
-                isFollowing
-                  ? "bg-gray-200 text-gray-900 hover:bg-gray-300"
-                  : "bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:shadow-lg"
-              }`}
-            >
-              <Heart
-                className={`w-5 h-5 ${isFollowing ? "fill-current" : ""}`}
-              />
-              {isFollowing ? "Following" : "Follow"}
-            </button>
-          )}
 
           {/* Account Info Card */}
           <div
