@@ -80,7 +80,12 @@ export default function UserProfile() {
   const [commentLoading, setCommentLoading] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId) {
+      console.warn("No userId provided to UserProfile");
+      return;
+    }
+
+    console.log("UserProfile: Fetching user with ID/username:", userId);
 
     const fetchUserProfile = async () => {
       try {
