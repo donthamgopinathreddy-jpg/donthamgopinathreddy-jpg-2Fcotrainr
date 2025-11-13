@@ -62,7 +62,7 @@ export const usePosts = () => {
         const userIds = [...new Set(data.map((p) => p.user_id))];
         const { data: users } = await supabase
           .from("users")
-          .select("id, full_name, profile_picture_url, role")
+          .select("id, full_name, username, profile_picture_url, role")
           .in("id", userIds);
 
         const userMap = new Map(
@@ -73,7 +73,7 @@ export const usePosts = () => {
           const author = userMap.get(post.user_id);
           return {
             ...post,
-            author_name: author?.full_name || "Unknown",
+            author_name: author?.full_name || author?.username || "Unknown",
             author_avatar: author?.profile_picture_url,
             author_role: author?.role as "trainer" | "client" | undefined,
           };
