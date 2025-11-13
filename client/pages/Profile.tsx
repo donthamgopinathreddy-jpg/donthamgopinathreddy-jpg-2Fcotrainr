@@ -838,9 +838,28 @@ export default function Profile() {
           </div>
 
           {/* Menu Items */}
+          {/* Achievements Section */}
+          <div
+            className={`rounded-2xl p-4 ${
+              theme === "dark"
+                ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
+                : "bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200"
+            }`}
+          >
+            <h3
+              className={`font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              🏆 Achievements
+            </h3>
+            <AchievementBadges compact={true} />
+          </div>
+
+          {/* Referral Code Section */}
+          <ReferralCodeSection theme={theme} />
+
           <div className="space-y-2">
             <button
-              onClick={() => navigate(`/profile/${userProfile?.id}`)}
+              onClick={() => navigate(`/user/${userProfile?.username}`)}
               className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
                 theme === "dark"
                   ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
