@@ -160,6 +160,7 @@ export const usePermissions = () => {
           { name: "camera" as const },
           { name: "microphone" as const },
           { name: "notifications" as const },
+          { name: "geolocation" as const },
         ];
 
         for (const query of queries) {
@@ -167,7 +168,8 @@ export const usePermissions = () => {
             const status = await (navigator.permissions as any).query(query);
             setPermissions((prev) => ({
               ...prev,
-              [query.name]: status.state,
+              [query.name === "geolocation" ? "location" : query.name]:
+                status.state,
             }));
           } catch (e) {
             console.warn(`Could not query ${query.name} permission:`, e);
