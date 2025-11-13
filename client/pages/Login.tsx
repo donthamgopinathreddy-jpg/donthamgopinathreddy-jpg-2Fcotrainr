@@ -127,9 +127,7 @@ export default function Login() {
           <div className="text-center space-y-3">
             <Logo size="lg" className="mx-auto" />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Welcome Back
-              </h1>
+              <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
               <p className="text-gray-600 text-sm mt-2">
                 Sign in to your account to continue
               </p>

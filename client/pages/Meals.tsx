@@ -498,7 +498,7 @@ const FOOD_DATABASE: Record<string, FoodInfo> = {
     fat: 1.9,
     inputType: "weight",
   },
-  "olive": {
+  olive: {
     calories: 115,
     protein: 0.8,
     carbs: 6.3,
@@ -1001,9 +1001,11 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className={`text-xl font-bold ${
-                      theme === "dark" ? "text-white" : "text-gray-900"
-                    }`}>
+                    <span
+                      className={`text-xl font-bold ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
                       {Math.round((totalCalories / calorieGoal) * 100)}%
                     </span>
                   </div>
@@ -1045,9 +1047,11 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className={`text-xl font-bold ${
-                      theme === "dark" ? "text-white" : "text-gray-900"
-                    }`}>
+                    <span
+                      className={`text-xl font-bold ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
                       {Math.round((totalProtein / proteinGoal) * 100)}%
                     </span>
                   </div>
@@ -1087,9 +1091,11 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className={`text-xl font-bold ${
-                      theme === "dark" ? "text-white" : "text-gray-900"
-                    }`}>
+                    <span
+                      className={`text-xl font-bold ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
                       {Math.round((totalCarbs / carbsGoal) * 100)}%
                     </span>
                   </div>
@@ -1129,9 +1135,11 @@ export default function Meals() {
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className={`text-xl font-bold ${
-                      theme === "dark" ? "text-white" : "text-gray-900"
-                    }`}>
+                    <span
+                      className={`text-xl font-bold ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
                       {Math.round((totalFat / fatGoal) * 100)}%
                     </span>
                   </div>
@@ -1289,11 +1297,13 @@ export default function Meals() {
                   }`}
                 />
                 {suggestions.length > 0 && (
-                  <div className={`absolute z-10 top-full left-0 right-0 rounded-lg mt-1 shadow-lg border ${
-                    theme === "dark"
-                      ? "bg-gray-800 border-gray-700"
-                      : "bg-white border-gray-300"
-                  }`}>
+                  <div
+                    className={`absolute z-10 top-full left-0 right-0 rounded-lg mt-1 shadow-lg border ${
+                      theme === "dark"
+                        ? "bg-gray-800 border-gray-700"
+                        : "bg-white border-gray-300"
+                    }`}
+                  >
                     {suggestions.map((food) => {
                       const foodInfo = FOOD_DATABASE[food.toLowerCase()];
                       return (
@@ -1309,11 +1319,13 @@ export default function Meals() {
                           <div className="flex justify-between items-center">
                             <span>{food}</span>
                             {foodInfo.inputType === "quantity" && (
-                              <span className={`text-xs px-2 py-0.5 rounded ${
-                                theme === "dark"
-                                  ? "bg-blue-900 text-blue-300"
-                                  : "bg-blue-100 text-blue-700"
-                              }`}>
+                              <span
+                                className={`text-xs px-2 py-0.5 rounded ${
+                                  theme === "dark"
+                                    ? "bg-blue-900 text-blue-300"
+                                    : "bg-blue-100 text-blue-700"
+                                }`}
+                              >
                                 {foodInfo.unitName}
                               </span>
                             )}
@@ -1352,51 +1364,65 @@ export default function Meals() {
                   />
                 ))}
 
-              <div className={`rounded-lg p-3 space-y-2 border ${
-                theme === "dark"
-                  ? "bg-blue-900/30 border-blue-800"
-                  : "bg-blue-50 border-blue-200"
-              }`}>
-                <p className={`text-xs font-semibold ${
-                  theme === "dark" ? "text-blue-300" : "text-blue-900"
-                }`}>
+              <div
+                className={`rounded-lg p-3 space-y-2 border ${
+                  theme === "dark"
+                    ? "bg-blue-900/30 border-blue-800"
+                    : "bg-blue-50 border-blue-200"
+                }`}
+              >
+                <p
+                  className={`text-xs font-semibold ${
+                    theme === "dark" ? "text-blue-300" : "text-blue-900"
+                  }`}
+                >
                   Auto-calculated nutrition:
                 </p>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div>
-                    <p className={`font-medium ${
-                      theme === "dark" ? "text-blue-300" : "text-blue-700"
-                    }`}>
+                    <p
+                      className={`font-medium ${
+                        theme === "dark" ? "text-blue-300" : "text-blue-700"
+                      }`}
+                    >
                       {newFood.calories || "0"} cal
                     </p>
                   </div>
                   <div>
-                    <p className={`font-medium ${
-                      theme === "dark" ? "text-blue-300" : "text-blue-700"
-                    }`}>
+                    <p
+                      className={`font-medium ${
+                        theme === "dark" ? "text-blue-300" : "text-blue-700"
+                      }`}
+                    >
                       P: {newFood.protein || "0"}g
                     </p>
                   </div>
                   <div>
-                    <p className={`font-medium ${
-                      theme === "dark" ? "text-blue-300" : "text-blue-700"
-                    }`}>
+                    <p
+                      className={`font-medium ${
+                        theme === "dark" ? "text-blue-300" : "text-blue-700"
+                      }`}
+                    >
                       C: {newFood.carbs || "0"}g
                     </p>
                   </div>
                   <div>
-                    <p className={`font-medium ${
-                      theme === "dark" ? "text-blue-300" : "text-blue-700"
-                    }`}>
+                    <p
+                      className={`font-medium ${
+                        theme === "dark" ? "text-blue-300" : "text-blue-700"
+                      }`}
+                    >
                       F: {newFood.fat || "0"}g
                     </p>
                   </div>
                 </div>
               </div>
 
-              <p className={`text-xs ${
-                theme === "dark" ? "text-gray-400" : "text-gray-600"
-              }`}>
+              <p
+                className={`text-xs ${
+                  theme === "dark" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
                 💡 Type a food name and weight to auto-calculate nutrition. Can
                 be manually edited.
               </p>

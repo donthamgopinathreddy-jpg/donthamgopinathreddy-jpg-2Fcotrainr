@@ -65,9 +65,7 @@ export const usePosts = () => {
           .select("id, full_name, username, profile_picture_url, role")
           .in("id", userIds);
 
-        const userMap = new Map(
-          (users || []).map((u) => [u.id, u])
-        );
+        const userMap = new Map((users || []).map((u) => [u.id, u]));
 
         const enriched: Post[] = data.map((post) => {
           const author = userMap.get(post.user_id);
@@ -117,7 +115,10 @@ export const usePosts = () => {
         const existingPosts = demoPosts ? JSON.parse(demoPosts) : [];
         const updatedPosts = [newPost, ...existingPosts];
 
-        localStorage.setItem(`posts_demo_${user.id}`, JSON.stringify(updatedPosts));
+        localStorage.setItem(
+          `posts_demo_${user.id}`,
+          JSON.stringify(updatedPosts),
+        );
         setPosts(updatedPosts);
         return newPost;
       }
@@ -165,17 +166,19 @@ export const usePosts = () => {
         const demoPosts = localStorage.getItem(`posts_demo_${user?.id}`);
         if (demoPosts) {
           const existingPosts = JSON.parse(demoPosts);
-          const updatedPosts = existingPosts.filter((p: Post) => p.id !== postId);
-          localStorage.setItem(`posts_demo_${user?.id}`, JSON.stringify(updatedPosts));
+          const updatedPosts = existingPosts.filter(
+            (p: Post) => p.id !== postId,
+          );
+          localStorage.setItem(
+            `posts_demo_${user?.id}`,
+            JSON.stringify(updatedPosts),
+          );
         }
         setPosts((prev) => prev.filter((p) => p.id !== postId));
         return;
       }
 
-      const { error } = await supabase
-        .from("posts")
-        .delete()
-        .eq("id", postId);
+      const { error } = await supabase.from("posts").delete().eq("id", postId);
 
       if (error) throw error;
 
@@ -207,8 +210,8 @@ export const usePosts = () => {
         prev.map((p) =>
           p.id === postId
             ? { ...p, likes_count: Math.max(0, p.likes_count + delta) }
-            : p
-        )
+            : p,
+        ),
       );
 
       const isDemo = isDemoMode();
@@ -221,9 +224,12 @@ export const usePosts = () => {
           const updatedPosts = existingPosts.map((p: Post) =>
             p.id === postId
               ? { ...p, likes_count: Math.max(0, p.likes_count + delta) }
-              : p
+              : p,
           );
-          localStorage.setItem(`posts_demo_${user?.id}`, JSON.stringify(updatedPosts));
+          localStorage.setItem(
+            `posts_demo_${user?.id}`,
+            JSON.stringify(updatedPosts),
+          );
         }
         return;
       }
@@ -256,8 +262,8 @@ export const usePosts = () => {
     try {
       setPosts((prev) =>
         prev.map((p) =>
-          p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p
-        )
+          p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p,
+        ),
       );
 
       const isDemo = isDemoMode();
@@ -268,9 +274,14 @@ export const usePosts = () => {
         if (demoPosts) {
           const existingPosts = JSON.parse(demoPosts);
           const updatedPosts = existingPosts.map((p: Post) =>
-            p.id === postId ? { ...p, comments_count: p.comments_count + 1 } : p
+            p.id === postId
+              ? { ...p, comments_count: p.comments_count + 1 }
+              : p,
           );
-          localStorage.setItem(`posts_demo_${user?.id}`, JSON.stringify(updatedPosts));
+          localStorage.setItem(
+            `posts_demo_${user?.id}`,
+            JSON.stringify(updatedPosts),
+          );
         }
         return;
       }

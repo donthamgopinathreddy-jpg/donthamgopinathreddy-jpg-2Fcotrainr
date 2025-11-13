@@ -34,7 +34,9 @@ export const useNotifications = () => {
     try {
       const { data, error } = await supabase
         .from("notifications")
-        .select("id, user_id, actor_id, type, post_id, comment_id, content, is_read, created_at")
+        .select(
+          "id, user_id, actor_id, type, post_id, comment_id, content, is_read, created_at",
+        )
         .eq("user_id", userProfile.id)
         .order("created_at", { ascending: false })
         .limit(20);
@@ -91,7 +93,9 @@ export const useNotifications = () => {
         .eq("id", notificationId);
 
       setNotifications((prev) =>
-        prev.map((n) => (n.id === notificationId ? { ...n, is_read: true } : n))
+        prev.map((n) =>
+          n.id === notificationId ? { ...n, is_read: true } : n,
+        ),
       );
 
       setUnreadCount((prev) => Math.max(0, prev - 1));

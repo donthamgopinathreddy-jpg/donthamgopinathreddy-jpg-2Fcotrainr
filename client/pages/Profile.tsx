@@ -101,7 +101,6 @@ export default function Profile() {
     return Math.max(0, age);
   };
 
-
   // Sync state with userProfile whenever it changes
   useEffect(() => {
     if (userProfile) {
@@ -1247,10 +1246,17 @@ export default function Profile() {
                         placeholder="5"
                         min="0"
                         max="10"
-                        value={editForm.height > 0 ? cmToFeetInches(editForm.height).feet : ""}
+                        value={
+                          editForm.height > 0
+                            ? cmToFeetInches(editForm.height).feet
+                            : ""
+                        }
                         onChange={(e) => {
                           const feet = parseInt(e.target.value) || 0;
-                          const inches = editForm.height > 0 ? cmToFeetInches(editForm.height).inches : 0;
+                          const inches =
+                            editForm.height > 0
+                              ? cmToFeetInches(editForm.height).inches
+                              : 0;
                           const totalInches = feet * 12 + inches;
                           setEditForm((prev) => ({
                             ...prev,
@@ -1273,9 +1279,16 @@ export default function Profile() {
                         placeholder="11"
                         min="0"
                         max="11"
-                        value={editForm.height > 0 ? cmToFeetInches(editForm.height).inches : ""}
+                        value={
+                          editForm.height > 0
+                            ? cmToFeetInches(editForm.height).inches
+                            : ""
+                        }
                         onChange={(e) => {
-                          const feet = editForm.height > 0 ? cmToFeetInches(editForm.height).feet : 0;
+                          const feet =
+                            editForm.height > 0
+                              ? cmToFeetInches(editForm.height).feet
+                              : 0;
                           const inches = parseInt(e.target.value) || 0;
                           const totalInches = feet * 12 + inches;
                           setEditForm((prev) => ({
@@ -1292,10 +1305,13 @@ export default function Profile() {
                     </div>
                   </div>
                   {editForm.height > 0 && (
-                    <p className={`text-xs mt-2 ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
-                    }`}>
-                      {cmToFeetInchesString(editForm.height)} ({editForm.height} cm)
+                    <p
+                      className={`text-xs mt-2 ${
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    >
+                      {cmToFeetInchesString(editForm.height)} ({editForm.height}{" "}
+                      cm)
                     </p>
                   )}
                 </div>

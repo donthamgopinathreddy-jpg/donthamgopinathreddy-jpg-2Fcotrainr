@@ -85,7 +85,10 @@ export default function UserProfile() {
         let userError = null;
 
         // Check if userId looks like a UUID (contains hyphens) or is a username
-        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId);
+        const isUUID =
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+            userId,
+          );
 
         if (isUUID) {
           // Search by ID

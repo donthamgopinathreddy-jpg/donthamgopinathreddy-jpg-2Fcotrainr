@@ -783,12 +783,21 @@ export default function Onboarding() {
                     placeholder="5"
                     min="0"
                     max="10"
-                    value={formData.height ? cmToFeetInches(parseFloat(formData.height)).feet : ""}
+                    value={
+                      formData.height
+                        ? cmToFeetInches(parseFloat(formData.height)).feet
+                        : ""
+                    }
                     onChange={(e) => {
                       const feet = parseInt(e.target.value) || 0;
-                      const inches = formData.height ? cmToFeetInches(parseFloat(formData.height)).inches : 0;
+                      const inches = formData.height
+                        ? cmToFeetInches(parseFloat(formData.height)).inches
+                        : 0;
                       const totalInches = feet * 12 + inches;
-                      setFormData((prev) => ({ ...prev, height: inchesToCm(totalInches).toString() }));
+                      setFormData((prev) => ({
+                        ...prev,
+                        height: inchesToCm(totalInches).toString(),
+                      }));
                     }}
                     className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
@@ -802,12 +811,21 @@ export default function Onboarding() {
                     placeholder="11"
                     min="0"
                     max="11"
-                    value={formData.height ? cmToFeetInches(parseFloat(formData.height)).inches : ""}
+                    value={
+                      formData.height
+                        ? cmToFeetInches(parseFloat(formData.height)).inches
+                        : ""
+                    }
                     onChange={(e) => {
-                      const feet = formData.height ? cmToFeetInches(parseFloat(formData.height)).feet : 0;
+                      const feet = formData.height
+                        ? cmToFeetInches(parseFloat(formData.height)).feet
+                        : 0;
                       const inches = parseInt(e.target.value) || 0;
                       const totalInches = feet * 12 + inches;
-                      setFormData((prev) => ({ ...prev, height: inchesToCm(totalInches).toString() }));
+                      setFormData((prev) => ({
+                        ...prev,
+                        height: inchesToCm(totalInches).toString(),
+                      }));
                     }}
                     className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
@@ -815,13 +833,16 @@ export default function Onboarding() {
               </div>
 
               {formData.height.trim() && (
-                <div className={`rounded-lg p-3 ${
-                  heightUnit === "cm"
-                    ? "bg-blue-50 border border-blue-200"
-                    : "bg-blue-50 border border-blue-200"
-                }`}>
+                <div
+                  className={`rounded-lg p-3 ${
+                    heightUnit === "cm"
+                      ? "bg-blue-50 border border-blue-200"
+                      : "bg-blue-50 border border-blue-200"
+                  }`}
+                >
                   <p className="text-sm font-medium text-blue-900">
-                    Height: {cmToFeetInchesString(parseFloat(formData.height))} ({parseFloat(formData.height)} cm)
+                    Height: {cmToFeetInchesString(parseFloat(formData.height))}{" "}
+                    ({parseFloat(formData.height)} cm)
                   </p>
                 </div>
               )}

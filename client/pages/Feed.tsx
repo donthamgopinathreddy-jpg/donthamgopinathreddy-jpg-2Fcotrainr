@@ -47,7 +47,8 @@ export default function Feed() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [isTogglingId, setIsTogglingId] = useState<string | null>(null);
-  const [selectedSearchUser, setSelectedSearchUser] = useState<SearchUser | null>(null);
+  const [selectedSearchUser, setSelectedSearchUser] =
+    useState<SearchUser | null>(null);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [loadingUserPosts, setLoadingUserPosts] = useState(false);
 
@@ -408,104 +409,117 @@ export default function Feed() {
                               </div>
                             )}
                             {!loadingUserPosts && userPosts.length === 0 && (
-                              <p className={`text-xs italic ${
-                                theme === "light" ? "text-gray-500" : "text-gray-400"
-                              }`}>
+                              <p
+                                className={`text-xs italic ${
+                                  theme === "light"
+                                    ? "text-gray-500"
+                                    : "text-gray-400"
+                                }`}
+                              >
                                 No posts yet
                               </p>
                             )}
-                            {!loadingUserPosts && userPosts.map((post) => (
-                              <div
-                                key={post.id}
-                                className={`rounded-lg overflow-hidden border ${
-                                  theme === "light"
-                                    ? "bg-white border-gray-100"
-                                    : "bg-gray-800 border-gray-700"
-                                }`}
-                              >
-                                {/* Post Header */}
-                                <div className={`px-3 py-2 border-b ${
-                                  theme === "light"
-                                    ? "border-gray-100"
-                                    : "border-gray-700"
-                                }`}>
-                                  <p className={`text-xs font-semibold ${
+                            {!loadingUserPosts &&
+                              userPosts.map((post) => (
+                                <div
+                                  key={post.id}
+                                  className={`rounded-lg overflow-hidden border ${
                                     theme === "light"
-                                      ? "text-gray-900"
-                                      : "text-white"
-                                  }`}>
-                                    {formatDate(post.created_at)}
-                                  </p>
-                                </div>
-
-                                {/* Post Content */}
-                                <div className="px-3 py-2">
-                                  <p className={`text-xs leading-relaxed ${
-                                    theme === "light"
-                                      ? "text-gray-700"
-                                      : "text-gray-300"
-                                  }`}>
-                                    {post.content}
-                                  </p>
-                                </div>
-
-                                {/* Post Image */}
-                                {post.image_url && (
-                                  <div className="w-full h-32 overflow-hidden">
-                                    <img
-                                      src={post.image_url}
-                                      alt="Post"
-                                      className="w-full h-full object-cover"
-                                    />
-                                  </div>
-                                )}
-
-                                {/* Post Video */}
-                                {post.video_url && (
-                                  <div className="w-full h-32 overflow-hidden">
-                                    <video
-                                      src={post.video_url}
-                                      className="w-full h-full object-cover"
-                                      controls
-                                    />
-                                  </div>
-                                )}
-
-                                {/* Post Actions */}
-                                <div className={`px-3 py-2 border-t flex items-center justify-around text-xs ${
-                                  theme === "light"
-                                    ? "border-gray-100"
-                                    : "border-gray-700"
-                                }`}>
-                                  <button
-                                    onClick={() => handleLike(post.id)}
-                                    className={`flex items-center gap-1 font-medium transition-colors ${
-                                      likedPosts.has(post.id)
-                                        ? "text-red-500"
-                                        : theme === "light"
-                                          ? "text-gray-600 hover:text-red-500"
-                                          : "text-gray-400 hover:text-red-500"
-                                    }`}
-                                  >
-                                    <Heart
-                                      className={`w-3 h-3 ${likedPosts.has(post.id) ? "fill-red-500" : ""}`}
-                                    />
-                                    <span>{post.likes_count}</span>
-                                  </button>
-                                  <button
-                                    onClick={() => handleComment(post.id)}
-                                    className={`flex items-center gap-1 font-medium transition-colors ${
+                                      ? "bg-white border-gray-100"
+                                      : "bg-gray-800 border-gray-700"
+                                  }`}
+                                >
+                                  {/* Post Header */}
+                                  <div
+                                    className={`px-3 py-2 border-b ${
                                       theme === "light"
-                                        ? "text-gray-600 hover:text-primary"
-                                        : "text-gray-400 hover:text-primary"
+                                        ? "border-gray-100"
+                                        : "border-gray-700"
                                     }`}
                                   >
-                                    <MessageCircle className="w-3 h-3" />
-                                    <span>{post.comments_count}</span>
-                                  </button>
+                                    <p
+                                      className={`text-xs font-semibold ${
+                                        theme === "light"
+                                          ? "text-gray-900"
+                                          : "text-white"
+                                      }`}
+                                    >
+                                      {formatDate(post.created_at)}
+                                    </p>
+                                  </div>
+
+                                  {/* Post Content */}
+                                  <div className="px-3 py-2">
+                                    <p
+                                      className={`text-xs leading-relaxed ${
+                                        theme === "light"
+                                          ? "text-gray-700"
+                                          : "text-gray-300"
+                                      }`}
+                                    >
+                                      {post.content}
+                                    </p>
+                                  </div>
+
+                                  {/* Post Image */}
+                                  {post.image_url && (
+                                    <div className="w-full h-32 overflow-hidden">
+                                      <img
+                                        src={post.image_url}
+                                        alt="Post"
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                  )}
+
+                                  {/* Post Video */}
+                                  {post.video_url && (
+                                    <div className="w-full h-32 overflow-hidden">
+                                      <video
+                                        src={post.video_url}
+                                        className="w-full h-full object-cover"
+                                        controls
+                                      />
+                                    </div>
+                                  )}
+
+                                  {/* Post Actions */}
+                                  <div
+                                    className={`px-3 py-2 border-t flex items-center justify-around text-xs ${
+                                      theme === "light"
+                                        ? "border-gray-100"
+                                        : "border-gray-700"
+                                    }`}
+                                  >
+                                    <button
+                                      onClick={() => handleLike(post.id)}
+                                      className={`flex items-center gap-1 font-medium transition-colors ${
+                                        likedPosts.has(post.id)
+                                          ? "text-red-500"
+                                          : theme === "light"
+                                            ? "text-gray-600 hover:text-red-500"
+                                            : "text-gray-400 hover:text-red-500"
+                                      }`}
+                                    >
+                                      <Heart
+                                        className={`w-3 h-3 ${likedPosts.has(post.id) ? "fill-red-500" : ""}`}
+                                      />
+                                      <span>{post.likes_count}</span>
+                                    </button>
+                                    <button
+                                      onClick={() => handleComment(post.id)}
+                                      className={`flex items-center gap-1 font-medium transition-colors ${
+                                        theme === "light"
+                                          ? "text-gray-600 hover:text-primary"
+                                          : "text-gray-400 hover:text-primary"
+                                      }`}
+                                    >
+                                      <MessageCircle className="w-3 h-3" />
+                                      <span>{post.comments_count}</span>
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
+                              ))}
                           </div>
                         )}
                       </div>
