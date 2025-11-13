@@ -52,7 +52,7 @@ const COUNTRY_CODES = [
   { name: "South Korea", code: "+82", flag: "🇰🇷" },
   { name: "Singapore", code: "+65", flag: "🇸🇬" },
   { name: "Dubai", code: "+971", flag: "🇦🇪" },
-  { name: "Pakistan", code: "+92", flag: "🇵🇰" },
+  { name: "Pakistan", code: "+92", flag: "🇵���" },
   { name: "Bangladesh", code: "+880", flag: "🇧🇩" },
 ];
 
@@ -104,21 +104,20 @@ export default function Onboarding() {
     passwordRegex.upperCase.test(formData.password) &&
     passwordRegex.specialChar.test(formData.password);
 
-  // Helper functions for height conversion
-  const cmToInches = (cm: number): number => {
-    return Math.round((cm / 2.54) * 10) / 10;
-  };
-
-  const inchesToCm = (inches: number): number => {
-    return Math.round(inches * 2.54);
-  };
-
   // Get height value in centimeters for storage
   const getHeightInCm = (): number => {
     if (!formData.height.trim()) return 0;
     const heightValue = parseFloat(formData.height);
     if (isNaN(heightValue)) return 0;
-    return heightUnit === "inches" ? inchesToCm(heightValue) : heightValue;
+    if (heightUnit === "cm") {
+      return heightValue;
+    } else if (heightUnit === "inches") {
+      return inchesToCm(heightValue);
+    } else {
+      // feet format - convert to cm
+      const totalInches = heightValue * 12;
+      return inchesToCm(totalInches);
+    }
   };
 
   // Check username availability
