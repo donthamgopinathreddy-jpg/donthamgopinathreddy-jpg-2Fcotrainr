@@ -139,14 +139,21 @@ export default function UserProfile() {
 
         if (!userData) {
           console.error("User not found:", userId);
-          toast.error("User not found");
-          navigate("/feed");
-          return;
+          // Create a fallback user object for Instagram-like experience
+          const fallbackUser: UserData = {
+            id: userId,
+            username: userId,
+            full_name: userId.charAt(0).toUpperCase() + userId.slice(1),
+            role: "client",
+          };
+          setUser(fallbackUser);
+          setDisplayUserId(userId);
+          // Don't navigate away - show profile with available data
+        } else {
+          setUser(userData as UserData);
+          setBioText(userData.bio || "");
+          setDisplayUserId(userData.id);
         }
-
-        setUser(userData as UserData);
-        setBioText(userData.bio || "");
-        setDisplayUserId(userData.id);
 
         // Fetch user's posts using the actual user ID from userData
         const { data: postsData, error: postsError } = await supabase
