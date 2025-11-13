@@ -136,13 +136,13 @@ export const usePosts = () => {
       // Fetch user details for the new post
       const { data: userData } = await supabase
         .from("users")
-        .select("id, full_name, profile_picture_url, role")
+        .select("id, full_name, username, profile_picture_url, role")
         .eq("id", user.id)
         .single();
 
       const newPost: Post = {
         ...data,
-        author_name: userData?.full_name,
+        author_name: userData?.full_name || userData?.username || "Unknown",
         author_avatar: userData?.profile_picture_url,
         author_role: userData?.role,
       };
