@@ -243,6 +243,12 @@ export const useMessages = (recipientId?: string) => {
     }
   };
 
+  // Recalculate total unread messages whenever conversations change
+  useEffect(() => {
+    const total = conversations.reduce((sum, conv) => sum + conv.unread_count, 0);
+    setTotalUnreadMessages(total);
+  }, [conversations]);
+
   useEffect(() => {
     if (recipientId) {
       fetchMessages(recipientId);
