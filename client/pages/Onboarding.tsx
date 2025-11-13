@@ -965,19 +965,61 @@ export default function Onboarding() {
           <div className="max-w-md mx-auto w-full space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-foreground mb-2">
-                Enable Camera & Microphone
+                Enable Permissions
               </h2>
               <p className="text-muted-foreground">
-                This helps trainers see you during video sessions
+                We need a few permissions to give you the best experience
               </p>
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
-              <p className="text-sm text-blue-900">
-                <span className="font-semibold">Why we need this:</span> Video
-                calls with trainers require camera and microphone access to work
-                properly.
-              </p>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-50 border border-blue-200">
+                <div className="flex-shrink-0 mt-0.5">
+                  <div className="flex items-center justify-center h-5 w-5 rounded-full bg-blue-500 text-white text-xs">
+                    📹
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-blue-900">Camera</p>
+                  <p className="text-xs text-blue-700">For video calls with trainers</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-50 border border-blue-200">
+                <div className="flex-shrink-0 mt-0.5">
+                  <div className="flex items-center justify-center h-5 w-5 rounded-full bg-blue-500 text-white text-xs">
+                    🎤
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-blue-900">Microphone</p>
+                  <p className="text-xs text-blue-700">For audio during calls and messages</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-50 border border-blue-200">
+                <div className="flex-shrink-0 mt-0.5">
+                  <div className="flex items-center justify-center h-5 w-5 rounded-full bg-blue-500 text-white text-xs">
+                    📍
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-blue-900">Location</p>
+                  <p className="text-xs text-blue-700">To find trainers near you</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-50 border border-blue-200">
+                <div className="flex-shrink-0 mt-0.5">
+                  <div className="flex items-center justify-center h-5 w-5 rounded-full bg-blue-500 text-white text-xs">
+                    🔔
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-blue-900">Notifications</p>
+                  <p className="text-xs text-blue-700">Stay updated with messages and reminders</p>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -986,7 +1028,7 @@ export default function Onboarding() {
                 disabled={loading || permissionLoading}
                 className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {permissionLoading ? "Requesting..." : "Allow Access"}
+                {permissionLoading ? "Requesting..." : "Allow All"}
               </button>
 
               <button
