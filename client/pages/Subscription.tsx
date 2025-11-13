@@ -64,6 +64,7 @@ const PLANS = [
 
 export default function Subscription() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [selectedPlan, setSelectedPlan] = useState<string>("monthly");
   const [loading, setLoading] = useState(false);
 
