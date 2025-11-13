@@ -24,6 +24,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { cmToFeetInchesString, cmToFeetInches, inchesToCm } from "@/lib/utils";
+import { useFollowerCounts } from "@/hooks/useFollowerCounts";
 
 interface UserType {
   role: "client" | "trainer";
