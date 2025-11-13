@@ -10,13 +10,13 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useNotifications } from "@/hooks/useNotifications";
+import { useMessages } from "@/hooks/useMessages";
 
 const Navigation = () => {
   const location = useLocation();
   const { userProfile } = useAuth();
   const { theme } = useTheme();
-  const { unreadCount } = useNotifications();
+  const { totalUnreadMessages } = useMessages();
 
   const isActive = (path: string) => location.pathname === path;
   const isTrainer = userProfile?.role === "trainer";
