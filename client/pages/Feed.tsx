@@ -342,7 +342,7 @@ export default function Feed() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                navigate(`/user/${user.id}`);
+                                navigate(`/profile/${user.id}`);
                               }}
                               className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs hover:opacity-80 transition-opacity ${
                                 theme === "light"
@@ -355,7 +355,7 @@ export default function Feed() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                navigate(`/user/${user.id}`);
+                                navigate(`/profile/${user.id}`);
                               }}
                               className="flex-1 min-w-0 text-left hover:opacity-80 transition-opacity"
                             >
