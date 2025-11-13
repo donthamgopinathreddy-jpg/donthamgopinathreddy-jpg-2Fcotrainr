@@ -77,7 +77,8 @@ export const useStreaks = () => {
           const lastDate = new Date(lastActiveDate);
           const currentDate = new Date(today);
           const daysDiff =
-            (currentDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24);
+            (currentDate.getTime() - lastDate.getTime()) /
+            (1000 * 60 * 60 * 24);
 
           if (daysDiff === 1) {
             // Consecutive day - increment streak
@@ -90,7 +91,7 @@ export const useStreaks = () => {
 
         const newLongestStreak = Math.max(
           newCurrentStreak,
-          existingStreak.longest_streak
+          existingStreak.longest_streak,
         );
 
         // Update streak

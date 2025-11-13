@@ -7,12 +7,16 @@ interface AchievementBadgesProps {
   compact?: boolean;
 }
 
-const AchievementBadges = ({ userId, compact = false }: AchievementBadgesProps) => {
+const AchievementBadges = ({
+  userId,
+  compact = false,
+}: AchievementBadgesProps) => {
   const { theme } = useTheme();
   const { userAchievements, getTotalPoints } = useAchievements();
   const [showAll, setShowAll] = useState(false);
 
-  const displayAchievements = compact && !showAll ? userAchievements.slice(0, 3) : userAchievements;
+  const displayAchievements =
+    compact && !showAll ? userAchievements.slice(0, 3) : userAchievements;
   const hasMore = userAchievements.length > 3 && compact;
 
   if (userAchievements.length === 0) {
@@ -101,7 +105,9 @@ const AchievementBadges = ({ userId, compact = false }: AchievementBadgesProps) 
               : "bg-gray-100 text-blue-600 hover:bg-gray-200"
           }`}
         >
-          {showAll ? "Show Less" : `View All ${userAchievements.length} Achievements`}
+          {showAll
+            ? "Show Less"
+            : `View All ${userAchievements.length} Achievements`}
         </button>
       )}
     </div>

@@ -14,7 +14,9 @@ export interface LeaderboardEntry {
 export const useLeaderboard = () => {
   const { user } = useAuth();
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
-  const [monthlyLeaderboard, setMonthlyLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [monthlyLeaderboard, setMonthlyLeaderboard] = useState<
+    LeaderboardEntry[]
+  >([]);
   const [userRank, setUserRank] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -170,7 +172,7 @@ export const useLeaderboard = () => {
   // Get user's rank and surrounding entries
   const getUserRankContext = (
     data: LeaderboardEntry[],
-    userId: string
+    userId: string,
   ): LeaderboardEntry[] => {
     const userIndex = data.findIndex((e) => e.user_id === userId);
     if (userIndex === -1) return [];

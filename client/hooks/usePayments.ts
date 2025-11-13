@@ -62,7 +62,7 @@ export const usePayments = () => {
     amountCents: number,
     description: string,
     discountCode?: string,
-    discountAmountCents?: number
+    discountAmountCents?: number,
   ): Promise<{ orderId: string; amountCents: number } | null> => {
     if (!user?.id) {
       setError("User not authenticated");
@@ -112,7 +112,7 @@ export const usePayments = () => {
     amountCents: number,
     description: string,
     discountCode?: string,
-    discountAmountCents?: number
+    discountAmountCents?: number,
   ): Promise<boolean> => {
     setError(null);
 
@@ -128,7 +128,7 @@ export const usePayments = () => {
       amountCents,
       description,
       discountCode,
-      discountAmountCents
+      discountAmountCents,
     );
     if (!orderData) return false;
 
@@ -148,7 +148,7 @@ export const usePayments = () => {
           // Verify and update payment
           const success = await verifyAndUpdatePayment(
             orderData.orderId,
-            response.razorpay_payment_id
+            response.razorpay_payment_id,
           );
           resolve(success);
         },
@@ -168,7 +168,7 @@ export const usePayments = () => {
   // Verify and update payment
   const verifyAndUpdatePayment = async (
     paymentId: string,
-    razorpayPaymentId: string
+    razorpayPaymentId: string,
   ): Promise<boolean> => {
     try {
       const { error: updateError } = await supabase
@@ -197,11 +197,9 @@ export const usePayments = () => {
   // Apply discount code to payment
   const applyDiscount = (
     baseAmount: number,
-    discountPercentage: number
+    discountPercentage: number,
   ): { finalAmount: number; discountAmount: number } => {
-    const discountAmount = Math.floor(
-      (baseAmount * discountPercentage) / 100
-    );
+    const discountAmount = Math.floor((baseAmount * discountPercentage) / 100);
     const finalAmount = baseAmount - discountAmount;
     return { finalAmount, discountAmount };
   };

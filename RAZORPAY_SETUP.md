@@ -1,11 +1,13 @@
 # Razorpay Payment Integration Setup
 
 ## Overview
+
 This app has been integrated with Razorpay for processing payments for trainer bookings, subscriptions, and other services.
 
 ## Setup Instructions
 
 ### 1. Get Razorpay Credentials
+
 1. Sign up at [Razorpay Dashboard](https://dashboard.razorpay.com)
 2. Go to Settings → API Keys
 3. Copy your **Key ID** (public key)
@@ -32,12 +34,14 @@ For production, set up webhooks to handle payment verification:
 ## Features Implemented
 
 ### Payment Processing
+
 - **Trainer Bookings**: Users can book trainers and pay through Razorpay
 - **Amount Calculation**: Hourly rates × duration
 - **Discount Codes**: Apply referral codes for discounts
 - **Payment History**: Track all payments in the database
 
 ### Payment Flow
+
 1. User selects trainer and booking details
 2. User can optionally apply referral code for discount
 3. Payment processed through Razorpay modal
@@ -47,6 +51,7 @@ For production, set up webhooks to handle payment verification:
 ## Database Schema
 
 ### payments table
+
 ```sql
 - id: UUID (primary key)
 - user_id: UUID (foreign key to users)
@@ -68,15 +73,17 @@ For production, set up webhooks to handle payment verification:
 ## Hook Usage
 
 ### usePayments()
+
 ```typescript
-const { processPayment, createPaymentOrder, applyDiscount, getPaymentHistory } = usePayments();
+const { processPayment, createPaymentOrder, applyDiscount, getPaymentHistory } =
+  usePayments();
 
 // Process payment through Razorpay
 const success = await processPayment(
   amountInPaise,
   "Trainer Session",
   discountCode,
-  discountAmountInPaise
+  discountAmountInPaise,
 );
 
 // Calculate discount
@@ -89,6 +96,7 @@ const payments = await getPaymentHistory();
 ## Testing
 
 ### Test Cards (Razorpay Sandbox)
+
 - **Success**: 4111 1111 1111 1111
 - **Decline**: 5555 5555 5555 4444
 - **OTP**: 123456
@@ -113,14 +121,17 @@ const payments = await getPaymentHistory();
 ## Troubleshooting
 
 ### "Razorpay is not defined"
+
 - Check that VITE_RAZORPAY_KEY is set
 - Razorpay script might not have loaded - check console for errors
 
 ### Payment shows "pending" but user not charged
+
 - Check Razorpay dashboard for payment status
 - Verify webhook is configured for production
 
 ### Discount not applying
+
 - Ensure referral code exists and is not used
 - Check referral code hasn't expired
 

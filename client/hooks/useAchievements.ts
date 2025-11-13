@@ -18,7 +18,9 @@ export interface UserAchievement extends Achievement {
 export const useAchievements = () => {
   const { user, userProfile } = useAuth();
   const [achievements, setAchievements] = useState<Achievement[]>([]);
-  const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
+  const [userAchievements, setUserAchievements] = useState<UserAchievement[]>(
+    [],
+  );
   const [loading, setLoading] = useState(false);
 
   // Fetch all available achievements
@@ -62,7 +64,7 @@ export const useAchievements = () => {
             type,
             points
           )
-        `
+        `,
         )
         .eq("user_id", targetUserId)
         .order("unlocked_at", { ascending: false });

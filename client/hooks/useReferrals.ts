@@ -113,7 +113,7 @@ export const useReferrals = () => {
   // Use a referral code (when new user signs up)
   const useReferralCode = async (
     referralCode: string,
-    newUserId: string
+    newUserId: string,
   ): Promise<boolean> => {
     try {
       const { data: referral, error: fetchError } = await supabase

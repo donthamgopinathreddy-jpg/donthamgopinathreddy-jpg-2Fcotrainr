@@ -152,9 +152,7 @@ const Leaderboard = () => {
                       </p>
                       <p
                         className={`text-sm ${
-                          theme === "dark"
-                            ? "text-gray-400"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
                         @{entry.username}
@@ -173,9 +171,7 @@ const Leaderboard = () => {
                     </p>
                     <p
                       className={`text-xs ${
-                        theme === "dark"
-                          ? "text-gray-400"
-                          : "text-gray-600"
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
                       {activeTab === "monthly" ? "this month" : "total"}
@@ -251,9 +247,7 @@ const Leaderboard = () => {
                       <div className="text-right">
                         <p
                           className={`text-xl font-bold ${
-                            theme === "dark"
-                              ? "text-cyan-400"
-                              : "text-blue-600"
+                            theme === "dark" ? "text-cyan-400" : "text-blue-600"
                           }`}
                         >
                           {entry.steps.toLocaleString()}

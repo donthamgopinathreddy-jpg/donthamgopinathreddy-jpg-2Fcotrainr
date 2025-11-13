@@ -82,11 +82,11 @@ const TrainerBookingPayment = () => {
 
   // Calculate amount
   const baseAmount = Math.ceil(
-    ((trainer?.hourly_rate || 1000) / 60) * bookingDetails.duration_minutes
+    ((trainer?.hourly_rate || 1000) / 60) * bookingDetails.duration_minutes,
   );
   const { finalAmount: discountedAmount, discountAmount } = applyDiscount(
     baseAmount,
-    appliedDiscount
+    appliedDiscount,
   );
 
   // Apply referral code
@@ -128,7 +128,7 @@ const TrainerBookingPayment = () => {
         discountedAmount * 100, // Convert to paise
         `Trainer Session with ${trainer.full_name} - ${bookingDetails.duration_minutes}min`,
         discountDetails?.code,
-        discountAmount * 100
+        discountAmount * 100,
       );
 
       if (success) {
