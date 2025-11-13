@@ -65,8 +65,9 @@ export const useSearch = () => {
       }
 
       // Create search term - remove spaces for username matching
-      const searchTermWithSpaces = `%${query.toLowerCase()}%`;
-      const searchTermNoSpaces = `%${query.toLowerCase().replace(/\s+/g, "")}%`;
+      // Match from the beginning (no leading %) so "J" shows all names starting with J
+      const searchTermWithSpaces = `${query.toLowerCase()}%`;
+      const searchTermNoSpaces = `${query.toLowerCase().replace(/\s+/g, "")}%`;
       let allUsers: any[] = [];
 
       // Search by username (with and without spaces)
