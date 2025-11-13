@@ -61,44 +61,43 @@ export default function ChatMessages() {
     }
   };
 
-  const handleSendMessage = () => {
-    if (!newMessage.trim()) return;
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !authUser?.id || !recipientId) return;
 
-    if (!isPremium && messagesUsed >= messagesLimit) {
-      alert(
-        "You've reached your free message limit. Upgrade to premium for unlimited chat.",
-      );
-      return;
+    setIsSending(true);
+    try {
+      const { data, error } = await supabase.from("messages").insert({
+        sender_id: authUser.id,
+        recipient_id: recipientId,
+        content: newMessage,
+        is_read: false,
+      });
+
+      if (error) {
+        console.error("Error sending message:", error);
+        return;
+      }
+
+      setNewMessage("");
+      // Refetch messages to get the newly sent message
+      if (dbMessages) {
+        setMessages([
+          ...dbMessages,
+          {
+            id: Date.now().toString(),
+            sender_id: authUser.id,
+            recipient_id: recipientId,
+            content: newMessage,
+            is_read: false,
+            created_at: new Date().toISOString(),
+          },
+        ]);
+      }
+    } catch (error) {
+      console.error("Error in handleSendMessage:", error);
+    } finally {
+      setIsSending(false);
     }
-
-    const message: Message = {
-      id: Date.now().toString(),
-      senderId: "user",
-      content: newMessage,
-      timestamp: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    };
-
-    setMessages([...messages, message]);
-    setNewMessage("");
-
-    // Simulate trainer response
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          senderId: "trainer",
-          content: "Thanks for the message! I'll get back to you soon.",
-          timestamp: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-      ]);
-    }, 1000);
   };
 
   return (
