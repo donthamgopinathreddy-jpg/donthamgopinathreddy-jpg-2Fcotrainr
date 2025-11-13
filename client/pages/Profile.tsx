@@ -102,14 +102,6 @@ export default function Profile() {
     return Math.max(0, age);
   };
 
-  // Helper functions for height conversion
-  const cmToInches = (cm: number): number => {
-    return Math.round((cm / 2.54) * 10) / 10;
-  };
-
-  const inchesToCm = (inches: number): number => {
-    return Math.round(inches * 2.54);
-  };
 
   // Sync state with userProfile whenever it changes
   useEffect(() => {
