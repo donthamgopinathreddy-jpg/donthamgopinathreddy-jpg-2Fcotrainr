@@ -102,8 +102,10 @@ export const useMessages = (recipientId?: string) => {
         new Date(b.last_message_time || 0).getTime() -
         new Date(a.last_message_time || 0).getTime()
       ));
+      setTotalUnreadMessages(totalUnreadMessages);
     } catch (error) {
       console.error("Error fetching conversations:", error);
+      setTotalUnreadMessages(0);
     } finally {
       setLoading(false);
     }
