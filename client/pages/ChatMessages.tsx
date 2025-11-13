@@ -66,7 +66,7 @@ export default function ChatMessages() {
 
     setIsSending(true);
     try {
-      const { data, error } = await supabase.from("messages").insert({
+      const { error } = await supabase.from("messages").insert({
         sender_id: authUser.id,
         recipient_id: recipientId,
         content: newMessage,
@@ -78,21 +78,17 @@ export default function ChatMessages() {
         return;
       }
 
+      const messageToAdd: Message = {
+        id: Date.now().toString(),
+        sender_id: authUser.id,
+        recipient_id: recipientId,
+        content: newMessage,
+        is_read: false,
+        created_at: new Date().toISOString(),
+      };
+
+      setMessages((prev) => [...prev, messageToAdd]);
       setNewMessage("");
-      // Refetch messages to get the newly sent message
-      if (dbMessages) {
-        setMessages([
-          ...dbMessages,
-          {
-            id: Date.now().toString(),
-            sender_id: authUser.id,
-            recipient_id: recipientId,
-            content: newMessage,
-            is_read: false,
-            created_at: new Date().toISOString(),
-          },
-        ]);
-      }
     } catch (error) {
       console.error("Error in handleSendMessage:", error);
     } finally {
@@ -128,76 +124,69 @@ export default function ChatMessages() {
               theme === "dark" ? "text-white" : "text-gray-900"
             }`}
           >
-            {DEMO_CHAT.trainerName}
+            {otherUser?.full_name || "Loading..."}
           </h1>
           <p
             className={`text-xs ${
               theme === "dark" ? "text-gray-400" : "text-gray-500"
             }`}
           >
-            🏋️ Trainer
+            @{otherUser?.username || ""}
           </p>
         </div>
       </div>
 
       {/* Messages Container */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex ${msg.senderId === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`max-w-xs px-4 py-2 rounded-2xl ${
-                msg.senderId === "user"
-                  ? "bg-blue-500 text-white rounded-br-none"
-                  : theme === "dark"
-                    ? "bg-gray-800 text-gray-100 rounded-bl-none"
-                    : "bg-gray-100 text-gray-900 rounded-bl-none"
-              }`}
-            >
-              <p className="text-sm">{msg.content}</p>
-              <p
-                className={`text-xs mt-1 ${msg.senderId === "user" ? "text-blue-100" : theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
-              >
-                {msg.timestamp}
-              </p>
-            </div>
+        {loading ? (
+          <div className="flex items-center justify-center h-full">
+            <Loader className="w-6 h-6 animate-spin text-primary" />
           </div>
-        ))}
-      </div>
-
-      {/* Message Limit Banner (if free user) */}
-      {!isPremium && (
-        <div
-          className={`px-4 py-3 border-t ${
-            theme === "dark"
-              ? "bg-blue-900/30 border-blue-800"
-              : "bg-blue-50 border-blue-100"
-          }`}
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <Lock className="w-4 h-4 text-blue-600" />
+        ) : messages.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-center">
             <p
-              className={`text-sm font-semibold ${
-                theme === "dark" ? "text-blue-300" : "text-blue-900"
+              className={`text-sm ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
               }`}
             >
-              {messagesLimit - messagesUsed} messages left this week
+              No messages yet. Start the conversation!
             </p>
           </div>
-          <p
-            className={`text-xs mb-2 ${
-              theme === "dark" ? "text-blue-300" : "text-blue-800"
-            }`}
-          >
-            Upgrade to premium for unlimited chat with all trainers
-          </p>
-          <button className="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors">
-            Upgrade Now
-          </button>
-        </div>
-      )}
+        ) : (
+          messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex ${msg.sender_id === authUser?.id ? "justify-end" : "justify-start"}`}
+            >
+              <div
+                className={`max-w-xs px-4 py-2 rounded-2xl ${
+                  msg.sender_id === authUser?.id
+                    ? "bg-blue-500 text-white rounded-br-none"
+                    : theme === "dark"
+                      ? "bg-gray-800 text-gray-100 rounded-bl-none"
+                      : "bg-gray-100 text-gray-900 rounded-bl-none"
+                }`}
+              >
+                <p className="text-sm">{msg.content}</p>
+                <p
+                  className={`text-xs mt-1 ${
+                    msg.sender_id === authUser?.id
+                      ? "text-blue-100"
+                      : theme === "dark"
+                        ? "text-gray-400"
+                        : "text-gray-500"
+                  }`}
+                >
+                  {new Date(msg.created_at).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
 
       {/* Message Input */}
       <div
@@ -213,7 +202,7 @@ export default function ChatMessages() {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-          disabled={!isPremium && messagesUsed >= messagesLimit}
+          disabled={isSending}
           className={`flex-1 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 ${
             theme === "dark"
               ? "bg-gray-800 border border-gray-700 text-white placeholder-gray-500"
@@ -222,10 +211,14 @@ export default function ChatMessages() {
         />
         <button
           onClick={handleSendMessage}
-          disabled={!isPremium && messagesUsed >= messagesLimit}
-          className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isSending}
+          className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
-          <Send className="w-5 h-5" />
+          {isSending ? (
+            <Loader className="w-5 h-5 animate-spin" />
+          ) : (
+            <Send className="w-5 h-5" />
+          )}
         </button>
       </div>
     </div>
