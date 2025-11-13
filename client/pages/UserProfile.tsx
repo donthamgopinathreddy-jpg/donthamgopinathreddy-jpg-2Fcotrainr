@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useFollows } from "@/hooks/useFollows";
+import { useFollowerCounts } from "@/hooks/useFollowerCounts";
 import { toast } from "sonner";
 
 interface UserData {
