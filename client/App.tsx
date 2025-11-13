@@ -172,6 +172,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/leaderboard"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Leaderboard />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/profile"
         element={
           <ProtectedRoute>
