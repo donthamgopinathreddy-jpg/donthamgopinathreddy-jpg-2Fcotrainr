@@ -892,49 +892,6 @@ export default function Profile() {
         </div>
 
 
-        {/* Delete Post Confirmation Modal */}
-        {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div
-              className={`w-full max-w-sm rounded-2xl p-6 ${
-                theme === "dark" ? "bg-gray-800" : "bg-white"
-              }`}
-            >
-              <h3
-                className={`text-lg font-bold mb-4 ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}
-              >
-                Delete Post?
-              </h3>
-              <p
-                className={`text-sm mb-6 ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                This action cannot be undone.
-              </p>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setShowDeleteConfirm(null)}
-                  className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                    theme === "dark"
-                      ? "bg-gray-700 text-white hover:bg-gray-600"
-                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
-                  }`}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => handleDeletePost(showDeleteConfirm)}
-                  className="flex-1 px-4 py-2 rounded-lg font-medium bg-red-600 text-white hover:bg-red-700 transition-colors"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Edit Profile Modal */}
         {showEditModal && (
