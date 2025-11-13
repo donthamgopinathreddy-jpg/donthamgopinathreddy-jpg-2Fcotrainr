@@ -52,7 +52,7 @@ const COUNTRY_CODES = [
   { name: "South Korea", code: "+82", flag: "🇰🇷" },
   { name: "Singapore", code: "+65", flag: "🇸🇬" },
   { name: "Dubai", code: "+971", flag: "🇦🇪" },
-  { name: "Pakistan", code: "+92", flag: "🇵���" },
+  { name: "Pakistan", code: "+92", flag: "🇵🇰" },
   { name: "Bangladesh", code: "+880", flag: "🇧🇩" },
 ];
 
@@ -768,65 +768,62 @@ export default function Onboarding() {
               <h2 className="text-2xl font-bold text-foreground mb-2">
                 What's your height?
               </h2>
-              <p className="text-muted-foreground">Select your preferred unit</p>
+              <p className="text-muted-foreground">Enter feet and inches</p>
             </div>
 
-            {/* Unit Selection */}
-            <div className="flex gap-3">
-              <button
-                onClick={() => {
-                  if (formData.height.trim() && heightUnit === "inches") {
-                    const inchValue = parseFloat(formData.height);
-                    const cmValue = inchesToCm(inchValue);
-                    setFormData((prev) => ({ ...prev, height: cmValue.toString() }));
-                  }
-                  setHeightUnit("cm");
-                }}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all border-2 ${
-                  heightUnit === "cm"
-                    ? "border-primary bg-primary/10 text-foreground"
-                    : "border-border bg-card hover:border-primary/50"
-                }`}
-              >
-                Centimeters (cm)
-              </button>
-              <button
-                onClick={() => {
-                  if (formData.height.trim() && heightUnit === "cm") {
-                    const cmValue = parseFloat(formData.height);
-                    const inchValue = cmToInches(cmValue);
-                    setFormData((prev) => ({ ...prev, height: inchValue.toString() }));
-                  }
-                  setHeightUnit("inches");
-                }}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all border-2 ${
-                  heightUnit === "inches"
-                    ? "border-primary bg-primary/10 text-foreground"
-                    : "border-border bg-card hover:border-primary/50"
-                }`}
-              >
-                Inches (in)
-              </button>
-            </div>
+            {/* Feet and Inches Inputs */}
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Feet
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="5"
+                    min="0"
+                    max="10"
+                    value={formData.height ? cmToFeetInches(parseFloat(formData.height)).feet : ""}
+                    onChange={(e) => {
+                      const feet = parseInt(e.target.value) || 0;
+                      const inches = formData.height ? cmToFeetInches(parseFloat(formData.height)).inches : 0;
+                      const totalInches = feet * 12 + inches;
+                      setFormData((prev) => ({ ...prev, height: inchesToCm(totalInches).toString() }));
+                    }}
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Inches
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="11"
+                    min="0"
+                    max="11"
+                    value={formData.height ? cmToFeetInches(parseFloat(formData.height)).inches : ""}
+                    onChange={(e) => {
+                      const feet = formData.height ? cmToFeetInches(parseFloat(formData.height)).feet : 0;
+                      const inches = parseInt(e.target.value) || 0;
+                      const totalInches = feet * 12 + inches;
+                      setFormData((prev) => ({ ...prev, height: inchesToCm(totalInches).toString() }));
+                    }}
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  />
+                </div>
+              </div>
 
-            {/* Height Input */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Height ({heightUnit === "cm" ? "cm" : "in"})
-              </label>
-              <input
-                type="number"
-                placeholder={heightUnit === "cm" ? "180" : "5.9"}
-                value={formData.height}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, height: e.target.value }))
-                }
-                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
               {formData.height.trim() && (
-                <p className="text-xs text-muted-foreground mt-2">
-                  ≈ {heightUnit === "cm" ? cmToInches(parseFloat(formData.height)).toFixed(1) : inchesToCm(parseFloat(formData.height))} {heightUnit === "cm" ? "inches" : "cm"}
-                </p>
+                <div className={`rounded-lg p-3 ${
+                  heightUnit === "cm"
+                    ? "bg-blue-50 border border-blue-200"
+                    : "bg-blue-50 border border-blue-200"
+                }`}>
+                  <p className="text-sm font-medium text-blue-900">
+                    Height: {cmToFeetInchesString(parseFloat(formData.height))} ({parseFloat(formData.height)} cm)
+                  </p>
+                </div>
               )}
             </div>
 
