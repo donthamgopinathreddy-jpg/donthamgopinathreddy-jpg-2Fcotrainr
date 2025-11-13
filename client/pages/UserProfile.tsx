@@ -123,6 +123,7 @@ export default function UserProfile() {
 
         setUser(userData as UserData);
         setBioText(userData.bio || "");
+        setDisplayUserId(userData.id);
 
         // Fetch user's posts using the actual user ID from userData
         const { data: postsData, error: postsError } = await supabase
