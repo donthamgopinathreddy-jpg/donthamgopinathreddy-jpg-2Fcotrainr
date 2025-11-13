@@ -64,15 +64,17 @@ export const useSearch = () => {
         return;
       }
 
-      const searchTerm = `%${query.toLowerCase()}%`;
+      // Create search term - remove spaces for username matching
+      const searchTermWithSpaces = `%${query.toLowerCase()}%`;
+      const searchTermNoSpaces = `%${query.toLowerCase().replace(/\s+/g, "")}%`;
       let allUsers: any[] = [];
 
-      // Search by username
+      // Search by username (with and without spaces)
       try {
         const { data } = await supabase
           .from("users")
           .select("id, username, full_name, profile_picture_url, bio, role")
-          .ilike("username", searchTerm)
+          .ilike("username", searchTermNoSpaces)
           .limit(10);
 
         if (data) {
@@ -82,12 +84,12 @@ export const useSearch = () => {
         console.warn("Username search failed");
       }
 
-      // Search by full_name
+      // Search by full_name (with spaces)
       try {
         const { data } = await supabase
           .from("users")
           .select("id, username, full_name, profile_picture_url, bio, role")
-          .ilike("full_name", searchTerm)
+          .ilike("full_name", searchTermWithSpaces)
           .limit(10);
 
         if (data) {
