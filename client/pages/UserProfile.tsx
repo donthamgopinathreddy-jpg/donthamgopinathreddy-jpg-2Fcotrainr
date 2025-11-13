@@ -145,56 +145,31 @@ export default function UserProfile() {
         // Determine which ID to use for fetching posts
         const profileUserId = userData?.id || userId;
 
-        // Fetch user's posts first
-        const { data: postsData, error: postsError } = await supabase
-          .from("posts")
-          .select("*")
-          .eq("user_id", profileUserId)
-          .order("created_at", { ascending: false });
-
-        if (!userData && postsData && postsData.length > 0) {
-          // If user not in database but has posts, try to extract user info from posts
-          // by fetching the full user data for the first post's author
-          const firstPost = postsData[0];
-          const { data: extractedUser } = await supabase
-            .from("users")
-            .select("id, username, full_name, profile_picture_url, bio, role")
-            .eq("id", firstPost.user_id);
-
-          if (extractedUser && extractedUser.length > 0) {
-            const userDataFromPost = extractedUser[0];
-            console.log("User data extracted from post:", userDataFromPost);
-            setUser(userDataFromPost as UserData);
-            setBioText(userDataFromPost.bio || "");
-            setDisplayUserId(userDataFromPost.id);
-          } else {
-            // Fallback if still no user data
-            console.warn("Could not find user data for ID:", profileUserId);
-            const fallbackUser: UserData = {
-              id: profileUserId,
-              username: "unknown_user",
-              full_name: "Unknown User",
-              role: "client",
-            };
-            setUser(fallbackUser);
-            setDisplayUserId(profileUserId);
-          }
-        } else if (userData) {
+        // If user data found, set it
+        if (userData) {
           console.log("User found:", userData);
           setUser(userData as UserData);
           setBioText(userData.bio || "");
           setDisplayUserId(userData.id);
         } else {
-          // No user data and no posts
-          const fallbackUser: UserData = {
+          console.error("User not found in database:", profileUserId);
+          // Still set the user with minimal data so profile can load
+          const minimalUser: UserData = {
             id: profileUserId,
-            username: "user_not_found",
-            full_name: "User Not Found",
+            username: profileUserId.slice(0, 8),
+            full_name: "User",
             role: "client",
           };
-          setUser(fallbackUser);
+          setUser(minimalUser);
           setDisplayUserId(profileUserId);
         }
+
+        // Fetch user's posts
+        const { data: postsData, error: postsError } = await supabase
+          .from("posts")
+          .select("*")
+          .eq("user_id", profileUserId)
+          .order("created_at", { ascending: false });
 
         if (postsError) {
           console.error("Error fetching posts:", postsError);
