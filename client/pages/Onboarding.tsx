@@ -981,7 +981,9 @@ export default function Onboarding() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-blue-900">Camera</p>
-                  <p className="text-xs text-blue-700">For video calls with trainers</p>
+                  <p className="text-xs text-blue-700">
+                    For video calls with trainers
+                  </p>
                 </div>
               </div>
 
@@ -992,8 +994,12 @@ export default function Onboarding() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-blue-900">Microphone</p>
-                  <p className="text-xs text-blue-700">For audio during calls and messages</p>
+                  <p className="text-sm font-semibold text-blue-900">
+                    Microphone
+                  </p>
+                  <p className="text-xs text-blue-700">
+                    For audio during calls and messages
+                  </p>
                 </div>
               </div>
 
@@ -1004,8 +1010,12 @@ export default function Onboarding() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-blue-900">Location</p>
-                  <p className="text-xs text-blue-700">To find trainers near you</p>
+                  <p className="text-sm font-semibold text-blue-900">
+                    Location
+                  </p>
+                  <p className="text-xs text-blue-700">
+                    To find trainers near you
+                  </p>
                 </div>
               </div>
 
@@ -1016,8 +1026,12 @@ export default function Onboarding() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-blue-900">Notifications</p>
-                  <p className="text-xs text-blue-700">Stay updated with messages and reminders</p>
+                  <p className="text-sm font-semibold text-blue-900">
+                    Notifications
+                  </p>
+                  <p className="text-xs text-blue-700">
+                    Stay updated with messages and reminders
+                  </p>
                 </div>
               </div>
             </div>

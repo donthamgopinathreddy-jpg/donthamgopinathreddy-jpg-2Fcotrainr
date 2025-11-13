@@ -412,7 +412,6 @@ export default function Profile() {
 
         {/* Profile Content */}
         <div className="px-4 sm:px-6 py-8 space-y-4 sm:space-y-6">
-
           {/* Account Info Card */}
           <div
             className={`rounded-2xl p-6 space-y-3 ${
