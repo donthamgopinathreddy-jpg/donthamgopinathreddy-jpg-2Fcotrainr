@@ -100,15 +100,20 @@ export default function UserProfile() {
 
         if (isUUID) {
           // Search by ID
+          console.log("Searching for user by UUID:", userId);
           const { data, error } = await supabase
             .from("users")
             .select("id, username, full_name, profile_picture_url, bio, role, gender, weight_kg, height_cm, age, date_of_birth")
             .eq("id", userId);
 
+          console.log("Supabase response - data:", data, "error:", error);
           if (!error && data && data.length > 0) {
             userData = data[0];
+            console.log("User found:", userData);
           } else if (error) {
             console.error("Error fetching user by ID:", error);
+          } else {
+            console.warn("No user found with ID:", userId);
           }
         } else {
           // Search by username
