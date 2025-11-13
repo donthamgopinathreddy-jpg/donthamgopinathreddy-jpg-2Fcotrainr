@@ -233,15 +233,43 @@ export default function Profile() {
     }
   };
 
+  const requestPhotoPermissions = async () => {
+    try {
+      // Request camera permission for iOS
+      if (
+        navigator.mediaDevices &&
+        navigator.mediaDevices.getUserMedia &&
+        /iPad|iPhone|iPod/.test(navigator.userAgent)
+      ) {
+        await navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: false,
+        });
+      }
+    } catch (error) {
+      console.warn("Permission request result:", error);
+    }
+  };
+
   const handleProfilePhotoUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     if (!e.target.files?.[0] || !userProfile?.id) return;
 
     const file = e.target.files[0];
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File size must be less than 5MB");
+      return;
+    }
+
     setIsSaving(true);
 
     try {
+      // Request permissions before processing
+      await requestPhotoPermissions();
+
       // Read as data URL and store directly
       const reader = new FileReader();
       reader.onload = async (event) => {
