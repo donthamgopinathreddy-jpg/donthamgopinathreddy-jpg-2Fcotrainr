@@ -69,6 +69,8 @@ export const useMessages = (recipientId?: string) => {
 
       // Fetch user details for each conversation
       const conversationList: Conversation[] = [];
+      let totalUnreadMessages = 0;
+
       for (const [otherUserId, msgs] of conversationMap.entries()) {
         const { data: userData, error: userError } = await supabase
           .from("users")
@@ -81,6 +83,7 @@ export const useMessages = (recipientId?: string) => {
           const unreadCount = msgs.filter(
             (m) => !m.is_read && m.recipient_id === user.id
           ).length;
+          totalUnreadMessages += unreadCount;
 
           conversationList.push({
             id: otherUserId,
