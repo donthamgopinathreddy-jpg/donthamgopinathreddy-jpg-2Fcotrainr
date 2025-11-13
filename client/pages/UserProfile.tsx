@@ -103,7 +103,7 @@ export default function UserProfile() {
           console.log("Searching for user by UUID:", userId);
           const { data, error } = await supabase
             .from("users")
-            .select("id, username, full_name, profile_picture_url, bio, role, gender, weight_kg, height_cm, age, date_of_birth")
+            .select("id, username, full_name, profile_picture_url, bio, role")
             .eq("id", userId);
 
           console.log("Supabase response - data:", data, "error:", error);
@@ -119,7 +119,7 @@ export default function UserProfile() {
           // Search by username
           const { data, error } = await supabase
             .from("users")
-            .select("id, username, full_name, profile_picture_url, bio, role, gender, weight_kg, height_cm, age, date_of_birth")
+            .select("id, username, full_name, profile_picture_url, bio, role")
             .eq("username", userId.toLowerCase());
 
           if (!error && data && data.length > 0) {
