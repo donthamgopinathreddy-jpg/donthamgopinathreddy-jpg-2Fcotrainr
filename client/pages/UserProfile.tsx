@@ -601,6 +601,46 @@ export default function UserProfile() {
             </div>
           </div>
 
+          {/* Follower/Following Counts */}
+          <div
+            className={`flex gap-6 mb-4 py-3 px-3 rounded-lg ${
+              theme === "light" ? "bg-gray-50" : "bg-gray-800"
+            }`}
+          >
+            <div className="text-center">
+              <p
+                className={`text-lg font-bold ${
+                  theme === "light" ? "text-gray-900" : "text-white"
+                }`}
+              >
+                {followerCounts.followers_count}
+              </p>
+              <p
+                className={`text-xs ${
+                  theme === "light" ? "text-gray-600" : "text-gray-400"
+                }`}
+              >
+                Followers
+              </p>
+            </div>
+            <div className="text-center">
+              <p
+                className={`text-lg font-bold ${
+                  theme === "light" ? "text-gray-900" : "text-white"
+                }`}
+              >
+                {followerCounts.following_count}
+              </p>
+              <p
+                className={`text-xs ${
+                  theme === "light" ? "text-gray-600" : "text-gray-400"
+                }`}
+              >
+                Following
+              </p>
+            </div>
+          </div>
+
           {/* Follow Button */}
           <div className="mb-4">
             <button
