@@ -717,9 +717,30 @@ export default function Feed() {
                         • {formatDate(post.created_at)}
                       </p>
                     </div>
-                    <button className="flex items-center gap-1 px-3 py-1 rounded-lg font-semibold text-xs transition-all flex-shrink-0 bg-blue-600 text-white hover:bg-blue-700">
-                      <UserPlus className="w-4 h-4" />
-                      Follow
+                    <button
+                      onClick={() => handleFollow(post.user_id)}
+                      disabled={isTogglingId === post.user_id}
+                      className={`flex items-center gap-1 px-3 py-1 rounded-lg font-semibold text-xs transition-all flex-shrink-0 disabled:opacity-50 ${
+                        isFollowing(post.user_id)
+                          ? theme === "light"
+                            ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            : "bg-gray-600 text-white hover:bg-gray-500"
+                          : "bg-blue-600 text-white hover:bg-blue-700"
+                      }`}
+                    >
+                      {isTogglingId === post.user_id ? (
+                        <Loader className="w-3 h-3 animate-spin" />
+                      ) : isFollowing(post.user_id) ? (
+                        <>
+                          <UserCheck className="w-4 h-4" />
+                          Following
+                        </>
+                      ) : (
+                        <>
+                          <UserPlus className="w-4 h-4" />
+                          Follow
+                        </>
+                      )}
                     </button>
                   </div>
 
