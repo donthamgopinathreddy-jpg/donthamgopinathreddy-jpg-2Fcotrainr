@@ -43,8 +43,12 @@ export const useMessages = (recipientId?: string) => {
 
       if (isDemo) {
         // Load from localStorage in demo mode
-        const demoConversations = localStorage.getItem(`conversations_demo_${user.id}`);
-        setConversations(demoConversations ? JSON.parse(demoConversations) : []);
+        const demoConversations = localStorage.getItem(
+          `conversations_demo_${user.id}`,
+        );
+        setConversations(
+          demoConversations ? JSON.parse(demoConversations) : [],
+        );
         setLoading(false);
         return;
       }
@@ -82,7 +86,7 @@ export const useMessages = (recipientId?: string) => {
         if (!userError && userData) {
           const lastMsg = msgs[0];
           const unreadCount = msgs.filter(
-            (m) => !m.is_read && m.recipient_id === user.id
+            (m) => !m.is_read && m.recipient_id === user.id,
           ).length;
           totalUnreadMessages += unreadCount;
 
@@ -98,10 +102,13 @@ export const useMessages = (recipientId?: string) => {
         }
       }
 
-      setConversations(conversationList.sort((a, b) =>
-        new Date(b.last_message_time || 0).getTime() -
-        new Date(a.last_message_time || 0).getTime()
-      ));
+      setConversations(
+        conversationList.sort(
+          (a, b) =>
+            new Date(b.last_message_time || 0).getTime() -
+            new Date(a.last_message_time || 0).getTime(),
+        ),
+      );
       setTotalUnreadMessages(totalUnreadMessages);
     } catch (error) {
       console.error("Error fetching conversations:", error);
@@ -121,7 +128,9 @@ export const useMessages = (recipientId?: string) => {
 
       if (isDemo) {
         // Load from localStorage in demo mode
-        const demoMessages = localStorage.getItem(`messages_demo_${user.id}_${otherUserId}`);
+        const demoMessages = localStorage.getItem(
+          `messages_demo_${user.id}_${otherUserId}`,
+        );
         setMessages(demoMessages ? JSON.parse(demoMessages) : []);
         setLoading(false);
         return;
@@ -131,7 +140,7 @@ export const useMessages = (recipientId?: string) => {
         .from("messages")
         .select("*")
         .or(
-          `and(sender_id.eq.${user.id},recipient_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},recipient_id.eq.${user.id})`
+          `and(sender_id.eq.${user.id},recipient_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},recipient_id.eq.${user.id})`,
         )
         .order("created_at", { ascending: true });
 
@@ -188,10 +197,12 @@ export const useMessages = (recipientId?: string) => {
         // Update conversations
         const conversationsKey = `conversations_demo_${user.id}`;
         const demoConversations = localStorage.getItem(conversationsKey);
-        const existingConversations = demoConversations ? JSON.parse(demoConversations) : [];
+        const existingConversations = demoConversations
+          ? JSON.parse(demoConversations)
+          : [];
 
         const conversationIndex = existingConversations.findIndex(
-          (c: Conversation) => c.other_user_id === recipientId
+          (c: Conversation) => c.other_user_id === recipientId,
         );
 
         if (conversationIndex >= 0) {
@@ -202,7 +213,10 @@ export const useMessages = (recipientId?: string) => {
           };
         }
 
-        localStorage.setItem(conversationsKey, JSON.stringify(existingConversations));
+        localStorage.setItem(
+          conversationsKey,
+          JSON.stringify(existingConversations),
+        );
 
         return newMessage;
       }
