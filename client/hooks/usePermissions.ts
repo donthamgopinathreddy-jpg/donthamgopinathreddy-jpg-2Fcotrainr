@@ -91,6 +91,47 @@ export const usePermissions = () => {
     }
   }, []);
 
+  // Request location permission
+  const requestLocation = useCallback(async () => {
+    if (!("geolocation" in navigator)) {
+      setPermissions((prev) => ({ ...prev, location: "unknown" }));
+      return false;
+    }
+
+    try {
+      setLoading(true);
+      return new Promise((resolve) => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            console.log("Location granted:", position.coords);
+            setPermissions((prev) => ({ ...prev, location: "granted" }));
+            resolve(true);
+          },
+          (error) => {
+            console.error("Location permission error:", error);
+            if (error.code === error.PERMISSION_DENIED) {
+              setPermissions((prev) => ({ ...prev, location: "denied" }));
+            } else {
+              setPermissions((prev) => ({ ...prev, location: "prompt" }));
+            }
+            resolve(false);
+          },
+          {
+            enableHighAccuracy: false,
+            timeout: 5000,
+            maximumAge: 0,
+          },
+        );
+      });
+    } catch (error) {
+      console.error("Location error:", error);
+      setPermissions((prev) => ({ ...prev, location: "unknown" }));
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   // Request all permissions at once
   const requestAllPermissions = useCallback(async () => {
     setLoading(true);
