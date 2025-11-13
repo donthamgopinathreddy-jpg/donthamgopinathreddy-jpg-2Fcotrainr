@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import { supabase } from "@/lib/supabase";
 import { usePermissions } from "@/hooks/usePermissions";
+import { cmToFeetInchesString, inchesToCm, cmToFeetInches } from "@/lib/utils";
 
 type OnboardingStep =
   | "welcome"
