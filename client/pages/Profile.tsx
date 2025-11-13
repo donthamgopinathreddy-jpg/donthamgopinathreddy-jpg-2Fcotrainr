@@ -27,6 +27,7 @@ import { cmToFeetInchesString, cmToFeetInches, inchesToCm } from "@/lib/utils";
 import { useFollowerCounts } from "@/hooks/useFollowerCounts";
 import { useReferrals } from "@/hooks/useReferrals";
 import AchievementBadges from "@/components/AchievementBadges";
+import ReferralCodeSection from "@/components/ReferralCodeSection";
 
 interface UserType {
   role: "client" | "trainer";
