@@ -23,6 +23,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { cmToFeetInchesString, cmToFeetInches, inchesToCm } from "@/lib/utils";
 
 interface UserType {
   role: "client" | "trainer";
