@@ -114,8 +114,8 @@ export default function Profile() {
         height: userProfile.height_cm || 170,
         weight: userProfile.weight_kg || 70,
         isFollowing: false,
-        followers: 0,
-        following: 0,
+        followers: followerCounts.followers_count,
+        following: followerCounts.following_count,
       };
       setUser(newUserState);
       const calculatedAge = userProfile.date_of_birth
@@ -1541,7 +1541,7 @@ export default function Profile() {
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-green-600 mt-0.5 flex-shrink-0">
-                          ��
+                          ���
                         </span>
                         <span>2 free trainer sessions</span>
                       </li>
