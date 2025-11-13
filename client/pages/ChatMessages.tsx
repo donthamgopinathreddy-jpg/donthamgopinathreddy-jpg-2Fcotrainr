@@ -1,57 +1,65 @@
-import { useState } from "react";
-import { ArrowLeft, Send, Lock } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { ArrowLeft, Send, Loader } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useMessages } from "@/hooks/useMessages";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 interface Message {
   id: string;
-  senderId: "user" | "trainer";
+  sender_id: string;
+  recipient_id: string;
   content: string;
-  timestamp: string;
+  is_read: boolean;
+  created_at: string;
 }
 
-interface ChatThread {
-  trainerId: string;
-  trainerName: string;
-  trainerAvatar: string;
-  messages: Message[];
+interface OtherUser {
+  id: string;
+  full_name: string;
+  username: string;
 }
-
-const DEMO_CHAT: ChatThread = {
-  trainerId: "1",
-  trainerName: "Priya Singh",
-  trainerAvatar: "PS",
-  messages: [
-    {
-      id: "1",
-      senderId: "trainer",
-      content: "Hi! Welcome. Let's get started with your fitness journey 💪",
-      timestamp: "10:30 AM",
-    },
-    {
-      id: "2",
-      senderId: "user",
-      content: "Thanks! I'm looking to build strength",
-      timestamp: "10:32 AM",
-    },
-    {
-      id: "3",
-      senderId: "trainer",
-      content:
-        "Great! I have a perfect plan for you. Let's start with basic exercises.",
-      timestamp: "10:35 AM",
-    },
-  ],
-};
 
 export default function ChatMessages() {
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const [messages, setMessages] = useState<Message[]>(DEMO_CHAT.messages);
+  const { recipientId } = useParams<{ recipientId: string }>();
+  const { user: authUser, userProfile } = useAuth();
+  const { messages: dbMessages, loading } = useMessages(recipientId);
+
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [isPremium] = useState(false);
-  const [messagesUsed] = useState(3);
-  const messagesLimit = 10;
+  const [isSending, setIsSending] = useState(false);
+  const [otherUser, setOtherUser] = useState<OtherUser | null>(null);
+
+  useEffect(() => {
+    if (dbMessages) {
+      setMessages(dbMessages);
+    }
+  }, [dbMessages]);
+
+  useEffect(() => {
+    if (recipientId) {
+      fetchOtherUser();
+    }
+  }, [recipientId]);
+
+  const fetchOtherUser = async () => {
+    try {
+      const { data } = await supabase
+        .from("users")
+        .select("id, full_name, username")
+        .eq("id", recipientId)
+        .single();
+
+      if (data) {
+        setOtherUser(data);
+      }
+    } catch (error) {
+      console.error("Error fetching other user:", error);
+    }
+  };
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
