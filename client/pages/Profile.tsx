@@ -84,7 +84,6 @@ export default function Profile() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(
     null,
   );
-  const [heightUnit, setHeightUnit] = useState<"cm" | "inches">("cm");
 
   // Calculate age from date of birth
   const calculateAge = (dateOfBirth: string): number => {
