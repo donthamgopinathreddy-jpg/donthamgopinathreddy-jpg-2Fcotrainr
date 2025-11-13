@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Zap, Crown } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
