@@ -139,16 +139,18 @@ export const usePermissions = () => {
       const cameraResult = await requestCamera();
       const micResult = await requestMicrophone();
       const notifResult = await requestNotification();
+      const locationResult = await requestLocation();
 
       return {
         camera: cameraResult,
         microphone: micResult,
         notifications: notifResult,
+        location: locationResult,
       };
     } finally {
       setLoading(false);
     }
-  }, [requestCamera, requestMicrophone, requestNotification]);
+  }, [requestCamera, requestMicrophone, requestNotification, requestLocation]);
 
   // Check current permission status
   const checkPermissions = useCallback(async () => {
