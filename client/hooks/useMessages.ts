@@ -26,6 +26,7 @@ export const useMessages = (recipientId?: string) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(false);
+  const [totalUnreadMessages, setTotalUnreadMessages] = useState(0);
 
   // Check if user is in demo mode
   const isDemoMode = () => {
