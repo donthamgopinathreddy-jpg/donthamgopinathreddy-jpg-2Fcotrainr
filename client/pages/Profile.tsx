@@ -125,7 +125,7 @@ export default function Profile() {
             .single();
 
           if (error) {
-            console.error("Error loading biometric settings:", error);
+            console.debug("Load biometric settings error:", error?.code);
             return;
           }
 
