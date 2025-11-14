@@ -1223,15 +1223,19 @@ export default function Profile() {
                     Upload a clear photo of your government ID
                   </p>
                 </div>
-                <button
-                  className={`p-2 rounded-full ${
-                    theme === "dark"
-                      ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
+                <label className={`p-2 rounded-full cursor-pointer ${
+                  theme === "dark"
+                    ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}>
                   <Upload className="w-5 h-5" />
-                </button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleVerificationUpload(e, 'id')}
+                    className="hidden"
+                  />
+                </label>
               </div>
 
               <div
