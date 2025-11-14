@@ -97,7 +97,7 @@ export default function Subscription() {
       });
       rzp.open();
     } catch (error) {
-      console.error("Subscription error:", error);
+      console.debug("Subscription error:", error instanceof Error ? error.code : "unknown");
       toast.error("Failed to process subscription");
       setIsProcessing(false);
     }
