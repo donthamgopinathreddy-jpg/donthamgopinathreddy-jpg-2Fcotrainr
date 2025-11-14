@@ -1279,18 +1279,16 @@ export default function Profile() {
         <div className="space-y-2">
           <button
             onClick={() => navigate(`/user/${userProfile?.username}`)}
-            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-colors ${
+            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-all shadow-sm hover:shadow-md ${
               theme === "dark"
-                ? "bg-gray-800/50 border border-gray-700/50 hover:bg-gray-800"
-                : "bg-white border border-gray-200 hover:bg-gray-50"
+                ? "bg-gradient-to-r from-gray-800 to-gray-700/50 border border-gray-700 hover:from-gray-700 hover:to-gray-600 text-gray-200"
+                : "bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-300 hover:from-blue-100 hover:to-cyan-100 text-blue-900"
             }`}
           >
             <User
-              className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              className={`w-5 h-5 ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}
             />
-            <span
-              className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-            >
+            <span className="font-semibold">
               View My Public Profile
             </span>
           </button>
@@ -1299,10 +1297,10 @@ export default function Profile() {
             onClick={() =>
               toast.info("Premium subscription features coming soon!")
             }
-            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-colors font-medium ${
+            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-all shadow-sm hover:shadow-md font-semibold ${
               theme === "dark"
-                ? "bg-gradient-to-r from-purple-900/50 to-blue-900/50 border border-purple-700/50 hover:from-purple-900/70 hover:to-blue-900/70 text-purple-300"
-                : "bg-gradient-to-r from-purple-100 to-blue-100 border border-purple-300 hover:from-purple-200 hover:to-blue-200 text-purple-700"
+                ? "bg-gradient-to-r from-purple-800 to-indigo-800 border border-purple-700 hover:from-purple-700 hover:to-indigo-700 text-purple-100"
+                : "bg-gradient-to-r from-purple-200 to-indigo-200 border border-purple-400 hover:from-purple-300 hover:to-indigo-300 text-purple-900"
             }`}
           >
             <span className="text-lg">⭐</span>
@@ -1322,14 +1320,14 @@ export default function Profile() {
                 toast.error("Failed to logout");
               }
             }}
-            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-colors ${
+            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-all shadow-sm hover:shadow-md ${
               theme === "dark"
-                ? "bg-gray-800/50 border border-gray-700/50 hover:bg-red-900/30 text-red-400"
-                : "bg-white border border-gray-200 hover:bg-red-50 text-red-600"
+                ? "bg-gradient-to-r from-red-900/80 to-orange-900/80 border border-red-800 hover:from-red-800 hover:to-orange-800 text-red-200"
+                : "bg-gradient-to-r from-red-100 to-orange-100 border border-red-300 hover:from-red-200 hover:to-orange-200 text-red-900"
             }`}
           >
             <LogOut className="w-5 h-5" />
-            <span className="font-medium">Logout</span>
+            <span className="font-semibold">Logout</span>
           </button>
         </div>
       </div>
