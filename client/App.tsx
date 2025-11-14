@@ -36,6 +36,7 @@ import UserProfile from "./pages/UserProfile";
 import Leaderboard from "./pages/Leaderboard";
 import TrainerBookingPayment from "./pages/TrainerBookingPayment";
 import Navigation from "./components/Navigation";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const queryClient = new QueryClient();
 
