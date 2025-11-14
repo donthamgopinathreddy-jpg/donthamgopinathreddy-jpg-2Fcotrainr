@@ -14,8 +14,6 @@ import {
   Fingerprint,
   Smile,
   Share2,
-  Instagram,
-  MessageCircle,
   Download,
   Upload,
   CheckCircle,
