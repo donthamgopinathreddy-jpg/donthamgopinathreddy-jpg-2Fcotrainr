@@ -41,10 +41,8 @@ export const useAchievements = () => {
       if (fetchError) throw fetchError;
       setAllAchievements((data as Achievement[]) || []);
     } catch (err) {
-      console.error("Error fetching achievements:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch achievements",
-      );
+      console.debug("Fetch all achievements error:", err instanceof Error ? err.code : "unknown");
+      setError("Failed to fetch achievements");
     }
   };
 
@@ -120,7 +118,7 @@ export const useAchievements = () => {
       await fetchUnlockedAchievements();
       return true;
     } catch (err) {
-      console.error("Error unlocking achievement:", err);
+      console.debug("Unlock achievement error:", err instanceof Error ? err.code : "unknown");
       return false;
     }
   };
