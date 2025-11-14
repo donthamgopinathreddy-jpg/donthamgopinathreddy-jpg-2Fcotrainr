@@ -90,65 +90,90 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
 
   return (
     <div
-      className={`rounded-lg border ${
+      className={`rounded-2xl border shadow-md transition-all hover:shadow-lg ${
         theme === "dark"
-          ? "bg-gray-800/50 border-gray-700/50"
-          : "bg-white border-gray-200"
+          ? "bg-gradient-to-br from-gray-800 to-gray-900 border-orange-700/30"
+          : "bg-gradient-to-br from-orange-100 to-amber-50 border-orange-300"
       } p-6`}
     >
       <div className="flex items-center justify-between mb-6">
         <h3
-          className={`font-bold text-lg ${
+          className={`font-bold text-lg flex items-center gap-2 ${
             theme === "dark" ? "text-white" : "text-gray-900"
           }`}
         >
-          🔥 Daily Streak
+          <Flame className={`w-6 h-6 ${
+            streak.current_streak > 0 ? "text-orange-500" : "text-gray-400"
+          }`} />
+          Daily Streak
         </h3>
-        <div className="text-2xl">
+        <div className="text-3xl animate-bounce">
           {getMilestoneEmoji(streak.current_streak)}
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="mb-6">
         <div
-          className={`rounded-lg p-4 ${
-            theme === "dark" ? "bg-orange-900/20" : "bg-orange-50"
+          className={`rounded-2xl p-6 text-center transition-all ${
+            theme === "dark"
+              ? "bg-gradient-to-br from-orange-900/40 to-orange-900/20 border border-orange-800/50"
+              : "bg-gradient-to-br from-orange-200 to-orange-100 border border-orange-400"
           }`}
         >
           <p
-            className={`text-xs uppercase font-semibold ${
-              theme === "dark" ? "text-orange-300" : "text-orange-600"
-            } mb-2`}
+            className={`text-xs uppercase font-bold tracking-wide mb-2 ${
+              theme === "dark" ? "text-orange-300" : "text-orange-700"
+            }`}
           >
-            Current
+            Current Streak
           </p>
-          <p className="text-2xl font-bold text-orange-500">
+          <p className={`text-5xl font-black mb-2 ${
+            theme === "dark" ? "text-orange-400" : "text-orange-600"
+          }`}>
             {streak.current_streak}
           </p>
-          <p className="text-xs mt-1 text-orange-400">days in a row</p>
-        </div>
-
-        <div
-          className={`rounded-lg p-4 ${
-            theme === "dark" ? "bg-yellow-900/20" : "bg-yellow-50"
-          }`}
-        >
-          <p
-            className={`text-xs uppercase font-semibold ${
-              theme === "dark" ? "text-yellow-300" : "text-yellow-600"
-            } mb-2`}
-          >
-            Longest
-          </p>
-          <p className="text-2xl font-bold text-yellow-500">
-            {streak.longest_streak}
-          </p>
-          <p className="text-xs mt-1 text-yellow-400">days total</p>
+          <p className={`text-sm font-semibold ${
+            theme === "dark" ? "text-orange-300" : "text-orange-700"
+          }`}>Days in a row 🔥</p>
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-orange-500/10 to-yellow-500/10 rounded-lg p-4 border border-orange-200/50">
-        <p className="text-sm font-semibold mb-3">
+      <div className="grid grid-cols-1 gap-3 mb-6">
+        <div
+          className={`rounded-xl p-4 transition-all ${
+            theme === "dark"
+              ? "bg-gradient-to-r from-yellow-900/30 to-yellow-900/10 border border-yellow-800/30"
+              : "bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-300"
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p
+                className={`text-xs uppercase font-bold ${
+                  theme === "dark" ? "text-yellow-300" : "text-yellow-700"
+                } mb-1`}
+              >
+                Longest Streak
+              </p>
+              <p className={`text-3xl font-bold ${
+                theme === "dark" ? "text-yellow-400" : "text-yellow-600"
+              }`}>
+                {streak.longest_streak}
+              </p>
+            </div>
+            <span className="text-4xl">🏆</span>
+          </div>
+        </div>
+      </div>
+
+      <div className={`rounded-xl p-4 border-2 ${
+        theme === "dark"
+          ? "bg-gradient-to-br from-purple-900/20 to-transparent border-purple-700/50"
+          : "bg-gradient-to-br from-purple-100 to-transparent border-purple-300"
+      }`}>
+        <p className={`text-sm font-bold mb-3 ${
+          theme === "dark" ? "text-purple-300" : "text-purple-700"
+        }`}>
           {getMilestoneEmoji(streak.current_streak)}{" "}
           {getMilestoneText(streak.current_streak)}
         </p>
@@ -156,9 +181,11 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
           {[3, 7, 15, 30].map((days) => (
             <div
               key={days}
-              className={`text-xs px-3 py-1 rounded-full font-semibold ${
+              className={`text-xs px-4 py-2 rounded-full font-bold transition-all ${
                 streak.current_streak >= days
-                  ? "bg-orange-500 text-white"
+                  ? theme === "dark"
+                    ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/30"
+                    : "bg-gradient-to-r from-orange-400 to-amber-400 text-white shadow-lg shadow-orange-400/30"
                   : theme === "dark"
                     ? "bg-gray-700/50 text-gray-400"
                     : "bg-gray-200 text-gray-600"
@@ -171,11 +198,11 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
       </div>
 
       <p
-        className={`text-xs mt-4 ${
-          theme === "dark" ? "text-gray-400" : "text-gray-600"
+        className={`text-xs mt-4 font-semibold text-center ${
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
         }`}
       >
-        Log any activity today to continue your streak! ✨
+        ✨ Log any activity today to continue your streak!
       </p>
     </div>
   );
