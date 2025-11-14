@@ -78,13 +78,32 @@ export default function ActivityDetail() {
     return dates;
   }, []);
 
-  const stepsCompleted = userProfile?.bio
-    ? parseInt(userProfile.bio.split("|")[0] || "0")
-    : 0;
-  const waterConsumed = userProfile?.bio
-    ? parseFloat(userProfile.bio.split("|")[1] || "0")
-    : 0;
-  const caloriesBurned = Math.round(stepsCompleted * 0.05);
+  const stepsCompleted = (() => {
+    try {
+      const val = userProfile?.bio
+        ? parseInt(userProfile.bio.split("|")[0] || "0", 10)
+        : 0;
+      return isNaN(val) ? 0 : val;
+    } catch {
+      return 0;
+    }
+  })();
+
+  const waterConsumed = (() => {
+    try {
+      const val = userProfile?.bio
+        ? parseFloat(userProfile.bio.split("|")[1] || "0")
+        : 0;
+      return isNaN(val) ? 0 : val;
+    } catch {
+      return 0;
+    }
+  })();
+
+  const caloriesBurned = (() => {
+    const val = Math.round(stepsCompleted * 0.05);
+    return isNaN(val) ? 0 : val;
+  })();
 
   const weeklyData: DayData[] = useMemo(() => {
     const data: DayData[] = [];
