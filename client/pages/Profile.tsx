@@ -197,7 +197,7 @@ export default function Profile() {
             profilePhoto: dataUrl,
           }));
 
-          toast.success("✓ Profile photo updated!");
+          toast.success("��� Profile photo updated!");
         } catch (error: any) {
           console.error("Error saving profile photo:", error);
           const errorMsg =
@@ -533,13 +533,9 @@ export default function Profile() {
                 </span>
               </div>
               <button
-                onClick={() =>
-                  setSecuritySettings((prev) => ({
-                    ...prev,
-                    fingerprint: !prev.fingerprint,
-                  }))
-                }
-                className={`relative w-12 h-6 rounded-full transition-colors ${
+                onClick={() => handleBiometricToggle("fingerprint")}
+                disabled={isSavingBiometrics}
+                className={`relative w-12 h-6 rounded-full transition-colors disabled:opacity-50 ${
                   securitySettings.fingerprint ? "bg-orange-500" : "bg-gray-400"
                 }`}
               >
@@ -562,13 +558,9 @@ export default function Profile() {
                 </span>
               </div>
               <button
-                onClick={() =>
-                  setSecuritySettings((prev) => ({
-                    ...prev,
-                    faceRecognition: !prev.faceRecognition,
-                  }))
-                }
-                className={`relative w-12 h-6 rounded-full transition-colors ${
+                onClick={() => handleBiometricToggle("faceRecognition")}
+                disabled={isSavingBiometrics}
+                className={`relative w-12 h-6 rounded-full transition-colors disabled:opacity-50 ${
                   securitySettings.faceRecognition
                     ? "bg-orange-500"
                     : "bg-gray-400"
