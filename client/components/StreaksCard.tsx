@@ -86,7 +86,9 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
         >
           🔥 Daily Streak
         </h3>
-        <div className="text-2xl">{getMilestoneEmoji(streak.current_streak)}</div>
+        <div className="text-2xl">
+          {getMilestoneEmoji(streak.current_streak)}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-6">
@@ -129,7 +131,8 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
 
       <div className="bg-gradient-to-r from-orange-500/10 to-yellow-500/10 rounded-lg p-4 border border-orange-200/50">
         <p className="text-sm font-semibold mb-3">
-          {getMilestoneEmoji(streak.current_streak)} {getMilestoneText(streak.current_streak)}
+          {getMilestoneEmoji(streak.current_streak)}{" "}
+          {getMilestoneText(streak.current_streak)}
         </p>
         <div className="flex gap-2 flex-wrap">
           {[3, 7, 15, 30].map((days) => (

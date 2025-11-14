@@ -125,7 +125,10 @@ export const useStreaks = () => {
           : null,
       );
 
-      return { currentStreak: newCurrentStreak, longestStreak: newLongestStreak };
+      return {
+        currentStreak: newCurrentStreak,
+        longestStreak: newLongestStreak,
+      };
     } catch (err) {
       console.error("Error updating streak:", err);
       setError(err instanceof Error ? err.message : "Failed to update streak");

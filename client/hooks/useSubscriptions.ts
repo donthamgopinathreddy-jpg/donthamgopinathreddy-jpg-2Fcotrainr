@@ -103,7 +103,9 @@ export const useSubscriptions = () => {
       }
     } catch (err) {
       console.error("Error fetching subscription:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch subscription");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch subscription",
+      );
     } finally {
       setLoading(false);
     }
@@ -164,7 +166,9 @@ export const useSubscriptions = () => {
       return true;
     } catch (err) {
       console.error("Error creating subscription:", err);
-      setError(err instanceof Error ? err.message : "Failed to create subscription");
+      setError(
+        err instanceof Error ? err.message : "Failed to create subscription",
+      );
       return false;
     }
   };
@@ -185,7 +189,9 @@ export const useSubscriptions = () => {
       return true;
     } catch (err) {
       console.error("Error cancelling subscription:", err);
-      setError(err instanceof Error ? err.message : "Failed to cancel subscription");
+      setError(
+        err instanceof Error ? err.message : "Failed to cancel subscription",
+      );
       return false;
     }
   };

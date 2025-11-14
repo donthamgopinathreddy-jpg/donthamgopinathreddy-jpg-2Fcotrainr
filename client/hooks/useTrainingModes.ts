@@ -54,7 +54,9 @@ export const useTrainingModes = () => {
       }
     } catch (err) {
       console.error("Error fetching training preferences:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch preferences");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch preferences",
+      );
     } finally {
       setLoading(false);
     }

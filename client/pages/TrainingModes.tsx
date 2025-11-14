@@ -31,7 +31,9 @@ export default function TrainingModes() {
 
   const handleModeToggle = (modeId: string) => {
     setSelectedModes((prev) =>
-      prev.includes(modeId) ? prev.filter((m) => m !== modeId) : [...prev, modeId],
+      prev.includes(modeId)
+        ? prev.filter((m) => m !== modeId)
+        : [...prev, modeId],
     );
   };
 
@@ -39,7 +41,10 @@ export default function TrainingModes() {
     setIsSaving(true);
     try {
       // Update modes
-      if (JSON.stringify(selectedModes) !== JSON.stringify(preferences.training_modes)) {
+      if (
+        JSON.stringify(selectedModes) !==
+        JSON.stringify(preferences.training_modes)
+      ) {
         await updateTrainingModes(selectedModes);
       }
 
@@ -94,9 +99,7 @@ export default function TrainingModes() {
             <button
               onClick={() => navigate(-1)}
               className={`p-2 rounded-lg transition-colors ${
-                theme === "dark"
-                  ? "hover:bg-gray-700"
-                  : "hover:bg-gray-100"
+                theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
               }`}
             >
               <ArrowLeft className="w-5 h-5" />
@@ -243,8 +246,9 @@ export default function TrainingModes() {
               theme === "dark" ? "text-blue-300" : "text-blue-700"
             }`}
           >
-            💡 These preferences help us personalize your dashboard, suggest relevant
-            trainers, and track progress on activities that matter to you.
+            💡 These preferences help us personalize your dashboard, suggest
+            relevant trainers, and track progress on activities that matter to
+            you.
           </p>
         </div>
       </div>

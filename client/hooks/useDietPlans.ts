@@ -58,7 +58,9 @@ export const useDietPlans = () => {
       setDietPlans((data as DietPlan[]) || []);
     } catch (err) {
       console.error("Error fetching diet plans:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch diet plans");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch diet plans",
+      );
     } finally {
       setLoading(false);
     }
@@ -72,7 +74,9 @@ export const useDietPlans = () => {
       setLoading(true);
       const { data, error: fetchError } = await supabase
         .from("diet_plans")
-        .select("*, users!diet_plans_trainer_id(full_name, profile_picture_url)")
+        .select(
+          "*, users!diet_plans_trainer_id(full_name, profile_picture_url)",
+        )
         .eq("client_id", user.id)
         .eq("status", "active")
         .order("shared_at", { ascending: false });
@@ -81,7 +85,9 @@ export const useDietPlans = () => {
       setDietPlans((data as DietPlan[]) || []);
     } catch (err) {
       console.error("Error fetching client diet plans:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch diet plans");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch diet plans",
+      );
     } finally {
       setLoading(false);
     }
@@ -113,7 +119,9 @@ export const useDietPlans = () => {
       return data as DietPlan;
     } catch (err) {
       console.error("Error creating diet plan:", err);
-      setError(err instanceof Error ? err.message : "Failed to create diet plan");
+      setError(
+        err instanceof Error ? err.message : "Failed to create diet plan",
+      );
       return null;
     }
   };
@@ -142,7 +150,9 @@ export const useDietPlans = () => {
       return true;
     } catch (err) {
       console.error("Error updating diet plan:", err);
-      setError(err instanceof Error ? err.message : "Failed to update diet plan");
+      setError(
+        err instanceof Error ? err.message : "Failed to update diet plan",
+      );
       return false;
     }
   };
@@ -168,7 +178,9 @@ export const useDietPlans = () => {
       return true;
     } catch (err) {
       console.error("Error deleting diet plan:", err);
-      setError(err instanceof Error ? err.message : "Failed to delete diet plan");
+      setError(
+        err instanceof Error ? err.message : "Failed to delete diet plan",
+      );
       return false;
     }
   };

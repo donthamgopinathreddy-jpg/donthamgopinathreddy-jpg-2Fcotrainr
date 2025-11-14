@@ -131,9 +131,7 @@ export default function Subscription() {
           <button
             onClick={() => navigate(-1)}
             className={`p-2 rounded-lg transition-colors ${
-              theme === "dark"
-                ? "hover:bg-gray-700"
-                : "hover:bg-gray-100"
+              theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
             }`}
           >
             <ArrowLeft className="w-5 h-5" />
@@ -164,9 +162,7 @@ export default function Subscription() {
                 </h3>
                 <p
                   className={`text-sm ${
-                    theme === "dark"
-                      ? "text-green-300"
-                      : "text-green-600"
+                    theme === "dark" ? "text-green-300" : "text-green-600"
                   }`}
                 >
                   Your premium access is active and benefits are available.
@@ -206,7 +202,9 @@ export default function Subscription() {
               >
                 <Check className="w-5 h-5 text-orange-500 flex-shrink-0" />
                 <span
-                  className={theme === "dark" ? "text-gray-200" : "text-gray-700"}
+                  className={
+                    theme === "dark" ? "text-gray-200" : "text-gray-700"
+                  }
                 >
                   {benefit}
                 </span>
@@ -249,7 +247,9 @@ export default function Subscription() {
                   }`}
                   onClick={() => setSelectedPlanId(plan.id)}
                 >
-                  <h3 className={`font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                  <h3
+                    className={`font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                  >
                     {plan.name}
                   </h3>
                   <div className="mb-4">
@@ -258,9 +258,7 @@ export default function Subscription() {
                     </span>
                     <span
                       className={`ml-2 text-sm ${
-                        theme === "dark"
-                          ? "text-gray-400"
-                          : "text-gray-600"
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
                       /month
@@ -271,9 +269,7 @@ export default function Subscription() {
                       <li
                         key={idx}
                         className={`text-sm flex items-start gap-2 ${
-                          theme === "dark"
-                            ? "text-gray-300"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-300" : "text-gray-600"
                         }`}
                       >
                         <span className="text-orange-500 mt-0.5">✓</span>
@@ -310,7 +306,9 @@ export default function Subscription() {
                   }`}
                   onClick={() => setSelectedPlanId(plan.id)}
                 >
-                  <h3 className={`font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                  <h3
+                    className={`font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                  >
                     {plan.name}
                   </h3>
                   <div className="mb-4">
@@ -319,9 +317,7 @@ export default function Subscription() {
                     </span>
                     <span
                       className={`ml-2 text-sm ${
-                        theme === "dark"
-                          ? "text-gray-400"
-                          : "text-gray-600"
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
                       /year
@@ -332,9 +328,7 @@ export default function Subscription() {
                       <li
                         key={idx}
                         className={`text-sm flex items-start gap-2 ${
-                          theme === "dark"
-                            ? "text-gray-300"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-300" : "text-gray-600"
                         }`}
                       >
                         <span className="text-orange-500 mt-0.5">✓</span>
@@ -363,9 +357,7 @@ export default function Subscription() {
             ) : !razorpayLoaded ? (
               "Loading payment system..."
             ) : (
-              <>
-                Subscribe with Razorpay
-              </>
+              <>Subscribe with Razorpay</>
             )}
           </button>
         )}
@@ -383,8 +375,8 @@ export default function Subscription() {
               theme === "dark" ? "text-blue-300" : "text-blue-700"
             }`}
           >
-            💳 Secure payment processing powered by Razorpay. Your payment information
-            is encrypted and never stored on our servers.
+            💳 Secure payment processing powered by Razorpay. Your payment
+            information is encrypted and never stored on our servers.
           </p>
         </div>
       </div>

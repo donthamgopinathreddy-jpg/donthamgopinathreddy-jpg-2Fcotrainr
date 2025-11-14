@@ -18,7 +18,8 @@ export default function DietPlans() {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { user } = useAuth();
-  const { dietPlans, createDietPlan, shareDietPlan, deleteDietPlan } = useDietPlans();
+  const { dietPlans, createDietPlan, shareDietPlan, deleteDietPlan } =
+    useDietPlans();
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [clients, setClients] = useState<Client[]>([]);
@@ -185,9 +186,7 @@ export default function DietPlans() {
             >
               No diet plans yet
             </p>
-            <p
-              className={theme === "dark" ? "text-gray-400" : "text-gray-500"}
-            >
+            <p className={theme === "dark" ? "text-gray-400" : "text-gray-500"}>
               Create a personalized diet plan for your clients
             </p>
           </div>
@@ -213,9 +212,7 @@ export default function DietPlans() {
                     </h3>
                     <p
                       className={`text-sm ${
-                        theme === "dark"
-                          ? "text-gray-400"
-                          : "text-gray-600"
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
                       For: {getClientName(plan.client_id)}
@@ -250,9 +247,7 @@ export default function DietPlans() {
                   >
                     <p
                       className={`text-xs ${
-                        theme === "dark"
-                          ? "text-gray-400"
-                          : "text-gray-600"
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
                       Duration
@@ -268,9 +263,7 @@ export default function DietPlans() {
                   >
                     <p
                       className={`text-xs ${
-                        theme === "dark"
-                          ? "text-gray-400"
-                          : "text-gray-600"
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
                       Target Calories
@@ -427,9 +420,7 @@ export default function DietPlans() {
                 <div>
                   <label
                     className={`block text-sm font-medium mb-1 ${
-                      theme === "dark"
-                        ? "text-gray-300"
-                        : "text-gray-900"
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
                     }`}
                   >
                     Duration (days)
@@ -438,7 +429,10 @@ export default function DietPlans() {
                     type="number"
                     value={formData.duration_days}
                     onChange={(e) =>
-                      setFormData({ ...formData, duration_days: e.target.value })
+                      setFormData({
+                        ...formData,
+                        duration_days: e.target.value,
+                      })
                     }
                     className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
                       theme === "dark"
@@ -450,9 +444,7 @@ export default function DietPlans() {
                 <div>
                   <label
                     className={`block text-sm font-medium mb-1 ${
-                      theme === "dark"
-                        ? "text-gray-300"
-                        : "text-gray-900"
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
                     }`}
                   >
                     Meals per Day
@@ -461,7 +453,10 @@ export default function DietPlans() {
                     type="number"
                     value={formData.meals_per_day}
                     onChange={(e) =>
-                      setFormData({ ...formData, meals_per_day: e.target.value })
+                      setFormData({
+                        ...formData,
+                        meals_per_day: e.target.value,
+                      })
                     }
                     className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
                       theme === "dark"
@@ -484,7 +479,10 @@ export default function DietPlans() {
                   type="number"
                   value={formData.target_calories}
                   onChange={(e) =>
-                    setFormData({ ...formData, target_calories: e.target.value })
+                    setFormData({
+                      ...formData,
+                      target_calories: e.target.value,
+                    })
                   }
                   className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
                     theme === "dark"
@@ -498,9 +496,7 @@ export default function DietPlans() {
                 <div>
                   <label
                     className={`block text-xs font-medium mb-1 ${
-                      theme === "dark"
-                        ? "text-gray-300"
-                        : "text-gray-900"
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
                     }`}
                   >
                     Protein (g)
@@ -524,9 +520,7 @@ export default function DietPlans() {
                 <div>
                   <label
                     className={`block text-xs font-medium mb-1 ${
-                      theme === "dark"
-                        ? "text-gray-300"
-                        : "text-gray-900"
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
                     }`}
                   >
                     Carbs (g)
@@ -550,9 +544,7 @@ export default function DietPlans() {
                 <div>
                   <label
                     className={`block text-xs font-medium mb-1 ${
-                      theme === "dark"
-                        ? "text-gray-300"
-                        : "text-gray-900"
+                      theme === "dark" ? "text-gray-300" : "text-gray-900"
                     }`}
                   >
                     Fat (g)

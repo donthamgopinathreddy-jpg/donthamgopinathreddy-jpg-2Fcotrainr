@@ -17,7 +17,9 @@ export default function Achievements() {
 
     // Calculate total XP
     const xp = unlockedAchievements.reduce((sum, ua) => {
-      const achievement = allAchievements.find((a) => a.id === ua.achievement_id);
+      const achievement = allAchievements.find(
+        (a) => a.id === ua.achievement_id,
+      );
       return sum + (achievement?.points || 0);
     }, 0);
     setTotalXP(xp);
@@ -76,9 +78,7 @@ export default function Achievements() {
           <button
             onClick={() => navigate(-1)}
             className={`p-2 rounded-lg transition-colors ${
-              theme === "dark"
-                ? "hover:bg-gray-700"
-                : "hover:bg-gray-100"
+              theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
             }`}
           >
             <ArrowLeft className="w-5 h-5" />
@@ -135,7 +135,9 @@ export default function Achievements() {
           >
             <div
               className="h-full bg-gradient-to-r from-orange-500 to-yellow-500 transition-all"
-              style={{ width: `${(unlockedList.length / allAchievements.length) * 100}%` }}
+              style={{
+                width: `${(unlockedList.length / allAchievements.length) * 100}%`,
+              }}
             />
           </div>
         </div>
@@ -181,9 +183,7 @@ export default function Achievements() {
                         </h3>
                         <p
                           className={`text-sm ${
-                            theme === "dark"
-                              ? "text-gray-400"
-                              : "text-gray-600"
+                            theme === "dark" ? "text-gray-400" : "text-gray-600"
                           } mb-2`}
                         >
                           {achievement.description}
@@ -239,18 +239,14 @@ export default function Achievements() {
                     <div className="flex-1">
                       <h3
                         className={`font-bold ${
-                          theme === "dark"
-                            ? "text-gray-400"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
                         {achievement.title}
                       </h3>
                       <p
                         className={`text-sm ${
-                          theme === "dark"
-                            ? "text-gray-500"
-                            : "text-gray-500"
+                          theme === "dark" ? "text-gray-500" : "text-gray-500"
                         } mb-2`}
                       >
                         {getAchievementDescription(achievement.type)}

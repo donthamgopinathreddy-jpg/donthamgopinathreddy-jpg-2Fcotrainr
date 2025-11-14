@@ -42,7 +42,9 @@ export const useAchievements = () => {
       setAllAchievements((data as Achievement[]) || []);
     } catch (err) {
       console.error("Error fetching achievements:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch achievements");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch achievements",
+      );
     }
   };
 
@@ -61,7 +63,7 @@ export const useAchievements = () => {
           achievement_id,
           unlocked_at,
           achievements(id, title, description, icon, type, points, created_at)
-        `
+        `,
         )
         .eq("user_id", user.id)
         .order("unlocked_at", { ascending: false });
