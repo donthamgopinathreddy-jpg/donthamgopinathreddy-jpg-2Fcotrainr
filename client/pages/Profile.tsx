@@ -58,7 +58,7 @@ export default function Profile() {
   const { counts: followerCounts } = useFollowerCounts(userProfile?.id);
   const { referralCode } = useReferrals();
   const { userAchievements, getTotalPoints } = useAchievements();
-  const { theme = "light" } = useTheme() || { theme: "light" };
+  const { theme = "light", toggleTheme } = useTheme();
   const { todaySteps: syncedSteps, isAvailable: isHealthSyncAvailable } =
     useHealthSync();
 
