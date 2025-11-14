@@ -464,13 +464,19 @@ export default function Discover() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="w-12 h-12 bg-card rounded-full flex items-center justify-center mb-4">
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${
+                theme === "dark" ? "bg-gray-800" : "bg-orange-100"
+              }`}>
                 <span className="text-2xl">🔍</span>
               </div>
-              <h3 className="font-bold text-foreground mb-1">
+              <h3 className={`font-bold mb-1 ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}>
                 No trainers found
               </h3>
-              <p className="text-muted-foreground text-sm">
+              <p className={`text-sm ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}>
                 Try adjusting your filters or category
               </p>
             </div>
