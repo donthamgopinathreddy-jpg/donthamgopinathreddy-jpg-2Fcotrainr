@@ -230,63 +230,39 @@ export default function ActivityDetail() {
           }`}
         >
           <div className="relative space-y-4">
-            {/* Half-Circle Icon with Value Around It */}
-            <div className="flex justify-center py-8">
-              <div className="relative w-64 h-48">
-                <svg
-                  className="w-full h-full"
-                  viewBox="0 0 256 128"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  {/* Background half circle arc */}
-                  <path
-                    d="M 32 128 A 96 96 0 0 1 224 128"
-                    fill="none"
-                    stroke={theme === "dark" ? "#374151" : "#e5e7eb"}
-                    strokeWidth="5"
-                    strokeLinecap="round"
-                  />
-                  {/* Progress half circle arc */}
-                  <path
-                    d="M 32 128 A 96 96 0 0 1 224 128"
-                    fill="none"
-                    stroke={
-                      type === "water"
-                        ? "#06b6d4"
-                        : type === "calories"
-                          ? "#dc2626"
-                          : "#ea580c"
-                    }
-                    strokeWidth="5"
-                    strokeLinecap="round"
-                    strokeDasharray={Math.PI * 96}
-                    strokeDashoffset={
-                      Math.PI * 96 *
-                      (1 -
-                        Math.min(
-                          selectedDate.toDateString() === new Date().toDateString()
-                            ? type === "water"
-                              ? waterConsumed / 2.5
-                              : type === "calories"
-                                ? caloriesBurned / 2500
-                                : stepsCompleted / 10000
-                            : 0,
-                          1,
-                        ))
-                    }
-                    className="transition-all duration-500"
-                  />
-                </svg>
+            {/* Icon with Horizontal Progress Bar Below */}
+            <div className="flex flex-col items-center py-6 gap-4">
+              {/* Icon */}
+              <div className="text-7xl">{colors.icon}</div>
 
-                {/* Center Icon */}
-                <div className="absolute inset-0 flex items-center justify-center pt-8">
-                  <div className="text-7xl">{colors.icon}</div>
+              {/* Horizontal Progress Bar */}
+              <div className="w-64">
+                <div
+                  className={`rounded-full h-3 overflow-hidden ${
+                    theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+                  }`}
+                >
+                  <div
+                    className={`h-full bg-gradient-to-r ${colors.gradient} transition-all duration-500`}
+                    style={{
+                      width: `${Math.min(
+                        (selectedDate.toDateString() === new Date().toDateString()
+                          ? type === "water"
+                            ? waterConsumed / 2.5
+                            : type === "calories"
+                              ? caloriesBurned / 2500
+                              : stepsCompleted / 10000
+                          : 0) * 100,
+                        100,
+                      )}%`,
+                    }}
+                  />
                 </div>
               </div>
             </div>
 
             <div>
-              <div className={`text-5xl font-bold ${colors.text}`}>
+              <div className={`text-5xl font-bold ${theme === "dark" ? colors.text : colors.text}`}>
                 {type === "water"
                   ? selectedDate.toDateString() === new Date().toDateString()
                     ? waterConsumed.toFixed(1)
