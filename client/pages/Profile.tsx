@@ -1348,15 +1348,20 @@ export default function Profile() {
                     A quick photo to verify your identity
                   </p>
                 </div>
-                <button
-                  className={`p-2 rounded-full ${
-                    theme === "dark"
-                      ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
+                <label className={`p-2 rounded-full cursor-pointer ${
+                  theme === "dark"
+                    ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}>
                   <Camera className="w-5 h-5" />
-                </button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="user"
+                    onChange={(e) => handleVerificationUpload(e, 'selfie')}
+                    className="hidden"
+                  />
+                </label>
               </div>
 
               <div
