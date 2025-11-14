@@ -54,9 +54,18 @@ export default function Profile() {
     signOut,
     updateProfile: authUpdateProfile,
   } = useAuth();
+
   const { counts: followerCounts, refetch: refetchCounts } = useFollowerCounts(
     userProfile?.id,
   );
+
+  // Safely handle referrals hook - wrap in try-catch if it fails
+  let referralData: any = { referralCount: 0 };
+  try {
+    referralData = useReferrals();
+  } catch (error) {
+    console.error("Error loading referrals:", error);
+  }
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
