@@ -955,48 +955,38 @@ export default function Profile() {
                 />
               </div>
 
-              {/* Social Sharing */}
-              <div>
-                <p
-                  className={`text-xs font-semibold mb-3 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
+              {/* Share Button */}
+              <div className="flex items-center justify-center">
+                <button
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator
+                        .share({
+                          title: "Join me on CoTrainr!",
+                          text: `Join me on CoTrainr fitness coaching app and get 100 bonus coins!`,
+                          url: referralLink,
+                        })
+                        .catch((error) => {
+                          if (error.name !== "AbortError") {
+                            toast.error("Unable to share. Please try again.");
+                            console.error("Share error:", error);
+                          }
+                        });
+                    } else {
+                      // Fallback: copy to clipboard if share is not supported
+                      handleCopyReferralLink();
+                      toast.info("Share not supported. Link copied instead!");
+                    }
+                  }}
+                  title="Share referral link"
+                  className={`p-3 rounded-full transition-all ${
+                    theme === "dark"
+                      ? "bg-orange-900/30 hover:bg-orange-900/50 text-orange-400"
+                      : "bg-orange-100 hover:bg-orange-200 text-orange-600"
+                  }`}
                 >
-                  Share on Social
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() =>
-                      window.open(
-                        `https://wa.me/?text=${encodeURIComponent(`Join me on CoTrainr! ${referralLink}`)}`,
-                        "_blank",
-                      )
-                    }
-                    className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    WhatsApp
-                  </button>
-                  <button
-                    onClick={() =>
-                      window.open(`https://instagram.com`, "_blank")
-                    }
-                    className="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Instagram className="w-4 h-4" />
-                    Instagram
-                  </button>
-                  <button
-                    onClick={() =>
-                      window.open(
-                        `sms:?body=${encodeURIComponent(`Join me on CoTrainr! ${referralLink}`)}`,
-                        "_blank",
-                      )
-                    }
-                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    SMS
-                  </button>
-                </div>
+                  <Share2 className="w-6 h-6" />
+                </button>
               </div>
 
               <p
