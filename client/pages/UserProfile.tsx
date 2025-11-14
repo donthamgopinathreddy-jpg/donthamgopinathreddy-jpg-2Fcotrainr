@@ -52,7 +52,8 @@ interface Like {
 }
 
 export default function UserProfile() {
-  const { userId } = useParams<{ userId: string }>();
+  const params = useParams<{ userId?: string; username?: string }>();
+  const identifier = params.userId || params.username;
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { isFollowing, toggleFollow } = useFollows();
@@ -81,18 +82,18 @@ export default function UserProfile() {
 
   useEffect(() => {
     console.log(
-      "=== UserProfile mounted, userId from URL:",
-      userId,
+      "=== UserProfile mounted, identifier from URL:",
+      identifier,
       "Length:",
-      userId?.length,
+      identifier?.length,
     );
 
-    if (!userId) {
-      console.warn("No userId provided to UserProfile");
+    if (!identifier) {
+      console.warn("No identifier provided to UserProfile");
       return;
     }
 
-    console.log("UserProfile: Fetching user with ID/username:", userId);
+    console.log("UserProfile: Fetching user with ID/username:", identifier);
 
     const fetchUserProfile = async () => {
       try {
