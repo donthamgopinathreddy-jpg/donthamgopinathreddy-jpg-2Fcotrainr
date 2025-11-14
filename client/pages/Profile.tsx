@@ -57,6 +57,7 @@ export default function Profile() {
   const { referralCode } = useReferrals();
   const { userAchievements, getTotalPoints } = useAchievements();
   const { theme = "light" } = useTheme() || { theme: "light" };
+  const { todaySteps: syncedSteps, isAvailable: isHealthSyncAvailable } = useHealthSync();
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
@@ -74,7 +75,7 @@ export default function Profile() {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
-  const [dailySteps, setDailySteps] = useState(8450);
+  const [dailySteps, setDailySteps] = useState(0);
 
   const [securitySettings, setSecuritySettings] = useState({
     usePIN: false,
