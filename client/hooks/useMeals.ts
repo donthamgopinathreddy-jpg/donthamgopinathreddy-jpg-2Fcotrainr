@@ -51,21 +51,13 @@ export const useMeals = () => {
         .order("logged_at", { ascending: false });
 
       if (error) {
-        console.error(
-          "Supabase error fetching meals:",
-          error?.message || JSON.stringify(error),
-        );
+        console.debug("Fetch meals error:", error?.code);
         setMeals([]);
       } else {
         setMeals(data || []);
       }
     } catch (error: any) {
-      const errorMsg =
-        error?.message ||
-        error?.code ||
-        String(error) ||
-        "Failed to fetch meals";
-      console.error("Error fetching meals:", errorMsg);
+      console.debug("Fetch meals catch error:", error instanceof Error ? error.code : "unknown");
       setMeals([]);
     } finally {
       setLoading(false);
@@ -114,15 +106,15 @@ export const useMeals = () => {
         .single();
 
       if (error) {
-        console.error("Error adding meal:", error);
+        console.debug("Add meal error:", error?.code);
         throw error;
       }
       setMeals((prev) => [data, ...prev]);
       return data;
     } catch (error: any) {
       const errorMsg =
-        error?.message || error?.code || String(error) || "Failed to add meal";
-      console.error("Error adding meal:", errorMsg);
+        error?.message || error?.code || "Failed to add meal";
+      console.debug("Add meal catch error:", errorMsg);
       throw new Error(errorMsg);
     }
   };
