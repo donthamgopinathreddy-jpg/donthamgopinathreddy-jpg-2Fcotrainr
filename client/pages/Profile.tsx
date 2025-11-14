@@ -919,43 +919,40 @@ export default function Profile() {
                     : "bg-blue-50 border border-blue-200"
                 }`}
               >
-                <p
-                  className={`text-xs font-semibold ${theme === "dark" ? "text-blue-300" : "text-blue-700"}`}
-                >
-                  Referral Link
-                </p>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    readOnly
-                    value={referralLink}
-                    className={`flex-1 rounded-lg px-3 py-2 text-xs focus:outline-none overflow-hidden text-ellipsis ${
-                      theme === "dark"
-                        ? "bg-gray-900 border border-blue-700 text-gray-300"
-                        : "bg-white border border-blue-300 text-gray-700"
-                    }`}
-                  />
+                <div className="flex items-center justify-between">
+                  <p
+                    className={`text-xs font-semibold ${theme === "dark" ? "text-blue-300" : "text-blue-700"}`}
+                  >
+                    Referral Link
+                  </p>
                   <button
                     onClick={handleCopyReferralLink}
-                    className={`px-3 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-1 whitespace-nowrap text-xs ${
+                    title={referralCopied ? "Copied!" : "Copy link"}
+                    className={`p-2 rounded-lg transition-all ${
                       referralCopied
-                        ? "bg-green-600 text-white"
-                        : "bg-orange-500 text-white hover:bg-orange-600"
+                        ? "text-green-600"
+                        : theme === "dark"
+                          ? "text-blue-400 hover:bg-blue-800/50"
+                          : "text-blue-600 hover:bg-blue-100"
                     }`}
                   >
                     {referralCopied ? (
-                      <>
-                        <Check className="w-4 h-4" />
-                        Copied
-                      </>
+                      <Check className="w-5 h-5" />
                     ) : (
-                      <>
-                        <Copy className="w-4 h-4" />
-                        Copy Link
-                      </>
+                      <Copy className="w-5 h-5" />
                     )}
                   </button>
                 </div>
+                <input
+                  type="text"
+                  readOnly
+                  value={referralLink}
+                  className={`w-full rounded-lg px-3 py-2 text-xs focus:outline-none overflow-hidden text-ellipsis ${
+                    theme === "dark"
+                      ? "bg-gray-900 border border-blue-700 text-gray-300"
+                      : "bg-white border border-blue-300 text-gray-700"
+                  }`}
+                />
               </div>
 
               {/* Social Sharing */}
