@@ -178,7 +178,7 @@ export const useReferrals = () => {
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("Error fetching referrals:", error);
+        console.debug("Fetch referrals error:", error?.code);
         return;
       }
 
