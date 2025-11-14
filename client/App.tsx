@@ -27,6 +27,7 @@ import Subscription from "./pages/Subscription";
 import Achievements from "./pages/Achievements";
 import TrainingModes from "./pages/TrainingModes";
 import DietPlans from "./pages/DietPlans";
+import DietPlanDetail from "./pages/DietPlanDetail";
 import TrainerSignup from "./pages/TrainerSignup";
 import TrainerDashboard from "./pages/TrainerDashboard";
 import TrainerClientDetail from "./pages/TrainerClientDetail";
