@@ -190,7 +190,9 @@ export const useAchievements = () => {
   // Format unlocked achievements with achievement details
   const userAchievements = unlockedAchievements
     .map((ua) => {
-      const achievement = allAchievements.find((a) => a.id === ua.achievement_id);
+      const achievement = allAchievements.find(
+        (a) => a.id === ua.achievement_id,
+      );
       return {
         id: ua.id,
         title: achievement?.title || "Unknown",
@@ -200,11 +202,17 @@ export const useAchievements = () => {
         unlocked_at: ua.unlocked_at,
       };
     })
-    .sort((a, b) => new Date(b.unlocked_at).getTime() - new Date(a.unlocked_at).getTime());
+    .sort(
+      (a, b) =>
+        new Date(b.unlocked_at).getTime() - new Date(a.unlocked_at).getTime(),
+    );
 
   // Calculate total points
   const getTotalPoints = () => {
-    return userAchievements.reduce((sum, achievement) => sum + achievement.points, 0);
+    return userAchievements.reduce(
+      (sum, achievement) => sum + achievement.points,
+      0,
+    );
   };
 
   return {
