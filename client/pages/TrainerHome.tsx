@@ -511,7 +511,7 @@ export default function TrainerHome() {
 
             {/* BMI Index Card */}
             <div
-              className={`${bmiStatus.bgColor} border-2 border-gray-200 rounded-2xl p-6 space-y-4`}
+              className={`${bmiStatus.bgColor} rounded-2xl p-6 space-y-4`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
