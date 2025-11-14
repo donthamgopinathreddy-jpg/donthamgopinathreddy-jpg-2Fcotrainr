@@ -71,6 +71,7 @@ export default function Profile() {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
+  const [dailySteps, setDailySteps] = useState(8450); // Example value, can be passed as prop
 
   // Security & Login state
   const [securitySettings, setSecuritySettings] = useState({
