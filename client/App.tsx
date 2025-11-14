@@ -220,7 +220,9 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <AppLayout>
-              <Profile />
+              <ErrorBoundary>
+                <Profile />
+              </ErrorBoundary>
             </AppLayout>
           </ProtectedRoute>
         }
