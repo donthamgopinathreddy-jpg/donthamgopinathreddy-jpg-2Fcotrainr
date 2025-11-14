@@ -592,8 +592,35 @@ export default function TrainerHome() {
                     Schedule or join meetings
                   </p>
                 </button>
+                <button
+                  onClick={() => navigate("/diet-plans")}
+                  className="bg-gradient-to-br from-green-100 via-lime-100 to-emerald-100 rounded-2xl p-5 border border-green-200 hover:shadow-lg hover:shadow-green-300/50 transition-all transform hover:scale-105"
+                >
+                  <span className="text-2xl mb-2 block">🥗</span>
+                  <p className="font-bold text-gray-900 text-sm">Diet Plans</p>
+                  <p className="text-xs text-gray-600">Create & share</p>
+                </button>
+                <button
+                  onClick={() => navigate("/achievements")}
+                  className="bg-gradient-to-br from-yellow-100 via-amber-100 to-orange-100 rounded-2xl p-5 border border-yellow-200 hover:shadow-lg hover:shadow-yellow-300/50 transition-all transform hover:scale-105"
+                >
+                  <span className="text-2xl mb-2 block">🏆</span>
+                  <p className="font-bold text-gray-900 text-sm">Achievements</p>
+                  <p className="text-xs text-gray-600">View milestones</p>
+                </button>
+                <button
+                  onClick={() => navigate("/training-modes")}
+                  className="bg-gradient-to-br from-pink-100 via-rose-100 to-red-100 rounded-2xl p-5 border border-pink-200 hover:shadow-lg hover:shadow-pink-300/50 transition-all transform hover:scale-105"
+                >
+                  <span className="text-2xl mb-2 block">🎯</span>
+                  <p className="font-bold text-gray-900 text-sm">Training Modes</p>
+                  <p className="text-xs text-gray-600">Update preferences</p>
+                </button>
               </div>
             </div>
+
+            {/* Streaks Card */}
+            <StreaksCard compact={false} />
 
             {/* Latest Posts Section */}
             <div>
