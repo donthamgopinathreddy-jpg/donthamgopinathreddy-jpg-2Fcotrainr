@@ -2,127 +2,144 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 
-export interface StreakData {
+interface Streak {
   id: string;
   user_id: string;
   current_streak: number;
   longest_streak: number;
   last_active_date: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export const useStreaks = () => {
-  const { user, userProfile } = useAuth();
-  const [streak, setStreak] = useState<StreakData | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+  const [streak, setStreak] = useState<Streak | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch user's streak
-  const fetchStreak = async (userId?: string) => {
-    const targetUserId = userId || user?.id;
-    if (!targetUserId) return;
+  // Fetch streak data for current user
+  const fetchStreak = async () => {
+    if (!user?.id) return;
 
-    setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("user_streaks")
+      setLoading(true);
+      const { data, error: fetchError } = await supabase
+        .from("streaks")
         .select("*")
-        .eq("user_id", targetUserId)
-        .single();
+        .eq("user_id", user.id)
+        .maybeSingle();
 
-      if (error && error.code !== "PGRST116") {
-        console.error("Error fetching streak:", error);
+      if (fetchError) throw fetchError;
+
+      if (data) {
+        setStreak(data as Streak);
+      } else {
+        // Create initial streak record if not exists
+        const { data: newStreak, error: createError } = await supabase
+          .from("streaks")
+          .insert([
+            {
+              user_id: user.id,
+              current_streak: 0,
+              longest_streak: 0,
+              last_active_date: null,
+            },
+          ])
+          .select()
+          .single();
+
+        if (createError) throw createError;
+        setStreak(newStreak as Streak);
       }
-
-      setStreak(data || null);
-    } catch (error) {
-      console.error("Error in fetchStreak:", error);
+    } catch (err) {
+      console.error("Error fetching streak:", err);
+      setError(err instanceof Error ? err.message : "Failed to fetch streak");
     } finally {
       setLoading(false);
     }
   };
 
-  // Update streak (usually called after logging steps for the day)
+  // Update streak based on daily activity
   const updateStreak = async () => {
-    if (!user?.id) return;
+    if (!user?.id || !streak) return;
 
     try {
       const today = new Date().toISOString().split("T")[0];
+      const lastActive = streak.last_active_date;
 
-      // Get or create streak record
-      let { data: existingStreak } = await supabase
-        .from("user_streaks")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
+      // Calculate new streak
+      let newCurrentStreak = streak.current_streak;
+      let newLongestStreak = streak.longest_streak;
 
-      if (!existingStreak) {
-        // Create new streak
-        const { data: newStreak } = await supabase
-          .from("user_streaks")
-          .insert({
-            user_id: user.id,
-            current_streak: 1,
-            longest_streak: 1,
-            last_active_date: today,
-          })
-          .select()
-          .single();
-
-        setStreak(newStreak);
+      if (!lastActive) {
+        // First activity
+        newCurrentStreak = 1;
+        newLongestStreak = 1;
+      } else if (lastActive === today) {
+        // Already counted today
+        return;
       } else {
-        const lastActiveDate = existingStreak.last_active_date;
-        let newCurrentStreak = existingStreak.current_streak;
+        // Check if consecutive day
+        const lastDate = new Date(lastActive);
+        const todayDate = new Date(today);
+        const diffTime = todayDate.getTime() - lastDate.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-        // Check if it's a new day
-        if (lastActiveDate !== today) {
-          const lastDate = new Date(lastActiveDate);
-          const currentDate = new Date(today);
-          const daysDiff =
-            (currentDate.getTime() - lastDate.getTime()) /
-            (1000 * 60 * 60 * 24);
-
-          if (daysDiff === 1) {
-            // Consecutive day - increment streak
-            newCurrentStreak = existingStreak.current_streak + 1;
-          } else if (daysDiff > 1) {
-            // Streak broken - reset
-            newCurrentStreak = 1;
-          }
+        if (diffDays === 1) {
+          // Consecutive day
+          newCurrentStreak += 1;
+        } else {
+          // Broken streak
+          newCurrentStreak = 1;
         }
 
-        const newLongestStreak = Math.max(
-          newCurrentStreak,
-          existingStreak.longest_streak,
-        );
-
-        // Update streak
-        const { data: updatedStreak } = await supabase
-          .from("user_streaks")
-          .update({
-            current_streak: newCurrentStreak,
-            longest_streak: newLongestStreak,
-            last_active_date: today,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("user_id", user.id)
-          .select()
-          .single();
-
-        setStreak(updatedStreak);
+        // Update longest streak if current is higher
+        if (newCurrentStreak > newLongestStreak) {
+          newLongestStreak = newCurrentStreak;
+        }
       }
-    } catch (error) {
-      console.error("Error updating streak:", error);
+
+      // Update in database
+      const { error: updateError } = await supabase
+        .from("streaks")
+        .update({
+          current_streak: newCurrentStreak,
+          longest_streak: newLongestStreak,
+          last_active_date: today,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("user_id", user.id);
+
+      if (updateError) throw updateError;
+
+      // Update local state
+      setStreak((prev) =>
+        prev
+          ? {
+              ...prev,
+              current_streak: newCurrentStreak,
+              longest_streak: newLongestStreak,
+              last_active_date: today,
+            }
+          : null,
+      );
+
+      return { currentStreak: newCurrentStreak, longestStreak: newLongestStreak };
+    } catch (err) {
+      console.error("Error updating streak:", err);
+      setError(err instanceof Error ? err.message : "Failed to update streak");
     }
   };
 
   useEffect(() => {
-    if (user?.id) {
-      fetchStreak();
-    }
+    fetchStreak();
   }, [user?.id]);
 
   return {
     streak,
     loading,
+    error,
     fetchStreak,
     updateStreak,
   };
