@@ -139,13 +139,13 @@ export const useReferrals = () => {
         .eq("id", referral.id);
 
       if (updateError) {
-        console.error("Error using referral:", updateError);
+        console.debug("Error using referral:", updateError?.message || String(updateError));
         return false;
       }
 
       return true;
     } catch (error) {
-      console.error("Error in useReferralCode:", error);
+      console.debug("Error in useReferralCode:", error instanceof Error ? error.message : String(error));
       return false;
     }
   };
