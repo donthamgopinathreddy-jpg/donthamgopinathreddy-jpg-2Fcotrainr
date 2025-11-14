@@ -137,7 +137,7 @@ export default function Profile() {
             }));
           }
         } catch (error) {
-          console.error("Error fetching biometric settings:", error);
+          console.debug("Fetch biometric settings catch error:", error instanceof Error ? error.code : "unknown");
         }
       };
 
