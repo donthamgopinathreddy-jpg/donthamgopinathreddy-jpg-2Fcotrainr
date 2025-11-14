@@ -1,13 +1,38 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Phone, PhoneOff, Mic, MicOff, Video, VideoOff } from "lucide-react";
+import { toast } from "sonner";
+import { usePermissions } from "@/hooks/usePermissions";
 
 export default function VideoCall() {
   const navigate = useNavigate();
+  const { requestCamera, requestMicrophone } = usePermissions();
   const [timeLeft, setTimeLeft] = useState(10 * 60); // 10 minutes in seconds
   const [isActive, setIsActive] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
+
+  useEffect(() => {
+    const requestMediaPermissions = async () => {
+      try {
+        const cameraGranted = await requestCamera();
+        const micGranted = await requestMicrophone();
+
+        if (!cameraGranted) {
+          toast.warning("Camera permission denied. Your video will be off.");
+          setIsVideoOff(true);
+        }
+        if (!micGranted) {
+          toast.warning("Microphone permission denied. You will be muted.");
+          setIsMuted(true);
+        }
+      } catch (error) {
+        console.debug("Media permission request error:", error);
+      }
+    };
+
+    requestMediaPermissions();
+  }, [requestCamera, requestMicrophone]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
