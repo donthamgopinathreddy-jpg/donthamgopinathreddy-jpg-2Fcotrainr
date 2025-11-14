@@ -1334,10 +1334,10 @@ export default function Profile() {
 
       {/* EDIT PROFILE MODAL */}
       {showEditModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div
-            className={`w-full max-w-md rounded-3xl flex flex-col max-h-[90vh] ${
-              theme === "dark" ? "bg-gray-800" : "bg-white"
+            className={`w-full max-w-md rounded-3xl flex flex-col max-h-[90vh] shadow-2xl ${
+              theme === "dark" ? "bg-gradient-to-br from-gray-800 to-gray-900" : "bg-gradient-to-br from-white to-gray-50"
             }`}
           >
             {/* Sticky Header */}
