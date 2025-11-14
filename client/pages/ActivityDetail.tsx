@@ -377,82 +377,45 @@ export default function ActivityDetail() {
             </div>
           </div>
 
-          {/* Weekly Data - Bars for Past Days, Circles for Today */}
-          <div className="flex items-end justify-around gap-2 h-48">
-            {weeklyData.map((dayData, idx) => {
-              const safeValue = isNaN(dayData.value) ? 0 : dayData.value;
-              const safeMax = isNaN(dayData.max) || dayData.max <= 0 ? 1 : dayData.max;
-              const progressPercent = (safeValue / safeMax) * 100;
-              const isToday = idx === new Date().getDay();
-
-              // For today and future days - show circular indicator
-              if (isToday) {
-                const circumference = 2 * Math.PI * 28;
-                const strokeDashoffset = circumference * (1 - Math.min(progressPercent, 100) / 100);
-                const displayValue = safeValue > 0 ? (safeValue / 1000).toFixed(1) : "0";
+          {/* Vertical Bar Chart - Old Style */}
+          <div
+            className={`rounded-lg p-6 ${
+              theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+            }`}
+          >
+            <div className="flex items-end justify-around gap-2 h-48">
+              {weeklyData.map((dayData, idx) => {
+                const safeValue = isNaN(dayData.value) ? 0 : dayData.value;
+                const safeMax = isNaN(dayData.max) || dayData.max <= 0 ? 1 : dayData.max;
+                const barHeightPercent = (safeValue / safeMax) * 100;
 
                 return (
-                  <div key={idx} className="flex flex-col items-center gap-2 flex-1">
-                    {/* Circular Progress Indicator for today */}
-                    <div className="relative w-16 h-16">
-                      <svg
-                        className="w-full h-full transform -rotate-90"
-                        viewBox="0 0 64 64"
-                      >
-                        {/* Background circle */}
-                        <circle
-                          cx="32"
-                          cy="32"
-                          r="28"
-                          fill="none"
-                          stroke={theme === "dark" ? "#374151" : "#e5e7eb"}
-                          strokeWidth="4"
-                        />
-                        {/* Progress circle */}
-                        <circle
-                          cx="32"
-                          cy="32"
-                          r="28"
-                          fill="none"
-                          stroke={
-                            type === "water"
-                              ? "#06b6d4"
-                              : type === "calories"
-                                ? "#dc2626"
-                                : "#ea580c"
-                          }
-                          strokeWidth="4"
-                          strokeDasharray={circumference}
-                          strokeDashoffset={Math.max(0, strokeDashoffset)}
-                          strokeLinecap="round"
-                          className="transition-all duration-500"
-                        />
-                      </svg>
+                  <div
+                    key={idx}
+                    className="flex flex-col items-center gap-2 flex-1"
+                  >
+                    {/* Vertical Bar */}
+                    <div className="w-full flex flex-col items-center justify-end h-full relative group">
+                      <div
+                        className={`w-full bg-gradient-to-t ${colors.gradient} rounded-t-lg transition-all duration-300 hover:opacity-80`}
+                        style={{
+                          height: `${barHeightPercent}%`,
+                          minHeight: barHeightPercent > 0 ? "4px" : "0px",
+                        }}
+                        title={`${dayData.day} ${dayData.date}: ${safeValue.toLocaleString()} ${unit}`}
+                      />
 
-                      {/* Center Value */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span
-                          className={`text-xs font-bold ${
-                            safeValue > 0
-                              ? colors.text
-                              : theme === "dark"
-                                ? "text-gray-500"
-                                : "text-gray-400"
-                          }`}
+                      {/* Value on top of bar */}
+                      {barHeightPercent > 0 && (
+                        <div
+                          className={`absolute -top-6 text-xs font-bold ${colors.text}`}
                         >
-                          {String(displayValue)}
-                        </span>
-                        <span
-                          className={`text-[10px] ${
-                            theme === "dark" ? "text-gray-600" : "text-gray-500"
-                          }`}
-                        >
-                          {type === "water" ? "L" : "K"}
-                        </span>
-                      </div>
+                          {safeValue.toLocaleString()}
+                        </div>
+                      )}
                     </div>
 
-                    {/* Day Label */}
+                    {/* Day and Date Label */}
                     <div className="text-center">
                       <div
                         className={`text-xs font-semibold ${
@@ -471,56 +434,8 @@ export default function ActivityDetail() {
                     </div>
                   </div>
                 );
-              }
-
-              // For past days - show vertical bar style
-              const barHeightPercent = progressPercent;
-              return (
-                <div
-                  key={idx}
-                  className="flex flex-col items-center gap-2 flex-1"
-                >
-                  {/* Vertical Bar */}
-                  <div className="w-full flex flex-col items-center justify-end h-full relative group">
-                    <div
-                      className={`w-full bg-gradient-to-t ${colors.gradient} rounded-t-lg transition-all duration-300 hover:opacity-80`}
-                      style={{
-                        height: `${barHeightPercent}%`,
-                        minHeight: barHeightPercent > 0 ? "4px" : "0px",
-                      }}
-                      title={`${dayData.day} ${dayData.date}: ${safeValue.toLocaleString()} ${unit}`}
-                    />
-
-                    {/* Value on top of bar */}
-                    {barHeightPercent > 0 && (
-                      <div
-                        className={`absolute -top-6 text-xs font-bold ${colors.text}`}
-                      >
-                        {safeValue.toLocaleString()}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Day and Date Label */}
-                  <div className="text-center">
-                    <div
-                      className={`text-xs font-semibold ${
-                        theme === "dark" ? "text-gray-300" : "text-gray-900"
-                      }`}
-                    >
-                      {dayData.day}
-                    </div>
-                    <div
-                      className={`text-xs ${
-                        theme === "dark" ? "text-gray-500" : "text-gray-600"
-                      }`}
-                    >
-                      {dayData.date}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+              })}
+            </div>
           </div>
 
           {type === "steps" && (
