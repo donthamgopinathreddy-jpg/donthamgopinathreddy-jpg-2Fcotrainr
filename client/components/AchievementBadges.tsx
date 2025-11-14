@@ -19,7 +19,7 @@ const AchievementBadges = ({
     compact && !showAll ? userAchievements.slice(0, 3) : userAchievements;
   const hasMore = (userAchievements?.length || 0) > 3 && compact;
 
-  if (userAchievements.length === 0) {
+  if (!userAchievements || userAchievements.length === 0) {
     return (
       <div
         className={`p-4 rounded-lg text-center ${
