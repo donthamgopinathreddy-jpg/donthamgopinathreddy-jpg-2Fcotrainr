@@ -25,10 +25,33 @@ const MOCK_PARTICIPANTS: Participant[] = [
 
 export default function VideoMeeting() {
   const navigate = useNavigate();
+  const { requestCamera, requestMicrophone } = usePermissions();
   const [participants, setParticipants] = useState(MOCK_PARTICIPANTS);
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
   const [showChat, setShowChat] = useState(true);
+
+  useEffect(() => {
+    const requestMediaPermissions = async () => {
+      try {
+        const cameraGranted = await requestCamera();
+        const micGranted = await requestMicrophone();
+
+        if (!cameraGranted) {
+          toast.warning("Camera permission denied. Your video will be off.");
+          setIsVideoOff(true);
+        }
+        if (!micGranted) {
+          toast.warning("Microphone permission denied. You will be muted.");
+          setIsMuted(true);
+        }
+      } catch (error) {
+        console.debug("Media permission request error:", error);
+      }
+    };
+
+    requestMediaPermissions();
+  }, [requestCamera, requestMicrophone]);
 
   // Find the trainer in the meeting
   const trainerParticipant = participants.find(p => p.isTrainer);
