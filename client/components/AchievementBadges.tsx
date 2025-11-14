@@ -12,12 +12,12 @@ const AchievementBadges = ({
   compact = false,
 }: AchievementBadgesProps) => {
   const { theme } = useTheme();
-  const { userAchievements, getTotalPoints } = useAchievements();
+  const { userAchievements = [], getTotalPoints } = useAchievements();
   const [showAll, setShowAll] = useState(false);
 
   const displayAchievements =
     compact && !showAll ? userAchievements.slice(0, 3) : userAchievements;
-  const hasMore = userAchievements.length > 3 && compact;
+  const hasMore = (userAchievements?.length || 0) > 3 && compact;
 
   if (userAchievements.length === 0) {
     return (
