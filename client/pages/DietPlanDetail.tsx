@@ -168,6 +168,13 @@ export default function DietPlanDetail() {
     if (!confirm("Delete this meal?")) return;
 
     try {
+      // Demo mode: remove from local state
+      if (isDemoMode()) {
+        setMeals((prev) => prev.filter((meal) => meal.id !== mealId));
+        toast.success("Meal deleted!");
+        return;
+      }
+
       const { error } = await supabase
         .from("diet_plan_meals")
         .delete()
