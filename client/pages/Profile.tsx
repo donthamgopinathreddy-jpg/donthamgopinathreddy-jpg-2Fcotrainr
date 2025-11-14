@@ -361,10 +361,10 @@ export default function Profile() {
       <div className="w-full max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* HEADER SECTION */}
         <div
-          className={`rounded-3xl p-6 text-center shadow-sm ${
+          className={`rounded-3xl p-6 text-center shadow-md transition-all hover:shadow-lg ${
             theme === "dark"
-              ? "bg-gradient-to-br from-gray-800 to-gray-900"
-              : "bg-gradient-to-br from-orange-50 to-amber-50"
+              ? "bg-gradient-to-br from-gray-800 via-orange-900/20 to-gray-900"
+              : "bg-gradient-to-br from-orange-100 via-orange-50 to-amber-100"
           }`}
         >
           {/* Theme Toggle Button */}
