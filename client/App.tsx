@@ -328,6 +328,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/diet-plan/:id"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <DietPlanDetail />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/trainer-signup"
         element={
           <ProtectedRoute>
