@@ -349,11 +349,12 @@ export default function ActivityDetail() {
           {/* New Circular Indicators Layout */}
           <div className="grid grid-cols-7 gap-3">
             {weeklyData.map((dayData, idx) => {
-              const progressPercent =
-                dayData.max > 0 ? (dayData.value / dayData.max) * 100 : 0;
+              const safeValue = isNaN(dayData.value) ? 0 : dayData.value;
+              const safeMax = isNaN(dayData.max) || dayData.max <= 0 ? 1 : dayData.max;
+              const progressPercent = (safeValue / safeMax) * 100;
               const circumference = 2 * Math.PI * 28;
-              const strokeDashoffset =
-                circumference * (1 - progressPercent / 100);
+              const strokeDashoffset = circumference * (1 - Math.min(progressPercent, 100) / 100);
+              const displayValue = safeValue > 0 ? (safeValue / 1000).toFixed(1) : "0";
 
               return (
                 <div key={idx} className="flex flex-col items-center gap-2">
@@ -387,7 +388,7 @@ export default function ActivityDetail() {
                         }
                         strokeWidth="4"
                         strokeDasharray={circumference}
-                        strokeDashoffset={strokeDashoffset}
+                        strokeDashoffset={Math.max(0, strokeDashoffset)}
                         strokeLinecap="round"
                         className="transition-all duration-500"
                       />
@@ -397,18 +398,14 @@ export default function ActivityDetail() {
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                       <span
                         className={`text-xs font-bold ${
-                          dayData.value > 0
+                          safeValue > 0
                             ? colors.text
                             : theme === "dark"
                               ? "text-gray-500"
                               : "text-gray-400"
                         }`}
                       >
-                        {dayData.value > 0
-                          ? type === "water"
-                            ? (dayData.value / 1000).toFixed(1)
-                            : (dayData.value / 1000).toFixed(1)
-                          : "0"}
+                        {String(displayValue)}
                       </span>
                       <span
                         className={`text-[10px] ${
