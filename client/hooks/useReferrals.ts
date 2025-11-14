@@ -96,16 +96,16 @@ export const useReferrals = () => {
         .select("*")
         .eq("referral_code", code)
         .eq("is_used", false)
-        .single();
+        .maybeSingle();
 
       if (error) {
-        console.error("Error fetching referral:", error);
+        console.debug("Error fetching referral:", error?.message || String(error));
         return null;
       }
 
       return data;
     } catch (error) {
-      console.error("Error in getReferralByCode:", error);
+      console.debug("Error in getReferralByCode:", error instanceof Error ? error.message : String(error));
       return null;
     }
   };
@@ -121,10 +121,10 @@ export const useReferrals = () => {
         .select("*")
         .eq("referral_code", referralCode)
         .eq("is_used", false)
-        .single();
+        .maybeSingle();
 
       if (fetchError || !referral) {
-        console.error("Invalid referral code");
+        console.debug("Invalid referral code:", fetchError?.message || "Not found");
         return false;
       }
 
