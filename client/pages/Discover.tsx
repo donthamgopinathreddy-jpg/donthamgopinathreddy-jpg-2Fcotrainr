@@ -51,7 +51,7 @@ export default function Discover() {
     category: "All",
     verified: false,
     priceRange: [0, 2000],
-    distance: 20,
+    distance: 30,
     sort: "distance",
   });
   const [touchStart, setTouchStart] = useState(0);
@@ -63,7 +63,7 @@ export default function Discover() {
   const hasActiveFilters =
     (filter.category && filter.category !== "All") ||
     filter.verified ||
-    filter.distance < 20;
+    filter.distance < 30;
 
   const selectCategory = (cat: string) => {
     setFilter({
@@ -77,7 +77,7 @@ export default function Discover() {
       category: "All",
       verified: false,
       priceRange: [0, 2000],
-      distance: 20,
+      distance: 30,
       sort: "distance",
     });
   };
@@ -293,58 +293,85 @@ export default function Discover() {
 
           {/* Additional Filters Panel */}
           {showFilters && (
-            <div className="px-4 py-4 space-y-4 border-t border-border bg-card/50 backdrop-blur">
-              {/* Price Range Filter */}
+            <div className={`px-4 py-4 space-y-4 border-t border-border bg-card/50 backdrop-blur ${
+              theme === "dark" ? "" : ""
+            }`}>
+              {/* Distance Range Filter */}
               <div>
-                <h3 className="text-sm font-semibold mb-3">
-                  Price Range: ₹{filter.priceRange[0]} - ₹{filter.priceRange[1]}
+                <h3 className={`text-sm font-semibold mb-3 ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}>
+                  Search Radius: {filter.distance} km
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <input
                     type="range"
-                    min="0"
-                    max="2000"
-                    value={filter.priceRange[1]}
+                    min="1"
+                    max="100"
+                    value={filter.distance}
                     onChange={(e) =>
                       setFilter({
                         ...filter,
-                        priceRange: [
-                          filter.priceRange[0],
-                          Number(e.target.value),
-                        ],
+                        distance: Number(e.target.value),
                       })
                     }
-                    className="w-full"
+                    className="w-full cursor-pointer"
                   />
+                  <div className={`flex justify-between text-xs ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}>
+                    <span>1 km</span>
+                    <span>100 km</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Verified Only */}
-              <label className="flex items-center gap-3 cursor-pointer">
+              {/* Verified Only Filter */}
+              <label className={`flex items-center gap-3 cursor-pointer p-3 rounded-lg transition-colors ${
+                filter.verified
+                  ? theme === "dark"
+                    ? "bg-blue-900/30 border border-blue-800"
+                    : "bg-blue-50 border border-blue-200"
+                  : theme === "dark"
+                    ? "bg-gray-800/30 border border-gray-700"
+                    : "bg-gray-50 border border-gray-200"
+              }`}>
                 <input
                   type="checkbox"
                   checked={filter.verified}
                   onChange={(e) =>
                     setFilter({ ...filter, verified: e.target.checked })
                   }
-                  className="w-4 h-4"
+                  className="w-4 h-4 cursor-pointer"
                 />
-                <span className="text-sm font-medium">Verified only</span>
+                <div>
+                  <p className={`text-sm font-semibold ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}>Verified Trainers Only</p>
+                  <p className={`text-xs ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}>Show only verified trainers</p>
+                </div>
               </label>
 
-              {/* Sort */}
+              {/* Sort by Rating/Distance */}
               <div>
-                <h3 className="text-sm font-semibold mb-3">Sort by</h3>
+                <h3 className={`text-sm font-semibold mb-3 ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}>Sort by</h3>
                 <select
                   value={filter.sort}
                   onChange={(e) =>
                     setFilter({ ...filter, sort: e.target.value as SortOption })
                   }
-                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm"
+                  className={`w-full rounded-lg px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all ${
+                    theme === "dark"
+                      ? "bg-gray-800 border border-gray-700 text-white"
+                      : "bg-white border border-gray-300 text-gray-900"
+                  }`}
                 >
-                  <option value="distance">Distance (nearest)</option>
-                  <option value="rating">Rating (highest)</option>
-                  <option value="price">Price (lowest)</option>
+                  <option value="distance">🌍 Distance (nearest)</option>
+                  <option value="rating">⭐ Rating (highest)</option>
                 </select>
               </div>
             </div>
