@@ -36,6 +36,14 @@ export default function Home() {
   const navigate = useNavigate();
   const { userProfile, updateProfile } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const {
+    todaySteps: syncedSteps,
+    isSyncing,
+    hasPermission,
+    requestPermissions,
+    syncTodaySteps,
+    isAvailable: isHealthSyncAvailable,
+  } = useHealthSync();
 
   const [coverImage, setCoverImage] = useState(
     "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop",
@@ -48,6 +56,8 @@ export default function Home() {
   const [pendingMeetings, setPendingMeetings] = useState<any[]>([]);
   const [latestFeed, setLatestFeed] = useState<any[]>([]);
   const [loadingFeed, setLoadingFeed] = useState(false);
+  const [showHealthPermissionPrompt, setShowHealthPermissionPrompt] =
+    useState(isHealthSyncAvailable && !hasPermission);
 
   // Sync user data from profile
   useEffect(() => {
