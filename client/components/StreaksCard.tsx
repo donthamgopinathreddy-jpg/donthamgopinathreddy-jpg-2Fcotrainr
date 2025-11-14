@@ -25,7 +25,25 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
     );
   }
 
-  if (!streak) return null;
+  if (!streak) {
+    return (
+      <div
+        className={`rounded-lg border ${
+          theme === "dark"
+            ? "bg-gray-800/50 border-gray-700/50"
+            : "bg-white border-gray-200"
+        } p-4`}
+      >
+        <p
+          className={`text-sm ${
+            theme === "dark" ? "text-gray-400" : "text-gray-600"
+          }`}
+        >
+          🔥 Start tracking your daily activity to build streaks!
+        </p>
+      </div>
+    );
+  }
 
   const getMilestoneEmoji = (days: number) => {
     if (days >= 30) return "👑";
