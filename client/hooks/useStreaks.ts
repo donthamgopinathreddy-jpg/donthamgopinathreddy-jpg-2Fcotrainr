@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -17,10 +17,9 @@ export const useStreaks = () => {
   const [streak, setStreak] = useState<Streak | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const hasFetchedRef = useRef(false);
 
   // Fetch streak data for current user
-  const fetchStreak = useCallback(async () => {
+  const fetchStreak = async () => {
     if (!user?.id) return;
 
     try {
@@ -33,7 +32,9 @@ export const useStreaks = () => {
 
       if (fetchError) {
         // Extract error message safely without accessing response body again
-        const errorMessage = fetchError?.message || "Failed to fetch streak";
+        const errorMessage = typeof fetchError === 'object' && fetchError !== null && 'message' in fetchError 
+          ? (fetchError as any).message 
+          : String(fetchError);
         console.error("Error fetching streak:", errorMessage);
         throw new Error(errorMessage);
       }
@@ -56,7 +57,9 @@ export const useStreaks = () => {
           .single();
 
         if (createError) {
-          const errorMessage = createError?.message || "Failed to create streak";
+          const errorMessage = typeof createError === 'object' && createError !== null && 'message' in createError
+            ? (createError as any).message
+            : String(createError);
           console.error("Error creating streak:", errorMessage);
           throw new Error(errorMessage);
         }
@@ -64,7 +67,9 @@ export const useStreaks = () => {
       }
     } catch (err: any) {
       // Don't block the app if streak fetch fails - it's optional
-      const errorMessage = err?.message || "Unknown error fetching streak";
+      const errorMessage = typeof err === 'object' && err !== null && 'message' in err
+        ? err.message
+        : String(err);
       console.error("Streak operation failed:", errorMessage);
       setError(null);
       // Return empty streak on error to allow app to continue
@@ -80,10 +85,10 @@ export const useStreaks = () => {
     } finally {
       setLoading(false);
     }
-  }, [user?.id]);
+  };
 
   // Update streak based on daily activity
-  const updateStreak = useCallback(async () => {
+  const updateStreak = async () => {
     if (!user?.id || !streak) return;
 
     try {
@@ -134,7 +139,10 @@ export const useStreaks = () => {
         .eq("user_id", user.id);
 
       if (updateError) {
-        console.warn("Error updating streak:", updateError?.message);
+        const errorMessage = typeof updateError === 'object' && updateError !== null && 'message' in updateError
+          ? (updateError as any).message
+          : String(updateError);
+        console.warn("Error updating streak:", errorMessage);
         // Don't throw - streak updates are non-critical
       } else {
         // Update local state only if update was successful
@@ -155,18 +163,19 @@ export const useStreaks = () => {
         longestStreak: newLongestStreak,
       };
     } catch (err: any) {
-      console.warn("Error updating streak:", err?.message || err);
+      const errorMessage = typeof err === 'object' && err !== null && 'message' in err
+        ? err.message
+        : String(err);
+      console.warn("Error updating streak:", errorMessage);
       // Non-critical - don't block the app
     }
-  }, [streak, user?.id]);
+  };
 
   useEffect(() => {
-    // Prevent double-fetching in React StrictMode
-    if (hasFetchedRef.current || !user?.id) return;
-
-    hasFetchedRef.current = true;
-    fetchStreak();
-  }, [fetchStreak, user?.id]);
+    if (user?.id) {
+      fetchStreak();
+    }
+  }, [user?.id]);
 
   return {
     streak,
