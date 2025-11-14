@@ -1382,9 +1382,22 @@ export default function Profile() {
                 </p>
               </div>
 
-              <button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
-                <CheckCircle className="w-5 h-5" />
-                Start Verification
+              <button
+                onClick={handleStartVerification}
+                disabled={isUploadingDocs || isSaving || !verificationDocs.idUploaded || !verificationDocs.selfieUploaded}
+                className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
+              >
+                {isSaving ? (
+                  <>
+                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    Start Verification
+                  </>
+                )}
               </button>
             </div>
           </div>
