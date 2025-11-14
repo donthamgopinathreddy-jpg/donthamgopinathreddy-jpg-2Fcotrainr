@@ -255,7 +255,9 @@ export default function Profile() {
     }
   };
 
-  const handleBiometricToggle = async (setting: "fingerprint" | "faceRecognition") => {
+  const handleBiometricToggle = async (
+    setting: "fingerprint" | "faceRecognition",
+  ) => {
     if (!userProfile?.id) return;
 
     const newValue = !securitySettings[setting];
@@ -279,7 +281,9 @@ export default function Profile() {
         [setting]: newValue,
       }));
 
-      toast.success(`✓ ${setting === "fingerprint" ? "Fingerprint" : "Face Recognition"} ${newValue ? "enabled" : "disabled"}!`);
+      toast.success(
+        `✓ ${setting === "fingerprint" ? "Fingerprint" : "Face Recognition"} ${newValue ? "enabled" : "disabled"}!`,
+      );
     } catch (error: any) {
       console.error("Error updating biometric setting:", error);
       toast.error("Failed to update security setting");
