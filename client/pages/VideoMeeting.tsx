@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Mic, MicOff, Video, VideoOff, Phone, MessageCircle, Users, Settings, Share2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { usePermissions } from "@/hooks/usePermissions";
 
 interface Participant {
   id: string;
