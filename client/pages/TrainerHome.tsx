@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
+import StreaksCard from "@/components/StreaksCard";
 import {
   Footprints,
   Droplets,
