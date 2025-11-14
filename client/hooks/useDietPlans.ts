@@ -233,6 +233,19 @@ export const useDietPlans = () => {
   // Update diet plan
   const updateDietPlan = async (planId: string, updates: Partial<DietPlan>) => {
     try {
+      // Demo mode: update local state
+      if (isDemoMode()) {
+        setDietPlans((prev) =>
+          prev.map((plan) =>
+            plan.id === planId
+              ? { ...plan, ...updates, updated_at: new Date().toISOString() }
+              : plan,
+          ),
+        );
+        setError(null);
+        return true;
+      }
+
       const { error: updateError } = await supabase
         .from("diet_plans")
         .update({
