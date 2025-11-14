@@ -389,7 +389,13 @@ export default function ActivityDetail() {
                     {/* Vertical Bar */}
                     <div className="w-full flex flex-col items-center justify-end h-full relative group">
                       <div
-                        className={`w-full bg-gradient-to-t ${colors.gradient} rounded-t-lg transition-all duration-300 hover:opacity-80`}
+                        className={`w-full rounded-t-lg transition-all duration-300 hover:opacity-80 ${
+                          type === "water"
+                            ? "bg-gradient-to-t from-cyan-400 to-blue-600"
+                            : type === "calories"
+                              ? "bg-gradient-to-t from-red-400 to-red-600"
+                              : "bg-gradient-to-t from-orange-400 to-orange-600"
+                        }`}
                         style={{
                           height: `${barHeightPercent}%`,
                           minHeight: barHeightPercent > 0 ? "4px" : "0px",
