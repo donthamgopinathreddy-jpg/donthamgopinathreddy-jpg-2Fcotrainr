@@ -231,16 +231,16 @@ export default function ActivityDetail() {
         >
           <div className="relative space-y-4">
             {/* Half-Circle Icon with Value Around It */}
-            <div className="flex justify-center py-6">
-              <div className="relative w-48 h-32">
+            <div className="flex justify-center py-8">
+              <div className="relative w-64 h-48">
                 <svg
                   className="w-full h-full"
-                  viewBox="0 0 192 96"
+                  viewBox="0 0 256 128"
                   preserveAspectRatio="xMidYMid meet"
                 >
                   {/* Background half circle arc */}
                   <path
-                    d="M 24 96 A 72 72 0 0 1 168 96"
+                    d="M 32 128 A 96 96 0 0 1 224 128"
                     fill="none"
                     stroke={theme === "dark" ? "#374151" : "#e5e7eb"}
                     strokeWidth="5"
@@ -248,7 +248,7 @@ export default function ActivityDetail() {
                   />
                   {/* Progress half circle arc */}
                   <path
-                    d="M 24 96 A 72 72 0 0 1 168 96"
+                    d="M 32 128 A 96 96 0 0 1 224 128"
                     fill="none"
                     stroke={
                       type === "water"
@@ -259,9 +259,9 @@ export default function ActivityDetail() {
                     }
                     strokeWidth="5"
                     strokeLinecap="round"
-                    strokeDasharray={Math.PI * 72}
+                    strokeDasharray={Math.PI * 96}
                     strokeDashoffset={
-                      Math.PI * 72 *
+                      Math.PI * 96 *
                       (1 -
                         Math.min(
                           selectedDate.toDateString() === new Date().toDateString()
@@ -279,8 +279,8 @@ export default function ActivityDetail() {
                 </svg>
 
                 {/* Center Icon */}
-                <div className="absolute inset-0 flex items-center justify-center pt-2">
-                  <div className="text-6xl">{colors.icon}</div>
+                <div className="absolute inset-0 flex items-center justify-center pt-8">
+                  <div className="text-7xl">{colors.icon}</div>
                 </div>
               </div>
             </div>
