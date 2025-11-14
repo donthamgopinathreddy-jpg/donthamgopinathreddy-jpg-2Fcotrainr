@@ -52,9 +52,20 @@ export const useStreaks = () => {
         if (createError) throw createError;
         setStreak(newStreak as Streak);
       }
-    } catch (err) {
-      console.error("Error fetching streak:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch streak");
+    } catch (err: any) {
+      console.error("Error fetching streak:", err?.message || err);
+      // Don't block the app if streak fetch fails - it's optional
+      setError(null);
+      // Return empty streak on error to allow app to continue
+      setStreak({
+        id: "temp",
+        user_id: user?.id || "",
+        current_streak: 0,
+        longest_streak: 0,
+        last_active_date: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
     } finally {
       setLoading(false);
     }
