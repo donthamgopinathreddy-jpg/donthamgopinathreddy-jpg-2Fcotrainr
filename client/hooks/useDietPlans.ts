@@ -54,13 +54,18 @@ export const useDietPlans = () => {
         .eq("trainer_id", user.id)
         .order("created_at", { ascending: false });
 
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        console.debug("Diet plans fetch error:", fetchError?.code);
+        setError("Failed to load diet plans");
+        setDietPlans([]);
+        return;
+      }
       setDietPlans((data as DietPlan[]) || []);
+      setError(null);
     } catch (err) {
-      console.error("Error fetching diet plans:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch diet plans",
-      );
+      console.debug("Diet plans catch error:", err instanceof Error ? err.code : "unknown");
+      setError("Failed to fetch diet plans");
+      setDietPlans([]);
     } finally {
       setLoading(false);
     }
@@ -81,13 +86,18 @@ export const useDietPlans = () => {
         .eq("status", "active")
         .order("shared_at", { ascending: false });
 
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        console.debug("Client diet plans fetch error:", fetchError?.code);
+        setError("Failed to load diet plans");
+        setDietPlans([]);
+        return;
+      }
       setDietPlans((data as DietPlan[]) || []);
+      setError(null);
     } catch (err) {
-      console.error("Error fetching client diet plans:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch diet plans",
-      );
+      console.debug("Client diet plans catch error:", err instanceof Error ? err.code : "unknown");
+      setError("Failed to fetch diet plans");
+      setDietPlans([]);
     } finally {
       setLoading(false);
     }
@@ -115,13 +125,16 @@ export const useDietPlans = () => {
         .select()
         .single();
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        console.debug("Create diet plan error:", insertError?.code);
+        setError("Failed to create diet plan");
+        return null;
+      }
+      setError(null);
       return data as DietPlan;
     } catch (err) {
-      console.error("Error creating diet plan:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to create diet plan",
-      );
+      console.debug("Create diet plan catch error:", err instanceof Error ? err.code : "unknown");
+      setError("Failed to create diet plan");
       return null;
     }
   };
@@ -137,7 +150,11 @@ export const useDietPlans = () => {
         })
         .eq("id", planId);
 
-      if (updateError) throw updateError;
+      if (updateError) {
+        console.debug("Update diet plan error:", updateError?.code);
+        setError("Failed to update diet plan");
+        return false;
+      }
 
       // Update local state
       setDietPlans((prev) =>
@@ -147,12 +164,11 @@ export const useDietPlans = () => {
             : plan,
         ),
       );
+      setError(null);
       return true;
     } catch (err) {
-      console.error("Error updating diet plan:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to update diet plan",
-      );
+      console.debug("Update diet plan catch error:", err instanceof Error ? err.code : "unknown");
+      setError("Failed to update diet plan");
       return false;
     }
   };
@@ -172,15 +188,18 @@ export const useDietPlans = () => {
         .delete()
         .eq("id", planId);
 
-      if (deleteError) throw deleteError;
+      if (deleteError) {
+        console.debug("Delete diet plan error:", deleteError?.code);
+        setError("Failed to delete diet plan");
+        return false;
+      }
 
       setDietPlans((prev) => prev.filter((plan) => plan.id !== planId));
+      setError(null);
       return true;
     } catch (err) {
-      console.error("Error deleting diet plan:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to delete diet plan",
-      );
+      console.debug("Delete diet plan catch error:", err instanceof Error ? err.code : "unknown");
+      setError("Failed to delete diet plan");
       return false;
     }
   };
@@ -203,10 +222,13 @@ export const useDietPlans = () => {
         .select()
         .single();
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        console.debug("Add meal error:", insertError?.code);
+        return null;
+      }
       return data as DietPlanMeal;
     } catch (err) {
-      console.error("Error adding meal:", err);
+      console.debug("Add meal catch error:", err instanceof Error ? err.code : "unknown");
       return null;
     }
   };
@@ -219,10 +241,13 @@ export const useDietPlans = () => {
         .delete()
         .eq("id", mealId);
 
-      if (deleteError) throw deleteError;
+      if (deleteError) {
+        console.debug("Remove meal error:", deleteError?.code);
+        return false;
+      }
       return true;
     } catch (err) {
-      console.error("Error removing meal:", err);
+      console.debug("Remove meal catch error:", err instanceof Error ? err.code : "unknown");
       return false;
     }
   };
