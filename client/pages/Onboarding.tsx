@@ -307,7 +307,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header with Back Button */}
       {step !== "welcome" && (
         <div className="px-4 py-4 border-b border-border">
