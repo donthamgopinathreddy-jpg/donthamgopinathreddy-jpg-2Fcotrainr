@@ -30,7 +30,12 @@ export const useStreaks = () => {
         .eq("user_id", user.id)
         .maybeSingle();
 
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        // Extract error message safely without accessing response body again
+        const errorMessage = fetchError?.message || "Failed to fetch streak";
+        console.error("Error fetching streak:", errorMessage);
+        throw new Error(errorMessage);
+      }
 
       if (data) {
         setStreak(data as Streak);
@@ -49,12 +54,17 @@ export const useStreaks = () => {
           .select()
           .single();
 
-        if (createError) throw createError;
+        if (createError) {
+          const errorMessage = createError?.message || "Failed to create streak";
+          console.error("Error creating streak:", errorMessage);
+          throw new Error(errorMessage);
+        }
         setStreak(newStreak as Streak);
       }
     } catch (err: any) {
-      console.error("Error fetching streak:", err?.message || err);
       // Don't block the app if streak fetch fails - it's optional
+      const errorMessage = err?.message || "Unknown error fetching streak";
+      console.error("Streak operation failed:", errorMessage);
       setError(null);
       // Return empty streak on error to allow app to continue
       setStreak({
