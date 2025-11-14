@@ -311,15 +311,16 @@ export default function Profile() {
   };
 
   const isTrainer = user.role === "trainer";
-  const { theme, toggleTheme } = useTheme();
+  const { theme = "light", toggleTheme } = useTheme() || { theme: "light" };
 
   return (
     <div
       className={`min-h-screen pb-24 ${
         theme === "dark"
-          ? "l-shape-bg fitness-gradient-1 bg-gray-950"
+          ? "bg-gray-950"
           : "bg-white"
       }`}
+      style={{ minHeight: "100vh" }}
     >
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
         {/* Profile Header */}
