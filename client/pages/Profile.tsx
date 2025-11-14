@@ -789,8 +789,14 @@ export default function Profile() {
             </h2>
 
             <div
-              className={`rounded-2xl p-6 text-center mb-4 bg-gradient-to-br from-orange-400 to-amber-500 text-white shadow-lg`}
+              className={`rounded-2xl p-6 text-center mb-4 bg-gradient-to-br from-orange-400 to-amber-500 text-white shadow-lg relative`}
             >
+              {hasDiscount && (
+                <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                  <span>✓</span>
+                  <span>10% Discount</span>
+                </div>
+              )}
               <p className="text-sm font-semibold opacity-90 mb-2">
                 Current Balance
               </p>
@@ -1143,7 +1149,7 @@ export default function Profile() {
             <h2
               className={`text-lg font-bold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
             >
-              ✓ Trainer Verification
+              ��� Trainer Verification
             </h2>
 
             <div className="space-y-3">
