@@ -1275,6 +1275,18 @@ export default function Profile() {
           </button>
 
           <button
+            onClick={() => toast.info("Premium subscription features coming soon!")}
+            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-colors font-medium ${
+              theme === "dark"
+                ? "bg-gradient-to-r from-purple-900/50 to-blue-900/50 border border-purple-700/50 hover:from-purple-900/70 hover:to-blue-900/70 text-purple-300"
+                : "bg-gradient-to-r from-purple-100 to-blue-100 border border-purple-300 hover:from-purple-200 hover:to-blue-200 text-purple-700"
+            }`}
+          >
+            <span className="text-lg">⭐</span>
+            <span>Upgrade to Premium</span>
+          </button>
+
+          <button
             onClick={async () => {
               try {
                 await signOut();
