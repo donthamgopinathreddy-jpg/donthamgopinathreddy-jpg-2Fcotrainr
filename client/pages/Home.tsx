@@ -619,6 +619,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Streaks Card */}
+        <StreaksCard compact={false} />
+
         {/* BMI Index Card */}
         <div
           className={`${bmiStatus.bgColor} rounded-2xl p-6 space-y-4 dark:bg-gray-800`}
