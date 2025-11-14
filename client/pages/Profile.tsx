@@ -64,6 +64,8 @@ export default function Profile() {
   const { theme = "light", toggleTheme } = useTheme();
   const { todaySteps: syncedSteps, isAvailable: isHealthSyncAvailable } =
     useHealthSync();
+  const { dietPlans: sharedDietPlans, loading: loadingDietPlans } =
+    useClientDietPlans();
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
