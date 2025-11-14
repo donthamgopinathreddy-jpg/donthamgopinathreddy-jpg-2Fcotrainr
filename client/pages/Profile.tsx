@@ -478,10 +478,10 @@ export default function Profile() {
 
         {/* ACCOUNT SECTION */}
         <div
-          className={`rounded-2xl p-6 space-y-4 shadow-sm ${
+          className={`rounded-2xl p-6 space-y-4 shadow-md transition-all hover:shadow-lg ${
             theme === "dark"
-              ? "bg-gray-800/50 border border-gray-700/50"
-              : "bg-white border border-gray-200"
+              ? "bg-gradient-to-br from-gray-800 to-gray-700/50 border border-gray-700"
+              : "bg-gradient-to-br from-orange-50 to-amber-50/50 border border-orange-200"
           }`}
         >
           <h2
@@ -522,10 +522,10 @@ export default function Profile() {
 
         {/* SECURITY & LOGIN SECTION */}
         <div
-          className={`rounded-2xl p-6 space-y-4 shadow-sm ${
+          className={`rounded-2xl p-6 space-y-4 shadow-md transition-all hover:shadow-lg ${
             theme === "dark"
-              ? "bg-gray-800/50 border border-gray-700/50"
-              : "bg-white border border-gray-200"
+              ? "bg-gradient-to-br from-gray-800 to-gray-700/50 border border-gray-700"
+              : "bg-gradient-to-br from-blue-50 to-cyan-50/50 border border-blue-200"
           }`}
         >
           <h2
@@ -797,10 +797,10 @@ export default function Profile() {
 
         {/* REFERRAL COINS SECTION */}
         <div
-          className={`rounded-2xl p-6 space-y-6 shadow-sm ${
+          className={`rounded-2xl p-6 space-y-6 shadow-md transition-all hover:shadow-lg ${
             theme === "dark"
-              ? "bg-gray-800/50 border border-gray-700/50"
-              : "bg-white border border-gray-200"
+              ? "bg-gradient-to-br from-gray-800 to-gray-700/50 border border-amber-700/30"
+              : "bg-gradient-to-br from-amber-50 to-orange-50/30 border border-amber-300"
           }`}
         >
           <div>
@@ -870,48 +870,48 @@ export default function Profile() {
             </h3>
             <div className="space-y-2">
               <div
-                className={`p-3 rounded-lg flex items-center justify-between ${
-                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-50"
+                className={`p-4 rounded-lg flex items-center justify-between transition-all ${
+                  theme === "dark" ? "bg-gradient-to-r from-orange-900/40 to-orange-900/20 border border-orange-800/30 hover:bg-gradient-to-r hover:from-orange-900/60 hover:to-orange-900/40" : "bg-gradient-to-r from-orange-100 to-orange-50 border border-orange-300 hover:from-orange-200 hover:to-orange-100"
                 }`}
               >
                 <div>
                   <p
-                    className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                    className={`text-sm font-medium ${theme === "dark" ? "text-orange-200" : "text-orange-900"}`}
                   >
                     Invite a friend who joins
                   </p>
                 </div>
-                <span className="text-orange-500 font-bold">+100</span>
+                <span className={`font-bold text-lg ${theme === "dark" ? "text-orange-300" : "text-orange-600"}`}>+100</span>
               </div>
 
               <div
-                className={`p-3 rounded-lg flex items-center justify-between ${
-                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-50"
+                className={`p-4 rounded-lg flex items-center justify-between transition-all ${
+                  theme === "dark" ? "bg-gradient-to-r from-amber-900/40 to-amber-900/20 border border-amber-800/30 hover:bg-gradient-to-r hover:from-amber-900/60 hover:to-amber-900/40" : "bg-gradient-to-r from-amber-100 to-amber-50 border border-amber-300 hover:from-amber-200 hover:to-amber-100"
                 }`}
               >
                 <div>
                   <p
-                    className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                    className={`text-sm font-medium ${theme === "dark" ? "text-amber-200" : "text-amber-900"}`}
                   >
                     Complete 5 workouts in a week
                   </p>
                 </div>
-                <span className="text-orange-500 font-bold">+50</span>
+                <span className={`font-bold text-lg ${theme === "dark" ? "text-amber-300" : "text-amber-600"}`}>+50</span>
               </div>
 
               <div
-                className={`p-3 rounded-lg flex items-center justify-between ${
-                  theme === "dark" ? "bg-gray-700/50" : "bg-gray-50"
+                className={`p-4 rounded-lg flex items-center justify-between transition-all ${
+                  theme === "dark" ? "bg-gradient-to-r from-red-900/40 to-red-900/20 border border-red-800/30 hover:bg-gradient-to-r hover:from-red-900/60 hover:to-red-900/40" : "bg-gradient-to-r from-red-100 to-red-50 border border-red-300 hover:from-red-200 hover:to-red-100"
                 }`}
               >
                 <div>
                   <p
-                    className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                    className={`text-sm font-medium ${theme === "dark" ? "text-red-200" : "text-red-900"}`}
                   >
                     Maintain a 7-day streak
                   </p>
                 </div>
-                <span className="text-orange-500 font-bold">+75</span>
+                <span className={`font-bold text-lg ${theme === "dark" ? "text-red-300" : "text-red-600"}`}>+75</span>
               </div>
             </div>
           </div>
@@ -1037,10 +1037,10 @@ export default function Profile() {
 
         {/* ACHIEVEMENTS SECTION */}
         <div
-          className={`rounded-2xl p-6 space-y-6 shadow-sm ${
+          className={`rounded-2xl p-6 space-y-6 shadow-md transition-all hover:shadow-lg ${
             theme === "dark"
-              ? "bg-gray-800/50 border border-gray-700/50"
-              : "bg-white border border-gray-200"
+              ? "bg-gradient-to-br from-gray-800 to-gray-700/50 border border-yellow-700/30"
+              : "bg-gradient-to-br from-yellow-50 to-amber-50/30 border border-yellow-300"
           }`}
         >
           <h2
