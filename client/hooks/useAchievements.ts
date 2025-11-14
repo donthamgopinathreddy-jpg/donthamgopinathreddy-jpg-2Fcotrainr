@@ -71,7 +71,7 @@ export const useAchievements = () => {
       if (fetchError) throw fetchError;
       setUnlockedAchievements((data as UserAchievement[]) || []);
     } catch (err) {
-      console.error("Error fetching unlocked achievements:", err);
+      console.debug("Fetch achievements error:", err instanceof Error ? err.code : "unknown");
     } finally {
       setLoading(false);
     }
