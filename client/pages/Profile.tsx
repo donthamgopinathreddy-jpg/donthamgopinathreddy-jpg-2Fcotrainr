@@ -1275,7 +1275,9 @@ export default function Profile() {
           </button>
 
           <button
-            onClick={() => toast.info("Premium subscription features coming soon!")}
+            onClick={() =>
+              toast.info("Premium subscription features coming soon!")
+            }
             className={`w-full flex items-center gap-3 p-4 rounded-lg transition-colors font-medium ${
               theme === "dark"
                 ? "bg-gradient-to-r from-purple-900/50 to-blue-900/50 border border-purple-700/50 hover:from-purple-900/70 hover:to-blue-900/70 text-purple-300"
