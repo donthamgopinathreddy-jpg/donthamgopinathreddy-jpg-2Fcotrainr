@@ -57,7 +57,8 @@ export default function Profile() {
   const { referralCode } = useReferrals();
   const { userAchievements, getTotalPoints } = useAchievements();
   const { theme = "light" } = useTheme() || { theme: "light" };
-  const { todaySteps: syncedSteps, isAvailable: isHealthSyncAvailable } = useHealthSync();
+  const { todaySteps: syncedSteps, isAvailable: isHealthSyncAvailable } =
+    useHealthSync();
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
@@ -809,12 +810,16 @@ export default function Profile() {
                 <p
                   className={`text-xs font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
                 >
-                  {hasDiscount ? "Discount Unlocked! 🎉" : `10% Discount at ${discountThreshold} coins`}
+                  {hasDiscount
+                    ? "Discount Unlocked! 🎉"
+                    : `10% Discount at ${discountThreshold} coins`}
                 </p>
                 <p
                   className={`text-xs font-bold ${hasDiscount ? "text-green-500" : theme === "dark" ? "text-orange-400" : "text-orange-600"}`}
                 >
-                  {hasDiscount ? "Unlocked!" : `${Math.round((referralCoins / discountThreshold) * 100)}%`}
+                  {hasDiscount
+                    ? "Unlocked!"
+                    : `${Math.round((referralCoins / discountThreshold) * 100)}%`}
                 </p>
               </div>
               <div
@@ -1303,9 +1308,11 @@ export default function Profile() {
             }`}
           >
             {/* Sticky Header */}
-            <div className={`flex items-center justify-between p-6 border-b ${
-              theme === "dark" ? "border-gray-700" : "border-gray-200"
-            }`}>
+            <div
+              className={`flex items-center justify-between p-6 border-b ${
+                theme === "dark" ? "border-gray-700" : "border-gray-200"
+              }`}
+            >
               <h2
                 className={`text-xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
               >
@@ -1356,7 +1363,10 @@ export default function Profile() {
                     type="text"
                     value={editForm.username}
                     onChange={(e) =>
-                      setEditForm((prev) => ({ ...prev, username: e.target.value }))
+                      setEditForm((prev) => ({
+                        ...prev,
+                        username: e.target.value,
+                      }))
                     }
                     placeholder="your_username"
                     className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
@@ -1377,7 +1387,10 @@ export default function Profile() {
                     type="email"
                     value={editForm.email}
                     onChange={(e) =>
-                      setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                      setEditForm((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
                     }
                     className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
                       theme === "dark"
@@ -1397,7 +1410,10 @@ export default function Profile() {
                     type="tel"
                     value={editForm.phone}
                     onChange={(e) =>
-                      setEditForm((prev) => ({ ...prev, phone: e.target.value }))
+                      setEditForm((prev) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }))
                     }
                     className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
                       theme === "dark"
@@ -1417,7 +1433,10 @@ export default function Profile() {
                   <select
                     value={editForm.gender}
                     onChange={(e) =>
-                      setEditForm((prev) => ({ ...prev, gender: e.target.value }))
+                      setEditForm((prev) => ({
+                        ...prev,
+                        gender: e.target.value,
+                      }))
                     }
                     className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
                       theme === "dark"
@@ -1541,9 +1560,11 @@ export default function Profile() {
             </div>
 
             {/* Sticky Footer */}
-            <div className={`flex gap-3 p-6 border-t ${
-              theme === "dark" ? "border-gray-700" : "border-gray-200"
-            }`}>
+            <div
+              className={`flex gap-3 p-6 border-t ${
+                theme === "dark" ? "border-gray-700" : "border-gray-200"
+              }`}
+            >
               <button
                 onClick={() => setShowEditModal(false)}
                 disabled={isSaving}

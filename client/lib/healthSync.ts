@@ -33,7 +33,9 @@ class HealthSyncService {
   async requestHealthPermissions(): Promise<boolean> {
     try {
       if (!this.isCapacitorApp()) {
-        console.warn("Health sync requires Capacitor. Using manual entry fallback.");
+        console.warn(
+          "Health sync requires Capacitor. Using manual entry fallback.",
+        );
         return false;
       }
 
@@ -60,7 +62,9 @@ class HealthSyncService {
       // Check if Google Fit plugin is available
       const plugin = (window as any).cordova?.plugins?.["google-fit"];
       if (!plugin) {
-        console.warn("Google Fit plugin not available. Install cordova-plugin-google-fit");
+        console.warn(
+          "Google Fit plugin not available. Install cordova-plugin-google-fit",
+        );
         return false;
       }
 
@@ -86,7 +90,8 @@ class HealthSyncService {
   private async requestAppleHealthPermissions(): Promise<boolean> {
     try {
       // Check if Apple Health plugin is available
-      const plugin = (window as any).cordova?.plugins?.["apple-health"] ||
+      const plugin =
+        (window as any).cordova?.plugins?.["apple-health"] ||
         (window as any).AppleHealth;
       if (!plugin) {
         console.warn(
@@ -169,7 +174,8 @@ class HealthSyncService {
    */
   private async getAppleHealthSteps(date: string): Promise<number> {
     try {
-      const plugin = (window as any).cordova?.plugins?.["apple-health"] ||
+      const plugin =
+        (window as any).cordova?.plugins?.["apple-health"] ||
         (window as any).AppleHealth;
       if (!plugin) return 0;
 

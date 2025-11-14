@@ -56,8 +56,9 @@ export default function Home() {
   const [pendingMeetings, setPendingMeetings] = useState<any[]>([]);
   const [latestFeed, setLatestFeed] = useState<any[]>([]);
   const [loadingFeed, setLoadingFeed] = useState(false);
-  const [showHealthPermissionPrompt, setShowHealthPermissionPrompt] =
-    useState(isHealthSyncAvailable && !hasPermission);
+  const [showHealthPermissionPrompt, setShowHealthPermissionPrompt] = useState(
+    isHealthSyncAvailable && !hasPermission,
+  );
 
   // Sync user data from profile and health sync
   useEffect(() => {
@@ -94,7 +95,13 @@ export default function Home() {
         setCoverImage(userProfile.cover_image_url);
       }
     }
-  }, [userProfile?.id, userProfile?.bio, userProfile?.cover_image_url, syncedSteps, isHealthSyncAvailable]);
+  }, [
+    userProfile?.id,
+    userProfile?.bio,
+    userProfile?.cover_image_url,
+    syncedSteps,
+    isHealthSyncAvailable,
+  ]);
 
   // Fetch latest feed
   useEffect(() => {
@@ -499,40 +506,43 @@ export default function Home() {
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 -mt-8 pb-24 relative z-20 space-y-6">
         {/* Health Sync Permission Banner */}
-        {isHealthSyncAvailable && !hasPermission && showHealthPermissionPrompt && (
-          <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4 flex items-start gap-3">
-            <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2">
-                Auto-sync Your Steps
-              </p>
-              <p className="text-xs text-blue-800 dark:text-blue-300 mb-3">
-                Connect your phone's health data to automatically track your steps.
-              </p>
-              <div className="flex gap-2">
-                <button
-                  onClick={async () => {
-                    const granted = await requestPermissions();
-                    if (granted) {
-                      setShowHealthPermissionPrompt(false);
-                      toast.success("Health data access granted!");
-                      await syncTodaySteps();
-                    }
-                  }}
-                  className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition-colors"
-                >
-                  Connect Now
-                </button>
-                <button
-                  onClick={() => setShowHealthPermissionPrompt(false)}
-                  className="text-xs font-semibold bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 dark:hover:bg-blue-700 text-blue-900 dark:text-blue-200 px-3 py-1.5 rounded-lg transition-colors"
-                >
-                  Later
-                </button>
+        {isHealthSyncAvailable &&
+          !hasPermission &&
+          showHealthPermissionPrompt && (
+            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4 flex items-start gap-3">
+              <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2">
+                  Auto-sync Your Steps
+                </p>
+                <p className="text-xs text-blue-800 dark:text-blue-300 mb-3">
+                  Connect your phone's health data to automatically track your
+                  steps.
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={async () => {
+                      const granted = await requestPermissions();
+                      if (granted) {
+                        setShowHealthPermissionPrompt(false);
+                        toast.success("Health data access granted!");
+                        await syncTodaySteps();
+                      }
+                    }}
+                    className="text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    Connect Now
+                  </button>
+                  <button
+                    onClick={() => setShowHealthPermissionPrompt(false)}
+                    className="text-xs font-semibold bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 dark:hover:bg-blue-700 text-blue-900 dark:text-blue-200 px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    Later
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
         {/* Progress Bars Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
@@ -548,7 +558,9 @@ export default function Home() {
                       const granted = await requestPermissions();
                       if (granted) {
                         setShowHealthPermissionPrompt(false);
-                        toast.success("Health data access granted! Syncing steps...");
+                        toast.success(
+                          "Health data access granted! Syncing steps...",
+                        );
                         await syncTodaySteps();
                       }
                     } else {
@@ -561,10 +573,20 @@ export default function Home() {
                       ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50"
                       : "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50"
                   } disabled:opacity-50`}
-                  title={hasPermission ? "Sync steps from phone" : "Connect to health data"}
+                  title={
+                    hasPermission
+                      ? "Sync steps from phone"
+                      : "Connect to health data"
+                  }
                 >
-                  <Activity className={`w-4 h-4 ${isSyncing ? "animate-spin" : ""}`} />
-                  {isSyncing ? "Syncing..." : hasPermission ? "Synced" : "Connect"}
+                  <Activity
+                    className={`w-4 h-4 ${isSyncing ? "animate-spin" : ""}`}
+                  />
+                  {isSyncing
+                    ? "Syncing..."
+                    : hasPermission
+                      ? "Synced"
+                      : "Connect"}
                 </button>
               )}
               <button

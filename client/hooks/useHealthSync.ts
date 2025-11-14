@@ -16,7 +16,9 @@ export interface StoredHealthData {
 export const useHealthSync = () => {
   const { user } = useAuth();
   const [todaySteps, setTodaySteps] = useState(0);
-  const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "error">("idle");
+  const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "error">(
+    "idle",
+  );
   const [isSyncing, setIsSyncing] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
   const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
@@ -136,9 +138,12 @@ export const useHealthSync = () => {
       syncTodaySteps();
 
       // Sync every 30 minutes
-      const interval = setInterval(() => {
-        syncTodaySteps();
-      }, 30 * 60 * 1000);
+      const interval = setInterval(
+        () => {
+          syncTodaySteps();
+        },
+        30 * 60 * 1000,
+      );
 
       return () => clearInterval(interval);
     }
