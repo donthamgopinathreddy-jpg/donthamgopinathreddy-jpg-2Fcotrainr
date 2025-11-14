@@ -287,6 +287,13 @@ export const useDietPlans = () => {
   // Delete diet plan
   const deleteDietPlan = async (planId: string) => {
     try {
+      // Demo mode: update local state
+      if (isDemoMode()) {
+        setDietPlans((prev) => prev.filter((plan) => plan.id !== planId));
+        setError(null);
+        return true;
+      }
+
       const { error: deleteError } = await supabase
         .from("diet_plans")
         .delete()
