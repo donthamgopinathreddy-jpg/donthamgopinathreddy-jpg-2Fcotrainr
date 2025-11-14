@@ -260,8 +260,10 @@ export default function Discover() {
                   onClick={() => selectCategory(cat)}
                   className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex-shrink-0 ${
                     filter.category === cat
-                      ? "bg-gradient-primary text-gray-900 shadow-lg shadow-orange-500/30"
-                      : "bg-card border border-border text-foreground hover:border-primary"
+                      ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
+                      : theme === "dark"
+                        ? "bg-gray-800 border border-gray-700 text-gray-300 hover:border-orange-500"
+                        : "bg-gray-100 border border-gray-300 text-gray-800 hover:border-orange-500"
                   }`}
                 >
                   {cat}
