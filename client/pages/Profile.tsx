@@ -30,6 +30,7 @@ import { cmToFeetInchesString, cmToFeetInches, inchesToCm } from "@/lib/utils";
 import { useFollowerCounts } from "@/hooks/useFollowerCounts";
 import { useReferrals } from "@/hooks/useReferrals";
 import { useAchievements } from "@/hooks/useAchievements";
+import DailyStepsReward from "@/components/DailyStepsReward";
 
 interface UserType {
   role: "client" | "trainer";
