@@ -213,6 +213,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/user/:username"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <UserProfile />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/feed"
         element={
           <ProtectedRoute>
