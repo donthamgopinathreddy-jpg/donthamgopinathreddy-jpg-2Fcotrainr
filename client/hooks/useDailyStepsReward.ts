@@ -30,8 +30,8 @@ export const useDailyStepsReward = (dailySteps: number = 0) => {
           .maybeSingle();
 
         if (fetchError) {
-          console.error("Error checking daily reward:", fetchError);
-          setError(fetchError.message);
+          console.debug("Daily reward check error:", fetchError?.code);
+          setError("Failed to check daily reward");
           return;
         }
 
@@ -39,8 +39,8 @@ export const useDailyStepsReward = (dailySteps: number = 0) => {
         setRewardClaimed(!!data);
         setIsClaimable(dailySteps >= 10000 && !data);
       } catch (err) {
-        console.error("Error in checkDailyReward:", err);
-        setError(err instanceof Error ? err.message : "Unknown error");
+        console.debug("Daily reward check catch error:", err instanceof Error ? err.code : "unknown");
+        setError("Failed to check daily reward");
       } finally {
         setLoading(false);
       }
@@ -75,7 +75,10 @@ export const useDailyStepsReward = (dailySteps: number = 0) => {
         ]);
 
       if (insertError) {
-        throw insertError;
+        console.debug("Daily reward insert error:", insertError?.code);
+        setError("Failed to claim reward");
+        setIsClaiming(false);
+        return false;
       }
 
       // Update user's coin balance (update the referral coins or create a coins table)
@@ -88,16 +91,18 @@ export const useDailyStepsReward = (dailySteps: number = 0) => {
         .eq("id", user.id);
 
       if (updateError) {
-        throw updateError;
+        console.debug("Daily reward update error:", updateError?.code);
+        setError("Failed to update coins");
+        setIsClaiming(false);
+        return false;
       }
 
       setRewardClaimed(true);
       setIsClaimable(false);
       return true;
     } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : "Failed to claim reward";
-      console.error("Error claiming reward:", err);
-      setError(errorMsg);
+      console.debug("Claim reward catch error:", err instanceof Error ? err.code : "unknown");
+      setError("Failed to claim reward");
       return false;
     } finally {
       setIsClaiming(false);
