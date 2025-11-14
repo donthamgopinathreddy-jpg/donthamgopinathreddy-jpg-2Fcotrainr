@@ -106,6 +106,12 @@ export default function Profile() {
   });
 
   useEffect(() => {
+    if (isHealthSyncAvailable && syncedSteps > 0) {
+      setDailySteps(syncedSteps);
+    }
+  }, [syncedSteps, isHealthSyncAvailable]);
+
+  useEffect(() => {
     if (userProfile?.id) {
       const loadBiometricSettings = async () => {
         try {
