@@ -367,6 +367,25 @@ export default function Profile() {
               : "bg-gradient-to-br from-orange-50 to-amber-50"
           }`}
         >
+          {/* Theme Toggle Button */}
+          <div className="flex justify-end mb-2">
+            <button
+              onClick={toggleTheme}
+              className={`p-2 rounded-full transition-colors ${
+                theme === "dark"
+                  ? "bg-gray-700 hover:bg-gray-600 text-yellow-400"
+                  : "bg-orange-200 hover:bg-orange-300 text-orange-800"
+              }`}
+              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+          </div>
+
           <div className="relative w-24 h-24 mx-auto mb-4 group">
             <div
               className={`w-24 h-24 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg ${
