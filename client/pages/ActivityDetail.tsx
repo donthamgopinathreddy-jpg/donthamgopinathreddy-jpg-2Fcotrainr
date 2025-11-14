@@ -262,7 +262,17 @@ export default function ActivityDetail() {
             </div>
 
             <div>
-              <div className={`text-5xl font-bold ${colors.text} !text-inherit`}>
+              <div
+                className={`text-5xl font-bold ${
+                  theme === "dark"
+                    ? type === "water"
+                      ? "text-cyan-400"
+                      : type === "calories"
+                        ? "text-red-400"
+                        : "text-orange-400"
+                    : colors.text
+                }`}
+              >
                 {type === "water"
                   ? selectedDate.toDateString() === new Date().toDateString()
                     ? waterConsumed.toFixed(1)
