@@ -32,6 +32,7 @@ import {
   X,
 } from "lucide-react";
 import { useTrainerClients } from "@/hooks/useTrainerClients";
+import { useTheme } from "@/contexts/ThemeContext";
 import { toast } from "sonner";
 
 // Sample posts data
