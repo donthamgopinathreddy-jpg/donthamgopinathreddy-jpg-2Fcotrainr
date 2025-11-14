@@ -33,6 +33,7 @@ import { useFollowerCounts } from "@/hooks/useFollowerCounts";
 import { useReferrals } from "@/hooks/useReferrals";
 import { useAchievements } from "@/hooks/useAchievements";
 import { useHealthSync } from "@/hooks/useHealthSync";
+import { useClientDietPlans } from "@/hooks/useClientDietPlans";
 import DailyStepsReward from "@/components/DailyStepsReward";
 
 interface UserType {
