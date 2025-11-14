@@ -293,14 +293,18 @@ export default function Discover() {
 
           {/* Additional Filters Panel */}
           {showFilters && (
-            <div className={`px-4 py-4 space-y-4 border-t border-border bg-card/50 backdrop-blur ${
-              theme === "dark" ? "" : ""
-            }`}>
+            <div
+              className={`px-4 py-4 space-y-4 border-t border-border bg-card/50 backdrop-blur ${
+                theme === "dark" ? "" : ""
+              }`}
+            >
               {/* Distance Range Filter */}
               <div>
-                <h3 className={`text-sm font-semibold mb-3 ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}>
+                <h3
+                  className={`text-sm font-semibold mb-3 ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}
+                >
                   Search Radius: {filter.distance} km
                 </h3>
                 <div className="space-y-3">
@@ -317,9 +321,11 @@ export default function Discover() {
                     }
                     className="w-full cursor-pointer"
                   />
-                  <div className={`flex justify-between text-xs ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }`}>
+                  <div
+                    className={`flex justify-between text-xs ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
                     <span>1 km</span>
                     <span>100 km</span>
                   </div>
@@ -327,15 +333,17 @@ export default function Discover() {
               </div>
 
               {/* Verified Only Filter */}
-              <label className={`flex items-center gap-3 cursor-pointer p-3 rounded-lg transition-colors ${
-                filter.verified
-                  ? theme === "dark"
-                    ? "bg-blue-900/30 border border-blue-800"
-                    : "bg-blue-50 border border-blue-200"
-                  : theme === "dark"
-                    ? "bg-gray-800/30 border border-gray-700"
-                    : "bg-gray-50 border border-gray-200"
-              }`}>
+              <label
+                className={`flex items-center gap-3 cursor-pointer p-3 rounded-lg transition-colors ${
+                  filter.verified
+                    ? theme === "dark"
+                      ? "bg-blue-900/30 border border-blue-800"
+                      : "bg-blue-50 border border-blue-200"
+                    : theme === "dark"
+                      ? "bg-gray-800/30 border border-gray-700"
+                      : "bg-gray-50 border border-gray-200"
+                }`}
+              >
                 <input
                   type="checkbox"
                   checked={filter.verified}
@@ -345,20 +353,32 @@ export default function Discover() {
                   className="w-4 h-4 cursor-pointer"
                 />
                 <div>
-                  <p className={`text-sm font-semibold ${
-                    theme === "dark" ? "text-white" : "text-gray-900"
-                  }`}>Verified Trainers Only</p>
-                  <p className={`text-xs ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }`}>Show only verified trainers</p>
+                  <p
+                    className={`text-sm font-semibold ${
+                      theme === "dark" ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    Verified Trainers Only
+                  </p>
+                  <p
+                    className={`text-xs ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
+                    Show only verified trainers
+                  </p>
                 </div>
               </label>
 
               {/* Sort by Rating/Distance */}
               <div>
-                <h3 className={`text-sm font-semibold mb-3 ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}>Sort by</h3>
+                <h3
+                  className={`text-sm font-semibold mb-3 ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  Sort by
+                </h3>
                 <select
                   value={filter.sort}
                   onChange={(e) =>
@@ -491,19 +511,25 @@ export default function Discover() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${
-                theme === "dark" ? "bg-gray-800" : "bg-orange-100"
-              }`}>
+              <div
+                className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${
+                  theme === "dark" ? "bg-gray-800" : "bg-orange-100"
+                }`}
+              >
                 <span className="text-2xl">🔍</span>
               </div>
-              <h3 className={`font-bold mb-1 ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}>
+              <h3
+                className={`font-bold mb-1 ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
+              >
                 No trainers found
               </h3>
-              <p className={`text-sm ${
-                theme === "dark" ? "text-gray-400" : "text-gray-600"
-              }`}>
+              <p
+                className={`text-sm ${
+                  theme === "dark" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
                 Try adjusting your filters or category
               </p>
             </div>

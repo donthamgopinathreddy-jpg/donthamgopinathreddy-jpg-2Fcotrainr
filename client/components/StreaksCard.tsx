@@ -102,9 +102,11 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
             theme === "dark" ? "text-white" : "text-gray-900"
           }`}
         >
-          <Flame className={`w-6 h-6 ${
-            streak.current_streak > 0 ? "text-orange-500" : "text-gray-400"
-          }`} />
+          <Flame
+            className={`w-6 h-6 ${
+              streak.current_streak > 0 ? "text-orange-500" : "text-gray-400"
+            }`}
+          />
           Daily Streak
         </h3>
         <div className="text-3xl animate-bounce">
@@ -127,14 +129,20 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
           >
             Current Streak
           </p>
-          <p className={`text-5xl font-black mb-2 ${
-            theme === "dark" ? "text-orange-400" : "text-orange-600"
-          }`}>
+          <p
+            className={`text-5xl font-black mb-2 ${
+              theme === "dark" ? "text-orange-400" : "text-orange-600"
+            }`}
+          >
             {streak.current_streak}
           </p>
-          <p className={`text-sm font-semibold ${
-            theme === "dark" ? "text-orange-300" : "text-orange-700"
-          }`}>Days in a row 🔥</p>
+          <p
+            className={`text-sm font-semibold ${
+              theme === "dark" ? "text-orange-300" : "text-orange-700"
+            }`}
+          >
+            Days in a row 🔥
+          </p>
         </div>
       </div>
 
@@ -155,9 +163,11 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
               >
                 Longest Streak
               </p>
-              <p className={`text-3xl font-bold ${
-                theme === "dark" ? "text-yellow-400" : "text-yellow-600"
-              }`}>
+              <p
+                className={`text-3xl font-bold ${
+                  theme === "dark" ? "text-yellow-400" : "text-yellow-600"
+                }`}
+              >
                 {streak.longest_streak}
               </p>
             </div>
@@ -166,14 +176,18 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
         </div>
       </div>
 
-      <div className={`rounded-xl p-4 border-2 ${
-        theme === "dark"
-          ? "bg-gradient-to-br from-purple-900/20 to-transparent border-purple-700/50"
-          : "bg-gradient-to-br from-purple-100 to-transparent border-purple-300"
-      }`}>
-        <p className={`text-sm font-bold mb-3 ${
-          theme === "dark" ? "text-purple-300" : "text-purple-700"
-        }`}>
+      <div
+        className={`rounded-xl p-4 border-2 ${
+          theme === "dark"
+            ? "bg-gradient-to-br from-purple-900/20 to-transparent border-purple-700/50"
+            : "bg-gradient-to-br from-purple-100 to-transparent border-purple-300"
+        }`}
+      >
+        <p
+          className={`text-sm font-bold mb-3 ${
+            theme === "dark" ? "text-purple-300" : "text-purple-700"
+          }`}
+        >
           {getMilestoneEmoji(streak.current_streak)}{" "}
           {getMilestoneText(streak.current_streak)}
         </p>
