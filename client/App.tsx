@@ -24,6 +24,8 @@ import VideoCall from "./pages/VideoCall";
 import VideoMeeting from "./pages/VideoMeeting";
 import VideoSessions from "./pages/VideoSessions";
 import Subscription from "./pages/Subscription";
+import Achievements from "./pages/Achievements";
+import TrainingModes from "./pages/TrainingModes";
 import TrainerSignup from "./pages/TrainerSignup";
 import TrainerDashboard from "./pages/TrainerDashboard";
 import TrainerClientDetail from "./pages/TrainerClientDetail";
