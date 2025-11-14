@@ -108,6 +108,12 @@ export default function Profile() {
     weight: userProfile?.weight_kg || 70,
   });
 
+  const [verificationDocs, setVerificationDocs] = useState({
+    idUploaded: false,
+    selfieUploaded: false,
+  });
+  const [isUploadingDocs, setIsUploadingDocs] = useState(false);
+
   useEffect(() => {
     if (isHealthSyncAvailable && syncedSteps > 0) {
       setDailySteps(syncedSteps);
