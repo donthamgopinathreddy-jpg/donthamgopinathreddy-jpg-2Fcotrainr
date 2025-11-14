@@ -187,12 +187,34 @@ export const useAchievements = () => {
     fetchUnlockedAchievements();
   }, [user?.id]);
 
+  // Format unlocked achievements with achievement details
+  const userAchievements = unlockedAchievements
+    .map((ua) => {
+      const achievement = allAchievements.find((a) => a.id === ua.achievement_id);
+      return {
+        id: ua.id,
+        title: achievement?.title || "Unknown",
+        description: achievement?.description || "",
+        icon: achievement?.icon || "🎯",
+        points: achievement?.points || 0,
+        unlocked_at: ua.unlocked_at,
+      };
+    })
+    .sort((a, b) => new Date(b.unlocked_at).getTime() - new Date(a.unlocked_at).getTime());
+
+  // Calculate total points
+  const getTotalPoints = () => {
+    return userAchievements.reduce((sum, achievement) => sum + achievement.points, 0);
+  };
+
   return {
     allAchievements,
     unlockedAchievements,
+    userAchievements,
     loading,
     error,
     newlyUnlocked,
+    getTotalPoints,
     fetchAllAchievements,
     fetchUnlockedAchievements,
     unlockAchievement,
