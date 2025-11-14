@@ -231,24 +231,24 @@ export default function ActivityDetail() {
         >
           <div className="relative space-y-4">
             {/* Half-Circle Icon with Value Around It */}
-            <div className="flex justify-center py-4">
-              <div className="relative w-40 h-24">
+            <div className="flex justify-center py-6">
+              <div className="relative w-48 h-32">
                 <svg
                   className="w-full h-full"
-                  viewBox="0 0 160 80"
+                  viewBox="0 0 192 96"
                   preserveAspectRatio="xMidYMid meet"
                 >
                   {/* Background half circle arc */}
                   <path
-                    d="M 20 80 A 60 60 0 0 1 140 80"
+                    d="M 24 96 A 72 72 0 0 1 168 96"
                     fill="none"
                     stroke={theme === "dark" ? "#374151" : "#e5e7eb"}
-                    strokeWidth="6"
+                    strokeWidth="5"
                     strokeLinecap="round"
                   />
                   {/* Progress half circle arc */}
                   <path
-                    d="M 20 80 A 60 60 0 0 1 140 80"
+                    d="M 24 96 A 72 72 0 0 1 168 96"
                     fill="none"
                     stroke={
                       type === "water"
@@ -257,11 +257,11 @@ export default function ActivityDetail() {
                           ? "#dc2626"
                           : "#ea580c"
                     }
-                    strokeWidth="6"
+                    strokeWidth="5"
                     strokeLinecap="round"
-                    strokeDasharray={Math.PI * 60}
+                    strokeDasharray={Math.PI * 72}
                     strokeDashoffset={
-                      Math.PI * 60 *
+                      Math.PI * 72 *
                       (1 -
                         Math.min(
                           selectedDate.toDateString() === new Date().toDateString()
@@ -279,7 +279,7 @@ export default function ActivityDetail() {
                 </svg>
 
                 {/* Center Icon */}
-                <div className="absolute inset-0 flex items-center justify-center -mt-4">
+                <div className="absolute inset-0 flex items-center justify-center pt-2">
                   <div className="text-6xl">{colors.icon}</div>
                 </div>
               </div>
