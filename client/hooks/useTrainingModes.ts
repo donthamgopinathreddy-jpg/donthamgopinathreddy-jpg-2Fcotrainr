@@ -86,7 +86,7 @@ export const useTrainingModes = () => {
 
       return true;
     } catch (err) {
-      console.error("Error updating training modes:", err);
+      console.debug("Error updating training modes:", (err as any)?.code);
       setError(err instanceof Error ? err.message : "Failed to update modes");
       return false;
     }
