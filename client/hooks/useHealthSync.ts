@@ -113,7 +113,7 @@ export const useHealthSync = () => {
         .maybeSingle();
 
       if (error) {
-        console.error("Error loading health data:", error);
+        console.debug("Load health data error:", error?.code);
         return;
       }
 
