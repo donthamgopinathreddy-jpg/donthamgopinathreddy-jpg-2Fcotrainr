@@ -859,7 +859,7 @@ export default function TrainerHome() {
 
                     {/* Expanded Details */}
                     {expandedClient === client.id && (
-                      <div className="px-4 py-4 border-t border-gray-200 bg-gray-50 space-y-4">
+                      <div className="px-4 py-4 bg-gray-50 space-y-4">
                         {/* Key Metrics */}
                         <div className="grid grid-cols-2 gap-3">
                           <div className="bg-white rounded-lg p-3 border border-gray-200">
