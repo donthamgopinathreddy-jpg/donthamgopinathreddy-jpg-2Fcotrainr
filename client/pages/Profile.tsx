@@ -115,6 +115,7 @@ export default function Profile() {
         isFollowing: false,
         followers: followerCounts.followers_count,
         following: followerCounts.following_count,
+        profilePhoto: userProfile.profile_picture_url,
       };
       setUser(newUserState);
       const calculatedAge = userProfile.date_of_birth
