@@ -12,7 +12,7 @@ import {
   Loader,
   Lock,
   Fingerprint,
-  FaceIcon,
+  Smile,
   Share2,
   Instagram,
   MessageCircle,
@@ -427,7 +427,7 @@ export default function Profile() {
             {/* Face Recognition Toggle */}
             <div className="flex items-center justify-between p-3 rounded-xl bg-gray-100/50 dark:bg-gray-700/50">
               <div className="flex items-center gap-2">
-                <FaceIcon className="w-4 h-4 text-orange-500" />
+                <Smile className="w-4 h-4 text-orange-500" />
                 <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
                   Enable Face Recognition
                 </span>
