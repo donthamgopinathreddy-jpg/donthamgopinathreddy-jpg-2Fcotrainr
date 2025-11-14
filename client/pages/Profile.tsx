@@ -19,6 +19,8 @@ import {
   CheckCircle,
   Phone,
   Mail,
+  Instagram,
+  MessageCircle,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -33,6 +35,7 @@ import DailyStepsReward from "@/components/DailyStepsReward";
 interface UserType {
   role: "client" | "trainer";
   name: string;
+  username?: string;
   gender: string;
   height: number;
   weight: number;
@@ -57,6 +60,7 @@ export default function Profile() {
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
     name: userProfile?.full_name || "User",
+    username: userProfile?.username,
     gender: userProfile?.gender || "Not specified",
     height: userProfile?.height_cm || 170,
     weight: userProfile?.weight_kg || 70,
@@ -69,9 +73,8 @@ export default function Profile() {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
-  const [dailySteps, setDailySteps] = useState(8450); // Example value, can be passed as prop
+  const [dailySteps, setDailySteps] = useState(8450);
 
-  // Security & Login state
   const [securitySettings, setSecuritySettings] = useState({
     usePIN: false,
     fingerprint: false,
@@ -79,7 +82,6 @@ export default function Profile() {
   });
   const [isSavingBiometrics, setIsSavingBiometrics] = useState(false);
 
-  // Password change state
   const [passwordForm, setPasswordForm] = useState({
     current: "",
     new: "",
@@ -91,9 +93,9 @@ export default function Profile() {
     confirm: false,
   });
 
-  // Edit form state
   const [editForm, setEditForm] = useState({
     name: userProfile?.full_name || "User",
+    username: userProfile?.username || "",
     email: userProfile?.email || "",
     phone: userProfile?.phone_number || "",
     gender: userProfile?.gender || "Not specified",
@@ -101,7 +103,6 @@ export default function Profile() {
     weight: userProfile?.weight_kg || 70,
   });
 
-  // Load biometric settings from database
   useEffect(() => {
     if (userProfile?.id) {
       const loadBiometricSettings = async () => {
@@ -138,6 +139,7 @@ export default function Profile() {
       setUser({
         role: userProfile.role || "client",
         name: userProfile.full_name || "User",
+        username: userProfile.username,
         gender: userProfile.gender || "Not specified",
         height: userProfile.height_cm || 170,
         weight: userProfile.weight_kg || 70,
@@ -147,6 +149,7 @@ export default function Profile() {
       });
       setEditForm({
         name: userProfile.full_name || "User",
+        username: userProfile.username || "",
         email: userProfile.email || "",
         phone: userProfile.phone_number || "",
         gender: userProfile.gender || "Not specified",
@@ -156,7 +159,6 @@ export default function Profile() {
     }
   }, [userProfile, followerCounts]);
 
-  // Generate referral link
   const referralCodeDisplay =
     referralCode || userProfile?.id?.substring(0, 8)?.toUpperCase() || "REFER";
   const referralLink = `${window.location.origin}?ref=${referralCodeDisplay}`;
@@ -197,7 +199,7 @@ export default function Profile() {
             profilePhoto: dataUrl,
           }));
 
-          toast.success("��� Profile photo updated!");
+          toast.success("📸 Profile photo updated!");
         } catch (error: any) {
           console.error("Error saving profile photo:", error);
           const errorMsg =
@@ -228,6 +230,7 @@ export default function Profile() {
 
       await authUpdateProfile({
         full_name: editForm.name,
+        username: editForm.username,
         email: editForm.email,
         phone_number: editForm.phone,
         gender: editForm.gender,
@@ -238,6 +241,7 @@ export default function Profile() {
       setUser((prev) => ({
         ...prev,
         name: editForm.name,
+        username: editForm.username,
         gender: editForm.gender,
         height: editForm.height,
         weight: editForm.weight,
@@ -334,7 +338,6 @@ export default function Profile() {
   const referralCoins = 320;
   const nextRewardCoins = 500;
 
-  // Sample achievements data
   const topAchievements = userAchievements.slice(0, 3);
   const featuredAchievement = userAchievements[0];
 
@@ -381,10 +384,18 @@ export default function Profile() {
           </div>
 
           <h1
-            className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            className={`text-3xl font-bold mb-1 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
           >
             {user.name}
           </h1>
+
+          {user.username && (
+            <p
+              className={`text-sm mb-3 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+            >
+              @{user.username}
+            </p>
+          )}
 
           <div
             className={`text-sm font-semibold inline-block px-4 py-1 rounded-full mb-4 ${
@@ -475,13 +486,6 @@ export default function Profile() {
               </p>
             </div>
           </div>
-
-          <button
-            onClick={() => setShowEditModal(true)}
-            className={`text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors`}
-          >
-            → Edit personal details
-          </button>
         </div>
 
         {/* SECURITY & LOGIN SECTION */}
@@ -500,7 +504,6 @@ export default function Profile() {
           </h2>
 
           <div className="space-y-3">
-            {/* PIN Toggle */}
             <div className="flex items-center justify-between p-3 rounded-xl bg-gray-100/50 dark:bg-gray-700/50">
               <span
                 className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
@@ -526,7 +529,6 @@ export default function Profile() {
               </button>
             </div>
 
-            {/* Fingerprint Toggle */}
             <div className="flex items-center justify-between p-3 rounded-xl bg-gray-100/50 dark:bg-gray-700/50">
               <div className="flex items-center gap-2">
                 <Fingerprint className="w-4 h-4 text-orange-500" />
@@ -551,7 +553,6 @@ export default function Profile() {
               </button>
             </div>
 
-            {/* Face Recognition Toggle */}
             <div className="flex items-center justify-between p-3 rounded-xl bg-gray-100/50 dark:bg-gray-700/50">
               <div className="flex items-center gap-2">
                 <Smile className="w-4 h-4 text-orange-500" />
@@ -578,7 +579,6 @@ export default function Profile() {
               </button>
             </div>
 
-            {/* Info Box */}
             <div
               className={`rounded-xl p-4 flex items-start gap-3 ${
                 theme === "dark"
@@ -597,7 +597,6 @@ export default function Profile() {
               </p>
             </div>
 
-            {/* Change Password Section */}
             {!showPasswordForm ? (
               <button
                 onClick={() => setShowPasswordForm(true)}
@@ -779,7 +778,6 @@ export default function Profile() {
               💰 Referral Coins
             </h2>
 
-            {/* Coins Balance */}
             <div
               className={`rounded-2xl p-6 text-center mb-4 bg-gradient-to-br from-orange-400 to-amber-500 text-white shadow-lg`}
             >
@@ -790,7 +788,6 @@ export default function Profile() {
               <p className="text-sm opacity-80">Coins</p>
             </div>
 
-            {/* Progress Bar */}
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
                 <p
@@ -819,7 +816,6 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Earning Opportunities */}
           <div>
             <h3
               className={`text-sm font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
@@ -874,7 +870,6 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Daily Steps Reward Component */}
           <DailyStepsReward
             dailySteps={dailySteps}
             onRewardClaimed={() => {
@@ -882,7 +877,6 @@ export default function Profile() {
             }}
           />
 
-          {/* Referral Sharing Subsection */}
           <div className="border-t pt-6 border-gray-200 dark:border-gray-700">
             <h3
               className={`text-sm font-bold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
@@ -891,7 +885,6 @@ export default function Profile() {
             </h3>
 
             <div className="space-y-3">
-              {/* Referral Code Box */}
               <div
                 className={`rounded-xl p-4 ${
                   theme === "dark"
@@ -911,7 +904,6 @@ export default function Profile() {
                 </p>
               </div>
 
-              {/* Referral Link Box */}
               <div
                 className={`rounded-xl p-4 space-y-2 ${
                   theme === "dark"
@@ -955,7 +947,6 @@ export default function Profile() {
                 />
               </div>
 
-              {/* Share Button */}
               <div className="flex items-center justify-center">
                 <button
                   onClick={() => {
@@ -973,7 +964,6 @@ export default function Profile() {
                           }
                         });
                     } else {
-                      // Fallback: copy to clipboard if share is not supported
                       handleCopyReferralLink();
                       toast.info("Share not supported. Link copied instead!");
                     }
@@ -1013,7 +1003,6 @@ export default function Profile() {
             🏆 Achievements
           </h2>
 
-          {/* Achievement Badges Horizontal Scroll */}
           {userAchievements.length > 0 ? (
             <>
               <div className="overflow-x-auto pb-2 -mx-6 px-6">
@@ -1044,7 +1033,6 @@ export default function Profile() {
                 </div>
               </div>
 
-              {/* Featured Achievement Card */}
               {featuredAchievement && (
                 <div
                   className={`rounded-2xl p-6 text-center border-2 ${
@@ -1075,7 +1063,6 @@ export default function Profile() {
                     ).toLocaleDateString()}
                   </p>
 
-                  {/* Social Sharing Buttons */}
                   <div className="flex gap-2 mt-4">
                     <button
                       onClick={() =>
@@ -1150,7 +1137,6 @@ export default function Profile() {
             </h2>
 
             <div className="space-y-3">
-              {/* Upload ID Step */}
               <div
                 className={`rounded-xl p-4 flex items-center gap-4 ${
                   theme === "dark"
@@ -1184,7 +1170,6 @@ export default function Profile() {
                 </button>
               </div>
 
-              {/* Selfie Step */}
               <div
                 className={`rounded-xl p-4 flex items-center gap-4 ${
                   theme === "dark"
@@ -1218,7 +1203,6 @@ export default function Profile() {
                 </button>
               </div>
 
-              {/* Info Box */}
               <div
                 className={`rounded-xl p-4 flex items-start gap-3 ${
                   theme === "dark"
@@ -1294,11 +1278,14 @@ export default function Profile() {
       {showEditModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div
-            className={`w-full max-w-md rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto ${
+            className={`w-full max-w-md rounded-3xl flex flex-col max-h-[90vh] ${
               theme === "dark" ? "bg-gray-800" : "bg-white"
             }`}
           >
-            <div className="flex items-center justify-between mb-4">
+            {/* Sticky Header */}
+            <div className={`flex items-center justify-between p-6 border-b ${
+              theme === "dark" ? "border-gray-700" : "border-gray-200"
+            }`}>
               <h2
                 className={`text-xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
               >
@@ -1316,200 +1303,227 @@ export default function Profile() {
               </button>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <label
-                  className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
-                >
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={editForm.name}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, name: e.target.value }))
-                  }
-                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                    theme === "dark"
-                      ? "border border-gray-700 bg-gray-900 text-white"
-                      : "border border-gray-300 bg-white text-gray-900"
-                  }`}
-                />
-              </div>
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="space-y-4 p-6">
+                <div>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
+                  >
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={editForm.name}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({ ...prev, name: e.target.value }))
+                    }
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
+                  />
+                </div>
 
-              <div>
-                <label
-                  className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
-                >
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={editForm.email}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, email: e.target.value }))
-                  }
-                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                    theme === "dark"
-                      ? "border border-gray-700 bg-gray-900 text-white"
-                      : "border border-gray-300 bg-white text-gray-900"
-                  }`}
-                />
-              </div>
+                <div>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
+                  >
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    value={editForm.username}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({ ...prev, username: e.target.value }))
+                    }
+                    placeholder="your_username"
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
+                  />
+                </div>
 
-              <div>
-                <label
-                  className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
-                >
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  value={editForm.phone}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, phone: e.target.value }))
-                  }
-                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                    theme === "dark"
-                      ? "border border-gray-700 bg-gray-900 text-white"
-                      : "border border-gray-300 bg-white text-gray-900"
-                  }`}
-                  placeholder="+91 9876543210"
-                />
-              </div>
+                <div>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={editForm.email}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                    }
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
+                  />
+                </div>
 
-              <div>
-                <label
-                  className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
-                >
-                  Gender
-                </label>
-                <select
-                  value={editForm.gender}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, gender: e.target.value }))
-                  }
-                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                    theme === "dark"
-                      ? "border border-gray-700 bg-gray-900 text-white"
-                      : "border border-gray-300 bg-white text-gray-900"
-                  }`}
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+                <div>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    value={editForm.phone}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({ ...prev, phone: e.target.value }))
+                    }
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
+                    placeholder="+91 9876543210"
+                  />
+                </div>
 
-              <div>
-                <label
-                  className={`block text-sm font-medium mb-2 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
-                >
-                  Height
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                      Feet
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="5"
-                      min="0"
-                      max="10"
-                      value={
-                        editForm.height > 0
-                          ? cmToFeetInches(editForm.height).feet
-                          : ""
-                      }
-                      onChange={(e) => {
-                        const feet = parseInt(e.target.value) || 0;
-                        const inches =
-                          editForm.height > 0
-                            ? cmToFeetInches(editForm.height).inches
-                            : 0;
-                        const totalInches = feet * 12 + inches;
-                        setEditForm((prev) => ({
-                          ...prev,
-                          height: inchesToCm(totalInches),
-                        }));
-                      }}
-                      className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                        theme === "dark"
-                          ? "border border-gray-700 bg-gray-900 text-white"
-                          : "border border-gray-300 bg-white text-gray-900"
-                      }`}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                      Inches
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="11"
-                      min="0"
-                      max="11"
-                      value={
-                        editForm.height > 0
-                          ? cmToFeetInches(editForm.height).inches
-                          : ""
-                      }
-                      onChange={(e) => {
-                        const feet =
+                <div>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
+                  >
+                    Gender
+                  </label>
+                  <select
+                    value={editForm.gender}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({ ...prev, gender: e.target.value }))
+                    }
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    className={`block text-sm font-medium mb-2 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
+                  >
+                    Height
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                        Feet
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="5"
+                        min="0"
+                        max="10"
+                        value={
                           editForm.height > 0
                             ? cmToFeetInches(editForm.height).feet
-                            : 0;
-                        const inches = parseInt(e.target.value) || 0;
-                        const totalInches = feet * 12 + inches;
-                        setEditForm((prev) => ({
-                          ...prev,
-                          height: inchesToCm(totalInches),
-                        }));
-                      }}
-                      className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                        theme === "dark"
-                          ? "border border-gray-700 bg-gray-900 text-white"
-                          : "border border-gray-300 bg-white text-gray-900"
-                      }`}
-                    />
+                            : ""
+                        }
+                        onChange={(e) => {
+                          const feet = parseInt(e.target.value) || 0;
+                          const inches =
+                            editForm.height > 0
+                              ? cmToFeetInches(editForm.height).inches
+                              : 0;
+                          const totalInches = feet * 12 + inches;
+                          setEditForm((prev) => ({
+                            ...prev,
+                            height: inchesToCm(totalInches),
+                          }));
+                        }}
+                        className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                          theme === "dark"
+                            ? "border border-gray-700 bg-gray-900 text-white"
+                            : "border border-gray-300 bg-white text-gray-900"
+                        }`}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                        Inches
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="11"
+                        min="0"
+                        max="11"
+                        value={
+                          editForm.height > 0
+                            ? cmToFeetInches(editForm.height).inches
+                            : ""
+                        }
+                        onChange={(e) => {
+                          const feet =
+                            editForm.height > 0
+                              ? cmToFeetInches(editForm.height).feet
+                              : 0;
+                          const inches = parseInt(e.target.value) || 0;
+                          const totalInches = feet * 12 + inches;
+                          setEditForm((prev) => ({
+                            ...prev,
+                            height: inchesToCm(totalInches),
+                          }));
+                        }}
+                        className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                          theme === "dark"
+                            ? "border border-gray-700 bg-gray-900 text-white"
+                            : "border border-gray-300 bg-white text-gray-900"
+                        }`}
+                      />
+                    </div>
                   </div>
+                  {editForm.height > 0 && (
+                    <p
+                      className={`text-xs mt-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                    >
+                      {cmToFeetInchesString(editForm.height)} ({editForm.height}{" "}
+                      cm)
+                    </p>
+                  )}
                 </div>
-                {editForm.height > 0 && (
-                  <p
-                    className={`text-xs mt-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                  >
-                    {cmToFeetInchesString(editForm.height)} ({editForm.height}{" "}
-                    cm)
-                  </p>
-                )}
-              </div>
 
-              <div>
-                <label
-                  className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
-                >
-                  Weight (kg)
-                </label>
-                <input
-                  type="number"
-                  value={editForm.weight}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({
-                      ...prev,
-                      weight: Number(e.target.value),
-                    }))
-                  }
-                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                    theme === "dark"
-                      ? "border border-gray-700 bg-gray-900 text-white"
-                      : "border border-gray-300 bg-white text-gray-900"
-                  }`}
-                />
+                <div>
+                  <label
+                    className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
+                  >
+                    Weight (kg)
+                  </label>
+                  <input
+                    type="number"
+                    value={editForm.weight}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        weight: Number(e.target.value),
+                      }))
+                    }
+                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                      theme === "dark"
+                        ? "border border-gray-700 bg-gray-900 text-white"
+                        : "border border-gray-300 bg-white text-gray-900"
+                    }`}
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4">
+            {/* Sticky Footer */}
+            <div className={`flex gap-3 p-6 border-t ${
+              theme === "dark" ? "border-gray-700" : "border-gray-200"
+            }`}>
               <button
                 onClick={() => setShowEditModal(false)}
                 disabled={isSaving}
