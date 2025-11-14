@@ -81,6 +81,10 @@ export default function DietPlanDetail() {
     loadPlanAndMeals();
   }, [id, dietPlans]);
 
+  const isDemoMode = () => {
+    return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
+  };
+
   const handleAddMeal = async () => {
     if (!mealForm.food_name || !id) {
       toast.error("Please fill in all required fields");
@@ -88,6 +92,40 @@ export default function DietPlanDetail() {
     }
 
     try {
+      // Demo mode: add meal to local state
+      if (isDemoMode()) {
+        const newMeal: Meal = {
+          id: "meal-" + Math.random().toString(36).substring(7),
+          diet_plan_id: id,
+          meal_type: mealForm.meal_type,
+          food_name: mealForm.food_name,
+          time: mealForm.time,
+          quantity_g: mealForm.quantity_g,
+          calories: mealForm.calories,
+          protein_g: mealForm.protein_g,
+          carbs_g: mealForm.carbs_g,
+          fat_g: mealForm.fat_g,
+          notes: mealForm.notes,
+          created_at: new Date().toISOString(),
+        };
+
+        setMeals((prev) => [...prev, newMeal]);
+        toast.success("Meal added!");
+        setMealForm({
+          meal_type: "breakfast",
+          food_name: "",
+          time: "08:00",
+          quantity_g: 100,
+          calories: 300,
+          protein_g: 20,
+          carbs_g: 40,
+          fat_g: 10,
+          notes: "",
+        });
+        setShowMealForm(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("diet_plan_meals")
         .insert([
