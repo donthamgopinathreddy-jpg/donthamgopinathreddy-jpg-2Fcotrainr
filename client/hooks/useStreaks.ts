@@ -122,27 +122,30 @@ export const useStreaks = () => {
         })
         .eq("user_id", user.id);
 
-      if (updateError) throw updateError;
-
-      // Update local state
-      setStreak((prev) =>
-        prev
-          ? {
-              ...prev,
-              current_streak: newCurrentStreak,
-              longest_streak: newLongestStreak,
-              last_active_date: today,
-            }
-          : null,
-      );
+      if (updateError) {
+        console.warn("Error updating streak:", updateError?.message);
+        // Don't throw - streak updates are non-critical
+      } else {
+        // Update local state only if update was successful
+        setStreak((prev) =>
+          prev
+            ? {
+                ...prev,
+                current_streak: newCurrentStreak,
+                longest_streak: newLongestStreak,
+                last_active_date: today,
+              }
+            : null,
+        );
+      }
 
       return {
         currentStreak: newCurrentStreak,
         longestStreak: newLongestStreak,
       };
-    } catch (err) {
-      console.error("Error updating streak:", err);
-      setError(err instanceof Error ? err.message : "Failed to update streak");
+    } catch (err: any) {
+      console.warn("Error updating streak:", err?.message || err);
+      // Non-critical - don't block the app
     }
   };
 
