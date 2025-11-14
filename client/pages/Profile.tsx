@@ -137,7 +137,7 @@ export default function Profile() {
 
   // Generate referral link
   const referralCode =
-    userProfile?.id?.substring(0, 8).toUpperCase() || "REFER";
+    userProfile?.id?.substring(0, 8)?.toUpperCase() || "REFER";
   const referralLink = `${window.location.origin}?ref=${referralCode}`;
 
   const handleCopyReferralLink = () => {
@@ -161,7 +161,7 @@ export default function Profile() {
 
   // Trainer Referral Functions
   const trainerReferralCode =
-    userProfile?.id?.substring(0, 8).toUpperCase() || "COACH";
+    userProfile?.id?.substring(0, 8)?.toUpperCase() || "COACH";
   const trainerReferralLink = `${window.location.origin}/trainer-signup?ref=${trainerReferralCode}`;
 
   const handleCopyTrainerReferralLink = () => {
