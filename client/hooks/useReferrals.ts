@@ -99,13 +99,19 @@ export const useReferrals = () => {
         .maybeSingle();
 
       if (error) {
-        console.debug("Error fetching referral:", error?.message || String(error));
+        console.debug(
+          "Error fetching referral:",
+          error?.message || String(error),
+        );
         return null;
       }
 
       return data;
     } catch (error) {
-      console.debug("Error in getReferralByCode:", error instanceof Error ? error.message : String(error));
+      console.debug(
+        "Error in getReferralByCode:",
+        error instanceof Error ? error.message : String(error),
+      );
       return null;
     }
   };
@@ -124,7 +130,10 @@ export const useReferrals = () => {
         .maybeSingle();
 
       if (fetchError || !referral) {
-        console.debug("Invalid referral code:", fetchError?.message || "Not found");
+        console.debug(
+          "Invalid referral code:",
+          fetchError?.message || "Not found",
+        );
         return false;
       }
 
@@ -139,13 +148,19 @@ export const useReferrals = () => {
         .eq("id", referral.id);
 
       if (updateError) {
-        console.debug("Error using referral:", updateError?.message || String(updateError));
+        console.debug(
+          "Error using referral:",
+          updateError?.message || String(updateError),
+        );
         return false;
       }
 
       return true;
     } catch (error) {
-      console.debug("Error in useReferralCode:", error instanceof Error ? error.message : String(error));
+      console.debug(
+        "Error in useReferralCode:",
+        error instanceof Error ? error.message : String(error),
+      );
       return false;
     }
   };

@@ -115,7 +115,10 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
       const requestInitialPermissions = async () => {
         try {
           // Request notifications (can be called without user interaction in many cases)
-          if ("Notification" in window && Notification.permission === "default") {
+          if (
+            "Notification" in window &&
+            Notification.permission === "default"
+          ) {
             await Notification.requestPermission();
           }
         } catch (error) {

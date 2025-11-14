@@ -64,8 +64,12 @@ export default function VideoCall() {
       {/* Watermark */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="text-center">
-          <p className="text-white/30 text-2xl font-bold">No Screenshots/Recording</p>
-          <p className="text-white/20 text-sm mt-2">User ID: #12345 • {new Date().toLocaleTimeString()}</p>
+          <p className="text-white/30 text-2xl font-bold">
+            No Screenshots/Recording
+          </p>
+          <p className="text-white/20 text-sm mt-2">
+            User ID: #12345 • {new Date().toLocaleTimeString()}
+          </p>
         </div>
       </div>
 
@@ -79,7 +83,9 @@ export default function VideoCall() {
           {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
         </div>
         {timeLeft < 60 && (
-          <p className="text-red-400 text-center mt-2 font-semibold">Trial ending soon!</p>
+          <p className="text-red-400 text-center mt-2 font-semibold">
+            Trial ending soon!
+          </p>
         )}
       </div>
 
@@ -97,19 +103,31 @@ export default function VideoCall() {
         <button
           onClick={() => setIsMuted(!isMuted)}
           className={`p-4 rounded-full transition-all ${
-            isMuted ? "bg-red-600 hover:bg-red-700" : "bg-gray-700 hover:bg-gray-600"
+            isMuted
+              ? "bg-red-600 hover:bg-red-700"
+              : "bg-gray-700 hover:bg-gray-600"
           }`}
         >
-          {isMuted ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
+          {isMuted ? (
+            <MicOff className="w-6 h-6" />
+          ) : (
+            <Mic className="w-6 h-6" />
+          )}
         </button>
 
         <button
           onClick={() => setIsVideoOff(!isVideoOff)}
           className={`p-4 rounded-full transition-all ${
-            isVideoOff ? "bg-red-600 hover:bg-red-700" : "bg-gray-700 hover:bg-gray-600"
+            isVideoOff
+              ? "bg-red-600 hover:bg-red-700"
+              : "bg-gray-700 hover:bg-gray-600"
           }`}
         >
-          {isVideoOff ? <VideoOff className="w-6 h-6" /> : <Video className="w-6 h-6" />}
+          {isVideoOff ? (
+            <VideoOff className="w-6 h-6" />
+          ) : (
+            <Video className="w-6 h-6" />
+          )}
         </button>
 
         <button
@@ -122,8 +140,12 @@ export default function VideoCall() {
 
       {/* Bottom Info */}
       <div className="absolute bottom-8 left-0 right-0 text-center z-10">
-        <p className="text-gray-400 text-sm">This is a 10-minute free trial session</p>
-        <p className="text-gray-500 text-xs mt-1">Video will end automatically at 0:00</p>
+        <p className="text-gray-400 text-sm">
+          This is a 10-minute free trial session
+        </p>
+        <p className="text-gray-500 text-xs mt-1">
+          Video will end automatically at 0:00
+        </p>
       </div>
     </div>
   );

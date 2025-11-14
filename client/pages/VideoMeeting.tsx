@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
-import { Mic, MicOff, Video, VideoOff, Phone, MessageCircle, Users, Settings, Share2 } from "lucide-react";
+import {
+  Mic,
+  MicOff,
+  Video,
+  VideoOff,
+  Phone,
+  MessageCircle,
+  Users,
+  Settings,
+  Share2,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { usePermissions } from "@/hooks/usePermissions";
@@ -15,12 +25,60 @@ interface Participant {
 }
 
 const MOCK_PARTICIPANTS: Participant[] = [
-  { id: "1", name: "Priya Singh", avatar: "PS", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=PriyaSingh", isMuted: false, isVideoOff: false, isTrainer: true },
-  { id: "2", name: "Amit Kumar", avatar: "AK", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=AmitKumar", isMuted: true, isVideoOff: false, isTrainer: false },
-  { id: "3", name: "Neha Verma", avatar: "NV", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=NehaVerma", isMuted: false, isVideoOff: false, isTrainer: false },
-  { id: "4", name: "Raj Patel", avatar: "RP", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=RajPatel", isMuted: false, isVideoOff: true, isTrainer: false },
-  { id: "5", name: "Sarah Chen", avatar: "SC", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=SarahChen", isMuted: false, isVideoOff: false, isTrainer: false },
-  { id: "6", name: "Mike Johnson", avatar: "MJ", pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=MikeJohnson", isMuted: true, isVideoOff: false, isTrainer: false },
+  {
+    id: "1",
+    name: "Priya Singh",
+    avatar: "PS",
+    pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=PriyaSingh",
+    isMuted: false,
+    isVideoOff: false,
+    isTrainer: true,
+  },
+  {
+    id: "2",
+    name: "Amit Kumar",
+    avatar: "AK",
+    pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=AmitKumar",
+    isMuted: true,
+    isVideoOff: false,
+    isTrainer: false,
+  },
+  {
+    id: "3",
+    name: "Neha Verma",
+    avatar: "NV",
+    pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=NehaVerma",
+    isMuted: false,
+    isVideoOff: false,
+    isTrainer: false,
+  },
+  {
+    id: "4",
+    name: "Raj Patel",
+    avatar: "RP",
+    pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=RajPatel",
+    isMuted: false,
+    isVideoOff: true,
+    isTrainer: false,
+  },
+  {
+    id: "5",
+    name: "Sarah Chen",
+    avatar: "SC",
+    pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=SarahChen",
+    isMuted: false,
+    isVideoOff: false,
+    isTrainer: false,
+  },
+  {
+    id: "6",
+    name: "Mike Johnson",
+    avatar: "MJ",
+    pictureUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=MikeJohnson",
+    isMuted: true,
+    isVideoOff: false,
+    isTrainer: false,
+  },
 ];
 
 export default function VideoMeeting() {
@@ -54,11 +112,21 @@ export default function VideoMeeting() {
   }, [requestCamera, requestMicrophone]);
 
   // Find the trainer in the meeting
-  const trainerParticipant = participants.find(p => p.isTrainer);
+  const trainerParticipant = participants.find((p) => p.isTrainer);
   const isCurrentUserTrainer = true; // In a real app, this would come from auth context
   const [chatMessages, setChatMessages] = useState([
-    { id: 1, name: "Priya Singh", message: "Welcome everyone! Let's begin the session.", time: "2:15 PM" },
-    { id: 2, name: "Amit Kumar", message: "Thanks for the session Priya!", time: "2:18 PM" },
+    {
+      id: 1,
+      name: "Priya Singh",
+      message: "Welcome everyone! Let's begin the session.",
+      time: "2:15 PM",
+    },
+    {
+      id: 2,
+      name: "Amit Kumar",
+      message: "Thanks for the session Priya!",
+      time: "2:18 PM",
+    },
   ]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -70,7 +138,10 @@ export default function VideoMeeting() {
           id: chatMessages.length + 1,
           name: "You",
           message: newMessage,
-          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
         },
       ]);
       setNewMessage("");
@@ -82,32 +153,36 @@ export default function VideoMeeting() {
   };
 
   const toggleMute = (participantId: string) => {
-    const participant = participants.find(p => p.id === participantId);
+    const participant = participants.find((p) => p.id === participantId);
     const newMutedState = !participant?.isMuted;
 
     setParticipants(
       participants.map((p) =>
-        p.id === participantId ? { ...p, isMuted: newMutedState } : p
-      )
+        p.id === participantId ? { ...p, isMuted: newMutedState } : p,
+      ),
     );
 
     if (isCurrentUserTrainer && participant && !participant.isTrainer) {
-      toast.info(`${participant.name} is now ${newMutedState ? "muted" : "unmuted"}`);
+      toast.info(
+        `${participant.name} is now ${newMutedState ? "muted" : "unmuted"}`,
+      );
     }
   };
 
   const toggleVideo = (participantId: string) => {
-    const participant = participants.find(p => p.id === participantId);
+    const participant = participants.find((p) => p.id === participantId);
     const newVideoOffState = !participant?.isVideoOff;
 
     setParticipants(
       participants.map((p) =>
-        p.id === participantId ? { ...p, isVideoOff: newVideoOffState } : p
-      )
+        p.id === participantId ? { ...p, isVideoOff: newVideoOffState } : p,
+      ),
     );
 
     if (isCurrentUserTrainer && participant && !participant.isTrainer) {
-      toast.info(`${participant.name}'s camera is now ${newVideoOffState ? "off" : "on"}`);
+      toast.info(
+        `${participant.name}'s camera is now ${newVideoOffState ? "off" : "on"}`,
+      );
     }
   };
 
@@ -121,7 +196,9 @@ export default function VideoMeeting() {
           </div>
           <div>
             <h1 className="text-white font-bold">Group Training Session</h1>
-            <p className="text-gray-400 text-xs">{participants.length} participants</p>
+            <p className="text-gray-400 text-xs">
+              {participants.length} participants
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -132,10 +209,16 @@ export default function VideoMeeting() {
           >
             <MessageCircle className="w-5 h-5" />
           </button>
-          <button className="p-2 hover:bg-gray-700 rounded-lg text-gray-300 hover:text-white transition-colors" title="Share screen">
+          <button
+            className="p-2 hover:bg-gray-700 rounded-lg text-gray-300 hover:text-white transition-colors"
+            title="Share screen"
+          >
             <Share2 className="w-5 h-5" />
           </button>
-          <button className="p-2 hover:bg-gray-700 rounded-lg text-gray-300 hover:text-white transition-colors" title="Settings">
+          <button
+            className="p-2 hover:bg-gray-700 rounded-lg text-gray-300 hover:text-white transition-colors"
+            title="Settings"
+          >
             <Settings className="w-5 h-5" />
           </button>
         </div>
@@ -150,7 +233,9 @@ export default function VideoMeeting() {
               <div
                 key={participant.id}
                 className={`relative rounded-lg overflow-hidden bg-gray-800 aspect-video flex items-center justify-center group ${
-                  participant.isTrainer ? "border-2 border-primary" : "border border-gray-700"
+                  participant.isTrainer
+                    ? "border-2 border-primary"
+                    : "border border-gray-700"
                 }`}
               >
                 {/* Video Background */}
@@ -161,7 +246,9 @@ export default function VideoMeeting() {
                       alt={participant.name}
                       className="w-32 h-32 rounded-full object-cover mb-3 border-4 border-gray-600"
                     />
-                    <p className="text-gray-300 font-semibold">{participant.name}</p>
+                    <p className="text-gray-300 font-semibold">
+                      {participant.name}
+                    </p>
                     <p className="text-gray-400 text-xs mt-1">Camera off</p>
                   </div>
                 ) : (
@@ -188,10 +275,16 @@ export default function VideoMeeting() {
 
                 {/* Participant Info */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3">
-                  <p className="text-white font-semibold text-sm">{participant.name}</p>
+                  <p className="text-white font-semibold text-sm">
+                    {participant.name}
+                  </p>
                   <div className="flex items-center gap-2 mt-1">
-                    {participant.isMuted && <MicOff className="w-3 h-3 text-red-500" />}
-                    {participant.isVideoOff && <VideoOff className="w-3 h-3 text-red-500" />}
+                    {participant.isMuted && (
+                      <MicOff className="w-3 h-3 text-red-500" />
+                    )}
+                    {participant.isVideoOff && (
+                      <VideoOff className="w-3 h-3 text-red-500" />
+                    )}
                   </div>
                 </div>
 
@@ -209,7 +302,9 @@ export default function VideoMeeting() {
                             ? "bg-red-600 hover:bg-red-700"
                             : "bg-gray-600 hover:bg-gray-700"
                         }`}
-                        title={participant.isMuted ? "Unmute client" : "Mute client"}
+                        title={
+                          participant.isMuted ? "Unmute client" : "Mute client"
+                        }
                       >
                         {participant.isMuted ? (
                           <MicOff className="w-4 h-4 text-white" />
@@ -224,7 +319,11 @@ export default function VideoMeeting() {
                             ? "bg-red-600 hover:bg-red-700"
                             : "bg-gray-600 hover:bg-gray-700"
                         }`}
-                        title={participant.isVideoOff ? "Turn on client camera" : "Turn off client camera"}
+                        title={
+                          participant.isVideoOff
+                            ? "Turn on client camera"
+                            : "Turn off client camera"
+                        }
                       >
                         {participant.isVideoOff ? (
                           <VideoOff className="w-4 h-4 text-white" />
@@ -256,7 +355,9 @@ export default function VideoMeeting() {
                     <p className="text-white font-semibold">{msg.name}</p>
                     <p className="text-gray-400 text-xs">{msg.time}</p>
                   </div>
-                  <p className="text-gray-300 bg-gray-700 rounded px-3 py-2">{msg.message}</p>
+                  <p className="text-gray-300 bg-gray-700 rounded px-3 py-2">
+                    {msg.message}
+                  </p>
                 </div>
               ))}
             </div>
