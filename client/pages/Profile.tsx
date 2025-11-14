@@ -77,6 +77,7 @@ export default function Profile() {
     fingerprint: false,
     faceRecognition: false,
   });
+  const [isSavingBiometrics, setIsSavingBiometrics] = useState(false);
 
   // Password change state
   const [passwordForm, setPasswordForm] = useState({
