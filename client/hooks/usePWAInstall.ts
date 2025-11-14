@@ -52,7 +52,7 @@ export const usePWAInstall = () => {
       setIsInstallable(false);
       return outcome === "accepted";
     } catch (error) {
-      console.error("Error installing app:", error);
+      console.debug("PWA install error:", error instanceof Error ? error.code : "unknown");
       return false;
     }
   };
