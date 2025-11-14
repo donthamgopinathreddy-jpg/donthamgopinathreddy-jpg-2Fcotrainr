@@ -116,7 +116,7 @@ export const useTrainingModes = () => {
 
       return true;
     } catch (err) {
-      console.error("Error updating main focus:", err);
+      console.debug("Error updating main focus:", (err as any)?.code);
       setError(err instanceof Error ? err.message : "Failed to update focus");
       return false;
     }
