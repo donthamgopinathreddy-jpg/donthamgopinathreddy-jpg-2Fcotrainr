@@ -61,7 +61,6 @@ export default function ActivityDetail() {
 
   const isToday = selectedDayOffset === 0;
 
-  // Calculate week dates (Sunday to Saturday)
   const weekDates = useMemo(() => {
     const dates = [];
     const today = new Date();
@@ -79,7 +78,6 @@ export default function ActivityDetail() {
     return dates;
   }, []);
 
-  // Get user stats
   const stepsCompleted = userProfile?.bio
     ? parseInt(userProfile.bio.split("|")[0] || "0")
     : 0;
@@ -88,7 +86,6 @@ export default function ActivityDetail() {
     : 0;
   const caloriesBurned = Math.round(stepsCompleted * 0.05);
 
-  // Generate weekly data with real calendar dates
   const weeklyData: DayData[] = useMemo(() => {
     const data: DayData[] = [];
 
@@ -97,56 +94,36 @@ export default function ActivityDetail() {
       let value = 0;
       let max = type === "water" ? 2.5 : type === "calories" ? 2500 : 10000;
 
-      // Only show today's data
-      if (i === new Date().getDay()) {
-        if (type === "steps") {
-          value = stepsCompleted;
-        } else if (type === "calories") {
-          value = caloriesBurned;
-        } else if (type === "water") {
-          value = waterConsumed;
-        }
+      if (date.toDateString() === new Date().toDateString()) {
+        value =
+          type === "water"
+            ? waterConsumed
+            : type === "calories"
+              ? caloriesBurned
+              : stepsCompleted;
       }
-
-      const dateStr = date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      });
 
       data.push({
         day: DAY_NAMES[date.getDay()],
-        date: dateStr,
-        value,
-        max,
+        date: date.getDate().toString(),
+        value: value,
+        max: max,
       });
     }
 
     return data;
-  }, [type, stepsCompleted, caloriesBurned, waterConsumed, weekDates]);
+  }, [weekDates, stepsCompleted, waterConsumed, caloriesBurned, type]);
 
-  // Calculate average steps for the week
-  const averageSteps = Math.round(
-    weeklyData.reduce((sum, day) => sum + day.value, 0) / weeklyData.length,
-  );
   const totalSteps = weeklyData.reduce((sum, day) => sum + day.value, 0);
-
-  // Find max value for bar chart scaling
-  const maxBarValue = Math.max(...weeklyData.map((d) => d.value), 1);
+  const averageSteps = Math.round(totalSteps / 7);
+  const maxBarValue = Math.max(...weeklyData.map((d) => d.max), 1);
 
   const getTitle = () => {
-    switch (type) {
-      case "steps":
-        return "Daily Activity";
-      case "calories":
-        return "Calories Burned";
-      case "water":
-        return "Water Intake";
-      default:
-        return "Activity";
-    }
+    if (type === "steps") return "Daily Steps";
+    if (type === "calories") return "Calories Burned";
+    return "Water Consumption";
   };
 
-  // Format current date for header
   const formattedDate = selectedDate.toLocaleDateString("en-US", {
     weekday: "long",
     month: "short",
@@ -156,10 +133,9 @@ export default function ActivityDetail() {
   return (
     <div
       className={`min-h-screen pb-24 ${
-        theme === "dark" ? "bg-gray-950" : "bg-white"
+        theme === "dark" ? "bg-gray-950" : "bg-gray-50"
       }`}
     >
-      {/* Header */}
       <div
         className={`sticky top-0 z-40 border-b ${
           theme === "dark"
@@ -192,7 +168,6 @@ export default function ActivityDetail() {
           </div>
         </div>
 
-        {/* Week Day Picker with Real Dates */}
         <div
           className={`max-w-md mx-auto px-4 py-3 flex items-center justify-between gap-2 overflow-x-auto ${
             theme === "dark"
@@ -227,9 +202,7 @@ export default function ActivityDetail() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="max-w-md mx-auto px-4 py-6 space-y-6">
-        {/* Large Stats Card for Selected Day */}
         <div
           className={`relative rounded-2xl overflow-hidden p-8 text-center space-y-4 ${
             theme === "dark"
@@ -238,10 +211,8 @@ export default function ActivityDetail() {
           }`}
         >
           <div className="relative space-y-4">
-            {/* Icon */}
             <div className="text-6xl">{colors.icon}</div>
 
-            {/* Main Value */}
             <div>
               <div className={`text-5xl font-bold ${colors.text}`}>
                 {type === "water"
@@ -268,7 +239,6 @@ export default function ActivityDetail() {
               </div>
             </div>
 
-            {/* Progress Bar */}
             <div
               className={`rounded-full h-2 overflow-hidden ${
                 theme === "dark" ? "bg-gray-700" : "bg-gray-200"
@@ -291,7 +261,6 @@ export default function ActivityDetail() {
               />
             </div>
 
-            {/* Date Display */}
             <div
               className={`text-xs font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
             >
@@ -304,9 +273,8 @@ export default function ActivityDetail() {
           </div>
         </div>
 
-        {/* Weekly Breakdown with Vertical Bar Chart */}
         <div
-          className={`rounded-2xl p-6 space-y-4 ${
+          className={`rounded-2xl p-6 space-y-6 ${
             theme === "dark" ? "bg-gray-800/50" : "bg-white"
           }`}
         >
@@ -332,7 +300,6 @@ export default function ActivityDetail() {
             </span>
           </div>
 
-          {/* Summary Stats */}
           <div
             className={`rounded-lg p-4 space-y-2 ${
               theme === "dark" ? "bg-gray-900" : "bg-gray-50"
@@ -360,63 +327,106 @@ export default function ActivityDetail() {
             </div>
           </div>
 
-          {/* Vertical Standing Bar Chart */}
-          <div
-            className={`rounded-lg p-6 ${
-              theme === "dark" ? "bg-gray-900" : "bg-gray-50"
-            }`}
-          >
-            <div className="flex items-end justify-around gap-2 h-48">
-              {weeklyData.map((dayData, idx) => {
-                const barHeightPercent =
-                  maxBarValue > 0 ? (dayData.value / maxBarValue) * 100 : 0;
+          {/* New Circular Indicators Layout */}
+          <div className="grid grid-cols-7 gap-3">
+            {weeklyData.map((dayData, idx) => {
+              const progressPercent =
+                dayData.max > 0 ? (dayData.value / dayData.max) * 100 : 0;
+              const circumference = 2 * Math.PI * 28;
+              const strokeDashoffset =
+                circumference * (1 - progressPercent / 100);
 
-                return (
-                  <div
-                    key={idx}
-                    className="flex flex-col items-center gap-2 flex-1"
-                  >
-                    {/* Vertical Bar */}
-                    <div className="w-full flex flex-col items-center justify-end h-full relative group">
-                      <div
-                        className={`w-full bg-gradient-to-t ${colors.gradient} rounded-t-lg transition-all duration-300 hover:opacity-80`}
-                        style={{
-                          height: `${barHeightPercent}%`,
-                          minHeight: barHeightPercent > 0 ? "4px" : "0px",
-                        }}
-                        title={`${dayData.day} ${dayData.date}: ${dayData.value.toLocaleString()} ${unit}`}
+              return (
+                <div key={idx} className="flex flex-col items-center gap-2">
+                  {/* Circular Progress Indicator */}
+                  <div className="relative w-16 h-16">
+                    <svg
+                      className="w-full h-full transform -rotate-90"
+                      viewBox="0 0 64 64"
+                    >
+                      {/* Background circle */}
+                      <circle
+                        cx="32"
+                        cy="32"
+                        r="28"
+                        fill="none"
+                        stroke={theme === "dark" ? "#374151" : "#e5e7eb"}
+                        strokeWidth="4"
                       />
+                      {/* Progress circle */}
+                      <circle
+                        cx="32"
+                        cy="32"
+                        r="28"
+                        fill="none"
+                        stroke={
+                          type === "water"
+                            ? "#06b6d4"
+                            : type === "calories"
+                              ? "#dc2626"
+                              : "#ea580c"
+                        }
+                        strokeWidth="4"
+                        strokeDasharray={circumference}
+                        strokeDashoffset={strokeDashoffset}
+                        strokeLinecap="round"
+                        className="transition-all duration-500"
+                      />
+                    </svg>
 
-                      {/* Value on top of bar */}
-                      {barHeightPercent > 0 && (
-                        <div
-                          className={`absolute -top-6 text-xs font-bold ${colors.text}`}
-                        >
-                          {dayData.value.toLocaleString()}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Day and Date Label */}
-                    <div className="text-center">
-                      <div
-                        className={`text-xs font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}
+                    {/* Center Value */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span
+                        className={`text-xs font-bold ${
+                          dayData.value > 0
+                            ? colors.text
+                            : theme === "dark"
+                              ? "text-gray-500"
+                              : "text-gray-400"
+                        }`}
                       >
-                        {dayData.day}
-                      </div>
-                      <div
-                        className={`text-xs ${theme === "dark" ? "text-gray-500" : "text-gray-600"}`}
+                        {dayData.value > 0
+                          ? type === "water"
+                            ? (dayData.value / 1000).toFixed(1)
+                            : (dayData.value / 1000).toFixed(1)
+                          : "0"}
+                      </span>
+                      <span
+                        className={`text-[10px] ${
+                          theme === "dark" ? "text-gray-600" : "text-gray-500"
+                        }`}
                       >
-                        {dayData.date}
-                      </div>
+                        {type === "water"
+                          ? "L"
+                          : type === "calories"
+                            ? "K"
+                            : "K"}
+                      </span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+
+                  {/* Day Label */}
+                  <div className="text-center">
+                    <div
+                      className={`text-xs font-semibold ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-900"
+                      }`}
+                    >
+                      {dayData.day}
+                    </div>
+                    <div
+                      className={`text-xs ${
+                        theme === "dark" ? "text-gray-500" : "text-gray-600"
+                      }`}
+                    >
+                      {dayData.date}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Additional Info */}
           {type === "steps" && (
             <div
               className={`rounded-lg p-4 text-center text-sm ${
