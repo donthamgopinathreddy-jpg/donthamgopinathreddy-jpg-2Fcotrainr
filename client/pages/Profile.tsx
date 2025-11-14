@@ -876,6 +876,14 @@ export default function Profile() {
             </div>
           </div>
 
+          {/* Daily Steps Reward Component */}
+          <DailyStepsReward
+            dailySteps={dailySteps}
+            onRewardClaimed={() => {
+              toast.success("🎉 Reward claimed! Check your coins.");
+            }}
+          />
+
           {/* Referral Sharing Subsection */}
           <div className="border-t pt-6 border-gray-200 dark:border-gray-700">
             <h3
