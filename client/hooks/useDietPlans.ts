@@ -179,6 +179,29 @@ export const useDietPlans = () => {
     if (!user?.id) return;
 
     try {
+      // Demo mode: store in localStorage
+      if (isDemoMode()) {
+        const newPlan: DietPlan = {
+          id: "plan-" + Math.random().toString(36).substring(7),
+          trainer_id: user.id,
+          client_id: clientId,
+          name: planData.name || "",
+          description: planData.description,
+          duration_days: planData.duration_days,
+          meals_per_day: planData.meals_per_day || 3,
+          target_calories: planData.target_calories,
+          macros_protein_g: planData.macros_protein_g,
+          macros_carbs_g: planData.macros_carbs_g,
+          macros_fat_g: planData.macros_fat_g,
+          notes: planData.notes,
+          status: planData.status || "active",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        setDietPlans((prev) => [newPlan, ...prev]);
+        return newPlan;
+      }
+
       const { data, error: insertError } = await supabase
         .from("diet_plans")
         .insert([
