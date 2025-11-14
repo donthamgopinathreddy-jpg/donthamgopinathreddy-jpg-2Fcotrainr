@@ -862,7 +862,7 @@ export default function TrainerHome() {
                       <div className="px-4 py-4 bg-gray-50 space-y-4">
                         {/* Key Metrics */}
                         <div className="grid grid-cols-2 gap-3">
-                          <div className="bg-white rounded-lg p-3 border border-gray-200">
+                          <div className="bg-white rounded-lg p-3">
                             <p className="text-xs text-gray-600 mb-1">
                               Weight Progress
                             </p>
@@ -873,7 +873,7 @@ export default function TrainerHome() {
                               {client.current_stats.weight_progress_kg} kg
                             </p>
                           </div>
-                          <div className="bg-white rounded-lg p-3 border border-gray-200">
+                          <div className="bg-white rounded-lg p-3">
                             <p className="text-xs text-gray-600 mb-1">
                               Sessions
                             </p>
@@ -882,7 +882,7 @@ export default function TrainerHome() {
                               {client.total_sessions}
                             </p>
                           </div>
-                          <div className="bg-white rounded-lg p-3 border border-gray-200">
+                          <div className="bg-white rounded-lg p-3">
                             <p className="text-xs text-gray-600 mb-1">
                               Meal Logs
                             </p>
@@ -890,7 +890,7 @@ export default function TrainerHome() {
                               {client.meal_logs_this_week}/21
                             </p>
                           </div>
-                          <div className="bg-white rounded-lg p-3 border border-gray-200">
+                          <div className="bg-white rounded-lg p-3">
                             <p className="text-xs text-gray-600 mb-1">Videos</p>
                             <p className="text-lg font-bold text-gray-900">
                               {client.video_session_count}
