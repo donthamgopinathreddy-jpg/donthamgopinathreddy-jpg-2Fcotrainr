@@ -107,7 +107,7 @@ const AchievementBadges = ({
         >
           {showAll
             ? "Show Less"
-            : `View All ${userAchievements.length} Achievements`}
+            : `View All ${userAchievements?.length || 0} Achievements`}
         </button>
       )}
     </div>
