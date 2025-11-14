@@ -59,7 +59,7 @@ export default function Home() {
   const [showHealthPermissionPrompt, setShowHealthPermissionPrompt] =
     useState(isHealthSyncAvailable && !hasPermission);
 
-  // Sync user data from profile
+  // Sync user data from profile and health sync
   useEffect(() => {
     if (userProfile) {
       const isDemoMode =
@@ -79,8 +79,13 @@ export default function Home() {
 
       // Parse the bio value safely
       const parts = bioValue.split("|");
-      const steps = parseInt(parts[0] || "0") || 0;
+      let steps = parseInt(parts[0] || "0") || 0;
       const water = parseFloat(parts[1] || "0") || 0;
+
+      // Prioritize synced steps from health sync if available
+      if (syncedSteps > 0 && isHealthSyncAvailable) {
+        steps = syncedSteps;
+      }
 
       setStepsCompleted(steps);
       setWaterConsumed(water);
@@ -89,7 +94,7 @@ export default function Home() {
         setCoverImage(userProfile.cover_image_url);
       }
     }
-  }, [userProfile?.id, userProfile?.bio, userProfile?.cover_image_url]);
+  }, [userProfile?.id, userProfile?.bio, userProfile?.cover_image_url, syncedSteps, isHealthSyncAvailable]);
 
   // Fetch latest feed
   useEffect(() => {
