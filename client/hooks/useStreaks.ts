@@ -31,19 +31,25 @@ export const useStreaks = () => {
         .maybeSingle();
 
       if (fetchError) {
-        // Extract error message safely without accessing response body again
-        const errorMessage =
-          typeof fetchError === "object" &&
-          fetchError !== null &&
-          "message" in fetchError
-            ? (fetchError as any).message
-            : String(fetchError);
-        console.error("Error fetching streak:", errorMessage);
-        throw new Error(errorMessage);
+        // Log error without trying to read response body
+        console.debug("Streak fetch error details:", fetchError?.code);
+        // Create a default/empty streak on error
+        setStreak({
+          id: "temp",
+          user_id: user?.id || "",
+          current_streak: 0,
+          longest_streak: 0,
+          last_active_date: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
+        setError(null);
+        return;
       }
 
       if (data) {
         setStreak(data as Streak);
+        setError(null);
       } else {
         // Create initial streak record if not exists
         const { data: newStreak, error: createError } = await supabase
@@ -60,24 +66,26 @@ export const useStreaks = () => {
           .single();
 
         if (createError) {
-          const errorMessage =
-            typeof createError === "object" &&
-            createError !== null &&
-            "message" in createError
-              ? (createError as any).message
-              : String(createError);
-          console.error("Error creating streak:", errorMessage);
-          throw new Error(errorMessage);
+          console.debug("Streak creation error code:", createError?.code);
+          // Return default streak on error
+          setStreak({
+            id: "temp",
+            user_id: user?.id || "",
+            current_streak: 0,
+            longest_streak: 0,
+            last_active_date: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
+          setError(null);
+          return;
         }
         setStreak(newStreak as Streak);
+        setError(null);
       }
     } catch (err: any) {
       // Don't block the app if streak fetch fails - it's optional
-      const errorMessage =
-        typeof err === "object" && err !== null && "message" in err
-          ? err.message
-          : String(err);
-      console.error("Streak operation failed:", errorMessage);
+      console.debug("Streak hook error:", err?.code || "unknown");
       setError(null);
       // Return empty streak on error to allow app to continue
       setStreak({
@@ -146,13 +154,7 @@ export const useStreaks = () => {
         .eq("user_id", user.id);
 
       if (updateError) {
-        const errorMessage =
-          typeof updateError === "object" &&
-          updateError !== null &&
-          "message" in updateError
-            ? (updateError as any).message
-            : String(updateError);
-        console.warn("Error updating streak:", errorMessage);
+        console.debug("Streak update error code:", updateError?.code || "unknown");
         // Don't throw - streak updates are non-critical
       } else {
         // Update local state only if update was successful
@@ -173,11 +175,7 @@ export const useStreaks = () => {
         longestStreak: newLongestStreak,
       };
     } catch (err: any) {
-      const errorMessage =
-        typeof err === "object" && err !== null && "message" in err
-          ? err.message
-          : String(err);
-      console.warn("Error updating streak:", errorMessage);
+      console.debug("Streak update error:", err?.code || "unknown");
       // Non-critical - don't block the app
     }
   };
