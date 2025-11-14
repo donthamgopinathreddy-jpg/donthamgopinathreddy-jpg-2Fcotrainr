@@ -550,7 +550,7 @@ export default function TrainerHome() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => navigate("/meals")}
-                  className="bg-gradient-to-br from-amber-100 via-orange-100 to-red-100 rounded-2xl p-5 border border-orange-200 hover:shadow-lg hover:shadow-orange-300/50 transition-all transform hover:scale-105"
+                  className="bg-gradient-to-br from-amber-100 via-orange-100 to-red-100 rounded-2xl p-5 hover:shadow-lg hover:shadow-orange-300/50 transition-all transform hover:scale-105"
                 >
                   <Flame className="w-7 h-7 text-orange-600 mb-2" />
                   <p className="font-bold text-gray-900 text-sm">Track Meals</p>
@@ -558,7 +558,7 @@ export default function TrainerHome() {
                 </button>
                 <button
                   onClick={() => toggleView("clients")}
-                  className="bg-gradient-to-br from-cyan-100 via-blue-100 to-teal-100 rounded-2xl p-5 border border-cyan-200 hover:shadow-lg hover:shadow-cyan-300/50 transition-all transform hover:scale-105"
+                  className="bg-gradient-to-br from-cyan-100 via-blue-100 to-teal-100 rounded-2xl p-5 hover:shadow-lg hover:shadow-cyan-300/50 transition-all transform hover:scale-105"
                 >
                   <Users className="w-7 h-7 text-cyan-600 mb-2" />
                   <p className="font-bold text-gray-900 text-sm">
@@ -568,7 +568,7 @@ export default function TrainerHome() {
                 </button>
                 <button
                   onClick={() => navigate("/feed")}
-                  className="bg-gradient-to-br from-purple-100 via-pink-100 to-rose-100 rounded-2xl p-5 border border-purple-200 hover:shadow-lg hover:shadow-purple-300/50 transition-all transform hover:scale-105"
+                  className="bg-gradient-to-br from-purple-100 via-pink-100 to-rose-100 rounded-2xl p-5 hover:shadow-lg hover:shadow-purple-300/50 transition-all transform hover:scale-105"
                 >
                   <Newspaper className="w-7 h-7 text-purple-600 mb-2" />
                   <p className="font-bold text-gray-900 text-sm">Feed</p>
@@ -576,7 +576,7 @@ export default function TrainerHome() {
                 </button>
                 <button
                   onClick={() => navigate("/discover")}
-                  className="bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 rounded-2xl p-5 border border-green-200 hover:shadow-lg hover:shadow-green-300/50 transition-all transform hover:scale-105"
+                  className="bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 rounded-2xl p-5 hover:shadow-lg hover:shadow-green-300/50 transition-all transform hover:scale-105"
                 >
                   <MapPin className="w-7 h-7 text-green-600 mb-2" />
                   <p className="font-bold text-gray-900 text-sm">Network</p>
@@ -584,7 +584,7 @@ export default function TrainerHome() {
                 </button>
                 <button
                   onClick={() => navigate("/video-sessions")}
-                  className="w-full bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 rounded-2xl p-5 border border-blue-200 hover:shadow-lg hover:shadow-blue-300/50 transition-all transform hover:scale-105 text-left"
+                  className="w-full bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 rounded-2xl p-5 hover:shadow-lg hover:shadow-blue-300/50 transition-all transform hover:scale-105 text-left"
                 >
                   <Video className="w-7 h-7 text-blue-600 mb-2" />
                   <p className="font-bold text-gray-900 text-sm">
@@ -596,7 +596,7 @@ export default function TrainerHome() {
                 </button>
                 <button
                   onClick={() => navigate("/diet-plans")}
-                  className="bg-gradient-to-br from-green-100 via-lime-100 to-emerald-100 rounded-2xl p-5 border border-green-200 hover:shadow-lg hover:shadow-green-300/50 transition-all transform hover:scale-105"
+                  className="bg-gradient-to-br from-green-100 via-lime-100 to-emerald-100 rounded-2xl p-5 hover:shadow-lg hover:shadow-green-300/50 transition-all transform hover:scale-105"
                 >
                   <span className="text-2xl mb-2 block">🥗</span>
                   <p className="font-bold text-gray-900 text-sm">Diet Plans</p>
@@ -604,7 +604,7 @@ export default function TrainerHome() {
                 </button>
                 <button
                   onClick={() => navigate("/achievements")}
-                  className="bg-gradient-to-br from-yellow-100 via-amber-100 to-orange-100 rounded-2xl p-5 border border-yellow-200 hover:shadow-lg hover:shadow-yellow-300/50 transition-all transform hover:scale-105"
+                  className="bg-gradient-to-br from-yellow-100 via-amber-100 to-orange-100 rounded-2xl p-5 hover:shadow-lg hover:shadow-yellow-300/50 transition-all transform hover:scale-105"
                 >
                   <span className="text-2xl mb-2 block">🏆</span>
                   <p className="font-bold text-gray-900 text-sm">
@@ -614,7 +614,7 @@ export default function TrainerHome() {
                 </button>
                 <button
                   onClick={() => navigate("/training-modes")}
-                  className="bg-gradient-to-br from-pink-100 via-rose-100 to-red-100 rounded-2xl p-5 border border-pink-200 hover:shadow-lg hover:shadow-pink-300/50 transition-all transform hover:scale-105"
+                  className="bg-gradient-to-br from-pink-100 via-rose-100 to-red-100 rounded-2xl p-5 hover:shadow-lg hover:shadow-pink-300/50 transition-all transform hover:scale-105"
                 >
                   <span className="text-2xl mb-2 block">🎯</span>
                   <p className="font-bold text-gray-900 text-sm">
