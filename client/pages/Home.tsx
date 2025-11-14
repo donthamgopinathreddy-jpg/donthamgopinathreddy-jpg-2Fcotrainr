@@ -504,16 +504,44 @@ export default function Home() {
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
               Today's Stats
             </h2>
-            <button
-              onClick={() => {
-                setEditStepsTarget(stepsTarget);
-                setShowTargetsModal(true);
-              }}
-              className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
-            >
-              <Settings className="w-4 h-4" />
-              Edit Steps
-            </button>
+            <div className="flex items-center gap-2">
+              {isHealthSyncAvailable && (
+                <button
+                  onClick={async () => {
+                    if (!hasPermission) {
+                      const granted = await requestPermissions();
+                      if (granted) {
+                        setShowHealthPermissionPrompt(false);
+                        toast.success("Health data access granted! Syncing steps...");
+                        await syncTodaySteps();
+                      }
+                    } else {
+                      await syncTodaySteps();
+                    }
+                  }}
+                  disabled={isSyncing}
+                  className={`flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold transition-colors ${
+                    hasPermission
+                      ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50"
+                      : "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50"
+                  } disabled:opacity-50`}
+                  title={hasPermission ? "Sync steps from phone" : "Connect to health data"}
+                >
+                  <Activity className={`w-4 h-4 ${isSyncing ? "animate-spin" : ""}`} />
+                  {isSyncing ? "Syncing..." : hasPermission ? "Synced" : "Connect"}
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  setEditStepsTarget(stepsTarget);
+                  setShowTargetsModal(true);
+                }}
+                className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
+              >
+                <Settings className="w-4 h-4" />
+                Edit Steps
+              </button>
+            </div>
           </div>
           {/* Steps Progress */}
           <button
