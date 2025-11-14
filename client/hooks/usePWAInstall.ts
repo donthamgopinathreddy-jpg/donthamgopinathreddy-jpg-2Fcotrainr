@@ -6,7 +6,8 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export const usePWAInstall = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
 
@@ -32,7 +33,10 @@ export const usePWAInstall = () => {
     window.addEventListener("appinstalled", handleAppInstalled);
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt,
+      );
       window.removeEventListener("appinstalled", handleAppInstalled);
     };
   }, []);
@@ -52,7 +56,10 @@ export const usePWAInstall = () => {
       setIsInstallable(false);
       return outcome === "accepted";
     } catch (error) {
-      console.debug("PWA install error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "PWA install error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       return false;
     }
   };

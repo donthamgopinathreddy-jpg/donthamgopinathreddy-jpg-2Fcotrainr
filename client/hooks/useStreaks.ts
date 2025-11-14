@@ -154,7 +154,10 @@ export const useStreaks = () => {
         .eq("user_id", user.id);
 
       if (updateError) {
-        console.debug("Streak update error code:", updateError?.code || "unknown");
+        console.debug(
+          "Streak update error code:",
+          updateError?.code || "unknown",
+        );
         // Don't throw - streak updates are non-critical
       } else {
         // Update local state only if update was successful

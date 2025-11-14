@@ -148,7 +148,10 @@ export default function Profile() {
             }));
           }
         } catch (error) {
-          console.debug("Fetch biometric settings catch error:", error instanceof Error ? error.code : "unknown");
+          console.debug(
+            "Fetch biometric settings catch error:",
+            error instanceof Error ? error.code : "unknown",
+          );
         }
       };
 
@@ -358,7 +361,7 @@ export default function Profile() {
 
   const handleVerificationUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    type: 'id' | 'selfie',
+    type: "id" | "selfie",
   ) => {
     if (!e.target.files?.[0] || !userProfile?.id) return;
 
@@ -371,7 +374,8 @@ export default function Profile() {
         const dataUrl = event.target?.result as string;
 
         try {
-          const columnName = type === 'id' ? 'id_verification_url' : 'selfie_verification_url';
+          const columnName =
+            type === "id" ? "id_verification_url" : "selfie_verification_url";
           const { error: updateError } = await supabase
             .from("users")
             .update({
@@ -381,19 +385,24 @@ export default function Profile() {
             .eq("id", userProfile.id);
 
           if (updateError) {
-            toast.error(`Failed to upload ${type === 'id' ? 'ID' : 'selfie'}`);
+            toast.error(`Failed to upload ${type === "id" ? "ID" : "selfie"}`);
             console.debug("Upload error:", updateError?.code);
             return;
           }
 
           setVerificationDocs((prev) => ({
             ...prev,
-            [type === 'id' ? 'idUploaded' : 'selfieUploaded']: true,
+            [type === "id" ? "idUploaded" : "selfieUploaded"]: true,
           }));
 
-          toast.success(`${type === 'id' ? 'ID' : 'Selfie'} uploaded successfully!`);
+          toast.success(
+            `${type === "id" ? "ID" : "Selfie"} uploaded successfully!`,
+          );
         } catch (error: any) {
-          console.debug("Save verification error:", error instanceof Error ? error.code : "unknown");
+          console.debug(
+            "Save verification error:",
+            error instanceof Error ? error.code : "unknown",
+          );
           toast.error("Failed to save verification document");
         } finally {
           setIsUploadingDocs(false);
@@ -401,7 +410,10 @@ export default function Profile() {
       };
       reader.readAsDataURL(file);
     } catch (error: any) {
-      console.debug("Read verification file error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Read verification file error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       toast.error("Failed to read file");
       setIsUploadingDocs(false);
     }
@@ -429,9 +441,14 @@ export default function Profile() {
         return;
       }
 
-      toast.success("✓ Trainer verification submitted! We'll review it within 24 hours.");
+      toast.success(
+        "✓ Trainer verification submitted! We'll review it within 24 hours.",
+      );
     } catch (error: any) {
-      console.debug("Submit verification error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Submit verification error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       toast.error("Failed to submit verification");
     } finally {
       setIsSaving(false);
@@ -1318,7 +1335,9 @@ export default function Profile() {
                         By {plan.users?.full_name || "Your Trainer"}
                       </p>
                     </div>
-                    <ArrowRight className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                    <ArrowRight
+                      className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+                    />
                   </div>
 
                   {plan.description && (
@@ -1330,18 +1349,36 @@ export default function Profile() {
                   )}
 
                   <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div className={`p-2 rounded ${theme === "dark" ? "bg-gray-600/50" : "bg-orange-100"}`}>
-                      <p className={theme === "dark" ? "text-gray-300" : "text-orange-700"}>
+                    <div
+                      className={`p-2 rounded ${theme === "dark" ? "bg-gray-600/50" : "bg-orange-100"}`}
+                    >
+                      <p
+                        className={
+                          theme === "dark" ? "text-gray-300" : "text-orange-700"
+                        }
+                      >
                         {plan.duration_days} days
                       </p>
                     </div>
-                    <div className={`p-2 rounded ${theme === "dark" ? "bg-gray-600/50" : "bg-orange-100"}`}>
-                      <p className={theme === "dark" ? "text-gray-300" : "text-orange-700"}>
+                    <div
+                      className={`p-2 rounded ${theme === "dark" ? "bg-gray-600/50" : "bg-orange-100"}`}
+                    >
+                      <p
+                        className={
+                          theme === "dark" ? "text-gray-300" : "text-orange-700"
+                        }
+                      >
                         {plan.target_calories} cal
                       </p>
                     </div>
-                    <div className={`p-2 rounded ${theme === "dark" ? "bg-gray-600/50" : "bg-orange-100"}`}>
-                      <p className={theme === "dark" ? "text-gray-300" : "text-orange-700"}>
+                    <div
+                      className={`p-2 rounded ${theme === "dark" ? "bg-gray-600/50" : "bg-orange-100"}`}
+                    >
+                      <p
+                        className={
+                          theme === "dark" ? "text-gray-300" : "text-orange-700"
+                        }
+                      >
                         {plan.meals_per_day} meals
                       </p>
                     </div>
@@ -1390,16 +1427,18 @@ export default function Profile() {
                     Upload a clear photo of your government ID
                   </p>
                 </div>
-                <label className={`p-2 rounded-full cursor-pointer ${
-                  theme === "dark"
-                    ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}>
+                <label
+                  className={`p-2 rounded-full cursor-pointer ${
+                    theme === "dark"
+                      ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
                   <Upload className="w-5 h-5" />
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleVerificationUpload(e, 'id')}
+                    onChange={(e) => handleVerificationUpload(e, "id")}
                     className="hidden"
                   />
                 </label>
@@ -1427,17 +1466,19 @@ export default function Profile() {
                     A quick photo to verify your identity
                   </p>
                 </div>
-                <label className={`p-2 rounded-full cursor-pointer ${
-                  theme === "dark"
-                    ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}>
+                <label
+                  className={`p-2 rounded-full cursor-pointer ${
+                    theme === "dark"
+                      ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
                   <Camera className="w-5 h-5" />
                   <input
                     type="file"
                     accept="image/*"
                     capture="user"
-                    onChange={(e) => handleVerificationUpload(e, 'selfie')}
+                    onChange={(e) => handleVerificationUpload(e, "selfie")}
                     className="hidden"
                   />
                 </label>
@@ -1463,7 +1504,12 @@ export default function Profile() {
 
               <button
                 onClick={handleStartVerification}
-                disabled={isUploadingDocs || isSaving || !verificationDocs.idUploaded || !verificationDocs.selfieUploaded}
+                disabled={
+                  isUploadingDocs ||
+                  isSaving ||
+                  !verificationDocs.idUploaded ||
+                  !verificationDocs.selfieUploaded
+                }
                 className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 {isSaving ? (

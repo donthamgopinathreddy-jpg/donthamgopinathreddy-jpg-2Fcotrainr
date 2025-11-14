@@ -61,7 +61,10 @@ export const useReferrals = () => {
       setReferralCode(code);
       return code;
     } catch (error) {
-      console.debug("Generate referral code catch error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Generate referral code catch error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       return null;
     }
   };
@@ -84,7 +87,10 @@ export const useReferrals = () => {
         await generateReferralCode();
       }
     } catch (error) {
-      console.debug("Fetch referral code error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Fetch referral code error:",
+        error instanceof Error ? error.code : "unknown",
+      );
     }
   };
 
@@ -188,7 +194,10 @@ export const useReferrals = () => {
       const successCount = (data || []).filter((r) => r.is_used).length;
       setReferralCount(successCount);
     } catch (error) {
-      console.debug("Fetch referrals catch error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Fetch referrals catch error:",
+        error instanceof Error ? error.code : "unknown",
+      );
     } finally {
       setLoading(false);
     }

@@ -43,7 +43,10 @@ export default function Search() {
         toast.error("Failed to update follow status");
       }
     } catch (error) {
-      console.debug("Toggle follow error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Toggle follow error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       toast.error("Something went wrong");
     } finally {
       setIsTogglingId(null);

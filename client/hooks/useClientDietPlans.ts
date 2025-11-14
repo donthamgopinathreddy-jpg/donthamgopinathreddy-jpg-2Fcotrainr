@@ -45,7 +45,8 @@ const DEMO_CLIENT_DIET_PLANS: ClientDietPlan[] = [
     updated_at: new Date().toISOString(),
     users: {
       full_name: "Demo Trainer",
-      profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoTrainer",
+      profile_picture_url:
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoTrainer",
     },
   },
   {
@@ -53,7 +54,8 @@ const DEMO_CLIENT_DIET_PLANS: ClientDietPlan[] = [
     trainer_id: "demo-user-trainer",
     client_id: "demo-user-client",
     name: "Low Carb Weight Loss",
-    description: "Reduce carbs while maintaining protein for sustainable weight loss",
+    description:
+      "Reduce carbs while maintaining protein for sustainable weight loss",
     duration_days: 60,
     meals_per_day: 3,
     target_calories: 1800,
@@ -67,7 +69,8 @@ const DEMO_CLIENT_DIET_PLANS: ClientDietPlan[] = [
     updated_at: new Date().toISOString(),
     users: {
       full_name: "Demo Trainer",
-      profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoTrainer",
+      profile_picture_url:
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoTrainer",
     },
   },
 ];
@@ -99,7 +102,9 @@ export const useClientDietPlans = () => {
 
       const { data, error: fetchError } = await supabase
         .from("diet_plans")
-        .select("*, users!diet_plans_trainer_id(full_name, profile_picture_url)")
+        .select(
+          "*, users!diet_plans_trainer_id(full_name, profile_picture_url)",
+        )
         .eq("client_id", user.id)
         .eq("status", "active")
         .not("shared_at", "is", null)
@@ -115,7 +120,10 @@ export const useClientDietPlans = () => {
       setDietPlans((data as ClientDietPlan[]) || []);
       setError(null);
     } catch (err) {
-      console.debug("Fetch shared diet plans catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Fetch shared diet plans catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       setError("Failed to fetch diet plans");
       setDietPlans([]);
     } finally {

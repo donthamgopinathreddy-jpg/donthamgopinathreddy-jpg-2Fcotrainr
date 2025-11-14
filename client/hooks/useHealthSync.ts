@@ -35,7 +35,10 @@ export const useHealthSync = () => {
       setHasPermission(granted);
       return granted;
     } catch (error) {
-      console.debug("Request permissions error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Request permissions error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       setHasPermission(false);
       return false;
     }
@@ -90,7 +93,10 @@ export const useHealthSync = () => {
       setSyncStatus("idle");
       return true;
     } catch (error) {
-      console.debug("Sync steps error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Sync steps error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       setSyncStatus("error");
       return false;
     } finally {
@@ -122,7 +128,10 @@ export const useHealthSync = () => {
         setLastSyncTime(data.last_synced);
       }
     } catch (error) {
-      console.debug("Load today steps error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Load today steps error:",
+        error instanceof Error ? error.code : "unknown",
+      );
     }
   }, [user?.id]);
 
@@ -170,7 +179,10 @@ export const useHealthSync = () => {
 
         return data as StoredHealthData[];
       } catch (error) {
-        console.debug("Get historical steps error:", error instanceof Error ? error.code : "unknown");
+        console.debug(
+          "Get historical steps error:",
+          error instanceof Error ? error.code : "unknown",
+        );
         return [];
       }
     },
@@ -224,7 +236,10 @@ export const useHealthSync = () => {
 
       return true;
     } catch (error) {
-      console.debug("Sync historical data error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Sync historical data error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       return false;
     } finally {
       setIsSyncing(false);

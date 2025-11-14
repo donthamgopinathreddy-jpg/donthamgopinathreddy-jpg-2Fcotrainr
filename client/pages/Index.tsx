@@ -15,7 +15,10 @@ export default function Index() {
       const data = (await response.json()) as DemoResponse;
       setExampleFromServer(data.message);
     } catch (error) {
-      console.debug("Fetch demo error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Fetch demo error:",
+        error instanceof Error ? error.code : "unknown",
+      );
     }
   };
 

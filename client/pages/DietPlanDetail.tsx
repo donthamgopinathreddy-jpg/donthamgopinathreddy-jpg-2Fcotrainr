@@ -78,7 +78,10 @@ export default function DietPlanDetail() {
           setMeals(mealsData as Meal[]);
         }
       } catch (err) {
-        console.debug("Load plan error:", err instanceof Error ? err.code : "unknown");
+        console.debug(
+          "Load plan error:",
+          err instanceof Error ? err.code : "unknown",
+        );
         toast.error("Failed to load diet plan");
       } finally {
         setLoading(false);
@@ -166,7 +169,10 @@ export default function DietPlanDetail() {
       });
       setShowMealForm(false);
     } catch (err) {
-      console.debug("Add meal catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Add meal catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       toast.error("Failed to add meal");
     }
   };
@@ -196,7 +202,10 @@ export default function DietPlanDetail() {
       setMeals((prev) => prev.filter((m) => m.id !== mealId));
       toast.success("Meal deleted");
     } catch (err) {
-      console.debug("Delete meal catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Delete meal catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       toast.error("Failed to delete meal");
     }
   };
@@ -217,9 +226,7 @@ export default function DietPlanDetail() {
     text += `DAILY MEAL SCHEDULE:\n`;
     text += `${"=".repeat(50)}\n\n`;
 
-    const mealsByTime = [...meals].sort(
-      (a, b) => a.time.localeCompare(b.time)
-    );
+    const mealsByTime = [...meals].sort((a, b) => a.time.localeCompare(b.time));
 
     mealsByTime.forEach((meal) => {
       text += `${meal.time} - ${meal.meal_type.toUpperCase()}\n`;
@@ -246,12 +253,9 @@ export default function DietPlanDetail() {
     const element = document.createElement("a");
     element.setAttribute(
       "href",
-      "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+      "data:text/plain;charset=utf-8," + encodeURIComponent(text),
     );
-    element.setAttribute(
-      "download",
-      `${plan?.name || "diet-plan"}.txt`
-    );
+    element.setAttribute("download", `${plan?.name || "diet-plan"}.txt`);
     element.style.display = "none";
     document.body.appendChild(element);
     element.click();
@@ -265,7 +269,10 @@ export default function DietPlanDetail() {
       await navigator.clipboard.writeText(text);
       toast.success("Diet plan copied to clipboard!");
     } catch (err) {
-      console.debug("Copy text error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Copy text error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       toast.error("Failed to copy");
     }
   };
@@ -364,35 +371,69 @@ export default function DietPlanDetail() {
               : "bg-white border-gray-200"
           } p-6`}
         >
-          <h2 className={`font-bold text-lg mb-3 ${
-            theme === "dark" ? "text-white" : "text-gray-900"
-          }`}>
+          <h2
+            className={`font-bold text-lg mb-3 ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
+          >
             Plan Details
           </h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className={theme === "dark" ? "text-gray-400 text-sm" : "text-gray-600 text-sm"}>
+              <p
+                className={
+                  theme === "dark"
+                    ? "text-gray-400 text-sm"
+                    : "text-gray-600 text-sm"
+                }
+              >
                 Duration
               </p>
-              <p className="font-semibold text-orange-500">{plan.duration_days} days</p>
+              <p className="font-semibold text-orange-500">
+                {plan.duration_days} days
+              </p>
             </div>
             <div>
-              <p className={theme === "dark" ? "text-gray-400 text-sm" : "text-gray-600 text-sm"}>
+              <p
+                className={
+                  theme === "dark"
+                    ? "text-gray-400 text-sm"
+                    : "text-gray-600 text-sm"
+                }
+              >
                 Target Calories
               </p>
-              <p className="font-semibold text-orange-500">{plan.target_calories} cal</p>
+              <p className="font-semibold text-orange-500">
+                {plan.target_calories} cal
+              </p>
             </div>
             <div>
-              <p className={theme === "dark" ? "text-gray-400 text-sm" : "text-gray-600 text-sm"}>
+              <p
+                className={
+                  theme === "dark"
+                    ? "text-gray-400 text-sm"
+                    : "text-gray-600 text-sm"
+                }
+              >
                 Protein
               </p>
-              <p className="font-semibold text-orange-500">{plan.macros_protein_g}g</p>
+              <p className="font-semibold text-orange-500">
+                {plan.macros_protein_g}g
+              </p>
             </div>
             <div>
-              <p className={theme === "dark" ? "text-gray-400 text-sm" : "text-gray-600 text-sm"}>
+              <p
+                className={
+                  theme === "dark"
+                    ? "text-gray-400 text-sm"
+                    : "text-gray-600 text-sm"
+                }
+              >
                 Carbs
               </p>
-              <p className="font-semibold text-orange-500">{plan.macros_carbs_g}g</p>
+              <p className="font-semibold text-orange-500">
+                {plan.macros_carbs_g}g
+              </p>
             </div>
           </div>
         </div>
@@ -431,7 +472,9 @@ export default function DietPlanDetail() {
               >
                 No meals added yet
               </p>
-              <p className={theme === "dark" ? "text-gray-400" : "text-gray-500"}>
+              <p
+                className={theme === "dark" ? "text-gray-400" : "text-gray-500"}
+              >
                 Add meals with times to create the daily schedule
               </p>
             </div>
@@ -448,7 +491,9 @@ export default function DietPlanDetail() {
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="font-semibold text-orange-500">{meal.time}</p>
+                      <p className="font-semibold text-orange-500">
+                        {meal.time}
+                      </p>
                       <h3
                         className={`font-bold ${
                           theme === "dark" ? "text-white" : "text-gray-900"
@@ -472,11 +517,20 @@ export default function DietPlanDetail() {
                     </button>
                   </div>
 
-                  {(meal.calories || meal.protein_g || meal.carbs_g || meal.fat_g) && (
+                  {(meal.calories ||
+                    meal.protein_g ||
+                    meal.carbs_g ||
+                    meal.fat_g) && (
                     <div className="grid grid-cols-4 gap-2 text-xs">
                       {meal.calories && (
                         <div>
-                          <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+                          <p
+                            className={
+                              theme === "dark"
+                                ? "text-gray-400"
+                                : "text-gray-600"
+                            }
+                          >
                             Calories
                           </p>
                           <p className="font-semibold">{meal.calories}</p>
@@ -484,7 +538,13 @@ export default function DietPlanDetail() {
                       )}
                       {meal.protein_g && (
                         <div>
-                          <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+                          <p
+                            className={
+                              theme === "dark"
+                                ? "text-gray-400"
+                                : "text-gray-600"
+                            }
+                          >
                             Protein
                           </p>
                           <p className="font-semibold">{meal.protein_g}g</p>
@@ -492,7 +552,13 @@ export default function DietPlanDetail() {
                       )}
                       {meal.carbs_g && (
                         <div>
-                          <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+                          <p
+                            className={
+                              theme === "dark"
+                                ? "text-gray-400"
+                                : "text-gray-600"
+                            }
+                          >
                             Carbs
                           </p>
                           <p className="font-semibold">{meal.carbs_g}g</p>
@@ -500,7 +566,13 @@ export default function DietPlanDetail() {
                       )}
                       {meal.fat_g && (
                         <div>
-                          <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+                          <p
+                            className={
+                              theme === "dark"
+                                ? "text-gray-400"
+                                : "text-gray-600"
+                            }
+                          >
                             Fat
                           </p>
                           <p className="font-semibold">{meal.fat_g}g</p>

@@ -35,7 +35,10 @@ export const useFollowerCounts = (userId?: string) => {
         following_count: data?.following_count || 0,
       });
     } catch (error) {
-      console.debug("Follower counts catch error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Follower counts catch error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       setCounts({ followers_count: 0, following_count: 0 });
     } finally {
       setLoading(false);

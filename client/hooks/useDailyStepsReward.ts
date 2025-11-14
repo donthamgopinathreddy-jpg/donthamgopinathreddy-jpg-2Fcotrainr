@@ -39,7 +39,10 @@ export const useDailyStepsReward = (dailySteps: number = 0) => {
         setRewardClaimed(!!data);
         setIsClaimable(dailySteps >= 10000 && !data);
       } catch (err) {
-        console.debug("Daily reward check catch error:", err instanceof Error ? err.code : "unknown");
+        console.debug(
+          "Daily reward check catch error:",
+          err instanceof Error ? err.code : "unknown",
+        );
         setError("Failed to check daily reward");
       } finally {
         setLoading(false);
@@ -101,7 +104,10 @@ export const useDailyStepsReward = (dailySteps: number = 0) => {
       setIsClaimable(false);
       return true;
     } catch (err) {
-      console.debug("Claim reward catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Claim reward catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       setError("Failed to claim reward");
       return false;
     } finally {

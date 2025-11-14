@@ -57,7 +57,10 @@ export const useMeals = () => {
         setMeals(data || []);
       }
     } catch (error: any) {
-      console.debug("Fetch meals catch error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Fetch meals catch error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       setMeals([]);
     } finally {
       setLoading(false);
@@ -112,8 +115,7 @@ export const useMeals = () => {
       setMeals((prev) => [data, ...prev]);
       return data;
     } catch (error: any) {
-      const errorMsg =
-        error?.message || error?.code || "Failed to add meal";
+      const errorMsg = error?.message || error?.code || "Failed to add meal";
       console.debug("Add meal catch error:", errorMsg);
       throw new Error(errorMsg);
     }
@@ -131,8 +133,13 @@ export const useMeals = () => {
         const demoMeals = localStorage.getItem(`meals_demo_${user.id}`);
         if (demoMeals) {
           const existingMeals = JSON.parse(demoMeals);
-          const updatedMeals = existingMeals.filter((m: Meal) => m.id !== mealId);
-          localStorage.setItem(`meals_demo_${user.id}`, JSON.stringify(updatedMeals));
+          const updatedMeals = existingMeals.filter(
+            (m: Meal) => m.id !== mealId,
+          );
+          localStorage.setItem(
+            `meals_demo_${user.id}`,
+            JSON.stringify(updatedMeals),
+          );
         }
         setMeals((prev) => prev.filter((m) => m.id !== mealId));
         return;
@@ -147,7 +154,10 @@ export const useMeals = () => {
       if (error) throw error;
       setMeals((prev) => prev.filter((m) => m.id !== mealId));
     } catch (error) {
-      console.debug("Delete meal error:", error instanceof Error ? error.code : "unknown");
+      console.debug(
+        "Delete meal error:",
+        error instanceof Error ? error.code : "unknown",
+      );
       throw error;
     }
   };

@@ -60,7 +60,8 @@ const DEMO_DIET_PLANS: DietPlan[] = [
     trainer_id: "demo-user-trainer",
     client_id: "demo-user-client",
     name: "Low Carb Weight Loss",
-    description: "Reduce carbs while maintaining protein for sustainable weight loss",
+    description:
+      "Reduce carbs while maintaining protein for sustainable weight loss",
     duration_days: 60,
     meals_per_day: 3,
     target_calories: 1800,
@@ -115,7 +116,10 @@ export const useDietPlans = () => {
       setDietPlans((data as DietPlan[]) || []);
       setError(null);
     } catch (err) {
-      console.debug("Diet plans catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Diet plans catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       setError("Failed to fetch diet plans");
       setDietPlans([]);
     } finally {
@@ -136,7 +140,8 @@ export const useDietPlans = () => {
           ...plan,
           users: {
             full_name: "Demo Trainer",
-            profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoTrainer",
+            profile_picture_url:
+              "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoTrainer",
           },
         }));
         setDietPlans(demoPlansWithTrainer);
@@ -163,7 +168,10 @@ export const useDietPlans = () => {
       setDietPlans((data as DietPlan[]) || []);
       setError(null);
     } catch (err) {
-      console.debug("Client diet plans catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Client diet plans catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       setError("Failed to fetch diet plans");
       setDietPlans([]);
     } finally {
@@ -224,7 +232,10 @@ export const useDietPlans = () => {
       setError(null);
       return data as DietPlan;
     } catch (err) {
-      console.debug("Create diet plan catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Create diet plan catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       setError("Failed to create diet plan");
       return null;
     }
@@ -271,7 +282,10 @@ export const useDietPlans = () => {
       setError(null);
       return true;
     } catch (err) {
-      console.debug("Update diet plan catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Update diet plan catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       setError("Failed to update diet plan");
       return false;
     }
@@ -309,7 +323,10 @@ export const useDietPlans = () => {
       setError(null);
       return true;
     } catch (err) {
-      console.debug("Delete diet plan catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Delete diet plan catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       setError("Failed to delete diet plan");
       return false;
     }
@@ -339,7 +356,10 @@ export const useDietPlans = () => {
       }
       return data as DietPlanMeal;
     } catch (err) {
-      console.debug("Add meal catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Add meal catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       return null;
     }
   };
@@ -358,7 +378,10 @@ export const useDietPlans = () => {
       }
       return true;
     } catch (err) {
-      console.debug("Remove meal catch error:", err instanceof Error ? err.code : "unknown");
+      console.debug(
+        "Remove meal catch error:",
+        err instanceof Error ? err.code : "unknown",
+      );
       return false;
     }
   };
