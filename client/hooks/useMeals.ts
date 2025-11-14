@@ -147,7 +147,7 @@ export const useMeals = () => {
       if (error) throw error;
       setMeals((prev) => prev.filter((m) => m.id !== mealId));
     } catch (error) {
-      console.error("Error deleting meal:", error);
+      console.debug("Delete meal error:", error instanceof Error ? error.code : "unknown");
       throw error;
     }
   };
