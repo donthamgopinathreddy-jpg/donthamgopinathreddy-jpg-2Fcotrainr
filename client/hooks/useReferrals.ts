@@ -54,14 +54,14 @@ export const useReferrals = () => {
         .single();
 
       if (error) {
-        console.error("Error generating referral code:", error);
+        console.debug("Generate referral code error:", error?.code);
         return null;
       }
 
       setReferralCode(code);
       return code;
     } catch (error) {
-      console.error("Error in generateReferralCode:", error);
+      console.debug("Generate referral code catch error:", error instanceof Error ? error.code : "unknown");
       return null;
     }
   };
@@ -84,7 +84,7 @@ export const useReferrals = () => {
         await generateReferralCode();
       }
     } catch (error) {
-      console.error("Error fetching referral code:", error);
+      console.debug("Fetch referral code error:", error instanceof Error ? error.code : "unknown");
     }
   };
 
@@ -188,7 +188,7 @@ export const useReferrals = () => {
       const successCount = (data || []).filter((r) => r.is_used).length;
       setReferralCount(successCount);
     } catch (error) {
-      console.error("Error in fetchReferrals:", error);
+      console.debug("Fetch referrals catch error:", error instanceof Error ? error.code : "unknown");
     } finally {
       setLoading(false);
     }
