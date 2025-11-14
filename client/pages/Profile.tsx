@@ -809,12 +809,12 @@ export default function Profile() {
                 <p
                   className={`text-xs font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
                 >
-                  Next Reward at {nextRewardCoins} coins
+                  {hasDiscount ? "Discount Unlocked! 🎉" : `10% Discount at ${discountThreshold} coins`}
                 </p>
                 <p
-                  className={`text-xs font-bold ${theme === "dark" ? "text-orange-400" : "text-orange-600"}`}
+                  className={`text-xs font-bold ${hasDiscount ? "text-green-500" : theme === "dark" ? "text-orange-400" : "text-orange-600"}`}
                 >
-                  {Math.round((referralCoins / nextRewardCoins) * 100)}%
+                  {hasDiscount ? "Unlocked!" : `${Math.round((referralCoins / discountThreshold) * 100)}%`}
                 </p>
               </div>
               <div
@@ -823,9 +823,13 @@ export default function Profile() {
                 }`}
               >
                 <div
-                  className="h-full bg-gradient-to-r from-orange-400 to-amber-500 transition-all duration-300"
+                  className={`h-full transition-all duration-300 ${
+                    hasDiscount
+                      ? "bg-gradient-to-r from-green-400 to-emerald-500"
+                      : "bg-gradient-to-r from-orange-400 to-amber-500"
+                  }`}
                   style={{
-                    width: `${(referralCoins / nextRewardCoins) * 100}%`,
+                    width: `${Math.min((referralCoins / discountThreshold) * 100, 100)}%`,
                   }}
                 />
               </div>
@@ -1149,7 +1153,7 @@ export default function Profile() {
             <h2
               className={`text-lg font-bold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
             >
-              ��� Trainer Verification
+              ✓ Trainer Verification
             </h2>
 
             <div className="space-y-3">
