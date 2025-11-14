@@ -896,6 +896,54 @@ export default function Profile() {
             </button>
 
             <button
+              onClick={() => navigate("/achievements")}
+              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
+                theme === "dark"
+                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
+                  : "bg-white border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              <span className="text-xl">🏆</span>
+              <span
+                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
+                Achievements
+              </span>
+            </button>
+
+            <button
+              onClick={() => navigate("/training-modes")}
+              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
+                theme === "dark"
+                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
+                  : "bg-white border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              <span className="text-xl">🎯</span>
+              <span
+                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
+                Training Modes
+              </span>
+            </button>
+
+            <button
+              onClick={() => navigate("/subscription")}
+              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
+                theme === "dark"
+                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
+                  : "bg-white border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              <span className="text-xl">⭐</span>
+              <span
+                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
+                Premium
+              </span>
+            </button>
+
+            <button
               onClick={async () => {
                 try {
                   await signOut();
