@@ -4,21 +4,24 @@ import {
   User,
   Edit2,
   LogOut,
-  Briefcase,
-  Heart,
-  Users,
-  Award,
-  MapPin,
   Camera,
-  CheckCircle,
-  Share2,
+  Eye,
+  EyeOff,
   Copy,
   Check,
   Loader,
-  Eye,
-  Trash2,
+  Lock,
+  Fingerprint,
+  FaceIcon,
+  Share2,
+  Instagram,
+  MessageCircle,
+  Download,
+  Upload,
+  CheckCircle,
+  Phone,
+  Mail,
 } from "lucide-react";
-import GlassyTile from "@/components/GlassyTile";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
@@ -26,8 +29,7 @@ import { toast } from "sonner";
 import { cmToFeetInchesString, cmToFeetInches, inchesToCm } from "@/lib/utils";
 import { useFollowerCounts } from "@/hooks/useFollowerCounts";
 import { useReferrals } from "@/hooks/useReferrals";
-import AchievementBadges from "@/components/AchievementBadges";
-import ReferralCodeSection from "@/components/ReferralCodeSection";
+import { useAchievements } from "@/hooks/useAchievements";
 
 interface UserType {
   role: "client" | "trainer";
@@ -35,15 +37,9 @@ interface UserType {
   gender: string;
   height: number;
   weight: number;
-  isFollowing: boolean;
   followers: number;
   following: number;
   profilePhoto?: string;
-  qualifications?: string[];
-  yearsExperience?: number;
-  specialties?: string[];
-  location?: string;
-  rating?: number;
 }
 
 export default function Profile() {
@@ -54,10 +50,10 @@ export default function Profile() {
     signOut,
     updateProfile: authUpdateProfile,
   } = useAuth();
-  const { counts: followerCounts, refetch: refetchCounts } = useFollowerCounts(
-    userProfile?.id,
-  );
-  const referralData = useReferrals();
+  const { counts: followerCounts } = useFollowerCounts(userProfile?.id);
+  const { referralCode } = useReferrals();
+  const { userAchievements, getTotalPoints } = useAchievements();
+  const { theme = "light" } = useTheme() || { theme: "light" };
 
   const [user, setUser] = useState<UserType>({
     role: userProfile?.role || "client",
@@ -65,18 +61,36 @@ export default function Profile() {
     gender: userProfile?.gender || "Not specified",
     height: userProfile?.height_cm || 170,
     weight: userProfile?.weight_kg || 70,
-    isFollowing: false,
     followers: 0,
     following: 0,
   });
-  const [isFollowing, setIsFollowing] = useState(user.isFollowing);
+
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showReferralModal, setShowReferralModal] = useState(false);
-  const [showTrainerReferralModal, setShowTrainerReferralModal] =
-    useState(false);
-  const [referralCopied, setReferralCopied] = useState(false);
-  const [trainerReferralCopied, setTrainerReferralCopied] = useState(false);
+  const [showSecuritySection, setShowSecuritySection] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [referralCopied, setReferralCopied] = useState(false);
+
+  // Security & Login state
+  const [securitySettings, setSecuritySettings] = useState({
+    usePIN: false,
+    fingerprint: false,
+    faceRecognition: false,
+  });
+
+  // Password change state
+  const [passwordForm, setPasswordForm] = useState({
+    current: "",
+    new: "",
+    confirm: "",
+  });
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  });
+
+  // Edit form state
   const [editForm, setEditForm] = useState({
     name: userProfile?.full_name || "User",
     email: userProfile?.email || "",
@@ -84,44 +98,20 @@ export default function Profile() {
     gender: userProfile?.gender || "Not specified",
     height: userProfile?.height_cm || 170,
     weight: userProfile?.weight_kg || 70,
-    dateOfBirth: userProfile?.date_of_birth || "",
-    age: userProfile?.age || 25,
   });
 
-  // Calculate age from date of birth
-  const calculateAge = (dateOfBirth: string): number => {
-    if (!dateOfBirth) return 25;
-    const today = new Date();
-    const birthDate = new Date(dateOfBirth);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-    return Math.max(0, age);
-  };
-
-  // Sync state with userProfile whenever it changes
   useEffect(() => {
-    if (userProfile) {
-      const newUserState = {
+    if (userProfile && followerCounts) {
+      setUser({
         role: userProfile.role || "client",
         name: userProfile.full_name || "User",
         gender: userProfile.gender || "Not specified",
         height: userProfile.height_cm || 170,
         weight: userProfile.weight_kg || 70,
-        isFollowing: false,
         followers: followerCounts.followers_count,
         following: followerCounts.following_count,
         profilePhoto: userProfile.profile_picture_url,
-      };
-      setUser(newUserState);
-      const calculatedAge = userProfile.date_of_birth
-        ? calculateAge(userProfile.date_of_birth)
-        : userProfile.age || 25;
+      });
       setEditForm({
         name: userProfile.full_name || "User",
         email: userProfile.email || "",
@@ -129,16 +119,13 @@ export default function Profile() {
         gender: userProfile.gender || "Not specified",
         height: userProfile.height_cm || 170,
         weight: userProfile.weight_kg || 70,
-        dateOfBirth: userProfile.date_of_birth || "",
-        age: calculatedAge,
       });
     }
   }, [userProfile, followerCounts]);
 
   // Generate referral link
-  const referralCode =
-    userProfile?.id?.substring(0, 8)?.toUpperCase() || "REFER";
-  const referralLink = `${window.location.origin}?ref=${referralCode}`;
+  const referralCodeDisplay = referralCode || userProfile?.id?.substring(0, 8)?.toUpperCase() || "REFER";
+  const referralLink = `${window.location.origin}?ref=${referralCodeDisplay}`;
 
   const handleCopyReferralLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -147,48 +134,49 @@ export default function Profile() {
     setTimeout(() => setReferralCopied(false), 2000);
   };
 
-  const handleShareReferral = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: "Join CoTrainr",
-        text: "Join me on CoTrainr! Get personalized training and nutrition guidance.",
-        url: referralLink,
-      });
-    } else {
-      handleCopyReferralLink();
+  const handleProfilePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.[0] || !userProfile?.id) return;
+
+    const file = e.target.files[0];
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File size must be less than 5MB");
+      return;
     }
-  };
 
-  // Trainer Referral Functions
-  const trainerReferralCode =
-    userProfile?.id?.substring(0, 8)?.toUpperCase() || "COACH";
-  const trainerReferralLink = `${window.location.origin}/trainer-signup?ref=${trainerReferralCode}`;
+    setIsSaving(true);
 
-  const handleCopyTrainerReferralLink = () => {
-    navigator.clipboard.writeText(trainerReferralLink);
-    setTrainerReferralCopied(true);
-    toast.success("✓ Trainer referral link copied!");
-    setTimeout(() => setTrainerReferralCopied(false), 2000);
-  };
+    try {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const dataUrl = event.target?.result as string;
 
-  const handleShareTrainerReferral = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: "Join CoTrainr as a Trainer",
-        text: "Join CoTrainr as a trainer! Build your coaching business and reach more clients.",
-        url: trainerReferralLink,
-      });
-    } else {
-      handleCopyTrainerReferralLink();
+        try {
+          await authUpdateProfile({
+            profile_picture_url: dataUrl,
+          });
+
+          setUser((prev) => ({
+            ...prev,
+            profilePhoto: dataUrl,
+          }));
+
+          toast.success("✓ Profile photo updated!");
+        } catch (error: any) {
+          console.error("Error saving profile photo:", error);
+          const errorMsg = error?.message || String(error) || "Failed to save profile photo";
+          toast.error(errorMsg);
+        } finally {
+          setIsSaving(false);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (error: any) {
+      console.error("Error processing profile photo:", error);
+      const errorMsg = error?.message || String(error) || "Failed to process profile photo";
+      toast.error(errorMsg);
+      setIsSaving(false);
     }
-  };
-
-  const handleFollow = () => {
-    setIsFollowing(!isFollowing);
-    setUser((prev) => ({
-      ...prev,
-      followers: isFollowing ? prev.followers - 1 : prev.followers + 1,
-    }));
   };
 
   const handleSaveEdit = async () => {
@@ -200,12 +188,6 @@ export default function Profile() {
         return;
       }
 
-      // Calculate age from date of birth - use the calculated value
-      const ageValue = editForm.dateOfBirth
-        ? calculateAge(editForm.dateOfBirth)
-        : editForm.age;
-
-      // Update profile using AuthContext method
       await authUpdateProfile({
         full_name: editForm.name,
         email: editForm.email,
@@ -213,11 +195,8 @@ export default function Profile() {
         gender: editForm.gender,
         height_cm: editForm.height,
         weight_kg: editForm.weight,
-        date_of_birth: editForm.dateOfBirth,
-        age: ageValue,
       });
 
-      // Update local state
       setUser((prev) => ({
         ...prev,
         name: editForm.name,
@@ -230,128 +209,82 @@ export default function Profile() {
       setShowEditModal(false);
     } catch (error: any) {
       console.error("Error saving profile:", error);
-      const errorMsg =
-        error?.message || String(error) || "Failed to update profile";
+      const errorMsg = error?.message || String(error) || "Failed to update profile";
       toast.error(errorMsg);
     } finally {
       setIsSaving(false);
     }
   };
 
-  const requestPhotoPermissions = async () => {
-    try {
-      // Request camera permission for iOS
-      if (
-        navigator.mediaDevices &&
-        navigator.mediaDevices.getUserMedia &&
-        /iPad|iPhone|iPod/.test(navigator.userAgent)
-      ) {
-        await navigator.mediaDevices.getUserMedia({
-          audio: false,
-          video: false,
-        });
-      }
-    } catch (error) {
-      console.warn("Permission request result:", error);
-    }
-  };
-
-  const handleProfilePhotoUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    if (!e.target.files?.[0] || !userProfile?.id) return;
-
-    const file = e.target.files[0];
-
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("File size must be less than 5MB");
+  const handleChangePassword = async () => {
+    if (!passwordForm.current || !passwordForm.new || !passwordForm.confirm) {
+      toast.error("Please fill in all password fields");
       return;
     }
 
-    setIsSaving(true);
+    if (passwordForm.new !== passwordForm.confirm) {
+      toast.error("New passwords don't match");
+      return;
+    }
+
+    if (passwordForm.new.length < 6) {
+      toast.error("New password must be at least 6 characters");
+      return;
+    }
 
     try {
-      // Request permissions before processing
-      await requestPhotoPermissions();
+      setIsSaving(true);
 
-      // Read as data URL and store directly
-      const reader = new FileReader();
-      reader.onload = async (event) => {
-        const dataUrl = event.target?.result as string;
+      const { error } = await supabase.auth.updateUser({
+        password: passwordForm.new,
+      });
 
-        try {
-          // Save data URL to database
-          await authUpdateProfile({
-            profile_picture_url: dataUrl,
-          });
+      if (error) throw error;
 
-          // Update local state
-          setUser((prev) => ({
-            ...prev,
-            profilePhoto: dataUrl,
-          }));
-
-          toast.success("✓ Profile photo updated!");
-        } catch (error: any) {
-          console.error("Error saving profile photo:", error);
-          const errorMsg =
-            error?.message || String(error) || "Failed to save profile photo";
-          toast.error(errorMsg);
-        } finally {
-          setIsSaving(false);
-        }
-      };
-      reader.readAsDataURL(file);
+      toast.success("✓ Password updated successfully!");
+      setPasswordForm({ current: "", new: "", confirm: "" });
+      setShowPasswordForm(false);
     } catch (error: any) {
-      console.error("Error processing profile photo:", error);
-      const errorMsg =
-        error?.message || String(error) || "Failed to process profile photo";
+      console.error("Error changing password:", error);
+      const errorMsg = error?.message || String(error) || "Failed to change password";
       toast.error(errorMsg);
+    } finally {
       setIsSaving(false);
     }
   };
 
   const isTrainer = user.role === "trainer";
-  const { theme = "light", toggleTheme } = useTheme() || { theme: "light" };
+  const referralCoins = 320;
+  const nextRewardCoins = 500;
+
+  // Sample achievements data
+  const topAchievements = userAchievements.slice(0, 3);
+  const featuredAchievement = userAchievements[0];
 
   return (
-    <div
-      className={`min-h-screen pb-24 ${
-        theme === "dark" ? "bg-gray-950" : "bg-white"
-      }`}
-      style={{ minHeight: "100vh" }}
-    >
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
-        {/* Profile Header */}
-        <div
-          className={`px-4 sm:px-6 py-12 text-center ${
-            theme === "dark"
-              ? "bg-gradient-to-br from-gray-800 to-gray-900"
-              : "bg-gradient-to-br from-blue-100 to-cyan-100"
-          }`}
-        >
+    <div className={`min-h-screen pb-24 ${theme === "dark" ? "bg-gray-950" : "bg-gray-50"}`}>
+      <div className="w-full max-w-2xl mx-auto px-4 py-6 space-y-6">
+        {/* HEADER SECTION */}
+        <div className={`rounded-3xl p-6 text-center shadow-sm ${
+          theme === "dark"
+            ? "bg-gradient-to-br from-gray-800 to-gray-900"
+            : "bg-gradient-to-br from-orange-50 to-amber-50"
+        }`}>
           <div className="relative w-24 h-24 mx-auto mb-4 group">
-            <div
-              className={`w-24 h-24 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg ${
-                theme === "dark" ? "bg-gray-700" : "bg-gray-300"
-              }`}
-            >
-              {user.profilePhoto || userProfile?.profile_picture_url ? (
+            <div className={`w-24 h-24 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-lg ${
+              theme === "dark" ? "bg-gray-700" : "bg-orange-100"
+            }`}>
+              {user.profilePhoto ? (
                 <img
-                  src={user.profilePhoto || userProfile?.profile_picture_url}
+                  src={user.profilePhoto}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <User
-                  className={`w-12 h-12 ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }`}
-                />
+                <User className={`w-12 h-12 ${theme === "dark" ? "text-gray-400" : "text-orange-600"}`} />
               )}
             </div>
-            <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-blue-700 transition-colors group-hover:scale-110">
+            <label className="absolute bottom-0 right-0 bg-orange-500 text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-orange-600 transition-colors">
               <Camera className="w-4 h-4" />
               <input
                 type="file"
@@ -361,1361 +294,891 @@ export default function Profile() {
               />
             </label>
           </div>
-          <h1
-            className={`text-2xl font-bold mb-1 ${
-              theme === "dark" ? "text-white" : "text-gray-900"
-            }`}
-          >
+
+          <h1 className={`text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
             {user.name}
           </h1>
-          {isTrainer && (
-            <p
-              className={`text-sm mb-3 ${
-                theme === "dark" ? "text-gray-400" : "text-gray-700"
-              }`}
-            >
-              ⭐ {user.rating || 4.8} • {user.yearsExperience || 0}+ years
-              experience
-            </p>
-          )}
-          <div className="flex items-center justify-center gap-4">
+
+          <div className={`text-sm font-semibold inline-block px-4 py-1 rounded-full mb-4 ${
+            theme === "dark"
+              ? "bg-orange-900/30 text-orange-300"
+              : "bg-orange-200 text-orange-800"
+          }`}>
+            {isTrainer ? "⭐ Trainer" : "Member"}
+          </div>
+
+          <div className="flex items-center justify-center gap-6 mb-6">
             <div className="text-center">
-              <div
-                className={`text-lg font-bold ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}
-              >
+              <div className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
                 {user.followers}
               </div>
-              <p
-                className={`text-xs ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                Followers
-              </p>
+              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Followers</p>
             </div>
+            <div className="h-8 w-px bg-orange-300"></div>
             <div className="text-center">
-              <div
-                className={`text-lg font-bold ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}
-              >
+              <div className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
                 {user.following}
               </div>
-              <p
-                className={`text-xs ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
+              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Following</p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setShowEditModal(true)}
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2"
+          >
+            <Edit2 className="w-4 h-4" />
+            Edit Profile
+          </button>
+        </div>
+
+        {/* ACCOUNT SECTION */}
+        <div className={`rounded-2xl p-6 space-y-4 shadow-sm ${
+          theme === "dark"
+            ? "bg-gray-800/50 border border-gray-700/50"
+            : "bg-white border border-gray-200"
+        }`}>
+          <h2 className={`text-lg font-bold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <Mail className="w-5 h-5 text-orange-500" />
+            Account
+          </h2>
+
+          <div className="space-y-3">
+            <div>
+              <p className={`text-xs font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                Email Address
+              </p>
+              <p className={`text-sm mt-1 break-all ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                {userProfile?.email || "Not set"}
+              </p>
+            </div>
+
+            <div>
+              <p className={`text-xs font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                Phone Number
+              </p>
+              <p className={`text-sm mt-1 ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                {userProfile?.phone_number || "+91 9876543210"}
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setShowEditModal(true)}
+            className={`text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors`}
+          >
+            → Edit personal details
+          </button>
+        </div>
+
+        {/* SECURITY & LOGIN SECTION */}
+        <div className={`rounded-2xl p-6 space-y-4 shadow-sm ${
+          theme === "dark"
+            ? "bg-gray-800/50 border border-gray-700/50"
+            : "bg-white border border-gray-200"
+        }`}>
+          <h2 className={`text-lg font-bold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <Lock className="w-5 h-5 text-orange-500" />
+            Security & Login
+          </h2>
+
+          <div className="space-y-3">
+            {/* PIN Toggle */}
+            <div className="flex items-center justify-between p-3 rounded-xl bg-gray-100/50 dark:bg-gray-700/50">
+              <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                Use device PIN / password
+              </span>
+              <button
+                onClick={() => setSecuritySettings((prev) => ({ ...prev, usePIN: !prev.usePIN }))}
+                className={`relative w-12 h-6 rounded-full transition-colors ${
+                  securitySettings.usePIN ? "bg-orange-500" : "bg-gray-400"
                 }`}
               >
-                Following
+                <div
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                    securitySettings.usePIN ? "translate-x-6" : ""
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Fingerprint Toggle */}
+            <div className="flex items-center justify-between p-3 rounded-xl bg-gray-100/50 dark:bg-gray-700/50">
+              <div className="flex items-center gap-2">
+                <Fingerprint className="w-4 h-4 text-orange-500" />
+                <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                  Enable Fingerprint Unlock
+                </span>
+              </div>
+              <button
+                onClick={() => setSecuritySettings((prev) => ({ ...prev, fingerprint: !prev.fingerprint }))}
+                className={`relative w-12 h-6 rounded-full transition-colors ${
+                  securitySettings.fingerprint ? "bg-orange-500" : "bg-gray-400"
+                }`}
+              >
+                <div
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                    securitySettings.fingerprint ? "translate-x-6" : ""
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Face Recognition Toggle */}
+            <div className="flex items-center justify-between p-3 rounded-xl bg-gray-100/50 dark:bg-gray-700/50">
+              <div className="flex items-center gap-2">
+                <FaceIcon className="w-4 h-4 text-orange-500" />
+                <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                  Enable Face Recognition
+                </span>
+              </div>
+              <button
+                onClick={() => setSecuritySettings((prev) => ({ ...prev, faceRecognition: !prev.faceRecognition }))}
+                className={`relative w-12 h-6 rounded-full transition-colors ${
+                  securitySettings.faceRecognition ? "bg-orange-500" : "bg-gray-400"
+                }`}
+              >
+                <div
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                    securitySettings.faceRecognition ? "translate-x-6" : ""
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Info Box */}
+            <div className={`rounded-xl p-4 flex items-start gap-3 ${
+              theme === "dark"
+                ? "bg-blue-900/30 border border-blue-800"
+                : "bg-blue-50 border border-blue-200"
+            }`}>
+              <Lock className={`w-5 h-5 mt-0.5 flex-shrink-0 ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`} />
+              <p className={`text-xs ${theme === "dark" ? "text-blue-300" : "text-blue-700"}`}>
+                Your biometric data is never stored on our servers. All authentication happens locally on your device.
+              </p>
+            </div>
+
+            {/* Change Password Section */}
+            {!showPasswordForm ? (
+              <button
+                onClick={() => setShowPasswordForm(true)}
+                className="text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors mt-2"
+              >
+                → Change Password
+              </button>
+            ) : (
+              <div className="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div>
+                  <label className={`block text-xs font-semibold mb-2 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                    Current Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasswords.current ? "text" : "password"}
+                      value={passwordForm.current}
+                      onChange={(e) => setPasswordForm((prev) => ({ ...prev, current: e.target.value }))}
+                      placeholder="Enter current password"
+                      className={`w-full pr-10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                        theme === "dark"
+                          ? "bg-gray-900 border border-gray-700 text-white"
+                          : "bg-gray-50 border border-gray-300 text-gray-900"
+                      }`}
+                    />
+                    <button
+                      onClick={() => setShowPasswords((prev) => ({ ...prev, current: !prev.current }))}
+                      className={`absolute right-3 top-2.5 ${theme === "dark" ? "text-gray-400 hover:text-gray-300" : "text-gray-600 hover:text-gray-700"}`}
+                    >
+                      {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className={`block text-xs font-semibold mb-2 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                    New Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasswords.new ? "text" : "password"}
+                      value={passwordForm.new}
+                      onChange={(e) => setPasswordForm((prev) => ({ ...prev, new: e.target.value }))}
+                      placeholder="Enter new password"
+                      className={`w-full pr-10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                        theme === "dark"
+                          ? "bg-gray-900 border border-gray-700 text-white"
+                          : "bg-gray-50 border border-gray-300 text-gray-900"
+                      }`}
+                    />
+                    <button
+                      onClick={() => setShowPasswords((prev) => ({ ...prev, new: !prev.new }))}
+                      className={`absolute right-3 top-2.5 ${theme === "dark" ? "text-gray-400 hover:text-gray-300" : "text-gray-600 hover:text-gray-700"}`}
+                    >
+                      {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className={`block text-xs font-semibold mb-2 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasswords.confirm ? "text" : "password"}
+                      value={passwordForm.confirm}
+                      onChange={(e) => setPasswordForm((prev) => ({ ...prev, confirm: e.target.value }))}
+                      placeholder="Confirm new password"
+                      className={`w-full pr-10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                        theme === "dark"
+                          ? "bg-gray-900 border border-gray-700 text-white"
+                          : "bg-gray-50 border border-gray-300 text-gray-900"
+                      }`}
+                    />
+                    <button
+                      onClick={() => setShowPasswords((prev) => ({ ...prev, confirm: !prev.confirm }))}
+                      className={`absolute right-3 top-2.5 ${theme === "dark" ? "text-gray-400 hover:text-gray-300" : "text-gray-600 hover:text-gray-700"}`}
+                    >
+                      {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <button
+                    onClick={() => {
+                      setShowPasswordForm(false);
+                      setPasswordForm({ current: "", new: "", confirm: "" });
+                    }}
+                    className={`flex-1 py-2.5 rounded-lg font-medium transition-colors ${
+                      theme === "dark"
+                        ? "bg-gray-700 text-white hover:bg-gray-600"
+                        : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                    }`}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleChangePassword}
+                    disabled={isSaving}
+                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-medium py-2.5 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {isSaving ? (
+                      <>
+                        <Loader className="w-4 h-4 animate-spin" />
+                        Updating...
+                      </>
+                    ) : (
+                      "Update Password"
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* REFERRAL COINS SECTION */}
+        <div className={`rounded-2xl p-6 space-y-6 shadow-sm ${
+          theme === "dark"
+            ? "bg-gray-800/50 border border-gray-700/50"
+            : "bg-white border border-gray-200"
+        }`}>
+          <div>
+            <h2 className={`text-lg font-bold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              💰 Referral Coins
+            </h2>
+
+            {/* Coins Balance */}
+            <div className={`rounded-2xl p-6 text-center mb-4 bg-gradient-to-br from-orange-400 to-amber-500 text-white shadow-lg`}>
+              <p className="text-sm font-semibold opacity-90 mb-2">Current Balance</p>
+              <h3 className="text-4xl font-bold mb-1">{referralCoins}</h3>
+              <p className="text-sm opacity-80">Coins</p>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className={`text-xs font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                  Next Reward at {nextRewardCoins} coins
+                </p>
+                <p className={`text-xs font-bold ${theme === "dark" ? "text-orange-400" : "text-orange-600"}`}>
+                  {Math.round((referralCoins / nextRewardCoins) * 100)}%
+                </p>
+              </div>
+              <div className={`w-full h-3 rounded-full overflow-hidden ${
+                theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+              }`}>
+                <div
+                  className="h-full bg-gradient-to-r from-orange-400 to-amber-500 transition-all duration-300"
+                  style={{ width: `${(referralCoins / nextRewardCoins) * 100}%` }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Earning Opportunities */}
+          <div>
+            <h3 className={`text-sm font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              Earning Opportunities
+            </h3>
+            <div className="space-y-2">
+              <div className={`p-3 rounded-lg flex items-center justify-between ${
+                theme === "dark" ? "bg-gray-700/50" : "bg-gray-50"
+              }`}>
+                <div>
+                  <p className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                    Invite a friend who joins
+                  </p>
+                </div>
+                <span className="text-orange-500 font-bold">+100</span>
+              </div>
+
+              <div className={`p-3 rounded-lg flex items-center justify-between ${
+                theme === "dark" ? "bg-gray-700/50" : "bg-gray-50"
+              }`}>
+                <div>
+                  <p className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                    Complete 5 workouts in a week
+                  </p>
+                </div>
+                <span className="text-orange-500 font-bold">+50</span>
+              </div>
+
+              <div className={`p-3 rounded-lg flex items-center justify-between ${
+                theme === "dark" ? "bg-gray-700/50" : "bg-gray-50"
+              }`}>
+                <div>
+                  <p className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                    Maintain a 7-day streak
+                  </p>
+                </div>
+                <span className="text-orange-500 font-bold">+75</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Referral Sharing Subsection */}
+          <div className="border-t pt-6 border-gray-200 dark:border-gray-700">
+            <h3 className={`text-sm font-bold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              🎯 Invite Friends
+            </h3>
+
+            <div className="space-y-3">
+              {/* Referral Code Box */}
+              <div className={`rounded-xl p-4 ${
+                theme === "dark"
+                  ? "bg-green-900/30 border border-green-800"
+                  : "bg-green-50 border border-green-200"
+              }`}>
+                <p className={`text-xs font-semibold ${theme === "dark" ? "text-green-300" : "text-green-700"}`}>
+                  Referral Code
+                </p>
+                <p className={`text-lg font-bold mt-2 ${theme === "dark" ? "text-green-400" : "text-green-600"}`}>
+                  {referralCodeDisplay}
+                </p>
+              </div>
+
+              {/* Referral Link Box */}
+              <div className={`rounded-xl p-4 space-y-2 ${
+                theme === "dark"
+                  ? "bg-blue-900/30 border border-blue-800"
+                  : "bg-blue-50 border border-blue-200"
+              }`}>
+                <p className={`text-xs font-semibold ${theme === "dark" ? "text-blue-300" : "text-blue-700"}`}>
+                  Referral Link
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    readOnly
+                    value={referralLink}
+                    className={`flex-1 rounded-lg px-3 py-2 text-xs focus:outline-none overflow-hidden text-ellipsis ${
+                      theme === "dark"
+                        ? "bg-gray-900 border border-blue-700 text-gray-300"
+                        : "bg-white border border-blue-300 text-gray-700"
+                    }`}
+                  />
+                  <button
+                    onClick={handleCopyReferralLink}
+                    className={`px-3 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-1 whitespace-nowrap text-xs ${
+                      referralCopied
+                        ? "bg-green-600 text-white"
+                        : "bg-orange-500 text-white hover:bg-orange-600"
+                    }`}
+                  >
+                    {referralCopied ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Copied
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4" />
+                        Copy Link
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Social Sharing */}
+              <div>
+                <p className={`text-xs font-semibold mb-3 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                  Share on Social
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Join me on CoTrainr! ${referralLink}`)}`, "_blank")}
+                    className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    WhatsApp
+                  </button>
+                  <button
+                    onClick={() => window.open(`https://instagram.com`, "_blank")}
+                    className="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Instagram className="w-4 h-4" />
+                    Instagram
+                  </button>
+                  <button
+                    onClick={() => window.open(`sms:?body=${encodeURIComponent(`Join me on CoTrainr! ${referralLink}`)}`, "_blank")}
+                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    SMS
+                  </button>
+                </div>
+              </div>
+
+              <p className={`text-xs text-center pt-3 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                Each friend who joins gives you <span className="font-bold text-orange-500">100 coins</span>.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Profile Content */}
-        <div className="px-4 sm:px-6 py-8 space-y-4 sm:space-y-6">
-          {/* Account Info Card */}
-          <div
-            className={`rounded-2xl p-6 space-y-3 ${
-              theme === "dark"
-                ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                : "bg-gradient-to-br from-blue-100 via-cyan-100 to-teal-100 border border-cyan-200"
-            }`}
-          >
-            <h3
-              className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-            >
-              Account Information
-            </h3>
-            <div className="space-y-3">
-              <div>
-                <p
-                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                >
-                  Username
-                </p>
-                <p
-                  className={`font-semibold break-all ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
-                >
-                  {userProfile?.username || "Not set"}
-                </p>
-              </div>
-              <div>
-                <p
-                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                >
-                  Email Address
-                </p>
-                <p
-                  className={`font-semibold break-all ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
-                >
-                  {userProfile?.email || "Not set"}
-                </p>
-              </div>
-            </div>
-          </div>
+        {/* ACHIEVEMENTS SECTION */}
+        <div className={`rounded-2xl p-6 space-y-6 shadow-sm ${
+          theme === "dark"
+            ? "bg-gray-800/50 border border-gray-700/50"
+            : "bg-white border border-gray-200"
+        }`}>
+          <h2 className={`text-lg font-bold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            🏆 Achievements
+          </h2>
 
-          {/* Basic Info Card */}
-          <div
-            className={`rounded-2xl p-6 space-y-3 ${
-              theme === "dark"
-                ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                : "bg-gradient-to-br from-purple-100 via-violet-100 to-pink-100 border border-purple-200"
-            }`}
-          >
-            <h3
-              className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-            >
-              Basic Information
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p
-                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                >
-                  Gender
-                </p>
-                <p
-                  className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
-                >
-                  {user.gender}
-                </p>
-              </div>
-              <div>
-                <p
-                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                >
-                  Height
-                </p>
-                <p
-                  className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
-                >
-                  {cmToFeetInchesString(user.height)}
-                </p>
-              </div>
-              <div>
-                <p
-                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                >
-                  Weight
-                </p>
-                <p
-                  className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
-                >
-                  {user.weight} kg
-                </p>
-              </div>
-              <div>
-                <p
-                  className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                >
-                  BMI
-                </p>
-                <p
-                  className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
-                >
-                  {(user.weight / (user.height / 100) ** 2).toFixed(1)}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Trainer-specific sections */}
-          {isTrainer && (
+          {/* Achievement Badges Horizontal Scroll */}
+          {userAchievements.length > 0 ? (
             <>
-              {/* Specialties */}
-              {user.specialties && (
-                <div
-                  className={`rounded-2xl p-6 space-y-3 ${
-                    theme === "dark"
-                      ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                      : "bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 border border-indigo-200"
-                  }`}
-                >
-                  <h3
-                    className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-                  >
-                    Specialties
+              <div className="overflow-x-auto pb-2 -mx-6 px-6">
+                <div className="flex gap-3 min-w-min">
+                  {topAchievements.map((achievement) => (
+                    <div
+                      key={achievement.id}
+                      className="flex flex-col items-center gap-2 flex-shrink-0 hover:scale-110 transition-transform"
+                    >
+                      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg ${
+                        theme === "dark"
+                          ? "bg-yellow-900/30 border border-yellow-700"
+                          : "bg-yellow-100 border-2 border-yellow-400"
+                      }`}>
+                        {achievement.icon}
+                      </div>
+                      <p className={`text-xs font-semibold text-center max-w-[80px] line-clamp-2 ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-700"
+                      }`}>
+                        {achievement.title}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Featured Achievement Card */}
+              {featuredAchievement && (
+                <div className={`rounded-2xl p-6 text-center border-2 ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-yellow-900/30 to-amber-900/30 border-yellow-700"
+                    : "bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-300"
+                }`}>
+                  <div className="text-5xl mb-4 flex justify-center">{featuredAchievement.icon}</div>
+                  <h3 className={`text-xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                    {featuredAchievement.title}
                   </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {user.specialties.map((spec) => (
-                      <span
-                        key={spec}
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          theme === "dark"
-                            ? "bg-blue-900/30 text-blue-300"
-                            : "bg-blue-100 text-blue-700"
-                        }`}
-                      >
-                        {spec}
-                      </span>
-                    ))}
+                  <p className={`text-sm mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                    Great job keeping up the pace!
+                  </p>
+                  <p className={`text-xs mb-4 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    Unlocked {new Date(featuredAchievement.unlocked_at).toLocaleDateString()}
+                  </p>
+
+                  {/* Social Sharing Buttons */}
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      onClick={() => toast.success("Share feature coming soon!")}
+                      className="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Instagram className="w-4 h-4" />
+                      Instagram
+                    </button>
+                    <button
+                      onClick={() => toast.success("Share feature coming soon!")}
+                      className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      WhatsApp
+                    </button>
+                    <button
+                      onClick={() => toast.success("Download feature coming soon!")}
+                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download
+                    </button>
                   </div>
                 </div>
               )}
 
-              {/* Qualifications */}
-              {user.qualifications && user.qualifications.length > 0 && (
-                <div
-                  className={`rounded-2xl p-6 space-y-3 ${
-                    theme === "dark"
-                      ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                      : "bg-gradient-to-br from-amber-100 via-orange-100 to-red-100 border border-amber-200"
-                  }`}
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <Award className="w-5 h-5 text-amber-600" />
-                    <h3
-                      className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-                    >
-                      Qualifications
-                    </h3>
-                  </div>
-                  <ul className="space-y-2">
-                    {user.qualifications.map((qual, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-amber-600 mt-1">✓</span>
-                        <span
-                          className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
-                        >
-                          {qual}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Location */}
-              {user.location && (
-                <div
-                  className={`rounded-2xl p-4 flex items-center gap-3 ${
-                    theme === "dark"
-                      ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                      : "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 border border-green-200"
-                  }`}
-                >
-                  <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                  <div>
-                    <p
-                      className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                    >
-                      Training Location
-                    </p>
-                    <p
-                      className={`font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
-                    >
-                      {user.location}
-                    </p>
-                  </div>
-                </div>
-              )}
+              <div className={`rounded-lg p-3 text-center text-sm font-semibold ${
+                theme === "dark"
+                  ? "bg-purple-900/30 border border-purple-800 text-purple-300"
+                  : "bg-purple-50 border border-purple-200 text-purple-700"
+              }`}>
+                Total Points: <span className="text-lg">{getTotalPoints()}</span>
+              </div>
             </>
-          )}
-
-          {/* Stats */}
-          {!isTrainer && (
-            <div className="grid grid-cols-3 gap-3">
-              <div
-                className={`rounded-xl p-4 text-center ${
-                  theme === "dark"
-                    ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                    : "bg-gradient-to-br from-blue-100 to-cyan-100 border border-cyan-200"
-                }`}
-              >
-                <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
-                <p
-                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                >
-                  Sessions
-                </p>
-              </div>
-              <div
-                className={`rounded-xl p-4 text-center ${
-                  theme === "dark"
-                    ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                    : "bg-gradient-to-br from-purple-100 to-violet-100 border border-purple-200"
-                }`}
-              >
-                <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
-                <p
-                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                >
-                  Hours
-                </p>
-              </div>
-              <div
-                className={`rounded-xl p-4 text-center ${
-                  theme === "dark"
-                    ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                    : "bg-gradient-to-br from-pink-100 to-rose-100 border border-pink-200"
-                }`}
-              >
-                <div className="text-2xl font-bold text-blue-600 mb-1">0</div>
-                <p
-                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-                >
-                  Streak
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Join as Trainer CTA - only for clients */}
-          {!isTrainer && (
-            <div>
-              <div
-                onClick={() => navigate("/trainer-signup")}
-                className="relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all duration-300 active:scale-95 hover:scale-105 shadow-lg hover:shadow-2xl l-shape-bg mb-4"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #10B981 0%, #06B6D4 25%, #3B82F6 50%, #8B5CF6 75%, #10B981 100%)",
-                  backgroundSize: "300% 300%",
-                  animation: "gradientFlow 8s ease infinite",
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50" />
-                <div className="relative z-10 text-center space-y-3">
-                  <div className="flex justify-center">
-                    <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
-                      <Briefcase className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white mb-1">
-                      Become a Trainer
-                    </h3>
-                    <p className="text-sm text-white/90">
-                      Share your expertise and earn
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick Action Tiles */}
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                {/* Invite Friends Tile */}
-                <div
-                  onClick={() => setShowReferralModal(true)}
-                  className="bg-gradient-to-br from-green-100 to-emerald-100 border-2 border-green-300 rounded-xl p-4 cursor-pointer transition-all duration-200 active:scale-95 hover:shadow-lg"
-                >
-                  <div className="flex flex-col items-center gap-2 text-center h-full justify-center">
-                    <div className="p-2 bg-green-600/20 rounded-full">
-                      <Users className="w-5 h-5 text-green-700" />
-                    </div>
-                    <h4
-                      className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}
-                    >
-                      Invite Friends
-                    </h4>
-                    <p
-                      className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}
-                    >
-                      Earn rewards
-                    </p>
-                  </div>
-                </div>
-
-                {/* Upgrade to Premium Tile */}
-                <div
-                  onClick={() => navigate("/subscription")}
-                  className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-4 cursor-pointer transition-all duration-200 active:scale-95 hover:shadow-lg"
-                >
-                  <div className="flex flex-col items-center gap-2 text-center h-full justify-center">
-                    <div className="p-2 bg-orange-600/20 rounded-full">
-                      <CheckCircle className="w-5 h-5 text-orange-700" />
-                    </div>
-                    <h4
-                      className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}
-                    >
-                      Go Premium
-                    </h4>
-                    <p
-                      className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}
-                    >
-                      Unlock all
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Trainer Referral Tiles */}
-          {isTrainer && (
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              {/* Refer a Cotrainer Tile */}
-              <div
-                onClick={() => setShowTrainerReferralModal(true)}
-                className="bg-gradient-to-br from-blue-100 to-indigo-100 border-2 border-blue-300 rounded-xl p-4 cursor-pointer transition-all duration-200 active:scale-95 hover:shadow-lg"
-              >
-                <div className="flex flex-col items-center gap-2 text-center h-full justify-center">
-                  <div className="p-2 bg-blue-600/20 rounded-full">
-                    <Briefcase className="w-5 h-5 text-blue-700" />
-                  </div>
-                  <h4
-                    className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}
-                  >
-                    Refer Trainer
-                  </h4>
-                  <p
-                    className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}
-                  >
-                    Earn bonus
-                  </p>
-                </div>
-              </div>
-
-              {/* Upgrade to Premium Tile */}
-              <div
-                onClick={() => navigate("/subscription")}
-                className="bg-gradient-to-br from-orange-100 to-amber-100 border-2 border-orange-300 rounded-xl p-4 cursor-pointer transition-all duration-200 active:scale-95 hover:shadow-lg"
-              >
-                <div className="flex flex-col items-center gap-2 text-center h-full justify-center">
-                  <div className="p-2 bg-orange-600/20 rounded-full">
-                    <CheckCircle className="w-5 h-5 text-orange-700" />
-                  </div>
-                  <h4
-                    className={`font-bold text-sm ${theme === "dark" ? "text-gray-900" : "text-gray-900"}`}
-                  >
-                    Go Premium
-                  </h4>
-                  <p
-                    className={`text-xs ${theme === "dark" ? "text-gray-800" : "text-gray-700"}`}
-                  >
-                    More features
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Theme Toggle Button */}
-          <div
-            className={`rounded-lg p-4 flex items-center justify-between ${
+          ) : (
+            <div className={`rounded-lg p-6 text-center ${
               theme === "dark"
-                ? "bg-gray-800/50 border border-gray-700/50"
-                : "bg-gradient-to-br from-yellow-50/40 to-amber-50/40 border border-yellow-200/30 backdrop-blur-md"
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <div
-                className={`w-5 h-5 rounded-full flex items-center justify-center ${
-                  theme === "light"
-                    ? "bg-orange-600 text-white"
-                    : "bg-blue-400 text-white"
-                }`}
-              >
-                {theme === "light" ? "☀" : "🌙"}
-              </div>
-              <div>
-                <p
-                  className={`font-medium text-sm ${
-                    theme === "dark" ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  {theme === "light" ? "Light Mode" : "Dark Mode"}
-                </p>
-                <p
-                  className={`text-xs ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }`}
-                >
-                  Tap to switch
-                </p>
-              </div>
+                ? "bg-gray-700/50"
+                : "bg-gray-100"
+            }`}>
+              <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+                No achievements yet. Complete workouts to unlock achievements!
+              </p>
             </div>
-            <button
-              onClick={toggleTheme}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors text-sm ${
-                theme === "dark"
-                  ? "bg-gray-700 text-white hover:bg-gray-600"
-                  : "bg-white text-gray-900 border border-gray-300 hover:bg-gray-50"
-              }`}
-            >
-              {theme === "light" ? "Dark" : "Light"}
-            </button>
-          </div>
-
-          {/* Menu Items */}
-          {/* Achievements Section */}
-          <div
-            className={`rounded-2xl p-4 ${
-              theme === "dark"
-                ? "bg-gray-800/50 border border-gray-700/50 backdrop-blur-xl"
-                : "bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200"
-            }`}
-          >
-            <h3
-              className={`font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-            >
-              🏆 Achievements
-            </h3>
-            <AchievementBadges compact={true} />
-          </div>
-
-          {/* Referral Code Section */}
-          <ReferralCodeSection theme={theme} />
-
-          <div className="space-y-2">
-            <button
-              onClick={() => navigate(`/user/${userProfile?.username}`)}
-              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
-                theme === "dark"
-                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
-                  : "bg-white border-gray-300 hover:bg-gray-50"
-              }`}
-            >
-              <Eye
-                className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-              />
-              <span
-                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-              >
-                View My Public Profile
-              </span>
-            </button>
-
-            <button
-              onClick={() => setShowEditModal(true)}
-              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
-                theme === "dark"
-                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
-                  : "bg-white border-gray-300 hover:bg-gray-50"
-              }`}
-            >
-              <Edit2
-                className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
-              />
-              <span
-                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-              >
-                Edit Profile
-              </span>
-            </button>
-
-            <button
-              onClick={() => navigate("/achievements")}
-              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
-                theme === "dark"
-                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
-                  : "bg-white border-gray-300 hover:bg-gray-50"
-              }`}
-            >
-              <span className="text-xl">🏆</span>
-              <span
-                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-              >
-                Achievements
-              </span>
-            </button>
-
-            <button
-              onClick={() => navigate("/training-modes")}
-              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
-                theme === "dark"
-                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
-                  : "bg-white border-gray-300 hover:bg-gray-50"
-              }`}
-            >
-              <span className="text-xl">🎯</span>
-              <span
-                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-              >
-                Training Modes
-              </span>
-            </button>
-
-            <button
-              onClick={() => navigate("/subscription")}
-              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
-                theme === "dark"
-                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800"
-                  : "bg-white border-gray-300 hover:bg-gray-50"
-              }`}
-            >
-              <span className="text-xl">⭐</span>
-              <span
-                className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-              >
-                Premium
-              </span>
-            </button>
-
-            <button
-              onClick={async () => {
-                try {
-                  await signOut();
-                  toast.success("Logged out successfully");
-                  // Navigate to login after a short delay to ensure state is cleared
-                  setTimeout(() => {
-                    navigate("/login", { replace: true });
-                  }, 500);
-                } catch (error) {
-                  console.error("Logout error:", error);
-                  toast.error("Failed to logout");
-                }
-              }}
-              className={`w-full flex items-center gap-3 border rounded-lg p-4 transition-colors ${
-                theme === "dark"
-                  ? "bg-gray-800/50 border-gray-700/50 hover:bg-gray-800 text-red-400"
-                  : "bg-white border-gray-300 hover:bg-red-50 text-red-600"
-              }`}
-            >
-              <LogOut className="w-5 h-5" />
-              <span className="font-medium">Logout</span>
-            </button>
-          </div>
+          )}
         </div>
 
-        {/* Edit Profile Modal */}
-        {showEditModal && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div
-              className={`w-full max-w-md rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto ${
-                theme === "dark" ? "bg-gray-800" : "bg-white"
-              }`}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2
-                  className={`text-xl font-bold ${
-                    theme === "dark" ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  Edit Profile
-                </h2>
-                <button
-                  onClick={() => setShowEditModal(false)}
-                  className={`text-2xl leading-none ${
-                    theme === "dark"
-                      ? "text-gray-400 hover:text-gray-300"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  ✕
-                </button>
-              </div>
+        {/* TRAINER VERIFICATION SECTION (conditional) */}
+        {isTrainer && (
+          <div className={`rounded-2xl p-6 space-y-4 shadow-sm border-2 border-amber-400 ${
+            theme === "dark"
+              ? "bg-gradient-to-br from-amber-900/30 to-orange-900/30"
+              : "bg-gradient-to-br from-amber-50 to-orange-50"
+          }`}>
+            <h2 className={`text-lg font-bold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              ✓ Trainer Verification
+            </h2>
 
-              <div className="space-y-4">
-                <div>
-                  <label
-                    className={`block text-sm font-medium mb-1 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}
-                  >
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    value={editForm.name}
-                    onChange={(e) =>
-                      setEditForm((prev) => ({ ...prev, name: e.target.value }))
-                    }
-                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                      theme === "dark"
-                        ? "border border-gray-700 bg-gray-900 text-white"
-                        : "border border-gray-300 bg-white text-gray-900"
-                    }`}
-                  />
+            <div className="space-y-3">
+              {/* Upload ID Step */}
+              <div className={`rounded-xl p-4 flex items-center gap-4 ${
+                theme === "dark"
+                  ? "bg-gray-700/50 border border-gray-600"
+                  : "bg-white border border-gray-200"
+              }`}>
+                <div className="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-lg">
+                  1
                 </div>
-
-                <div>
-                  <label
-                    className={`block text-sm font-medium mb-1 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}
-                  >
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    value={editForm.email}
-                    onChange={(e) =>
-                      setEditForm((prev) => ({
-                        ...prev,
-                        email: e.target.value,
-                      }))
-                    }
-                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                      theme === "dark"
-                        ? "border border-gray-700 bg-gray-900 text-white"
-                        : "border border-gray-300 bg-white text-gray-900"
-                    }`}
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className={`block text-sm font-medium mb-1 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}
-                  >
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    value={editForm.phone}
-                    onChange={(e) =>
-                      setEditForm((prev) => ({
-                        ...prev,
-                        phone: e.target.value,
-                      }))
-                    }
-                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                      theme === "dark"
-                        ? "border border-gray-700 bg-gray-900 text-white"
-                        : "border border-gray-300 bg-white text-gray-900"
-                    }`}
-                    placeholder="+91 9876543210"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className={`block text-sm font-medium mb-1 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}
-                  >
-                    Date of Birth
-                  </label>
-                  <input
-                    type="date"
-                    value={editForm.dateOfBirth}
-                    onChange={(e) => {
-                      const newDOB = e.target.value;
-                      const newAge = calculateAge(newDOB);
-                      setEditForm((prev) => ({
-                        ...prev,
-                        dateOfBirth: newDOB,
-                        age: newAge,
-                      }));
-                    }}
-                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                      theme === "dark"
-                        ? "border border-gray-700 bg-gray-900 text-white"
-                        : "border border-gray-300 bg-white text-gray-900"
-                    }`}
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className={`block text-sm font-medium mb-1 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}
-                  >
-                    Gender
-                  </label>
-                  <select
-                    value={editForm.gender}
-                    onChange={(e) =>
-                      setEditForm((prev) => ({
-                        ...prev,
-                        gender: e.target.value,
-                      }))
-                    }
-                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                      theme === "dark"
-                        ? "border border-gray-700 bg-gray-900 text-white"
-                        : "border border-gray-300 bg-white text-gray-900"
-                    }`}
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label
-                    className={`block text-sm font-medium mb-2 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}
-                  >
-                    Height
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">
-                        Feet
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="5"
-                        min="0"
-                        max="10"
-                        value={
-                          editForm.height > 0
-                            ? cmToFeetInches(editForm.height).feet
-                            : ""
-                        }
-                        onChange={(e) => {
-                          const feet = parseInt(e.target.value) || 0;
-                          const inches =
-                            editForm.height > 0
-                              ? cmToFeetInches(editForm.height).inches
-                              : 0;
-                          const totalInches = feet * 12 + inches;
-                          setEditForm((prev) => ({
-                            ...prev,
-                            height: inchesToCm(totalInches),
-                          }));
-                        }}
-                        className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                          theme === "dark"
-                            ? "border border-gray-700 bg-gray-900 text-white"
-                            : "border border-gray-300 bg-white text-gray-900"
-                        }`}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">
-                        Inches
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="11"
-                        min="0"
-                        max="11"
-                        value={
-                          editForm.height > 0
-                            ? cmToFeetInches(editForm.height).inches
-                            : ""
-                        }
-                        onChange={(e) => {
-                          const feet =
-                            editForm.height > 0
-                              ? cmToFeetInches(editForm.height).feet
-                              : 0;
-                          const inches = parseInt(e.target.value) || 0;
-                          const totalInches = feet * 12 + inches;
-                          setEditForm((prev) => ({
-                            ...prev,
-                            height: inchesToCm(totalInches),
-                          }));
-                        }}
-                        className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                          theme === "dark"
-                            ? "border border-gray-700 bg-gray-900 text-white"
-                            : "border border-gray-300 bg-white text-gray-900"
-                        }`}
-                      />
-                    </div>
-                  </div>
-                  {editForm.height > 0 && (
-                    <p
-                      className={`text-xs mt-2 ${
-                        theme === "dark" ? "text-gray-400" : "text-gray-600"
-                      }`}
-                    >
-                      {cmToFeetInchesString(editForm.height)} ({editForm.height}{" "}
-                      cm)
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    className={`block text-sm font-medium mb-1 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-900"
-                    }`}
-                  >
-                    Weight (kg)
-                  </label>
-                  <input
-                    type="number"
-                    value={editForm.weight}
-                    onChange={(e) =>
-                      setEditForm((prev) => ({
-                        ...prev,
-                        weight: Number(e.target.value),
-                      }))
-                    }
-                    className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
-                      theme === "dark"
-                        ? "border border-gray-700 bg-gray-900 text-white"
-                        : "border border-gray-300 bg-white text-gray-900"
-                    }`}
-                  />
-                </div>
-
-                <div
-                  className={`rounded-lg p-3 ${
-                    theme === "dark"
-                      ? "bg-blue-900/30 border border-blue-800"
-                      : "bg-blue-50 border border-blue-200"
-                  }`}
-                >
-                  <p
-                    className={`text-xs ${
-                      theme === "dark" ? "text-blue-300" : "text-blue-700"
-                    }`}
-                  >
-                    <strong>Age:</strong> {editForm.age} years
+                <div className="flex-1">
+                  <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                    Upload ID Document
                   </p>
-                  <p
-                    className={`text-xs mt-1 ${
-                      theme === "dark" ? "text-blue-300" : "text-blue-600"
-                    }`}
-                  >
-                    Age auto-updates from your date of birth
+                  <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    Upload a clear photo of your government ID
                   </p>
                 </div>
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <button
-                  onClick={() => setShowEditModal(false)}
-                  disabled={isSaving}
-                  className={`flex-1 font-medium py-3 rounded-lg transition-colors disabled:opacity-50 ${
-                    theme === "dark"
-                      ? "bg-gray-700 text-white hover:bg-gray-600"
-                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
-                  }`}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSaveEdit}
-                  disabled={isSaving}
-                  className="flex-1 bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {isSaving ? (
-                    <>
-                      <Loader className="w-4 h-4 animate-spin" />
-                      Saving...
-                    </>
-                  ) : (
-                    "Save Changes"
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Referral Modal */}
-        {showReferralModal && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center p-0 md:p-4">
-            <div
-              className={`w-full md:max-w-md rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto ${
-                theme === "dark" ? "bg-gray-800" : "bg-white"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <h2
-                  className={`text-lg md:text-xl font-bold ${
-                    theme === "dark" ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  Invite Friends
-                </h2>
-                <button
-                  onClick={() => setShowReferralModal(false)}
-                  className={`text-2xl leading-none ${
-                    theme === "dark"
-                      ? "text-gray-400 hover:text-gray-300"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  ✕
+                <button className={`p-2 rounded-full ${
+                  theme === "dark"
+                    ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}>
+                  <Upload className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Referral Info */}
-              <div className="space-y-4">
-                <p
-                  className={`text-sm leading-relaxed ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-600"
-                  }`}
-                >
-                  Share your referral link with friends and earn rewards when
-                  they join CoTrainr!
+              {/* Selfie Step */}
+              <div className={`rounded-xl p-4 flex items-center gap-4 ${
+                theme === "dark"
+                  ? "bg-gray-700/50 border border-gray-600"
+                  : "bg-white border border-gray-200"
+              }`}>
+                <div className="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-lg">
+                  2
+                </div>
+                <div className="flex-1">
+                  <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                    Take a Selfie for Verification
+                  </p>
+                  <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    A quick photo to verify your identity
+                  </p>
+                </div>
+                <button className={`p-2 rounded-full ${
+                  theme === "dark"
+                    ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}>
+                  <Camera className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Info Box */}
+              <div className={`rounded-xl p-4 flex items-start gap-3 ${
+                theme === "dark"
+                  ? "bg-green-900/30 border border-green-800"
+                  : "bg-green-50 border border-green-200"
+              }`}>
+                <Lock className={`w-5 h-5 mt-0.5 flex-shrink-0 ${theme === "dark" ? "text-green-400" : "text-green-600"}`} />
+                <p className={`text-xs ${theme === "dark" ? "text-green-300" : "text-green-700"}`}>
+                  Your documents are encrypted and only used for identity verification. We never share your data.
                 </p>
-
-                {/* Referral Link Card */}
-                <div
-                  className={`rounded-2xl p-4 space-y-3 border-2 ${
-                    theme === "dark"
-                      ? "bg-green-900/30 border-green-800"
-                      : "bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
-                  }`}
-                >
-                  <p
-                    className={`text-xs font-semibold ${
-                      theme === "dark" ? "text-green-300" : "text-gray-700"
-                    }`}
-                  >
-                    Your Referral Link
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <input
-                      type="text"
-                      readOnly
-                      value={referralLink}
-                      className={`flex-1 rounded-lg px-3 py-2 text-xs md:text-sm focus:outline-none overflow-hidden text-ellipsis ${
-                        theme === "dark"
-                          ? "bg-gray-900 border border-green-700 text-gray-300"
-                          : "bg-white border border-green-300 text-gray-700"
-                      }`}
-                    />
-                    <button
-                      onClick={handleCopyReferralLink}
-                      className={`px-3 md:px-4 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-1 whitespace-nowrap text-xs md:text-sm ${
-                        referralCopied
-                          ? "bg-green-600 text-white"
-                          : "bg-green-600 text-white hover:bg-green-700"
-                      }`}
-                    >
-                      {referralCopied ? (
-                        <>
-                          <Check className="w-3 md:w-4 h-3 md:h-4" />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3 md:w-4 h-3 md:h-4" />
-                          Copy
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Referral Code */}
-                <div
-                  className={`rounded-lg p-4 ${
-                    theme === "dark"
-                      ? "bg-gray-800/50 border border-gray-700/50"
-                      : "bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 border border-green-200"
-                  }`}
-                >
-                  <p
-                    className={`text-xs mb-2 ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
-                    Referral Code
-                  </p>
-                  <p
-                    className={`text-base md:text-lg font-bold ${
-                      theme === "dark" ? "text-green-400" : "text-green-600"
-                    }`}
-                  >
-                    {referralCode}
-                  </p>
-                </div>
-
-                {/* Benefits */}
-                <div className="space-y-3">
-                  {/* Friend Benefits */}
-                  <div
-                    className={`rounded-xl p-4 space-y-2 border ${
-                      theme === "dark"
-                        ? "bg-green-900/30 border-green-800"
-                        : "bg-green-50 border-green-200"
-                    }`}
-                  >
-                    <p
-                      className={`text-sm font-semibold ${
-                        theme === "dark" ? "text-green-300" : "text-gray-900"
-                      }`}
-                    >
-                      Friend Gets
-                    </p>
-                    <ul
-                      className={`space-y-1 text-xs ${
-                        theme === "dark" ? "text-gray-300" : "text-gray-700"
-                      }`}
-                    >
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 mt-0.5 flex-shrink-0">
-                          ✓
-                        </span>
-                        <span>20% OFF first month</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 mt-0.5 flex-shrink-0">
-                          ���
-                        </span>
-                        <span>2 free trainer sessions</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Your Benefits */}
-                  <div
-                    className={`rounded-xl p-4 space-y-2 border ${
-                      theme === "dark"
-                        ? "bg-purple-900/30 border-purple-800"
-                        : "bg-purple-50 border-purple-200"
-                    }`}
-                  >
-                    <p
-                      className={`text-sm font-semibold ${
-                        theme === "dark" ? "text-purple-300" : "text-gray-900"
-                      }`}
-                    >
-                      You Get
-                    </p>
-                    <ul
-                      className={`space-y-1 text-xs ${
-                        theme === "dark" ? "text-gray-300" : "text-gray-700"
-                      }`}
-                    >
-                      <li className="flex items-start gap-2">
-                        <span className="text-purple-600 mt-0.5 flex-shrink-0">
-                          ✓
-                        </span>
-                        <span>1 week Pro features</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-purple-600 mt-0.5 flex-shrink-0">
-                          ✓
-                        </span>
-                        <span>20% bonus on next purchase</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-2 pt-2 sm:pt-4">
-                <button
-                  onClick={() => setShowReferralModal(false)}
-                  className={`flex-1 font-medium py-2.5 md:py-3 rounded-lg transition-colors text-sm md:text-base ${
-                    theme === "dark"
-                      ? "bg-gray-700 text-white hover:bg-gray-600"
-                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
-                  }`}
-                >
-                  Close
-                </button>
-                <button
-                  onClick={handleShareReferral}
-                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-medium py-2.5 md:py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm md:text-base"
-                >
-                  <Share2 className="w-3 md:w-4 h-3 md:h-4" />
-                  Share
-                </button>
-              </div>
+              <button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+                <CheckCircle className="w-5 h-5" />
+                Start Verification
+              </button>
             </div>
           </div>
         )}
 
-        {/* Trainer Referral Modal */}
-        {showTrainerReferralModal && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center p-0 md:p-4">
-            <div
-              className={`w-full md:max-w-md rounded-t-3xl md:rounded-3xl p-5 md:p-6 space-y-5 md:space-y-6 max-h-[85vh] md:max-h-[90vh] overflow-y-auto ${
-                theme === "dark" ? "bg-gray-800" : "bg-white"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <h2
-                  className={`text-lg md:text-xl font-bold ${
-                    theme === "dark" ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  Refer a Cotrainer
-                </h2>
-                <button
-                  onClick={() => setShowTrainerReferralModal(false)}
-                  className={`text-2xl leading-none ${
-                    theme === "dark"
-                      ? "text-gray-400 hover:text-gray-300"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  ✕
-                </button>
-              </div>
+        {/* ADDITIONAL MENU ITEMS */}
+        <div className="space-y-2">
+          <button
+            onClick={() => navigate(`/user/${userProfile?.username}`)}
+            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-colors ${
+              theme === "dark"
+                ? "bg-gray-800/50 border border-gray-700/50 hover:bg-gray-800"
+                : "bg-white border border-gray-200 hover:bg-gray-50"
+            }`}
+          >
+            <User className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`} />
+            <span className={`font-medium ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              View My Public Profile
+            </span>
+          </button>
 
-              {/* Referral Info */}
-              <div className="space-y-4">
-                <p
-                  className={`text-sm leading-relaxed ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-600"
-                  }`}
-                >
-                  Share your trainer code with other trainers and earn
-                  commission when they join CoTrainr!
-                </p>
-
-                {/* Trainer Referral Link Card */}
-                <div
-                  className={`rounded-2xl p-4 space-y-3 border-2 ${
-                    theme === "dark"
-                      ? "bg-blue-900/30 border-blue-800"
-                      : "bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200"
-                  }`}
-                >
-                  <p
-                    className={`text-xs font-semibold ${
-                      theme === "dark" ? "text-blue-300" : "text-gray-700"
-                    }`}
-                  >
-                    Your Trainer Referral Link
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <input
-                      type="text"
-                      readOnly
-                      value={trainerReferralLink}
-                      className={`flex-1 rounded-lg px-3 py-2 text-xs md:text-sm focus:outline-none overflow-hidden text-ellipsis ${
-                        theme === "dark"
-                          ? "bg-gray-900 border border-blue-700 text-gray-300"
-                          : "bg-white border border-blue-300 text-gray-700"
-                      }`}
-                    />
-                    <button
-                      onClick={handleCopyTrainerReferralLink}
-                      className={`px-3 md:px-4 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-1 whitespace-nowrap text-xs md:text-sm ${
-                        trainerReferralCopied
-                          ? "bg-blue-600 text-white"
-                          : "bg-blue-600 text-white hover:bg-blue-700"
-                      }`}
-                    >
-                      {trainerReferralCopied ? (
-                        <>
-                          <Check className="w-3 md:w-4 h-3 md:h-4" />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3 md:w-4 h-3 md:h-4" />
-                          Copy
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Trainer Referral Code */}
-                <div
-                  className={`rounded-lg p-4 ${
-                    theme === "dark"
-                      ? "bg-gray-800/50 border border-gray-700/50"
-                      : "bg-gradient-to-br from-indigo-100 via-blue-100 to-purple-100 border border-indigo-200"
-                  }`}
-                >
-                  <p
-                    className={`text-xs mb-2 ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
-                    Coach Code
-                  </p>
-                  <p
-                    className={`text-base md:text-lg font-bold ${
-                      theme === "dark" ? "text-blue-400" : "text-blue-600"
-                    }`}
-                  >
-                    {trainerReferralCode}
-                  </p>
-                </div>
-
-                {/* Benefits */}
-                <div className="space-y-3">
-                  {/* Referred Trainer Benefits */}
-                  <div
-                    className={`rounded-xl p-4 space-y-2 border ${
-                      theme === "dark"
-                        ? "bg-blue-900/30 border-blue-800"
-                        : "bg-blue-50 border-blue-200"
-                    }`}
-                  >
-                    <p
-                      className={`text-sm font-semibold ${
-                        theme === "dark" ? "text-blue-300" : "text-gray-900"
-                      }`}
-                    >
-                      New Trainer Gets
-                    </p>
-                    <ul
-                      className={`space-y-1 text-xs ${
-                        theme === "dark" ? "text-gray-300" : "text-gray-700"
-                      }`}
-                    >
-                      <li className="flex items-start gap-2">
-                        <span className="text-blue-600 mt-0.5 flex-shrink-0">
-                          ✓
-                        </span>
-                        <span>Onboarding support</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-blue-600 mt-0.5 flex-shrink-0">
-                          ✓
-                        </span>
-                        <span>50% platform fee waived (3 months)</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Your Benefits as Referrer */}
-                  <div
-                    className={`rounded-xl p-4 space-y-2 border ${
-                      theme === "dark"
-                        ? "bg-indigo-900/30 border-indigo-800"
-                        : "bg-indigo-50 border-indigo-200"
-                    }`}
-                  >
-                    <p
-                      className={`text-sm font-semibold ${
-                        theme === "dark" ? "text-indigo-300" : "text-gray-900"
-                      }`}
-                    >
-                      You Get
-                    </p>
-                    <ul
-                      className={`space-y-1 text-xs ${
-                        theme === "dark" ? "text-gray-300" : "text-gray-700"
-                      }`}
-                    >
-                      <li className="flex items-start gap-2">
-                        <span className="text-indigo-600 mt-0.5 flex-shrink-0">
-                          ✓
-                        </span>
-                        <span>₹2000 per referral</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-indigo-600 mt-0.5 flex-shrink-0">
-                          ✓
-                        </span>
-                        <span>Featured trainer profile</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-2 pt-2 sm:pt-4">
-                <button
-                  onClick={() => setShowTrainerReferralModal(false)}
-                  className={`flex-1 font-medium py-2.5 md:py-3 rounded-lg transition-colors text-sm md:text-base ${
-                    theme === "dark"
-                      ? "bg-gray-700 text-white hover:bg-gray-600"
-                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
-                  }`}
-                >
-                  Close
-                </button>
-                <button
-                  onClick={handleShareTrainerReferral}
-                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium py-2.5 md:py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm md:text-base"
-                >
-                  <Share2 className="w-3 md:w-4 h-3 md:h-4" />
-                  Share
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+          <button
+            onClick={async () => {
+              try {
+                await signOut();
+                toast.success("Logged out successfully");
+                setTimeout(() => {
+                  navigate("/login", { replace: true });
+                }, 500);
+              } catch (error) {
+                console.error("Logout error:", error);
+                toast.error("Failed to logout");
+              }
+            }}
+            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-colors ${
+              theme === "dark"
+                ? "bg-gray-800/50 border border-gray-700/50 hover:bg-red-900/30 text-red-400"
+                : "bg-white border border-gray-200 hover:bg-red-50 text-red-600"
+            }`}
+          >
+            <LogOut className="w-5 h-5" />
+            <span className="font-medium">Logout</span>
+          </button>
+        </div>
       </div>
+
+      {/* EDIT PROFILE MODAL */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div
+            className={`w-full max-w-md rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className={`text-xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                Edit Profile
+              </h2>
+              <button
+                onClick={() => setShowEditModal(false)}
+                className={`text-2xl leading-none ${
+                  theme === "dark" ? "text-gray-400 hover:text-gray-300" : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}>
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  value={editForm.name}
+                  onChange={(e) => setEditForm((prev) => ({ ...prev, name: e.target.value }))}
+                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                    theme === "dark"
+                      ? "border border-gray-700 bg-gray-900 text-white"
+                      : "border border-gray-300 bg-white text-gray-900"
+                  }`}
+                />
+              </div>
+
+              <div>
+                <label className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}>
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={editForm.email}
+                  onChange={(e) => setEditForm((prev) => ({ ...prev, email: e.target.value }))}
+                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                    theme === "dark"
+                      ? "border border-gray-700 bg-gray-900 text-white"
+                      : "border border-gray-300 bg-white text-gray-900"
+                  }`}
+                />
+              </div>
+
+              <div>
+                <label className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}>
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  value={editForm.phone}
+                  onChange={(e) => setEditForm((prev) => ({ ...prev, phone: e.target.value }))}
+                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                    theme === "dark"
+                      ? "border border-gray-700 bg-gray-900 text-white"
+                      : "border border-gray-300 bg-white text-gray-900"
+                  }`}
+                  placeholder="+91 9876543210"
+                />
+              </div>
+
+              <div>
+                <label className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}>
+                  Gender
+                </label>
+                <select
+                  value={editForm.gender}
+                  onChange={(e) => setEditForm((prev) => ({ ...prev, gender: e.target.value }))}
+                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                    theme === "dark"
+                      ? "border border-gray-700 bg-gray-900 text-white"
+                      : "border border-gray-300 bg-white text-gray-900"
+                  }`}
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label className={`block text-sm font-medium mb-2 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}>
+                  Height
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Feet</label>
+                    <input
+                      type="number"
+                      placeholder="5"
+                      min="0"
+                      max="10"
+                      value={editForm.height > 0 ? cmToFeetInches(editForm.height).feet : ""}
+                      onChange={(e) => {
+                        const feet = parseInt(e.target.value) || 0;
+                        const inches = editForm.height > 0 ? cmToFeetInches(editForm.height).inches : 0;
+                        const totalInches = feet * 12 + inches;
+                        setEditForm((prev) => ({ ...prev, height: inchesToCm(totalInches) }));
+                      }}
+                      className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                        theme === "dark"
+                          ? "border border-gray-700 bg-gray-900 text-white"
+                          : "border border-gray-300 bg-white text-gray-900"
+                      }`}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Inches</label>
+                    <input
+                      type="number"
+                      placeholder="11"
+                      min="0"
+                      max="11"
+                      value={editForm.height > 0 ? cmToFeetInches(editForm.height).inches : ""}
+                      onChange={(e) => {
+                        const feet = editForm.height > 0 ? cmToFeetInches(editForm.height).feet : 0;
+                        const inches = parseInt(e.target.value) || 0;
+                        const totalInches = feet * 12 + inches;
+                        setEditForm((prev) => ({ ...prev, height: inchesToCm(totalInches) }));
+                      }}
+                      className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                        theme === "dark"
+                          ? "border border-gray-700 bg-gray-900 text-white"
+                          : "border border-gray-300 bg-white text-gray-900"
+                      }`}
+                    />
+                  </div>
+                </div>
+                {editForm.height > 0 && (
+                  <p className={`text-xs mt-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    {cmToFeetInchesString(editForm.height)} ({editForm.height} cm)
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className={`block text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-300" : "text-gray-900"}`}>
+                  Weight (kg)
+                </label>
+                <input
+                  type="number"
+                  value={editForm.weight}
+                  onChange={(e) => setEditForm((prev) => ({ ...prev, weight: Number(e.target.value) }))}
+                  className={`w-full rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                    theme === "dark"
+                      ? "border border-gray-700 bg-gray-900 text-white"
+                      : "border border-gray-300 bg-white text-gray-900"
+                  }`}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <button
+                onClick={() => setShowEditModal(false)}
+                disabled={isSaving}
+                className={`flex-1 font-medium py-3 rounded-lg transition-colors disabled:opacity-50 ${
+                  theme === "dark"
+                    ? "bg-gray-700 text-white hover:bg-gray-600"
+                    : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                disabled={isSaving}
+                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader className="w-4 h-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  "Save Changes"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
