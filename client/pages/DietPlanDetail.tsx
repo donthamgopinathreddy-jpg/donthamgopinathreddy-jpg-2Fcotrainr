@@ -60,6 +60,13 @@ export default function DietPlanDetail() {
           setPlan(planData);
         }
 
+        // In demo mode, skip database fetch for meals
+        if (isDemoMode()) {
+          setMeals([]);
+          setLoading(false);
+          return;
+        }
+
         // Fetch meals
         const { data: mealsData, error } = await supabase
           .from("diet_plan_meals")
