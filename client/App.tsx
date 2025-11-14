@@ -271,6 +271,26 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/achievements"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Achievements />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/training-modes"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <TrainingModes />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/trainer-signup"
         element={
           <ProtectedRoute>
