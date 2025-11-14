@@ -101,6 +101,38 @@ export default function Profile() {
     weight: userProfile?.weight_kg || 70,
   });
 
+  // Load biometric settings from database
+  useEffect(() => {
+    if (userProfile?.id) {
+      const loadBiometricSettings = async () => {
+        try {
+          const { data, error } = await supabase
+            .from("users")
+            .select("fingerprint_enabled, face_recognition_enabled")
+            .eq("id", userProfile.id)
+            .single();
+
+          if (error) {
+            console.error("Error loading biometric settings:", error);
+            return;
+          }
+
+          if (data) {
+            setSecuritySettings((prev) => ({
+              ...prev,
+              fingerprint: data.fingerprint_enabled || false,
+              faceRecognition: data.face_recognition_enabled || false,
+            }));
+          }
+        } catch (error) {
+          console.error("Error fetching biometric settings:", error);
+        }
+      };
+
+      loadBiometricSettings();
+    }
+  }, [userProfile?.id]);
+
   useEffect(() => {
     if (userProfile && followerCounts) {
       setUser({
