@@ -106,7 +106,26 @@ const RoleBasedHome = () => {
 };
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
-  // Just render children immediately - auth check happens in background in AuthProvider
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      // Request permissions on app startup for authenticated users
+      const requestInitialPermissions = async () => {
+        try {
+          // Request notifications (can be called without user interaction in many cases)
+          if ("Notification" in window && Notification.permission === "default") {
+            await Notification.requestPermission();
+          }
+        } catch (error) {
+          console.debug("Permission request result:", error);
+        }
+      };
+
+      requestInitialPermissions();
+    }
+  }, [user]);
+
   return <>{children}</>;
 };
 
