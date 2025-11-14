@@ -351,6 +351,88 @@ export default function Profile() {
     }
   };
 
+  const handleVerificationUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: 'id' | 'selfie',
+  ) => {
+    if (!e.target.files?.[0] || !userProfile?.id) return;
+
+    const file = e.target.files[0];
+    setIsUploadingDocs(true);
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const dataUrl = event.target?.result as string;
+
+        try {
+          const columnName = type === 'id' ? 'id_verification_url' : 'selfie_verification_url';
+          const { error: updateError } = await supabase
+            .from("users")
+            .update({
+              [columnName]: dataUrl,
+              [`${type}_verified_at`]: new Date().toISOString(),
+            })
+            .eq("id", userProfile.id);
+
+          if (updateError) {
+            toast.error(`Failed to upload ${type === 'id' ? 'ID' : 'selfie'}`);
+            console.debug("Upload error:", updateError?.code);
+            return;
+          }
+
+          setVerificationDocs((prev) => ({
+            ...prev,
+            [type === 'id' ? 'idUploaded' : 'selfieUploaded']: true,
+          }));
+
+          toast.success(`${type === 'id' ? 'ID' : 'Selfie'} uploaded successfully!`);
+        } catch (error: any) {
+          console.debug("Save verification error:", error instanceof Error ? error.code : "unknown");
+          toast.error("Failed to save verification document");
+        } finally {
+          setIsUploadingDocs(false);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (error: any) {
+      console.debug("Read verification file error:", error instanceof Error ? error.code : "unknown");
+      toast.error("Failed to read file");
+      setIsUploadingDocs(false);
+    }
+  };
+
+  const handleStartVerification = async () => {
+    if (!verificationDocs.idUploaded || !verificationDocs.selfieUploaded) {
+      toast.error("Please upload both ID and selfie");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from("users")
+        .update({
+          trainer_verified: true,
+          trainer_verified_at: new Date().toISOString(),
+        })
+        .eq("id", userProfile?.id);
+
+      if (error) {
+        console.debug("Verification error:", error?.code);
+        toast.error("Failed to submit verification");
+        return;
+      }
+
+      toast.success("✓ Trainer verification submitted! We'll review it within 24 hours.");
+    } catch (error: any) {
+      console.debug("Submit verification error:", error instanceof Error ? error.code : "unknown");
+      toast.error("Failed to submit verification");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const isTrainer = user.role === "trainer";
   const referralCoins = userProfile?.referral_coins || 0;
   const nextRewardCoins = 500;
