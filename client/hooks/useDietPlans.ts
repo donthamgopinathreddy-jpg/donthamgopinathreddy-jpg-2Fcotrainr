@@ -129,6 +129,22 @@ export const useDietPlans = () => {
 
     try {
       setLoading(true);
+
+      // Demo mode: return mock diet plans with trainer info
+      if (isDemoMode()) {
+        const demoPlansWithTrainer = DEMO_DIET_PLANS.map((plan) => ({
+          ...plan,
+          users: {
+            full_name: "Demo Trainer",
+            profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=DemoTrainer",
+          },
+        }));
+        setDietPlans(demoPlansWithTrainer);
+        setError(null);
+        setLoading(false);
+        return;
+      }
+
       const { data, error: fetchError } = await supabase
         .from("diet_plans")
         .select(
