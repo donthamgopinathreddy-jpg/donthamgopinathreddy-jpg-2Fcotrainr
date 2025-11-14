@@ -262,7 +262,7 @@ export default function ActivityDetail() {
             </div>
 
             <div>
-              <div className={`text-5xl font-bold ${theme === "dark" ? colors.text : colors.text}`}>
+              <div className={`text-5xl font-bold ${colors.text} !text-inherit`}>
                 {type === "water"
                   ? selectedDate.toDateString() === new Date().toDateString()
                     ? waterConsumed.toFixed(1)
@@ -276,7 +276,9 @@ export default function ActivityDetail() {
                       : "0"}
               </div>
               <div
-                className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                className={`text-sm ${
+                  theme === "dark" ? "text-gray-300" : "text-gray-700"
+                }`}
               >
                 {type === "water"
                   ? "/ 2.5"
@@ -288,7 +290,9 @@ export default function ActivityDetail() {
             </div>
 
             <div
-              className={`text-xs font-semibold ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              className={`text-xs font-semibold ${
+                theme === "dark" ? "text-gray-300" : "text-gray-700"
+              }`}
             >
               {selectedDate.toLocaleDateString("en-US", {
                 weekday: "long",
