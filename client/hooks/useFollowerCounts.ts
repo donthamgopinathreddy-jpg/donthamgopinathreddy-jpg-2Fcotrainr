@@ -25,7 +25,7 @@ export const useFollowerCounts = (userId?: string) => {
         .single();
 
       if (error) {
-        console.error("Error fetching counts:", error);
+        console.debug("Follower counts fetch error:", error?.code);
         setCounts({ followers_count: 0, following_count: 0 });
         return;
       }
@@ -35,7 +35,7 @@ export const useFollowerCounts = (userId?: string) => {
         following_count: data?.following_count || 0,
       });
     } catch (error) {
-      console.error("Error in fetchCounts:", error);
+      console.debug("Follower counts catch error:", error instanceof Error ? error.code : "unknown");
       setCounts({ followers_count: 0, following_count: 0 });
     } finally {
       setLoading(false);
