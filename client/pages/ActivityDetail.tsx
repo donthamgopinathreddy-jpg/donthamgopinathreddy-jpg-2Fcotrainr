@@ -246,7 +246,8 @@ export default function ActivityDetail() {
                     className={`h-full bg-gradient-to-r ${colors.gradient} transition-all duration-500`}
                     style={{
                       width: `${Math.min(
-                        (selectedDate.toDateString() === new Date().toDateString()
+                        (selectedDate.toDateString() ===
+                        new Date().toDateString()
                           ? type === "water"
                             ? waterConsumed / 2.5
                             : type === "calories"
@@ -376,7 +377,8 @@ export default function ActivityDetail() {
             <div className="flex items-end justify-around gap-2 h-48">
               {weeklyData.map((dayData, idx) => {
                 const safeValue = isNaN(dayData.value) ? 0 : dayData.value;
-                const safeMax = isNaN(dayData.max) || dayData.max <= 0 ? 1 : dayData.max;
+                const safeMax =
+                  isNaN(dayData.max) || dayData.max <= 0 ? 1 : dayData.max;
                 const barHeightPercent = (safeValue / safeMax) * 100;
 
                 return (
