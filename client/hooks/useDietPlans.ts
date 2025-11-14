@@ -36,11 +36,54 @@ export interface DietPlan {
   meals?: DietPlanMeal[];
 }
 
+const DEMO_DIET_PLANS: DietPlan[] = [
+  {
+    id: "plan-1",
+    trainer_id: "demo-user-trainer",
+    client_id: "demo-user-client",
+    name: "High Protein Muscle Gain",
+    description: "Designed to build lean muscle mass with high protein intake",
+    duration_days: 30,
+    meals_per_day: 4,
+    target_calories: 2800,
+    macros_protein_g: 200,
+    macros_carbs_g: 300,
+    macros_fat_g: 90,
+    notes: "Focus on compound exercises with this plan",
+    status: "active",
+    shared_at: new Date().toISOString(),
+    created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: "plan-2",
+    trainer_id: "demo-user-trainer",
+    client_id: "demo-user-client",
+    name: "Low Carb Weight Loss",
+    description: "Reduce carbs while maintaining protein for sustainable weight loss",
+    duration_days: 60,
+    meals_per_day: 3,
+    target_calories: 1800,
+    macros_protein_g: 150,
+    macros_carbs_g: 150,
+    macros_fat_g: 60,
+    notes: "Ideal for consistent fat loss",
+    status: "active",
+    shared_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+];
+
 export const useDietPlans = () => {
   const { user } = useAuth();
   const [dietPlans, setDietPlans] = useState<DietPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const isDemoMode = () => {
+    return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
+  };
 
   // Fetch diet plans for trainer (all clients)
   const fetchTrainerDietPlans = async () => {
@@ -48,6 +91,15 @@ export const useDietPlans = () => {
 
     try {
       setLoading(true);
+
+      // Demo mode: return mock diet plans
+      if (isDemoMode()) {
+        setDietPlans(DEMO_DIET_PLANS);
+        setError(null);
+        setLoading(false);
+        return;
+      }
+
       const { data, error: fetchError } = await supabase
         .from("diet_plans")
         .select("*")
