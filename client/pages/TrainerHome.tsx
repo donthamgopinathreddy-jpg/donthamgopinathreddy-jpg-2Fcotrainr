@@ -123,6 +123,7 @@ const MOTIVATIONAL_QUOTES = [
 export default function TrainerHome() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { theme } = useTheme();
   const view = searchParams.get("view") || "stats";
   const [latestPosts, setLatestPosts] = useState<PostData[]>(LATEST_POSTS);
 
