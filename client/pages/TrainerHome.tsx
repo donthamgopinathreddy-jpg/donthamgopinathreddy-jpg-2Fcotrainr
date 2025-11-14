@@ -414,7 +414,7 @@ export default function TrainerHome() {
           {/* Main Content */}
           <div className="max-w-md mx-auto px-4 -mt-8 pb-8 relative z-20 space-y-6">
             {/* Progress Bars Card */}
-            <div className="bg-card border border-border rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
+            <div className="bg-card rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold text-foreground">
                   Today's Stats
