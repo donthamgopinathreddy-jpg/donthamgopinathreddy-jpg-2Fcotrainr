@@ -255,6 +255,39 @@ export default function Profile() {
     }
   };
 
+  const handleBiometricToggle = async (setting: "fingerprint" | "faceRecognition") => {
+    if (!userProfile?.id) return;
+
+    const newValue = !securitySettings[setting];
+    setIsSavingBiometrics(true);
+
+    try {
+      const updateData =
+        setting === "fingerprint"
+          ? { fingerprint_enabled: newValue }
+          : { face_recognition_enabled: newValue };
+
+      const { error } = await supabase
+        .from("users")
+        .update(updateData)
+        .eq("id", userProfile.id);
+
+      if (error) throw error;
+
+      setSecuritySettings((prev) => ({
+        ...prev,
+        [setting]: newValue,
+      }));
+
+      toast.success(`✓ ${setting === "fingerprint" ? "Fingerprint" : "Face Recognition"} ${newValue ? "enabled" : "disabled"}!`);
+    } catch (error: any) {
+      console.error("Error updating biometric setting:", error);
+      toast.error("Failed to update security setting");
+    } finally {
+      setIsSavingBiometrics(false);
+    }
+  };
+
   const handleChangePassword = async () => {
     if (!passwordForm.current || !passwordForm.new || !passwordForm.confirm) {
       toast.error("Please fill in all password fields");
