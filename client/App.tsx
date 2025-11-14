@@ -292,6 +292,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/diet-plans"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <DietPlans />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/trainer-signup"
         element={
           <ProtectedRoute>
