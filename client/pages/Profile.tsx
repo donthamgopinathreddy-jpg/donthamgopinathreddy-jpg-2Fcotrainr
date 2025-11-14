@@ -1278,6 +1278,80 @@ export default function Profile() {
           )}
         </div>
 
+        {/* SHARED DIET PLANS SECTION (for clients) */}
+        {!isTrainer && sharedDietPlans.length > 0 && (
+          <div
+            className={`rounded-2xl p-6 space-y-4 shadow-md transition-all hover:shadow-lg ${
+              theme === "dark"
+                ? "bg-gradient-to-br from-gray-800 to-gray-700/50 border border-gray-700"
+                : "bg-gradient-to-br from-orange-50 to-amber-50/50 border border-orange-200"
+            }`}
+          >
+            <h2
+              className={`text-lg font-bold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              <Flame className="w-5 h-5 text-orange-500" />
+              Shared Diet Plans
+            </h2>
+
+            <div className="space-y-3">
+              {sharedDietPlans.map((plan) => (
+                <button
+                  key={plan.id}
+                  onClick={() => navigate(`/diet-plan/${plan.id}`)}
+                  className={`w-full rounded-xl p-4 text-left transition-all hover:shadow-md ${
+                    theme === "dark"
+                      ? "bg-gray-700/50 border border-gray-600 hover:bg-gray-600/50"
+                      : "bg-white border border-gray-200 hover:bg-gray-50"
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1">
+                      <p
+                        className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                      >
+                        {plan.name}
+                      </p>
+                      <p
+                        className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                      >
+                        By {plan.users?.full_name || "Your Trainer"}
+                      </p>
+                    </div>
+                    <ArrowRight className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                  </div>
+
+                  {plan.description && (
+                    <p
+                      className={`text-sm mb-3 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                    >
+                      {plan.description}
+                    </p>
+                  )}
+
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div className={`p-2 rounded ${theme === "dark" ? "bg-gray-600/50" : "bg-orange-100"}`}>
+                      <p className={theme === "dark" ? "text-gray-300" : "text-orange-700"}>
+                        {plan.duration_days} days
+                      </p>
+                    </div>
+                    <div className={`p-2 rounded ${theme === "dark" ? "bg-gray-600/50" : "bg-orange-100"}`}>
+                      <p className={theme === "dark" ? "text-gray-300" : "text-orange-700"}>
+                        {plan.target_calories} cal
+                      </p>
+                    </div>
+                    <div className={`p-2 rounded ${theme === "dark" ? "bg-gray-600/50" : "bg-orange-100"}`}>
+                      <p className={theme === "dark" ? "text-gray-300" : "text-orange-700"}>
+                        {plan.meals_per_day} meals
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* TRAINER VERIFICATION SECTION (conditional) */}
         {isTrainer && (
           <div
