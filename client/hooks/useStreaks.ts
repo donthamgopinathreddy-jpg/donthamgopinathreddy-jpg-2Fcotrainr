@@ -17,9 +17,10 @@ export const useStreaks = () => {
   const [streak, setStreak] = useState<Streak | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const hasFetchedRef = useRef(false);
 
   // Fetch streak data for current user
-  const fetchStreak = async () => {
+  const fetchStreak = useCallback(async () => {
     if (!user?.id) return;
 
     try {
@@ -79,10 +80,10 @@ export const useStreaks = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.id]);
 
   // Update streak based on daily activity
-  const updateStreak = async () => {
+  const updateStreak = useCallback(async () => {
     if (!user?.id || !streak) return;
 
     try {
@@ -157,11 +158,15 @@ export const useStreaks = () => {
       console.warn("Error updating streak:", err?.message || err);
       // Non-critical - don't block the app
     }
-  };
+  }, [streak, user?.id]);
 
   useEffect(() => {
+    // Prevent double-fetching in React StrictMode
+    if (hasFetchedRef.current || !user?.id) return;
+
+    hasFetchedRef.current = true;
     fetchStreak();
-  }, [user?.id]);
+  }, [fetchStreak, user?.id]);
 
   return {
     streak,
