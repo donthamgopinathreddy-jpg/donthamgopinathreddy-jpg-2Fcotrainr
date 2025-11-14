@@ -211,7 +211,7 @@ export default function UserProfile() {
     };
 
     fetchUserProfile();
-  }, [userId, navigate, currentUser?.id]);
+  }, [identifier, navigate, currentUser?.id]);
 
   const handleFollow = async () => {
     if (!user?.id) return;
