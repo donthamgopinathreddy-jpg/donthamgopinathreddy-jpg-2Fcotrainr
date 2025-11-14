@@ -316,9 +316,7 @@ export default function Profile() {
   return (
     <div
       className={`min-h-screen pb-24 ${
-        theme === "dark"
-          ? "bg-gray-950"
-          : "bg-white"
+        theme === "dark" ? "bg-gray-950" : "bg-white"
       }`}
       style={{ minHeight: "100vh" }}
     >

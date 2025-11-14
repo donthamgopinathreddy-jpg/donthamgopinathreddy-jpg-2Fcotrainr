@@ -32,9 +32,12 @@ export const useStreaks = () => {
 
       if (fetchError) {
         // Extract error message safely without accessing response body again
-        const errorMessage = typeof fetchError === 'object' && fetchError !== null && 'message' in fetchError 
-          ? (fetchError as any).message 
-          : String(fetchError);
+        const errorMessage =
+          typeof fetchError === "object" &&
+          fetchError !== null &&
+          "message" in fetchError
+            ? (fetchError as any).message
+            : String(fetchError);
         console.error("Error fetching streak:", errorMessage);
         throw new Error(errorMessage);
       }
@@ -57,9 +60,12 @@ export const useStreaks = () => {
           .single();
 
         if (createError) {
-          const errorMessage = typeof createError === 'object' && createError !== null && 'message' in createError
-            ? (createError as any).message
-            : String(createError);
+          const errorMessage =
+            typeof createError === "object" &&
+            createError !== null &&
+            "message" in createError
+              ? (createError as any).message
+              : String(createError);
           console.error("Error creating streak:", errorMessage);
           throw new Error(errorMessage);
         }
@@ -67,9 +73,10 @@ export const useStreaks = () => {
       }
     } catch (err: any) {
       // Don't block the app if streak fetch fails - it's optional
-      const errorMessage = typeof err === 'object' && err !== null && 'message' in err
-        ? err.message
-        : String(err);
+      const errorMessage =
+        typeof err === "object" && err !== null && "message" in err
+          ? err.message
+          : String(err);
       console.error("Streak operation failed:", errorMessage);
       setError(null);
       // Return empty streak on error to allow app to continue
@@ -139,9 +146,12 @@ export const useStreaks = () => {
         .eq("user_id", user.id);
 
       if (updateError) {
-        const errorMessage = typeof updateError === 'object' && updateError !== null && 'message' in updateError
-          ? (updateError as any).message
-          : String(updateError);
+        const errorMessage =
+          typeof updateError === "object" &&
+          updateError !== null &&
+          "message" in updateError
+            ? (updateError as any).message
+            : String(updateError);
         console.warn("Error updating streak:", errorMessage);
         // Don't throw - streak updates are non-critical
       } else {
@@ -163,9 +173,10 @@ export const useStreaks = () => {
         longestStreak: newLongestStreak,
       };
     } catch (err: any) {
-      const errorMessage = typeof err === 'object' && err !== null && 'message' in err
-        ? err.message
-        : String(err);
+      const errorMessage =
+        typeof err === "object" && err !== null && "message" in err
+          ? err.message
+          : String(err);
       console.warn("Error updating streak:", errorMessage);
       // Non-critical - don't block the app
     }
