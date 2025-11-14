@@ -230,27 +230,25 @@ export default function ActivityDetail() {
           }`}
         >
           <div className="relative space-y-4">
-            {/* Circular Icon with Value Around It */}
+            {/* Half-Circle Icon with Value Around It */}
             <div className="flex justify-center py-4">
-              <div className="relative w-40 h-40">
+              <div className="relative w-40 h-24">
                 <svg
-                  className="w-full h-full transform -rotate-90"
-                  viewBox="0 0 160 160"
+                  className="w-full h-full"
+                  viewBox="0 0 160 80"
+                  preserveAspectRatio="xMidYMid meet"
                 >
-                  {/* Background circle */}
-                  <circle
-                    cx="80"
-                    cy="80"
-                    r="70"
+                  {/* Background half circle arc */}
+                  <path
+                    d="M 20 80 A 60 60 0 0 1 140 80"
                     fill="none"
                     stroke={theme === "dark" ? "#374151" : "#e5e7eb"}
                     strokeWidth="6"
+                    strokeLinecap="round"
                   />
-                  {/* Progress circle */}
-                  <circle
-                    cx="80"
-                    cy="80"
-                    r="70"
+                  {/* Progress half circle arc */}
+                  <path
+                    d="M 20 80 A 60 60 0 0 1 140 80"
                     fill="none"
                     stroke={
                       type === "water"
@@ -260,9 +258,10 @@ export default function ActivityDetail() {
                           : "#ea580c"
                     }
                     strokeWidth="6"
-                    strokeDasharray={2 * Math.PI * 70}
+                    strokeLinecap="round"
+                    strokeDasharray={Math.PI * 60}
                     strokeDashoffset={
-                      2 * Math.PI * 70 *
+                      Math.PI * 60 *
                       (1 -
                         Math.min(
                           selectedDate.toDateString() === new Date().toDateString()
@@ -275,13 +274,12 @@ export default function ActivityDetail() {
                           1,
                         ))
                     }
-                    strokeLinecap="round"
                     className="transition-all duration-500"
                   />
                 </svg>
 
                 {/* Center Icon */}
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center -mt-4">
                   <div className="text-6xl">{colors.icon}</div>
                 </div>
               </div>
