@@ -100,19 +100,19 @@ export default function UserProfile() {
         // Try to fetch user data by ID first
         let userData = null;
 
-        // Check if userId looks like a UUID (contains hyphens) or is a username
+        // Check if identifier looks like a UUID (contains hyphens) or is a username
         const isUUID =
           /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
-            userId,
+            identifier,
           );
 
         if (isUUID) {
           // Search by ID
-          console.log("Searching for user by UUID:", userId);
+          console.log("Searching for user by UUID:", identifier);
           const { data, error } = await supabase
             .from("users")
             .select("id, username, full_name, profile_picture_url, bio, role")
-            .eq("id", userId);
+            .eq("id", identifier);
 
           console.log("Supabase response - data:", data, "error:", error);
           if (!error && data && data.length > 0) {
@@ -121,14 +121,14 @@ export default function UserProfile() {
           } else if (error) {
             console.error("Error fetching user by ID:", error);
           } else {
-            console.warn("No user found with ID:", userId);
+            console.warn("No user found with ID:", identifier);
           }
         } else {
           // Search by username
           const { data, error } = await supabase
             .from("users")
             .select("id, username, full_name, profile_picture_url, bio, role")
-            .eq("username", userId.toLowerCase());
+            .eq("username", identifier.toLowerCase());
 
           if (!error && data && data.length > 0) {
             userData = data[0];
@@ -142,7 +142,7 @@ export default function UserProfile() {
           const { data, error } = await supabase
             .from("users")
             .select("id, username, full_name, profile_picture_url, bio, role")
-            .ilike("username", `%${userId}%`)
+            .ilike("username", `%${identifier}%`)
             .limit(1);
 
           if (!error && data && data.length > 0) {
@@ -151,7 +151,7 @@ export default function UserProfile() {
         }
 
         // Determine which ID to use for fetching posts
-        const profileUserId = userData?.id || userId;
+        const profileUserId = userData?.id || identifier;
 
         // If user data found, set it
         if (userData) {
