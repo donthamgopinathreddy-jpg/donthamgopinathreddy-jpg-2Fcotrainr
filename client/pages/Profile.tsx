@@ -343,8 +343,10 @@ export default function Profile() {
   };
 
   const isTrainer = user.role === "trainer";
-  const referralCoins = 320;
+  const referralCoins = userProfile?.referral_coins || 0;
   const nextRewardCoins = 500;
+  const discountThreshold = 1000;
+  const hasDiscount = referralCoins >= discountThreshold;
 
   const topAchievements = userAchievements.slice(0, 3);
   const featuredAchievement = userAchievements[0];
