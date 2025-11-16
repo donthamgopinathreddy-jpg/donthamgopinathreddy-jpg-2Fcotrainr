@@ -1,10 +1,21 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import {
+  ChevronRight,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Fingerprint,
+  Grid3x3,
+} from "lucide-react";
 import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePINAuth } from "@/hooks/usePINAuth";
+import PINEntrypad from "@/components/PINEntrypad";
+import PatternLock from "@/components/PatternLock";
 
 export default function Login() {
   const navigate = useNavigate();
