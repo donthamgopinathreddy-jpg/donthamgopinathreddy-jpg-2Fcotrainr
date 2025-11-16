@@ -192,10 +192,10 @@ export default function ExpandedDietPlanner({
               Foods You Like
             </label>
             <textarea
-              value={likes}
+              value={likes || ""}
               onChange={(e) => setLikes(e.target.value)}
               placeholder="Chicken, Rice, Broccoli..."
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-white focus:border-orange-500 focus:outline-none transition-colors resize-none h-20 text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-900 transition-all resize-none h-20 text-sm font-medium placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
@@ -204,10 +204,10 @@ export default function ExpandedDietPlanner({
               Foods to Avoid
             </label>
             <textarea
-              value={dislikes}
+              value={dislikes || ""}
               onChange={(e) => setDislikes(e.target.value)}
               placeholder="Mushrooms, Olives..."
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-white focus:border-orange-500 focus:outline-none transition-colors resize-none h-20 text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-900 transition-all resize-none h-20 text-sm font-medium placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
@@ -216,10 +216,10 @@ export default function ExpandedDietPlanner({
               Must Include
             </label>
             <textarea
-              value={mustInclude}
+              value={mustInclude || ""}
               onChange={(e) => setMustInclude(e.target.value)}
               placeholder="Protein, Greens..."
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-white focus:border-orange-500 focus:outline-none transition-colors resize-none h-20 text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-900 transition-all resize-none h-20 text-sm font-medium placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
         </div>
