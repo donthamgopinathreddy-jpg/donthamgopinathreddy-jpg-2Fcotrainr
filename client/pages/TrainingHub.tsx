@@ -56,29 +56,6 @@ export default function TrainingHub() {
   const isAIInsightsLocked = plan !== "premium";
   const isTrendGraphsLocked = plan === "free";
 
-  // Handle save diet preferences
-  const handleSaveDietPreferences = async () => {
-    try {
-      setSavingDiet(true);
-      const success = await updatePreferences({
-        goal: dietGoal as "lose_fat" | "build_muscle" | "maintain" | null,
-        diet_type: dietType as "veg" | "non_veg" | "vegan" | null,
-        likes: likes.split(",").map((l) => l.trim()),
-        dislikes: dislikes.split(",").map((d) => d.trim()),
-        allergies: allergens,
-      });
-
-      if (success) {
-        toast.success("Diet preferences saved successfully!");
-      } else {
-        toast.error("Failed to save diet preferences");
-      }
-    } catch (err) {
-      toast.error("An error occurred while saving");
-    } finally {
-      setSavingDiet(false);
-    }
-  };
 
   // Generate weekly meal plan respecting user preferences
   const handleGenerateWeeklyMealPlan = () => {
