@@ -2,6 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
 import StreaksCard from "@/components/StreaksCard";
+import SmartInsightsCard from "@/components/SmartInsightsCard";
+import HydrationGamification from "@/components/HydrationGamification";
+import MealTrackingStreak from "@/components/MealTrackingStreak";
+import MiniChallengesCarousel from "@/components/MiniChallengesCarousel";
+import MoodTracker from "@/components/MoodTracker";
+import WorkoutLibraryGrid from "@/components/WorkoutLibraryGrid";
+import BodyProgressTracker from "@/components/BodyProgressTracker";
 import {
   Dumbbell,
   Apple,
@@ -319,7 +326,7 @@ export default function Home() {
       if (isDemoMode) {
         // Save to localStorage in demo mode
         localStorage.setItem(`targets_${userProfile.id}`, bioValue);
-        toast.success(`✓ Added ${amount} steps!`);
+        toast.success(`��� Added ${amount} steps!`);
         return;
       }
 
@@ -723,6 +730,30 @@ export default function Home() {
 
         {/* Streaks Card */}
         <StreaksCard compact={false} />
+
+        {/* Premium Wellness Section */}
+        <div className="space-y-6 pt-4">
+          {/* Smart Insights Card */}
+          <SmartInsightsCard />
+
+          {/* Hydration Gamification */}
+          <HydrationGamification />
+
+          {/* Meal Tracking Streak */}
+          <MealTrackingStreak />
+
+          {/* Mini Challenges Carousel */}
+          <MiniChallengesCarousel />
+
+          {/* Mood Tracker */}
+          <MoodTracker />
+
+          {/* Workout Library Grid */}
+          <WorkoutLibraryGrid />
+
+          {/* Body Progress Tracker */}
+          <BodyProgressTracker />
+        </div>
 
         {/* BMI Index Card */}
         <div
