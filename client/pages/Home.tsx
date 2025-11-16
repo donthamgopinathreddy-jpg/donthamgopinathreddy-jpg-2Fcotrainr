@@ -620,21 +620,20 @@ export default function Home() {
             </p>
           </button>
 
-          {/* Quick Add Steps Buttons */}
-          <div className="flex gap-2 pt-2">
-            <button
-              onClick={() => handleAddSteps(100)}
-              className="flex-1 bg-orange-100 dark:bg-orange-900/30 hover:bg-orange-200 dark:hover:bg-orange-900/50 text-orange-700 dark:text-orange-400 font-semibold py-2 rounded-lg transition-colors text-sm"
-            >
-              +100 steps
-            </button>
-            <button
-              onClick={() => handleAddSteps(500)}
-              className="flex-1 bg-orange-100 dark:bg-orange-900/30 hover:bg-orange-200 dark:hover:bg-orange-900/50 text-orange-700 dark:text-orange-400 font-semibold py-2 rounded-lg transition-colors text-sm"
-            >
-              +500 steps
-            </button>
-          </div>
+          {/* Achievement Notification */}
+          {newAchievement && (
+            <div className="flex gap-2 pt-2 animate-pulse bg-gradient-to-r from-yellow-100 to-amber-100 dark:from-yellow-900/30 dark:to-amber-900/30 p-3 rounded-lg border-l-4 border-yellow-500">
+              <div className="text-2xl">{newAchievement.icon}</div>
+              <div className="flex-1">
+                <p className="font-bold text-sm text-yellow-900 dark:text-yellow-200">
+                  {newAchievement.title}! 🎉
+                </p>
+                <p className="text-xs text-yellow-700 dark:text-yellow-300">
+                  {newAchievement.description}
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Calories Progress */}
           <button
