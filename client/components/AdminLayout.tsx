@@ -202,6 +202,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
         onLogout={handleLogout}
         onProfilePictureUpload={handleProfilePictureUpload}
         uploadingPic={uploadingPic}
+        showActivityLog={showActivityLog}
+        onActivityLogChange={setShowActivityLog}
+        showNotificationPrefs={showNotificationPrefs}
+        onNotificationPrefsChange={setShowNotificationPrefs}
       />
 
       {/* Main Content */}
