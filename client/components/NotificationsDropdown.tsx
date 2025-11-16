@@ -242,7 +242,7 @@ export default function NotificationsDropdown() {
                               e.stopPropagation();
                               deleteNotification(notification.id);
                             }}
-                            className={`p-1 rounded transition-colors ${
+                            className={`p-1 rounded transition-colors flex-shrink-0 ${
                               theme === "dark"
                                 ? "hover:bg-gray-700 text-gray-500"
                                 : "hover:bg-gray-200 text-gray-400"
