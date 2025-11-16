@@ -659,7 +659,7 @@ export default function Home() {
               />
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-              ~{caloriesBurned} cal from {stepsCompleted} steps
+              ~{caloriesBurned} cal from {steps} steps {isTracking && "🔄 Auto-tracking"}
             </p>
           </button>
 
