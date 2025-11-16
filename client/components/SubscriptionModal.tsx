@@ -87,25 +87,37 @@ export default function SubscriptionModal({
             {selectedPlan ? (
               // Payment Section
               <div className="space-y-6">
-                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-2xl p-6">
+                <div className={`rounded-2xl p-6 border ${
+                  selectedPlan === "free"
+                    ? "bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
+                    : "bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800"
+                }`}>
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                    {selectedPlan === "basic"
-                      ? "Basic Plan"
-                      : "Premium Plan"}
+                    {selectedPlan === "free"
+                      ? "Free Plan"
+                      : selectedPlan === "basic"
+                        ? "Basic Plan"
+                        : "Premium Plan"}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    {selectedPlan === "basic"
-                      ? "Unlock all workouts and limited diet planning"
-                      : "Full access to all features including AI insights"}
+                    {selectedPlan === "free"
+                      ? "Get started with basic workouts"
+                      : selectedPlan === "basic"
+                        ? "Unlock all workouts and limited diet planning"
+                        : "Full access to all features including AI insights"}
                   </p>
-                  <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
-                    ₹{selectedPlan === "basic" ? "299" : "599"}
+                  <div className="text-3xl font-bold">
+                    <span className={selectedPlan === "free" ? "text-gray-600 dark:text-gray-400" : "text-orange-600 dark:text-orange-400"}>
+                      ₹{selectedPlan === "free" ? "0" : selectedPlan === "basic" ? "299" : "599"}
+                    </span>
                     <span className="text-lg text-gray-600 dark:text-gray-400">
                       /month
                     </span>
                   </div>
                 </div>
 
+                {selectedPlan !== "free" && (
+                  <>
                 {/* Payment Method Selection */}
                 <div>
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
@@ -160,6 +172,8 @@ export default function SubscriptionModal({
                     anytime from your account settings.
                   </p>
                 </div>
+                  </>
+                )}
 
                 {/* Action Buttons */}
                 <div className="flex gap-3">
