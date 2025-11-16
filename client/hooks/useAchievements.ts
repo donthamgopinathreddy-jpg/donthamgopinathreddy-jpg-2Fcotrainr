@@ -20,6 +20,22 @@ interface UserAchievement {
   achievement?: Achievement;
 }
 
+interface WeeklyStats {
+  highestSteps: number;
+  weeklyAchievements: Achievement[];
+  userRank: number | null;
+  totalWeeklySteps: number;
+}
+
+interface LeaderboardEntry {
+  user_id: string;
+  full_name: string;
+  username: string;
+  profile_picture_url?: string;
+  steps: number;
+  rank: number;
+}
+
 export const useAchievements = () => {
   const { user } = useAuth();
   const [allAchievements, setAllAchievements] = useState<Achievement[]>([]);
