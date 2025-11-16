@@ -31,7 +31,9 @@ export default function DietPlannerForm({
   const [goal, setGoal] = useState(preferences?.goal || "");
   const [dietType, setDietType] = useState(preferences?.diet_type || "");
   const [likes, setLikes] = useState((preferences?.likes || []).join(", "));
-  const [dislikes, setDislikes] = useState((preferences?.dislikes || []).join(", "));
+  const [dislikes, setDislikes] = useState(
+    (preferences?.dislikes || []).join(", "),
+  );
   const [allergens, setAllergens] = useState<string[]>(
     preferences?.allergies || [],
   );
@@ -125,7 +127,8 @@ export default function DietPlannerForm({
           {/* Allergens */}
           <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl border border-white/60 dark:border-gray-700/60 p-6 hover:shadow-lg transition-all">
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">
-              Allergens <span className="text-orange-500 font-bold">★ Premium</span>
+              Allergens{" "}
+              <span className="text-orange-500 font-bold">★ Premium</span>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {ALLERGENS.map((allergen) => (
@@ -196,7 +199,8 @@ export default function DietPlannerForm({
           {/* Budget Filter */}
           <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl border border-white/60 dark:border-gray-700/60 p-6 hover:shadow-lg transition-all">
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-              Daily Budget <span className="text-orange-500 font-bold">★ Premium</span>
+              Daily Budget{" "}
+              <span className="text-orange-500 font-bold">★ Premium</span>
             </label>
             <input
               type="number"

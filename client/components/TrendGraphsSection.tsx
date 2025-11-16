@@ -83,7 +83,9 @@ export default function TrendGraphsSection({
               </div>
 
               {/* Chart */}
-              <div className={`h-40 bg-gradient-to-t ${metric.color} opacity-10 dark:opacity-20 rounded-lg flex items-end justify-around p-4 mb-4`}>
+              <div
+                className={`h-40 bg-gradient-to-t ${metric.color} opacity-10 dark:opacity-20 rounded-lg flex items-end justify-around p-4 mb-4`}
+              >
                 {generateChartData().map((height, i) => (
                   <div
                     key={i}

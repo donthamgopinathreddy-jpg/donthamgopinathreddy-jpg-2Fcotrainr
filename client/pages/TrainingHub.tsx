@@ -30,8 +30,11 @@ const TREND_METRICS = [
 export default function TrainingHub() {
   const { userProfile } = useAuth();
   const { workouts, loading: workoutsLoading } = useWorkouts();
-  const { preferences, updatePreferences, loading: prefsLoading } =
-    useDietPreferences();
+  const {
+    preferences,
+    updatePreferences,
+    loading: prefsLoading,
+  } = useDietPreferences();
   const { createReviewRequest, loading: reviewLoading } =
     useDietReviewRequests();
 
@@ -111,7 +114,10 @@ export default function TrainingHub() {
   const handleAskTrainerReview = async (trainerId: string | null) => {
     try {
       // Create a temporary diet plan ID (in real app, would be from actual plan)
-      const result = await createReviewRequest("diet-plan-" + Date.now(), trainerId || undefined);
+      const result = await createReviewRequest(
+        "diet-plan-" + Date.now(),
+        trainerId || undefined,
+      );
 
       if (result) {
         toast.success("Review request sent to trainer!");
@@ -341,7 +347,10 @@ export default function TrainingHub() {
         )}
 
         {/* TREND GRAPHS SECTION */}
-        <TrendGraphsSection isLocked={isTrendGraphsLocked} metrics={TREND_METRICS} />
+        <TrendGraphsSection
+          isLocked={isTrendGraphsLocked}
+          metrics={TREND_METRICS}
+        />
 
         {/* Upgrade CTA for locked features */}
         {(isDietPlannerLocked || isTrendGraphsLocked || isAIInsightsLocked) && (

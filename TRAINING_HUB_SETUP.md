@@ -1,11 +1,13 @@
 # Training & Nutrition Hub - Supabase Setup
 
 ## Overview
+
 The Training Hub requires several Supabase tables to store workout data, diet preferences, and diet review requests. This guide explains the required tables and how to set them up.
 
 ## Required Tables
 
 ### 1. `workouts` Table
+
 **Purpose:** Store all available workouts across different categories and levels
 
 ```sql
@@ -28,6 +30,7 @@ CREATE INDEX idx_workouts_level ON workouts(level);
 ```
 
 **Sample Data:**
+
 ```sql
 INSERT INTO workouts (title, category, level, duration_minutes, calories_burned, description) VALUES
 ('Beginner Push-ups', 'gym', 'basic', 10, 50, 'Learn proper form for push-ups'),
@@ -39,6 +42,7 @@ INSERT INTO workouts (title, category, level, duration_minutes, calories_burned,
 ```
 
 ### 2. `diet_preferences` Table
+
 **Purpose:** Store user's dietary preferences and restrictions
 
 ```sql
@@ -62,6 +66,7 @@ CREATE INDEX idx_diet_preferences_user_id ON diet_preferences(user_id);
 ```
 
 ### 3. `diet_plans` Table
+
 **Purpose:** Store generated or user-created diet plans
 
 ```sql
@@ -81,6 +86,7 @@ CREATE INDEX idx_diet_plans_user_id ON diet_plans(user_id);
 ```
 
 ### 4. `diet_review_requests` Table
+
 **Purpose:** Store requests for trainers to review diet plans
 
 ```sql
@@ -101,6 +107,7 @@ CREATE INDEX idx_diet_review_requests_status ON diet_review_requests(status);
 ```
 
 ### 5. Update `profiles` Table
+
 **Purpose:** Add subscription_plan column if it doesn't exist
 
 ```sql
@@ -111,6 +118,7 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS subscription_plan TEXT DEFAULT 'fr
 ## Row-Level Security (RLS) Policies
 
 ### For `diet_preferences`:
+
 ```sql
 -- Users can only view/edit their own preferences
 ALTER TABLE diet_preferences ENABLE ROW LEVEL SECURITY;
@@ -129,6 +137,7 @@ WITH CHECK (auth.uid() = user_id);
 ```
 
 ### For `diet_plans`:
+
 ```sql
 -- Users can view plans created for them or by trainers
 ALTER TABLE diet_plans ENABLE ROW LEVEL SECURITY;
@@ -147,6 +156,7 @@ USING (auth.uid() = created_by);
 ```
 
 ### For `diet_review_requests`:
+
 ```sql
 -- Users can view their requests, trainers can view requests assigned to them
 ALTER TABLE diet_review_requests ENABLE ROW LEVEL SECURITY;
@@ -175,6 +185,7 @@ USING (auth.uid() = trainer_id);
 ## Testing
 
 After setup, you can:
+
 1. Navigate to `/training-hub` in the app
 2. Test with different subscription plans (free/basic/premium)
 3. Try saving diet preferences
@@ -184,6 +195,7 @@ After setup, you can:
 ## Demo Mode Fallback
 
 The app has built-in demo data fallback in the hooks. If tables don't exist:
+
 - Workouts will show demo data
 - Diet preferences will use mock data
 - Review requests will still attempt to save to DB
