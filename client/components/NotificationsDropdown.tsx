@@ -187,7 +187,7 @@ export default function NotificationsDropdown() {
                             {notification.title}
                           </p>
                           <p
-                            className={`text-xs mt-1 ${
+                            className={`text-xs mt-1 line-clamp-2 ${
                               theme === "dark"
                                 ? "text-gray-400"
                                 : "text-gray-600"
