@@ -13,10 +13,10 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
   if (loading) {
     return (
       <div
-        className={`rounded-2xl border-2 ${
+        className={`rounded-2xl ${
           theme === "dark"
-            ? "bg-gray-800/50 border-gray-700/50"
-            : "bg-white border-gray-200"
+            ? "bg-gray-800/50"
+            : "bg-white"
         } p-4 animate-pulse`}
       >
         <div className="h-4 bg-gray-300 rounded w-20 mb-2" />
@@ -28,10 +28,10 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
   if (!streak) {
     return (
       <div
-        className={`rounded-2xl border-2 p-6 text-center ${
+        className={`rounded-2xl p-6 text-center ${
           theme === "dark"
-            ? "bg-gradient-to-br from-gray-800/80 to-gray-900 border-gray-700/60"
-            : "bg-gradient-to-br from-orange-50 to-amber-50 border-orange-300/60"
+            ? "bg-gradient-to-br from-gray-800/80 to-gray-900"
+            : "bg-gradient-to-br from-orange-50 to-amber-50"
         }`}
       >
         <Flame className="w-12 h-12 mx-auto mb-3 opacity-30" />
@@ -65,10 +65,10 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
   if (compact) {
     return (
       <div
-        className={`rounded-xl border-2 p-4 flex items-center gap-3 transition-all hover:shadow-lg ${
+        className={`rounded-xl p-4 flex items-center gap-3 transition-all ${
           theme === "dark"
-            ? "bg-gradient-to-br from-orange-900/40 via-orange-900/20 to-transparent border-orange-700/60 shadow-lg shadow-orange-500/20"
-            : "bg-gradient-to-br from-orange-200/60 via-orange-100/40 to-transparent border-orange-400/60 shadow-lg shadow-orange-400/20"
+            ? "bg-gradient-to-br from-orange-900/40 via-orange-900/20 to-transparent shadow-lg shadow-orange-500/20"
+            : "bg-gradient-to-br from-orange-200/60 via-orange-100/40 to-transparent shadow-lg shadow-orange-400/20"
         }`}
       >
         <div className={`text-3xl flex items-center gap-1 p-3 rounded-lg ${
@@ -97,10 +97,10 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
 
   return (
     <div
-      className={`rounded-3xl border-2 shadow-2xl transition-all hover:shadow-2xl hover:scale-105 ${
+      className={`rounded-3xl shadow-2xl transition-all ${
         theme === "dark"
-          ? "bg-gradient-to-br from-orange-900/40 via-gray-900 to-gray-950 border-orange-700/60 shadow-orange-500/20"
-          : "bg-gradient-to-br from-orange-200/50 via-white to-amber-50/40 border-orange-400/60 shadow-orange-400/20"
+          ? "bg-gradient-to-br from-orange-900/40 via-gray-900 to-gray-950 shadow-orange-500/20"
+          : "bg-gradient-to-br from-orange-200/50 via-white to-amber-50/40 shadow-orange-400/20"
       } p-8`}
     >
       {/* Header */}
@@ -136,10 +136,10 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
 
       {/* Main Streak Display */}
       <div
-        className={`rounded-3xl p-8 text-center transition-all mb-6 border-2 ${
+        className={`rounded-3xl p-8 text-center transition-all mb-6 ${
           theme === "dark"
-            ? "bg-gradient-to-br from-orange-900/60 via-orange-900/40 to-orange-900/20 border-orange-700/80 shadow-xl shadow-orange-500/30"
-            : "bg-gradient-to-br from-orange-300 via-orange-200 to-orange-100 border-orange-400 shadow-xl shadow-orange-400/40"
+            ? "bg-gradient-to-br from-orange-900/60 via-orange-900/40 to-orange-900/20 shadow-xl shadow-orange-500/30"
+            : "bg-gradient-to-br from-orange-300 via-orange-200 to-orange-100 shadow-xl shadow-orange-400/40"
         }`}
       >
         <p
@@ -167,10 +167,10 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
 
       {/* Longest Streak */}
       <div
-        className={`rounded-2xl p-6 mb-6 transition-all border-2 ${
+        className={`rounded-2xl p-6 mb-6 transition-all ${
           theme === "dark"
-            ? "bg-gradient-to-r from-yellow-900/50 via-yellow-900/30 to-yellow-900/10 border-yellow-700/60 shadow-lg shadow-yellow-500/20"
-            : "bg-gradient-to-r from-yellow-200/70 via-yellow-100/50 to-yellow-50/40 border-yellow-400/60 shadow-lg shadow-yellow-400/20"
+            ? "bg-gradient-to-r from-yellow-900/50 via-yellow-900/30 to-yellow-900/10 shadow-lg shadow-yellow-500/20"
+            : "bg-gradient-to-r from-yellow-200/70 via-yellow-100/50 to-yellow-50/40 shadow-lg shadow-yellow-400/20"
         }`}
       >
         <div className="flex items-center justify-between">
@@ -196,10 +196,10 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
 
       {/* Milestone Badges */}
       <div
-        className={`rounded-2xl p-6 border-2 mb-6 ${
+        className={`rounded-2xl p-6 mb-6 ${
           theme === "dark"
-            ? "bg-gradient-to-br from-purple-900/40 to-purple-900/10 border-purple-700/60"
-            : "bg-gradient-to-br from-purple-200/60 to-purple-50/40 border-purple-400/60"
+            ? "bg-gradient-to-br from-purple-900/40 to-purple-900/10"
+            : "bg-gradient-to-br from-purple-200/60 to-purple-50/40"
         }`}
       >
         <p
@@ -216,11 +216,11 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
               className={`text-sm px-4 py-3 rounded-xl font-bold transition-all transform ${
                 streak.current_streak >= days
                   ? theme === "dark"
-                    ? "bg-gradient-to-r from-orange-500 via-orange-400 to-amber-500 text-white shadow-lg shadow-orange-500/40 scale-105"
-                    : "bg-gradient-to-r from-orange-400 via-orange-300 to-amber-400 text-white shadow-lg shadow-orange-400/40 scale-105"
+                    ? "bg-gradient-to-r from-orange-500 via-orange-400 to-amber-500 text-white shadow-lg shadow-orange-500/40"
+                    : "bg-gradient-to-r from-orange-400 via-orange-300 to-amber-400 text-white shadow-lg shadow-orange-400/40"
                   : theme === "dark"
-                    ? "bg-gray-700/60 border border-gray-600/50 text-gray-400"
-                    : "bg-gray-200/70 border border-gray-300/50 text-gray-600"
+                    ? "bg-gray-700/60 text-gray-400"
+                    : "bg-gray-200/70 text-gray-600"
               }`}
             >
               {days}d
@@ -233,8 +233,8 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
       <p
         className={`text-sm font-bold text-center py-4 px-4 rounded-2xl ${
           theme === "dark"
-            ? "bg-gradient-to-r from-blue-900/40 to-cyan-900/40 border border-blue-700/50 text-blue-300"
-            : "bg-gradient-to-r from-blue-100/70 to-cyan-100/70 border border-blue-400/50 text-blue-700"
+            ? "bg-gradient-to-r from-blue-900/40 to-cyan-900/40 text-blue-300"
+            : "bg-gradient-to-r from-blue-100/70 to-cyan-100/70 text-blue-700"
         }`}
       >
         ✨ Log any activity today to keep your streak alive!
