@@ -61,11 +61,6 @@ export default function TrainingHubCarousel({
           />
         ))}
       </div>
-
-      {/* Section Counter */}
-      <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-        {currentIndex + 1} / {sections.length}
-      </div>
     </div>
   );
 }
