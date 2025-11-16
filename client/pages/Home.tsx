@@ -27,6 +27,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
 import { useHealthSync } from "@/hooks/useHealthSync";
+import { useMoodLogs } from "@/hooks/useMoodLogs";
 
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
@@ -334,7 +335,7 @@ export default function Home() {
 
       if (error) throw error;
 
-      toast.success(`�� Added ${amount} steps!`);
+      toast.success(`✓ Added ${amount} steps!`);
     } catch (error) {
       console.error("Error saving steps:", error);
       toast.error("Failed to save steps");
