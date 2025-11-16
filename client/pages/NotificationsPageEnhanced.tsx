@@ -401,9 +401,12 @@ export default function NotificationsPageEnhanced() {
                             <div className="flex items-center gap-3">
                               {/* Avatar */}
                               <button
-                                onClick={() =>
-                                  navigate(`/profile/${notification.actor?.id}`)
-                                }
+                                onClick={() => {
+                                  const actorId = notification.actor?.id;
+                                  if (actorId) {
+                                    navigate(`/profile/${actorId}`);
+                                  }
+                                }}
                                 className="flex-shrink-0"
                               >
                                 <div
