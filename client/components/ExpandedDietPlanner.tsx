@@ -205,9 +205,7 @@ export default function ExpandedDietPlanner({
 
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           4️⃣ Allergens
-          {plan !== "premium" && (
-            <Lock className="w-5 h-5 text-orange-500" />
-          )}
+          {plan !== "premium" && <Lock className="w-5 h-5 text-orange-500" />}
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {ALLERGENS.map((allergen) => (
@@ -248,9 +246,7 @@ export default function ExpandedDietPlanner({
 
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           5️⃣ Macro Customization
-          {plan !== "premium" && (
-            <Lock className="w-5 h-5 text-orange-500" />
-          )}
+          {plan !== "premium" && <Lock className="w-5 h-5 text-orange-500" />}
         </h3>
         <div className="space-y-6">
           {/* Protein */}
@@ -345,9 +341,7 @@ export default function ExpandedDietPlanner({
 
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           6️⃣ Budget Filter
-          {plan !== "premium" && (
-            <Lock className="w-5 h-5 text-orange-500" />
-          )}
+          {plan !== "premium" && <Lock className="w-5 h-5 text-orange-500" />}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
@@ -390,9 +384,7 @@ export default function ExpandedDietPlanner({
 
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           7️⃣ Weekly Plan Generator
-          {plan !== "premium" && (
-            <Lock className="w-5 h-5 text-orange-500" />
-          )}
+          {plan !== "premium" && <Lock className="w-5 h-5 text-orange-500" />}
         </h3>
         <button
           onClick={onGenerateMealPlan}

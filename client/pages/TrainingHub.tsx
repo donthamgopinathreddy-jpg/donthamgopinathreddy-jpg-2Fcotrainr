@@ -42,8 +42,11 @@ const TREND_METRICS = [
 export default function TrainingHub() {
   const { userProfile } = useAuth();
   const { workouts, loading: workoutsLoading } = useWorkouts();
-  const { preferences, updatePreferences, loading: prefsLoading } =
-    useDietPreferences();
+  const {
+    preferences,
+    updatePreferences,
+    loading: prefsLoading,
+  } = useDietPreferences();
   const { createReviewRequest, loading: reviewLoading } =
     useDietReviewRequests();
 
@@ -58,7 +61,8 @@ export default function TrainingHub() {
   const [selectedLevel, setSelectedLevel] = useState<WorkoutLevel>("basic");
   const [weeklyPlan, setWeeklyPlan] = useState<Record<string, string>>({});
   const [showWorkoutModal, setShowWorkoutModal] = useState(false);
-  const [selectedDayForWorkout, setSelectedDayForWorkout] = useState<string>("");
+  const [selectedDayForWorkout, setSelectedDayForWorkout] =
+    useState<string>("");
   const [showTrainerModal, setShowTrainerModal] = useState(false);
 
   // Diet state
@@ -294,27 +298,23 @@ export default function TrainingHub() {
                     key={workout.id}
                     className="relative group"
                     onClick={() => {
-                      if (
-                        plan !== "free" ||
-                        workout.level === "basic"
-                      ) {
+                      if (plan !== "free" || workout.level === "basic") {
                         setSelectedDayForWorkout(workout.id);
                         setShowWorkoutModal(true);
                       }
                     }}
                   >
                     <WorkoutCard workout={workout} />
-                    {plan === "free" &&
-                      workout.level !== "basic" && (
-                        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:flex opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div className="text-center text-white">
-                            <Lock className="w-8 h-8 mx-auto mb-2" />
-                            <p className="text-sm font-semibold">
-                              Upgrade to unlock
-                            </p>
-                          </div>
+                    {plan === "free" && workout.level !== "basic" && (
+                      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:flex opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="text-center text-white">
+                          <Lock className="w-8 h-8 mx-auto mb-2" />
+                          <p className="text-sm font-semibold">
+                            Upgrade to unlock
+                          </p>
                         </div>
-                      )}
+                      </div>
+                    )}
                   </div>
                 ))
               ) : (
@@ -333,9 +333,7 @@ export default function TrainingHub() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
               📅 Weekly Workout Planner
-              {isWorkoutLocked && (
-                <Lock className="w-6 h-6 text-orange-500" />
-              )}
+              {isWorkoutLocked && <Lock className="w-6 h-6 text-orange-500" />}
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
               Plan your workouts for the week ahead
@@ -395,9 +393,7 @@ export default function TrainingHub() {
             <div className="flex-1">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                 🍎 Diet Planner
-                {isDietLocked && (
-                  <Lock className="w-6 h-6 text-orange-500" />
-                )}
+                {isDietLocked && <Lock className="w-6 h-6 text-orange-500" />}
               </h2>
               <p className="text-gray-600 dark:text-gray-400">
                 {plan === "free"
@@ -529,7 +525,10 @@ export default function TrainingHub() {
         )}
 
         {/* 9. TREND GRAPHS */}
-        <TrendGraphsSection isLocked={isTrendGraphsLocked} metrics={TREND_METRICS} />
+        <TrendGraphsSection
+          isLocked={isTrendGraphsLocked}
+          metrics={TREND_METRICS}
+        />
 
         {/* 10. UPGRADE CTA */}
         {(isDietLocked || isTrendGraphsLocked || isAIInsightsLocked) && (
@@ -593,8 +592,8 @@ export default function TrainingHub() {
                         {workout.title}
                       </p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {workout.duration_minutes} min • {workout.calories_burned}{" "}
-                        cal
+                        {workout.duration_minutes} min •{" "}
+                        {workout.calories_burned} cal
                       </p>
                     </div>
                     <ChevronRight className="w-5 h-5 text-gray-400" />
