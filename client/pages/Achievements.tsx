@@ -176,7 +176,7 @@ export default function Quests() {
         {activeTab === "achievements" && (
           <div className="space-y-6">
             {/* Overview Stats - Vibrant Design */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               <div
                 className={`rounded-2xl p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
                   theme === "dark"
