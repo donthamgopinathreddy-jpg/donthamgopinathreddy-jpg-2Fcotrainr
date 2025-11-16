@@ -58,6 +58,8 @@ export default function NotificationsPageEnhanced() {
   const [isTogglingFollow, setIsTogglingFollow] = useState<
     Map<string, boolean>
   >(new Map());
+  const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
+  const [longPressNotifId, setLongPressNotifId] = useState<string | null>(null);
 
   useEffect(() => {
     const enrichNotifications = async () => {
