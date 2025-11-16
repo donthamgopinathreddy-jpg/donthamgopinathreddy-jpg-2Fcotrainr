@@ -3,7 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import AdminSidebar from "./AdminSidebar";
 import { supabase } from "@/lib/supabase";
-import { X, LogOut } from "lucide-react";
+import { X } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
