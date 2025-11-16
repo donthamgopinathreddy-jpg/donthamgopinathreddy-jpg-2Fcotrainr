@@ -315,7 +315,19 @@ export function useNotifications(userId?: string) {
       }
     }, 30000);
 
-    return () => clearInterval(interval);
+    // Also refetch when the window comes back into focus
+    const handleWindowFocus = () => {
+      if (isMountedRef.current) {
+        fetchNotifications();
+      }
+    };
+
+    window.addEventListener("focus", handleWindowFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", handleWindowFocus);
+    };
   }, [userId, fetchNotifications]);
 
   useEffect(() => {
