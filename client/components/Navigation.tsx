@@ -28,6 +28,7 @@ const Navigation = () => {
     ? [
         { path: "/", label: "Home", icon: Home },
         { path: "/training-hub", label: "Training", icon: Dumbbell },
+        { path: "/achievements", label: "Achievements", icon: Award },
         { path: "/messages", label: "Messages", icon: MessageCircle },
         { path: "/profile", label: "Profile", icon: User },
       ]
@@ -35,6 +36,7 @@ const Navigation = () => {
         { path: "/", label: "Home", icon: Home },
         { path: "/discover", label: "Discover", icon: MapPin },
         { path: "/training-hub", label: "Training", icon: Dumbbell },
+        { path: "/achievements", label: "Achievements", icon: Award },
         { path: "/messages", label: "Messages", icon: MessageCircle },
         { path: "/profile", label: "Profile", icon: User },
       ];
