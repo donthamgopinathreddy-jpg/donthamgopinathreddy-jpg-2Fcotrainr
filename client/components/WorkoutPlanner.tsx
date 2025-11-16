@@ -27,7 +27,7 @@ export default function WorkoutPlanner() {
     if (plan === "free") {
       return workouts.filter(
         (w) =>
-          w.level === "basic" &&
+          w.level === "beginner" &&
           ["gym", "warmups", "stretching"].includes(w.category)
       );
     }
