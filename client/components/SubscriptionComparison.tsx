@@ -2,7 +2,7 @@ import { Check, Lock } from "lucide-react";
 
 interface SubscriptionComparisonProps {
   currentPlan: "free" | "basic" | "premium";
-  onSelectPlan: (plan: "basic" | "premium") => void;
+  onSelectPlan: (plan: "free" | "basic" | "premium") => void;
 }
 
 const FEATURES = [
