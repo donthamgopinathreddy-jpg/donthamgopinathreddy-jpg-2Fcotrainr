@@ -175,7 +175,7 @@ export default function NotificationsPageEnhanced() {
         // Enrich notifications
         const enriched = notifications.map((notif) => {
           const enrichedNotif = { ...notif } as NotificationWithUser;
-          const actorId = notif.related_user_id || (notif as any).actor_id;
+          const actorId = notif.related_user_id || notif.actor_id;
 
           if (actorId && usersData[actorId]) {
             enrichedNotif.actor = usersData[actorId];
@@ -183,18 +183,16 @@ export default function NotificationsPageEnhanced() {
           }
 
           // Add comment content if available
-          if ((notif as any).type === "comment") {
-            const commentId = (notif as any).comment_id;
-            if (commentId && commentData[commentId]) {
-              enrichedNotif.content = commentData[commentId];
+          if (notif.type === "comment" && notif.comment_id) {
+            if (commentData[notif.comment_id]) {
+              enrichedNotif.content = commentData[notif.comment_id];
             }
           }
 
           // Add post image if available
-          if ((notif as any).type === "like" || (notif as any).type === "comment") {
-            const postId = (notif as any).post_id;
-            if (postId && postData[postId]) {
-              enrichedNotif.post_image_url = postData[postId];
+          if ((notif.type === "like" || notif.type === "comment") && notif.post_id) {
+            if (postData[notif.post_id]) {
+              enrichedNotif.post_image_url = postData[notif.post_id];
             }
           }
 
