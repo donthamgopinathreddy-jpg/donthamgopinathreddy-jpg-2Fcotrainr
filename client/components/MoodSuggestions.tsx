@@ -243,7 +243,7 @@ export default function MoodSuggestions({ moodValue }: MoodSuggestionsProps) {
               }`}
             >
               <Icon className={`w-4 h-4 flex-shrink-0 ${action.color}`} />
-              <span className="text-xs font-semibold line-clamp-2 text-left">
+              <span className="text-xs font-semibold line-clamp-2 text-left text-black">
                 {action.text}
               </span>
             </button>

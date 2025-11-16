@@ -270,7 +270,7 @@ export default function NotificationsDropdown() {
                 <button
                   onClick={() => {
                     setIsOpen(false);
-                    // Navigate to notifications page if available
+                    window.location.href = "/notifications";
                   }}
                   className="text-xs font-semibold text-blue-500 hover:text-blue-600"
                 >
