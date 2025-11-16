@@ -1103,6 +1103,9 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Permissions Modal */}
+      <PermissionsModal isOpen={showPermissionsModal} onClose={() => setShowPermissionsModal(false)} />
     </div>
   );
 }
