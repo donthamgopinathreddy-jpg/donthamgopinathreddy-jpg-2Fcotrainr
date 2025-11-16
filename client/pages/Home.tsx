@@ -2,13 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
 import StreaksCard from "@/components/StreaksCard";
-import SmartInsightsCard from "@/components/SmartInsightsCard";
-import HydrationGamification from "@/components/HydrationGamification";
-import MealTrackingStreak from "@/components/MealTrackingStreak";
-import MiniChallengesCarousel from "@/components/MiniChallengesCarousel";
-import MoodTracker from "@/components/MoodTracker";
-import WorkoutLibraryGrid from "@/components/WorkoutLibraryGrid";
-import BodyProgressTracker from "@/components/BodyProgressTracker";
 import {
   Dumbbell,
   Apple,
@@ -24,6 +17,7 @@ import {
   Upload,
   Moon,
   Sun,
+  Bell,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
@@ -451,34 +445,43 @@ export default function Home() {
           className="w-full h-full object-cover"
         />
 
-        {/* Edit Cover Button */}
-        <label className="absolute top-4 right-4 bg-white/90 hover:bg-white p-3 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all">
-          <svg
-            className="w-5 h-5 text-gray-900"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+        {/* Header Actions */}
+        <div className="absolute top-4 right-4 flex gap-3">
+          {/* Notification Bell */}
+          <button className="relative bg-white/90 hover:bg-white p-3 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all">
+            <Bell className="w-5 h-5 text-gray-900" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+
+          {/* Edit Cover Button */}
+          <label className="bg-white/90 hover:bg-white p-3 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all">
+            <svg
+              className="w-5 h-5 text-gray-900"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleCoverImageChange}
+              className="hidden"
             />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleCoverImageChange}
-            className="hidden"
-          />
-        </label>
+          </label>
+        </div>
 
         {/* Greeting */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 to-transparent p-6">
@@ -504,7 +507,9 @@ export default function Home() {
 
           {/* Welcome Text */}
           <div className="pb-2">
-            <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Welcome, {userProfile?.full_name?.split(" ")[0] || "User"}
+            </h1>
             <p className="text-gray-600 text-sm">Ready to train?</p>
           </div>
         </div>
