@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
 import StreaksCard from "@/components/StreaksCard";
+import ProgressTracker from "@/components/ProgressTracker";
+import MoodTrackerDB from "@/components/MoodTrackerDB";
 import {
   Dumbbell,
   Apple,
@@ -735,6 +737,12 @@ export default function Home() {
 
         {/* Streaks Card */}
         <StreaksCard compact={false} />
+
+        {/* Mood Tracker */}
+        <MoodTrackerDB />
+
+        {/* Progress Tracker */}
+        <ProgressTracker />
 
         {/* BMI Index Card */}
         <div
