@@ -273,8 +273,8 @@ export const useLeaderboard = () => {
   };
 
   useEffect(() => {
+    fetchWeeklyLeaderboard();
     fetchMonthlyLeaderboard();
-    fetchOverallLeaderboard();
   }, []);
 
   return {
@@ -282,6 +282,7 @@ export const useLeaderboard = () => {
     monthlyLeaderboard,
     userRank,
     loading,
+    fetchWeeklyLeaderboard,
     fetchMonthlyLeaderboard,
     fetchOverallLeaderboard,
     getTop10,
