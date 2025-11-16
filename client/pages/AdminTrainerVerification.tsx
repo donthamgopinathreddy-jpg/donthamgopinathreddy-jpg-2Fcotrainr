@@ -485,7 +485,7 @@ const AdminTrainerVerification: React.FC = () => {
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-3 px-2">Platform Statistics</h3>
               <div className="grid grid-cols-3 gap-3">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-blue-400/50 transition-all duration-200">
+                <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-blue-400/50 transition-all duration-200">
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <p className="text-[10px] text-blue-700 font-semibold uppercase">Total Users</p>
@@ -495,7 +495,7 @@ const AdminTrainerVerification: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-purple-400/50 transition-all duration-200">
+                <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-purple-400/50 transition-all duration-200">
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <p className="text-[10px] text-purple-700 font-semibold uppercase">Trainers</p>
@@ -505,7 +505,7 @@ const AdminTrainerVerification: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-indigo-400/50 transition-all duration-200">
+                <div className="bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-indigo-400/50 transition-all duration-200">
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <p className="text-[10px] text-indigo-700 font-semibold uppercase">Clients</p>
