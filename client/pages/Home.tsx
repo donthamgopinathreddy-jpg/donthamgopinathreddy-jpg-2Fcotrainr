@@ -521,11 +521,6 @@ export default function Home() {
             ? "bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 shadow-md"
             : "bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-300/40 shadow-md"
         }`}>
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
-          </div>
-
           <div className="relative z-10">
             <div className="text-3xl mb-3 animate-bounce" style={{ animationDuration: '3s' }}>
               ✨
