@@ -154,23 +154,23 @@ export default function AIWeeklyInsights() {
         <Card className="p-6 mb-8 bg-white/80 backdrop-blur border-orange-100">
           <div className="flex items-center gap-3 mb-6">
             <Award className="w-6 h-6 text-orange-500" />
-            <h3 className="text-lg font-bold">Achievements & Streaks</h3>
+            <h3 className="text-lg font-bold text-black dark:text-white">Achievements & Streaks</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {insights.achievements.personalRecords.map((pr, idx) => (
-              <div key={idx} className="p-4 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg border border-purple-200">
-                <div className="text-sm font-semibold">{pr}</div>
+              <div key={idx} className="p-4 bg-gradient-to-br from-purple-400 to-purple-300 dark:from-purple-700 dark:to-purple-600 rounded-lg border-2 border-purple-500">
+                <div className="text-sm font-bold text-black dark:text-white">{pr}</div>
               </div>
             ))}
             {insights.achievements.milestones.map((ms, idx) => (
-              <div key={idx} className="p-4 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg border border-blue-200">
-                <div className="text-sm font-semibold">{ms}</div>
+              <div key={idx} className="p-4 bg-gradient-to-br from-blue-400 to-blue-300 dark:from-blue-700 dark:to-blue-600 rounded-lg border-2 border-blue-500">
+                <div className="text-sm font-bold text-black dark:text-white">{ms}</div>
               </div>
             ))}
             {insights.achievements.streaks.map((st, idx) => (
-              <div key={idx} className="p-4 bg-gradient-to-br from-orange-100 to-orange-50 rounded-lg border border-orange-200">
-                <div className="text-sm font-semibold">{st}</div>
+              <div key={idx} className="p-4 bg-gradient-to-br from-orange-400 to-orange-300 dark:from-orange-700 dark:to-orange-600 rounded-lg border-2 border-orange-500">
+                <div className="text-sm font-bold text-black dark:text-white">{st}</div>
               </div>
             ))}
           </div>
