@@ -23,6 +23,7 @@ import Discover from "./pages/Discover";
 import Messages from "./pages/Messages";
 import ChatMessages from "./pages/ChatMessages";
 import Meals from "./pages/Meals";
+import DietPlanCreator from "./pages/DietPlanCreator";
 import Profile from "./pages/Profile";
 import Feed from "./pages/Feed";
 import TrainerProfile from "./pages/TrainerProfile";
