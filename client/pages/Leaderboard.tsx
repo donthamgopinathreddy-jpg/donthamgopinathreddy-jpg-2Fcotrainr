@@ -47,13 +47,13 @@ const Achievements = () => {
         } border-b p-4`}
       >
         <div className="flex items-center gap-3 mb-4">
-          <Trophy className="w-8 h-8 text-yellow-500" />
+          <Medal className="w-8 h-8 text-yellow-500" />
           <h1
             className={`text-2xl font-bold ${
               theme === "dark" ? "text-white" : "text-gray-900"
             }`}
           >
-            Leaderboard
+            Achievements
           </h1>
         </div>
 
