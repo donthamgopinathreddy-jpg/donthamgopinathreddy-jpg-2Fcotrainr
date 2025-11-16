@@ -28,6 +28,9 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
 import { useHealthSync } from "@/hooks/useHealthSync";
 import { useMoodLogs } from "@/hooks/useMoodLogs";
+import { useStepCounter } from "@/hooks/useStepCounter";
+import { useDailyStreak } from "@/hooks/useDailyStreak";
+import { useStepAchievements } from "@/hooks/useStepAchievements";
 
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
