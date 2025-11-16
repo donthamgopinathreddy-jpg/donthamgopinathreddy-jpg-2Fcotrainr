@@ -6,7 +6,7 @@ export interface Workout {
   id: string;
   title: string;
   category: "gym" | "yoga" | "boxing" | "zumba" | "stretching" | "warmups";
-  level: "basic" | "intermediate" | "advanced";
+  level: "beginner" | "intermediate" | "advanced";
   duration_minutes: number;
   calories_burned: number;
   thumbnail_url?: string;
