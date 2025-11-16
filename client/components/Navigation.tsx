@@ -22,15 +22,15 @@ const Navigation = () => {
   const navItems = isTrainer
     ? [
         { path: "/", label: "Home", icon: Home, color: "from-blue-500 to-cyan-500" },
-        { path: "/achievements", label: "Achievements", icon: Award, color: "from-purple-500 to-pink-500" },
-        { path: "/messages", label: "Messages", icon: MessageCircle, color: "from-green-500 to-emerald-500" },
+        { path: "/achievements", label: "Quest", icon: Award, color: "from-purple-500 to-pink-500" },
+        { path: "/messages", label: "Messages", icon: MessageCircle, color: "from-yellow-500 to-green-500" },
         { path: "/profile", label: "Profile", icon: User, color: "from-orange-500 to-red-500" },
       ]
     : [
         { path: "/", label: "Home", icon: Home, color: "from-blue-500 to-cyan-500" },
         { path: "/discover", label: "Discover", icon: MapPin, color: "from-indigo-500 to-purple-500" },
-        { path: "/achievements", label: "Achievements", icon: Award, color: "from-purple-500 to-pink-500" },
-        { path: "/messages", label: "Messages", icon: MessageCircle, color: "from-green-500 to-emerald-500" },
+        { path: "/achievements", label: "Quest", icon: Award, color: "from-purple-500 to-pink-500" },
+        { path: "/messages", label: "Messages", icon: MessageCircle, color: "from-yellow-500 to-green-500" },
         { path: "/profile", label: "Profile", icon: User, color: "from-orange-500 to-red-500" },
       ];
 
@@ -139,7 +139,7 @@ const Navigation = () => {
                 {/* Glow Effect for Active */}
                 {active && (
                   <div
-                    className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} opacity-20 blur-xl`}
+                    className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} opacity-30 blur-2xl`}
                   />
                 )}
               </Link>
