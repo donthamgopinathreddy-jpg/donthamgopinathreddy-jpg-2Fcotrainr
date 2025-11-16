@@ -171,20 +171,68 @@ const AdminTrainerVerification: React.FC = () => {
     try {
       setUploadingPic(true);
 
-      // Upload to Supabase storage
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${userProfile.id}-profile.${fileExt}`;
-      const { error: uploadError } = await supabase.storage
-        .from("profiles")
-        .upload(fileName, file, { upsert: true });
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append("file", file);
 
-      if (uploadError) throw uploadError;
+      // First, try to ensure the bucket exists by testing a simple operation
+      const fileExt = file.name.split(".").pop() || "jpg";
+      const fileName = `${userProfile.id}-profile-${Date.now()}.${fileExt}`;
+
+      // Upload to Supabase storage with retry
+      let uploadError: any = null;
+      let uploadSuccess = false;
+
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const { error } = await supabase.storage
+            .from("profiles")
+            .upload(fileName, file, { upsert: true });
+
+          if (error) {
+            uploadError = error;
+          } else {
+            uploadSuccess = true;
+            break;
+          }
+        } catch (e) {
+          uploadError = e;
+          if (attempt < 1) {
+            // Wait before retry
+            await new Promise((resolve) => setTimeout(resolve, 500));
+          }
+        }
+      }
+
+      if (!uploadSuccess && uploadError) {
+        // Check if it's a bucket not found error
+        const errorMsg = uploadError?.message || JSON.stringify(uploadError);
+        if (
+          errorMsg.includes("Bucket not found") ||
+          errorMsg.includes("does not exist")
+        ) {
+          // Create the bucket first
+          try {
+            await supabase.storage.createBucket("profiles", {
+              public: true,
+            });
+            // Try upload again
+            const { error: retryError } = await supabase.storage
+              .from("profiles")
+              .upload(fileName, file, { upsert: true });
+            if (retryError) throw retryError;
+            uploadSuccess = true;
+          } catch (bucketErr) {
+            console.error("Error creating bucket:", bucketErr);
+            throw uploadError;
+          }
+        } else {
+          throw uploadError;
+        }
+      }
 
       // Get public URL
-      const { data } = supabase.storage
-        .from("profiles")
-        .getPublicUrl(fileName);
-
+      const { data } = supabase.storage.from("profiles").getPublicUrl(fileName);
       const profileUrl = data.publicUrl;
 
       // Update user profile in database
@@ -201,10 +249,13 @@ const AdminTrainerVerification: React.FC = () => {
         variant: "default",
       });
     } catch (err) {
-      console.error("Profile picture upload error:", err);
+      const errorMsg = err instanceof Error ? err.message : JSON.stringify(err);
+      console.error("Profile picture upload error:", errorMsg);
       toast({
         title: "Error",
-        description: "Failed to upload profile picture",
+        description: errorMsg.includes("Bucket")
+          ? "Storage not configured. Please try again."
+          : "Failed to upload profile picture",
         variant: "destructive",
       });
     } finally {
