@@ -233,21 +233,11 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/followers"
+        path="/followers-following"
         element={
           <ProtectedRoute>
             <AppLayout>
-              <FollowersPage />
-            </AppLayout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/following"
-        element={
-          <ProtectedRoute>
-            <AppLayout>
-              <FollowingPage />
+              <FollowersFollowingPage />
             </AppLayout>
           </ProtectedRoute>
         }
