@@ -89,7 +89,11 @@ export function useNotifications(userId?: string) {
         .limit(20);
 
       if (fetchError) {
-        console.debug("Fetch notifications error:", fetchError?.code, fetchError?.message);
+        console.debug(
+          "Fetch notifications error:",
+          fetchError?.code,
+          fetchError?.message,
+        );
         setError(null);
         setNotifications([]);
         setUnreadCount(0);
@@ -97,7 +101,9 @@ export function useNotifications(userId?: string) {
       }
 
       if (data) {
-        const transformed = (data as NotificationData[]).map(transformNotification);
+        const transformed = (data as NotificationData[]).map(
+          transformNotification,
+        );
         setNotifications(transformed);
         const unread = transformed.filter((n) => !n.is_read).length;
         setUnreadCount(unread);
@@ -106,7 +112,7 @@ export function useNotifications(userId?: string) {
     } catch (err) {
       console.debug(
         "Fetch notifications catch error:",
-        err instanceof Error ? err.message : "Unknown error"
+        err instanceof Error ? err.message : "Unknown error",
       );
       setNotifications([]);
       setUnreadCount(0);
@@ -129,8 +135,8 @@ export function useNotifications(userId?: string) {
 
       setNotifications((prev) =>
         prev.map((n) =>
-          n.id === notificationId ? { ...n, is_read: true } : n
-        )
+          n.id === notificationId ? { ...n, is_read: true } : n,
+        ),
       );
 
       setUnreadCount((prev) => Math.max(0, prev - 1));
@@ -138,7 +144,7 @@ export function useNotifications(userId?: string) {
     } catch (err) {
       console.debug(
         "Mark as read catch error:",
-        err instanceof Error ? err.message : "Unknown error"
+        err instanceof Error ? err.message : "Unknown error",
       );
       return false;
     }
@@ -158,15 +164,13 @@ export function useNotifications(userId?: string) {
         return false;
       }
 
-      setNotifications((prev) =>
-        prev.map((n) => ({ ...n, is_read: true }))
-      );
+      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
       setUnreadCount(0);
       return true;
     } catch (err) {
       console.debug(
         "Mark all as read catch error:",
-        err instanceof Error ? err.message : "Unknown error"
+        err instanceof Error ? err.message : "Unknown error",
       );
       return false;
     }
@@ -189,7 +193,7 @@ export function useNotifications(userId?: string) {
     } catch (err) {
       console.debug(
         "Delete notification catch error:",
-        err instanceof Error ? err.message : "Unknown error"
+        err instanceof Error ? err.message : "Unknown error",
       );
       return false;
     }

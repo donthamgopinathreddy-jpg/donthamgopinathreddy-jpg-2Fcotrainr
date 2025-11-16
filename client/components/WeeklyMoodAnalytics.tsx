@@ -14,11 +14,19 @@ interface WeeklyMoodAnalyticsProps {
   moodLogs: MoodLog[];
 }
 
-export default function WeeklyMoodAnalytics({ moodLogs }: WeeklyMoodAnalyticsProps) {
+export default function WeeklyMoodAnalytics({
+  moodLogs,
+}: WeeklyMoodAnalyticsProps) {
   const { theme } = useTheme();
 
   const getMoodLabel = (value: number) => {
-    const labels = { 1: "Poor", 2: "Fair", 3: "Good", 4: "Great", 5: "Amazing" };
+    const labels = {
+      1: "Poor",
+      2: "Fair",
+      3: "Good",
+      4: "Great",
+      5: "Amazing",
+    };
     return labels[value as keyof typeof labels] || "Unknown";
   };
 
@@ -41,9 +49,16 @@ export default function WeeklyMoodAnalytics({ moodLogs }: WeeklyMoodAnalyticsPro
 
   // Calculate statistics
   const totalMoods = moodLogs.length;
-  const averageMood = totalMoods > 0 ? (moodLogs.reduce((sum, log) => sum + log.mood_value, 0) / totalMoods).toFixed(1) : "0";
-  const highestMood = totalMoods > 0 ? Math.max(...moodLogs.map((log) => log.mood_value)) : 0;
-  const lowestMood = totalMoods > 0 ? Math.min(...moodLogs.map((log) => log.mood_value)) : 0;
+  const averageMood =
+    totalMoods > 0
+      ? (
+          moodLogs.reduce((sum, log) => sum + log.mood_value, 0) / totalMoods
+        ).toFixed(1)
+      : "0";
+  const highestMood =
+    totalMoods > 0 ? Math.max(...moodLogs.map((log) => log.mood_value)) : 0;
+  const lowestMood =
+    totalMoods > 0 ? Math.min(...moodLogs.map((log) => log.mood_value)) : 0;
 
   // Get last 7 days including missing days
   const getLast7DaysData = () => {
@@ -76,7 +91,8 @@ export default function WeeklyMoodAnalytics({ moodLogs }: WeeklyMoodAnalyticsPro
 
   const getTrendMessage = () => {
     if (totalMoods === 0) return "Start tracking your mood to see trends!";
-    const trend = moodLogs[0]?.mood_value - moodLogs[moodLogs.length - 1]?.mood_value;
+    const trend =
+      moodLogs[0]?.mood_value - moodLogs[moodLogs.length - 1]?.mood_value;
     if (trend > 0) return "📈 Your mood is improving!";
     if (trend < 0) return "📉 Your mood is declining, take care of yourself";
     return "➡️ Your mood is stable";
@@ -205,7 +221,10 @@ export default function WeeklyMoodAnalytics({ moodLogs }: WeeklyMoodAnalyticsPro
         </p>
         <div className="flex items-flex-end justify-between gap-2 h-24">
           {sevenDaysData.map((day) => (
-            <div key={day.date} className="flex-1 flex flex-col items-center justify-end gap-2">
+            <div
+              key={day.date}
+              className="flex-1 flex flex-col items-center justify-end gap-2"
+            >
               <div className="relative w-full h-full flex items-flex-end justify-center group">
                 {day.hasData ? (
                   <div
@@ -217,7 +236,9 @@ export default function WeeklyMoodAnalytics({ moodLogs }: WeeklyMoodAnalyticsPro
                   >
                     <div
                       className={`absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-bold rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap ${
-                        theme === "dark" ? "bg-gray-700 text-white" : "bg-gray-800 text-white"
+                        theme === "dark"
+                          ? "bg-gray-700 text-white"
+                          : "bg-gray-800 text-white"
                       }`}
                     >
                       {getMoodLabel(day.mood)}

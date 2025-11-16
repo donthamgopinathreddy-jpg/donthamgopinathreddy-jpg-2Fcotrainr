@@ -494,7 +494,6 @@ export default function Home() {
             />
           </label>
         </div>
-
       </div>
 
       {/* Profile Section */}
@@ -512,25 +511,31 @@ export default function Home() {
               className="w-24 h-24 rounded-2xl border-4 border-white shadow-lg object-cover"
             />
           </div>
-
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 -mt-8 pb-24 relative z-20 space-y-6">
         {/* Motivational Quote Tile */}
-        <div className={`rounded-3xl p-6 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-          theme === "dark"
-            ? "bg-gradient-to-br from-orange-900/40 to-amber-900/30 border border-orange-700/40 shadow-md"
-            : "bg-gradient-to-br from-orange-100 to-amber-50 border border-orange-300/40 shadow-md"
-        }`}>
+        <div
+          className={`rounded-3xl p-6 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+            theme === "dark"
+              ? "bg-gradient-to-br from-orange-900/40 to-amber-900/30 border border-orange-700/40 shadow-md"
+              : "bg-gradient-to-br from-orange-100 to-amber-50 border border-orange-300/40 shadow-md"
+          }`}
+        >
           <div className="relative z-10">
-            <div className="text-3xl mb-3 animate-bounce" style={{ animationDuration: '3s' }}>
+            <div
+              className="text-3xl mb-3 animate-bounce"
+              style={{ animationDuration: "3s" }}
+            >
               ✨
             </div>
-            <p className={`text-lg font-bold leading-relaxed animate-pulse ${
-              theme === "dark" ? "text-orange-100" : "text-orange-900"
-            }`}>
+            <p
+              className={`text-lg font-bold leading-relaxed animate-pulse ${
+                theme === "dark" ? "text-orange-100" : "text-orange-900"
+              }`}
+            >
               {quote}
             </p>
             <div className="mt-4 flex gap-1 justify-end">
@@ -542,7 +547,7 @@ export default function Home() {
                   }`}
                   style={{
                     animation: `ping 2s cubic-bezier(0, 0, 0.2, 1) infinite`,
-                    animationDelay: `${i * 0.3}s`
+                    animationDelay: `${i * 0.3}s`,
                   }}
                 ></div>
               ))}

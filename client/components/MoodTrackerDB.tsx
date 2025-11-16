@@ -9,9 +9,11 @@ import { toast } from "sonner";
 export default function MoodTrackerDB() {
   const { theme } = useTheme();
   const { userProfile } = useAuth();
-  const { todayMood, loading, error, addMoodLog } = useMoodLogs(userProfile?.id);
+  const { todayMood, loading, error, addMoodLog } = useMoodLogs(
+    userProfile?.id,
+  );
   const [selectedMood, setSelectedMood] = useState<number | null>(
-    todayMood?.mood_value || null
+    todayMood?.mood_value || null,
   );
   const [isSaving, setIsSaving] = useState(false);
 
@@ -77,7 +79,9 @@ export default function MoodTrackerDB() {
           <Smile className="w-6 h-6 text-pink-500 animate-bounce" />
           How are you feeling?
         </h3>
-        <div className="text-2xl">{selectedMood ? moods[selectedMood - 1].emoji : "😊"}</div>
+        <div className="text-2xl">
+          {selectedMood ? moods[selectedMood - 1].emoji : "😊"}
+        </div>
       </div>
 
       {/* Mood Selector */}

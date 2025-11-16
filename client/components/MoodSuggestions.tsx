@@ -217,9 +217,15 @@ export default function MoodSuggestions({ moodValue }: MoodSuggestionsProps) {
   const suggestion = suggestions[moodValue];
 
   return (
-    <div className={`rounded-3xl p-6 transition-all duration-300 ${suggestion.bgClass}`}>
-      <h4 className={`text-lg font-bold mb-2 ${suggestion.textClass}`}>{suggestion.title}</h4>
-      <p className={`text-sm mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+    <div
+      className={`rounded-3xl p-6 transition-all duration-300 ${suggestion.bgClass}`}
+    >
+      <h4 className={`text-lg font-bold mb-2 ${suggestion.textClass}`}>
+        {suggestion.title}
+      </h4>
+      <p
+        className={`text-sm mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
+      >
         {suggestion.message}
       </p>
 
@@ -237,7 +243,9 @@ export default function MoodSuggestions({ moodValue }: MoodSuggestionsProps) {
               }`}
             >
               <Icon className={`w-4 h-4 flex-shrink-0 ${action.color}`} />
-              <span className="text-xs font-semibold line-clamp-2 text-left">{action.text}</span>
+              <span className="text-xs font-semibold line-clamp-2 text-left">
+                {action.text}
+              </span>
             </button>
           );
         })}
