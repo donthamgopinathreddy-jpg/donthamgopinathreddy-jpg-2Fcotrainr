@@ -1,7 +1,6 @@
 import "./global.css";
 
 import { useEffect } from "react";
-import { motion } from "framer-motion";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
