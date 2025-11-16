@@ -1,8 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, MapPin, MessageCircle, User, Award } from "lucide-react";
+import { Home, MapPin, MessageCircle, User, Award, Settings } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useMessages } from "@/hooks/useMessages";
+import { isUserAdmin } from "@/lib/adminAuth";
 
 const Navigation = () => {
   const location = useLocation();
@@ -12,6 +13,7 @@ const Navigation = () => {
 
   const isActive = (path: string) => location.pathname === path;
   const isTrainer = userProfile?.role === "trainer";
+  const isAdmin = isUserAdmin(userProfile);
 
   const navItems = isTrainer
     ? [
