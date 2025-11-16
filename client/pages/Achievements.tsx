@@ -445,13 +445,9 @@ export default function Quests() {
                       key={entry.user_id}
                       className={`rounded-xl p-3 flex items-center gap-3 transition-all ${
                         isCurrentUser
-                          ? aestheticStyle === "vibrant"
-                            ? theme === "dark"
-                              ? "bg-blue-500/20 border border-blue-500/50"
-                              : "bg-blue-100/50 border border-blue-300"
-                            : theme === "dark"
-                              ? "bg-blue-500/10 border border-blue-500/30"
-                              : "bg-blue-50 border border-blue-200"
+                          ? theme === "dark"
+                            ? "bg-blue-500/20 border border-blue-500/50"
+                            : "bg-blue-100/50 border border-blue-300"
                           : theme === "dark"
                             ? "bg-gray-800/50 border border-gray-700/50"
                             : "bg-white border border-gray-200"
