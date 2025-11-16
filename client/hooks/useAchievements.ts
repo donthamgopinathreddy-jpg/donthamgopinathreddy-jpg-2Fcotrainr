@@ -45,6 +45,16 @@ export const useAchievements = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [newlyUnlocked, setNewlyUnlocked] = useState<Achievement | null>(null);
+  const [weeklyStats, setWeeklyStats] = useState<WeeklyStats>({
+    highestSteps: 0,
+    weeklyAchievements: [],
+    userRank: null,
+    totalWeeklySteps: 0,
+  });
+  const [weeklyLeaderboard, setWeeklyLeaderboard] = useState<LeaderboardEntry[]>(
+    [],
+  );
+  const [leaderboardLoading, setLeaderboardLoading] = useState(false);
 
   // Fetch all achievements
   const fetchAllAchievements = async () => {
