@@ -219,21 +219,35 @@ export default function NotificationsPageEnhanced() {
 
           {/* Action Buttons */}
           {notificationsWithUsers.length > 0 && (
-            <div className="flex gap-2">
-              <button
-                onClick={() => markAllAsRead()}
-                className="text-xs font-semibold text-blue-500 hover:text-blue-600 flex items-center gap-1"
-              >
-                <CheckCircle className="w-4 h-4" />
-                Mark all as read
-              </button>
-              {selectedNotifications.size > 0 && (
+            <div className="flex gap-2 items-center">
+              {isMultiSelectMode ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setIsMultiSelectMode(false);
+                      setSelectedNotifications(new Set());
+                    }}
+                    className="text-xs font-semibold text-gray-500 hover:text-gray-600"
+                  >
+                    Cancel
+                  </button>
+                  {selectedNotifications.size > 0 && (
+                    <button
+                      onClick={handleDeleteSelected}
+                      className="text-xs font-semibold text-red-500 hover:text-red-600 flex items-center gap-1"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      Delete ({selectedNotifications.size})
+                    </button>
+                  )}
+                </>
+              ) : (
                 <button
-                  onClick={handleDeleteSelected}
-                  className="text-xs font-semibold text-red-500 hover:text-red-600 flex items-center gap-1"
+                  onClick={() => markAllAsRead()}
+                  className="text-xs font-semibold text-blue-500 hover:text-blue-600 flex items-center gap-1"
                 >
-                  <Trash2 className="w-4 h-4" />
-                  Delete selected ({selectedNotifications.size})
+                  <CheckCircle className="w-4 h-4" />
+                  Mark all as read
                 </button>
               )}
             </div>
