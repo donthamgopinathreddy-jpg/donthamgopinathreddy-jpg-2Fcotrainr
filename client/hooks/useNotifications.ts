@@ -73,6 +73,19 @@ export function useNotifications(userId?: string) {
       setLoading(true);
       setError(null);
 
+      // Check if user is demo user to use mock data
+      const isDemoMode = userId.startsWith("demo-user") || userId.includes("demo");
+
+      if (isDemoMode) {
+        // For demo users, return empty notifications
+        if (isMountedRef.current) {
+          setNotifications([]);
+          setUnreadCount(0);
+          setLoading(false);
+        }
+        return;
+      }
+
       const { data, error: fetchError } = await supabase
         .from("notifications")
         .select("*")
@@ -112,6 +125,7 @@ export function useNotifications(userId?: string) {
           "Fetch notifications error:",
           err instanceof Error ? err.message : String(err),
         );
+        // Silently fail and return empty notifications
         setNotifications([]);
         setUnreadCount(0);
         setError(null);
