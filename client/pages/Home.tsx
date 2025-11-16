@@ -242,44 +242,6 @@ export default function Home() {
     }
   };
 
-  const handleAddSteps = async (amount: number) => {
-    try {
-      if (!userProfile?.id) {
-        toast.error("User not found");
-        return;
-      }
-
-      const newSteps = stepsCompleted + amount;
-      setStepsCompleted(newSteps);
-
-      // Check if demo mode
-      const isDemoMode =
-        userProfile.id.startsWith("demo-user") ||
-        userProfile.id.includes("demo");
-
-      // Save to Supabase
-      const bioValue = `${newSteps}|${waterConsumed}`;
-
-      if (isDemoMode) {
-        // Save to localStorage in demo mode
-        localStorage.setItem(`targets_${userProfile.id}`, bioValue);
-        toast.success(`��� Added ${amount} steps!`);
-        return;
-      }
-
-      const { error } = await supabase
-        .from("users")
-        .update({ bio: bioValue })
-        .eq("id", userProfile.id);
-
-      if (error) throw error;
-
-      toast.success(`✓ Added ${amount} steps!`);
-    } catch (error) {
-      console.error("Error saving steps:", error);
-      toast.error("Failed to save steps");
-    }
-  };
 
   const handleAddWater = async (amount: number) => {
     try {
