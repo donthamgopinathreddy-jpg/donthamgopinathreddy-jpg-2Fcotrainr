@@ -1,11 +1,15 @@
-import { useState } from "react";
-import { Lock, Zap, TrendingUp, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Lock, Zap, TrendingUp, AlertCircle, X, Sparkles } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWorkouts } from "@/hooks/useWorkouts";
 import { useDietPreferences } from "@/hooks/useDietPreferences";
 import { useDietReviewRequests } from "@/hooks/useDietReviewRequests";
+import { toast } from "sonner";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
 import WorkoutCard from "@/components/WorkoutCard";
+import DietPlannerForm from "@/components/DietPlannerForm";
+import AskTrainerModal from "@/components/AskTrainerModal";
+import TrendGraphsSection from "@/components/TrendGraphsSection";
 
 type WorkoutCategory =
   | "gym"
@@ -16,10 +20,18 @@ type WorkoutCategory =
   | "warmups";
 type WorkoutLevel = "basic" | "intermediate" | "advanced";
 
+const TREND_METRICS = [
+  { name: "Steps", icon: "👣", color: "from-blue-400 to-blue-600" },
+  { name: "Calories", icon: "🔥", color: "from-red-400 to-red-600" },
+  { name: "Water", icon: "💧", color: "from-cyan-400 to-cyan-600" },
+  { name: "Workouts", icon: "💪", color: "from-orange-400 to-orange-600" },
+];
+
 export default function TrainingHub() {
   const { userProfile } = useAuth();
   const { workouts, loading: workoutsLoading } = useWorkouts();
-  const { preferences } = useDietPreferences();
+  const { preferences, updatePreferences, loading: prefsLoading } =
+    useDietPreferences();
   const { createReviewRequest, loading: reviewLoading } =
     useDietReviewRequests();
 
@@ -28,24 +40,26 @@ export default function TrainingHub() {
     | "basic"
     | "premium";
 
+  // State management
+  const [selectedCategory, setSelectedCategory] =
+    useState<WorkoutCategory>("gym");
+  const [selectedLevel, setSelectedLevel] = useState<WorkoutLevel>("basic");
+  const [showDietModal, setShowDietModal] = useState(false);
+  const [showTrainerModal, setShowTrainerModal] = useState(false);
+  const [dietGoal, setDietGoal] = useState(preferences?.goal || "");
+  const [dietType, setDietType] = useState(preferences?.diet_type || "");
+  const [allergens, setAllergens] = useState<string[]>(
+    preferences?.allergies || [],
+  );
+  const [savingDiet, setSavingDiet] = useState(false);
+
   // Determine what's locked
   const isBasicWorkoutsLocked = plan === "free";
   const isDietPlannerLocked = plan === "free";
   const isAIInsightsLocked = plan !== "premium";
   const isTrendGraphsLocked = plan === "free";
 
-  // Filter workouts based on plan
-  const filterWorkoutsByPlan = (workouts: any[]) => {
-    if (plan === "free") {
-      return workouts.filter((w) => w.level === "basic");
-    }
-    return workouts;
-  };
-
-  const [selectedCategory, setSelectedCategory] =
-    useState<WorkoutCategory>("gym");
-  const [selectedLevel, setSelectedLevel] = useState<WorkoutLevel>("basic");
-
+  // Categories and levels
   const categories: WorkoutCategory[] = [
     "gym",
     "yoga",
@@ -56,22 +70,63 @@ export default function TrainingHub() {
   ];
   const levels: WorkoutLevel[] = ["basic", "intermediate", "advanced"];
 
-  const filteredWorkouts = filterWorkoutsByPlan(
-    workouts.filter(
-      (w) =>
-        w.category === selectedCategory &&
-        (plan === "premium" || plan === "basic" ? true : w.level === "basic"),
-    ),
-  );
+  // Filter workouts based on plan and selections
+  const filteredWorkouts = workouts.filter((w) => {
+    // Category filter
+    if (w.category !== selectedCategory) return false;
 
-  const handleAskTrainerReview = async () => {
-    // This would open a modal in a real implementation
-    alert("Opening Ask Trainer dialog...");
+    // Level filter - free users only see basic
+    if (plan === "free" && w.level !== "basic") return false;
+
+    // Level selection filter - basic/premium users can filter
+    if (plan !== "free" && w.level !== selectedLevel) return false;
+
+    return true;
+  });
+
+  // Handle diet preferences save
+  const handleSaveDietPreferences = async () => {
+    try {
+      setSavingDiet(true);
+      const success = await updatePreferences({
+        goal: dietGoal as "lose_fat" | "build_muscle" | "maintain" | null,
+        diet_type: dietType as "veg" | "non_veg" | "vegan" | null,
+        allergies: allergens,
+      });
+
+      if (success) {
+        toast.success("Diet preferences saved successfully!");
+        setShowDietModal(false);
+      } else {
+        toast.error("Failed to save diet preferences");
+      }
+    } catch (err) {
+      toast.error("An error occurred while saving");
+    } finally {
+      setSavingDiet(false);
+    }
+  };
+
+  // Handle ask trainer review
+  const handleAskTrainerReview = async (trainerId: string | null) => {
+    try {
+      // Create a temporary diet plan ID (in real app, would be from actual plan)
+      const result = await createReviewRequest("diet-plan-" + Date.now(), trainerId || undefined);
+
+      if (result) {
+        toast.success("Review request sent to trainer!");
+        setShowTrainerModal(false);
+      } else {
+        toast.error("Failed to send review request");
+      }
+    } catch (err) {
+      toast.error("An error occurred");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-20 pb-32">
-      {/* Background elements */}
+      {/* Animated background elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-20 right-10 w-96 h-96 bg-orange-200 dark:bg-orange-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-200 dark:bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-2000"></div>
@@ -79,8 +134,8 @@ export default function TrainingHub() {
 
       <div className="max-w-6xl mx-auto px-4 relative z-10 space-y-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-2">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
             Training & Nutrition Hub
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
@@ -113,7 +168,7 @@ export default function TrainingHub() {
                 className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                   selectedCategory === cat
                     ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105"
-                    : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-700 hover:border-orange-500"
+                    : "bg-white/40 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 border-2 border-white/60 dark:border-gray-700/60 backdrop-blur-md hover:border-orange-500"
                 }`}
               >
                 {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -122,27 +177,23 @@ export default function TrainingHub() {
           </div>
 
           {/* Level Filters */}
-          <div className="flex flex-wrap gap-2">
-            {levels.map((level) => {
-              const isLockedForUser = plan === "free" && level !== "basic";
-              return (
+          {plan !== "free" && (
+            <div className="flex flex-wrap gap-2">
+              {levels.map((level) => (
                 <button
                   key={level}
-                  onClick={() => !isLockedForUser && setSelectedLevel(level)}
-                  disabled={isLockedForUser}
+                  onClick={() => setSelectedLevel(level)}
                   className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
                     selectedLevel === level
-                      ? "bg-orange-500 text-white"
-                      : isLockedForUser
-                        ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed"
-                        : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
+                      ? "bg-gradient-to-r from-orange-500 to-red-500 text-white"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
                   }`}
                 >
                   {level.charAt(0).toUpperCase() + level.slice(1)}
                 </button>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Workout Cards Grid */}
           {workoutsLoading ? (
@@ -163,7 +214,8 @@ export default function TrainingHub() {
               ) : (
                 <div className="col-span-full text-center py-12">
                   <p className="text-gray-500 dark:text-gray-400 text-lg">
-                    No workouts found for this category and level.
+                    No workouts found for this category{" "}
+                    {plan !== "free" && "and level"}.
                   </p>
                 </div>
               )}
@@ -174,7 +226,7 @@ export default function TrainingHub() {
         {/* DIET PLANNER SECTION */}
         <section className="space-y-6">
           <div className="flex items-center justify-between">
-            <div>
+            <div className="flex-1">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                 🍽️ Diet Planner
                 {isDietPlannerLocked && (
@@ -185,208 +237,103 @@ export default function TrainingHub() {
                 {plan === "free"
                   ? "Upgrade to unlock personalized diet planning."
                   : plan === "basic"
-                    ? "Set your nutrition goals and preferences."
-                    : "Complete control over your nutrition plan."}
+                    ? "Set your nutrition goals and preferences (limited features)."
+                    : "Complete control over your nutrition plan with AI assistance."}
               </p>
             </div>
           </div>
 
           {isDietPlannerLocked ? (
-            <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-white/20 p-12 text-center">
-              <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Diet Planner Locked
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Upgrade to Basic or Premium to unlock personalized meal
-                planning.
-              </p>
-              <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all">
-                Upgrade Now
-              </button>
+            // Locked state with blur effect
+            <div className="relative">
+              <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-xl rounded-3xl border border-white/20 p-12 text-center">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent dark:from-gray-800/50 rounded-3xl blur-2xl opacity-50"></div>
+                <div className="relative z-10 space-y-4">
+                  <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Diet Planner Locked
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto">
+                    Upgrade to Basic or Premium to unlock personalized meal
+                    planning features.
+                  </p>
+                  <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
+                    Upgrade Now
+                  </button>
+                </div>
+              </div>
             </div>
           ) : (
-            <div className="space-y-6">
-              {/* Basic Plan Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Goal Selector */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Fitness Goal
-                  </label>
-                  <select className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:border-orange-500 focus:outline-none transition-colors">
-                    <option value="">Select your goal</option>
-                    <option value="lose_fat">Lose Fat</option>
-                    <option value="build_muscle">Build Muscle</option>
-                    <option value="maintain">Maintain Weight</option>
-                  </select>
-                </div>
-
-                {/* Diet Type */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Diet Type
-                  </label>
-                  <select className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:border-orange-500 focus:outline-none transition-colors">
-                    <option value="">Select diet type</option>
-                    <option value="veg">Vegetarian</option>
-                    <option value="non_veg">Non-Vegetarian</option>
-                    <option value="vegan">Vegan</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Likes and Dislikes */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Foods You Like
-                  </label>
-                  <textarea
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:border-orange-500 focus:outline-none transition-colors resize-none"
-                    rows={3}
-                    placeholder="e.g., Chicken, Rice, Broccoli..."
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Foods to Avoid
-                  </label>
-                  <textarea
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:border-orange-500 focus:outline-none transition-colors resize-none"
-                    rows={3}
-                    placeholder="e.g., Mushrooms, Olives..."
-                  />
-                </div>
-              </div>
-
-              {/* Premium Only Features */}
-              {plan === "premium" && (
-                <>
-                  {/* Allergens */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                      Allergens{" "}
-                      <span className="text-orange-500">★ Premium</span>
-                    </label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {[
-                        "dairy",
-                        "gluten",
-                        "nuts",
-                        "soy",
-                        "eggs",
-                        "shellfish",
-                        "wheat",
-                        "lactose",
-                      ].map((allergen) => (
-                        <label
-                          key={allergen}
-                          className="flex items-center gap-2 cursor-pointer"
-                        >
-                          <input
-                            type="checkbox"
-                            className="w-5 h-5 rounded accent-orange-500"
-                          />
-                          <span className="text-sm capitalize text-gray-700 dark:text-gray-300">
-                            {allergen}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Macros */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                      Macro Targets (g){" "}
-                      <span className="text-orange-500">★ Premium</span>
-                    </label>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <input
-                        type="number"
-                        placeholder="Protein (g)"
-                        className="px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:border-orange-500"
-                      />
-                      <input
-                        type="number"
-                        placeholder="Carbs (g)"
-                        className="px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:border-orange-500"
-                      />
-                      <input
-                        type="number"
-                        placeholder="Fats (g)"
-                        className="px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:border-orange-500"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Budget Filter */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                      Daily Budget{" "}
-                      <span className="text-orange-500">★ Premium</span>
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="Budget (₹)"
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:border-orange-500"
-                    />
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-4 pt-4">
-                    <button className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all">
-                      Generate Weekly Plan
-                    </button>
-                    <button
-                      onClick={handleAskTrainerReview}
-                      disabled={reviewLoading}
-                      className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
-                    >
-                      Ask Trainer to Review
-                    </button>
-                  </div>
-                </>
-              )}
-
-              <button className="w-full px-6 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600 transition-all">
-                Save Preferences
-              </button>
-            </div>
+            <DietPlannerForm
+              plan={plan}
+              preferences={preferences}
+              onOpenTrainerModal={() => setShowTrainerModal(true)}
+              onSave={handleSaveDietPreferences}
+              isSaving={savingDiet}
+            />
           )}
         </section>
 
-        {/* AI INSIGHTS SECTION */}
+        {/* AI INSIGHTS SECTION - Premium Only */}
         {plan === "premium" && (
           <section className="space-y-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-              ✨ AI Weekly Insights
+              <Sparkles className="w-8 h-8 text-orange-500" />
+              AI Weekly Insights
             </h2>
 
-            <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-3xl p-8 text-white backdrop-blur-lg border border-white/20 shadow-2xl">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
+            <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-3xl p-8 text-white backdrop-blur-lg border border-white/20 shadow-2xl overflow-hidden relative">
+              {/* Animated glow background */}
+              <div className="absolute inset-0 opacity-30">
+                <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+              </div>
+
+              <div className="relative z-10 space-y-6">
+                {/* Key Metrics */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
                     <p className="text-sm opacity-90">Steps Change</p>
-                    <p className="text-3xl font-bold">+12%</p>
+                    <p className="text-3xl font-bold mt-1">+12%</p>
+                    <p className="text-xs opacity-75 mt-1">vs last week</p>
                   </div>
-                  <div>
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
                     <p className="text-sm opacity-90">Calories Burned</p>
-                    <p className="text-3xl font-bold">-180 kcal</p>
+                    <p className="text-3xl font-bold mt-1">-180 kcal</p>
+                    <p className="text-xs opacity-75 mt-1">weekly average</p>
                   </div>
-                  <div>
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
                     <p className="text-sm opacity-90">Consistency</p>
-                    <p className="text-3xl font-bold">Good 🎯</p>
+                    <p className="text-3xl font-bold mt-1">Good 🎯</p>
+                    <p className="text-xs opacity-75 mt-1">Keep it up!</p>
                   </div>
                 </div>
 
-                <div className="border-t border-white/20 pt-4">
-                  <p className="text-lg font-semibold mb-2">💡 Pro Tip</p>
-                  <p className="text-base opacity-95">
-                    Try adding a 10-minute walk after meals to improve digestion
-                    and boost your daily activity levels.
+                {/* Pro Tip */}
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                  <p className="text-lg font-semibold mb-2 flex items-center gap-2">
+                    <span>💡</span> Pro Tip
                   </p>
+                  <p className="text-base opacity-95 leading-relaxed">
+                    Try adding a 10-minute walk after meals to improve digestion
+                    and boost your daily activity levels. This simple habit can
+                    increase your weekly steps by 15-20%.
+                  </p>
+                </div>
+
+                {/* Additional Insights */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                    <p className="font-semibold">🎯 Goal Progress</p>
+                    <p className="text-sm opacity-90 mt-2">
+                      You're 68% towards your weekly goal
+                    </p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                    <p className="font-semibold">📈 Best Day</p>
+                    <p className="text-sm opacity-90 mt-2">
+                      Wednesday - 12,500 steps
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -394,77 +341,38 @@ export default function TrainingHub() {
         )}
 
         {/* TREND GRAPHS SECTION */}
-        <section className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-              📊 Trend Graphs
-              {isTrendGraphsLocked && (
-                <Lock className="w-6 h-6 text-orange-500" />
-              )}
-            </h2>
-          </div>
-
-          {isTrendGraphsLocked ? (
-            <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-white/20 p-12 text-center">
-              <TrendingUp className="w-20 h-20 text-orange-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Trend Graphs Locked
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Upgrade to Basic or Premium to view your health trends and
-                progress.
-              </p>
-              <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all">
-                Upgrade Now
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {["Steps", "Calories", "Water Intake", "Workouts"].map(
-                (metric) => (
-                  <div
-                    key={metric}
-                    className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl border border-white/20 p-6"
-                  >
-                    <h3 className="font-bold text-gray-900 dark:text-white mb-4">
-                      {metric}
-                    </h3>
-                    <div className="h-40 bg-gradient-to-t from-orange-200 to-transparent dark:from-orange-900/30 rounded-lg flex items-end justify-around p-4">
-                      {[20, 40, 35, 50, 45, 60, 55].map((height, i) => (
-                        <div
-                          key={i}
-                          style={{ height: `${height}%` }}
-                          className="w-4 bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg"
-                        ></div>
-                      ))}
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                      Week overview
-                    </p>
-                  </div>
-                ),
-              )}
-            </div>
-          )}
-        </section>
+        <TrendGraphsSection isLocked={isTrendGraphsLocked} metrics={TREND_METRICS} />
 
         {/* Upgrade CTA for locked features */}
-        {(isDietPlannerLocked || isTrendGraphsLocked) && (
-          <section className="bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-12 text-center text-white">
-            <AlertCircle className="w-12 h-12 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold mb-2">
-              Ready to unlock your full potential?
-            </h2>
-            <p className="text-lg opacity-90 mb-6">
-              Upgrade to {plan === "free" ? "Basic or Premium" : "Premium"} to
-              access all premium features and accelerate your fitness journey.
-            </p>
-            <button className="px-8 py-4 bg-white text-orange-600 font-bold rounded-xl hover:shadow-lg transition-all">
-              View Pricing Plans
-            </button>
+        {(isDietPlannerLocked || isTrendGraphsLocked || isAIInsightsLocked) && (
+          <section className="bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-12 text-center text-white shadow-2xl border border-white/20 overflow-hidden relative">
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl"></div>
+            </div>
+            <div className="relative z-10">
+              <AlertCircle className="w-12 h-12 mx-auto mb-4" />
+              <h2 className="text-3xl font-bold mb-2">
+                Ready to unlock your full potential?
+              </h2>
+              <p className="text-lg opacity-90 mb-6 max-w-2xl mx-auto">
+                Upgrade to {plan === "free" ? "Basic or Premium" : "Premium"} to
+                access all premium features and accelerate your fitness journey.
+              </p>
+              <button className="px-8 py-4 bg-white text-orange-600 font-bold rounded-xl hover:shadow-lg transition-all hover:scale-105">
+                View Pricing Plans
+              </button>
+            </div>
           </section>
         )}
       </div>
+
+      {/* Ask Trainer Modal */}
+      <AskTrainerModal
+        isOpen={showTrainerModal}
+        onClose={() => setShowTrainerModal(false)}
+        onSubmit={handleAskTrainerReview}
+        isLoading={reviewLoading}
+      />
     </div>
   );
 }
