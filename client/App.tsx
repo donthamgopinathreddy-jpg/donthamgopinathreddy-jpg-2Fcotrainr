@@ -257,6 +257,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/upgrade"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Upgrade />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/profile/:userId"
         element={
           <ProtectedRoute>
