@@ -94,51 +94,91 @@ export function useNotifications(userId?: string) {
 
     try {
       let data: NotificationData[] = [];
+      let fetchAttempted = false;
 
       try {
-        // Fetch notifications - the RLS policy will handle filtering by auth.uid()
-        const response = await supabase
-          .from("notifications")
-          .select("*")
-          .order("created_at", { ascending: false })
-          .limit(20);
+        // Create a timeout promise
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(
+            () => reject(new Error("Notifications fetch timeout")),
+            8000,
+          ),
+        );
 
-        if (response.error) {
-          // Check if it's a "not found" error or permission error
-          const errorMsg = response.error?.message || "";
-          const errorCode = response.error?.code || "";
+        // Create the fetch promise
+        const fetchPromise = (async () => {
+          fetchAttempted = true;
+          // Fetch notifications - the RLS policy will handle filtering by auth.uid()
+          const response = await supabase
+            .from("notifications")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(20);
 
-          if (
-            errorMsg.includes("does not exist") ||
-            errorMsg.includes("relation") ||
-            errorCode === "PGRST116"
-          ) {
-            // Table doesn't exist yet - use empty array
-            console.debug("Notifications table not yet created");
-            data = [];
+          return response;
+        })();
+
+        // Race between fetch and timeout
+        const response = await Promise.race([fetchPromise, timeoutPromise]);
+
+        if (response && typeof response === "object") {
+          const typedResponse = response as {
+            error: any;
+            data: NotificationData[] | null;
+          };
+
+          if (typedResponse.error) {
+            // Check if it's a "not found" error or permission error
+            const errorMsg = typedResponse.error?.message || "";
+            const errorCode = typedResponse.error?.code || "";
+
+            if (
+              errorMsg.includes("does not exist") ||
+              errorMsg.includes("relation") ||
+              errorCode === "PGRST116"
+            ) {
+              // Table doesn't exist yet - use empty array
+              console.debug("Notifications table not yet created");
+              data = [];
+            } else if (
+              errorCode === "PGRST301" ||
+              errorMsg.includes("permission denied")
+            ) {
+              // RLS policy blocked - use empty array
+              console.debug("RLS policy blocked notifications access");
+              data = [];
+            } else {
+              console.debug(
+                "Supabase notifications error:",
+                typedResponse.error?.message || typedResponse.error,
+              );
+              data = [];
+            }
           } else if (
-            errorCode === "PGRST301" ||
-            errorMsg.includes("permission denied")
+            typedResponse.data &&
+            Array.isArray(typedResponse.data)
           ) {
-            // RLS policy blocked - use empty array
-            console.debug("RLS policy blocked notifications access");
-            data = [];
-          } else {
-            console.debug(
-              "Supabase notifications error:",
-              response.error?.message || response.error,
-            );
-            data = [];
+            data = typedResponse.data;
           }
-        } else if (response.data && Array.isArray(response.data)) {
-          data = response.data;
         }
       } catch (e) {
-        // Network error or other fetch issue - silently handle
+        // Network error, timeout, or other fetch issue - silently handle
+        const errorMsg =
+          e instanceof Error ? e.message : String(e);
         console.debug(
           "Fetch notifications error:",
-          e instanceof Error ? e.message : String(e),
+          errorMsg,
         );
+
+        // Log if it's a fetch failure vs timeout
+        if (errorMsg.includes("Failed to fetch")) {
+          console.debug(
+            "Network connectivity issue - notifications unavailable",
+          );
+        } else if (errorMsg.includes("timeout")) {
+          console.debug("Notifications fetch timeout - trying again later");
+        }
+
         data = [];
       }
 
