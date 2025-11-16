@@ -82,11 +82,11 @@ export default function AIWeeklyInsights() {
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center gap-3">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 hover:bg-gray-100 rounded-lg transition"
+            className="p-2 hover:bg-orange-100 rounded-lg transition group"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5 text-orange-500 group-hover:text-orange-600 transition" />
           </button>
-          <h1 className="text-2xl font-bold">AI Weekly Insights</h1>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent">AI Weekly Insights</h1>
         </div>
       </div>
 
@@ -147,9 +147,11 @@ export default function AIWeeklyInsights() {
           </Card>
 
           {/* Coach Message */}
-          <Card className="p-6 bg-gradient-to-br from-orange-100 to-orange-50 border-orange-200">
-            <h3 className="text-lg font-bold mb-4">Coach's Message</h3>
-            <p className="text-lg font-semibold text-orange-900">"{insights.coachMessage}"</p>
+          <Card className="p-6 bg-gradient-to-br from-purple-400 via-pink-300 to-red-300 dark:from-purple-700 dark:via-pink-600 dark:to-red-600 border-0 shadow-lg">
+            <h3 className="text-lg font-bold mb-4 text-white flex items-center gap-2">
+              <span className="text-2xl">🎯</span>Coach's Message
+            </h3>
+            <p className="text-lg font-semibold text-white drop-shadow">"{insights.coachMessage}"</p>
           </Card>
         </div>
 
@@ -183,7 +185,9 @@ export default function AIWeeklyInsights() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Steps Trend */}
           <Card className="p-6 bg-white/80 backdrop-blur border-orange-100">
-            <h3 className="text-lg font-bold mb-4">Steps Trend</h3>
+            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+              <span className="text-2xl">👟</span>Steps Trend
+            </h3>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={chunkStepsData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -198,7 +202,9 @@ export default function AIWeeklyInsights() {
 
           {/* Protein Intake */}
           <Card className="p-6 bg-white/80 backdrop-blur border-orange-100">
-            <h3 className="text-lg font-bold mb-4">Protein Intake Trend</h3>
+            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
+              <span className="text-2xl">🍗</span>Protein Intake Trend
+            </h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={proteinData}>
                 <CartesianGrid strokeDasharray="3 3" />
