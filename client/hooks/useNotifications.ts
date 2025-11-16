@@ -11,10 +11,6 @@ export interface Notification {
   related_id?: string;
   is_read: boolean;
   created_at: string;
-  related_user?: {
-    full_name: string;
-    profile_picture_url?: string;
-  };
 }
 
 export function useNotifications(userId?: string) {
