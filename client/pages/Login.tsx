@@ -125,6 +125,62 @@ export default function Login() {
     }
   };
 
+  const handlePINSubmit = async (pin: string) => {
+    if (!userId) {
+      toast.error("User information missing");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const isValid = await verifyPIN(userId, pin);
+      if (isValid) {
+        // After PIN verification, sign in the user
+        await authSignIn(email, password);
+        toast.success("Login successful!");
+      }
+    } catch (error: any) {
+      console.error("PIN verification error:", error);
+      toast.error(error?.message || "PIN verification failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePatternSubmit = async (pattern: number[]) => {
+    if (!userId) {
+      toast.error("User information missing");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Pattern verification would happen here
+      // For now, we'll just sign in
+      await authSignIn(email, password);
+      toast.success("Login successful!");
+    } catch (error: any) {
+      console.error("Pattern verification error:", error);
+      toast.error(error?.message || "Pattern verification failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBiometricAuth = async () => {
+    setLoading(true);
+    try {
+      // Biometric authentication would be implemented here
+      // For now, show placeholder
+      toast.info("Biometric authentication will be available soon");
+    } catch (error: any) {
+      console.error("Biometric auth error:", error);
+      toast.error(error?.message || "Biometric authentication failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
