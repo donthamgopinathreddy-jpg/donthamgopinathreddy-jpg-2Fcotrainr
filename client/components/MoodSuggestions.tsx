@@ -5,8 +5,19 @@ interface MoodSuggestionsProps {
   moodValue?: number;
 }
 
+interface ActionLink {
+  icon: React.ComponentType<any>;
+  text: string;
+  color: string;
+  url: string;
+}
+
 export default function MoodSuggestions({ moodValue }: MoodSuggestionsProps) {
   const { theme } = useTheme();
+
+  const handleActionClick = (url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   const suggestions = {
     1: {
