@@ -68,10 +68,7 @@ export default function NotificationsPageEnhanced() {
       for (const notif of notifications) {
         const enrichedNotif = { ...notif } as NotificationWithUser;
 
-        if (
-          notif.type === "follow" &&
-          notif.related_user_id
-        ) {
+        if (notif.related_user_id) {
           try {
             const { data: userData } = await supabase
               .from("users")
