@@ -176,7 +176,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  if (!userProfile || userProfile.role !== "admin") {
+  if (!isUserAdmin(userProfile)) {
     return <Navigate to="/" replace />;
   }
 
