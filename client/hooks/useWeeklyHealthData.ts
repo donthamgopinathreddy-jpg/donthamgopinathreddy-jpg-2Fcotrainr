@@ -28,6 +28,14 @@ export const useWeeklyHealthData = () => {
       const weekStartStr = weekStartDate.toISOString().split("T")[0];
       const weekEndStr = weekEndDate.toISOString().split("T")[0];
 
+      // Calculate previous week dates early
+      const prevWeekStart = new Date(weekStartDate);
+      prevWeekStart.setDate(prevWeekStart.getDate() - 7);
+      const prevWeekEnd = new Date(weekStartDate);
+      prevWeekEnd.setDate(prevWeekEnd.getDate() - 1);
+      const prevWeekStartStr = prevWeekStart.toISOString().split("T")[0];
+      const prevWeekEndStr = prevWeekEnd.toISOString().split("T")[0];
+
       // Fetch user goal from diet preferences
       const { data: dietPrefs, error: dietError } = await supabase
         .from("user_diet_preferences")
