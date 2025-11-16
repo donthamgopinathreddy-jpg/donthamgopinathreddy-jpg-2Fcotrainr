@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useActivityLog } from "@/hooks/useActivityLog";
+import { useNotificationPreferences, type NotificationPreferences } from "@/hooks/useNotificationPreferences";
 import AdminSidebar from "./AdminSidebar";
 import { supabase } from "@/lib/supabase";
-import { X } from "lucide-react";
+import { X, Bell, Clock } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
