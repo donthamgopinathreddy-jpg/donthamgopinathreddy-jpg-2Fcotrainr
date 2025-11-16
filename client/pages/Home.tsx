@@ -175,8 +175,6 @@ export default function Home() {
 
   const stepsGoal = stepsTarget;
 
-  // Calculate calories burned from steps (~0.05 cal per step)
-  const caloriesBurned = Math.round(steps * 0.05);
 
   // Calculate BMI
   const heightInMeters = userHeight / 100;
@@ -294,7 +292,6 @@ export default function Home() {
   };
 
   const stepsPercent = Math.round((steps / stepsGoal) * 100);
-  const caloriesPercent = Math.round((caloriesBurned / 400) * 100); // 400 is typical daily burn
   const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
 
   return (
@@ -593,33 +590,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Calories Progress */}
-          <button
-            onClick={() => navigate("/activity/calories")}
-            className="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Flame className="w-5 h-5 text-red-600" />
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  Calories Burned
-                </span>
-              </div>
-              <span className="text-sm font-bold text-red-600">
-                {caloriesBurned} cal
-              </span>
-            </div>
-            <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-red-600 via-red-500 to-red-600 transition-all duration-500 shadow-lg shadow-red-600/50"
-                style={{ width: `${Math.min(caloriesPercent, 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-              ~{caloriesBurned} cal from {steps} steps{" "}
-              {isTracking && "🔄 Auto-tracking"}
-            </p>
-          </button>
 
           {/* Water Intake Progress */}
           <button
