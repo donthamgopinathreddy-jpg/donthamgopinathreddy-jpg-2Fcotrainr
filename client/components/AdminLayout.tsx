@@ -495,6 +495,111 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
           </div>
         </div>
       )}
+
+      {/* Password Change Modal */}
+      {showPasswordChange && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowPasswordChange(false)}
+        >
+          <div
+            className="bg-white rounded-lg max-w-md w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-gray-900">Change Password</h2>
+              <button
+                onClick={() => {
+                  setShowPasswordChange(false);
+                  setShowPasswordFields(false);
+                  setCurrentPassword("");
+                  setNewPassword("");
+                  setConfirmPassword("");
+                }}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {!showPasswordFields ? (
+                <div className="space-y-4">
+                  <p className="text-sm text-gray-600">
+                    Update your admin password to keep your account secure.
+                  </p>
+                  <button
+                    onClick={() => setShowPasswordFields(true)}
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                  >
+                    Update Password
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      New Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showPasswordFields ? "text" : "password"}
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        placeholder="Enter new password"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                        disabled={changingPassword}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Confirm Password
+                    </label>
+                    <input
+                      type={showPasswordFields ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirm new password"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      disabled={changingPassword}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="bg-gray-50 border-t border-gray-200 px-6 py-4 flex gap-3 justify-end">
+              <button
+                onClick={() => {
+                  setShowPasswordChange(false);
+                  setShowPasswordFields(false);
+                  setCurrentPassword("");
+                  setNewPassword("");
+                  setConfirmPassword("");
+                }}
+                disabled={changingPassword}
+                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              {showPasswordFields && (
+                <button
+                  onClick={handlePasswordChange}
+                  disabled={
+                    !newPassword || !confirmPassword || changingPassword
+                  }
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
+                >
+                  {changingPassword ? "Changing..." : "Change Password"}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
