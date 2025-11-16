@@ -540,7 +540,7 @@ export default function Home() {
                 <div
                   key={i}
                   className={`w-2 h-2 rounded-full ${
-                    theme === "dark" ? "bg-white/40" : "bg-white/60"
+                    theme === "dark" ? "bg-gray-500/60" : "bg-gray-400/60"
                   }`}
                   style={{
                     animation: `ping 2s cubic-bezier(0, 0, 0.2, 1) infinite`,
