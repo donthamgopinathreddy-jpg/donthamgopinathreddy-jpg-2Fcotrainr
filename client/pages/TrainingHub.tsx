@@ -13,7 +13,7 @@ import { useDietPreferences } from "@/hooks/useDietPreferences";
 import { useDietReviewRequests } from "@/hooks/useDietReviewRequests";
 import { toast } from "sonner";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
-import SimpleDietPlanner from "@/components/SimpleDietPlanner";
+import TrainingHubDietPlanner from "@/components/TrainingHubDietPlanner";
 import AskTrainerModal from "@/components/AskTrainerModal";
 import TrendGraphsSection from "@/components/TrendGraphsSection";
 import TrainingHubCarousel from "@/components/TrainingHubCarousel";
