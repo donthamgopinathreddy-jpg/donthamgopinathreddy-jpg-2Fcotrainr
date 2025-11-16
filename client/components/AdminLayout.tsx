@@ -422,6 +422,149 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
           </div>
         </div>
       )}
+
+      {/* Activity Log Modal */}
+      {showActivityLog && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowActivityLog(false)}
+        >
+          <div
+            className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-gray-900">Activity Log</h2>
+              <button
+                onClick={() => setShowActivityLog(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {activityLogs.length === 0 ? (
+                <p className="text-center text-gray-500">No activity recorded yet</p>
+              ) : (
+                <div className="space-y-3">
+                  {activityLogs.map((log) => (
+                    <div
+                      key={log.id}
+                      className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50"
+                    >
+                      <div className="flex items-start justify-between mb-1">
+                        <h3 className="font-semibold text-gray-900 text-sm">{log.action}</h3>
+                        <span className="text-xs text-gray-500">
+                          {new Date(log.created_at).toLocaleString()}
+                        </span>
+                      </div>
+                      {log.description && (
+                        <p className="text-sm text-gray-600 mb-1">{log.description}</p>
+                      )}
+                      {log.resource_type && (
+                        <p className="text-xs text-gray-500">Resource: {log.resource_type}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Notification Preferences Modal */}
+      {showNotificationPrefs && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowNotificationPrefs(false)}
+        >
+          <div
+            className="bg-white rounded-lg max-w-md w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-gray-900">
+                Notification Preferences
+              </h2>
+              <button
+                onClick={() => setShowNotificationPrefs(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {notifPrefs ? (
+                <div className="space-y-4">
+                  {[
+                    {
+                      key: "email_notifications",
+                      label: "Email Notifications",
+                      desc: "Receive notifications via email",
+                    },
+                    {
+                      key: "in_app_notifications",
+                      label: "In-App Notifications",
+                      desc: "See notifications in the app",
+                    },
+                    {
+                      key: "trainer_verifications",
+                      label: "Trainer Verifications",
+                      desc: "Alerts for trainer verification updates",
+                    },
+                    {
+                      key: "user_activity",
+                      label: "User Activity",
+                      desc: "Notifications about user activity",
+                    },
+                    {
+                      key: "system_alerts",
+                      label: "System Alerts",
+                      desc: "Critical system notifications",
+                    },
+                  ].map((pref) => (
+                    <label
+                      key={pref.key}
+                      className="flex items-start gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={
+                          notifPrefs[pref.key as keyof NotificationPreferences] as unknown as boolean
+                        }
+                        onChange={(e) => {
+                          updateNotifPrefs({
+                            [pref.key]: e.target.checked,
+                          });
+                        }}
+                        className="w-4 h-4 text-blue-600 rounded border-gray-300 mt-0.5"
+                      />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{pref.label}</p>
+                        <p className="text-xs text-gray-500">{pref.desc}</p>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-gray-500">Loading preferences...</p>
+              )}
+            </div>
+
+            <div className="bg-gray-50 border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
+              <button
+                onClick={() => setShowNotificationPrefs(false)}
+                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
