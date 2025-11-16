@@ -94,7 +94,7 @@ export default function AIWeeklyInsights() {
         {/* Weekly Summary Header */}
         <Card className="p-6 mb-8 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white border-0">
           <h2 className="text-2xl font-bold mb-2">Week Overview</h2>
-          <p className="opacity-90">Your personal AI coach analyzed your entire week of activity</p>
+          <p className="opacity-90">Week of {weeklyData.weekStartDate.toLocaleDateString()}</p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
             <div className="bg-white/20 backdrop-blur p-4 rounded-lg">
