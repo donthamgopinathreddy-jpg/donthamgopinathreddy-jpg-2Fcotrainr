@@ -31,7 +31,7 @@ export const usePINAuth = () => {
       setError(null);
 
       try {
-        const hashedPin = hashPIN(pin);
+        const hashedPin = await hashPIN(pin);
 
         // Store PIN hash in Supabase (in user_security_settings table)
         const { error: dbError } = await supabase
