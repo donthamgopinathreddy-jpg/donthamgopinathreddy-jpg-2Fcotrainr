@@ -99,38 +99,51 @@ export function useAdminTrainerVerification() {
 
   const approveTrainer = async (trainerId: string, reviewedBy: string) => {
     try {
-      const { error } = await supabase
-        .from("trainer_verifications")
-        .update({
-          verification_status: "approved",
-          verified_trainer: true,
-          reviewed_by: reviewedBy,
-          reviewed_at: new Date().toISOString(),
-        })
-        .eq("id", trainerId);
+      try {
+        const { error } = await supabase
+          .from("trainer_verifications")
+          .update({
+            verification_status: "approved",
+            verified_trainer: true,
+            reviewed_by: reviewedBy,
+            reviewed_at: new Date().toISOString(),
+          })
+          .eq("id", trainerId);
 
-      if (error) {
-        throw error;
-      }
-
-      // Also update the users table to set verified_trainer flag
-      const verificationRecord = trainers.find((t) => t.id === trainerId);
-      if (verificationRecord) {
-        const { error: userError } = await supabase
-          .from("users")
-          .update({ verified_trainer: true })
-          .eq("id", verificationRecord.user_id);
-
-        if (userError) {
-          console.warn("Warning updating user verified status:", userError);
+        if (error) {
+          throw error;
         }
-      }
 
-      // Refresh the list
-      await fetchTrainers(currentTab);
-      return true;
+        // Also update the users table to set verified_trainer flag
+        const verificationRecord = trainers.find((t) => t.id === trainerId);
+        if (verificationRecord) {
+          const { error: userError } = await supabase
+            .from("users")
+            .update({ verified_trainer: true })
+            .eq("id", verificationRecord.user_id);
+
+          if (userError) {
+            console.warn("Warning updating user verified status:", userError);
+          }
+        }
+
+        // Refresh the list
+        await fetchTrainers(currentTab);
+        return true;
+      } catch (fetchErr) {
+        console.error("Error approving trainer:", fetchErr);
+        const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+
+        if (errorMsg.includes("Failed to fetch")) {
+          setError("Network error: Unable to reach the server");
+        } else {
+          setError("Failed to approve trainer");
+        }
+
+        return false;
+      }
     } catch (err) {
-      console.error("Error approving trainer:", err);
+      console.error("Error in approveTrainer:", err);
       setError("Failed to approve trainer");
       return false;
     }
