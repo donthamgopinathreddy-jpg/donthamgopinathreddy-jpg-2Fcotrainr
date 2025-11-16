@@ -382,35 +382,65 @@ const AdminTrainerVerification: React.FC = () => {
             </Badge>
           </div>
 
-          {/* Admin Stats Cards - Single Row */}
-          <div className="flex gap-3 justify-between">
-            <div className="flex-1 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-3">
+          {/* Admin Stats Cards - Compact Style */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="bg-white border border-amber-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
               <div className="flex items-center justify-between gap-2">
                 <div>
-                  <p className="text-xs text-amber-700 font-medium">Pending</p>
-                  <p className="text-2xl font-bold text-amber-900">{pendingCount}</p>
+                  <p className="text-[10px] text-amber-600 font-medium uppercase">Pending</p>
+                  <p className="text-xl font-bold text-amber-900 mt-1">{pendingCount}</p>
                 </div>
-                <Clock className="w-6 h-6 text-amber-600 opacity-30 flex-shrink-0" />
+                <Clock className="w-5 h-5 text-amber-400 opacity-60 flex-shrink-0" />
               </div>
             </div>
 
-            <div className="flex-1 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3">
+            <div className="bg-white border border-green-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
               <div className="flex items-center justify-between gap-2">
                 <div>
-                  <p className="text-xs text-green-700 font-medium">Approved</p>
-                  <p className="text-2xl font-bold text-green-900">{approvedCount}</p>
+                  <p className="text-[10px] text-green-600 font-medium uppercase">Approved</p>
+                  <p className="text-xl font-bold text-green-900 mt-1">{approvedCount}</p>
                 </div>
-                <CheckCircle className="w-6 h-6 text-green-600 opacity-30 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-green-400 opacity-60 flex-shrink-0" />
               </div>
             </div>
 
-            <div className="flex-1 bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-lg p-3">
+            <div className="bg-white border border-red-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
               <div className="flex items-center justify-between gap-2">
                 <div>
-                  <p className="text-xs text-red-700 font-medium">Rejected</p>
-                  <p className="text-2xl font-bold text-red-900">{rejectedCount}</p>
+                  <p className="text-[10px] text-red-600 font-medium uppercase">Rejected</p>
+                  <p className="text-xl font-bold text-red-900 mt-1">{rejectedCount}</p>
                 </div>
-                <XCircle className="w-6 h-6 text-red-600 opacity-30 flex-shrink-0" />
+                <XCircle className="w-5 h-5 text-red-400 opacity-60 flex-shrink-0" />
+              </div>
+            </div>
+
+            <div className="bg-white border border-blue-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="text-[10px] text-blue-600 font-medium uppercase">Total Users</p>
+                  <p className="text-xl font-bold text-blue-900 mt-1">{trainerCount + clientCount}</p>
+                </div>
+                <Users className="w-5 h-5 text-blue-400 opacity-60 flex-shrink-0" />
+              </div>
+            </div>
+
+            <div className="bg-white border border-purple-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="text-[10px] text-purple-600 font-medium uppercase">Trainers</p>
+                  <p className="text-xl font-bold text-purple-900 mt-1">{trainerCount}</p>
+                </div>
+                <Users className="w-5 h-5 text-purple-400 opacity-60 flex-shrink-0" />
+              </div>
+            </div>
+
+            <div className="bg-white border border-indigo-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="text-[10px] text-indigo-600 font-medium uppercase">Clients</p>
+                  <p className="text-xl font-bold text-indigo-900 mt-1">{clientCount}</p>
+                </div>
+                <Users className="w-5 h-5 text-indigo-400 opacity-60 flex-shrink-0" />
               </div>
             </div>
           </div>
