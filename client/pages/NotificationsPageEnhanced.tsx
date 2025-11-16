@@ -586,15 +586,17 @@ export default function NotificationsPageEnhanced() {
     if (notifs.length === 0) return null;
 
     return (
-      <div className="mb-6">
-        <h2
-          className={`text-sm font-bold px-1 py-2 mb-2 ${
-            theme === "dark" ? "text-gray-400" : "text-gray-600"
+      <div>
+        <div
+          className={`px-4 py-2 border-b font-bold text-xs uppercase tracking-wider ${
+            theme === "dark"
+              ? "bg-gray-800/50 border-gray-700 text-gray-400"
+              : "bg-gradient-to-r from-orange-100/50 to-yellow-100/50 border-orange-200 text-gray-700"
           }`}
         >
           {title}
-        </h2>
-        <div className="space-y-2">
+        </div>
+        <div>
           {notifs.map((notif) => (
             <NotificationCard key={notif.id} notification={notif} />
           ))}
