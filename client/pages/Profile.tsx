@@ -427,16 +427,48 @@ export default function Profile() {
 
     setIsSaving(true);
     try {
-      const { error } = await supabase
-        .from("users")
-        .update({
-          trainer_verified: true,
-          trainer_verified_at: new Date().toISOString(),
-        })
-        .eq("id", userProfile?.id);
+      // First, create or update trainer_verifications record
+      const { data: existingVerification, error: checkError } = await supabase
+        .from("trainer_verifications")
+        .select("id")
+        .eq("user_id", userProfile?.id)
+        .single();
 
-      if (error) {
-        console.debug("Verification error:", error?.code);
+      if (checkError && checkError?.code !== "PGRST116") {
+        // PGRST116 means no rows found, which is expected for new verifications
+        console.debug("Check verification error:", checkError?.code);
+      }
+
+      let verificationError = null;
+
+      if (existingVerification?.id) {
+        // Update existing verification record
+        const { error } = await supabase
+          .from("trainer_verifications")
+          .update({
+            id_document_url: verificationDocs.idUrl,
+            selfie_url: verificationDocs.selfieUrl,
+            verification_status: "pending",
+            submitted_at: new Date().toISOString(),
+          })
+          .eq("id", existingVerification.id);
+        verificationError = error;
+      } else {
+        // Create new verification record
+        const { error } = await supabase
+          .from("trainer_verifications")
+          .insert({
+            user_id: userProfile?.id,
+            id_document_url: verificationDocs.idUrl,
+            selfie_url: verificationDocs.selfieUrl,
+            verification_status: "pending",
+            submitted_at: new Date().toISOString(),
+          });
+        verificationError = error;
+      }
+
+      if (verificationError) {
+        console.debug("Verification submission error:", verificationError?.code);
         toast.error("Failed to submit verification");
         return;
       }
