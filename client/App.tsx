@@ -244,6 +244,11 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
+  return <>{children}</>;
+};
+
+// Separate component to handle permissions that uses useAuth
+const PermissionRequester = () => {
   const { user } = useAuth();
 
   useEffect(() => {
@@ -267,7 +272,7 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user]);
 
-  return <>{children}</>;
+  return null;
 };
 
 const AppRoutes = () => {
