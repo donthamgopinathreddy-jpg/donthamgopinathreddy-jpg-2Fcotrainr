@@ -195,40 +195,53 @@ export function useAdminTrainerVerification() {
 
   const revokeVerification = async (trainerId: string) => {
     try {
-      const verificationRecord = trainers.find((t) => t.id === trainerId);
-      if (!verificationRecord) {
-        throw new Error("Trainer record not found");
+      try {
+        const verificationRecord = trainers.find((t) => t.id === trainerId);
+        if (!verificationRecord) {
+          throw new Error("Trainer record not found");
+        }
+
+        const { error } = await supabase
+          .from("trainer_verifications")
+          .update({
+            verification_status: "pending",
+            verified_trainer: false,
+            reviewed_by: null,
+            reviewed_at: null,
+          })
+          .eq("id", trainerId);
+
+        if (error) {
+          throw error;
+        }
+
+        // Also update the users table
+        const { error: userError } = await supabase
+          .from("users")
+          .update({ verified_trainer: false })
+          .eq("id", verificationRecord.user_id);
+
+        if (userError) {
+          console.warn("Warning updating user verified status:", userError);
+        }
+
+        // Refresh the list
+        await fetchTrainers(currentTab);
+        return true;
+      } catch (fetchErr) {
+        console.error("Error revoking verification:", fetchErr);
+        const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+
+        if (errorMsg.includes("Failed to fetch")) {
+          setError("Network error: Unable to reach the server");
+        } else {
+          setError("Failed to revoke verification");
+        }
+
+        return false;
       }
-
-      const { error } = await supabase
-        .from("trainer_verifications")
-        .update({
-          verification_status: "pending",
-          verified_trainer: false,
-          reviewed_by: null,
-          reviewed_at: null,
-        })
-        .eq("id", trainerId);
-
-      if (error) {
-        throw error;
-      }
-
-      // Also update the users table
-      const { error: userError } = await supabase
-        .from("users")
-        .update({ verified_trainer: false })
-        .eq("id", verificationRecord.user_id);
-
-      if (userError) {
-        console.warn("Warning updating user verified status:", userError);
-      }
-
-      // Refresh the list
-      await fetchTrainers(currentTab);
-      return true;
     } catch (err) {
-      console.error("Error revoking verification:", err);
+      console.error("Error in revokeVerification:", err);
       setError("Failed to revoke verification");
       return false;
     }
