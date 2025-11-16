@@ -74,13 +74,9 @@ const Navigation = () => {
                 {/* Content Container */}
                 <div className="relative z-10 flex flex-col items-center justify-center py-3 px-2 transition-all duration-300">
                   {/* Icon Container */}
-                  <div
-                    className={`relative mb-1 transition-all duration-300 transform ${
-                      active ? "scale-110 -translate-y-0.5" : "scale-100"
-                    } ${active ? "group-hover:scale-110" : "group-hover:scale-105"}`}
-                  >
+                  <div className="relative mb-1">
                     <Icon
-                      className={`w-6 h-6 transition-all duration-300 ${
+                      className={`w-5 h-5 transition-all duration-300 ${
                         active
                           ? "text-white"
                           : theme === "dark"
@@ -89,23 +85,10 @@ const Navigation = () => {
                       }`}
                     />
 
-                    {/* Floating Pulse for Active */}
-                    {active && (
-                      <div
-                        className={`absolute inset-0 rounded-full border-2 border-white/30 animate-pulse`}
-                        style={{
-                          animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-                        }}
-                      />
-                    )}
-
                     {/* Unread Badge */}
                     {path === "/messages" && totalUnreadMessages > 0 && (
                       <div
-                        className={`absolute -top-2 -right-2 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold text-white bg-gradient-to-br from-red-500 to-pink-500 shadow-lg animate-bounce`}
-                        style={{
-                          animation: "bounce 1s cubic-bezier(0.36, 0, 0.66, -0.56) infinite",
-                        }}
+                        className={`absolute -top-1 -right-1 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold text-white bg-gradient-to-br from-red-500 to-pink-500 shadow-lg`}
                       >
                         {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
                       </div>
@@ -128,20 +111,11 @@ const Navigation = () => {
                   {/* Animated Bottom Line for Active */}
                   {active && (
                     <div
-                      className={`absolute bottom-0 left-1/2 w-1 h-1 rounded-full bg-white transform -translate-x-1/2`}
-                      style={{
-                        animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-                      }}
+                      className={`absolute bottom-0 left-1/2 w-1 h-1 rounded-full bg-white transform -translate-x-1/2 opacity-60`}
                     />
                   )}
                 </div>
 
-                {/* Glow Effect for Active */}
-                {active && (
-                  <div
-                    className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} opacity-30 blur-2xl`}
-                  />
-                )}
               </Link>
             );
           })}
