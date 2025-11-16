@@ -14,7 +14,7 @@ import { useDietPreferences } from "@/hooks/useDietPreferences";
 import { useDietReviewRequests } from "@/hooks/useDietReviewRequests";
 import { toast } from "sonner";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
-import ExpandedDietPlanner from "@/components/ExpandedDietPlanner";
+import AdvancedDietPlanner from "@/components/AdvancedDietPlanner";
 import AskTrainerModal from "@/components/AskTrainerModal";
 import TrendGraphsSection from "@/components/TrendGraphsSection";
 import TrainingHubCarousel from "@/components/TrainingHubCarousel";
