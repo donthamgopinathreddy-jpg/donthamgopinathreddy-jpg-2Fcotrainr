@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
+import StreaksCard from "@/components/StreaksCard";
+import MoodTrackerDB from "@/components/MoodTrackerDB";
+import ProgressTracker from "@/components/ProgressTracker";
 import SubscriptionModal from "@/components/SubscriptionModal";
 import {
   Dumbbell,
