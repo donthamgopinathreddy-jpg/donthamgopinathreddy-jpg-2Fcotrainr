@@ -109,7 +109,7 @@ export const SocialCompetitions = ({ variant = "full" }: SocialCompetitionsProps
                     : "bg-white border border-gray-200 hover:border-gray-300"
               }`}
             >
-              <div className="text-2xl mb-1">{competition.icon}</div>
+              <div className="text-xl sm:text-2xl mb-1">{competition.icon}</div>
               <p
                 className={`text-xs font-semibold line-clamp-2 ${
                   isSelected
@@ -146,7 +146,7 @@ export const SocialCompetitions = ({ variant = "full" }: SocialCompetitionsProps
             }`}
           >
             <h3
-              className={`font-bold text-base mb-1 ${
+              className={`font-bold text-sm sm:text-base mb-1 ${
                 theme === "dark" ? "text-white" : "text-gray-900"
               }`}
             >
