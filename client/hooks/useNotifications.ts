@@ -1,16 +1,66 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
+export interface NotificationData {
+  id: string;
+  user_id: string;
+  actor_id: string;
+  type: "like" | "comment" | "follow";
+  post_id?: string;
+  comment_id?: string;
+  content?: string;
+  is_read: boolean;
+  created_at: string;
+}
+
 export interface Notification {
   id: string;
   user_id: string;
-  type: "follow" | "meeting" | "goal_achieved" | "goal_reminder" | "achievement" | "message";
+  type: "like" | "comment" | "follow";
   title: string;
   message: string;
   related_user_id?: string;
   related_id?: string;
   is_read: boolean;
   created_at: string;
+}
+
+function transformNotification(data: NotificationData): Notification {
+  const typeMap = {
+    like: "like",
+    comment: "comment",
+    follow: "follow",
+  };
+
+  let title = "";
+  let message = "";
+
+  switch (data.type) {
+    case "like":
+      title = "New Like";
+      message = data.content || "Someone liked your post";
+      break;
+    case "comment":
+      title = "New Comment";
+      message = data.content || "Someone commented on your post";
+      break;
+    case "follow":
+      title = "New Follower";
+      message = "Someone followed you";
+      break;
+  }
+
+  return {
+    id: data.id,
+    user_id: data.user_id,
+    type: data.type,
+    title,
+    message,
+    related_user_id: data.actor_id,
+    related_id: data.post_id || data.comment_id,
+    is_read: data.is_read,
+    created_at: data.created_at,
+  };
 }
 
 export function useNotifications(userId?: string) {
@@ -40,15 +90,16 @@ export function useNotifications(userId?: string) {
 
       if (fetchError) {
         console.debug("Fetch notifications error:", fetchError?.code, fetchError?.message);
-        setError(null); // Don't show error to user, just log it
+        setError(null);
         setNotifications([]);
         setUnreadCount(0);
         return;
       }
 
       if (data) {
-        setNotifications(data);
-        const unread = data.filter((n) => !n.is_read).length;
+        const transformed = (data as NotificationData[]).map(transformNotification);
+        setNotifications(transformed);
+        const unread = transformed.filter((n) => !n.is_read).length;
         setUnreadCount(unread);
         setError(null);
       }
@@ -59,7 +110,6 @@ export function useNotifications(userId?: string) {
       );
       setNotifications([]);
       setUnreadCount(0);
-      // Don't show error UI to user
     } finally {
       setLoading(false);
     }
