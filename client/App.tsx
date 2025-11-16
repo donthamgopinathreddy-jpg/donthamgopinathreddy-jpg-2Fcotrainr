@@ -159,8 +159,7 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
 
 const AppRoutes = () => {
   return (
-    <AnimatePresence mode="wait">
-      <Routes>
+    <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/onboarding" element={<Onboarding />} />
       <Route
@@ -443,8 +442,7 @@ const AppRoutes = () => {
       />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AnimatePresence>
+    </Routes>
   );
 };
 
