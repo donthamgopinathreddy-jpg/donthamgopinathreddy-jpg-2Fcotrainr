@@ -8,7 +8,24 @@ import { toast } from "sonner";
 export default function NotificationsDropdown() {
   const { theme } = useTheme();
   const { userProfile } = useAuth();
-  const { notifications, unreadCount, loading, markAsRead, markAllAsRead, deleteNotification } = useNotifications(userProfile?.id);
+  const [hasError, setHasError] = useState(false);
+
+  let notificationsData = {
+    notifications: [] as any[],
+    unreadCount: 0,
+    loading: true,
+    markAsRead: () => {},
+    markAllAsRead: () => {},
+    deleteNotification: () => {},
+  };
+
+  try {
+    notificationsData = useNotifications(userProfile?.id);
+  } catch (err) {
+    setHasError(true);
+  }
+
+  const { notifications, unreadCount, loading, markAsRead, markAllAsRead, deleteNotification } = notificationsData;
   const [isOpen, setIsOpen] = useState(false);
 
   const getNotificationIcon = (type: string) => {
