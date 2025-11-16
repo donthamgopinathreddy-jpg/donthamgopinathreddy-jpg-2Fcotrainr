@@ -26,6 +26,10 @@ interface AdminSidebarProps {
   onLogout?: () => void;
   onProfilePictureUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   uploadingPic?: boolean;
+  showActivityLog?: boolean;
+  onActivityLogChange?: (show: boolean) => void;
+  showNotificationPrefs?: boolean;
+  onNotificationPrefsChange?: (show: boolean) => void;
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({
