@@ -127,8 +127,11 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-orange-100 via-orange-50 to-yellow-100 text-gray-900 z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto
+        className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-orange-100 via-orange-50 to-yellow-100 text-gray-900 z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto shadow-lg shadow-black/10
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+        style={{
+          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.08) 100%), linear-gradient(to bottom, rgb(254, 243, 219) 0%, rgb(255, 247, 237) 50%, rgb(254, 240, 199) 100%)`
+        }}
       >
         <div className="flex flex-col h-full">
           {/* Logo/Header */}
