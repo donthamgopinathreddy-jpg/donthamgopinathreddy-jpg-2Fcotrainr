@@ -962,6 +962,13 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Subscription Modal */}
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
+        currentPlan={(userProfile?.subscription_plan || "free") as "free" | "basic" | "premium"}
+      />
     </div>
   );
 }
