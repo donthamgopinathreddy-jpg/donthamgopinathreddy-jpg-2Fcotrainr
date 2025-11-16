@@ -395,6 +395,7 @@ export default function Profile() {
           setVerificationDocs((prev) => ({
             ...prev,
             [type === "id" ? "idUploaded" : "selfieUploaded"]: true,
+            [type === "id" ? "idUrl" : "selfieUrl"]: dataUrl,
           }));
 
           toast.success(
