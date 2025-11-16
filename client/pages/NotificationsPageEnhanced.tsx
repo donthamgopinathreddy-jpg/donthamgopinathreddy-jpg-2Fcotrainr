@@ -76,16 +76,20 @@ export default function NotificationsPageEnhanced() {
       for (const notif of notifications) {
         const enrichedNotif = { ...notif } as NotificationWithUser;
 
-        if (notif.related_user_id) {
+        // Get the actor ID (could be from related_user_id or as actor_id property)
+        const actorId = notif.related_user_id || (notif as any).actor_id;
+
+        if (actorId) {
           try {
             const { data: userData } = await supabase
               .from("users")
               .select("id, full_name, profile_picture_url, username")
-              .eq("id", notif.related_user_id)
+              .eq("id", actorId)
               .single();
 
             if (userData) {
               enrichedNotif.actor = userData;
+              enrichedNotif.actor_id = actorId;
             }
           } catch (error) {
             console.debug("Error fetching actor user:", error);
