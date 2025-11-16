@@ -4,32 +4,19 @@ import {
   Zap,
   TrendingUp,
   AlertCircle,
-  X,
   Sparkles,
   Plus,
-  ChevronRight,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useWorkouts } from "@/hooks/useWorkouts";
 import { useDietPreferences } from "@/hooks/useDietPreferences";
 import { useDietReviewRequests } from "@/hooks/useDietReviewRequests";
 import { toast } from "sonner";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
-import WorkoutCard from "@/components/WorkoutCard";
-import WeeklyWorkoutPlanner from "@/components/WeeklyWorkoutPlanner";
 import ExpandedDietPlanner from "@/components/ExpandedDietPlanner";
 import AskTrainerModal from "@/components/AskTrainerModal";
 import TrendGraphsSection from "@/components/TrendGraphsSection";
 import TrainingHubCarousel from "@/components/TrainingHubCarousel";
 
-type WorkoutCategory =
-  | "gym"
-  | "yoga"
-  | "boxing"
-  | "zumba"
-  | "stretching"
-  | "warmups";
-type WorkoutLevel = "basic" | "intermediate" | "advanced";
 
 const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -42,7 +29,6 @@ const TREND_METRICS = [
 
 export default function TrainingHub() {
   const { userProfile } = useAuth();
-  const { workouts, loading: workoutsLoading } = useWorkouts();
   const {
     preferences,
     updatePreferences,
@@ -55,14 +41,7 @@ export default function TrainingHub() {
   const plan = "premium" as "free" | "basic" | "premium";
   // Actual plan: const plan = (userProfile?.subscription_plan || "free") as "free" | "basic" | "premium";
 
-  // Workout state
-  const [selectedCategory, setSelectedCategory] =
-    useState<WorkoutCategory>("gym");
-  const [selectedLevel, setSelectedLevel] = useState<WorkoutLevel>("basic");
-  const [weeklyPlan, setWeeklyPlan] = useState<Record<string, string>>({});
-  const [showWorkoutModal, setShowWorkoutModal] = useState(false);
-  const [selectedDayForWorkout, setSelectedDayForWorkout] =
-    useState<string>("");
+  // UI state
   const [showTrainerModal, setShowTrainerModal] = useState(false);
 
   // Diet state
@@ -86,7 +65,6 @@ export default function TrainingHub() {
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
 
   // Subscription gating
-  const isWorkoutLocked = plan === "free";
   const isDietLocked = plan === "free";
   const isAllergenLocked = plan !== "premium";
   const isMacroLocked = plan !== "premium";
@@ -95,48 +73,6 @@ export default function TrainingHub() {
   const isAIInsightsLocked = plan !== "premium";
   const isTrendGraphsLocked = plan === "free";
 
-  // Workout categories
-  const categories: WorkoutCategory[] = [
-    "gym",
-    "yoga",
-    "boxing",
-    "zumba",
-    "stretching",
-    "warmups",
-  ];
-  const levels: WorkoutLevel[] = ["basic", "intermediate", "advanced"];
-
-  // Filter workouts based on plan and selections
-  const filteredWorkouts = workouts.filter((w) => {
-    if (w.category !== selectedCategory) return false;
-    if (plan === "free" && w.level !== "basic") return false;
-    if (plan !== "free" && w.level !== selectedLevel) return false;
-    return true;
-  });
-
-  // Handle workout day assignment
-  const handleAssignWorkout = (dayIndex: string, workoutId: string) => {
-    setWeeklyPlan({ ...weeklyPlan, [dayIndex]: workoutId });
-    setShowWorkoutModal(false);
-    toast.success("Workout assigned!");
-  };
-
-  // Get workout details
-  const getWorkoutById = (id: string) => {
-    return workouts.find((w) => w.id === id);
-  };
-
-  // Calculate weekly stats
-  const weeklyStats = Object.values(weeklyPlan)
-    .map((id) => getWorkoutById(id as string))
-    .filter(Boolean)
-    .reduce(
-      (acc, w) => ({
-        count: acc.count + 1,
-        minutes: acc.minutes + (w?.duration_minutes || 0),
-      }),
-      { count: 0, minutes: 0 },
-    );
 
   // Handle save diet preferences
   const handleSaveDietPreferences = async () => {
@@ -198,153 +134,13 @@ export default function TrainingHub() {
   };
 
   // Section components
-  const WorkoutsSection = () => (
-    <div className="space-y-6">
-      {/* Category Chips */}
-      <div className="flex flex-wrap gap-3">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-              selectedCategory === cat
-                ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105"
-                : "bg-white/40 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 border-2 border-white/60 dark:border-gray-700/60 backdrop-blur-md hover:border-orange-500"
-            }`}
-          >
-            {cat.charAt(0).toUpperCase() + cat.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      {/* Difficulty Level */}
-      <div className="space-y-3">
-        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-          Difficulty Level
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {levels.map((level) => {
-            const isLocked = plan === "free" && level !== "basic";
-            return (
-              <button
-                key={level}
-                onClick={() => !isLocked && setSelectedLevel(level)}
-                disabled={isLocked}
-                className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
-                  selectedLevel === level
-                    ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
-                    : isLocked
-                      ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed opacity-50"
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
-                }`}
-              >
-                {level.charAt(0).toUpperCase() + level.slice(1)}
-                {isLocked && <Lock className="w-3 h-3 inline ml-1" />}
-              </button>
-            );
-          })}
-        </div>
-        {plan === "free" && (
-          <p className="text-xs text-orange-600 dark:text-orange-400">
-            💡 Upgrade to unlock Intermediate and Advanced workouts
-          </p>
-        )}
-      </div>
-
-      {/* Workout Cards Grid */}
-      {workoutsLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="h-64 bg-gray-200 dark:bg-gray-700 rounded-2xl"
-            ></div>
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredWorkouts.length > 0 ? (
-            filteredWorkouts.map((workout) => (
-              <div
-                key={workout.id}
-                className="relative group"
-                onClick={() => {
-                  if (plan !== "free" || workout.level === "basic") {
-                    setSelectedDayForWorkout(workout.id);
-                    setShowWorkoutModal(true);
-                  }
-                }}
-              >
-                <WorkoutCard workout={workout} />
-                {plan === "free" && workout.level !== "basic" && (
-                  <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:flex opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="text-center text-white">
-                      <Lock className="w-8 h-8 mx-auto mb-2" />
-                      <p className="text-sm font-semibold">Upgrade to unlock</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400 text-lg">
-                No workouts found
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-
   const WeeklyPlannerSection = () => (
     <div className="space-y-6">
-      {isWorkoutLocked ? (
-        <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-white/20 p-12 text-center">
-          <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Workout Planner Locked
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Upgrade to unlock the weekly workout planner
-          </p>
-          <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
-            Upgrade Now
-          </button>
-        </div>
-      ) : (
-        <>
-          <WeeklyWorkoutPlanner
-            weeklyPlan={weeklyPlan}
-            workouts={workouts}
-            onSelectDay={(day) => {
-              setSelectedDayForWorkout(day);
-              setShowWorkoutModal(true);
-            }}
-            onRemoveWorkout={(day) => {
-              const newPlan = { ...weeklyPlan };
-              delete newPlan[day];
-              setWeeklyPlan(newPlan);
-            }}
-          />
-
-          {/* Weekly Summary */}
-          <div className="bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-2xl p-6 border border-orange-200 dark:border-orange-800/50">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-orange-600 dark:text-orange-400 font-semibold">
-                  📊 This Week's Summary
-                </p>
-                <p className="text-lg text-gray-900 dark:text-white font-bold mt-2">
-                  {weeklyStats.count} Workouts • {weeklyStats.minutes} Minutes
-                </p>
-              </div>
-              <div className="text-4xl">💪</div>
-            </div>
-          </div>
-        </>
-      )}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
+        <p className="text-gray-600 dark:text-gray-400 text-lg">
+          Weekly Workout Planner coming soon
+        </p>
+      </div>
     </div>
   );
 
@@ -464,13 +260,6 @@ export default function TrainingHub() {
 
   const carouselSections = [
     {
-      id: "workouts",
-      title: "Workout Library",
-      description: "Browse and select your favorite workouts",
-      icon: "🏋️",
-      component: <WorkoutsSection />,
-    },
-    {
       id: "weekly-planner",
       title: "Weekly Workout Planner",
       description: "Plan your workouts for the week ahead",
@@ -522,7 +311,7 @@ export default function TrainingHub() {
 
           {/* Feature Tabs - Like Followers/Following */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md border border-gray-200 dark:border-gray-700">
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {carouselSections.map((section, index) => (
                 <button
                   key={section.id}
@@ -583,50 +372,6 @@ export default function TrainingHub() {
         onSubmit={handleAskTrainerReview}
         isLoading={reviewLoading}
       />
-
-      {/* Workout Selection Modal */}
-      {showWorkoutModal && plan !== "free" && (
-        <div className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl max-w-2xl w-full max-h-96 overflow-y-auto">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Select Workout
-              </h3>
-              <button
-                onClick={() => setShowWorkoutModal(false)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="p-6 space-y-3">
-              {filteredWorkouts.map((workout) => (
-                <button
-                  key={workout.id}
-                  onClick={() =>
-                    handleAssignWorkout(selectedDayForWorkout, workout.id)
-                  }
-                  className="w-full p-4 text-left bg-gray-50 dark:bg-gray-800 hover:bg-orange-50 dark:hover:bg-gray-700 rounded-xl transition-all border border-gray-200 dark:border-gray-700"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">
-                        {workout.title}
-                      </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {workout.duration_minutes} min •{" "}
-                        {workout.calories_burned} cal
-                      </p>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-gray-400" />
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
