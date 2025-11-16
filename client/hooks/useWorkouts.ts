@@ -34,7 +34,7 @@ const DEMO_WORKOUTS: Workout[] = [
     level: "beginner",
     duration_minutes: 15,
     calories_burned: 60,
-    description: "Pushups on an inclined surface for progressive training",
+    description: "Pushups on an inclined surface for progressive chest training",
     created_at: new Date().toISOString(),
   },
   {
@@ -54,7 +54,7 @@ const DEMO_WORKOUTS: Workout[] = [
     level: "beginner",
     duration_minutes: 10,
     calories_burned: 40,
-    description: "Core strengthening exercise for abdominal muscles",
+    description: "Core strengthening exercise for abs and abdominal muscles",
     created_at: new Date().toISOString(),
   },
   {
@@ -74,7 +74,7 @@ const DEMO_WORKOUTS: Workout[] = [
     level: "beginner",
     duration_minutes: 8,
     calories_burned: 30,
-    description: "Shoulder mobility and warm-up exercise",
+    description: "Shoulder and arms mobility warm-up exercise",
     created_at: new Date().toISOString(),
   },
 
