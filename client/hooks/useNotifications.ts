@@ -94,7 +94,6 @@ export function useNotifications(userId?: string) {
 
     try {
       let data: NotificationData[] = [];
-      let fetchAttempted = false;
 
       try {
         // Create a timeout promise
@@ -105,17 +104,32 @@ export function useNotifications(userId?: string) {
           ),
         );
 
-        // Create the fetch promise
+        // Create the fetch promise with its own error handling
         const fetchPromise = (async () => {
-          fetchAttempted = true;
-          // Fetch notifications - the RLS policy will handle filtering by auth.uid()
-          const response = await supabase
-            .from("notifications")
-            .select("*")
-            .order("created_at", { ascending: false })
-            .limit(20);
+          try {
+            // Fetch notifications - the RLS policy will handle filtering by auth.uid()
+            const response = await supabase
+              .from("notifications")
+              .select("*")
+              .order("created_at", { ascending: false })
+              .limit(20);
 
-          return response;
+            return response;
+          } catch (fetchError) {
+            // Handle fetch-level errors (network errors, etc.)
+            const errorMsg = fetchError instanceof Error ? fetchError.message : String(fetchError);
+            console.debug("Notifications fetch-level error:", errorMsg);
+
+            if (errorMsg.includes("Failed to fetch")) {
+              console.debug("Network connectivity issue - notifications unavailable");
+            }
+
+            // Return a structured error response that matches Supabase response format
+            return {
+              error: { message: errorMsg, code: "FETCH_ERROR" },
+              data: null,
+            };
+          }
         })();
 
         // Race between fetch and timeout
@@ -147,6 +161,14 @@ export function useNotifications(userId?: string) {
               // RLS policy blocked - use empty array
               console.debug("RLS policy blocked notifications access");
               data = [];
+            } else if (
+              errorCode === "FETCH_ERROR" ||
+              errorMsg.includes("Failed to fetch") ||
+              errorMsg.includes("Network")
+            ) {
+              // Network error - use empty array
+              console.debug("Network error accessing notifications");
+              data = [];
             } else {
               console.debug(
                 "Supabase notifications error:",
@@ -166,7 +188,7 @@ export function useNotifications(userId?: string) {
         const errorMsg =
           e instanceof Error ? e.message : String(e);
         console.debug(
-          "Fetch notifications error:",
+          "Fetch notifications outer error:",
           errorMsg,
         );
 
