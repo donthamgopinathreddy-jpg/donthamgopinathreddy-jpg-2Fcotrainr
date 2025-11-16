@@ -178,7 +178,7 @@ export default function Quests() {
             {/* Overview Stats - Vibrant Design */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               <div
-                className={`rounded-2xl p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
+                className={`rounded-lg sm:rounded-2xl p-2 sm:p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
                   theme === "dark"
                     ? "bg-gradient-to-br from-orange-500/20 to-red-500/20 border border-orange-500/30"
                     : "bg-gradient-to-br from-orange-100 to-red-100 border border-orange-200"
@@ -202,7 +202,7 @@ export default function Quests() {
                 </div>
               </div>
               <div
-                className={`rounded-2xl p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
+                className={`rounded-lg sm:rounded-2xl p-2 sm:p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
                   theme === "dark"
                     ? "bg-gradient-to-br from-yellow-500/20 to-amber-500/20 border border-yellow-500/30"
                     : "bg-gradient-to-br from-yellow-100 to-amber-100 border border-yellow-200"
@@ -224,7 +224,7 @@ export default function Quests() {
                 </div>
               </div>
               <div
-                className={`rounded-2xl p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
+                className={`rounded-lg sm:rounded-2xl p-2 sm:p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
                   theme === "dark"
                     ? "bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30"
                     : "bg-gradient-to-br from-green-100 to-emerald-100 border border-green-200"
@@ -248,7 +248,7 @@ export default function Quests() {
                 </div>
               </div>
               <div
-                className={`rounded-2xl p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
+                className={`rounded-lg sm:rounded-2xl p-2 sm:p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
                   theme === "dark"
                     ? "bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30"
                     : "bg-gradient-to-br from-purple-100 to-pink-100 border border-purple-200"
