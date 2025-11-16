@@ -102,7 +102,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       {/* Mobile Toggle Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-6 left-4 z-35 md:hidden p-2 text-gray-900 hover:text-gray-600 transition-colors"
+        className="fixed top-4 left-4 z-50 md:hidden p-2 text-white hover:text-gray-300 transition-colors"
       >
         {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
