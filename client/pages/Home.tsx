@@ -4,6 +4,7 @@ import GlassyTile from "@/components/GlassyTile";
 import StreaksCard from "@/components/StreaksCard";
 import ProgressTracker from "@/components/ProgressTracker";
 import MoodTrackerDB from "@/components/MoodTrackerDB";
+import NotificationsDropdown from "@/components/NotificationsDropdown";
 import {
   Dumbbell,
   Apple,
@@ -19,7 +20,6 @@ import {
   Upload,
   Moon,
   Sun,
-  Bell,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
@@ -449,11 +449,8 @@ export default function Home() {
 
         {/* Header Actions */}
         <div className="absolute top-4 right-4 flex gap-3">
-          {/* Notification Bell */}
-          <button className="relative bg-white/90 hover:bg-white p-3 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all">
-            <Bell className="w-5 h-5 text-gray-900" />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+          {/* Notification Dropdown */}
+          <NotificationsDropdown />
 
           {/* Edit Cover Button */}
           <label className="bg-white/90 hover:bg-white p-3 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all">
