@@ -163,10 +163,10 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               </label>
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">
+                <p className="text-sm font-semibold text-white truncate">
                   {userProfile?.full_name || "Admin"}
                 </p>
-                <p className="text-xs text-gray-500 truncate">{userProfile?.email}</p>
+                <p className="text-xs text-gray-400 truncate">{userProfile?.email}</p>
               </div>
             </div>
           </div>
@@ -186,8 +186,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                     active
-                      ? colorClasses[item.color as keyof typeof colorClasses]
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-gray-800 text-white border-l-4 border-orange-500"
+                      : "text-gray-400 hover:bg-gray-900 hover:text-white"
                   }`}
                 >
                   <Icon className="w-5 h-5 flex-shrink-0" />
@@ -198,15 +198,15 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </nav>
 
           {/* Settings & Logout */}
-          <div className="p-4 border-t border-gray-200 space-y-2">
+          <div className="p-4 border-t border-gray-700 space-y-2">
             <button
               onClick={() => {
                 onSettingsChange?.(!showSettings);
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                 showSettings
-                  ? "bg-blue-100 text-blue-600"
-                  : "text-gray-700 hover:bg-gray-100"
+                  ? "bg-gray-800 text-white"
+                  : "text-gray-400 hover:bg-gray-900 hover:text-white"
               }`}
             >
               <Settings className="w-5 h-5" />
@@ -217,7 +217,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               onClick={() => {
                 onActivityLogChange?.(true);
               }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-200"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-900 hover:text-white transition-all duration-200"
             >
               <Clock className="w-5 h-5" />
               <span className="font-medium text-sm">Activity Log</span>
@@ -227,7 +227,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               onClick={() => {
                 onNotificationPrefsChange?.(true);
               }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-200"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-900 hover:text-white transition-all duration-200"
             >
               <Bell className="w-5 h-5" />
               <span className="font-medium text-sm">Notifications</span>
@@ -235,7 +235,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
             <button
               onClick={onLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200 font-medium text-sm"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:bg-red-900/30 transition-all duration-200 font-medium text-sm"
             >
               <LogOut className="w-5 h-5" />
               Logout
@@ -244,8 +244,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         </div>
       </aside>
 
-      {/* Main Content Offset */}
-      <div className="md:pl-64" />
     </>
   );
 };
