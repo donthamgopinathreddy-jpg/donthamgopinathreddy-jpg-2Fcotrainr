@@ -98,7 +98,7 @@ export default function TrainingHub() {
           </div>
         </div>
       ) : (
-        <TrainingHubDietPlanner plan={plan} />
+        <AdvancedDietPlanner />
       )}
     </div>
   );
