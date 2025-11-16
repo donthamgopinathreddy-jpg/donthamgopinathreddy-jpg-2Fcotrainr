@@ -263,7 +263,7 @@ export default function NotificationsDropdown() {
             {/* Footer */}
             {notifications.length > 0 && (
               <div
-                className={`p-4 border-t text-center ${
+                className={`p-4 border-t text-center space-y-2 ${
                   theme === "dark"
                     ? "bg-gray-800 border-gray-700"
                     : "bg-gray-50 border-gray-200"
@@ -274,7 +274,7 @@ export default function NotificationsDropdown() {
                     setIsOpen(false);
                     navigate("/notifications");
                   }}
-                  className="text-xs font-semibold text-blue-500 hover:text-blue-600"
+                  className="w-full text-xs font-semibold text-blue-500 hover:text-blue-600 py-2 px-3 rounded-lg transition-colors"
                 >
                   View all notifications →
                 </button>
