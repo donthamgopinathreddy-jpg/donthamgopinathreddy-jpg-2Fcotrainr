@@ -32,26 +32,6 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
   }
 }
 
-// Custom fetch wrapper with timeout
-const createFetchWithTimeout = () => {
-  return async (url: string | Request, options?: RequestInit) => {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
-
-    try {
-      const response = await fetch(url, {
-        ...options,
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
-      return response;
-    } catch (error) {
-      clearTimeout(timeout);
-      throw error;
-    }
-  };
-};
-
 // Create client with proper configuration
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -59,8 +39,5 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     storage: storageImpl,
     detectSessionInUrl: true,
-  },
-  global: {
-    fetch: createFetchWithTimeout(),
   },
 });
