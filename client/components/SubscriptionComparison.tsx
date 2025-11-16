@@ -55,8 +55,8 @@ export default function SubscriptionComparison({
             </button>
           ) : (
             <button
-              onClick={() => onSelectPlan("basic")}
-              className="w-full py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all"
+              onClick={() => onSelectPlan("free")}
+              className="w-full py-3 bg-gray-400 text-white font-semibold rounded-xl hover:bg-gray-500 transition-all"
             >
               View Details
             </button>
