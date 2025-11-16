@@ -736,30 +736,6 @@ export default function Home() {
         {/* Streaks Card */}
         <StreaksCard compact={false} />
 
-        {/* Premium Wellness Section */}
-        <div className="space-y-6 pt-4">
-          {/* Smart Insights Card */}
-          <SmartInsightsCard />
-
-          {/* Hydration Gamification */}
-          <HydrationGamification />
-
-          {/* Meal Tracking Streak */}
-          <MealTrackingStreak />
-
-          {/* Mini Challenges Carousel */}
-          <MiniChallengesCarousel />
-
-          {/* Mood Tracker */}
-          <MoodTracker />
-
-          {/* Workout Library Grid */}
-          <WorkoutLibraryGrid />
-
-          {/* Body Progress Tracker */}
-          <BodyProgressTracker />
-        </div>
-
         {/* BMI Index Card */}
         <div
           className={`${bmiStatus.bgColor} rounded-2xl p-6 space-y-4 dark:bg-gray-800`}
