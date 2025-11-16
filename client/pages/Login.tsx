@@ -20,6 +20,7 @@ import PatternLock from "@/components/PatternLock";
 export default function Login() {
   const navigate = useNavigate();
   const { user, signIn: authSignIn } = useAuth();
+  const { verifyPIN } = usePINAuth();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +28,10 @@ export default function Login() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
+  const [authMethod, setAuthMethod] = useState<
+    "password" | "pin" | "pattern" | "biometric"
+  >("password");
+  const [userId, setUserId] = useState<string | null>(null);
 
   // Use effect to redirect if already logged in (e.g., from browser back button)
   useEffect(() => {
