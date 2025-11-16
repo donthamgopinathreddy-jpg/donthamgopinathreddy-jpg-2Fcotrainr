@@ -22,8 +22,8 @@ const Achievements = () => {
   const [activeTab, setActiveTab] = useState<"achievements" | "monthly" | "overall">("achievements");
 
   const displayData =
-    activeTab === "monthly" ? monthlyLeaderboard : leaderboard;
-  const topTen = getTop10(displayData);
+    activeTab === "monthly" ? monthlyLeaderboard : activeTab === "overall" ? leaderboard : null;
+  const topTen = displayData ? getTop10(displayData) : [];
 
   const getMedalEmoji = (rank: number) => {
     if (rank === 1) return "🥇";
