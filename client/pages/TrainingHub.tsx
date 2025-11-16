@@ -30,6 +30,7 @@ const TREND_METRICS = [
 ];
 
 export default function TrainingHub() {
+  const navigate = useNavigate();
   const { userProfile } = useAuth();
   const {
     preferences,
