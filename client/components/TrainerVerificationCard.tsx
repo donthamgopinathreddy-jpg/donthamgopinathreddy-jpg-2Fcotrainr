@@ -228,39 +228,23 @@ export const TrainerVerificationCard: React.FC<TrainerVerificationCardProps> = (
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Reject Dialog */}
+      {/* Reject Dialog - Confirmation only */}
       <AlertDialog open={showRejectDialog} onOpenChange={setShowRejectDialog}>
         <AlertDialogContent className="bg-white">
           <AlertDialogTitle>Reject Trainer Verification</AlertDialogTitle>
           <AlertDialogDescription>
-            <div className="space-y-4">
-              <p>Please provide a reason for rejection:</p>
-              <textarea
-                id="rejection-reason"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF7A00]"
-                rows={4}
-                placeholder="Enter reason for rejection..."
-              />
-            </div>
+            This trainer will be moved to the Rejected tab. You can provide a reason in the next step.
           </AlertDialogDescription>
           <div className="flex gap-3 justify-end mt-6">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
-                const textarea = document.getElementById(
-                  "rejection-reason"
-                ) as HTMLTextAreaElement;
-                const reason = textarea?.value || "";
-                if (reason.trim()) {
-                  onReject(trainerId);
-                  setShowRejectDialog(false);
-                } else {
-                  alert("Please enter a rejection reason");
-                }
+                onReject(trainerId);
+                setShowRejectDialog(false);
               }}
               className="bg-red-600 hover:bg-red-700 text-white"
             >
-              Reject
+              Proceed to Rejection
             </AlertDialogAction>
           </div>
         </AlertDialogContent>
