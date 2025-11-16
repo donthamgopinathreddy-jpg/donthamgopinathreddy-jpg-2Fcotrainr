@@ -30,6 +30,7 @@ import DietPlans from "./pages/DietPlans";
 import DietPlanDetail from "./pages/DietPlanDetail";
 import TrainerSignup from "./pages/TrainerSignup";
 import TrainerDashboard from "./pages/TrainerDashboard";
+import TrainingHub from "./pages/TrainingHub";
 import TrainerClientDetail from "./pages/TrainerClientDetail";
 import ActivityDetail from "./pages/ActivityDetail";
 import NotFound from "./pages/NotFound";
