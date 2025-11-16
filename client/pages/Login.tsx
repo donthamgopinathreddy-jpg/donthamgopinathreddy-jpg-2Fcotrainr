@@ -209,78 +209,326 @@ export default function Login() {
 
           {!showForgotPassword ? (
             <>
-              {/* Email/Username Input */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-900">
-                  Email or Username
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Enter your email or username"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                  />
-                </div>
-              </div>
+              {authMethod === "password" ? (
+                <>
+                  {/* Email/Username Input */}
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-900">
+                      Email or Username
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        placeholder="Enter your email or username"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                      />
+                    </div>
+                  </div>
 
-              {/* Password Input */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-900">
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    className="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                  />
+                  {/* Password Input */}
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-900">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        className="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-5 h-5" />
+                        ) : (
+                          <Eye className="w-5 h-5" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Forgot Password Link */}
                   <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    onClick={() => setShowForgotPassword(true)}
+                    className="text-sm text-blue-600 hover:text-blue-700 transition-colors font-medium"
                   >
-                    {showPassword ? (
-                      <EyeOff className="w-5 h-5" />
-                    ) : (
-                      <Eye className="w-5 h-5" />
-                    )}
+                    Forgot password?
                   </button>
-                </div>
-              </div>
 
-              {/* Forgot Password Link */}
-              <button
-                onClick={() => setShowForgotPassword(true)}
-                className="text-sm text-blue-600 hover:text-blue-700 transition-colors font-medium"
-              >
-                Forgot password?
-              </button>
+                  {/* Login Button */}
+                  <button
+                    onClick={handleLogin}
+                    disabled={!isFormComplete || loading}
+                    className="w-full bg-gradient-primary text-gray-900 font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? "Signing in..." : "Get Started"}
+                    {!loading && <ChevronRight className="w-5 h-5" />}
+                  </button>
 
-              {/* Login Button */}
-              <button
-                onClick={handleLogin}
-                disabled={!isFormComplete || loading}
-                className="w-full bg-gradient-primary text-gray-900 font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? "Signing in..." : "Get Started"}
-                {!loading && <ChevronRight className="w-5 h-5" />}
-              </button>
+                  {/* Alternative Auth Methods */}
+                  <div className="border-t border-gray-200 pt-6">
+                    <p className="text-sm text-gray-600 text-center mb-3">
+                      Or sign in with
+                    </p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        onClick={() => setAuthMethod("pin")}
+                        className="flex items-center justify-center gap-2 py-3 rounded-lg border-2 border-gray-300 hover:border-primary hover:bg-primary/10 transition-all"
+                      >
+                        <Lock className="w-5 h-5 text-gray-600" />
+                        <span className="text-sm font-semibold text-gray-600">
+                          PIN
+                        </span>
+                      </button>
+                      <button
+                        onClick={() => setAuthMethod("pattern")}
+                        className="flex items-center justify-center gap-2 py-3 rounded-lg border-2 border-gray-300 hover:border-primary hover:bg-primary/10 transition-all"
+                      >
+                        <Grid3x3 className="w-5 h-5 text-gray-600" />
+                        <span className="text-sm font-semibold text-gray-600">
+                          Pattern
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : authMethod === "pin" ? (
+                <>
+                  <div className="space-y-4">
+                    <p className="text-center text-gray-600">
+                      Enter your credentials first to enable PIN
+                    </p>
+                    {!email ? (
+                      <>
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-900">
+                            Email or Username
+                          </label>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="text"
+                              placeholder="Enter your email or username"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-900">
+                            Password
+                          </label>
+                          <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              placeholder="Enter your password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              className="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                              {showPassword ? (
+                                <EyeOff className="w-5 h-5" />
+                              ) : (
+                                <Eye className="w-5 h-5" />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                        <button
+                          onClick={async () => {
+                            if (isFormComplete) {
+                              setLoading(true);
+                              try {
+                                // Get user ID first
+                                let loginEmail = email;
+                                if (!email.includes("@")) {
+                                  const { data: userData } = await supabase
+                                    .from("users")
+                                    .select("email, id")
+                                    .eq("username", email.toLowerCase())
+                                    .single();
+                                  if (userData?.email) {
+                                    loginEmail = userData.email;
+                                    setUserId(userData.id);
+                                  }
+                                } else {
+                                  const { data: userData } = await supabase
+                                    .from("users")
+                                    .select("id")
+                                    .eq("email", email)
+                                    .single();
+                                  if (userData?.id) {
+                                    setUserId(userData.id);
+                                  }
+                                }
+                              } catch (error) {
+                                toast.error("Could not find user account");
+                              } finally {
+                                setLoading(false);
+                              }
+                            }
+                          }}
+                          disabled={!isFormComplete || loading}
+                          className="w-full bg-primary hover:bg-primary/90 disabled:bg-gray-300 text-white font-bold py-3 rounded-lg transition-colors"
+                        >
+                          Continue
+                        </button>
+                      </>
+                    ) : (
+                      <PINEntrypad
+                        onPINSubmit={handlePINSubmit}
+                        isLoading={loading}
+                        onCancel={() => {
+                          setAuthMethod("password");
+                          setUserId(null);
+                        }}
+                      />
+                    )}
+                  </div>
+                </>
+              ) : authMethod === "pattern" ? (
+                <>
+                  <div className="space-y-4">
+                    <p className="text-center text-gray-600">
+                      Enter your credentials first to use pattern login
+                    </p>
+                    {!email ? (
+                      <>
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-900">
+                            Email or Username
+                          </label>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="text"
+                              placeholder="Enter your email or username"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-900">
+                            Password
+                          </label>
+                          <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              placeholder="Enter your password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              className="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                              {showPassword ? (
+                                <EyeOff className="w-5 h-5" />
+                              ) : (
+                                <Eye className="w-5 h-5" />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                        <button
+                          onClick={async () => {
+                            if (isFormComplete) {
+                              setLoading(true);
+                              try {
+                                let loginEmail = email;
+                                if (!email.includes("@")) {
+                                  const { data: userData } = await supabase
+                                    .from("users")
+                                    .select("email, id")
+                                    .eq("username", email.toLowerCase())
+                                    .single();
+                                  if (userData?.email) {
+                                    loginEmail = userData.email;
+                                    setUserId(userData.id);
+                                  }
+                                } else {
+                                  const { data: userData } = await supabase
+                                    .from("users")
+                                    .select("id")
+                                    .eq("email", email)
+                                    .single();
+                                  if (userData?.id) {
+                                    setUserId(userData.id);
+                                  }
+                                }
+                              } catch (error) {
+                                toast.error("Could not find user account");
+                              } finally {
+                                setLoading(false);
+                              }
+                            }
+                          }}
+                          disabled={!isFormComplete || loading}
+                          className="w-full bg-primary hover:bg-primary/90 disabled:bg-gray-300 text-white font-bold py-3 rounded-lg transition-colors"
+                        >
+                          Continue
+                        </button>
+                      </>
+                    ) : (
+                      <PatternLock
+                        onPatternSubmit={handlePatternSubmit}
+                        isLoading={loading}
+                        onCancel={() => {
+                          setAuthMethod("password");
+                          setUserId(null);
+                        }}
+                      />
+                    )}
+                  </div>
+                </>
+              ) : null}
 
-              {/* Create Account Button */}
-              <button
-                onClick={() => navigate("/onboarding")}
-                className="w-full bg-transparent border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary/10 transition-all"
-              >
-                Create Account
-              </button>
+              {authMethod === "password" && (
+                <>
+                  {/* Create Account Button */}
+                  <button
+                    onClick={() => navigate("/onboarding")}
+                    className="w-full bg-transparent border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary/10 transition-all"
+                  >
+                    Create Account
+                  </button>
+                </>
+              )}
+
+              {authMethod !== "password" && (
+                <button
+                  onClick={() => {
+                    setAuthMethod("password");
+                    setUserId(null);
+                  }}
+                  className="w-full bg-transparent border-2 border-gray-300 text-gray-600 font-semibold py-3 rounded-xl hover:bg-gray-50 transition-all"
+                >
+                  Back to Password
+                </button>
+              )}
             </>
           ) : (
             <>
