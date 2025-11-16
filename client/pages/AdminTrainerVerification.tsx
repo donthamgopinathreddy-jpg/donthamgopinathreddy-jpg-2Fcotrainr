@@ -172,69 +172,25 @@ const AdminTrainerVerification: React.FC = () => {
     try {
       setUploadingPic(true);
 
-      // Create FormData for file upload
-      const formData = new FormData();
-      formData.append("file", file);
-
-      // First, try to ensure the bucket exists by testing a simple operation
       const fileExt = file.name.split(".").pop() || "jpg";
       const fileName = `${userProfile.id}-profile-${Date.now()}.${fileExt}`;
 
-      // Upload to Supabase storage with retry
-      let uploadError: any = null;
-      let uploadSuccess = false;
+      // Upload to Supabase storage
+      const { data, error: uploadError } = await supabase.storage
+        .from("profiles")
+        .upload(fileName, file, { upsert: true });
 
-      for (let attempt = 0; attempt < 2; attempt++) {
-        try {
-          const { error } = await supabase.storage
-            .from("profiles")
-            .upload(fileName, file, { upsert: true });
-
-          if (error) {
-            uploadError = error;
-          } else {
-            uploadSuccess = true;
-            break;
-          }
-        } catch (e) {
-          uploadError = e;
-          if (attempt < 1) {
-            // Wait before retry
-            await new Promise((resolve) => setTimeout(resolve, 500));
-          }
-        }
+      if (uploadError) {
+        throw new Error(uploadError.message || "Failed to upload file");
       }
 
-      if (!uploadSuccess && uploadError) {
-        // Check if it's a bucket not found error
-        const errorMsg = uploadError?.message || JSON.stringify(uploadError);
-        if (
-          errorMsg.includes("Bucket not found") ||
-          errorMsg.includes("does not exist")
-        ) {
-          // Create the bucket first
-          try {
-            await supabase.storage.createBucket("profiles", {
-              public: true,
-            });
-            // Try upload again
-            const { error: retryError } = await supabase.storage
-              .from("profiles")
-              .upload(fileName, file, { upsert: true });
-            if (retryError) throw retryError;
-            uploadSuccess = true;
-          } catch (bucketErr) {
-            console.error("Error creating bucket:", bucketErr);
-            throw uploadError;
-          }
-        } else {
-          throw uploadError;
-        }
+      if (!data) {
+        throw new Error("No response from storage service");
       }
 
-      // Get public URL
-      const { data } = supabase.storage.from("profiles").getPublicUrl(fileName);
-      const profileUrl = data.publicUrl;
+      // Construct the public URL manually to avoid response parsing issues
+      const baseUrl = `https://jnvfoyjhflheohculqbb.supabase.co/storage/v1/object/public`;
+      const profileUrl = `${baseUrl}/profiles/${fileName}`;
 
       // Update user profile in database
       const { error: updateError } = await supabase
@@ -242,16 +198,16 @@ const AdminTrainerVerification: React.FC = () => {
         .update({ profile_picture_url: profileUrl })
         .eq("id", userProfile.id);
 
-      if (updateError) throw updateError;
+      if (updateError) {
+        throw new Error(updateError.message || "Failed to update profile");
+      }
 
       // Update local state to reflect the new picture immediately
-      if (userProfile) {
-        try {
-          await updateProfile({ profile_picture_url: profileUrl });
-        } catch (stateErr) {
-          console.error("Error updating local profile state:", stateErr);
-          // Still show success as the database was updated
-        }
+      try {
+        await updateProfile({ profile_picture_url: profileUrl });
+      } catch (stateErr) {
+        console.warn("Local state update warning:", stateErr);
+        // Continue - database was updated successfully
       }
 
       toast({
@@ -260,15 +216,12 @@ const AdminTrainerVerification: React.FC = () => {
         variant: "default",
       });
     } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : JSON.stringify(err);
+      const errorMsg = err instanceof Error ? err.message : String(err);
       console.error("Profile picture upload error:", errorMsg);
+
       toast({
         title: "Error",
-        description: errorMsg.includes("Bucket")
-          ? "Storage bucket not found. Please try again later."
-          : errorMsg.includes("body stream")
-            ? "Network error. Please try again."
-            : "Failed to upload profile picture",
+        description: "Failed to upload profile picture. Please try again.",
         variant: "destructive",
       });
     } finally {
