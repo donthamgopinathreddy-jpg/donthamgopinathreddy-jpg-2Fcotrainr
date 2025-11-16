@@ -772,6 +772,9 @@ export default function Home() {
         {/* Mood Tracker */}
         <MoodTrackerDB />
 
+        {/* Weekly Mood Analytics */}
+        {moodLogs.length > 0 && <WeeklyMoodAnalytics moodLogs={moodLogs} />}
+
         {/* Progress Tracker */}
         <ProgressTracker />
 
