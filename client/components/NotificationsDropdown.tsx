@@ -116,11 +116,11 @@ export default function NotificationsDropdown() {
 
           {/* Notifications Panel */}
           <div
-            className={`absolute right-0 top-full mt-2 w-80 rounded-2xl shadow-2xl z-50 overflow-hidden ${
+            className={`absolute right-0 top-full mt-2 w-80 max-w-[90vw] rounded-2xl shadow-2xl z-50 overflow-hidden ${
               theme === "dark"
                 ? "bg-gray-900 border border-gray-800"
                 : "bg-white border border-gray-200"
-            }`}
+            } sm:w-96 md:w-80`}
           >
             {/* Header */}
             <div
