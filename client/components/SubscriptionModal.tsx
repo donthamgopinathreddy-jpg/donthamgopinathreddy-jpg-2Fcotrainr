@@ -171,7 +171,7 @@ export default function SubscriptionModal({
                     className="flex-1 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     <CreditCard className="w-5 h-5" />
-                    {processingPayment ? "Processing..." : "Pay Now"}
+                    {processingPayment ? "Processing..." : `Pay Now for ${selectedPlan ? selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1) : ''}`}
                   </button>
                 </div>
               </div>
