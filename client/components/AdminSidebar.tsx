@@ -121,7 +121,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-screen w-64 bg-black text-white z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto
+        className={`fixed left-0 top-0 h-screen w-64 bg-black text-white z-45 transition-transform duration-300 md:translate-x-0 overflow-y-auto
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex flex-col h-full">
