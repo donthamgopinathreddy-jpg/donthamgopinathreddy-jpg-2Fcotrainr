@@ -32,59 +32,23 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
   }
 }
 
-// Custom fetch wrapper with retry logic and better error handling
-const createFetchWithRetry = () => {
+// Custom fetch wrapper with timeout
+const createFetchWithTimeout = () => {
   return async (url: string | Request, options?: RequestInit) => {
-    let lastError: Error | null = null;
-    const maxRetries = 1;
-    const retryDelay = 300;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
 
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        // Create a timeout for the fetch request (reduced from 10s to 5s)
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
-
-        try {
-          const response = await fetch(url, {
-            ...options,
-            signal: controller.signal,
-          });
-          clearTimeout(timeout);
-          return response;
-        } finally {
-          clearTimeout(timeout);
-        }
-      } catch (error) {
-        lastError = error instanceof Error ? error : new Error(String(error));
-
-        // Don't retry on abort errors (timeouts)
-        if (lastError.name === "AbortError") {
-          lastError = new Error("Request timeout - Supabase server not responding");
-          // Still throw timeout errors without retry
-          throw lastError;
-        }
-
-        // Retry on network errors, but not on the last attempt
-        if (attempt < maxRetries) {
-          console.debug(
-            `Fetch attempt ${attempt + 1} failed, retrying in ${retryDelay}ms...`,
-          );
-          await new Promise((resolve) => setTimeout(resolve, retryDelay));
-          continue;
-        }
-
-        // If we've exhausted retries, throw the error
-        throw lastError;
-      }
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+      return response;
+    } catch (error) {
+      clearTimeout(timeout);
+      throw error;
     }
-
-    // This should never be reached, but just in case
-    if (lastError) {
-      throw lastError;
-    }
-
-    throw new Error("Unknown fetch error");
   };
 };
 
