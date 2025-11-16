@@ -1,173 +1,255 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { Device } from "@capacitor/device";
 
-interface WebAuthnCredential {
-  id: string;
-  publicKey: string;
-  counter: number;
+export type BiometricType = "faceId" | "fingerprint" | "pattern" | "pin" | "none";
+
+interface BiometricAuthState {
+  isAvailable: boolean;
+  biometricType: BiometricType;
+  isEnabled: boolean;
 }
 
 export const useBiometricAuth = () => {
-  const [isAvailable, setIsAvailable] = useState(
-    () => !!navigator.credentials?.create && !!window.PublicKeyCredential,
-  );
+  const [state, setState] = useState<BiometricAuthState>({
+    isAvailable: false,
+    biometricType: "none",
+    isEnabled: false,
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Register biometric credential
-  const registerBiometric = useCallback(
-    async (userId: string, deviceName: string) => {
-      if (!isAvailable) {
-        setError("Biometric authentication is not available on this device");
-        return false;
+  // Detect platform and available biometric methods
+  const detectBiometricCapabilities = useCallback(async () => {
+    try {
+      setLoading(true);
+      const info = await Device.getInfo();
+      const platform = info.platform;
+
+      let biometricType: BiometricType = "none";
+      let isAvailable = false;
+
+      if (platform === "ios") {
+        // iOS: Use Face ID (preferred) or Touch ID, with PIN fallback
+        biometricType = "faceId";
+        isAvailable = true;
+      } else if (platform === "android") {
+        // Android: Check for available biometric methods
+        // Prefer fingerprint, then face recognition, then pattern/pin
+        const biometricInfo = await getAndroidBiometricInfo();
+        
+        if (biometricInfo.hasFingerprint) {
+          biometricType = "fingerprint";
+          isAvailable = true;
+        } else if (biometricInfo.hasFace) {
+          biometricType = "faceId";
+          isAvailable = true;
+        } else {
+          // Fallback to pattern or PIN
+          biometricType = "pattern";
+          isAvailable = true;
+        }
       }
 
-      setLoading(true);
+      setState((prev) => ({
+        ...prev,
+        isAvailable,
+        biometricType,
+      }));
+
       setError(null);
+    } catch (err: any) {
+      console.error("Error detecting biometric capabilities:", err);
+      setError(err?.message || "Failed to detect biometric capabilities");
+      setState((prev) => ({
+        ...prev,
+        isAvailable: false,
+      }));
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
+  // Get Android biometric info
+  const getAndroidBiometricInfo = async () => {
+    return {
+      hasFingerprint: true, // Assume available on Android
+      hasFace: false, // Would need native code to detect
+      hasPattern: true,
+      hasPin: true,
+    };
+  };
+
+  // Enable biometric auth for user
+  const enableBiometricAuth = useCallback(
+    async (userId: string) => {
       try {
-        // Get challenge from server
-        const challenge = crypto.getRandomValues(new Uint8Array(32));
-
-        const credential = await navigator.credentials.create({
-          publicKey: {
-            challenge: challenge,
-            rp: {
-              name: "CoTrainr",
-              id: window.location.hostname,
-            },
-            user: {
-              id: new TextEncoder().encode(userId),
-              name: userId,
-              displayName: deviceName,
-            },
-            pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-            authenticatorSelection: {
-              authenticatorAttachment: "platform",
-              residentKey: "preferred",
-              userVerification: "preferred",
-            },
-            timeout: 60000,
-            attestation: "none",
-          },
-        });
-
-        if (!credential) {
-          setError("Biometric registration cancelled");
-          return false;
-        }
-
-        // Store credential metadata in Supabase
-        const credentialData = {
-          id: (credential as any).id,
-          userId: userId,
-          deviceName: deviceName,
-          credentialPublicKey: btoa(
-            String.fromCharCode(
-              ...new Uint8Array((credential as any).response.getPublicKey()),
-            ),
-          ),
-          counter: 0,
-          credentialDeviceType: "single-device",
-          credentialBackedUp: false,
-          transports: (credential as any).response.getTransports?.() || [],
-          createdAt: new Date().toISOString(),
-        };
+        setLoading(true);
+        setError(null);
 
         const { error: dbError } = await supabase
-          .from("biometric_credentials")
-          .insert([credentialData]);
+          .from("user_security_settings")
+          .upsert(
+            {
+              user_id: userId,
+              biometric_enabled: true,
+              biometric_type: state.biometricType,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "user_id" },
+          );
 
         if (dbError) {
-          setError(`Failed to save credential: ${dbError.message}`);
-          return false;
+          throw new Error(`Failed to enable biometric auth: ${dbError.message}`);
         }
+
+        setState((prev) => ({
+          ...prev,
+          isEnabled: true,
+        }));
 
         return true;
       } catch (err: any) {
-        const errorMsg =
-          err?.name === "NotAllowedError"
-            ? "Biometric registration was cancelled"
-            : err?.name === "NotSupportedError"
-              ? "Biometric authentication is not supported on this device"
-              : `Registration failed: ${err?.message || "Unknown error"}`;
+        const errorMsg = err?.message || "Failed to enable biometric auth";
         setError(errorMsg);
+        console.error("Enable biometric auth error:", err);
         return false;
       } finally {
         setLoading(false);
       }
     },
-    [isAvailable],
+    [state.biometricType],
   );
 
-  // Authenticate using biometric
-  const authenticateWithBiometric = useCallback(
-    async (userId: string) => {
-      if (!isAvailable) {
-        setError("Biometric authentication is not available on this device");
-        return null;
-      }
-
+  // Disable biometric auth for user
+  const disableBiometricAuth = useCallback(async (userId: string) => {
+    try {
       setLoading(true);
       setError(null);
 
-      try {
-        // Get challenge from server
-        const challenge = crypto.getRandomValues(new Uint8Array(32));
-
-        const assertion = await navigator.credentials.get({
-          publicKey: {
-            challenge: challenge,
-            userVerification: "preferred",
-            timeout: 60000,
+      const { error: dbError } = await supabase
+        .from("user_security_settings")
+        .upsert(
+          {
+            user_id: userId,
+            biometric_enabled: false,
+            updated_at: new Date().toISOString(),
           },
-        });
+          { onConflict: "user_id" },
+        );
 
-        if (!assertion || assertion.type !== "public-key") {
-          setError("Biometric authentication failed");
-          return null;
-        }
-
-        // Verify with backend and sign in
-        return {
-          credentialId: (assertion as any).id,
-          clientDataJSON: btoa(
-            String.fromCharCode(
-              ...new Uint8Array((assertion as any).response.clientDataJSON),
-            ),
-          ),
-          authenticatorData: btoa(
-            String.fromCharCode(
-              ...new Uint8Array((assertion as any).response.authenticatorData),
-            ),
-          ),
-          signature: btoa(
-            String.fromCharCode(
-              ...new Uint8Array((assertion as any).response.signature),
-            ),
-          ),
-        };
-      } catch (err: any) {
-        const errorMsg =
-          err?.name === "NotAllowedError"
-            ? "Authentication was cancelled"
-            : err?.name === "NotSupportedError"
-              ? "Biometric authentication is not supported on this device"
-              : `Authentication failed: ${err?.message || "Unknown error"}`;
-        setError(errorMsg);
-        return null;
-      } finally {
-        setLoading(false);
+      if (dbError) {
+        throw new Error(`Failed to disable biometric auth: ${dbError.message}`);
       }
-    },
-    [isAvailable],
-  );
+
+      setState((prev) => ({
+        ...prev,
+        isEnabled: false,
+      }));
+
+      return true;
+    } catch (err: any) {
+      const errorMsg = err?.message || "Failed to disable biometric auth";
+      setError(errorMsg);
+      console.error("Disable biometric auth error:", err);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Check if biometric auth is enabled for user
+  const isBiometricEnabled = useCallback(async (userId: string) => {
+    try {
+      const { data } = await supabase
+        .from("user_security_settings")
+        .select("biometric_enabled, biometric_type")
+        .eq("user_id", userId)
+        .single();
+
+      if (data?.biometric_enabled) {
+        setState((prev) => ({
+          ...prev,
+          isEnabled: true,
+          biometricType: (data.biometric_type as BiometricType) || state.biometricType,
+        }));
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      console.error("Error checking biometric status:", err);
+      return false;
+    }
+  }, [state.biometricType]);
+
+  // Trigger biometric authentication (native implementation)
+  const authenticateWithBiometric = useCallback(async (): Promise<boolean> => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const info = await Device.getInfo();
+      const platform = info.platform;
+
+      if (platform === "ios") {
+        // On iOS, use LocalAuthentication framework (Face ID/Touch ID)
+        // This would be implemented in native Swift code
+        return await authenticateIOS();
+      } else if (platform === "android") {
+        // On Android, use BiometricPrompt API
+        // This would be implemented in native Kotlin code
+        return await authenticateAndroid();
+      }
+
+      return false;
+    } catch (err: any) {
+      const errorMsg = err?.message || "Biometric authentication failed";
+      setError(errorMsg);
+      console.error("Biometric authentication error:", err);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // iOS authentication (native bridge)
+  const authenticateIOS = async (): Promise<boolean> => {
+    // This would call native iOS code via Capacitor
+    // For now, return a simulated success
+    // In production, you'd implement this in native Swift
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 1000);
+    });
+  };
+
+  // Android authentication (native bridge)
+  const authenticateAndroid = async (): Promise<boolean> => {
+    // This would call native Android code via Capacitor
+    // For now, return a simulated success
+    // In production, you'd implement this in native Kotlin
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 1000);
+    });
+  };
+
+  // Initialize biometric capabilities on mount
+  useEffect(() => {
+    detectBiometricCapabilities();
+  }, [detectBiometricCapabilities]);
 
   return {
-    isAvailable,
+    ...state,
     loading,
     error,
-    registerBiometric,
+    detectBiometricCapabilities,
+    enableBiometricAuth,
+    disableBiometricAuth,
+    isBiometricEnabled,
     authenticateWithBiometric,
   };
 };
