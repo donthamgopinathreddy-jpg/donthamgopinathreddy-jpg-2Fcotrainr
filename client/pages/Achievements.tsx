@@ -175,16 +175,20 @@ export default function Achievements() {
         {/* Achievements/Badges Tab */}
         {activeTab === "achievements" && (
           <div className="space-y-6">
-            {/* Overview Stats */}
-            {aestheticStyle === "vibrant" ? (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div
-                  className={`rounded-2xl p-4 text-center ${
-                    theme === "dark"
-                      ? "bg-gradient-to-br from-orange-500/20 to-red-500/20 border border-orange-500/30"
-                      : "bg-gradient-to-br from-orange-100 to-red-100 border border-orange-200"
-                  }`}
-                >
+            {/* Overview Stats - Vibrant Design */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div
+                className={`rounded-2xl p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-orange-500/20 to-red-500/20 border border-orange-500/30"
+                    : "bg-gradient-to-br from-orange-100 to-red-100 border border-orange-200"
+                }`}
+                style={{
+                  animation: "fadeInUp 0.5s ease-out 0.1s both",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-red-500/0 group-hover:from-orange-500/10 group-hover:to-red-500/10 transition-all" />
+                <div className="relative z-10">
                   <p className="text-3xl font-bold text-orange-600">
                     {unlockedList.length}
                   </p>
@@ -196,13 +200,19 @@ export default function Achievements() {
                     Unlocked
                   </p>
                 </div>
-                <div
-                  className={`rounded-2xl p-4 text-center ${
-                    theme === "dark"
-                      ? "bg-gradient-to-br from-yellow-500/20 to-amber-500/20 border border-yellow-500/30"
-                      : "bg-gradient-to-br from-yellow-100 to-amber-100 border border-yellow-200"
-                  }`}
-                >
+              </div>
+              <div
+                className={`rounded-2xl p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-yellow-500/20 to-amber-500/20 border border-yellow-500/30"
+                    : "bg-gradient-to-br from-yellow-100 to-amber-100 border border-yellow-200"
+                }`}
+                style={{
+                  animation: "fadeInUp 0.5s ease-out 0.2s both",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-amber-500/0 group-hover:from-yellow-500/10 group-hover:to-amber-500/10 transition-all" />
+                <div className="relative z-10">
                   <p className="text-3xl font-bold text-yellow-600">{totalXP}</p>
                   <p
                     className={`text-xs font-medium mt-1 ${
@@ -212,13 +222,19 @@ export default function Achievements() {
                     Total XP
                   </p>
                 </div>
-                <div
-                  className={`rounded-2xl p-4 text-center ${
-                    theme === "dark"
-                      ? "bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30"
-                      : "bg-gradient-to-br from-green-100 to-emerald-100 border border-green-200"
-                  }`}
-                >
+              </div>
+              <div
+                className={`rounded-2xl p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30"
+                    : "bg-gradient-to-br from-green-100 to-emerald-100 border border-green-200"
+                }`}
+                style={{
+                  animation: "fadeInUp 0.5s ease-out 0.3s both",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/0 to-emerald-500/0 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all" />
+                <div className="relative z-10">
                   <p className="text-3xl font-bold text-green-600">
                     {weeklyStats.weeklyAchievements.length}
                   </p>
@@ -230,13 +246,19 @@ export default function Achievements() {
                     This Week
                   </p>
                 </div>
-                <div
-                  className={`rounded-2xl p-4 text-center ${
-                    theme === "dark"
-                      ? "bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30"
-                      : "bg-gradient-to-br from-purple-100 to-pink-100 border border-purple-200"
-                  }`}
-                >
+              </div>
+              <div
+                className={`rounded-2xl p-4 text-center transform transition-all hover:scale-105 hover:shadow-lg cursor-pointer group overflow-hidden relative ${
+                  theme === "dark"
+                    ? "bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30"
+                    : "bg-gradient-to-br from-purple-100 to-pink-100 border border-purple-200"
+                }`}
+                style={{
+                  animation: "fadeInUp 0.5s ease-out 0.4s both",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 transition-all" />
+                <div className="relative z-10">
                   <p className="text-3xl font-bold text-purple-600">
                     {allAchievements.length - unlockedList.length}
                   </p>
@@ -249,53 +271,7 @@ export default function Achievements() {
                   </p>
                 </div>
               </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {[
-                  {
-                    label: "Unlocked",
-                    value: unlockedList.length,
-                    icon: "🔓",
-                  },
-                  { label: "Total XP", value: totalXP, icon: "⭐" },
-                  {
-                    label: "This Week",
-                    value: weeklyStats.weeklyAchievements.length,
-                    icon: "📅",
-                  },
-                  {
-                    label: "Locked",
-                    value: allAchievements.length - unlockedList.length,
-                    icon: "🔒",
-                  },
-                ].map((stat) => (
-                  <div
-                    key={stat.label}
-                    className={`rounded-xl p-3 ${
-                      theme === "dark"
-                        ? "bg-gray-800/50 border border-gray-700/50"
-                        : "bg-gray-50 border border-gray-200"
-                    }`}
-                  >
-                    <p className="text-2xl mb-2">{stat.icon}</p>
-                    <p
-                      className={`text-xs font-medium mb-1 ${
-                        theme === "dark" ? "text-gray-400" : "text-gray-600"
-                      }`}
-                    >
-                      {stat.label}
-                    </p>
-                    <p
-                      className={`text-2xl font-bold ${
-                        theme === "dark" ? "text-white" : "text-gray-900"
-                      }`}
-                    >
-                      {stat.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
+            </div>
 
             {/* Unlocked Achievements */}
             {unlockedList.length > 0 && (
