@@ -1,237 +1,516 @@
-import React, { useState } from "react";
-import { Plus, Lock, Sparkles } from "lucide-react";
-import { useDietPlanGenerator, type DietPreferences, type MealPlan } from "@/hooks/useDietPlanGenerator";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ChefHat, Sparkles, Calendar, TrendingUp, AlertCircle } from "lucide-react";
 
-interface AdvancedDietPlannerProps {
-  plan: "free" | "basic" | "premium";
+/* ============================================================
+   DATA MODELS
+============================================================ */
+
+interface Meal {
+  id: string;
+  name: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+  micros: {
+    fiber: number;
+    iron: number;
+    calcium: number;
+    potassium: number;
+    vitaminA: number;
+    vitaminC: number;
+    vitaminB12: number;
+  };
+  ingredients: string[];
+  instructions: string[];
+  allergens: string[];
+  dietType: string[];
 }
 
-const DIET_TYPES = ["Veg", "Non-Veg", "Vegan", "High-Protein", "Keto"];
-const ALLERGENS = ["Dairy", "Gluten", "Nuts", "Soy", "Eggs", "Wheat", "Shellfish", "Sesame"];
-const GOALS = ["Lose Fat", "Build Muscle", "Maintain"];
-const BUDGETS = ["Low", "Medium", "High"];
+interface DailyMealPlan {
+  breakfast: Meal;
+  snack1: Meal;
+  lunch: Meal;
+  snack2: Meal;
+  dinner: Meal;
+  totalCalories: number;
+  totalProtein: number;
+  totalCarbs: number;
+  totalFats: number;
+}
 
-export default function AdvancedDietPlanner({ plan }: AdvancedDietPlannerProps) {
-  const { generateMealPlan, loading, error } = useDietPlanGenerator();
-  const [mealPlan, setMealPlan] = useState<MealPlan | null>(null);
+interface WeeklyMealPlan {
+  days: DailyMealPlan[];
+}
 
-  const [preferences, setPreferences] = useState<DietPreferences>({
-    goal: "Maintain",
-    dietTypes: [],
-    preferredFoods: [],
-    dislikedFoods: [],
-    mustIncludeFoods: [],
+interface DietPreferences {
+  goals: "fat_loss" | "muscle_gain" | "maintain";
+  dietType: string[];
+  likes: string[];
+  dislikes: string[];
+  mustInclude: string[];
+  allergens: string[];
+  calorieTarget: number;
+  macroTargets: {
+    protein: number;
+    carbs: number;
+    fats: number;
+  };
+}
+
+/* ============================================================
+   FOOD DATABASE
+============================================================ */
+
+const FOOD_DATABASE: Meal[] = [
+  {
+    id: "1",
+    name: "Oats + Banana",
+    calories: 320,
+    protein: 10,
+    carbs: 60,
+    fats: 6,
+    micros: { fiber: 5, iron: 2, calcium: 40, potassium: 220, vitaminA: 5, vitaminC: 8, vitaminB12: 0 },
+    ingredients: ["Oats", "Banana", "Milk"],
+    instructions: ["Cook oats", "Add banana on top"],
+    allergens: ["dairy"],
+    dietType: ["veg", "high-protein"]
+  },
+  {
+    id: "2",
+    name: "Paneer Stir Fry",
+    calories: 280,
+    protein: 22,
+    carbs: 10,
+    fats: 16,
+    micros: { fiber: 2, iron: 1, calcium: 200, potassium: 100, vitaminA: 6, vitaminC: 4, vitaminB12: 0 },
+    ingredients: ["Paneer", "Veggies"],
+    instructions: ["Stir fry paneer", "Add veggies"],
+    allergens: ["dairy"],
+    dietType: ["veg", "high-protein"]
+  },
+  {
+    id: "3",
+    name: "Chicken + Rice",
+    calories: 450,
+    protein: 42,
+    carbs: 38,
+    fats: 4,
+    micros: { fiber: 0, iron: 2, calcium: 12, potassium: 150, vitaminA: 0, vitaminC: 0, vitaminB12: 1 },
+    ingredients: ["Chicken", "Rice"],
+    instructions: ["Grill chicken", "Cook rice"],
     allergens: [],
-    dailyCalorieTarget: 2000,
-    proteinTarget: 150,
-    carbsTarget: 200,
-    fatsTarget: 65,
-    budgetTier: "Medium",
+    dietType: ["non-veg", "high-protein"]
+  },
+  {
+    id: "4",
+    name: "Boiled Eggs + Toast",
+    calories: 280,
+    protein: 20,
+    carbs: 30,
+    fats: 10,
+    micros: { fiber: 3, iron: 3, calcium: 55, potassium: 140, vitaminA: 5, vitaminC: 0, vitaminB12: 1.2 },
+    ingredients: ["Eggs", "Whole Wheat Bread"],
+    instructions: ["Boil eggs", "Toast bread"],
+    allergens: ["eggs", "gluten"],
+    dietType: ["veg", "high-protein"]
+  },
+  {
+    id: "5",
+    name: "Dal + Roti",
+    calories: 350,
+    protein: 15,
+    carbs: 55,
+    fats: 8,
+    micros: { fiber: 8, iron: 4, calcium: 50, potassium: 300, vitaminA: 2, vitaminC: 5, vitaminB12: 0 },
+    ingredients: ["Lentils", "Whole Wheat Flour"],
+    instructions: ["Cook dal", "Make roti"],
+    allergens: [],
+    dietType: ["veg", "high-protein"]
+  },
+  {
+    id: "6",
+    name: "Salmon + Broccoli",
+    calories: 400,
+    protein: 45,
+    carbs: 15,
+    fats: 18,
+    micros: { fiber: 3, iron: 1.5, calcium: 60, potassium: 400, vitaminA: 100, vitaminC: 90, vitaminB12: 3 },
+    ingredients: ["Salmon", "Broccoli"],
+    instructions: ["Bake salmon", "Steam broccoli"],
+    allergens: ["fish"],
+    dietType: ["non-veg", "high-protein"]
+  }
+];
+
+/* ============================================================
+   FILTERING + GENERATION LOGIC
+============================================================ */
+
+function filterMeals(pref: DietPreferences): Meal[] {
+  return FOOD_DATABASE.filter((meal) => {
+    const dietMatch = pref.dietType.length === 0 || pref.dietType.some((d) => meal.dietType.includes(d));
+    const allergenSafe = pref.allergens.every((a) => !meal.allergens.includes(a));
+    const dislikesSafe = pref.dislikes.every((d) => !meal.ingredients.includes(d));
+    const likesMatch = pref.likes.length > 0 ? pref.likes.some((l) => meal.ingredients.includes(l)) : true;
+
+    return dietMatch && allergenSafe && dislikesSafe && likesMatch;
+  });
+}
+
+function generateDailyPlan(pref: DietPreferences): DailyMealPlan {
+  const meals = filterMeals(pref);
+
+  if (meals.length < 5) {
+    throw new Error("Not enough meals in database for selected preferences.");
+  }
+
+  const pick = () => meals[Math.floor(Math.random() * meals.length)];
+
+  const breakfast = pick();
+  const snack1 = pick();
+  const lunch = pick();
+  const snack2 = pick();
+  const dinner = pick();
+
+  const totals = [breakfast, snack1, lunch, snack2, dinner].reduce(
+    (acc, meal) => ({
+      calories: acc.calories + meal.calories,
+      protein: acc.protein + meal.protein,
+      carbs: acc.carbs + meal.carbs,
+      fats: acc.fats + meal.fats,
+    }),
+    { calories: 0, protein: 0, carbs: 0, fats: 0 }
+  );
+
+  return {
+    breakfast,
+    snack1,
+    lunch,
+    snack2,
+    dinner,
+    totalCalories: totals.calories,
+    totalProtein: totals.protein,
+    totalCarbs: totals.carbs,
+    totalFats: totals.fats,
+  };
+}
+
+function generateWeeklyPlan(pref: DietPreferences): WeeklyMealPlan {
+  return {
+    days: Array.from({ length: 7 }, () => generateDailyPlan(pref)),
+  };
+}
+
+/* ============================================================
+   REACT COMPONENT
+============================================================ */
+
+export default function AdvancedDietPlanner() {
+  const [prefs, setPrefs] = useState<DietPreferences>({
+    goals: "maintain",
+    dietType: ["veg", "non-veg"],
+    likes: [],
+    dislikes: [],
+    mustInclude: [],
+    allergens: [],
+    calorieTarget: 2000,
+    macroTargets: { protein: 120, carbs: 200, fats: 60 },
   });
 
-  const handleGeneratePlan = async () => {
-    const generatedPlan = await generateMealPlan(preferences);
-    if (generatedPlan) {
-      setMealPlan(generatedPlan);
+  const [daily, setDaily] = useState<DailyMealPlan | null>(null);
+  const [weekly, setWeekly] = useState<WeeklyMealPlan | null>(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<"daily" | "weekly">("daily");
+
+  const createDaily = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      setDaily(generateDailyPlan(prefs));
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const MealCard = ({ meal, label }: { meal: any; label: string }) => {
-    if (!meal) return null;
-    return (
-      <div className="bg-gradient-to-br from-orange-50 to-white dark:from-gray-800 dark:to-gray-900 border border-orange-100 dark:border-orange-900/50 rounded-xl p-3">
-        <div className="flex items-start justify-between mb-2">
-          <h4 className="font-semibold text-sm text-gray-900 dark:text-white">{meal.name}</h4>
-          <span className="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 px-2 py-1 rounded-full">
-            {label}
-          </span>
-        </div>
-        <div className="grid grid-cols-2 gap-2 text-xs mb-2">
-          <div className="text-gray-600 dark:text-gray-400">
-            <div className="font-bold text-orange-600 dark:text-orange-400">{meal.calories || 0}</div>
-            <div>kcal</div>
-          </div>
-          <div className="text-gray-600 dark:text-gray-400">
-            <div className="font-bold text-red-600 dark:text-red-400">{meal.protein_g || 0}g</div>
-            <div>protein</div>
-          </div>
-        </div>
-      </div>
-    );
+  const createWeekly = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      setWeekly(generateWeeklyPlan(prefs));
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoalChange = (goal: "fat_loss" | "muscle_gain" | "maintain") => {
+    setPrefs((prev) => ({ ...prev, goals: goal }));
+    if (goal === "fat_loss") {
+      setPrefs((prev) => ({ ...prev, macroTargets: { protein: 130, carbs: 150, fats: 50 } }));
+    } else if (goal === "muscle_gain") {
+      setPrefs((prev) => ({ ...prev, macroTargets: { protein: 180, carbs: 250, fats: 70 } }));
+    } else {
+      setPrefs((prev) => ({ ...prev, macroTargets: { protein: 120, carbs: 200, fats: 60 } }));
+    }
+  };
+
+  const handleDietTypeChange = (type: string) => {
+    setPrefs((prev) => ({
+      ...prev,
+      dietType: prev.dietType.includes(type)
+        ? prev.dietType.filter((t) => t !== type)
+        : [...prev.dietType, type],
+    }));
   };
 
   return (
-    <div className="space-y-6">
-      {/* Goal Selection */}
-      <div>
-        <label className="text-sm font-bold text-gray-900 dark:text-white mb-2 block">Fitness Goal</label>
-        <div className="grid grid-cols-3 gap-2">
-          {GOALS.map((goal) => (
-            <button
-              key={goal}
-              onClick={() => setPreferences((prev) => ({ ...prev, goal: goal as any }))}
-              className={`p-2 rounded-lg transition-all text-sm font-medium border-2 ${
-                preferences.goal === goal
-                  ? "bg-orange-500 text-white border-orange-600"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
-              }`}
-            >
-              {goal === "Lose Fat" && "📉"}
-              {goal === "Build Muscle" && "💪"}
-              {goal === "Maintain" && "⚖️"}
-              <span className="ml-1">{goal}</span>
-            </button>
-          ))}
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <ChefHat className="w-8 h-8 text-orange-500" />
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+              Advanced Diet Planner
+            </h1>
+          </div>
+          <p className="text-gray-600 dark:text-gray-400">Generate personalized meal plans based on your goals and preferences</p>
         </div>
-      </div>
 
-      {/* Diet Types Multi-Select */}
-      <div>
-        <label className="text-sm font-bold text-gray-900 dark:text-white mb-2 block">Diet Type</label>
-        <div className="grid grid-cols-2 gap-2">
-          {DIET_TYPES.map((type) => (
-            <button
-              key={type}
-              onClick={() =>
-                setPreferences((prev) => ({
-                  ...prev,
-                  dietTypes: prev.dietTypes.includes(type)
-                    ? prev.dietTypes.filter((t) => t !== type)
-                    : [...prev.dietTypes, type],
-                }))
-              }
-              className={`p-2 rounded-lg transition-all text-sm font-medium border-2 ${
-                preferences.dietTypes.includes(type)
-                  ? "bg-orange-500 text-white border-orange-600"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
-              }`}
-            >
-              {type}
-            </button>
-          ))}
-        </div>
-      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Preferences Panel */}
+          <div className="lg:col-span-1">
+            <Card className="p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur border-orange-100">
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-orange-500" />
+                Your Preferences
+              </h2>
 
-      {/* Calorie Target */}
-      <div>
-        <div className="flex justify-between mb-2">
-          <label className="text-sm font-bold text-gray-900 dark:text-white">Daily Calories</label>
-          <span className="text-sm font-bold text-orange-600 dark:text-orange-400">{preferences.dailyCalorieTarget}</span>
-        </div>
-        <input
-          type="range"
-          min="1200"
-          max="3500"
-          value={preferences.dailyCalorieTarget}
-          onChange={(e) =>
-            setPreferences((prev) => ({
-              ...prev,
-              dailyCalorieTarget: parseInt(e.target.value),
-            }))
-          }
-          className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
-        />
-      </div>
+              {/* Goals */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">Fitness Goal</h3>
+                <div className="space-y-2">
+                  {(["fat_loss", "muscle_gain", "maintain"] as const).map((goal) => (
+                    <button
+                      key={goal}
+                      onClick={() => handleGoalChange(goal)}
+                      className={`w-full px-4 py-2 rounded-lg transition-all ${
+                        prefs.goals === goal
+                          ? "bg-orange-500 text-white shadow-lg"
+                          : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      }`}
+                    >
+                      {goal === "fat_loss" ? "🔥 Fat Loss" : goal === "muscle_gain" ? "💪 Muscle Gain" : "⚖️ Maintain"}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-      {/* Allergens - Premium */}
-      <div className={plan !== "premium" ? "opacity-60 pointer-events-none" : ""}>
-        <label className="text-sm font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-          Allergens {plan !== "premium" && <Lock className="w-4 h-4 text-orange-500" />}
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          {ALLERGENS.map((allergen) => (
-            <label
-              key={allergen}
-              className="flex items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
-            >
-              <input
-                type="checkbox"
-                checked={preferences.allergens.includes(allergen)}
-                onChange={() =>
-                  setPreferences((prev) => ({
-                    ...prev,
-                    allergens: prev.allergens.includes(allergen)
-                      ? prev.allergens.filter((a) => a !== allergen)
-                      : [...prev.allergens, allergen],
-                  }))
-                }
-                className="w-4 h-4 rounded accent-orange-500"
-                disabled={plan !== "premium"}
-              />
-              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{allergen}</span>
-            </label>
-          ))}
-        </div>
-        {plan !== "premium" && (
-          <p className="text-xs text-orange-600 dark:text-orange-400 mt-2 font-semibold">🔒 Upgrade to Premium</p>
-        )}
-      </div>
+              {/* Diet Types */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">Diet Type</h3>
+                <div className="space-y-2">
+                  {["veg", "non-veg"].map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => handleDietTypeChange(type)}
+                      className={`w-full px-4 py-2 rounded-lg transition-all text-sm ${
+                        prefs.dietType.includes(type)
+                          ? "bg-green-500 text-white shadow-lg"
+                          : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      }`}
+                    >
+                      {type === "veg" ? "🥬 Vegetarian" : "🍗 Non-Vegetarian"}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-      {/* Budget - Premium */}
-      <div className={plan !== "premium" ? "opacity-60 pointer-events-none" : ""}>
-        <label className="text-sm font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-          Budget Tier {plan !== "premium" && <Lock className="w-4 h-4 text-orange-500" />}
-        </label>
-        <div className="grid grid-cols-3 gap-2">
-          {BUDGETS.map((budget) => (
-            <button
-              key={budget}
-              onClick={() => setPreferences((prev) => ({ ...prev, budgetTier: budget as any }))}
-              disabled={plan !== "premium"}
-              className={`p-2 rounded-lg text-sm font-medium border-2 transition-all ${
-                preferences.budgetTier === budget
-                  ? "bg-orange-500 text-white border-orange-600"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
-              }`}
-            >
-              {budget === "Low" && "💰"}
-              {budget === "Medium" && "💸"}
-              {budget === "High" && "💎"}
-            </button>
-          ))}
-        </div>
-        {plan !== "premium" && (
-          <p className="text-xs text-orange-600 dark:text-orange-400 mt-2 font-semibold">🔒 Upgrade to Premium</p>
-        )}
-      </div>
+              {/* Calories */}
+              <div className="mb-6">
+                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">Daily Calories: {prefs.calorieTarget}</h3>
+                <input
+                  type="range"
+                  min="1500"
+                  max="3500"
+                  step="100"
+                  value={prefs.calorieTarget}
+                  onChange={(e) => setPrefs((prev) => ({ ...prev, calorieTarget: parseInt(e.target.value) }))}
+                  className="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
 
-      {/* Generate Button */}
-      <button
-        onClick={handleGeneratePlan}
-        disabled={loading}
-        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-      >
-        <Sparkles className="w-5 h-5" />
-        {loading ? "Generating..." : "Generate Daily Meal Plan"}
-      </button>
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <Button
+                  onClick={createDaily}
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
+                >
+                  {loading ? "Generating..." : "📅 Daily Plan"}
+                </Button>
+                <Button
+                  onClick={createWeekly}
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
+                >
+                  {loading ? "Generating..." : "📆 Weekly Plan"}
+                </Button>
+              </div>
 
-      {error && <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg text-sm">{error}</div>}
-
-      {/* Generated Meal Plan */}
-      {mealPlan && (
-        <div className="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="grid grid-cols-2 gap-2">
-            <div className="bg-orange-100 dark:bg-orange-900/30 rounded-lg p-3 text-center">
-              <div className="text-xl font-bold text-orange-700 dark:text-orange-400">{mealPlan.totals.calories}</div>
-              <div className="text-xs text-orange-600 dark:text-orange-400">Total Calories</div>
-            </div>
-            <div className="bg-red-100 dark:bg-red-900/30 rounded-lg p-3 text-center">
-              <div className="text-xl font-bold text-red-700 dark:text-red-400">{mealPlan.totals.protein.toFixed(0)}g</div>
-              <div className="text-xs text-red-600 dark:text-red-400">Protein</div>
-            </div>
+              {/* Error */}
+              {error && (
+                <div className="mt-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg flex gap-2">
+                  <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
+                  <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                </div>
+              )}
+            </Card>
           </div>
 
-          <div className="space-y-2">
-            <h4 className="font-bold text-gray-900 dark:text-white">Your Meals</h4>
-            <MealCard meal={mealPlan.breakfast} label="Breakfast" />
-            <MealCard meal={mealPlan.lunch} label="Lunch" />
-            <MealCard meal={mealPlan.snack1} label="Snack 1" />
-            <MealCard meal={mealPlan.snack2} label="Snack 2" />
-            <MealCard meal={mealPlan.dinner} label="Dinner" />
+          {/* Results Panel */}
+          <div className="lg:col-span-2">
+            {daily || weekly ? (
+              <Card className="p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur border-orange-100 animate-fade-in">
+                <div className="flex gap-2 mb-6">
+                  <button
+                    onClick={() => setActiveTab("daily")}
+                    className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                      activeTab === "daily"
+                        ? "bg-orange-500 text-white shadow-lg"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    📅 Daily
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("weekly")}
+                    className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                      activeTab === "weekly"
+                        ? "bg-green-500 text-white shadow-lg"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    📆 Weekly
+                  </button>
+                </div>
+
+                {activeTab === "daily" && daily && (
+                  <div className="space-y-4">
+                    <MealCard meal={daily.breakfast} mealType="🌅 Breakfast" />
+                    <MealCard meal={daily.snack1} mealType="🥤 Snack 1" />
+                    <MealCard meal={daily.lunch} mealType="🍽️ Lunch" />
+                    <MealCard meal={daily.snack2} mealType="🥜 Snack 2" />
+                    <MealCard meal={daily.dinner} mealType="🌙 Dinner" />
+                    <DailyTotals plan={daily} />
+                  </div>
+                )}
+
+                {activeTab === "weekly" && weekly && (
+                  <div className="space-y-4">
+                    {weekly.days.map((day, idx) => (
+                      <div key={idx} className="p-4 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-lg">
+                        <h3 className="font-semibold text-lg mb-3">📅 Day {idx + 1}</h3>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div className="bg-white/50 dark:bg-gray-800/50 p-2 rounded">
+                            <p className="text-gray-600 dark:text-gray-400">Calories</p>
+                            <p className="font-bold text-orange-600">{day.totalCalories}</p>
+                          </div>
+                          <div className="bg-white/50 dark:bg-gray-800/50 p-2 rounded">
+                            <p className="text-gray-600 dark:text-gray-400">Protein</p>
+                            <p className="font-bold text-blue-600">{day.totalProtein}g</p>
+                          </div>
+                          <div className="bg-white/50 dark:bg-gray-800/50 p-2 rounded">
+                            <p className="text-gray-600 dark:text-gray-400">Carbs</p>
+                            <p className="font-bold text-green-600">{day.totalCarbs}g</p>
+                          </div>
+                          <div className="bg-white/50 dark:bg-gray-800/50 p-2 rounded">
+                            <p className="text-gray-600 dark:text-gray-400">Fats</p>
+                            <p className="font-bold text-red-600">{day.totalFats}g</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+            ) : (
+              <Card className="p-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur border-orange-100 text-center">
+                <Calendar className="w-16 h-16 text-orange-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No Plan Generated Yet</h3>
+                <p className="text-gray-600 dark:text-gray-400">Configure your preferences and generate a meal plan to get started!</p>
+              </Card>
+            )}
           </div>
         </div>
-      )}
+      </div>
     </div>
+  );
+}
+
+/* Helper Components */
+
+function MealCard({ meal, mealType }: { meal: Meal; mealType: string }) {
+  return (
+    <div className="p-4 bg-gradient-to-r from-orange-100 to-yellow-100 dark:from-orange-900/30 dark:to-yellow-900/30 rounded-lg border-l-4 border-orange-500">
+      <h4 className="font-semibold text-lg mb-2">{mealType}</h4>
+      <p className="text-gray-700 dark:text-gray-300 font-medium mb-2">{meal.name}</p>
+      <div className="grid grid-cols-4 gap-2 text-sm">
+        <div>
+          <p className="text-gray-600 dark:text-gray-400">Cal</p>
+          <p className="font-bold text-orange-600">{meal.calories}</p>
+        </div>
+        <div>
+          <p className="text-gray-600 dark:text-gray-400">Pro</p>
+          <p className="font-bold text-blue-600">{meal.protein}g</p>
+        </div>
+        <div>
+          <p className="text-gray-600 dark:text-gray-400">Carb</p>
+          <p className="font-bold text-green-600">{meal.carbs}g</p>
+        </div>
+        <div>
+          <p className="text-gray-600 dark:text-gray-400">Fat</p>
+          <p className="font-bold text-red-600">{meal.fats}g</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DailyTotals({ plan }: { plan: DailyMealPlan }) {
+  return (
+    <Card className="p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+      <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
+        <TrendingUp className="w-5 h-5" />
+        Daily Totals
+      </h4>
+      <div className="grid grid-cols-4 gap-4">
+        <div>
+          <p className="text-purple-100">Calories</p>
+          <p className="text-2xl font-bold">{plan.totalCalories}</p>
+        </div>
+        <div>
+          <p className="text-purple-100">Protein</p>
+          <p className="text-2xl font-bold">{plan.totalProtein}g</p>
+        </div>
+        <div>
+          <p className="text-purple-100">Carbs</p>
+          <p className="text-2xl font-bold">{plan.totalCarbs}g</p>
+        </div>
+        <div>
+          <p className="text-purple-100">Fats</p>
+          <p className="text-2xl font-bold">{plan.totalFats}g</p>
+        </div>
+      </div>
+    </Card>
   );
 }
