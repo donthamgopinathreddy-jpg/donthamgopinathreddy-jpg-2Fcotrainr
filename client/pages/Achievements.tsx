@@ -106,7 +106,7 @@ export default function Quests() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <h1
-                className={`text-lg sm:text-2xl font-black truncate bg-clip-text text-transparent ${
+                className={`text-base sm:text-xl md:text-2xl font-black truncate bg-clip-text text-transparent ${
                   theme === "dark"
                     ? "bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"
                     : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"
@@ -137,7 +137,7 @@ export default function Quests() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative py-3 px-3 sm:px-4 text-sm sm:text-base font-bold transition-all whitespace-nowrap flex items-center gap-1.5 group ${
+                className={`relative py-2 px-2 sm:px-3 text-xs sm:text-sm md:text-base font-bold transition-all whitespace-nowrap flex items-center gap-1 sm:gap-1.5 group ${
                   activeTab === tab.id
                     ? theme === "dark"
                       ? "text-white"
