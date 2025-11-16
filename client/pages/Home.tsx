@@ -1005,12 +1005,6 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-2 pt-2">
-              <button
-                onClick={handleResetSteps}
-                className="w-full bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 font-medium py-2 rounded-lg transition-colors text-sm"
-              >
-                Reset Steps to 0
-              </button>
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowTargetsModal(false)}
