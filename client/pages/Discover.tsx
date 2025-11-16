@@ -263,7 +263,7 @@ export default function Discover() {
                       ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30"
                       : theme === "dark"
                         ? "bg-gray-800 border border-gray-700 text-gray-300 hover:border-orange-500"
-                        : "bg-gray-100 border border-gray-300 text-gray-800 hover:border-orange-500"
+                        : "bg-gray-300 border border-gray-400 text-gray-800 hover:border-orange-500"
                   }`}
                 >
                   {cat}
@@ -404,8 +404,8 @@ export default function Discover() {
         <div className="max-w-md mx-auto px-4 py-8">
           <div className="bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-2xl p-8 border border-orange-500/30 backdrop-blur text-center">
             <Lock className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h2 className="text-xl font-bold mb-2">Premium Feature</h2>
-            <p className="text-muted-foreground mb-6">
+            <h2 className="text-xl font-bold mb-2 text-gray-900">Premium Feature</h2>
+            <p className="text-gray-700 mb-6">
               Access nutritionists and meal planning by upgrading to premium
             </p>
             <button className="w-full bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-orange-500/30 transition-all">
