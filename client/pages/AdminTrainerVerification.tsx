@@ -397,7 +397,7 @@ const AdminTrainerVerification: React.FC = () => {
 
                     {/* Camera Icon Overlay - Center */}
                     <div className="absolute inset-0 rounded-lg bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center transition-all duration-200">
-                      <div className="bg-[#FF7A00] rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <div className="bg-pink-600 rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         {uploadingPic ? (
                           <Loader className="w-6 h-6 text-white animate-spin" />
                         ) : (
