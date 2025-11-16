@@ -185,18 +185,62 @@ const AdminTrainerVerification: React.FC = () => {
     try {
       setUploadingPic(true);
 
-      // Read file as base64 data URL
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error("File size must be less than 5MB");
+      }
+
+      // Compress and convert to base64
+      const canvas = document.createElement("canvas");
+      const img = new Image();
+
       const reader = new FileReader();
-      const base64Url = await new Promise<string>((resolve, reject) => {
-        reader.onload = () => resolve(reader.result as string);
+      const imageData = await new Promise<string>((resolve, reject) => {
+        reader.onload = (e) => {
+          const result = e.target?.result as string;
+          img.onload = () => {
+            try {
+              // Resize to max 400x400
+              const MAX_SIZE = 400;
+              let width = img.width;
+              let height = img.height;
+
+              if (width > height) {
+                if (width > MAX_SIZE) {
+                  height = Math.round((height * MAX_SIZE) / width);
+                  width = MAX_SIZE;
+                }
+              } else {
+                if (height > MAX_SIZE) {
+                  width = Math.round((width * MAX_SIZE) / height);
+                  height = MAX_SIZE;
+                }
+              }
+
+              canvas.width = width;
+              canvas.height = height;
+
+              const ctx = canvas.getContext("2d");
+              if (!ctx) throw new Error("Failed to get canvas context");
+
+              ctx.drawImage(img, 0, 0, width, height);
+              const compressedData = canvas.toDataURL("image/jpeg", 0.8);
+              resolve(compressedData);
+            } catch (err) {
+              reject(err);
+            }
+          };
+          img.onerror = () => reject(new Error("Failed to load image"));
+          img.src = result;
+        };
         reader.onerror = () => reject(reader.error);
         reader.readAsDataURL(file);
       });
 
-      // Update database with base64 data URL
+      // Update database with compressed base64
       const { error: updateError } = await supabase
         .from("users")
-        .update({ profile_picture_url: base64Url })
+        .update({ profile_picture_url: imageData })
         .eq("id", userProfile.id);
 
       if (updateError) {
@@ -204,7 +248,7 @@ const AdminTrainerVerification: React.FC = () => {
       }
 
       // Update local state
-      await updateProfile({ profile_picture_url: base64Url });
+      await updateProfile({ profile_picture_url: imageData });
 
       toast({
         title: "Success",
@@ -220,7 +264,7 @@ const AdminTrainerVerification: React.FC = () => {
 
       toast({
         title: "Error",
-        description: "Failed to save profile picture",
+        description: errorMsg || "Failed to save profile picture",
         variant: "destructive",
       });
     } finally {
