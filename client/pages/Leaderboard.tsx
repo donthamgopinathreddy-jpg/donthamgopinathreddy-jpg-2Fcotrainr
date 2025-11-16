@@ -58,7 +58,22 @@ const Achievements = () => {
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
+          <button
+            onClick={() => setActiveTab("achievements")}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              activeTab === "achievements"
+                ? theme === "dark"
+                  ? "bg-yellow-600 text-white"
+                  : "bg-yellow-600 text-white"
+                : theme === "dark"
+                  ? "bg-gray-700 text-gray-400 hover:text-gray-200"
+                  : "bg-gray-200 text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            <Star className="inline w-4 h-4 mr-2" />
+            My Achievements
+          </button>
           <button
             onClick={() => setActiveTab("monthly")}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -72,7 +87,7 @@ const Achievements = () => {
             }`}
           >
             <Zap className="inline w-4 h-4 mr-2" />
-            This Month
+            Monthly
           </button>
           <button
             onClick={() => setActiveTab("overall")}
@@ -87,7 +102,7 @@ const Achievements = () => {
             }`}
           >
             <TrendingUp className="inline w-4 h-4 mr-2" />
-            All Time
+            Leaderboard
           </button>
         </div>
       </div>
