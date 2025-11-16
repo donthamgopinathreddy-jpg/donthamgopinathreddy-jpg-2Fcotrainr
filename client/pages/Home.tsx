@@ -466,9 +466,9 @@ export default function Home() {
           <NotificationsDropdown />
 
           {/* Edit Cover Button */}
-          <label className="bg-white/90 hover:bg-white p-3 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all">
+          <label className="p-3 cursor-pointer shadow-lg hover:shadow-xl transition-all">
             <svg
-              className="w-5 h-5 text-gray-900"
+              className="w-5 h-5 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
