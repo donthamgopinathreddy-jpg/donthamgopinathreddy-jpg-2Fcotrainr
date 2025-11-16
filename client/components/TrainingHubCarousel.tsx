@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Section {
@@ -12,13 +12,21 @@ interface Section {
 interface TrainingHubCarouselProps {
   sections: Section[];
   onSectionChange?: (index: number) => void;
+  currentIndex?: number;
 }
 
 export default function TrainingHubCarousel({
   sections,
   onSectionChange,
+  currentIndex: externalIndex,
 }: TrainingHubCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(externalIndex || 0);
+
+  useEffect(() => {
+    if (externalIndex !== undefined) {
+      setCurrentIndex(externalIndex);
+    }
+  }, [externalIndex]);
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) =>
