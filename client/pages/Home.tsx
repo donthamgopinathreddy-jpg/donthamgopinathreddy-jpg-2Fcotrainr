@@ -13,7 +13,7 @@ import {
   Settings,
   Activity,
   Upload,
-  Sun,
+  Briefcase,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
