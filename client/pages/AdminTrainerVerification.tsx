@@ -17,7 +17,8 @@ import {
 } from "lucide-react";
 
 const AdminTrainerVerification: React.FC = () => {
-  const { userProfile } = useAuth();
+  const navigate = useNavigate();
+  const { userProfile, signOut } = useAuth();
   const { toast } = useToast();
   const {
     trainers,
@@ -34,6 +35,26 @@ const AdminTrainerVerification: React.FC = () => {
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [rejectingTrainerId, setRejectingTrainerId] = useState<string | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Logged out",
+        description: "You have been logged out successfully",
+        variant: "default",
+      });
+      navigate("/");
+    } catch (err) {
+      console.error("Logout error:", err);
+      toast({
+        title: "Error",
+        description: "Failed to log out",
+        variant: "destructive",
+      });
+    }
+  };
 
   // Check if user is admin (for now, we'll allow access - this should be enforced via backend)
   if (!userProfile) {
