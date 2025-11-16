@@ -54,6 +54,8 @@ function transformNotification(data: NotificationData): Notification {
     message,
     related_user_id: data.actor_id,
     related_id: data.post_id || data.comment_id,
+    post_id: data.post_id,
+    comment_id: data.comment_id,
     is_read: data.is_read,
     created_at: data.created_at,
   };
