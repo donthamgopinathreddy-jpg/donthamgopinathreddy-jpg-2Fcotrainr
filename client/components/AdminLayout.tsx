@@ -31,6 +31,23 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
   const { preferences: notifPrefs, updatePreferences: updateNotifPrefs } =
     useNotificationPreferences(userProfile?.id);
 
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    if (showUserMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [showUserMenu]);
+
   const handleLogout = async () => {
     try {
       await signOut();
