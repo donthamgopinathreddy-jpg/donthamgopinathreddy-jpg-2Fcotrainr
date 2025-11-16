@@ -593,6 +593,18 @@ export default function Profile() {
             <Edit2 className="w-4 h-4" />
             Edit Profile
           </button>
+
+          {/* Subscription Section */}
+          <div className="mt-6 pt-6 border-t border-orange-200 dark:border-gray-700">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <Lock className="w-5 h-5 text-orange-500" />
+              Your Subscription Plan
+            </h3>
+            <SubscriptionComparison
+              currentPlan={(userProfile?.subscription_plan || "free") as "free" | "basic" | "premium"}
+              onSelectPlan={() => setShowSubscriptionModal(true)}
+            />
+          </div>
         </div>
 
         {/* ACCOUNT SECTION */}
