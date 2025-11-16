@@ -122,35 +122,40 @@ export default function Achievements() {
       <div
         className={`sticky top-14 z-10 border-b ${
           theme === "dark"
-            ? "bg-gray-900/95 border-gray-800/50"
-            : aestheticStyle === "minimal"
-              ? "bg-white/95 border-gray-200"
-              : "bg-white/95 border-blue-100/50"
+            ? "bg-gray-950/95 border-gray-800/50"
+            : "bg-white/80 border-purple-200/30"
         } backdrop-blur-md`}
       >
         <div className="max-w-5xl mx-auto px-3 sm:px-4">
           <div className="flex gap-1 sm:gap-2 overflow-x-auto">
             {[
-              { id: "quests" as const, label: "Quests", icon: "📋" },
-              { id: "competitions" as const, label: "Competitions", icon: "⚡" },
-              { id: "achievements" as const, label: "Badges", icon: "🏆" },
-              { id: "leaderboard" as const, label: "Leaderboard", icon: "🏅" },
+              { id: "quests" as const, label: "Quests", icon: "📋", color: "from-blue-500 to-cyan-500" },
+              { id: "competitions" as const, label: "Competitions", icon: "⚡", color: "from-purple-500 to-pink-500" },
+              { id: "achievements" as const, label: "Badges", icon: "🏆", color: "from-orange-500 to-red-500" },
+              { id: "leaderboard" as const, label: "Leaderboard", icon: "🏅", color: "from-green-500 to-emerald-500" },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-3 px-3 sm:px-4 text-sm sm:text-base font-medium border-b-2 transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                className={`relative py-3 px-3 sm:px-4 text-sm sm:text-base font-bold transition-all whitespace-nowrap flex items-center gap-1.5 group ${
                   activeTab === tab.id
                     ? theme === "dark"
-                      ? "border-blue-500 text-blue-500"
-                      : aestheticStyle === "minimal"
-                        ? "border-blue-600 text-blue-600"
-                        : "border-purple-600 text-purple-600"
+                      ? "text-white"
+                      : "text-gray-900"
                     : theme === "dark"
-                      ? "border-transparent text-gray-400 hover:text-gray-300"
-                      : "border-transparent text-gray-600 hover:text-gray-900"
+                      ? "text-gray-400 hover:text-gray-300"
+                      : "text-gray-600 hover:text-gray-900"
                 }`}
               >
+                {/* Animated background for active tab */}
+                {activeTab === tab.id && (
+                  <div
+                    className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${tab.color} rounded-full shadow-lg`}
+                    style={{
+                      animation: "slideIn 0.3s ease-out",
+                    }}
+                  />
+                )}
                 <span className="text-lg">{tab.icon}</span>
                 <span className="hidden sm:inline">{tab.label}</span>
               </button>
