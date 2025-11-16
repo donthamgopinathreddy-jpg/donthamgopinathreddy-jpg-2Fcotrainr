@@ -177,7 +177,7 @@ const AdminTrainerVerification: React.FC = () => {
   };
 
   const handleProfilePictureUpload = async (
-    e: React.ChangeChange<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = e.target.files?.[0];
     if (!file || !userProfile) return;
