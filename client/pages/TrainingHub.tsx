@@ -136,13 +136,7 @@ export default function TrainingHub() {
 
   // Section components
   const WeeklyPlannerSection = () => (
-    <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
-        <p className="text-gray-600 dark:text-gray-400 text-lg">
-          Weekly Workout Planner coming soon
-        </p>
-      </div>
-    </div>
+    <WorkoutPlanner />
   );
 
   const DietPlannerSection = () => (
