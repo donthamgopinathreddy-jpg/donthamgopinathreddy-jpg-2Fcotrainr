@@ -38,6 +38,18 @@ export const useBiometricAuth = () => {
   const detectBiometricCapabilities = useCallback(async () => {
     try {
       setLoading(true);
+
+      // Check if Device is available (mobile only)
+      if (!Device) {
+        setState((prev) => ({
+          ...prev,
+          isAvailable: false,
+          biometricType: "none",
+        }));
+        setLoading(false);
+        return;
+      }
+
       const info = await Device.getInfo();
       const platform = info.platform;
 
