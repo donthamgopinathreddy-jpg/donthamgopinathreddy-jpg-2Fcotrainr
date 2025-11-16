@@ -180,7 +180,7 @@ export default function Home() {
   const stepsGoal = stepsTarget;
 
   // Calculate calories burned from steps (~0.05 cal per step)
-  const caloriesBurned = Math.round(stepsCompleted * 0.05);
+  const caloriesBurned = Math.round(steps * 0.05);
 
   // Calculate BMI
   const heightInMeters = userHeight / 100;
