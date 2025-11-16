@@ -207,36 +207,8 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
             })}
           </nav>
 
-          {/* Settings & Logout */}
-          <div className="p-4 border-t border-gray-700 space-y-2">
-            <button
-              onClick={() => onSettingsChange?.(!showSettings)}
-              className={`w-full flex items-center gap-3 px-4 py-2 transition-all duration-200 ${
-                showSettings
-                  ? "bg-gray-800 text-white border-l-4 border-orange-500"
-                  : "text-gray-400 hover:text-white"
-              }`}
-            >
-              <Settings className="w-5 h-5" />
-              <span className="font-medium text-sm">Settings</span>
-            </button>
-
-            <button
-              onClick={() => onActivityLogChange?.(true)}
-              className="w-full flex items-center gap-3 px-4 py-2 text-gray-400 hover:text-white transition-all duration-200"
-            >
-              <Clock className="w-5 h-5" />
-              <span className="font-medium text-sm">Activity Log</span>
-            </button>
-
-            <button
-              onClick={() => onNotificationPrefsChange?.(true)}
-              className="w-full flex items-center gap-3 px-4 py-2 text-gray-400 hover:text-white transition-all duration-200"
-            >
-              <Bell className="w-5 h-5" />
-              <span className="font-medium text-sm">Notifications</span>
-            </button>
-
+          {/* Logout */}
+          <div className="p-4 border-t border-gray-700">
             <button
               onClick={onLogout}
               className="w-full flex items-center gap-3 px-4 py-2 text-red-500 hover:text-red-400 transition-all duration-200 font-medium text-sm"
