@@ -93,7 +93,7 @@ export default function MoodTrackerDB() {
             disabled={isSaving || loading}
             className={`flex-1 py-4 rounded-2xl font-bold text-2xl transition-all duration-300 hover:scale-115 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform ${
               selectedMood === mood.value
-                ? `bg-gradient-to-br ${getMoodColor(mood.value)} text-white shadow-xl scale-110 shadow-${mood.value === 1 ? "red" : mood.value === 2 ? "yellow" : mood.value === 3 ? "blue" : mood.value === 4 ? "green" : "purple"}-500/40`
+                ? `bg-gradient-to-br ${getMoodColor(mood.value)} text-black shadow-xl scale-110 shadow-${mood.value === 1 ? "red" : mood.value === 2 ? "yellow" : mood.value === 3 ? "blue" : mood.value === 4 ? "green" : "purple"}-500/40`
                 : theme === "dark"
                   ? "bg-gray-700/40 border-2 border-gray-600/50 text-gray-300 hover:border-pink-500/50 hover:bg-gray-700/60"
                   : "bg-white/60 border-2 border-gray-300/40 text-gray-700 hover:border-pink-400/60 hover:bg-white/80 backdrop-blur-sm"
