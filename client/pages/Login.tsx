@@ -14,6 +14,7 @@ import Logo from "@/components/Logo";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePINAuth } from "@/hooks/usePINAuth";
+import { useBiometricAuth } from "@/hooks/useBiometricAuth";
 import PINEntrypad from "@/components/PINEntrypad";
 import PatternLock from "@/components/PatternLock";
 
