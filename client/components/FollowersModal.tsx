@@ -148,11 +148,28 @@ export default function FollowersModal({
 
                   {/* User Info */}
                   <div className="flex-1 min-w-0">
-                    <p
-                      className={`font-bold truncate ${theme === "dark" ? "text-white" : "text-gray-900"}`}
-                    >
-                      {user.full_name}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p
+                        className={`font-bold truncate ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                      >
+                        {user.full_name}
+                      </p>
+                      {user.role && (
+                        <span
+                          className={`text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${
+                            user.role === "trainer"
+                              ? theme === "dark"
+                                ? "bg-amber-900/40 text-amber-300"
+                                : "bg-amber-100 text-amber-700"
+                              : theme === "dark"
+                                ? "bg-blue-900/40 text-blue-300"
+                                : "bg-blue-100 text-blue-700"
+                          }`}
+                        >
+                          {user.role === "trainer" ? "⭐ Trainer" : "Member"}
+                        </span>
+                      )}
+                    </div>
                     {user.username && (
                       <p
                         className={`text-sm truncate ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
