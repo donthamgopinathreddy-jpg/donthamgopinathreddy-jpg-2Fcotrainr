@@ -197,9 +197,9 @@ export default function NotificationsDropdown() {
                         }
                       }}
                     >
-                      <div className="flex items-start gap-3">
+                      <div className="flex items-start gap-2 sm:gap-3">
                         {/* Icon */}
-                        <div className="mt-1 flex-shrink-0">
+                        <div className="mt-1 flex-shrink-0 hidden sm:block">
                           {getNotificationIcon(notification.type)}
                         </div>
 
