@@ -44,15 +44,30 @@ export default function AIWeeklyInsights() {
     { day: "Sun", actual: 150, target: 150 },
   ];
 
-  if (!insights) {
+  if (loadingData || generatingInsights) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center pb-24">
-        <div className="animate-spin h-8 w-8 text-orange-500"></div>
+        <div className="text-center">
+          <div className="animate-spin h-8 w-8 text-orange-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading your insights...</p>
+        </div>
       </div>
     );
   }
 
-  const isPremium = demoData.subscriptionLevel === "premium";
+  if (!insights || !weeklyData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center pb-24">
+        <div className="text-center">
+          <p className="text-red-600 dark:text-red-400">
+            {dataError || "Unable to load your weekly insights. Please try again later."}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const isPremium = weeklyData.subscriptionLevel === "premium";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pb-24">
