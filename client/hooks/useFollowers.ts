@@ -7,6 +7,7 @@ export interface FollowerUser {
   profile_picture_url?: string;
   username: string;
   bio?: string;
+  role?: "client" | "trainer";
 }
 
 export function useFollowers(userId?: string) {
@@ -27,9 +28,9 @@ export function useFollowers(userId?: string) {
       setError(null);
 
       const { data: followersData, error: followersError } = await supabase
-        .from("followers")
+        .from("follows")
         .select(
-          "follower_id, follower:follower_id(id, full_name, profile_picture_url, username, bio)",
+          "follower_id, users!follower_id(id, full_name, profile_picture_url, username, bio, role)",
         )
         .eq("following_id", userId);
 
@@ -42,21 +43,22 @@ export function useFollowers(userId?: string) {
         setFollowers([]);
       } else if (followersData) {
         const parsedFollowers = followersData
-          .filter((f: any) => f.follower && f.follower.id)
+          .filter((f: any) => f.users && f.users.id)
           .map((f: any) => ({
-            id: f.follower.id,
-            full_name: f.follower.full_name || "",
-            profile_picture_url: f.follower.profile_picture_url,
-            username: f.follower.username,
-            bio: f.follower.bio,
+            id: f.users.id,
+            full_name: f.users.full_name || "",
+            profile_picture_url: f.users.profile_picture_url,
+            username: f.users.username,
+            bio: f.users.bio,
+            role: f.users.role,
           }));
         setFollowers(parsedFollowers);
       }
 
       const { data: followingData, error: followingError } = await supabase
-        .from("followers")
+        .from("follows")
         .select(
-          "following_id, following:following_id(id, full_name, profile_picture_url, username, bio)",
+          "following_id, users!following_id(id, full_name, profile_picture_url, username, bio, role)",
         )
         .eq("follower_id", userId);
 
@@ -69,13 +71,14 @@ export function useFollowers(userId?: string) {
         setFollowing([]);
       } else if (followingData) {
         const parsedFollowing = followingData
-          .filter((f: any) => f.following && f.following.id)
+          .filter((f: any) => f.users && f.users.id)
           .map((f: any) => ({
-            id: f.following.id,
-            full_name: f.following.full_name || "",
-            profile_picture_url: f.following.profile_picture_url,
-            username: f.following.username,
-            bio: f.following.bio,
+            id: f.users.id,
+            full_name: f.users.full_name || "",
+            profile_picture_url: f.users.profile_picture_url,
+            username: f.users.username,
+            bio: f.users.bio,
+            role: f.users.role,
           }));
         setFollowing(parsedFollowing);
       }
