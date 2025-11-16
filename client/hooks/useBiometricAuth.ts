@@ -222,6 +222,12 @@ export const useBiometricAuth = () => {
       setLoading(true);
       setError(null);
 
+      // Check if Device is available (mobile only)
+      if (!Device) {
+        setError("Biometric authentication not available on this platform");
+        return false;
+      }
+
       const info = await Device.getInfo();
       const platform = info.platform;
 
