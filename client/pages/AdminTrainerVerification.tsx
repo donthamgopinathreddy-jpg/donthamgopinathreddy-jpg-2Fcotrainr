@@ -243,8 +243,16 @@ const AdminTrainerVerification: React.FC = () => {
 
       if (updateError) throw updateError;
 
-      // Update the local userProfile state to reflect the new picture
-      // This will update the UI immediately
+      // Update local state to reflect the new picture immediately
+      if (userProfile) {
+        try {
+          await updateProfile({ profile_picture_url: profileUrl });
+        } catch (stateErr) {
+          console.error("Error updating local profile state:", stateErr);
+          // Still show success as the database was updated
+        }
+      }
+
       toast({
         title: "Success",
         description: "Profile picture saved successfully",
@@ -256,8 +264,10 @@ const AdminTrainerVerification: React.FC = () => {
       toast({
         title: "Error",
         description: errorMsg.includes("Bucket")
-          ? "Storage not configured. Please try again."
-          : "Failed to upload profile picture",
+          ? "Storage bucket not found. Please try again later."
+          : errorMsg.includes("body stream")
+            ? "Network error. Please try again."
+            : "Failed to upload profile picture",
         variant: "destructive",
       });
     } finally {
