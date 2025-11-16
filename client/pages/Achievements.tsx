@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import WeeklyQuests from "@/components/achievements/WeeklyQuests";
 import SocialCompetitions from "@/components/achievements/SocialCompetitions";
 
-export default function Achievements() {
+export default function Quests() {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { userProfile } = useAuth();
