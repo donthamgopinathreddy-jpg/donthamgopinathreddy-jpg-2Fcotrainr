@@ -151,10 +151,11 @@ export default function NotificationsPageEnhanced() {
         if (postNotifs.length > 0) {
           try {
             const postIds = postNotifs.map((n) => (n as any).post_id);
+            const uniquePostIds = Array.from(new Set(postIds));
             const { data: posts, error: postError } = await supabase
               .from("posts")
               .select("id, image_url")
-              .in("id", postIds);
+              .in("id", uniquePostIds);
 
             if (!postError && posts) {
               posts.forEach((post) => {
