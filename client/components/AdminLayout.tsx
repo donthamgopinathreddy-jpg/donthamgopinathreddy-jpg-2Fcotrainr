@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { useActivityLog } from "@/hooks/useActivityLog";
-import { useNotificationPreferences, type NotificationPreferences } from "@/hooks/useNotificationPreferences";
 import AdminSidebar from "./AdminSidebar";
 import { supabase } from "@/lib/supabase";
-import { X, LogOut, Bell, Clock, Eye, EyeOff } from "lucide-react";
+import { X, LogOut } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -18,18 +16,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
   const { toast } = useToast();
   const [showSettings, setShowSettings] = useState(false);
   const [uploadingPic, setUploadingPic] = useState(false);
-  const [showActivityLog, setShowActivityLog] = useState(false);
-  const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
   const [showPasswordChange, setShowPasswordChange] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
   const [showPasswordFields, setShowPasswordFields] = useState(false);
-
-  const { logs: activityLogs } = useActivityLog(userProfile?.id);
-  const { preferences: notifPrefs, updatePreferences: updateNotifPrefs } =
-    useNotificationPreferences(userProfile?.id);
 
   const handleLogout = async () => {
     try {
@@ -46,69 +37,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
         description: "Failed to log out",
         variant: "destructive",
       });
-    }
-  };
-
-  const handlePasswordChange = async () => {
-    if (!newPassword || !confirmPassword) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill in all password fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      toast({
-        title: "Validation Error",
-        description: "New passwords do not match",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (newPassword.length < 8) {
-      toast({
-        title: "Validation Error",
-        description: "Password must be at least 8 characters long",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setChangingPassword(true);
-    try {
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword,
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      toast({
-        title: "Success",
-        description: "Password changed successfully!",
-        variant: "default",
-      });
-
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-      setShowPasswordChange(false);
-      setShowPasswordFields(false);
-    } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : String(err);
-      console.error("Password change error:", errorMsg);
-
-      toast({
-        title: "Error",
-        description: errorMsg || "Failed to change password",
-        variant: "destructive",
-      });
-    } finally {
-      setChangingPassword(false);
     }
   };
 
@@ -191,14 +119,70 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
     }
   };
 
+  const handlePasswordChange = async () => {
+    if (!newPassword || !confirmPassword) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all password fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast({
+        title: "Validation Error",
+        description: "New passwords do not match",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      toast({
+        title: "Validation Error",
+        description: "Password must be at least 8 characters long",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setChangingPassword(true);
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      toast({
+        title: "Success",
+        description: "Password changed successfully!",
+        variant: "default",
+      });
+
+      setNewPassword("");
+      setConfirmPassword("");
+      setShowPasswordChange(false);
+      setShowPasswordFields(false);
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      console.error("Password change error:", errorMsg);
+
+      toast({
+        title: "Error",
+        description: errorMsg || "Failed to change password",
+        variant: "destructive",
+      });
+    } finally {
+      setChangingPassword(false);
+    }
+  };
+
   if (!userProfile) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600">Please log in to access this page</p>
-        </div>
-      </div>
-    );
+    return <div>Please log in</div>;
   }
 
   return (
@@ -210,18 +194,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
         onLogout={handleLogout}
         onProfilePictureUpload={handleProfilePictureUpload}
         uploadingPic={uploadingPic}
-        showActivityLog={showActivityLog}
-        onActivityLogChange={setShowActivityLog}
-        showNotificationPrefs={showNotificationPrefs}
-        onNotificationPrefsChange={setShowNotificationPrefs}
       />
 
       {/* Main Content */}
       <main className="md:ml-64 transition-all duration-300">
         {/* Top Header */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-20">
+        <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
           <div className="px-4 md:px-8 py-6">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl">
               <div className="flex items-start justify-between">
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
@@ -237,9 +217,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-200">
             <div className="px-4 md:px-8 py-6">
               <div className="max-w-7xl mx-auto">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Settings</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Profile Picture Section */}
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Admin Settings</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Profile Picture */}
                   <div className="bg-white rounded-lg border border-gray-200 p-6">
                     <h3 className="text-sm font-semibold text-gray-900 mb-4">Profile Picture</h3>
                     <div className="flex flex-col items-center gap-4">
@@ -255,7 +235,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                             {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
                           </div>
                         )}
-
                         <div className="absolute inset-0 rounded-lg bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center transition-all duration-200">
                           <div className="bg-pink-600 rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                             <svg
@@ -279,7 +258,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                             </svg>
                           </div>
                         </div>
-
                         <input
                           type="file"
                           accept="image/*"
@@ -288,57 +266,22 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                           onChange={handleProfilePictureUpload}
                         />
                       </label>
-                      <p className="text-xs text-gray-500 text-center">Click to change profile picture</p>
+                      <p className="text-xs text-gray-500 text-center">Click to change picture</p>
                     </div>
                   </div>
 
-                  {/* Admin Information */}
-                  <div className="bg-white rounded-lg border border-gray-200 p-4">
-                    <h3 className="text-sm font-semibold text-gray-900 mb-4">Admin Information</h3>
-                    <div className="space-y-3 text-sm">
+                  {/* Admin Info & Password */}
+                  <div className="bg-white rounded-lg border border-gray-200 p-6">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-4">Account</h3>
+                    <div className="space-y-4">
                       <div>
-                        <p className="text-gray-600 font-medium">Role</p>
-                        <p className="text-gray-900">System Administrator</p>
+                        <p className="text-gray-600 font-medium text-sm">Email</p>
+                        <p className="text-gray-900 text-sm mt-1">{userProfile?.email}</p>
                       </div>
-                      <div>
-                        <p className="text-gray-600 font-medium">Status</p>
-                        <p className="text-green-600 flex items-center gap-1">
-                          <span className="w-2 h-2 bg-green-600 rounded-full"></span>
-                          Active
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600 font-medium">Email</p>
-                        <p className="text-gray-900 break-all text-xs">{userProfile?.email}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* System Settings */}
-                  <div className="bg-white rounded-lg border border-gray-200 p-4">
-                    <h3 className="text-sm font-semibold text-gray-900 mb-4">System Settings</h3>
-                    <div className="space-y-2">
-                      <button
-                        onClick={() => setShowNotificationPrefs(true)}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded transition-colors flex items-center gap-2"
-                      >
-                        <Bell className="w-4 h-4" />
-                        Notification Preferences
-                      </button>
-                      <button
-                        onClick={() => setShowActivityLog(true)}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded transition-colors flex items-center gap-2"
-                      >
-                        <Clock className="w-4 h-4" />
-                        View Activity Log
-                      </button>
                       <button
                         onClick={() => setShowPasswordChange(true)}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded transition-colors flex items-center gap-2 mt-2"
+                        className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
                         Change Password
                       </button>
                     </div>
@@ -354,147 +297,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
           <div className="max-w-7xl mx-auto">{children}</div>
         </div>
       </main>
-
-      {/* Activity Log Modal */}
-      {showActivityLog && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-          onClick={() => setShowActivityLog(false)}
-        >
-          <div
-            className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-900">Activity Log</h2>
-              <button
-                onClick={() => setShowActivityLog(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="p-6">
-              {activityLogs.length === 0 ? (
-                <p className="text-center text-gray-500">No activity recorded yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {activityLogs.map((log) => (
-                    <div
-                      key={log.id}
-                      className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50"
-                    >
-                      <div className="flex items-start justify-between mb-1">
-                        <h3 className="font-semibold text-gray-900 text-sm">{log.action}</h3>
-                        <span className="text-xs text-gray-500">
-                          {new Date(log.created_at).toLocaleString()}
-                        </span>
-                      </div>
-                      {log.description && (
-                        <p className="text-sm text-gray-600 mb-1">{log.description}</p>
-                      )}
-                      {log.resource_type && (
-                        <p className="text-xs text-gray-500">Resource: {log.resource_type}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Notification Preferences Modal */}
-      {showNotificationPrefs && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-          onClick={() => setShowNotificationPrefs(false)}
-        >
-          <div
-            className="bg-white rounded-lg max-w-md w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-900">Notification Preferences</h2>
-              <button
-                onClick={() => setShowNotificationPrefs(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="p-6">
-              {notifPrefs ? (
-                <div className="space-y-4">
-                  {[
-                    {
-                      key: "email_notifications",
-                      label: "Email Notifications",
-                      desc: "Receive notifications via email",
-                    },
-                    {
-                      key: "in_app_notifications",
-                      label: "In-App Notifications",
-                      desc: "See notifications in the app",
-                    },
-                    {
-                      key: "trainer_verifications",
-                      label: "Trainer Verifications",
-                      desc: "Alerts for trainer verification updates",
-                    },
-                    {
-                      key: "user_activity",
-                      label: "User Activity",
-                      desc: "Notifications about user activity",
-                    },
-                    {
-                      key: "system_alerts",
-                      label: "System Alerts",
-                      desc: "Critical system notifications",
-                    },
-                  ].map((pref) => (
-                    <label
-                      key={pref.key}
-                      className="flex items-start gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={
-                          notifPrefs[pref.key as keyof NotificationPreferences] as unknown as boolean
-                        }
-                        onChange={(e) => {
-                          updateNotifPrefs({
-                            [pref.key]: e.target.checked,
-                          });
-                        }}
-                        className="w-4 h-4 text-blue-600 rounded border-gray-300 mt-0.5"
-                      />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{pref.label}</p>
-                        <p className="text-xs text-gray-500">{pref.desc}</p>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center text-gray-500">Loading preferences...</p>
-              )}
-            </div>
-
-            <div className="bg-gray-50 border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
-              <button
-                onClick={() => setShowNotificationPrefs(false)}
-                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Password Change Modal */}
       {showPasswordChange && (
@@ -512,7 +314,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                 onClick={() => {
                   setShowPasswordChange(false);
                   setShowPasswordFields(false);
-                  setCurrentPassword("");
                   setNewPassword("");
                   setConfirmPassword("");
                 }}
@@ -541,16 +342,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       New Password
                     </label>
-                    <div className="relative">
-                      <input
-                        type={showPasswordFields ? "text" : "password"}
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        placeholder="Enter new password"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                        disabled={changingPassword}
-                      />
-                    </div>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Enter new password"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                      disabled={changingPassword}
+                    />
                     <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
                   </div>
 
@@ -559,7 +358,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                       Confirm Password
                     </label>
                     <input
-                      type={showPasswordFields ? "text" : "password"}
+                      type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Confirm new password"
@@ -576,7 +375,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                 onClick={() => {
                   setShowPasswordChange(false);
                   setShowPasswordFields(false);
-                  setCurrentPassword("");
                   setNewPassword("");
                   setConfirmPassword("");
                 }}
@@ -588,10 +386,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
               {showPasswordFields && (
                 <button
                   onClick={handlePasswordChange}
-                  disabled={
-                    !newPassword || !confirmPassword || changingPassword
-                  }
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
+                  disabled={!newPassword || !confirmPassword || changingPassword}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {changingPassword ? "Changing..." : "Change Password"}
                 </button>
