@@ -15,7 +15,7 @@ const Navigation = () => {
   const isTrainer = userProfile?.role === "trainer";
   const isAdmin = isUserAdmin(userProfile);
 
-  const navItems = isTrainer
+  let navItems = isTrainer
     ? [
         {
           path: "/",
@@ -74,6 +74,19 @@ const Navigation = () => {
           color: "from-orange-500 to-red-500",
         },
       ];
+
+  // Add admin link only for admin users
+  if (isAdmin) {
+    navItems = [
+      ...navItems,
+      {
+        path: "/admin",
+        label: "Admin",
+        icon: Settings,
+        color: "from-red-500 to-orange-500",
+      },
+    ];
+  }
 
   const handleNavClick = () => {
     if (navigator.vibrate) {
