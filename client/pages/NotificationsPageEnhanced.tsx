@@ -668,7 +668,7 @@ export default function NotificationsPageEnhanced() {
               ) : (
                 <button
                   onClick={() => markAllAsRead()}
-                  className="text-xs font-semibold text-blue-500 hover:text-blue-600 flex items-center gap-1"
+                  className="text-xs font-semibold text-orange-600 hover:text-orange-700 flex items-center gap-1"
                 >
                   <CheckCircle className="w-4 h-4" />
                   Mark all as read
