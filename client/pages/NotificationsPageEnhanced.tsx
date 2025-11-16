@@ -370,9 +370,11 @@ export default function NotificationsPageEnhanced() {
                       </div>
                     </div>
 
-                    {/* Follow notification with user card */}
-                    {notification.type === "follow" &&
-                      notification.actor && (
+                    {/* User card for follow, like, and comment notifications */}
+                    {notification.actor &&
+                      (notification.type === "follow" ||
+                        notification.type === "like" ||
+                        notification.type === "comment") && (
                         <div
                           className={`mt-4 p-3 rounded-xl border ${
                             theme === "dark"
@@ -439,30 +441,32 @@ export default function NotificationsPageEnhanced() {
                             </div>
 
                             {/* Follow Button */}
-                            <button
-                              onClick={() =>
-                                handleToggleFollow(notification.actor!.id)
-                              }
-                              disabled={
-                                isTogglingFollow.get(notification.actor!.id) ||
-                                false
-                              }
-                              className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm transition-all disabled:opacity-50 ${
-                                isFollowing(notification.actor!.id)
-                                  ? theme === "dark"
-                                    ? "bg-gray-700 text-white hover:bg-gray-600"
-                                    : "bg-gray-200 text-gray-900 hover:bg-gray-300"
-                                  : "bg-orange-500 text-white hover:bg-orange-600"
-                              }`}
-                            >
-                              {isTogglingFollow.get(notification.actor!.id) ? (
-                                <Loader className="w-4 h-4 animate-spin" />
-                              ) : isFollowing(notification.actor!.id) ? (
-                                "Following"
-                              ) : (
-                                "Follow"
-                              )}
-                            </button>
+                            {notification.type === "follow" && (
+                              <button
+                                onClick={() =>
+                                  handleToggleFollow(notification.actor!.id)
+                                }
+                                disabled={
+                                  isTogglingFollow.get(notification.actor!.id) ||
+                                  false
+                                }
+                                className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm transition-all disabled:opacity-50 ${
+                                  isFollowing(notification.actor!.id)
+                                    ? theme === "dark"
+                                      ? "bg-gray-700 text-white hover:bg-gray-600"
+                                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                                    : "bg-orange-500 text-white hover:bg-orange-600"
+                                }`}
+                              >
+                                {isTogglingFollow.get(notification.actor!.id) ? (
+                                  <Loader className="w-4 h-4 animate-spin" />
+                                ) : isFollowing(notification.actor!.id) ? (
+                                  "Following"
+                                ) : (
+                                  "Follow"
+                                )}
+                              </button>
+                            )}
                           </div>
                         </div>
                       )}
