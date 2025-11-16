@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
-import { Lock, Zap, TrendingUp, AlertCircle, X, Sparkles } from "lucide-react";
+import {
+  Lock,
+  Zap,
+  TrendingUp,
+  AlertCircle,
+  X,
+  Sparkles,
+  Plus,
+  ChevronRight,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWorkouts } from "@/hooks/useWorkouts";
 import { useDietPreferences } from "@/hooks/useDietPreferences";
@@ -7,7 +16,8 @@ import { useDietReviewRequests } from "@/hooks/useDietReviewRequests";
 import { toast } from "sonner";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
 import WorkoutCard from "@/components/WorkoutCard";
-import DietPlannerForm from "@/components/DietPlannerForm";
+import WeeklyWorkoutPlanner from "@/components/WeeklyWorkoutPlanner";
+import ExpandedDietPlanner from "@/components/ExpandedDietPlanner";
 import AskTrainerModal from "@/components/AskTrainerModal";
 import TrendGraphsSection from "@/components/TrendGraphsSection";
 
@@ -20,6 +30,8 @@ type WorkoutCategory =
   | "warmups";
 type WorkoutLevel = "basic" | "intermediate" | "advanced";
 
+const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 const TREND_METRICS = [
   { name: "Steps", icon: "👣", color: "from-blue-400 to-blue-600" },
   { name: "Calories", icon: "🔥", color: "from-red-400 to-red-600" },
@@ -30,11 +42,8 @@ const TREND_METRICS = [
 export default function TrainingHub() {
   const { userProfile } = useAuth();
   const { workouts, loading: workoutsLoading } = useWorkouts();
-  const {
-    preferences,
-    updatePreferences,
-    loading: prefsLoading,
-  } = useDietPreferences();
+  const { preferences, updatePreferences, loading: prefsLoading } =
+    useDietPreferences();
   const { createReviewRequest, loading: reviewLoading } =
     useDietReviewRequests();
 
@@ -43,26 +52,45 @@ export default function TrainingHub() {
     | "basic"
     | "premium";
 
-  // State management
+  // Workout state
   const [selectedCategory, setSelectedCategory] =
     useState<WorkoutCategory>("gym");
   const [selectedLevel, setSelectedLevel] = useState<WorkoutLevel>("basic");
-  const [showDietModal, setShowDietModal] = useState(false);
+  const [weeklyPlan, setWeeklyPlan] = useState<Record<string, string>>({});
+  const [showWorkoutModal, setShowWorkoutModal] = useState(false);
+  const [selectedDayForWorkout, setSelectedDayForWorkout] = useState<string>("");
   const [showTrainerModal, setShowTrainerModal] = useState(false);
+
+  // Diet state
   const [dietGoal, setDietGoal] = useState(preferences?.goal || "");
   const [dietType, setDietType] = useState(preferences?.diet_type || "");
+  const [likes, setLikes] = useState((preferences?.likes || []).join(", "));
+  const [dislikes, setDislikes] = useState(
+    (preferences?.dislikes || []).join(", "),
+  );
+  const [mustInclude, setMustInclude] = useState("");
   const [allergens, setAllergens] = useState<string[]>(
     preferences?.allergies || [],
   );
+  const [proteinTarget, setProteinTarget] = useState(150);
+  const [carbsTarget, setCarbsTarget] = useState(250);
+  const [fatsTarget, setFatsTarget] = useState(70);
+  const [budgetFilter, setBudgetFilter] = useState("medium");
   const [savingDiet, setSavingDiet] = useState(false);
+  const [weeklyMealPlan, setWeeklyMealPlan] = useState<any>(null);
+  const [showGeneratedMealPlan, setShowGeneratedMealPlan] = useState(false);
 
-  // Determine what's locked
-  const isBasicWorkoutsLocked = plan === "free";
-  const isDietPlannerLocked = plan === "free";
+  // Subscription gating
+  const isWorkoutLocked = plan === "free";
+  const isDietLocked = plan === "free";
+  const isAllergenLocked = plan !== "premium";
+  const isMacroLocked = plan !== "premium";
+  const isBudgetLocked = plan !== "premium";
+  const isWeeklyMealPlanLocked = plan !== "premium";
   const isAIInsightsLocked = plan !== "premium";
   const isTrendGraphsLocked = plan === "free";
 
-  // Categories and levels
+  // Workout categories
   const categories: WorkoutCategory[] = [
     "gym",
     "yoga",
@@ -75,31 +103,50 @@ export default function TrainingHub() {
 
   // Filter workouts based on plan and selections
   const filteredWorkouts = workouts.filter((w) => {
-    // Category filter
     if (w.category !== selectedCategory) return false;
-
-    // Level filter - free users only see basic
     if (plan === "free" && w.level !== "basic") return false;
-
-    // Level selection filter - basic/premium users can filter
     if (plan !== "free" && w.level !== selectedLevel) return false;
-
     return true;
   });
 
-  // Handle diet preferences save
+  // Handle workout day assignment
+  const handleAssignWorkout = (dayIndex: string, workoutId: string) => {
+    setWeeklyPlan({ ...weeklyPlan, [dayIndex]: workoutId });
+    setShowWorkoutModal(false);
+    toast.success("Workout assigned!");
+  };
+
+  // Get workout details
+  const getWorkoutById = (id: string) => {
+    return workouts.find((w) => w.id === id);
+  };
+
+  // Calculate weekly stats
+  const weeklyStats = Object.values(weeklyPlan)
+    .map((id) => getWorkoutById(id as string))
+    .filter(Boolean)
+    .reduce(
+      (acc, w) => ({
+        count: acc.count + 1,
+        minutes: acc.minutes + (w?.duration_minutes || 0),
+      }),
+      { count: 0, minutes: 0 },
+    );
+
+  // Handle save diet preferences
   const handleSaveDietPreferences = async () => {
     try {
       setSavingDiet(true);
       const success = await updatePreferences({
         goal: dietGoal as "lose_fat" | "build_muscle" | "maintain" | null,
         diet_type: dietType as "veg" | "non_veg" | "vegan" | null,
+        likes: likes.split(",").map((l) => l.trim()),
+        dislikes: dislikes.split(",").map((d) => d.trim()),
         allergies: allergens,
       });
 
       if (success) {
         toast.success("Diet preferences saved successfully!");
-        setShowDietModal(false);
       } else {
         toast.error("Failed to save diet preferences");
       }
@@ -110,10 +157,25 @@ export default function TrainingHub() {
     }
   };
 
+  // Generate weekly meal plan (mock)
+  const handleGenerateWeeklyMealPlan = () => {
+    const mealPlan = DAYS_OF_WEEK.map((day) => ({
+      day,
+      meals: {
+        breakfast: "Oats with berries",
+        lunch: "Grilled chicken with rice",
+        snack: "Greek yogurt",
+        dinner: "Salmon with vegetables",
+      },
+    }));
+    setWeeklyMealPlan(mealPlan);
+    setShowGeneratedMealPlan(true);
+    toast.success("Weekly meal plan generated!");
+  };
+
   // Handle ask trainer review
   const handleAskTrainerReview = async (trainerId: string | null) => {
     try {
-      // Create a temporary diet plan ID (in real app, would be from actual plan)
       const result = await createReviewRequest(
         "diet-plan-" + Date.now(),
         trainerId || undefined,
@@ -138,30 +200,28 @@ export default function TrainingHub() {
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-200 dark:bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-2000"></div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 relative z-10 space-y-8">
-        {/* Header */}
-        <div className="text-center mb-12">
+      <div className="max-w-7xl mx-auto px-4 relative z-10 space-y-12">
+        {/* 1. HEADER */}
+        <div className="text-center mb-8">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
             Training & Nutrition Hub
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Your personalized fitness and wellness command center
+            Complete fitness and wellness command center
           </p>
         </div>
 
-        {/* Subscription Banner */}
+        {/* 2. SUBSCRIPTION BANNER */}
         <SubscriptionBanner plan={plan} />
 
-        {/* WORKOUT SECTION */}
+        {/* 3. WORKOUT CATEGORIES */}
         <section className="space-y-6">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               🏋️ Workouts
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              {plan === "free"
-                ? "Basic workouts available. Upgrade for intermediate and advanced routines."
-                : "Explore all workout levels and categories tailored to your fitness goals."}
+              Choose your preferred workout category and difficulty level
             </p>
           </div>
 
@@ -182,26 +242,41 @@ export default function TrainingHub() {
             ))}
           </div>
 
-          {/* Level Filters */}
-          {plan !== "free" && (
+          {/* 4. WORKOUT LEVELS */}
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Difficulty Level
+            </p>
             <div className="flex flex-wrap gap-2">
-              {levels.map((level) => (
-                <button
-                  key={level}
-                  onClick={() => setSelectedLevel(level)}
-                  className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
-                    selectedLevel === level
-                      ? "bg-gradient-to-r from-orange-500 to-red-500 text-white"
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
-                  }`}
-                >
-                  {level.charAt(0).toUpperCase() + level.slice(1)}
-                </button>
-              ))}
+              {levels.map((level) => {
+                const isLocked = plan === "free" && level !== "basic";
+                return (
+                  <button
+                    key={level}
+                    onClick={() => !isLocked && setSelectedLevel(level)}
+                    disabled={isLocked}
+                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                      selectedLevel === level
+                        ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
+                        : isLocked
+                          ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed opacity-50"
+                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
+                    }`}
+                  >
+                    {level.charAt(0).toUpperCase() + level.slice(1)}
+                    {isLocked && <Lock className="w-3 h-3 inline ml-1" />}
+                  </button>
+                );
+              })}
             </div>
-          )}
+            {plan === "free" && (
+              <p className="text-xs text-orange-600 dark:text-orange-400">
+                💡 Upgrade to unlock Intermediate and Advanced workouts
+              </p>
+            )}
+          </div>
 
-          {/* Workout Cards Grid */}
+          {/* 5. WORKOUT CARDS GRID */}
           {workoutsLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
               {[...Array(6)].map((_, i) => (
@@ -215,13 +290,37 @@ export default function TrainingHub() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredWorkouts.length > 0 ? (
                 filteredWorkouts.map((workout) => (
-                  <WorkoutCard key={workout.id} workout={workout} />
+                  <div
+                    key={workout.id}
+                    className="relative group"
+                    onClick={() => {
+                      if (
+                        plan !== "free" ||
+                        workout.level === "basic"
+                      ) {
+                        setSelectedDayForWorkout(workout.id);
+                        setShowWorkoutModal(true);
+                      }
+                    }}
+                  >
+                    <WorkoutCard workout={workout} />
+                    {plan === "free" &&
+                      workout.level !== "basic" && (
+                        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:flex opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="text-center text-white">
+                            <Lock className="w-8 h-8 mx-auto mb-2" />
+                            <p className="text-sm font-semibold">
+                              Upgrade to unlock
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                  </div>
                 ))
               ) : (
                 <div className="col-span-full text-center py-12">
                   <p className="text-gray-500 dark:text-gray-400 text-lg">
-                    No workouts found for this category{" "}
-                    {plan !== "free" && "and level"}.
+                    No workouts found
                   </p>
                 </div>
               )}
@@ -229,59 +328,139 @@ export default function TrainingHub() {
           )}
         </section>
 
-        {/* DIET PLANNER SECTION */}
+        {/* 6. WEEKLY WORKOUT PLANNER */}
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+              📅 Weekly Workout Planner
+              {isWorkoutLocked && (
+                <Lock className="w-6 h-6 text-orange-500" />
+              )}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              Plan your workouts for the week ahead
+            </p>
+          </div>
+
+          {isWorkoutLocked ? (
+            <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-white/20 p-12 text-center">
+              <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                Workout Planner Locked
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Upgrade to unlock the weekly workout planner
+              </p>
+              <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
+                Upgrade Now
+              </button>
+            </div>
+          ) : (
+            <WeeklyWorkoutPlanner
+              weeklyPlan={weeklyPlan}
+              workouts={workouts}
+              onSelectDay={(day) => {
+                setSelectedDayForWorkout(day);
+                setShowWorkoutModal(true);
+              }}
+              onRemoveWorkout={(day) => {
+                const newPlan = { ...weeklyPlan };
+                delete newPlan[day];
+                setWeeklyPlan(newPlan);
+              }}
+            />
+          )}
+
+          {/* Weekly Summary */}
+          {!isWorkoutLocked && (
+            <div className="bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-2xl p-6 border border-orange-200 dark:border-orange-800/50">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-orange-600 dark:text-orange-400 font-semibold">
+                    📊 This Week's Summary
+                  </p>
+                  <p className="text-lg text-gray-900 dark:text-white font-bold mt-2">
+                    {weeklyStats.count} Workouts • {weeklyStats.minutes} Minutes
+                  </p>
+                </div>
+                <div className="text-4xl">💪</div>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* 7. DIET PLANNER (FULL SECTION) */}
         <section className="space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                🍽️ Diet Planner
-                {isDietPlannerLocked && (
+                🍎 Diet Planner
+                {isDietLocked && (
                   <Lock className="w-6 h-6 text-orange-500" />
                 )}
               </h2>
               <p className="text-gray-600 dark:text-gray-400">
                 {plan === "free"
-                  ? "Upgrade to unlock personalized diet planning."
+                  ? "Customize your nutrition with basic preferences."
                   : plan === "basic"
-                    ? "Set your nutrition goals and preferences (limited features)."
-                    : "Complete control over your nutrition plan with AI assistance."}
+                    ? "Set up your personalized diet plan (limited features)."
+                    : "Full control over your nutrition with AI assistance."}
               </p>
             </div>
           </div>
 
-          {isDietPlannerLocked ? (
-            // Locked state with blur effect
+          {isDietLocked ? (
             <div className="relative">
               <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-xl rounded-3xl border border-white/20 p-12 text-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent dark:from-gray-800/50 rounded-3xl blur-2xl opacity-50"></div>
-                <div className="relative z-10 space-y-4">
-                  <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    Diet Planner Locked
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto">
-                    Upgrade to Basic or Premium to unlock personalized meal
-                    planning features.
-                  </p>
-                  <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
-                    Upgrade Now
-                  </button>
-                </div>
+                <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Diet Planner Locked
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto mb-6">
+                  Upgrade to Basic or Premium to unlock personalized diet
+                  planning.
+                </p>
+                <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
+                  Upgrade Now
+                </button>
               </div>
             </div>
           ) : (
-            <DietPlannerForm
+            <ExpandedDietPlanner
               plan={plan}
               preferences={preferences}
-              onOpenTrainerModal={() => setShowTrainerModal(true)}
+              dietGoal={dietGoal}
+              setDietGoal={setDietGoal}
+              dietType={dietType}
+              setDietType={setDietType}
+              likes={likes}
+              setLikes={setLikes}
+              dislikes={dislikes}
+              setDislikes={setDislikes}
+              mustInclude={mustInclude}
+              setMustInclude={setMustInclude}
+              allergens={allergens}
+              setAllergens={setAllergens}
+              proteinTarget={proteinTarget}
+              setProteinTarget={setProteinTarget}
+              carbsTarget={carbsTarget}
+              setCarbsTarget={setCarbsTarget}
+              fatsTarget={fatsTarget}
+              setFatsTarget={setFatsTarget}
+              budgetFilter={budgetFilter}
+              setBudgetFilter={setBudgetFilter}
+              onGenerateMealPlan={handleGenerateWeeklyMealPlan}
+              onAskTrainer={() => setShowTrainerModal(true)}
               onSave={handleSaveDietPreferences}
               isSaving={savingDiet}
+              showGeneratedMealPlan={showGeneratedMealPlan}
+              weeklyMealPlan={weeklyMealPlan}
             />
           )}
         </section>
 
-        {/* AI INSIGHTS SECTION - Premium Only */}
-        {plan === "premium" && (
+        {/* 8. AI WEEKLY INSIGHTS - Premium Only */}
+        {!isAIInsightsLocked && (
           <section className="space-y-6">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
               <Sparkles className="w-8 h-8 text-orange-500" />
@@ -289,13 +468,11 @@ export default function TrainingHub() {
             </h2>
 
             <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-3xl p-8 text-white backdrop-blur-lg border border-white/20 shadow-2xl overflow-hidden relative">
-              {/* Animated glow background */}
               <div className="absolute inset-0 opacity-30">
                 <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
               </div>
 
               <div className="relative z-10 space-y-6">
-                {/* Key Metrics */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
                     <p className="text-sm opacity-90">Steps Change</p>
@@ -314,46 +491,48 @@ export default function TrainingHub() {
                   </div>
                 </div>
 
-                {/* Pro Tip */}
                 <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
                   <p className="text-lg font-semibold mb-2 flex items-center gap-2">
                     <span>💡</span> Pro Tip
                   </p>
-                  <p className="text-base opacity-95 leading-relaxed">
+                  <p className="text-base opacity-95">
                     Try adding a 10-minute walk after meals to improve digestion
-                    and boost your daily activity levels. This simple habit can
-                    increase your weekly steps by 15-20%.
+                    and boost your daily activity levels.
                   </p>
-                </div>
-
-                {/* Additional Insights */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                    <p className="font-semibold">🎯 Goal Progress</p>
-                    <p className="text-sm opacity-90 mt-2">
-                      You're 68% towards your weekly goal
-                    </p>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                    <p className="font-semibold">📈 Best Day</p>
-                    <p className="text-sm opacity-90 mt-2">
-                      Wednesday - 12,500 steps
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
           </section>
         )}
 
-        {/* TREND GRAPHS SECTION */}
-        <TrendGraphsSection
-          isLocked={isTrendGraphsLocked}
-          metrics={TREND_METRICS}
-        />
+        {isAIInsightsLocked && (
+          <section className="space-y-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+              <Sparkles className="w-8 h-8 text-gray-400" />
+              AI Weekly Insights
+            </h2>
 
-        {/* Upgrade CTA for locked features */}
-        {(isDietPlannerLocked || isTrendGraphsLocked || isAIInsightsLocked) && (
+            <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-white/20 p-12 text-center">
+              <Sparkles className="w-20 h-20 text-orange-500 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                Premium Feature Locked
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto mb-6">
+                Upgrade to Premium to unlock AI-powered weekly insights and
+                coaching tips.
+              </p>
+              <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
+                Upgrade to Premium
+              </button>
+            </div>
+          </section>
+        )}
+
+        {/* 9. TREND GRAPHS */}
+        <TrendGraphsSection isLocked={isTrendGraphsLocked} metrics={TREND_METRICS} />
+
+        {/* 10. UPGRADE CTA */}
+        {(isDietLocked || isTrendGraphsLocked || isAIInsightsLocked) && (
           <section className="bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-12 text-center text-white shadow-2xl border border-white/20 overflow-hidden relative">
             <div className="absolute inset-0 opacity-20">
               <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl"></div>
@@ -365,7 +544,7 @@ export default function TrainingHub() {
               </h2>
               <p className="text-lg opacity-90 mb-6 max-w-2xl mx-auto">
                 Upgrade to {plan === "free" ? "Basic or Premium" : "Premium"} to
-                access all premium features and accelerate your fitness journey.
+                access all features and accelerate your fitness journey.
               </p>
               <button className="px-8 py-4 bg-white text-orange-600 font-bold rounded-xl hover:shadow-lg transition-all hover:scale-105">
                 View Pricing Plans
@@ -375,13 +554,57 @@ export default function TrainingHub() {
         )}
       </div>
 
-      {/* Ask Trainer Modal */}
+      {/* Modals */}
       <AskTrainerModal
         isOpen={showTrainerModal}
         onClose={() => setShowTrainerModal(false)}
         onSubmit={handleAskTrainerReview}
         isLoading={reviewLoading}
       />
+
+      {/* Workout Selection Modal */}
+      {showWorkoutModal && plan !== "free" && (
+        <div className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl max-w-2xl w-full max-h-96 overflow-y-auto">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Select Workout
+              </h3>
+              <button
+                onClick={() => setShowWorkoutModal(false)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-3">
+              {filteredWorkouts.map((workout) => (
+                <button
+                  key={workout.id}
+                  onClick={() =>
+                    handleAssignWorkout(selectedDayForWorkout, workout.id)
+                  }
+                  className="w-full p-4 text-left bg-gray-50 dark:bg-gray-800 hover:bg-orange-50 dark:hover:bg-gray-700 rounded-xl transition-all border border-gray-200 dark:border-gray-700"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">
+                        {workout.title}
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {workout.duration_minutes} min • {workout.calories_burned}{" "}
+                        cal
+                      </p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-gray-400" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
