@@ -101,13 +101,6 @@ export const useWeeklyHealthData = () => {
       }
 
       // Fetch previous week's health data for comparison
-      const prevWeekStart = new Date(weekStartDate);
-      prevWeekStart.setDate(prevWeekStart.getDate() - 7);
-      const prevWeekEnd = new Date(weekStartDate);
-      prevWeekEnd.setDate(prevWeekEnd.getDate() - 1);
-      const prevWeekStartStr = prevWeekStart.toISOString().split("T")[0];
-      const prevWeekEndStr = prevWeekEnd.toISOString().split("T")[0];
-
       const { data: prevHealthData, error: prevHealthError } = await supabase
         .from("health_sync_data")
         .select("steps")
