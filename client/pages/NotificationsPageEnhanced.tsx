@@ -680,10 +680,10 @@ export default function NotificationsPageEnhanced() {
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="max-w-4xl mx-auto">
         {loading ? (
           <div className="flex justify-center py-12">
-            <Loader className="w-8 h-8 animate-spin text-pink-500" />
+            <Loader className="w-8 h-8 animate-spin text-orange-500" />
           </div>
         ) : notificationsWithUsers.length === 0 ? (
           <div
@@ -691,12 +691,16 @@ export default function NotificationsPageEnhanced() {
               theme === "dark" ? "text-gray-400" : "text-gray-600"
             }`}
           >
-            <Bell className="w-12 h-12 mx-auto mb-4 opacity-50" />
+            <Bell className="w-12 h-12 mx-auto mb-4 opacity-30 text-orange-500" />
             <p className="text-lg font-semibold mb-2">All caught up!</p>
             <p className="text-sm">No new notifications</p>
           </div>
         ) : (
-          <div>
+          <div
+            className={`${
+              theme === "dark" ? "bg-gray-900/50" : "bg-white/40 backdrop-blur-sm"
+            } rounded-xl overflow-hidden shadow-md`}
+          >
             {groupedNotifications.today.length > 0 && (
               <NotificationSection
                 title="Today"
