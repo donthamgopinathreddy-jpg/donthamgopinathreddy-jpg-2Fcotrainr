@@ -181,22 +181,17 @@ const AdminTrainerVerification: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowSettings(!showSettings)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Settings"
-              >
-                <Settings className="w-5 h-5 text-gray-600" />
-              </button>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-                Logout
-              </button>
-            </div>
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className={`p-2 rounded-lg transition-colors ${
+                showSettings
+                  ? "bg-blue-100 text-blue-600"
+                  : "hover:bg-gray-100 text-gray-600"
+              }`}
+              title="Settings"
+            >
+              <Settings className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
