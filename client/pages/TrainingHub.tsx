@@ -226,6 +226,14 @@ export default function TrainingHub() {
                 boost your daily activity levels.
               </p>
             </div>
+
+            <button
+              onClick={() => navigate("/ai-weekly-insights")}
+              className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-2xl p-4 border border-white/20 flex items-center justify-between font-semibold transition-all"
+            >
+              <span>View Full Weekly Insights</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       )}
