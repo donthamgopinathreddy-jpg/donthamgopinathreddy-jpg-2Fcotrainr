@@ -233,9 +233,9 @@ export default function NotificationsDropdown() {
                         </div>
 
                         {/* Actions */}
-                        <div className="flex gap-1 flex-shrink-0">
+                        <div className="flex gap-1 flex-shrink-0 items-center">
                           {!notification.is_read && (
-                            <div className="w-2 h-2 rounded-full bg-pink-500 mt-2" />
+                            <div className="w-2 h-2 rounded-full bg-pink-500 flex-shrink-0" />
                           )}
                           <button
                             onClick={(e) => {
