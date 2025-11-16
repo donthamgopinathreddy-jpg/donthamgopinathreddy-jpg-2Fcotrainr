@@ -508,15 +508,40 @@ export default function TrainingHub() {
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-purple-200 dark:bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-2000"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10 space-y-12">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
-            Training & Nutrition Hub
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Complete fitness and wellness command center
-          </p>
+      <div className="max-w-7xl mx-auto px-4 relative z-10 space-y-8">
+        {/* Header with Tabs */}
+        <div className="space-y-6">
+          <div className="text-center mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-2">
+              Training & Nutrition Hub
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
+              Complete fitness and wellness command center
+            </p>
+          </div>
+
+          {/* Feature Tabs - Like Followers/Following */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md border border-gray-200 dark:border-gray-700">
+            <div className="grid grid-cols-5 gap-2">
+              {carouselSections.map((section, index) => (
+                <button
+                  key={section.id}
+                  onClick={() => {
+                    // This button only shows the feature info
+                    // The carousel will handle the actual navigation
+                  }}
+                  className={`py-3 px-2 rounded-lg transition-all text-center text-xs sm:text-sm font-semibold flex flex-col items-center gap-1 ${
+                    index === 0
+                      ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md scale-105"
+                      : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                  }`}
+                >
+                  <span className="text-lg">{section.icon}</span>
+                  <span className="line-clamp-1">{section.title.split(" ")[0]}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Subscription Banner */}
