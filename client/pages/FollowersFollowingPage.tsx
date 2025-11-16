@@ -15,9 +15,9 @@ export default function FollowersFollowingPage() {
   const [activeTab, setActiveTab] = useState<"followers" | "following">(
     "followers",
   );
-  const [followingStates, setFollowingStates] = useState<
-    Map<string, boolean>
-  >(new Map());
+  const [followingStates, setFollowingStates] = useState<Map<string, boolean>>(
+    new Map(),
+  );
   const [isTogglingFollow, setIsTogglingFollow] = useState<
     Map<string, boolean>
   >(new Map());
@@ -220,9 +220,7 @@ export default function FollowersFollowingPage() {
                     {user.username && (
                       <p
                         className={`text-xs ${
-                          theme === "dark"
-                            ? "text-gray-400"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
                         @{user.username}
@@ -231,9 +229,7 @@ export default function FollowersFollowingPage() {
                     {user.bio && (
                       <p
                         className={`text-xs line-clamp-1 mt-1 ${
-                          theme === "dark"
-                            ? "text-gray-400"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
                         {user.bio}
