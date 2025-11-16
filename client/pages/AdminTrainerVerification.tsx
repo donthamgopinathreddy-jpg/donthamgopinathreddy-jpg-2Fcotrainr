@@ -161,10 +161,6 @@ const AdminTrainerVerification: React.FC = () => {
   const approvedCount = trainers.filter((t) => t.verification_status === "approved").length;
   const rejectedCount = trainers.filter((t) => t.verification_status === "rejected").length;
 
-  const pendingCount = trainers.filter((t) => t.verification_status === "pending").length;
-  const approvedCount = trainers.filter((t) => t.verification_status === "approved").length;
-  const rejectedCount = trainers.filter((t) => t.verification_status === "rejected").length;
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Admin Header */}
