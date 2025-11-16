@@ -114,7 +114,7 @@ const Navigation = () => {
 
                   {/* Label */}
                   <span
-                    className={`text-xs font-bold transition-all duration-300 ${
+                    className={`text-[10px] sm:text-xs font-bold transition-all duration-300 ${
                       active
                         ? "text-white"
                         : theme === "dark"
