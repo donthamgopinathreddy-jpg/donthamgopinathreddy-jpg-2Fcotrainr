@@ -34,10 +34,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onLogout,
   onProfilePictureUpload,
   uploadingPic = false,
-  showActivityLog = false,
-  onActivityLogChange,
-  showNotificationPrefs = false,
-  onNotificationPrefsChange,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
