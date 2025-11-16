@@ -16,6 +16,7 @@ import {
   Clock,
   Settings,
   Upload,
+  Camera,
 } from "lucide-react";
 
 const AdminTrainerVerification: React.FC = () => {
