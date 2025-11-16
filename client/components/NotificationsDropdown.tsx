@@ -92,7 +92,7 @@ export default function NotificationsDropdown() {
     <div className="relative">
       {/* Bell Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => navigate("/notifications")}
         className={`relative p-3 rounded-full transition-all hover:scale-110 ${
           theme === "dark"
             ? "bg-gray-800 hover:bg-gray-700 text-gray-200"
