@@ -144,7 +144,7 @@ export const useStreaks = () => {
 
       // Update in database
       const { error: updateError } = await supabase
-        .from("streaks")
+        .from("user_streaks")
         .update({
           current_streak: newCurrentStreak,
           longest_streak: newLongestStreak,
