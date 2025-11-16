@@ -521,7 +521,7 @@ const AdminTrainerVerification: React.FC = () => {
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-3 px-2">Trainer Verification Status</h3>
               <div className="grid grid-cols-3 gap-3">
-                <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-amber-400/50 transition-all duration-200">
+                <div className="bg-gradient-to-br from-amber-100 to-amber-200 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-amber-400/50 transition-all duration-200">
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <p className="text-[10px] text-amber-700 font-semibold uppercase">Pending</p>
@@ -531,7 +531,7 @@ const AdminTrainerVerification: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-green-400/50 transition-all duration-200">
+                <div className="bg-gradient-to-br from-green-100 to-green-200 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-green-400/50 transition-all duration-200">
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <p className="text-[10px] text-green-700 font-semibold uppercase">Approved</p>
@@ -541,7 +541,7 @@ const AdminTrainerVerification: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-red-400/50 transition-all duration-200">
+                <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-red-400/50 transition-all duration-200">
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <p className="text-[10px] text-red-700 font-semibold uppercase">Rejected</p>
