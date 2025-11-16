@@ -1,7 +1,16 @@
 import { useState, useCallback, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { Device } from "@capacitor/device";
-import { Capacitor } from "@capacitor/core";
+
+// Conditionally import Capacitor - only available on mobile platforms
+let Device: any = null;
+let Capacitor: any = null;
+
+try {
+  Device = require("@capacitor/device").Device;
+  Capacitor = require("@capacitor/core").Capacitor;
+} catch (e) {
+  // Capacitor not available in this environment (e.g., web)
+}
 
 export type BiometricType =
   | "faceId"
