@@ -527,12 +527,9 @@ export default function TrainingHub() {
               {carouselSections.map((section, index) => (
                 <button
                   key={section.id}
-                  onClick={() => {
-                    // This button only shows the feature info
-                    // The carousel will handle the actual navigation
-                  }}
+                  onClick={() => setCurrentCarouselIndex(index)}
                   className={`py-3 px-2 rounded-lg transition-all text-center text-xs sm:text-sm font-semibold flex flex-col items-center gap-1 ${
-                    index === 0
+                    index === currentCarouselIndex
                       ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md scale-105"
                       : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50"
                   }`}
