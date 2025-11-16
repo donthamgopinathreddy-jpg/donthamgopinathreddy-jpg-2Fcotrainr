@@ -58,22 +58,14 @@ export default function Achievements() {
 
   const getRankMedal = (rank: number): string => {
     if (rank === 1) return "🥇";
-    if (rank === 2) return "��";
+    if (rank === 2) return "🥈";
     if (rank === 3) return "🥉";
     return "🏆";
   };
 
-  const getMinimalBg = () =>
-    theme === "dark"
-      ? "bg-gray-900"
-      : "bg-white";
-
-  const getVibrantBg = () =>
-    theme === "dark"
-      ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
-      : "bg-gradient-to-br from-blue-50 via-white to-purple-50";
-
-  const bgClass = aestheticStyle === "minimal" ? getMinimalBg() : getVibrantBg();
+  const bgClass = theme === "dark"
+    ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950"
+    : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50";
 
   if (loading) {
     return (
