@@ -390,7 +390,7 @@ const AdminTrainerVerification: React.FC = () => {
                         className="w-full aspect-square rounded-lg object-cover"
                       />
                     ) : (
-                      <div className="w-full aspect-square rounded-lg bg-gradient-to-br from-[#FF7A00] to-orange-600 flex items-center justify-center text-white font-bold text-6xl">
+                      <div className="w-full aspect-square rounded-lg bg-gradient-to-br from-purple-900 to-pink-600 flex items-center justify-center text-white font-bold text-6xl">
                         {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
                       </div>
                     )}
