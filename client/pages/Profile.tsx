@@ -37,8 +37,6 @@ import { useAchievements } from "@/hooks/useAchievements";
 import { useHealthSync } from "@/hooks/useHealthSync";
 import { useClientDietPlans } from "@/hooks/useClientDietPlans";
 import DailyStepsReward from "@/components/DailyStepsReward";
-import SubscriptionComparison from "@/components/SubscriptionComparison";
-import SubscriptionModal from "@/components/SubscriptionModal";
 
 interface UserType {
   role: "client" | "trainer";
@@ -93,7 +91,6 @@ export default function Profile() {
     faceRecognition: false,
   });
   const [isSavingBiometrics, setIsSavingBiometrics] = useState(false);
-  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
   const [passwordForm, setPasswordForm] = useState({
     current: "",
@@ -594,17 +591,6 @@ export default function Profile() {
             Edit Profile
           </button>
 
-          {/* Subscription Section */}
-          <div className="mt-6 pt-6 border-t border-orange-200 dark:border-gray-700">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <Lock className="w-5 h-5 text-orange-500" />
-              Your Subscription Plan
-            </h3>
-            <SubscriptionComparison
-              currentPlan={(userProfile?.subscription_plan || "free") as "free" | "basic" | "premium"}
-              onSelectPlan={() => setShowSubscriptionModal(true)}
-            />
-          </div>
         </div>
 
         {/* ACCOUNT SECTION */}
@@ -1566,9 +1552,7 @@ export default function Profile() {
           </button>
 
           <button
-            onClick={() =>
-              toast.info("Premium subscription features coming soon!")
-            }
+            onClick={() => navigate("/upgrade")}
             className={`w-full flex items-center gap-3 p-4 rounded-lg transition-all shadow-sm hover:shadow-md font-semibold ${
               theme === "dark"
                 ? "bg-gradient-to-r from-purple-800 to-indigo-800 border border-purple-700 hover:from-purple-700 hover:to-indigo-700 text-purple-100"
@@ -1902,12 +1886,6 @@ export default function Profile() {
         </div>
       )}
 
-      {/* Subscription Modal */}
-      <SubscriptionModal
-        isOpen={showSubscriptionModal}
-        onClose={() => setShowSubscriptionModal(false)}
-        currentPlan={(userProfile?.subscription_plan || "free") as "free" | "basic" | "premium"}
-      />
     </div>
   );
 }
