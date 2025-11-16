@@ -33,7 +33,7 @@ CREATE POLICY "Users can insert own notification preferences"
   WITH CHECK (auth.uid() = user_id);
 
 -- Create an index for faster queries
-CREATE INDEX IF NOT EXISTS idx_notification_preferences_user_id 
+CREATE INDEX IF NOT EXISTS idx_notification_preferences_user_id
   ON notification_preferences(user_id);
 ```
 

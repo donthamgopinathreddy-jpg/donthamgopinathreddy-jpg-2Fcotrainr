@@ -19,7 +19,7 @@ export default function WeeklyMoodDropdown() {
       ? Math.round(
           (last7Days.reduce((sum, log) => sum + log.mood_value, 0) /
             last7Days.length) *
-            10
+            10,
         ) / 10
       : 0;
 
@@ -59,8 +59,10 @@ export default function WeeklyMoodDropdown() {
 
   const getMoodTrend = () => {
     if (last7Days.length < 2) return null;
-    const recent = last7Days.slice(0, 3).reduce((sum, log) => sum + log.mood_value, 0) / 3;
-    const older = last7Days.slice(3, 6).reduce((sum, log) => sum + log.mood_value, 0) / 3;
+    const recent =
+      last7Days.slice(0, 3).reduce((sum, log) => sum + log.mood_value, 0) / 3;
+    const older =
+      last7Days.slice(3, 6).reduce((sum, log) => sum + log.mood_value, 0) / 3;
     if (recent > older) return "up";
     if (recent < older) return "down";
     return "neutral";
@@ -68,7 +70,11 @@ export default function WeeklyMoodDropdown() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   return (
@@ -85,9 +91,7 @@ export default function WeeklyMoodDropdown() {
         <div className="flex items-center gap-3">
           <div
             className={`p-3 rounded-full ${
-              theme === "dark"
-                ? "bg-purple-900/60"
-                : "bg-purple-300/60"
+              theme === "dark" ? "bg-purple-900/60" : "bg-purple-300/60"
             }`}
           >
             <TrendingUp
@@ -110,8 +114,12 @@ export default function WeeklyMoodDropdown() {
               }`}
             >
               {averageMood > 0 ? `${averageMood}/5` : "No data"}
-              {getMoodTrend() === "up" && <span className="text-green-500">↗</span>}
-              {getMoodTrend() === "down" && <span className="text-red-500">↘</span>}
+              {getMoodTrend() === "up" && (
+                <span className="text-green-500">↗</span>
+              )}
+              {getMoodTrend() === "down" && (
+                <span className="text-red-500">↘</span>
+              )}
             </p>
           </div>
         </div>
@@ -126,9 +134,7 @@ export default function WeeklyMoodDropdown() {
       {showDropdown && (
         <div
           className={`absolute top-full left-0 right-0 mt-2 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-sm ${
-            theme === "dark"
-              ? "bg-gray-900/95"
-              : "bg-white/95"
+            theme === "dark" ? "bg-gray-900/95" : "bg-white/95"
           }`}
         >
           {last7Days.length > 0 ? (
@@ -170,9 +176,7 @@ export default function WeeklyMoodDropdown() {
                   </div>
                   <div
                     className={`text-sm font-bold px-3 py-1 rounded-lg ${
-                      theme === "dark"
-                        ? "bg-gray-700/50"
-                        : "bg-gray-200/50"
+                      theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"
                     }`}
                   >
                     {log.mood_value}/5

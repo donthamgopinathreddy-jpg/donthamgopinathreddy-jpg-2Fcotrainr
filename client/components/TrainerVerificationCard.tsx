@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { format } from "date-fns";
-import { ExternalLink, CheckCircle, XCircle, Clock, FileText } from "lucide-react";
+import {
+  ExternalLink,
+  CheckCircle,
+  XCircle,
+  Clock,
+  FileText,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -30,7 +36,9 @@ interface TrainerVerificationCardProps {
   isProcessing?: boolean;
 }
 
-export const TrainerVerificationCard: React.FC<TrainerVerificationCardProps> = ({
+export const TrainerVerificationCard: React.FC<
+  TrainerVerificationCardProps
+> = ({
   trainerId,
   name,
   email,
@@ -156,7 +164,9 @@ export const TrainerVerificationCard: React.FC<TrainerVerificationCardProps> = (
           )}
           {certificateUrl && (
             <button
-              onClick={() => handleViewDocument(certificateUrl, "Certification")}
+              onClick={() =>
+                handleViewDocument(certificateUrl, "Certification")
+              }
               className="flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-3 py-2 rounded text-sm font-medium transition-colors"
             >
               <FileText className="w-4 h-4" />
@@ -213,8 +223,8 @@ export const TrainerVerificationCard: React.FC<TrainerVerificationCardProps> = (
         <AlertDialogContent className="bg-white">
           <AlertDialogTitle>Approve Trainer Verification</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to approve this trainer as verified? This will give them access
-            to trainer features across the app.
+            Are you sure you want to approve this trainer as verified? This will
+            give them access to trainer features across the app.
           </AlertDialogDescription>
           <div className="flex gap-3 justify-end mt-6">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -233,7 +243,8 @@ export const TrainerVerificationCard: React.FC<TrainerVerificationCardProps> = (
         <AlertDialogContent className="bg-white">
           <AlertDialogTitle>Reject Trainer Verification</AlertDialogTitle>
           <AlertDialogDescription>
-            This trainer will be moved to the Rejected tab. You can provide a reason in the next step.
+            This trainer will be moved to the Rejected tab. You can provide a
+            reason in the next step.
           </AlertDialogDescription>
           <div className="flex gap-3 justify-end mt-6">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -261,7 +272,9 @@ export const TrainerVerificationCard: React.FC<TrainerVerificationCardProps> = (
             onClick={(e) => e.stopPropagation()}
           >
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-              <h3 className="font-semibold text-gray-900">{selectedImage.type}</h3>
+              <h3 className="font-semibold text-gray-900">
+                {selectedImage.type}
+              </h3>
               <button
                 onClick={() => setShowImageModal(false)}
                 className="text-gray-500 hover:text-gray-700"

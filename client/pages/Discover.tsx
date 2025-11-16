@@ -404,7 +404,9 @@ export default function Discover() {
         <div className="max-w-md mx-auto px-4 py-8">
           <div className="bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-2xl p-8 border border-orange-500/30 backdrop-blur text-center">
             <Lock className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h2 className="text-xl font-bold mb-2 text-gray-900">Premium Feature</h2>
+            <h2 className="text-xl font-bold mb-2 text-gray-900">
+              Premium Feature
+            </h2>
             <p className="text-gray-700 mb-6">
               Access nutritionists and meal planning by upgrading to premium
             </p>

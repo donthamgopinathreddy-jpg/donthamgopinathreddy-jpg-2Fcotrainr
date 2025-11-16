@@ -12,10 +12,7 @@ export const isUserAdmin = (userProfile: UserProfile | null): boolean => {
   if (userProfile.role === "admin") return true;
 
   // Fallback: Check a specific admin email list
-  const adminEmails = [
-    "cotrainr26@gmail.com",
-    "admin@cotrainr.app",
-  ];
+  const adminEmails = ["cotrainr26@gmail.com", "admin@cotrainr.app"];
 
   if (adminEmails.includes(userProfile.email)) return true;
 
@@ -26,6 +23,8 @@ export const isUserAdmin = (userProfile: UserProfile | null): boolean => {
  * Protect admin routes
  * Use this in components to ensure only admins can access certain features
  */
-export const requireAdminAccess = (userProfile: UserProfile | null): boolean => {
+export const requireAdminAccess = (
+  userProfile: UserProfile | null,
+): boolean => {
   return isUserAdmin(userProfile);
 };

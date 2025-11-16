@@ -96,7 +96,9 @@ const AdminQuickStats: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
               <div>
-                <p className="text-sm font-semibold text-blue-600">Total Users</p>
+                <p className="text-sm font-semibold text-blue-600">
+                  Total Users
+                </p>
                 <p className="text-2xl font-bold text-blue-900 mt-1">
                   {stats.totalUsers}
                 </p>
@@ -188,8 +190,10 @@ const AdminQuickStats: React.FC = () => {
               pink: "from-pink-400 to-pink-600 hover:shadow-pink-400/50",
               rose: "from-rose-400 to-rose-600 hover:shadow-rose-400/50",
               blue: "from-blue-400 to-blue-600 hover:shadow-blue-400/50",
-              purple: "from-purple-400 to-purple-600 hover:shadow-purple-400/50",
-              indigo: "from-indigo-400 to-indigo-600 hover:shadow-indigo-400/50",
+              purple:
+                "from-purple-400 to-purple-600 hover:shadow-purple-400/50",
+              indigo:
+                "from-indigo-400 to-indigo-600 hover:shadow-indigo-400/50",
             };
 
             return (

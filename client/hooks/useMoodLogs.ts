@@ -44,7 +44,8 @@ export function useMoodLogs(userId?: string) {
       setLoading(true);
 
       // Check if demo user
-      const isDemoMode = userId.startsWith("demo-user") || userId.includes("demo");
+      const isDemoMode =
+        userId.startsWith("demo-user") || userId.includes("demo");
 
       if (isDemoMode) {
         // For demo users, just reset state
@@ -96,7 +97,7 @@ export function useMoodLogs(userId?: string) {
     } catch (err) {
       console.debug(
         "Fetch mood logs catch error:",
-        err instanceof Error ? err.message : "Unknown error"
+        err instanceof Error ? err.message : "Unknown error",
       );
       setError(null);
       setMoodLogs([]);
@@ -116,7 +117,8 @@ export function useMoodLogs(userId?: string) {
       const moodEmoji = getMoodEmoji(moodValue);
 
       // Check if demo user
-      const isDemoMode = userId.startsWith("demo-user") || userId.includes("demo");
+      const isDemoMode =
+        userId.startsWith("demo-user") || userId.includes("demo");
 
       if (isDemoMode) {
         // For demo users, just update local state
@@ -218,7 +220,7 @@ export function useMoodLogs(userId?: string) {
     } catch (err) {
       console.debug(
         "Add mood log catch error:",
-        err instanceof Error ? err.message : "Unknown error"
+        err instanceof Error ? err.message : "Unknown error",
       );
 
       // Still save to local state even if DB fails

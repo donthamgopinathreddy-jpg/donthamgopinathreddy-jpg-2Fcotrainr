@@ -34,7 +34,9 @@ const AdminTrainerVerification: React.FC = () => {
 
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
-  const [rejectingTrainerId, setRejectingTrainerId] = useState<string | null>(null);
+  const [rejectingTrainerId, setRejectingTrainerId] = useState<string | null>(
+    null,
+  );
 
   if (!userProfile) {
     return (
@@ -76,7 +78,11 @@ const AdminTrainerVerification: React.FC = () => {
     if (!rejectingTrainerId) return;
 
     setProcessingId(rejectingTrainerId);
-    const success = await rejectTrainer(rejectingTrainerId, reason, userProfile.id);
+    const success = await rejectTrainer(
+      rejectingTrainerId,
+      reason,
+      userProfile.id,
+    );
     setProcessingId(null);
     setRejectModalOpen(false);
     setRejectingTrainerId(null);
@@ -327,7 +333,8 @@ const AdminTrainerVerification: React.FC = () => {
             No trainers to display
           </h3>
           <p className="text-gray-600">
-            {currentTab === "pending" && "No trainers are waiting for verification"}
+            {currentTab === "pending" &&
+              "No trainers are waiting for verification"}
             {currentTab === "approved" && "No approved trainers yet"}
             {currentTab === "rejected" && "No rejected trainers"}
           </p>
@@ -432,7 +439,9 @@ const RejectReasonModal: React.FC<RejectReasonModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="border-b border-gray-200 px-6 py-4">
-          <h2 className="text-xl font-semibold text-gray-900">Rejection Reason</h2>
+          <h2 className="text-xl font-semibold text-gray-900">
+            Rejection Reason
+          </h2>
         </div>
 
         <div className="px-6 py-4">

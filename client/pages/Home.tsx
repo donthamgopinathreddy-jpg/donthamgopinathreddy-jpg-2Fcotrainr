@@ -602,7 +602,9 @@ export default function Home() {
             <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-red-600 to-orange-600 transition-all duration-500 shadow-lg shadow-red-600/50"
-                style={{ width: `${Math.min(Math.round((steps * 0.05) / 20), 100)}%` }}
+                style={{
+                  width: `${Math.min(Math.round((steps * 0.05) / 20), 100)}%`,
+                }}
               />
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
@@ -659,7 +661,6 @@ export default function Home() {
             </button>
           </div>
         </div>
-
 
         {/* BMI Index Card */}
         <div

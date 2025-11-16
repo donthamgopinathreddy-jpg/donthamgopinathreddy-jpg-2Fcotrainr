@@ -117,11 +117,16 @@ export function useNotifications(userId?: string) {
             return response;
           } catch (fetchError) {
             // Handle fetch-level errors (network errors, etc.)
-            const errorMsg = fetchError instanceof Error ? fetchError.message : String(fetchError);
+            const errorMsg =
+              fetchError instanceof Error
+                ? fetchError.message
+                : String(fetchError);
             console.debug("Notifications fetch-level error:", errorMsg);
 
             if (errorMsg.includes("Failed to fetch")) {
-              console.debug("Network connectivity issue - notifications unavailable");
+              console.debug(
+                "Network connectivity issue - notifications unavailable",
+              );
             }
 
             // Return a structured error response that matches Supabase response format
@@ -176,21 +181,14 @@ export function useNotifications(userId?: string) {
               );
               data = [];
             }
-          } else if (
-            typedResponse.data &&
-            Array.isArray(typedResponse.data)
-          ) {
+          } else if (typedResponse.data && Array.isArray(typedResponse.data)) {
             data = typedResponse.data;
           }
         }
       } catch (e) {
         // Network error, timeout, or other fetch issue - silently handle
-        const errorMsg =
-          e instanceof Error ? e.message : String(e);
-        console.debug(
-          "Fetch notifications outer error:",
-          errorMsg,
-        );
+        const errorMsg = e instanceof Error ? e.message : String(e);
+        console.debug("Fetch notifications outer error:", errorMsg);
 
         // Log if it's a fetch failure vs timeout
         if (errorMsg.includes("Failed to fetch")) {
@@ -255,10 +253,7 @@ export function useNotifications(userId?: string) {
 
         // Add timeout for update operation
         const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(
-            () => reject(new Error("Mark as read timeout")),
-            5000,
-          ),
+          setTimeout(() => reject(new Error("Mark as read timeout")), 5000),
         );
 
         const updatePromise = supabase
@@ -304,10 +299,7 @@ export function useNotifications(userId?: string) {
 
       // Add timeout for update operation
       const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(
-          () => reject(new Error("Mark all as read timeout")),
-          5000,
-        ),
+        setTimeout(() => reject(new Error("Mark all as read timeout")), 5000),
       );
 
       const updatePromise = supabase
@@ -371,7 +363,10 @@ export function useNotifications(userId?: string) {
         if (result && typeof result === "object") {
           const typedResult = result as { error: any };
           if (typedResult.error) {
-            console.debug("Delete notification error:", typedResult.error?.code);
+            console.debug(
+              "Delete notification error:",
+              typedResult.error?.code,
+            );
             return false;
           }
         }

@@ -15,7 +15,9 @@ const AdminSettings: React.FC = () => {
   const [changingPassword, setChangingPassword] = useState(false);
   const [showPasswordFields, setShowPasswordFields] = useState(false);
 
-  const handleProfilePictureUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePictureUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file || !userProfile) return;
 
@@ -179,19 +181,26 @@ const AdminSettings: React.FC = () => {
   }
 
   return (
-    <AdminLayout title="Settings" description="Manage your admin account and preferences">
+    <AdminLayout
+      title="Settings"
+      description="Manage your admin account and preferences"
+    >
       <div className="space-y-6">
         {/* Profile Section */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center gap-4 mb-6">
             <Shield className="w-6 h-6 text-blue-600" />
-            <h2 className="text-xl font-semibold text-gray-900">Admin Profile</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Admin Profile
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Profile Picture */}
             <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">Profile Picture</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                Profile Picture
+              </h3>
               <div className="flex flex-col items-center gap-4">
                 <label className="relative cursor-pointer group w-full">
                   {userProfile?.profile_picture_url ? (
@@ -236,21 +245,33 @@ const AdminSettings: React.FC = () => {
                     onChange={handleProfilePictureUpload}
                   />
                 </label>
-                <p className="text-xs text-gray-500 text-center">Click to change picture</p>
+                <p className="text-xs text-gray-500 text-center">
+                  Click to change picture
+                </p>
               </div>
             </div>
 
             {/* Admin Info */}
             <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">Account Information</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                Account Information
+              </h3>
               <div className="space-y-4">
                 <div>
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Name</p>
-                  <p className="text-gray-900 font-medium mt-1">{userProfile?.full_name}</p>
+                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                    Name
+                  </p>
+                  <p className="text-gray-900 font-medium mt-1">
+                    {userProfile?.full_name}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Email</p>
-                  <p className="text-gray-900 font-medium mt-1">{userProfile?.email}</p>
+                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                    Email
+                  </p>
+                  <p className="text-gray-900 font-medium mt-1">
+                    {userProfile?.email}
+                  </p>
                 </div>
               </div>
             </div>
@@ -325,7 +346,9 @@ const AdminSettings: React.FC = () => {
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center gap-4 mb-6">
             <Clock className="w-6 h-6 text-purple-600" />
-            <h2 className="text-xl font-semibold text-gray-900">Activity & Logs</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Activity & Logs
+            </h2>
           </div>
 
           <div className="space-y-3">
@@ -353,7 +376,9 @@ const AdminSettings: React.FC = () => {
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center gap-4 mb-6">
             <Database className="w-6 h-6 text-cyan-600" />
-            <h2 className="text-xl font-semibold text-gray-900">Data & Export</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Data & Export
+            </h2>
           </div>
 
           <div className="space-y-3">
@@ -404,7 +429,9 @@ const AdminSettings: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-900">Change Password</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                Change Password
+              </h2>
               <button
                 onClick={() => {
                   setShowPasswordChange(false);
@@ -445,7 +472,9 @@ const AdminSettings: React.FC = () => {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                       disabled={changingPassword}
                     />
-                    <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Minimum 8 characters
+                    </p>
                   </div>
 
                   <div>
@@ -481,7 +510,9 @@ const AdminSettings: React.FC = () => {
               {showPasswordFields && (
                 <button
                   onClick={handlePasswordChange}
-                  disabled={!newPassword || !confirmPassword || changingPassword}
+                  disabled={
+                    !newPassword || !confirmPassword || changingPassword
+                  }
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {changingPassword ? "Changing..." : "Change Password"}

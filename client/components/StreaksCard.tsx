@@ -14,9 +14,7 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
     return (
       <div
         className={`rounded-2xl ${
-          theme === "dark"
-            ? "bg-gray-800/50"
-            : "bg-white"
+          theme === "dark" ? "bg-gray-800/50" : "bg-white"
         } p-4 animate-pulse`}
       >
         <div className="h-4 bg-gray-300 rounded w-20 mb-2" />
@@ -71,13 +69,23 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
             : "bg-gradient-to-br from-orange-200/60 via-orange-100/40 to-transparent shadow-lg shadow-orange-400/20"
         }`}
       >
-        <div className={`text-3xl flex items-center gap-1 p-3 rounded-lg ${
-          theme === "dark"
-            ? "bg-orange-900/60 shadow-lg shadow-orange-500/30"
-            : "bg-gradient-to-br from-orange-300 to-orange-400 shadow-lg shadow-orange-400/30"
-        }`}>
-          <Flame className={`w-6 h-6 ${theme === "dark" ? "text-orange-400" : "text-white"}`} />
-          <span className={theme === "dark" ? "text-orange-300 font-bold" : "text-white font-bold"}>
+        <div
+          className={`text-3xl flex items-center gap-1 p-3 rounded-lg ${
+            theme === "dark"
+              ? "bg-orange-900/60 shadow-lg shadow-orange-500/30"
+              : "bg-gradient-to-br from-orange-300 to-orange-400 shadow-lg shadow-orange-400/30"
+          }`}
+        >
+          <Flame
+            className={`w-6 h-6 ${theme === "dark" ? "text-orange-400" : "text-white"}`}
+          />
+          <span
+            className={
+              theme === "dark"
+                ? "text-orange-300 font-bold"
+                : "text-white font-bold"
+            }
+          >
             {streak.current_streak}
           </span>
         </div>
@@ -87,7 +95,9 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
           >
             Current Streak
           </p>
-          <p className={`text-xs font-bold ${theme === "dark" ? "text-orange-400" : "text-orange-600"}`}>
+          <p
+            className={`text-xs font-bold ${theme === "dark" ? "text-orange-400" : "text-orange-600"}`}
+          >
             {getMilestoneText(streak.current_streak)}
           </p>
         </div>
@@ -106,11 +116,13 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <div className={`p-3 rounded-full ${
-            theme === "dark"
-              ? "bg-orange-900/60 shadow-lg shadow-orange-500/30"
-              : "bg-gradient-to-br from-orange-300 to-orange-400 shadow-lg shadow-orange-400/30"
-          }`}>
+          <div
+            className={`p-3 rounded-full ${
+              theme === "dark"
+                ? "bg-orange-900/60 shadow-lg shadow-orange-500/30"
+                : "bg-gradient-to-br from-orange-300 to-orange-400 shadow-lg shadow-orange-400/30"
+            }`}
+          >
             <Flame
               className={`w-6 h-6 ${
                 streak.current_streak > 0
@@ -207,7 +219,8 @@ export default function StreaksCard({ compact = false }: StreaksCardProps) {
             theme === "dark" ? "text-purple-300" : "text-purple-700"
           }`}
         >
-          {getMilestoneEmoji(streak.current_streak)} {getMilestoneText(streak.current_streak)}
+          {getMilestoneEmoji(streak.current_streak)}{" "}
+          {getMilestoneText(streak.current_streak)}
         </p>
         <div className="flex gap-3 flex-wrap">
           {[3, 7, 15, 30].map((days) => (

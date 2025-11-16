@@ -14,9 +14,8 @@ export interface NotificationPreferences {
 }
 
 export function useNotificationPreferences(userId?: string) {
-  const [preferences, setPreferences] = useState<NotificationPreferences | null>(
-    null
-  );
+  const [preferences, setPreferences] =
+    useState<NotificationPreferences | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +37,10 @@ export function useNotificationPreferences(userId?: string) {
         // PGRST116 = no rows found (expected for first-time users)
         // Other errors like table not found should be handled gracefully
         if (fetchError.code !== "PGRST116") {
-          console.error("Error fetching preferences:", fetchError.message || JSON.stringify(fetchError));
+          console.error(
+            "Error fetching preferences:",
+            fetchError.message || JSON.stringify(fetchError),
+          );
         }
       }
 
@@ -63,7 +65,10 @@ export function useNotificationPreferences(userId?: string) {
             .single();
 
           if (createError) {
-            console.warn("Could not create preferences (table may not exist):", createError.message);
+            console.warn(
+              "Could not create preferences (table may not exist):",
+              createError.message,
+            );
             // Use defaults in memory if table doesn't exist
             setPreferences({
               id: "temp",
@@ -76,7 +81,10 @@ export function useNotificationPreferences(userId?: string) {
             setPreferences(newPrefs);
           }
         } catch (err) {
-          console.warn("Error creating preferences (table may not exist):", err);
+          console.warn(
+            "Error creating preferences (table may not exist):",
+            err,
+          );
           // Use defaults in memory if table doesn't exist
           setPreferences({
             id: "temp",
@@ -102,9 +110,7 @@ export function useNotificationPreferences(userId?: string) {
       try {
         // Skip database update if using temporary preferences
         if (preferences.id === "temp") {
-          setPreferences((prev) =>
-            prev ? { ...prev, ...updates } : null
-          );
+          setPreferences((prev) => (prev ? { ...prev, ...updates } : null));
           return true;
         }
 
@@ -116,28 +122,22 @@ export function useNotificationPreferences(userId?: string) {
         if (updateError) {
           console.warn("Error updating preferences:", updateError.message);
           // Still update local state even if DB update fails
-          setPreferences((prev) =>
-            prev ? { ...prev, ...updates } : null
-          );
+          setPreferences((prev) => (prev ? { ...prev, ...updates } : null));
           return true;
         }
 
         // Update local state
-        setPreferences((prev) =>
-          prev ? { ...prev, ...updates } : null
-        );
+        setPreferences((prev) => (prev ? { ...prev, ...updates } : null));
         setError(null);
         return true;
       } catch (err) {
         console.warn("Update preferences error:", err);
         // Still update local state even if update fails
-        setPreferences((prev) =>
-          prev ? { ...prev, ...updates } : null
-        );
+        setPreferences((prev) => (prev ? { ...prev, ...updates } : null));
         return true;
       }
     },
-    [userId, preferences]
+    [userId, preferences],
   );
 
   useEffect(() => {

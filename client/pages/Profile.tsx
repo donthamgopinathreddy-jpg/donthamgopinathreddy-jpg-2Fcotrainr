@@ -458,20 +458,21 @@ export default function Profile() {
         verificationError = error;
       } else {
         // Create new verification record
-        const { error } = await supabase
-          .from("trainer_verifications")
-          .insert({
-            user_id: userProfile?.id,
-            id_document_url: verificationDocs.idUrl,
-            selfie_url: verificationDocs.selfieUrl,
-            verification_status: "pending",
-            submitted_at: new Date().toISOString(),
-          });
+        const { error } = await supabase.from("trainer_verifications").insert({
+          user_id: userProfile?.id,
+          id_document_url: verificationDocs.idUrl,
+          selfie_url: verificationDocs.selfieUrl,
+          verification_status: "pending",
+          submitted_at: new Date().toISOString(),
+        });
         verificationError = error;
       }
 
       if (verificationError) {
-        console.debug("Verification submission error:", verificationError?.code);
+        console.debug(
+          "Verification submission error:",
+          verificationError?.code,
+        );
         toast.error("Failed to submit verification");
         return;
       }

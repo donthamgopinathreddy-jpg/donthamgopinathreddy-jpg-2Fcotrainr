@@ -50,7 +50,7 @@ export function useActivityLog(adminId?: string) {
       action: string,
       description?: string,
       resourceType?: string,
-      resourceId?: string
+      resourceId?: string,
     ) => {
       if (!adminId) return;
 
@@ -73,7 +73,7 @@ export function useActivityLog(adminId?: string) {
         console.error("Activity log insert error:", err);
       }
     },
-    [adminId, fetchActivityLogs]
+    [adminId, fetchActivityLogs],
   );
 
   useEffect(() => {

@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useActivityLog } from "@/hooks/useActivityLog";
-import { useNotificationPreferences, type NotificationPreferences } from "@/hooks/useNotificationPreferences";
+import {
+  useNotificationPreferences,
+  type NotificationPreferences,
+} from "@/hooks/useNotificationPreferences";
 import AdminSidebar from "./AdminSidebar";
 import { supabase } from "@/lib/supabase";
 import { X, Bell, Clock, LogOut, User, ChevronDown, Menu } from "lucide-react";
@@ -13,7 +16,11 @@ interface AdminLayoutProps {
   description?: string;
 }
 
-const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description }) => {
+const AdminLayout: React.FC<AdminLayoutProps> = ({
+  children,
+  title,
+  description,
+}) => {
   const { userProfile, signOut, updateProfile } = useAuth();
   const { toast } = useToast();
   const [showSettings, setShowSettings] = useState(false);
@@ -36,7 +43,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
         setShowUserMenu(false);
       }
     };
@@ -67,7 +77,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
     }
   };
 
-  const handleProfilePictureUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePictureUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file || !userProfile) return;
 
@@ -232,7 +244,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
       {/* Main Content */}
       <main className="md:ml-64 transition-all duration-300">
         {/* Top Header - Minimal with hamburger and welcome text */}
-        <div className="bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-400 sticky top-0 z-40 shadow-lg" ref={userMenuRef}>
+        <div
+          className="bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-400 sticky top-0 z-40 shadow-lg"
+          ref={userMenuRef}
+        >
           <div className="px-4 md:px-8 py-4">
             <div className="flex items-center justify-between">
               {/* Left side - Hamburger (handled in AdminSidebar) */}
@@ -266,11 +281,15 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-200">
             <div className="px-4 md:px-8 py-6">
               <div className="max-w-7xl mx-auto">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Admin Settings</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Admin Settings
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Profile Picture */}
                   <div className="bg-white rounded-lg border border-gray-200 p-6">
-                    <h3 className="text-sm font-semibold text-gray-900 mb-4">Profile Picture</h3>
+                    <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                      Profile Picture
+                    </h3>
                     <div className="flex flex-col items-center gap-4">
                       <label className="relative cursor-pointer group w-full">
                         {userProfile?.profile_picture_url ? (
@@ -315,17 +334,25 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                           onChange={handleProfilePictureUpload}
                         />
                       </label>
-                      <p className="text-xs text-gray-500 text-center">Click to change picture</p>
+                      <p className="text-xs text-gray-500 text-center">
+                        Click to change picture
+                      </p>
                     </div>
                   </div>
 
                   {/* Admin Info & Password */}
                   <div className="bg-white rounded-lg border border-gray-200 p-6">
-                    <h3 className="text-sm font-semibold text-gray-900 mb-4">Account</h3>
+                    <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                      Account
+                    </h3>
                     <div className="space-y-4">
                       <div>
-                        <p className="text-gray-600 font-medium text-sm">Email</p>
-                        <p className="text-gray-900 text-sm mt-1">{userProfile?.email}</p>
+                        <p className="text-gray-600 font-medium text-sm">
+                          Email
+                        </p>
+                        <p className="text-gray-900 text-sm mt-1">
+                          {userProfile?.email}
+                        </p>
                       </div>
                       <button
                         onClick={() => setShowPasswordChange(true)}
@@ -372,7 +399,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
             onClick={(e) => e.stopPropagation()}
           >
             <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-900">Change Password</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                Change Password
+              </h2>
               <button
                 onClick={() => {
                   setShowPasswordChange(false);
@@ -413,7 +442,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                       disabled={changingPassword}
                     />
-                    <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Minimum 8 characters
+                    </p>
                   </div>
 
                   <div>
@@ -449,7 +480,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
               {showPasswordFields && (
                 <button
                   onClick={handlePasswordChange}
-                  disabled={!newPassword || !confirmPassword || changingPassword}
+                  disabled={
+                    !newPassword || !confirmPassword || changingPassword
+                  }
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {changingPassword ? "Changing..." : "Change Password"}
@@ -471,7 +504,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
             onClick={(e) => e.stopPropagation()}
           >
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-900">Activity Log</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                Activity Log
+              </h2>
               <button
                 onClick={() => setShowActivityLog(false)}
                 className="text-gray-500 hover:text-gray-700"
@@ -482,7 +517,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
 
             <div className="p-6">
               {activityLogs.length === 0 ? (
-                <p className="text-center text-gray-500">No activity recorded yet</p>
+                <p className="text-center text-gray-500">
+                  No activity recorded yet
+                </p>
               ) : (
                 <div className="space-y-3">
                   {activityLogs.map((log) => (
@@ -491,16 +528,22 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                       className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50"
                     >
                       <div className="flex items-start justify-between mb-1">
-                        <h3 className="font-semibold text-gray-900 text-sm">{log.action}</h3>
+                        <h3 className="font-semibold text-gray-900 text-sm">
+                          {log.action}
+                        </h3>
                         <span className="text-xs text-gray-500">
                           {new Date(log.created_at).toLocaleString()}
                         </span>
                       </div>
                       {log.description && (
-                        <p className="text-sm text-gray-600 mb-1">{log.description}</p>
+                        <p className="text-sm text-gray-600 mb-1">
+                          {log.description}
+                        </p>
                       )}
                       {log.resource_type && (
-                        <p className="text-xs text-gray-500">Resource: {log.resource_type}</p>
+                        <p className="text-xs text-gray-500">
+                          Resource: {log.resource_type}
+                        </p>
                       )}
                     </div>
                   ))}
@@ -570,7 +613,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                       <input
                         type="checkbox"
                         checked={
-                          notifPrefs[pref.key as keyof NotificationPreferences] as unknown as boolean
+                          notifPrefs[
+                            pref.key as keyof NotificationPreferences
+                          ] as unknown as boolean
                         }
                         onChange={(e) => {
                           updateNotifPrefs({
@@ -580,14 +625,18 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                         className="w-4 h-4 text-blue-600 rounded border-gray-300 mt-0.5"
                       />
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{pref.label}</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {pref.label}
+                        </p>
                         <p className="text-xs text-gray-500">{pref.desc}</p>
                       </div>
                     </label>
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500">Loading preferences...</p>
+                <p className="text-center text-gray-500">
+                  Loading preferences...
+                </p>
               )}
             </div>
 

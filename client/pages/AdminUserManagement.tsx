@@ -3,14 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import AdminLayout from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
-import {
-  Users,
-  Search,
-  Loader,
-  Mail,
-  MapPin,
-  Eye,
-} from "lucide-react";
+import { Users, Search, Loader, Mail, MapPin, Eye } from "lucide-react";
 
 interface User {
   id: string;
@@ -71,7 +64,7 @@ const AdminUserManagement: React.FC = () => {
       filtered = filtered.filter(
         (u) =>
           u.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          u.email.toLowerCase().includes(searchTerm.toLowerCase())
+          u.email.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
@@ -116,7 +109,9 @@ const AdminUserManagement: React.FC = () => {
       <div className="grid grid-cols-3 gap-4 mb-8">
         <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg p-4 backdrop-blur-md border border-white/40">
           <p className="text-sm text-blue-600 font-semibold">Total Users</p>
-          <p className="text-2xl font-bold text-blue-900 mt-1">{users.length}</p>
+          <p className="text-2xl font-bold text-blue-900 mt-1">
+            {users.length}
+          </p>
         </div>
         <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg p-4 backdrop-blur-md border border-white/40">
           <p className="text-sm text-purple-600 font-semibold">Trainers</p>

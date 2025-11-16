@@ -19,11 +19,46 @@ export default function MoodTrackerDB() {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const moods = [
-    { emoji: "😢", label: "Poor", value: 1, gradient: "from-red-500 via-red-400 to-orange-500", darkGradient: "from-red-600 via-red-500 to-orange-600", shadow: "shadow-red-500/40" },
-    { emoji: "😐", label: "Fair", value: 2, gradient: "from-yellow-500 via-yellow-400 to-orange-500", darkGradient: "from-yellow-600 via-yellow-500 to-orange-600", shadow: "shadow-yellow-500/40" },
-    { emoji: "😌", label: "Good", value: 3, gradient: "from-blue-500 via-cyan-400 to-blue-400", darkGradient: "from-blue-600 via-cyan-500 to-blue-500", shadow: "shadow-blue-500/40" },
-    { emoji: "😊", label: "Great", value: 4, gradient: "from-green-500 via-emerald-400 to-teal-500", darkGradient: "from-green-600 via-emerald-500 to-teal-600", shadow: "shadow-green-500/40" },
-    { emoji: "🤩", label: "Amazing", value: 5, gradient: "from-purple-500 via-pink-400 to-rose-500", darkGradient: "from-purple-600 via-pink-500 to-rose-600", shadow: "shadow-purple-500/40" },
+    {
+      emoji: "😢",
+      label: "Poor",
+      value: 1,
+      gradient: "from-red-500 via-red-400 to-orange-500",
+      darkGradient: "from-red-600 via-red-500 to-orange-600",
+      shadow: "shadow-red-500/40",
+    },
+    {
+      emoji: "😐",
+      label: "Fair",
+      value: 2,
+      gradient: "from-yellow-500 via-yellow-400 to-orange-500",
+      darkGradient: "from-yellow-600 via-yellow-500 to-orange-600",
+      shadow: "shadow-yellow-500/40",
+    },
+    {
+      emoji: "😌",
+      label: "Good",
+      value: 3,
+      gradient: "from-blue-500 via-cyan-400 to-blue-400",
+      darkGradient: "from-blue-600 via-cyan-500 to-blue-500",
+      shadow: "shadow-blue-500/40",
+    },
+    {
+      emoji: "😊",
+      label: "Great",
+      value: 4,
+      gradient: "from-green-500 via-emerald-400 to-teal-500",
+      darkGradient: "from-green-600 via-emerald-500 to-teal-600",
+      shadow: "shadow-green-500/40",
+    },
+    {
+      emoji: "🤩",
+      label: "Amazing",
+      value: 5,
+      gradient: "from-purple-500 via-pink-400 to-rose-500",
+      darkGradient: "from-purple-600 via-pink-500 to-rose-600",
+      shadow: "shadow-purple-500/40",
+    },
   ];
 
   useEffect(() => {
@@ -47,7 +82,7 @@ export default function MoodTrackerDB() {
     }
   };
 
-  const currentMood = moods.find(m => m.value === selectedMood);
+  const currentMood = moods.find((m) => m.value === selectedMood);
 
   return (
     <div
@@ -60,8 +95,12 @@ export default function MoodTrackerDB() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className={`p-3 rounded-full ${theme === "dark" ? "bg-pink-500/20" : "bg-pink-200/50"}`}>
-            <Smile className={`w-6 h-6 ${theme === "dark" ? "text-pink-400" : "text-pink-600"}`} />
+          <div
+            className={`p-3 rounded-full ${theme === "dark" ? "bg-pink-500/20" : "bg-pink-200/50"}`}
+          >
+            <Smile
+              className={`w-6 h-6 ${theme === "dark" ? "text-pink-400" : "text-pink-600"}`}
+            />
           </div>
           <h3
             className={`text-xl font-bold ${
@@ -95,16 +134,18 @@ export default function MoodTrackerDB() {
             <span className="text-2xl">{currentMood?.emoji || "😊"}</span>
             <span>{currentMood?.label || "Select your mood"}</span>
           </span>
-          <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${showDropdown ? "rotate-180" : ""}`} />
+          <ChevronDown
+            className={`w-5 h-5 transition-transform duration-300 ${showDropdown ? "rotate-180" : ""}`}
+          />
         </button>
 
         {/* Dropdown Menu */}
         {showDropdown && (
-          <div className={`absolute top-full left-0 right-0 mt-2 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-sm ${
-            theme === "dark"
-              ? "bg-gray-800/95"
-              : "bg-white/95"
-          }`}>
+          <div
+            className={`absolute top-full left-0 right-0 mt-2 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-sm ${
+              theme === "dark" ? "bg-gray-800/95" : "bg-white/95"
+            }`}
+          >
             {moods.map((mood) => (
               <button
                 key={mood.value}
@@ -132,7 +173,9 @@ export default function MoodTrackerDB() {
 
       {/* Quick Emoji Buttons (Alternative selection) */}
       <div className="mb-6">
-        <p className={`text-xs font-semibold mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+        <p
+          className={`text-xs font-semibold mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+        >
           Or tap directly:
         </p>
         <div className="flex justify-between gap-2">

@@ -33,9 +33,9 @@ export default function Login() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
-  const [authMethod, setAuthMethod] = useState<
-    "password" | "biometric"
-  >("password");
+  const [authMethod, setAuthMethod] = useState<"password" | "biometric">(
+    "password",
+  );
   const [userId, setUserId] = useState<string | null>(null);
 
   // Use effect to redirect if already logged in (e.g., from browser back button)

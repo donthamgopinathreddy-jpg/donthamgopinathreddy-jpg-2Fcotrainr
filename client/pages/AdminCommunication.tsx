@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import AdminLayout from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Send,
-  MessageSquare,
-  Bell,
-  Users,
-  CheckCircle,
-} from "lucide-react";
+import { Send, MessageSquare, Bell, Users, CheckCircle } from "lucide-react";
 
 const AdminCommunication: React.FC = () => {
   const { userProfile } = useAuth();

@@ -35,7 +35,7 @@ const AdminAnalytics: React.FC = () => {
 
         if (verifications) {
           const approved = verifications.filter(
-            (v) => v.verification_status === "approved"
+            (v) => v.verification_status === "approved",
           ).length;
           const total = verifications.length;
 

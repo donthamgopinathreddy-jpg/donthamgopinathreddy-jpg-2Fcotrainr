@@ -114,7 +114,11 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         onClick={() => setSidebarOpen(!sidebarOpen)}
         className="fixed top-5 left-4 z-50 md:hidden p-1 transition-all duration-200 hover:scale-110 drop-shadow-md"
       >
-        {sidebarOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
+        {sidebarOpen ? (
+          <X className="w-6 h-6 text-white" />
+        ) : (
+          <Menu className="w-6 h-6 text-white" />
+        )}
       </button>
 
       {/* Sidebar Overlay for Mobile */}
@@ -130,7 +134,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
         className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-orange-100 via-orange-50 to-yellow-100 text-gray-900 z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto shadow-lg shadow-black/10
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.08) 100%), linear-gradient(to bottom, rgb(254, 243, 219) 0%, rgb(255, 247, 237) 50%, rgb(254, 240, 199) 100%)`
+          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.08) 100%), linear-gradient(to bottom, rgb(254, 243, 219) 0%, rgb(255, 247, 237) 50%, rgb(254, 240, 199) 100%)`,
         }}
       >
         <div className="flex flex-col h-full">
@@ -179,7 +183,9 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
                 <p className="text-sm font-semibold text-orange-900 truncate">
                   {userProfile?.full_name || "Admin"}
                 </p>
-                <p className="text-xs text-orange-600 truncate">{userProfile?.email}</p>
+                <p className="text-xs text-orange-600 truncate">
+                  {userProfile?.email}
+                </p>
               </div>
             </div>
           </div>
@@ -222,7 +228,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </div>
         </div>
       </aside>
-
     </>
   );
 };

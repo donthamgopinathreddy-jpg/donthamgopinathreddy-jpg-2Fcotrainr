@@ -22,111 +22,132 @@ export function useAdminTrainerVerification() {
   const [trainers, setTrainers] = useState<TrainerForVerification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentTab, setCurrentTab] = useState<"pending" | "approved" | "rejected">("pending");
+  const [currentTab, setCurrentTab] = useState<
+    "pending" | "approved" | "rejected"
+  >("pending");
 
-  const fetchTrainers = useCallback(async (status?: "pending" | "approved" | "rejected") => {
-    setLoading(true);
-    setError(null);
+  const fetchTrainers = useCallback(
+    async (status?: "pending" | "approved" | "rejected") => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      let query = supabase
-        .from("trainer_verifications")
-        .select("*")
-        .order("submitted_at", { ascending: false });
+      try {
+        let query = supabase
+          .from("trainer_verifications")
+          .select("*")
+          .order("submitted_at", { ascending: false });
 
-      if (status) {
-        query = query.eq("verification_status", status);
-      }
+        if (status) {
+          query = query.eq("verification_status", status);
+        }
 
-      const { data, error: fetchError } = await query;
+        const { data, error: fetchError } = await query;
 
-      if (fetchError) {
-        const errorMsg = fetchError?.message || "";
-        const errorCode = fetchError?.code || "";
+        if (fetchError) {
+          const errorMsg = fetchError?.message || "";
+          const errorCode = fetchError?.code || "";
 
-        console.error("Detailed error fetching trainers:");
-        console.error("Message:", errorMsg);
-        console.error("Code:", errorCode);
-        console.error("Status:", fetchError?.status);
-        console.error("Details:", fetchError?.details);
-        console.error("Full error:", JSON.stringify(fetchError, null, 2));
+          console.error("Detailed error fetching trainers:");
+          console.error("Message:", errorMsg);
+          console.error("Code:", errorCode);
+          console.error("Status:", fetchError?.status);
+          console.error("Details:", fetchError?.details);
+          console.error("Full error:", JSON.stringify(fetchError, null, 2));
 
-        // Check if it's a table not found error
-        if (errorMsg.includes("does not exist") || errorMsg.includes("relation") || errorCode === "PGRST116") {
-          setError("Trainer verification table not yet initialized. Please wait for database setup to complete.");
-        } else if (errorMsg.includes("permission denied") || errorCode === "PGRST301") {
-          setError("Permission denied: You may not have access to view trainer verifications.");
-        } else if (errorMsg.includes("RLS") || errorMsg.includes("policy")) {
-          setError("Row-level security policy blocked access. Please contact support.");
+          // Check if it's a table not found error
+          if (
+            errorMsg.includes("does not exist") ||
+            errorMsg.includes("relation") ||
+            errorCode === "PGRST116"
+          ) {
+            setError(
+              "Trainer verification table not yet initialized. Please wait for database setup to complete.",
+            );
+          } else if (
+            errorMsg.includes("permission denied") ||
+            errorCode === "PGRST301"
+          ) {
+            setError(
+              "Permission denied: You may not have access to view trainer verifications.",
+            );
+          } else if (errorMsg.includes("RLS") || errorMsg.includes("policy")) {
+            setError(
+              "Row-level security policy blocked access. Please contact support.",
+            );
+          } else {
+            setError(`Failed to fetch trainers: ${errorMsg}`);
+          }
+
+          setTrainers([]);
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          setTrainers([]);
+          return;
+        }
+
+        // Fetch user details for all trainers
+        const userIds = data.map((item: any) => item.user_id);
+        const { data: usersData, error: usersError } = await supabase
+          .from("users")
+          .select("id, full_name, email, country")
+          .in("id", userIds);
+
+        if (usersError) {
+          console.error("Error fetching user details:", usersError);
+          // Continue without user details
+        }
+
+        const usersMap = new Map((usersData || []).map((u: any) => [u.id, u]));
+
+        // Transform the data to flatten user information
+        const transformedData = (data || []).map((item: any) => {
+          const user = usersMap.get(item.user_id);
+          return {
+            id: item.id,
+            user_id: item.user_id,
+            name: user?.full_name || "Unknown",
+            email: user?.email || "",
+            country: user?.country,
+            id_document_url: item.id_document_url,
+            selfie_url: item.selfie_url,
+            certificate_url: item.certificate_url,
+            verification_status: item.verification_status,
+            verified_trainer: item.verified_trainer,
+            submitted_at: item.submitted_at,
+            reviewed_by: item.reviewed_by,
+            reviewed_at: item.reviewed_at,
+            rejection_reason: item.rejection_reason,
+          };
+        });
+
+        setTrainers(transformedData);
+      } catch (fetchErr) {
+        const errorMsg =
+          fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+        console.error("Caught error fetching trainers:", {
+          message: errorMsg,
+          stack: fetchErr instanceof Error ? fetchErr.stack : undefined,
+        });
+
+        if (errorMsg.includes("Failed to fetch")) {
+          setError(
+            "Network error: Unable to reach the server. Please check your connection.",
+          );
+        } else if (errorMsg.includes("timeout")) {
+          setError("Request timeout: The server took too long to respond.");
         } else {
-          setError(`Failed to fetch trainers: ${errorMsg}`);
+          setError(`An error occurred: ${errorMsg}`);
         }
 
         setTrainers([]);
-        return;
+      } finally {
+        setLoading(false);
       }
-
-      if (!data || data.length === 0) {
-        setTrainers([]);
-        return;
-      }
-
-      // Fetch user details for all trainers
-      const userIds = data.map((item: any) => item.user_id);
-      const { data: usersData, error: usersError } = await supabase
-        .from("users")
-        .select("id, full_name, email, country")
-        .in("id", userIds);
-
-      if (usersError) {
-        console.error("Error fetching user details:", usersError);
-        // Continue without user details
-      }
-
-      const usersMap = new Map((usersData || []).map((u: any) => [u.id, u]));
-
-      // Transform the data to flatten user information
-      const transformedData = (data || []).map((item: any) => {
-        const user = usersMap.get(item.user_id);
-        return {
-          id: item.id,
-          user_id: item.user_id,
-          name: user?.full_name || "Unknown",
-          email: user?.email || "",
-          country: user?.country,
-          id_document_url: item.id_document_url,
-          selfie_url: item.selfie_url,
-          certificate_url: item.certificate_url,
-          verification_status: item.verification_status,
-          verified_trainer: item.verified_trainer,
-          submitted_at: item.submitted_at,
-          reviewed_by: item.reviewed_by,
-          reviewed_at: item.reviewed_at,
-          rejection_reason: item.rejection_reason,
-        };
-      });
-
-      setTrainers(transformedData);
-    } catch (fetchErr) {
-      const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
-      console.error("Caught error fetching trainers:", {
-        message: errorMsg,
-        stack: fetchErr instanceof Error ? fetchErr.stack : undefined,
-      });
-
-      if (errorMsg.includes("Failed to fetch")) {
-        setError("Network error: Unable to reach the server. Please check your connection.");
-      } else if (errorMsg.includes("timeout")) {
-        setError("Request timeout: The server took too long to respond.");
-      } else {
-        setError(`An error occurred: ${errorMsg}`);
-      }
-
-      setTrainers([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    [],
+  );
 
   const approveTrainer = async (trainerId: string, reviewedBy: string) => {
     try {
@@ -163,7 +184,8 @@ export function useAdminTrainerVerification() {
         return true;
       } catch (fetchErr) {
         console.error("Error approving trainer:", fetchErr);
-        const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+        const errorMsg =
+          fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
 
         if (errorMsg.includes("Failed to fetch")) {
           setError("Network error: Unable to reach the server");
@@ -183,7 +205,7 @@ export function useAdminTrainerVerification() {
   const rejectTrainer = async (
     trainerId: string,
     rejectionReason: string,
-    reviewedBy: string
+    reviewedBy: string,
   ) => {
     try {
       try {
@@ -207,7 +229,8 @@ export function useAdminTrainerVerification() {
         return true;
       } catch (fetchErr) {
         console.error("Error rejecting trainer:", fetchErr);
-        const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+        const errorMsg =
+          fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
 
         if (errorMsg.includes("Failed to fetch")) {
           setError("Network error: Unable to reach the server");
@@ -261,7 +284,8 @@ export function useAdminTrainerVerification() {
         return true;
       } catch (fetchErr) {
         console.error("Error revoking verification:", fetchErr);
-        const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+        const errorMsg =
+          fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
 
         if (errorMsg.includes("Failed to fetch")) {
           setError("Network error: Unable to reach the server");
@@ -300,7 +324,8 @@ export function useAdminTrainerVerification() {
         return true;
       } catch (fetchErr) {
         console.error("Error re-reviewing trainer:", fetchErr);
-        const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+        const errorMsg =
+          fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
 
         if (errorMsg.includes("Failed to fetch")) {
           setError("Network error: Unable to reach the server");

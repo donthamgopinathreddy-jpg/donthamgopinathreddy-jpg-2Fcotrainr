@@ -47,15 +47,20 @@ export function useAdminDashboard() {
         if (usersError) throw usersError;
 
         // Fetch trainer verifications
-        const { data: verificationsData, error: verificationsError } = await supabase
-          .from("trainer_verifications")
-          .select("id, verification_status, created_at");
+        const { data: verificationsData, error: verificationsError } =
+          await supabase
+            .from("trainer_verifications")
+            .select("id, verification_status, created_at");
 
         if (verificationsError) throw verificationsError;
 
         // Calculate stats
         const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const today = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+        );
         const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
         const users = usersData || [];
@@ -75,15 +80,17 @@ export function useAdminDashboard() {
           return createdAt >= weekAgo;
         }).length;
 
-        const verifiedTrainers = users.filter((u) => u.role === "trainer").length;
+        const verifiedTrainers = users.filter(
+          (u) => u.role === "trainer",
+        ).length;
         const pendingVerifications = verifications.filter(
-          (v) => v.verification_status === "pending"
+          (v) => v.verification_status === "pending",
         ).length;
         const approvedVerifications = verifications.filter(
-          (v) => v.verification_status === "approved"
+          (v) => v.verification_status === "approved",
         ).length;
         const rejectedVerifications = verifications.filter(
-          (v) => v.verification_status === "rejected"
+          (v) => v.verification_status === "rejected",
         ).length;
 
         setStats({
@@ -113,9 +120,13 @@ export function useAdminDashboard() {
     // Subscribe to real-time updates
     const usersSubscription = supabase
       .channel("users-changes")
-      .on("postgres_changes", { event: "*", schema: "public", table: "users" }, () => {
-        fetchStats();
-      })
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "users" },
+        () => {
+          fetchStats();
+        },
+      )
       .subscribe();
 
     const verificationsSubscription = supabase
@@ -125,7 +136,7 @@ export function useAdminDashboard() {
         { event: "*", schema: "public", table: "trainer_verifications" },
         () => {
           fetchStats();
-        }
+        },
       )
       .subscribe();
 

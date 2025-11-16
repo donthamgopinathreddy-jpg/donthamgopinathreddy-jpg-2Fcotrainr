@@ -96,7 +96,9 @@ const AdminSystemHealth: React.FC = () => {
                     {stat.status}
                   </span>
                 </div>
-                <p className="text-2xl font-bold text-gray-900">{stat.uptime}</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stat.uptime}
+                </p>
               </div>
             </div>
           );
@@ -119,7 +121,10 @@ const AdminSystemHealth: React.FC = () => {
                 <span className="text-sm font-bold text-green-600">45ms</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-green-600 h-2 rounded-full" style={{ width: "95%" }} />
+                <div
+                  className="bg-green-600 h-2 rounded-full"
+                  style={{ width: "95%" }}
+                />
               </div>
             </div>
 
@@ -131,7 +136,10 @@ const AdminSystemHealth: React.FC = () => {
                 <span className="text-sm font-bold text-green-600">82ms</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-green-600 h-2 rounded-full" style={{ width: "85%" }} />
+                <div
+                  className="bg-green-600 h-2 rounded-full"
+                  style={{ width: "85%" }}
+                />
               </div>
             </div>
 
@@ -143,7 +151,10 @@ const AdminSystemHealth: React.FC = () => {
                 <span className="text-sm font-bold text-green-600">120ms</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-green-600 h-2 rounded-full" style={{ width: "70%" }} />
+                <div
+                  className="bg-green-600 h-2 rounded-full"
+                  style={{ width: "70%" }}
+                />
               </div>
             </div>
           </div>
@@ -163,27 +174,40 @@ const AdminSystemHealth: React.FC = () => {
                 <span className="text-sm font-bold text-blue-600">34%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-blue-600 h-2 rounded-full" style={{ width: "34%" }} />
+                <div
+                  className="bg-blue-600 h-2 rounded-full"
+                  style={{ width: "34%" }}
+                />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-gray-700">Memory</span>
+                <span className="text-sm font-semibold text-gray-700">
+                  Memory
+                </span>
                 <span className="text-sm font-bold text-purple-600">58%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-purple-600 h-2 rounded-full" style={{ width: "58%" }} />
+                <div
+                  className="bg-purple-600 h-2 rounded-full"
+                  style={{ width: "58%" }}
+                />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-gray-700">Disk</span>
+                <span className="text-sm font-semibold text-gray-700">
+                  Disk
+                </span>
                 <span className="text-sm font-bold text-pink-600">45%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-pink-600 h-2 rounded-full" style={{ width: "45%" }} />
+                <div
+                  className="bg-pink-600 h-2 rounded-full"
+                  style={{ width: "45%" }}
+                />
               </div>
             </div>
           </div>
