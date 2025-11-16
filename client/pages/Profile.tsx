@@ -37,7 +37,6 @@ import { useAchievements } from "@/hooks/useAchievements";
 import { useHealthSync } from "@/hooks/useHealthSync";
 import { useClientDietPlans } from "@/hooks/useClientDietPlans";
 import DailyStepsReward from "@/components/DailyStepsReward";
-import FollowersModal from "@/components/FollowersModal";
 
 interface UserType {
   role: "client" | "trainer";
