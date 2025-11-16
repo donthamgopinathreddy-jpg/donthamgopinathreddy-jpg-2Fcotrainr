@@ -243,9 +243,11 @@ const AdminTrainerVerification: React.FC = () => {
 
       if (updateError) throw updateError;
 
+      // Update the local userProfile state to reflect the new picture
+      // This will update the UI immediately
       toast({
         title: "Success",
-        description: "Profile picture updated successfully",
+        description: "Profile picture saved successfully",
         variant: "default",
       });
     } catch (err) {
