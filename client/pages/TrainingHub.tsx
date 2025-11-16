@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Lock,
   Zap,
@@ -6,6 +7,7 @@ import {
   AlertCircle,
   Sparkles,
   Plus,
+  ArrowRight,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDietPreferences } from "@/hooks/useDietPreferences";
