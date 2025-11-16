@@ -110,13 +110,25 @@ export const useWeeklyHealthData = () => {
 
       if (prevHealthError) console.debug("Failed to fetch previous week data:", prevHealthError);
 
-      // Calculate totals
+      // Calculate totals from real data
       const stepsTotal = healthData?.reduce((sum, d) => sum + (d.steps || 0), 0) || 0;
       const prevStepsTotal = prevHealthData?.reduce((sum, d) => sum + (d.steps || 0), 0) || 0;
       const stepsVsLastWeek = prevStepsTotal > 0 ? ((stepsTotal - prevStepsTotal) / prevStepsTotal) * 100 : 0;
 
       const caloriesConsumed = mealsData?.reduce((sum, m) => sum + (m.calories || 0), 0) || 0;
       const proteinIntakeG = mealsData?.reduce((sum, m) => sum + (m.protein_g || 0), 0) || 0;
+
+      // Log real data for debugging
+      console.log("🏃 Weekly Health Data Fetched:", {
+        stepsTotal,
+        healthDataLength: healthData?.length || 0,
+        caloriesConsumed,
+        proteinIntakeG,
+        mealsDataLength: mealsData?.length || 0,
+        workoutMinutesTotal,
+        questDataLength: questData?.length || 0,
+        weekRange: `${weekStartStr} to ${weekEndStr}`,
+      });
 
       // Estimate calories burned (roughly 1.2-1.5x BMR per day + activity)
       // Using a simple estimate: 500 calories per 10,000 steps + 300 base per day
