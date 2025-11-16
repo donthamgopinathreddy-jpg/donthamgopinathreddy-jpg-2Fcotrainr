@@ -249,25 +249,38 @@ export function useAdminTrainerVerification() {
 
   const reReviewTrainer = async (trainerId: string) => {
     try {
-      const { error } = await supabase
-        .from("trainer_verifications")
-        .update({
-          verification_status: "pending",
-          verified_trainer: false,
-          reviewed_by: null,
-          reviewed_at: null,
-        })
-        .eq("id", trainerId);
+      try {
+        const { error } = await supabase
+          .from("trainer_verifications")
+          .update({
+            verification_status: "pending",
+            verified_trainer: false,
+            reviewed_by: null,
+            reviewed_at: null,
+          })
+          .eq("id", trainerId);
 
-      if (error) {
-        throw error;
+        if (error) {
+          throw error;
+        }
+
+        // Refresh the list
+        await fetchTrainers(currentTab);
+        return true;
+      } catch (fetchErr) {
+        console.error("Error re-reviewing trainer:", fetchErr);
+        const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+
+        if (errorMsg.includes("Failed to fetch")) {
+          setError("Network error: Unable to reach the server");
+        } else {
+          setError("Failed to re-review trainer");
+        }
+
+        return false;
       }
-
-      // Refresh the list
-      await fetchTrainers(currentTab);
-      return true;
     } catch (err) {
-      console.error("Error re-reviewing trainer:", err);
+      console.error("Error in reReviewTrainer:", err);
       setError("Failed to re-review trainer");
       return false;
     }
