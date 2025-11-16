@@ -46,6 +46,15 @@ const AdminTrainerVerification: React.FC = () => {
   const [uploadingPic, setUploadingPic] = useState(false);
   const [trainerCount, setTrainerCount] = useState(0);
   const [clientCount, setClientCount] = useState(0);
+  const [showActivityLog, setShowActivityLog] = useState(false);
+  const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
+
+  // Hooks for activity log and notification preferences
+  const { logs: activityLogs } = useActivityLog(userProfile?.id);
+  const {
+    preferences: notifPrefs,
+    updatePreferences: updateNotifPrefs,
+  } = useNotificationPreferences(userProfile?.id);
 
   const handleLogout = async () => {
     try {
