@@ -71,6 +71,7 @@ export default function Home() {
   const [showHealthPermissionPrompt, setShowHealthPermissionPrompt] = useState(
     isHealthSyncAvailable && !hasPermission,
   );
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
   // Sync user data from profile and auto step counter
   useEffect(() => {
