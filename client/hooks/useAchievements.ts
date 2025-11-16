@@ -369,6 +369,8 @@ export const useAchievements = () => {
 
   useEffect(() => {
     fetchUnlockedAchievements();
+    fetchWeeklyStats();
+    fetchWeeklyLeaderboard();
   }, [user?.id]);
 
   // Format unlocked achievements with achievement details
