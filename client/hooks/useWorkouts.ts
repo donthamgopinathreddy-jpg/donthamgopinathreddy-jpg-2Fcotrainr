@@ -702,7 +702,7 @@ export const useWorkouts = () => {
     fetchWorkouts();
   }, [user?.id]);
 
-  const getWorkoutsByLevel = (level: "basic" | "intermediate" | "advanced") => {
+  const getWorkoutsByLevel = (level: "beginner" | "intermediate" | "advanced") => {
     return workouts.filter((w) => w.level === level);
   };
 
@@ -714,7 +714,7 @@ export const useWorkouts = () => {
 
   const getWorkoutsByCategoryAndLevel = (
     category: "gym" | "yoga" | "boxing" | "zumba" | "stretching" | "warmups",
-    level: "basic" | "intermediate" | "advanced",
+    level: "beginner" | "intermediate" | "advanced",
   ) => {
     return workouts.filter((w) => w.category === category && w.level === level);
   };
