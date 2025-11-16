@@ -122,6 +122,10 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const RoleBasedHome = () => {
   const { userProfile } = useAuth();
 
+  if (userProfile?.role === "admin") {
+    return <Navigate to="/admin" replace />;
+  }
+
   if (userProfile?.role === "trainer") {
     return <TrainerHome />;
   }
