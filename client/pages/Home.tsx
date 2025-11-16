@@ -44,9 +44,7 @@ export default function Home() {
     syncTodaySteps,
     isAvailable: isHealthSyncAvailable,
   } = useHealthSync();
-  const { moodLogs } = useMoodLogs(userProfile?.id);
   const { steps, isTracking } = useStepCounter();
-  const { currentStreak, streakJustIncremented } = useDailyStreak();
   const { newlyUnlocked: newAchievement } = useStepAchievements(steps);
 
   const [coverImage, setCoverImage] = useState(
