@@ -219,13 +219,13 @@ export default function Home() {
       }
 
       // Update the steps target (the goal)
-      setStepsTarget(editStepsTarget);
+      setStepsTarget(stepsTarget);
 
       // Save water consumed to Supabase (in case it was edited)
       const isDemoMode =
         userProfile.id.startsWith("demo-user") ||
         userProfile.id.includes("demo");
-      const bioValue = `${stepsCompleted}|${waterConsumed}`;
+      const bioValue = `${steps}|${waterConsumed}`;
 
       if (!isDemoMode) {
         const { error } = await supabase
@@ -239,63 +239,10 @@ export default function Home() {
       }
 
       setShowTargetsModal(false);
-      toast.success("✓ Targets updated!");
+      toast.success("✓ Step target updated!");
     } catch (error) {
       console.error("Error saving targets:", error);
       toast.error("Failed to save targets");
-    }
-  };
-
-  const handleResetSteps = async () => {
-    try {
-      if (!userProfile?.id) {
-        toast.error("User not found");
-        return;
-      }
-
-      const isDemoMode =
-        userProfile.id.startsWith("demo-user") ||
-        userProfile.id.includes("demo");
-      const bioValue = `0|${waterConsumed}`;
-
-      if (!isDemoMode) {
-        // Update Supabase
-        const { error: updateError } = await supabase
-          .from("users")
-          .update({ bio: bioValue })
-          .eq("id", userProfile.id);
-
-        if (updateError) {
-          console.error("Supabase error:", updateError);
-          throw updateError;
-        }
-
-        // Verify the update by fetching fresh data
-        const { data: updatedProfile, error: fetchError } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", userProfile.id)
-          .single();
-
-        if (fetchError) {
-          console.error("Error fetching updated profile:", fetchError);
-        } else if (updatedProfile) {
-          // Update local state with fresh data from Supabase
-          const [steps, water] = (updatedProfile.bio || "0|0").split("|");
-          setStepsCompleted(parseInt(steps || "0") || 0);
-          setWaterConsumed(parseFloat(water || "0") || 0);
-        }
-      } else {
-        localStorage.setItem(`targets_${userProfile.id}`, bioValue);
-        setStepsCompleted(0);
-        setWaterConsumed(parseFloat(waterConsumed.toString()) || 0);
-      }
-
-      setShowTargetsModal(false);
-      toast.success("✓ Steps reset to 0!");
-    } catch (error) {
-      console.error("Error resetting steps:", error);
-      toast.error("Failed to reset steps");
     }
   };
 
