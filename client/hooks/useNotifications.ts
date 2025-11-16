@@ -44,11 +44,7 @@ export function useNotifications(userId?: string) {
           related_user_id,
           related_id,
           is_read,
-          created_at,
-          users!notifications_related_user_id_fkey (
-            full_name,
-            profile_picture_url
-          )
+          created_at
         `
         )
         .eq("user_id", userId)
@@ -62,11 +58,7 @@ export function useNotifications(userId?: string) {
       }
 
       if (data) {
-        const formattedNotifications: Notification[] = data.map((notif: any) => ({
-          ...notif,
-          related_user: notif.users,
-        }));
-        setNotifications(formattedNotifications);
+        setNotifications(data);
 
         const unread = formattedNotifications.filter((n) => !n.is_read).length;
         setUnreadCount(unread);
