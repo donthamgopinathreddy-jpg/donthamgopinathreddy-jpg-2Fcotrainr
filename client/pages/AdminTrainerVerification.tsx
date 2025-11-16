@@ -1,10 +1,20 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminTrainerVerification } from "@/hooks/useAdminTrainerVerification";
 import { TrainerVerificationCard } from "@/components/TrainerVerificationCard";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { AlertCircle, Loader } from "lucide-react";
+import {
+  AlertCircle,
+  Loader,
+  LogOut,
+  Users,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Settings,
+} from "lucide-react";
 
 const AdminTrainerVerification: React.FC = () => {
   const { userProfile } = useAuth();
