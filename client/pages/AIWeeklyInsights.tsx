@@ -213,13 +213,13 @@ export default function AIWeeklyInsights() {
         <Card className="p-6 mb-8 bg-white/80 backdrop-blur border-orange-100">
           <div className="flex items-center gap-3 mb-6">
             <Zap className="w-6 h-6 text-orange-500" />
-            <h3 className="text-lg font-bold">AI Observations</h3>
+            <h3 className="text-lg font-bold text-black dark:text-white">AI Observations</h3>
           </div>
 
           <div className="space-y-3">
             {insights.aiObservations.map((obs, idx) => (
-              <div key={idx} className="p-3 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg border border-orange-100">
-                <p className="text-sm">{obs}</p>
+              <div key={idx} className="p-3 bg-gradient-to-r from-orange-300 to-yellow-300 dark:from-orange-600 dark:to-yellow-600 rounded-lg border-2 border-orange-400 dark:border-orange-700">
+                <p className="text-sm font-medium text-black dark:text-white">{obs}</p>
               </div>
             ))}
           </div>
@@ -229,25 +229,25 @@ export default function AIWeeklyInsights() {
         <Card className="p-6 mb-8 bg-white/80 backdrop-blur border-orange-100">
           <div className="flex items-center gap-3 mb-6">
             <TrendingUp className="w-6 h-6 text-orange-500" />
-            <h3 className="text-lg font-bold">Personalized Recommendations</h3>
+            <h3 className="text-lg font-bold text-black dark:text-white">Personalized Recommendations</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 rounded-lg border border-orange-100 bg-orange-50">
-              <h4 className="font-semibold text-sm mb-2">💪 Workout</h4>
-              <p className="text-sm text-gray-700">{insights.recommendations.workoutSuggestion}</p>
+            <div className="p-4 rounded-lg border-2 border-purple-400 bg-gradient-to-br from-purple-300 to-purple-200 dark:from-purple-700 dark:to-purple-600">
+              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">💪 Workout</h4>
+              <p className="text-sm font-medium text-black dark:text-white">{insights.recommendations.workoutSuggestion}</p>
             </div>
-            <div className="p-4 rounded-lg border border-orange-100 bg-orange-50">
-              <h4 className="font-semibold text-sm mb-2">🍗 Diet</h4>
-              <p className="text-sm text-gray-700">{insights.recommendations.dietModification}</p>
+            <div className="p-4 rounded-lg border-2 border-green-400 bg-gradient-to-br from-green-300 to-green-200 dark:from-green-700 dark:to-green-600">
+              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">🍗 Diet</h4>
+              <p className="text-sm font-medium text-black dark:text-white">{insights.recommendations.dietModification}</p>
             </div>
-            <div className="p-4 rounded-lg border border-orange-100 bg-orange-50">
-              <h4 className="font-semibold text-sm mb-2">💧 Hydration</h4>
-              <p className="text-sm text-gray-700">{insights.recommendations.hydrationTarget}</p>
+            <div className="p-4 rounded-lg border-2 border-blue-400 bg-gradient-to-br from-blue-300 to-blue-200 dark:from-blue-700 dark:to-blue-600">
+              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">💧 Hydration</h4>
+              <p className="text-sm font-medium text-black dark:text-white">{insights.recommendations.hydrationTarget}</p>
             </div>
-            <div className="p-4 rounded-lg border border-orange-100 bg-orange-50">
-              <h4 className="font-semibold text-sm mb-2">👟 Steps</h4>
-              <p className="text-sm text-gray-700">{insights.recommendations.stepChallenge}</p>
+            <div className="p-4 rounded-lg border-2 border-pink-400 bg-gradient-to-br from-pink-300 to-pink-200 dark:from-pink-700 dark:to-pink-600">
+              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">👟 Steps</h4>
+              <p className="text-sm font-medium text-black dark:text-white">{insights.recommendations.stepChallenge}</p>
             </div>
           </div>
         </Card>
