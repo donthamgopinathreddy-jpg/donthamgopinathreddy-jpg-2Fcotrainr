@@ -20,7 +20,7 @@ export default function FollowersFollowingPage() {
   const { followers, following, loading } = useFollowers(userId);
   const { isFollowing, toggleFollow } = useFollows();
   const [activeTab, setActiveTab] = useState<"followers" | "following">(
-    "followers",
+    initialTab || "followers",
   );
   const [followingStates, setFollowingStates] = useState<Map<string, boolean>>(
     new Map(),
