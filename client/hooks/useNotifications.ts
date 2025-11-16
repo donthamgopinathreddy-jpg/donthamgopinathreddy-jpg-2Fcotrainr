@@ -92,7 +92,6 @@ export function useNotifications(userId?: string) {
 
     try {
       let data: NotificationData[] = [];
-      let hasError = false;
 
       try {
         const response = await supabase
@@ -103,26 +102,38 @@ export function useNotifications(userId?: string) {
           .limit(20);
 
         if (response.error) {
-          console.debug(
-            "Supabase notifications error:",
-            response.error?.message || response.error,
-          );
-          hasError = true;
+          // Check if it's a "not found" error (table doesn't exist)
+          const errorMsg = response.error?.message || "";
+          if (
+            errorMsg.includes("does not exist") ||
+            errorMsg.includes("relation") ||
+            response.error?.code === "PGRST116"
+          ) {
+            // Table doesn't exist yet - use empty array
+            console.debug("Notifications table not yet created");
+            data = [];
+          } else {
+            console.debug(
+              "Supabase notifications error:",
+              response.error?.message || response.error,
+            );
+            data = [];
+          }
         } else if (response.data && Array.isArray(response.data)) {
           data = response.data;
         }
       } catch (e) {
-        // Network error or other fetch issue
+        // Network error or other fetch issue - silently handle
         console.debug(
           "Fetch notifications error:",
           e instanceof Error ? e.message : String(e),
         );
-        hasError = true;
+        data = [];
       }
 
       if (!isMountedRef.current) return;
 
-      if (hasError || data.length === 0) {
+      if (data.length === 0) {
         setNotifications([]);
         setUnreadCount(0);
       } else {
