@@ -296,6 +296,20 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                       >
                         Change Password
                       </button>
+                      <button
+                        onClick={() => setShowActivityLog(true)}
+                        className="w-full px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium text-sm flex items-center justify-center gap-2"
+                      >
+                        <Clock className="w-4 h-4" />
+                        View Activity Log
+                      </button>
+                      <button
+                        onClick={() => setShowNotificationPrefs(true)}
+                        className="w-full px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium text-sm flex items-center justify-center gap-2"
+                      >
+                        <Bell className="w-4 h-4" />
+                        Notification Preferences
+                      </button>
                     </div>
                   </div>
                 </div>
