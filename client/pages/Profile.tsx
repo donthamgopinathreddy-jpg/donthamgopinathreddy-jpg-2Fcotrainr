@@ -551,7 +551,7 @@ export default function Profile() {
 
           <div className="flex items-center justify-center gap-6 mb-6">
             <button
-              onClick={() => navigate("/followers")}
+              onClick={() => navigate("/followers-following")}
               className="text-center hover:opacity-80 transition-opacity flex-1"
             >
               <div
@@ -567,7 +567,7 @@ export default function Profile() {
             </button>
             <div className="h-8 w-px bg-orange-300"></div>
             <button
-              onClick={() => navigate("/following")}
+              onClick={() => navigate("/followers-following")}
               className="text-center hover:opacity-80 transition-opacity flex-1"
             >
               <div
