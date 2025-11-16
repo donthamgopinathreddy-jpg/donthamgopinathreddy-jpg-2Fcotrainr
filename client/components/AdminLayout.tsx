@@ -5,7 +5,7 @@ import { useActivityLog } from "@/hooks/useActivityLog";
 import { useNotificationPreferences, type NotificationPreferences } from "@/hooks/useNotificationPreferences";
 import AdminSidebar from "./AdminSidebar";
 import { supabase } from "@/lib/supabase";
-import { X, Bell, Clock, LogOut, User, ChevronDown } from "lucide-react";
+import { X, Bell, Clock, LogOut, User, ChevronDown, Menu } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
