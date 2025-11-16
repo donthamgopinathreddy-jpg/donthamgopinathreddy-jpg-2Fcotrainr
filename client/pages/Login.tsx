@@ -22,6 +22,15 @@ export default function Login() {
   const navigate = useNavigate();
   const { user, signIn: authSignIn } = useAuth();
   const { verifyPIN } = usePINAuth();
+  const {
+    isAvailable: biometricAvailable,
+    biometricType,
+    isEnabled: biometricEnabled,
+    loading: biometricLoading,
+    authenticateWithBiometric,
+    isBiometricEnabled,
+  } = useBiometricAuth();
+
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
