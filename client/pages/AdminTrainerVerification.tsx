@@ -336,30 +336,30 @@ const AdminTrainerVerification: React.FC = () => {
         <div className="bg-gradient-to-r from-slate-50 to-gray-50 border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-6 py-6">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {/* Profile Section */}
-              <div className="bg-white rounded-lg border border-gray-200 p-4">
+              {/* Profile Section - Full Tile View */}
+              <div className="bg-white rounded-lg border border-gray-200 p-6">
                 <h3 className="text-sm font-semibold text-gray-900 mb-4">Profile Picture</h3>
-                <div className="flex flex-col items-center gap-3">
-                  <label className="relative cursor-pointer group">
+                <div className="flex flex-col items-center gap-4">
+                  <label className="relative cursor-pointer group w-full">
                     {userProfile?.profile_picture_url ? (
                       <img
                         src={userProfile.profile_picture_url}
                         alt={userProfile.full_name}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-[#FF7A00]"
+                        className="w-full aspect-square rounded-lg object-cover"
                       />
                     ) : (
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#FF7A00] to-orange-600 flex items-center justify-center text-white font-bold text-2xl">
+                      <div className="w-full aspect-square rounded-lg bg-gradient-to-br from-[#FF7A00] to-orange-600 flex items-center justify-center text-white font-bold text-6xl">
                         {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
                       </div>
                     )}
 
-                    {/* Camera Icon Overlay */}
-                    <div className="absolute inset-0 rounded-full bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center transition-all duration-200">
-                      <div className="bg-[#FF7A00] rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    {/* Camera Icon Overlay - Center */}
+                    <div className="absolute inset-0 rounded-lg bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center transition-all duration-200">
+                      <div className="bg-[#FF7A00] rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         {uploadingPic ? (
-                          <Loader className="w-5 h-5 text-white animate-spin" />
+                          <Loader className="w-6 h-6 text-white animate-spin" />
                         ) : (
-                          <Camera className="w-5 h-5 text-white" />
+                          <Camera className="w-6 h-6 text-white" />
                         )}
                       </div>
                     </div>
@@ -372,6 +372,7 @@ const AdminTrainerVerification: React.FC = () => {
                       onChange={handleProfilePictureUpload}
                     />
                   </label>
+                  <p className="text-xs text-gray-500 text-center">Click to change profile picture</p>
                 </div>
               </div>
 
