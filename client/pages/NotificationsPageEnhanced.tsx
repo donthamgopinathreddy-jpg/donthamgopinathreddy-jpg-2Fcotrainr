@@ -119,12 +119,14 @@ export default function NotificationsPageEnhanced() {
 
         // Fetch comment content for comment notifications
         const commentNotifs = notifications.filter(
-          (n) => n.type === "comment" && n.comment_id
+          (n) => n.type === "comment" && n.comment_id,
         );
         let commentData: { [key: string]: any } = {};
         if (commentNotifs.length > 0) {
           try {
-            const commentIds = commentNotifs.map((n) => n.comment_id).filter(Boolean) as string[];
+            const commentIds = commentNotifs
+              .map((n) => n.comment_id)
+              .filter(Boolean) as string[];
             if (commentIds.length > 0) {
               const { data: comments, error: commentError } = await supabase
                 .from("post_comments")
@@ -145,14 +147,14 @@ export default function NotificationsPageEnhanced() {
 
         // Fetch post images for like and comment notifications
         const postNotifs = notifications.filter(
-          (n) =>
-            (n.type === "like" || n.type === "comment") &&
-            n.post_id
+          (n) => (n.type === "like" || n.type === "comment") && n.post_id,
         );
         let postData: { [key: string]: any } = {};
         if (postNotifs.length > 0) {
           try {
-            const postIds = postNotifs.map((n) => n.post_id).filter(Boolean) as string[];
+            const postIds = postNotifs
+              .map((n) => n.post_id)
+              .filter(Boolean) as string[];
             const uniquePostIds = Array.from(new Set(postIds));
             if (uniquePostIds.length > 0) {
               const { data: posts, error: postError } = await supabase
@@ -190,7 +192,10 @@ export default function NotificationsPageEnhanced() {
           }
 
           // Add post image if available
-          if ((notif.type === "like" || notif.type === "comment") && notif.post_id) {
+          if (
+            (notif.type === "like" || notif.type === "comment") &&
+            notif.post_id
+          ) {
             if (postData[notif.post_id]) {
               enrichedNotif.post_image_url = postData[notif.post_id];
             }
@@ -315,7 +320,7 @@ export default function NotificationsPageEnhanced() {
   };
 
   const getNotificationMessage = (
-    notification: NotificationWithUser
+    notification: NotificationWithUser,
   ): { title: string; message: string; commentContent?: string } => {
     const actorName = notification.actor?.full_name || "Someone";
 
@@ -374,7 +379,8 @@ export default function NotificationsPageEnhanced() {
       clearTimeout(longPressTimer);
     };
 
-    const { title, message, commentContent } = getNotificationMessage(notification);
+    const { title, message, commentContent } =
+      getNotificationMessage(notification);
 
     // Get notification type icon with Instagram style
     const getTypeIcon = (type: string) => {
@@ -475,10 +481,14 @@ export default function NotificationsPageEnhanced() {
                         theme === "dark" ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
-                      {notification.type === "follow" && "started following you"}
+                      {notification.type === "follow" &&
+                        "started following you"}
                       {notification.type === "like" && "liked your post"}
-                      {notification.type === "comment" && "commented on your post"}
-                      {!["follow", "like", "comment"].includes(notification.type) && message}
+                      {notification.type === "comment" &&
+                        "commented on your post"}
+                      {!["follow", "like", "comment"].includes(
+                        notification.type,
+                      ) && message}
                     </div>
                     <p
                       className={`text-xs mt-1 ${
@@ -521,7 +531,8 @@ export default function NotificationsPageEnhanced() {
               </div>
 
               {/* Post Thumbnail or Action Button */}
-              {notification.type === "like" || notification.type === "comment" ? (
+              {notification.type === "like" ||
+              notification.type === "comment" ? (
                 notification.post_image_url ? (
                   <img
                     src={notification.post_image_url}
@@ -702,7 +713,9 @@ export default function NotificationsPageEnhanced() {
         ) : (
           <div
             className={`${
-              theme === "dark" ? "bg-gray-900/50" : "bg-white/40 backdrop-blur-sm"
+              theme === "dark"
+                ? "bg-gray-900/50"
+                : "bg-white/40 backdrop-blur-sm"
             } rounded-xl overflow-hidden shadow-md`}
           >
             {groupedNotifications.today.length > 0 && (
