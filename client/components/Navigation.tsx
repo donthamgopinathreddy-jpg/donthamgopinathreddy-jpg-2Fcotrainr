@@ -26,14 +26,14 @@ const Navigation = () => {
   const navItems = isTrainer
     ? [
         { path: "/", label: "Home", icon: Home },
-        { path: "/leaderboard", label: "Leaderboard", icon: Trophy },
+        { path: "/training-hub", label: "Training", icon: Dumbbell },
         { path: "/messages", label: "Messages", icon: MessageCircle },
         { path: "/profile", label: "Profile", icon: User },
       ]
     : [
         { path: "/", label: "Home", icon: Home },
         { path: "/discover", label: "Discover", icon: MapPin },
-        { path: "/leaderboard", label: "Leaderboard", icon: Trophy },
+        { path: "/training-hub", label: "Training", icon: Dumbbell },
         { path: "/messages", label: "Messages", icon: MessageCircle },
         { path: "/profile", label: "Profile", icon: User },
       ];
