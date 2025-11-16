@@ -36,6 +36,7 @@ import ActivityDetail from "./pages/ActivityDetail";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
 import Leaderboard from "./pages/Leaderboard";
+import Upgrade from "./pages/Upgrade";
 import TrainerBookingPayment from "./pages/TrainerBookingPayment";
 import Notifications from "./pages/Notifications";
 import FollowersFollowingPage from "./pages/FollowersFollowingPage";
