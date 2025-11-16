@@ -27,17 +27,6 @@ export default function TrainingHubCarousel({
     }
   }, [externalIndex]);
 
-  const goToPrevious = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? sections.length - 1 : prevIndex - 1,
-    );
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === sections.length - 1 ? 0 : prevIndex + 1,
-    );
-  };
 
   const currentSection = sections[currentIndex];
 
