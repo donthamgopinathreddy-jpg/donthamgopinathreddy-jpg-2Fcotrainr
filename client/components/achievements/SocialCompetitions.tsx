@@ -83,11 +83,11 @@ export const SocialCompetitions = ({ variant = "full" }: SocialCompetitionsProps
     <div className="space-y-4">
       {/* Header */}
       <h2
-        className={`text-lg font-bold flex items-center gap-2 ${
+        className={`text-sm sm:text-base md:text-lg font-bold flex items-center gap-2 ${
           theme === "dark" ? "text-white" : "text-gray-900"
         }`}
       >
-        <span className="text-xl">⚡</span>
+        <span className="text-lg sm:text-xl">⚡</span>
         Social Competitions
       </h2>
 
@@ -99,7 +99,7 @@ export const SocialCompetitions = ({ variant = "full" }: SocialCompetitionsProps
             <button
               key={competition.id}
               onClick={() => setSelectedCompetitionId(competition.id)}
-              className={`rounded-xl p-3 transition-all text-center ${
+              className={`rounded-xl p-2 sm:p-3 transition-all text-center ${
                 isSelected
                   ? theme === "dark"
                     ? "bg-purple-500/30 border border-purple-500/50"
