@@ -203,33 +203,76 @@ const AdminTrainerVerification: React.FC = () => {
 
       {/* Settings Panel */}
       {showSettings && (
-        <div className="bg-blue-50 border-b border-blue-200">
-          <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-2">Admin Information</h3>
-                <div className="space-y-1 text-sm text-gray-600">
-                  <p>
-                    <strong>Role:</strong> System Administrator
-                  </p>
-                  <p>
-                    <strong>Status:</strong> <span className="text-green-600">● Active</span>
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {userProfile?.email}
-                  </p>
+        <div className="bg-gradient-to-r from-slate-50 to-gray-50 border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-6 py-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {/* Profile Section */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4">
+                <h3 className="text-sm font-semibold text-gray-900 mb-4">Profile Picture</h3>
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FF7A00] to-orange-600 flex items-center justify-center text-white font-bold text-xl">
+                    {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
+                  </div>
+                  <label className="flex items-center gap-2 px-3 py-2 bg-[#FF7A00] text-white text-sm font-medium rounded-lg hover:bg-[#E67000] cursor-pointer transition-colors">
+                    <span>Change Picture</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        // Image upload functionality can be implemented here
+                        toast({
+                          title: "Profile Picture",
+                          description: "Profile picture feature coming soon",
+                          variant: "default",
+                        });
+                      }}
+                    />
+                  </label>
                 </div>
               </div>
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-2">Quick Actions</h3>
-                <div className="space-y-2">
-                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-white rounded transition-colors">
+
+              {/* Admin Information */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4">
+                <h3 className="text-sm font-semibold text-gray-900 mb-4">Admin Information</h3>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <p className="text-gray-600 font-medium">Role</p>
+                    <p className="text-gray-900">System Administrator</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 font-medium">Status</p>
+                    <p className="text-green-600 flex items-center gap-1">
+                      <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                      Active
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 font-medium">Email</p>
+                    <p className="text-gray-900 break-all">{userProfile?.email}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* System Settings & Actions */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4">
+                <h3 className="text-sm font-semibold text-gray-900 mb-4">System Settings</h3>
+                <div className="space-y-2 mb-4">
+                  <p className="text-xs text-gray-500 mb-2">Settings & Configuration</p>
+                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
+                    Notification Preferences
+                  </button>
+                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
                     View Activity Log
                   </button>
-                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-white rounded transition-colors">
-                    System Settings
-                  </button>
                 </div>
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
               </div>
             </div>
           </div>
