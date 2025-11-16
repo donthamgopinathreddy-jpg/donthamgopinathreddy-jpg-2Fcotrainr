@@ -17,7 +17,6 @@ import { useBiometricAuth } from "@/hooks/useBiometricAuth";
 export default function Login() {
   const navigate = useNavigate();
   const { user, signIn: authSignIn } = useAuth();
-  const { verifyPIN } = usePINAuth();
   const {
     isAvailable: biometricAvailable,
     biometricType,
