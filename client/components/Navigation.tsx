@@ -15,6 +15,11 @@ const Navigation = () => {
   const isTrainer = userProfile?.role === "trainer";
   const isAdmin = isUserAdmin(userProfile);
 
+  // Don't show navigation for admin users
+  if (isAdmin) {
+    return null;
+  }
+
   let navItems = isTrainer
     ? [
         {
