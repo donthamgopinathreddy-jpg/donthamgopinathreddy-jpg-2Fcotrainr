@@ -139,6 +139,12 @@ export default function MoodTrackerDB() {
           💡 Track your mood daily to see your wellness journey!
         </div>
       )}
+
+      {selectedMood && (
+        <div className="mt-6">
+          <MoodSuggestions moodValue={selectedMood} />
+        </div>
+      )}
     </div>
   );
 }
