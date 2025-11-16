@@ -119,21 +119,23 @@ export default function NotificationsPageEnhanced() {
 
         // Fetch comment content for comment notifications
         const commentNotifs = notifications.filter(
-          (n) => (n as any).type === "comment" && (n as any).comment_id
+          (n) => n.type === "comment" && n.comment_id
         );
         let commentData: { [key: string]: any } = {};
         if (commentNotifs.length > 0) {
           try {
-            const commentIds = commentNotifs.map((n) => (n as any).comment_id);
-            const { data: comments, error: commentError } = await supabase
-              .from("post_comments")
-              .select("id, content")
-              .in("id", commentIds);
+            const commentIds = commentNotifs.map((n) => n.comment_id).filter(Boolean) as string[];
+            if (commentIds.length > 0) {
+              const { data: comments, error: commentError } = await supabase
+                .from("post_comments")
+                .select("id, content")
+                .in("id", commentIds);
 
-            if (!commentError && comments) {
-              comments.forEach((comment) => {
-                commentData[comment.id] = comment.content;
-              });
+              if (!commentError && comments) {
+                comments.forEach((comment) => {
+                  commentData[comment.id] = comment.content;
+                });
+              }
             }
           } catch (commentErr) {
             console.debug("Error fetching comment content:", commentErr);
