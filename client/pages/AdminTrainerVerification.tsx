@@ -249,35 +249,35 @@ const AdminTrainerVerification: React.FC = () => {
             </Badge>
           </div>
 
-          {/* Admin Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4">
-              <div className="flex items-center justify-between">
+          {/* Admin Stats Cards - Single Row */}
+          <div className="flex gap-3 justify-between">
+            <div className="flex-1 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-3">
+              <div className="flex items-center justify-between gap-2">
                 <div>
-                  <p className="text-sm text-amber-700 font-medium">Pending Reviews</p>
-                  <p className="text-3xl font-bold text-amber-900 mt-1">{pendingCount}</p>
+                  <p className="text-xs text-amber-700 font-medium">Pending</p>
+                  <p className="text-2xl font-bold text-amber-900">{pendingCount}</p>
                 </div>
-                <Clock className="w-8 h-8 text-amber-600 opacity-20" />
+                <Clock className="w-6 h-6 text-amber-600 opacity-30 flex-shrink-0" />
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-center justify-between">
+            <div className="flex-1 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3">
+              <div className="flex items-center justify-between gap-2">
                 <div>
-                  <p className="text-sm text-green-700 font-medium">Approved</p>
-                  <p className="text-3xl font-bold text-green-900 mt-1">{approvedCount}</p>
+                  <p className="text-xs text-green-700 font-medium">Approved</p>
+                  <p className="text-2xl font-bold text-green-900">{approvedCount}</p>
                 </div>
-                <CheckCircle className="w-8 h-8 text-green-600 opacity-20" />
+                <CheckCircle className="w-6 h-6 text-green-600 opacity-30 flex-shrink-0" />
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-lg p-4">
-              <div className="flex items-center justify-between">
+            <div className="flex-1 bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-lg p-3">
+              <div className="flex items-center justify-between gap-2">
                 <div>
-                  <p className="text-sm text-red-700 font-medium">Rejected</p>
-                  <p className="text-3xl font-bold text-red-900 mt-1">{rejectedCount}</p>
+                  <p className="text-xs text-red-700 font-medium">Rejected</p>
+                  <p className="text-2xl font-bold text-red-900">{rejectedCount}</p>
                 </div>
-                <XCircle className="w-8 h-8 text-red-600 opacity-20" />
+                <XCircle className="w-6 h-6 text-red-600 opacity-30 flex-shrink-0" />
               </div>
             </div>
           </div>
