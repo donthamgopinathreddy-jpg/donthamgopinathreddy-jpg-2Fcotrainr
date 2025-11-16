@@ -521,33 +521,33 @@ const AdminTrainerVerification: React.FC = () => {
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-3 px-2">Trainer Verification Status</h3>
               <div className="grid grid-cols-3 gap-3">
-                <div className="bg-gradient-to-br from-amber-600 to-amber-900 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-amber-500/50 transition-all duration-200">
+                <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-amber-400/50 transition-all duration-200">
                   <div className="flex items-center justify-between gap-2">
                     <div>
-                      <p className="text-[10px] text-amber-100 font-semibold uppercase">Pending</p>
-                      <p className="text-2xl font-bold text-white mt-1">{pendingCount}</p>
+                      <p className="text-[10px] text-amber-700 font-semibold uppercase">Pending</p>
+                      <p className="text-2xl font-bold text-amber-900 mt-1">{pendingCount}</p>
                     </div>
-                    <Clock className="w-5 h-5 text-amber-200 flex-shrink-0" />
+                    <Clock className="w-5 h-5 text-amber-500 flex-shrink-0" />
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-600 to-green-900 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-green-500/50 transition-all duration-200">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-green-400/50 transition-all duration-200">
                   <div className="flex items-center justify-between gap-2">
                     <div>
-                      <p className="text-[10px] text-green-100 font-semibold uppercase">Approved</p>
-                      <p className="text-2xl font-bold text-white mt-1">{approvedCount}</p>
+                      <p className="text-[10px] text-green-700 font-semibold uppercase">Approved</p>
+                      <p className="text-2xl font-bold text-green-900 mt-1">{approvedCount}</p>
                     </div>
-                    <CheckCircle className="w-5 h-5 text-green-200 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-red-600 to-red-900 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-red-500/50 transition-all duration-200">
+                <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-3 backdrop-blur-md border border-white/20 hover:shadow-lg hover:shadow-red-400/50 transition-all duration-200">
                   <div className="flex items-center justify-between gap-2">
                     <div>
-                      <p className="text-[10px] text-red-100 font-semibold uppercase">Rejected</p>
-                      <p className="text-2xl font-bold text-white mt-1">{rejectedCount}</p>
+                      <p className="text-[10px] text-red-700 font-semibold uppercase">Rejected</p>
+                      <p className="text-2xl font-bold text-red-900 mt-1">{rejectedCount}</p>
                     </div>
-                    <XCircle className="w-5 h-5 text-red-200 flex-shrink-0" />
+                    <XCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
                   </div>
                 </div>
               </div>
