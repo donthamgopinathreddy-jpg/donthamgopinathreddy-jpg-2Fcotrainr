@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChefHat, Sparkles, Calendar, TrendingUp, AlertCircle } from "lucide-react";
