@@ -37,6 +37,9 @@ import UserProfile from "./pages/UserProfile";
 import Leaderboard from "./pages/Leaderboard";
 import TrainerBookingPayment from "./pages/TrainerBookingPayment";
 import Notifications from "./pages/Notifications";
+import FollowersPage from "./pages/FollowersPage";
+import FollowingPage from "./pages/FollowingPage";
+import NotificationsPageEnhanced from "./pages/NotificationsPageEnhanced";
 import Navigation from "./components/Navigation";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
@@ -225,7 +228,27 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <AppLayout>
-              <Notifications />
+              <NotificationsPageEnhanced />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/followers"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <FollowersPage />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/following"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <FollowingPage />
             </AppLayout>
           </ProtectedRoute>
         }
