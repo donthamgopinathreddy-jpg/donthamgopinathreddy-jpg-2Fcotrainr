@@ -1,27 +1,18 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GlassyTile from "@/components/GlassyTile";
-import StreaksCard from "@/components/StreaksCard";
-import ProgressTracker from "@/components/ProgressTracker";
-import MoodTrackerDB from "@/components/MoodTrackerDB";
-import WeeklyMoodAnalytics from "@/components/WeeklyMoodAnalytics";
-import NotificationsDropdown from "@/components/NotificationsDropdown";
-import TrainingHubCard from "@/components/TrainingHubCard";
 import SubscriptionModal from "@/components/SubscriptionModal";
 import {
   Dumbbell,
   Apple,
-  MessageCircle,
   Utensils,
   Flame,
   Footprints,
   Droplets,
   Newspaper,
-  Briefcase,
   Settings,
   Activity,
   Upload,
-  Moon,
   Sun,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -29,10 +20,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
 import { useHealthSync } from "@/hooks/useHealthSync";
-import { useMoodLogs } from "@/hooks/useMoodLogs";
 import { useStepCounter } from "@/hooks/useStepCounter";
-import { useDailyStreak } from "@/hooks/useDailyStreak";
 import { useStepAchievements } from "@/hooks/useStepAchievements";
+import NotificationsDropdown from "@/components/NotificationsDropdown";
 
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
