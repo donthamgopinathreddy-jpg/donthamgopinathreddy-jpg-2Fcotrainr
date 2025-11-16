@@ -311,20 +311,6 @@ const AdminTrainerVerification: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF7A00] to-orange-600 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">
-                  {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
-                </span>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-gray-900">
-                  {userProfile?.full_name || "Admin"}
-                </p>
-                <p className="text-xs text-gray-500">{userProfile?.email}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
               {/* Profile Picture Circle - Only visible when settings closed */}
               {!showSettings && (
                 <label className="relative cursor-pointer group">
@@ -335,13 +321,13 @@ const AdminTrainerVerification: React.FC = () => {
                       className="w-10 h-10 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF7A00] to-orange-600 flex items-center justify-center text-white font-bold text-sm">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-900 to-pink-600 flex items-center justify-center text-white font-bold text-sm">
                       {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
                     </div>
                   )}
 
                   {/* Camera Icon in Bottom-Right Corner */}
-                  <div className="absolute bottom-0 right-0 bg-[#FF7A00] rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg">
+                  <div className="absolute bottom-0 right-0 bg-pink-600 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg">
                     {uploadingPic ? (
                       <Loader className="w-3 h-3 text-white animate-spin" />
                     ) : (
@@ -359,18 +345,30 @@ const AdminTrainerVerification: React.FC = () => {
                 </label>
               )}
 
-              <button
-                onClick={() => setShowSettings(!showSettings)}
-                className={`p-2 rounded-lg transition-colors ${
-                  showSettings
-                    ? "bg-blue-100 text-blue-600"
-                    : "hover:bg-gray-100 text-gray-600"
-                }`}
-                title="Settings"
-              >
-                <Settings className="w-5 h-5" />
-              </button>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-900 to-pink-600 flex items-center justify-center">
+                <span className="text-white font-bold text-lg">
+                  {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
+                </span>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-900">
+                  {userProfile?.full_name || "Admin"}
+                </p>
+                <p className="text-xs text-gray-500">{userProfile?.email}</p>
+              </div>
             </div>
+
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className={`p-2 rounded-lg transition-colors ${
+                showSettings
+                  ? "bg-blue-100 text-blue-600"
+                  : "hover:bg-gray-100 text-gray-600"
+              }`}
+              title="Settings"
+            >
+              <Settings className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
