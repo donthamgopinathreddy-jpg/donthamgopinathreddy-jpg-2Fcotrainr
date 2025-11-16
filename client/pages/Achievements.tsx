@@ -89,49 +89,32 @@ export default function Achievements() {
       <div
         className={`sticky top-0 z-20 border-b ${
           theme === "dark"
-            ? "bg-gray-900/95 border-gray-800/50"
-            : aestheticStyle === "minimal"
-              ? "bg-white/95 border-gray-200"
-              : "bg-white/95 border-blue-100/50"
+            ? "bg-gray-950/95 border-gray-800/50"
+            : "bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-purple-200/30"
         } backdrop-blur-md`}
       >
         <div className="max-w-5xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <button
-                onClick={() => navigate(-1)}
-                className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => navigate(-1)}
+              className={`p-2 rounded-xl transition-all flex-shrink-0 hover:scale-110 active:scale-95 ${
+                theme === "dark"
+                  ? "hover:bg-gray-800 text-gray-400 hover:text-white"
+                  : "hover:bg-white/60 text-gray-700 hover:text-gray-900"
+              }`}
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <h1
+                className={`text-lg sm:text-2xl font-black truncate bg-clip-text text-transparent ${
                   theme === "dark"
-                    ? "hover:bg-gray-800"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
-              <h1
-                className={`text-lg sm:text-xl font-bold truncate ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
+                    ? "bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"
+                    : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"
                 }`}
               >
                 🎮 Achievements Hub
               </h1>
             </div>
-
-            {/* Style Toggle */}
-            <button
-              onClick={() =>
-                setAestheticStyle(aestheticStyle === "minimal" ? "vibrant" : "minimal")
-              }
-              className={`p-2 rounded-lg transition-all flex-shrink-0 ${
-                theme === "dark"
-                  ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
-                  : "hover:bg-gray-100 text-gray-600 hover:text-gray-900"
-              }`}
-              title={`Switch to ${aestheticStyle === "minimal" ? "vibrant" : "minimal"} style`}
-            >
-              <Palette className="w-5 h-5" />
-            </button>
-          </div>
         </div>
       </div>
 
