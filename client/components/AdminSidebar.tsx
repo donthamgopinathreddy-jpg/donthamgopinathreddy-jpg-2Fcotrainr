@@ -173,10 +173,10 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
               </label>
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-white truncate">
+                <p className="text-sm font-semibold text-orange-900 truncate">
                   {userProfile?.full_name || "Admin"}
                 </p>
-                <p className="text-xs text-gray-400 truncate">{userProfile?.email}</p>
+                <p className="text-xs text-orange-600 truncate">{userProfile?.email}</p>
               </div>
             </div>
           </div>
