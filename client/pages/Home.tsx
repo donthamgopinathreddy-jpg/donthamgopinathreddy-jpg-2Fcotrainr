@@ -267,7 +267,7 @@ export default function Home() {
       if (isDemoMode) {
         // Save to localStorage in demo mode
         localStorage.setItem(`targets_${userProfile.id}`, bioValue);
-        toast.success(`��� Added ${amount} steps!`);
+        toast.success(`���� Added ${amount} steps!`);
         return;
       }
 
@@ -335,7 +335,7 @@ export default function Home() {
     toast.success("Meeting declined");
   };
 
-  const stepsPercent = Math.round((stepsCompleted / stepsGoal) * 100);
+  const stepsPercent = Math.round((steps / stepsGoal) * 100);
   const caloriesPercent = Math.round((caloriesBurned / 400) * 100); // 400 is typical daily burn
   const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
 
