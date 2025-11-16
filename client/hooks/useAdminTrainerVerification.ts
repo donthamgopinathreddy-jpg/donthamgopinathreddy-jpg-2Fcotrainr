@@ -66,23 +66,45 @@ export function useAdminTrainerVerification() {
         return;
       }
 
+      if (!data || data.length === 0) {
+        setTrainers([]);
+        return;
+      }
+
+      // Fetch user details for all trainers
+      const userIds = data.map((item: any) => item.user_id);
+      const { data: usersData, error: usersError } = await supabase
+        .from("users")
+        .select("id, full_name, email, country")
+        .in("id", userIds);
+
+      if (usersError) {
+        console.error("Error fetching user details:", usersError);
+        // Continue without user details
+      }
+
+      const usersMap = new Map((usersData || []).map((u: any) => [u.id, u]));
+
       // Transform the data to flatten user information
-      const transformedData = (data || []).map((item: any) => ({
-        id: item.id,
-        user_id: item.user_id,
-        name: item.user?.full_name || "Unknown",
-        email: item.user?.email || "",
-        country: item.user?.country,
-        id_document_url: item.id_document_url,
-        selfie_url: item.selfie_url,
-        certificate_url: item.certificate_url,
-        verification_status: item.verification_status,
-        verified_trainer: item.verified_trainer,
-        submitted_at: item.submitted_at,
-        reviewed_by: item.reviewed_by,
-        reviewed_at: item.reviewed_at,
-        rejection_reason: item.rejection_reason,
-      }));
+      const transformedData = (data || []).map((item: any) => {
+        const user = usersMap.get(item.user_id);
+        return {
+          id: item.id,
+          user_id: item.user_id,
+          name: user?.full_name || "Unknown",
+          email: user?.email || "",
+          country: user?.country,
+          id_document_url: item.id_document_url,
+          selfie_url: item.selfie_url,
+          certificate_url: item.certificate_url,
+          verification_status: item.verification_status,
+          verified_trainer: item.verified_trainer,
+          submitted_at: item.submitted_at,
+          reviewed_by: item.reviewed_by,
+          reviewed_at: item.reviewed_at,
+          rejection_reason: item.rejection_reason,
+        };
+      });
 
       setTrainers(transformedData);
     } catch (fetchErr) {
