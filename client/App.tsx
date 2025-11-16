@@ -655,6 +655,7 @@ const App = () => {
             <LanguageProvider>
               <AuthProvider>
                 <AuthInitializer>
+                  <PermissionRequester />
                   <Toaster />
                   <Sonner />
                   <AppRoutes />
