@@ -61,7 +61,11 @@ export default function FollowersModal({ isOpen, onClose, userId }: FollowersMod
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-0 border-b" className={theme === "dark" ? "border-gray-800" : "border-gray-200"}>
+        <div
+          className={`flex gap-0 border-b ${
+            theme === "dark" ? "border-gray-800" : "border-gray-200"
+          }`}
+        >
           <button
             onClick={() => setActiveTab("followers")}
             className={`flex-1 py-3 text-center font-semibold transition-colors border-b-2 ${
