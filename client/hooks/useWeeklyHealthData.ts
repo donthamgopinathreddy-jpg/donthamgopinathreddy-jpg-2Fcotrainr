@@ -100,13 +100,22 @@ export const useWeeklyHealthData = () => {
       // Using a simple estimate: 500 calories per 10,000 steps + 300 base per day
       const estimatedCaloriesBurned = Math.round((stepsTotal / 10000) * 500 + 300 * 7);
 
-      // Estimate hydration (assume 8 glasses per day if workout minutes are good)
+      // Estimate hydration (assume 8 glasses per day)
       const hydrationGlasses = 56; // 8 glasses * 7 days
 
-      // Get user's goal (default to "Maintain" if not set)
+      // Get user's goal from diet preferences or default to "Maintain"
       let userGoal: "Lose Fat" | "Build Muscle" | "Maintain" = "Maintain";
-      // This would need to be fetched from user preferences
-      // For now using a default
+      if (dietPrefs?.goal) {
+        const goalMap: Record<string, "Lose Fat" | "Build Muscle" | "Maintain"> = {
+          lose_fat: "Lose Fat",
+          build_muscle: "Build Muscle",
+          maintain: "Maintain",
+        };
+        userGoal = goalMap[dietPrefs.goal] || "Maintain";
+      }
+
+      // Get subscription level from profiles or default to "free"
+      const subscriptionLevel = (profiles?.subscription_plan || "free") as "free" | "basic" | "premium";
 
       const data: WeeklyInsightData = {
         userId: user.id,
@@ -121,7 +130,7 @@ export const useWeeklyHealthData = () => {
         proteinIntakeG,
         hydrationGlasses,
         goal: userGoal,
-        subscriptionLevel: (userProfile?.subscription_plan || "free") as "free" | "basic" | "premium",
+        subscriptionLevel,
       };
 
       setWeeklyData(data);
