@@ -225,6 +225,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
         onActivityLogChange={setShowActivityLog}
         showNotificationPrefs={showNotificationPrefs}
         onNotificationPrefsChange={setShowNotificationPrefs}
+        sidebarOpen={sidebarOpen}
+        onSidebarChange={setSidebarOpen}
       />
 
       {/* Main Content */}
