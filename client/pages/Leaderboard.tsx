@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { useAuth } from "@/contexts/AuthContext";
-import { Trophy, TrendingUp, Zap } from "lucide-react";
+import { useAchievements } from "@/hooks/useAchievements";
+import { Trophy, TrendingUp, Zap, Star, Medal } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const Leaderboard = () => {
+const Achievements = () => {
   const { theme } = useTheme();
+  const { userProfile } = useAuth();
   const { user } = useAuth();
   const {
     monthlyLeaderboard,
@@ -16,7 +18,8 @@ const Leaderboard = () => {
     getTop10,
     getUserRankContext,
   } = useLeaderboard();
-  const [activeTab, setActiveTab] = useState<"monthly" | "overall">("monthly");
+  const { achievements, userAchievements, loadingAchievements } = useAchievements(userProfile?.id);
+  const [activeTab, setActiveTab] = useState<"achievements" | "monthly" | "overall">("achievements");
 
   const displayData =
     activeTab === "monthly" ? monthlyLeaderboard : leaderboard;
