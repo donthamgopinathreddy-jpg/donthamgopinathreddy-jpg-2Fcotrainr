@@ -74,7 +74,8 @@ export function useNotifications(userId?: string) {
       setError(null);
 
       // Check if user is demo user to use mock data
-      const isDemoMode = userId.startsWith("demo-user") || userId.includes("demo");
+      const isDemoMode =
+        userId.startsWith("demo-user") || userId.includes("demo");
 
       if (isDemoMode) {
         // For demo users, return empty notifications
@@ -137,43 +138,50 @@ export function useNotifications(userId?: string) {
     }
   }, [userId]);
 
-  const markAsRead = useCallback(async (notificationId: string) => {
-    try {
-      // Always update local state
-      if (isMountedRef.current) {
-        setNotifications((prev) =>
-          prev.map((n) =>
-            n.id === notificationId ? { ...n, is_read: true } : n,
-          ),
-        );
-        setUnreadCount((prev) => Math.max(0, prev - 1));
-      }
+  const markAsRead = useCallback(
+    async (notificationId: string) => {
+      try {
+        // Always update local state
+        if (isMountedRef.current) {
+          setNotifications((prev) =>
+            prev.map((n) =>
+              n.id === notificationId ? { ...n, is_read: true } : n,
+            ),
+          );
+          setUnreadCount((prev) => Math.max(0, prev - 1));
+        }
 
-      // Skip database update for demo users
-      if (!userId || userId.startsWith("demo-user") || userId.includes("demo")) {
+        // Skip database update for demo users
+        if (
+          !userId ||
+          userId.startsWith("demo-user") ||
+          userId.includes("demo")
+        ) {
+          return true;
+        }
+
+        const { error: updateError } = await supabase
+          .from("notifications")
+          .update({ is_read: true })
+          .eq("id", notificationId);
+
+        if (updateError) {
+          console.debug("Mark as read error:", updateError?.code);
+          return false;
+        }
+
+        return true;
+      } catch (err) {
+        console.debug(
+          "Mark as read error:",
+          err instanceof Error ? err.message : String(err),
+        );
+        // Still return true since we updated local state
         return true;
       }
-
-      const { error: updateError } = await supabase
-        .from("notifications")
-        .update({ is_read: true })
-        .eq("id", notificationId);
-
-      if (updateError) {
-        console.debug("Mark as read error:", updateError?.code);
-        return false;
-      }
-
-      return true;
-    } catch (err) {
-      console.debug(
-        "Mark as read error:",
-        err instanceof Error ? err.message : String(err),
-      );
-      // Still return true since we updated local state
-      return true;
-    }
-  }, [userId]);
+    },
+    [userId],
+  );
 
   const markAllAsRead = useCallback(async () => {
     if (!userId) return false;
@@ -211,38 +219,47 @@ export function useNotifications(userId?: string) {
     }
   }, [userId]);
 
-  const deleteNotification = useCallback(async (notificationId: string) => {
-    try {
-      // Always update local state
-      if (isMountedRef.current) {
-        setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
-      }
+  const deleteNotification = useCallback(
+    async (notificationId: string) => {
+      try {
+        // Always update local state
+        if (isMountedRef.current) {
+          setNotifications((prev) =>
+            prev.filter((n) => n.id !== notificationId),
+          );
+        }
 
-      // Skip database update for demo users
-      if (!userId || userId.startsWith("demo-user") || userId.includes("demo")) {
+        // Skip database update for demo users
+        if (
+          !userId ||
+          userId.startsWith("demo-user") ||
+          userId.includes("demo")
+        ) {
+          return true;
+        }
+
+        const { error: deleteError } = await supabase
+          .from("notifications")
+          .delete()
+          .eq("id", notificationId);
+
+        if (deleteError) {
+          console.debug("Delete notification error:", deleteError?.code);
+          return false;
+        }
+
+        return true;
+      } catch (err) {
+        console.debug(
+          "Delete notification error:",
+          err instanceof Error ? err.message : String(err),
+        );
+        // Still return true since we updated local state
         return true;
       }
-
-      const { error: deleteError } = await supabase
-        .from("notifications")
-        .delete()
-        .eq("id", notificationId);
-
-      if (deleteError) {
-        console.debug("Delete notification error:", deleteError?.code);
-        return false;
-      }
-
-      return true;
-    } catch (err) {
-      console.debug(
-        "Delete notification error:",
-        err instanceof Error ? err.message : String(err),
-      );
-      // Still return true since we updated local state
-      return true;
-    }
-  }, [userId]);
+    },
+    [userId],
+  );
 
   useEffect(() => {
     isMountedRef.current = true;

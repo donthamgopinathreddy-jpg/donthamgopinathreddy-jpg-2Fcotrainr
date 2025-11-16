@@ -210,9 +210,7 @@ export default function Notifications() {
                     </h3>
                     <p
                       className={`text-base mb-3 ${
-                        theme === "dark"
-                          ? "text-gray-300"
-                          : "text-gray-700"
+                        theme === "dark" ? "text-gray-300" : "text-gray-700"
                       }`}
                     >
                       {notification.message}
