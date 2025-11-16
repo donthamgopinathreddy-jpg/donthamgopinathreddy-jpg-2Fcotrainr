@@ -212,6 +212,22 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
             </button>
 
             <button
+              onClick={() => onActivityLogChange?.(true)}
+              className="w-full flex items-center gap-3 px-4 py-2 text-gray-400 hover:text-white transition-all duration-200"
+            >
+              <Clock className="w-5 h-5" />
+              <span className="font-medium text-sm">Activity Log</span>
+            </button>
+
+            <button
+              onClick={() => onNotificationPrefsChange?.(true)}
+              className="w-full flex items-center gap-3 px-4 py-2 text-gray-400 hover:text-white transition-all duration-200"
+            >
+              <Bell className="w-5 h-5" />
+              <span className="font-medium text-sm">Notifications</span>
+            </button>
+
+            <button
               onClick={onLogout}
               className="w-full flex items-center gap-3 px-4 py-2 text-red-500 hover:text-red-400 transition-all duration-200 font-medium text-sm"
             >
