@@ -3,12 +3,7 @@ import {
   Home,
   MapPin,
   MessageCircle,
-  Utensils,
   User,
-  BarChart3,
-  Bell,
-  Trophy,
-  Dumbbell,
   Award,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,17 +21,17 @@ const Navigation = () => {
 
   const navItems = isTrainer
     ? [
-        { path: "/", label: "Home", icon: Home },
-        { path: "/achievements", label: "Achievements", icon: Award },
-        { path: "/messages", label: "Messages", icon: MessageCircle },
-        { path: "/profile", label: "Profile", icon: User },
+        { path: "/", label: "Home", icon: Home, color: "from-blue-500 to-cyan-500" },
+        { path: "/achievements", label: "Achievements", icon: Award, color: "from-purple-500 to-pink-500" },
+        { path: "/messages", label: "Messages", icon: MessageCircle, color: "from-green-500 to-emerald-500" },
+        { path: "/profile", label: "Profile", icon: User, color: "from-orange-500 to-red-500" },
       ]
     : [
-        { path: "/", label: "Home", icon: Home },
-        { path: "/discover", label: "Discover", icon: MapPin },
-        { path: "/achievements", label: "Achievements", icon: Award },
-        { path: "/messages", label: "Messages", icon: MessageCircle },
-        { path: "/profile", label: "Profile", icon: User },
+        { path: "/", label: "Home", icon: Home, color: "from-blue-500 to-cyan-500" },
+        { path: "/discover", label: "Discover", icon: MapPin, color: "from-indigo-500 to-purple-500" },
+        { path: "/achievements", label: "Achievements", icon: Award, color: "from-purple-500 to-pink-500" },
+        { path: "/messages", label: "Messages", icon: MessageCircle, color: "from-green-500 to-emerald-500" },
+        { path: "/profile", label: "Profile", icon: User, color: "from-orange-500 to-red-500" },
       ];
 
   const handleNavClick = () => {
@@ -49,84 +44,102 @@ const Navigation = () => {
     <nav
       className={`fixed bottom-0 left-0 right-0 z-50 ${
         theme === "dark"
-          ? "bg-gray-900/95 border-t border-gray-800/50 backdrop-blur-md"
-          : "bg-white/95 border-t border-gray-100 backdrop-blur-md"
-      }`}
+          ? "bg-gray-950/95 border-t border-gray-800/50"
+          : "bg-white/95 border-t border-gray-100/50"
+      } backdrop-blur-xl shadow-2xl`}
       style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}
     >
-      <div className="max-w-md mx-auto w-full px-2 py-1">
-        <div className="flex justify-between items-center gap-1">
-          {navItems.map(({ path, label, icon: Icon }) => {
+      <div className="max-w-md mx-auto w-full px-3 py-2">
+        <div className="flex justify-between items-center gap-2">
+          {navItems.map(({ path, label, icon: Icon, color }) => {
             const active = isActive(path);
             return (
               <Link
                 key={path}
                 to={path}
                 onClick={handleNavClick}
-                className={`flex-1 relative flex flex-col items-center justify-center py-2.5 px-2 transition-all duration-300 active:scale-95 rounded-xl group`}
+                className="flex-1 relative group"
               >
-                {/* Background */}
+                {/* Animated Background */}
                 <div
-                  className={`absolute inset-0 rounded-xl transition-all duration-300 ${
+                  className={`absolute inset-0 rounded-2xl transition-all duration-300 ${
                     active
-                      ? theme === "dark"
-                        ? "bg-blue-500/20"
-                        : "bg-blue-100/60"
+                      ? `bg-gradient-to-br ${color} opacity-100 shadow-lg shadow-blue-500/30`
                       : theme === "dark"
-                        ? "bg-transparent group-hover:bg-gray-800/50"
-                        : "bg-transparent group-hover:bg-gray-100/50"
+                        ? "bg-gray-800/50 group-hover:bg-gray-700/60 opacity-0 group-hover:opacity-100"
+                        : "bg-gray-100/50 group-hover:bg-gray-200/60 opacity-0 group-hover:opacity-100"
                   }`}
                 />
 
-                {/* Icon and Badge Container */}
-                <div className="relative z-10 mb-0.5">
-                  <Icon
-                    className={`w-5 h-5 transition-all duration-300 ${
+                {/* Content Container */}
+                <div className="relative z-10 flex flex-col items-center justify-center py-3 px-2 transition-all duration-300">
+                  {/* Icon Container */}
+                  <div
+                    className={`relative mb-1 transition-all duration-300 transform ${
+                      active ? "scale-110 -translate-y-0.5" : "scale-100"
+                    } ${active ? "group-hover:scale-110" : "group-hover:scale-105"}`}
+                  >
+                    <Icon
+                      className={`w-6 h-6 transition-all duration-300 ${
+                        active
+                          ? "text-white"
+                          : theme === "dark"
+                            ? "text-gray-400 group-hover:text-gray-200"
+                            : "text-gray-600 group-hover:text-gray-800"
+                      }`}
+                    />
+
+                    {/* Floating Pulse for Active */}
+                    {active && (
+                      <div
+                        className={`absolute inset-0 rounded-full border-2 border-white/30 animate-pulse`}
+                        style={{
+                          animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                        }}
+                      />
+                    )}
+
+                    {/* Unread Badge */}
+                    {path === "/messages" && totalUnreadMessages > 0 && (
+                      <div
+                        className={`absolute -top-2 -right-2 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold text-white bg-gradient-to-br from-red-500 to-pink-500 shadow-lg animate-bounce`}
+                        style={{
+                          animation: "bounce 1s cubic-bezier(0.36, 0, 0.66, -0.56) infinite",
+                        }}
+                      >
+                        {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Label */}
+                  <span
+                    className={`text-xs font-bold transition-all duration-300 ${
                       active
-                        ? theme === "dark"
-                          ? "text-blue-400"
-                          : "text-blue-600"
+                        ? "text-white"
                         : theme === "dark"
-                          ? "text-gray-400 group-hover:text-gray-300"
+                          ? "text-gray-500 group-hover:text-gray-400"
                           : "text-gray-600 group-hover:text-gray-800"
                     }`}
-                  />
-                  {path === "/messages" && totalUnreadMessages > 0 && (
+                  >
+                    {label}
+                  </span>
+
+                  {/* Animated Bottom Line for Active */}
+                  {active && (
                     <div
-                      className={`absolute -top-1 -right-1 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold text-white ${
-                        active
-                          ? "bg-red-500"
-                          : theme === "dark"
-                            ? "bg-red-500"
-                            : "bg-red-500"
-                      }`}
-                    >
-                      {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
-                    </div>
+                      className={`absolute bottom-0 left-1/2 w-1 h-1 rounded-full bg-white transform -translate-x-1/2`}
+                      style={{
+                        animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                      }}
+                    />
                   )}
                 </div>
 
-                {/* Label */}
-                <span
-                  className={`text-xs font-medium leading-none transition-all duration-300 z-10 ${
-                    active
-                      ? theme === "dark"
-                        ? "text-blue-400"
-                        : "text-blue-600"
-                      : theme === "dark"
-                        ? "text-gray-500 group-hover:text-gray-400"
-                        : "text-gray-600 group-hover:text-gray-800"
-                  }`}
-                >
-                  {label}
-                </span>
-
-                {/* Active indicator dot */}
+                {/* Glow Effect for Active */}
                 {active && (
                   <div
-                    className={`absolute bottom-1 w-1 h-1 rounded-full transition-all duration-300 ${
-                      theme === "dark" ? "bg-blue-400" : "bg-blue-600"
-                    }`}
+                    className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} opacity-20 blur-xl`}
                   />
                 )}
               </Link>
@@ -134,6 +147,25 @@ const Navigation = () => {
           })}
         </div>
       </div>
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-4px);
+          }
+        }
+      `}</style>
     </nav>
   );
 };
