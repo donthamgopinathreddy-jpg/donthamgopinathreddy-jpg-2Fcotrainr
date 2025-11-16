@@ -28,11 +28,17 @@ export function useFollowers(userId?: string) {
 
       const { data: followersData, error: followersError } = await supabase
         .from("followers")
-        .select("follower_id, follower:follower_id(id, full_name, profile_picture_url, username, bio)")
+        .select(
+          "follower_id, follower:follower_id(id, full_name, profile_picture_url, username, bio)",
+        )
         .eq("following_id", userId);
 
       if (followersError) {
-        console.debug("Fetch followers error:", followersError?.code, followersError?.message);
+        console.debug(
+          "Fetch followers error:",
+          followersError?.code,
+          followersError?.message,
+        );
         setFollowers([]);
       } else if (followersData) {
         const parsedFollowers = followersData
@@ -49,11 +55,17 @@ export function useFollowers(userId?: string) {
 
       const { data: followingData, error: followingError } = await supabase
         .from("followers")
-        .select("following_id, following:following_id(id, full_name, profile_picture_url, username, bio)")
+        .select(
+          "following_id, following:following_id(id, full_name, profile_picture_url, username, bio)",
+        )
         .eq("follower_id", userId);
 
       if (followingError) {
-        console.debug("Fetch following error:", followingError?.code, followingError?.message);
+        console.debug(
+          "Fetch following error:",
+          followingError?.code,
+          followingError?.message,
+        );
         setFollowing([]);
       } else if (followingData) {
         const parsedFollowing = followingData
@@ -70,7 +82,10 @@ export function useFollowers(userId?: string) {
 
       setError(null);
     } catch (err) {
-      console.debug("Fetch followers/following error:", err instanceof Error ? err.message : String(err));
+      console.debug(
+        "Fetch followers/following error:",
+        err instanceof Error ? err.message : String(err),
+      );
       setError("Failed to load followers");
       setFollowers([]);
       setFollowing([]);

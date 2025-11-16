@@ -1,7 +1,12 @@
 import { useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 
-export type NotificationType = "follow" | "achievement" | "meeting" | "goal_achieved" | "message";
+export type NotificationType =
+  | "follow"
+  | "achievement"
+  | "meeting"
+  | "goal_achieved"
+  | "message";
 
 export function useNotificationTrigger() {
   const sendNotification = useCallback(
@@ -11,7 +16,7 @@ export function useNotificationTrigger() {
       type: NotificationType,
       title: string,
       message: string,
-      relatedId?: string
+      relatedId?: string,
     ) => {
       try {
         const { error } = await supabase.from("notifications").insert([
@@ -39,7 +44,7 @@ export function useNotificationTrigger() {
         return false;
       }
     },
-    []
+    [],
   );
 
   const notifyFollowRequest = useCallback(
@@ -49,10 +54,10 @@ export function useNotificationTrigger() {
         followerUserId,
         "follow",
         `${followerName} followed you`,
-        `${followerName} is now following your profile`
+        `${followerName} is now following your profile`,
       );
     },
-    [sendNotification]
+    [sendNotification],
   );
 
   const notifyAchievementUnlocked = useCallback(
@@ -63,49 +68,64 @@ export function useNotificationTrigger() {
         "achievement",
         `Achievement Unlocked! 🏆`,
         `You've unlocked the "${achievementTitle}" achievement`,
-        achievementId
+        achievementId,
       );
     },
-    [sendNotification]
+    [sendNotification],
   );
 
   const notifyGoalAchieved = useCallback(
-    async (userId: string, goalName: string, trainerName: string, trainerId: string) => {
+    async (
+      userId: string,
+      goalName: string,
+      trainerName: string,
+      trainerId: string,
+    ) => {
       return sendNotification(
         userId,
         trainerId,
         "goal_achieved",
         `Goal Achieved! 🎉`,
-        `Congratulations! You've achieved the goal: "${goalName}" - ${trainerName} is proud of you!`
+        `Congratulations! You've achieved the goal: "${goalName}" - ${trainerName} is proud of you!`,
       );
     },
-    [sendNotification]
+    [sendNotification],
   );
 
   const notifyMeetingScheduled = useCallback(
-    async (userId: string, trainerName: string, trainerId: string, meetingDate: string) => {
+    async (
+      userId: string,
+      trainerName: string,
+      trainerId: string,
+      meetingDate: string,
+    ) => {
       return sendNotification(
         userId,
         trainerId,
         "meeting",
         `Meeting Scheduled 📅`,
-        `${trainerName} has scheduled a meeting for ${new Date(meetingDate).toLocaleDateString()}`
+        `${trainerName} has scheduled a meeting for ${new Date(meetingDate).toLocaleDateString()}`,
       );
     },
-    [sendNotification]
+    [sendNotification],
   );
 
   const notifyMessage = useCallback(
-    async (userId: string, senderName: string, senderId: string, message: string) => {
+    async (
+      userId: string,
+      senderName: string,
+      senderId: string,
+      message: string,
+    ) => {
       return sendNotification(
         userId,
         senderId,
         "message",
         `New Message from ${senderName}`,
-        message.substring(0, 100) + (message.length > 100 ? "..." : "")
+        message.substring(0, 100) + (message.length > 100 ? "..." : ""),
       );
     },
-    [sendNotification]
+    [sendNotification],
   );
 
   return {

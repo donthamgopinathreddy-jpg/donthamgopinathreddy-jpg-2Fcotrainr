@@ -10,11 +10,19 @@ interface FollowersModalProps {
   userId?: string;
 }
 
-export default function FollowersModal({ isOpen, onClose, userId }: FollowersModalProps) {
+export default function FollowersModal({
+  isOpen,
+  onClose,
+  userId,
+}: FollowersModalProps) {
   const { theme } = useTheme();
   const { userProfile } = useAuth();
-  const { followers, following, loading } = useFollowers(userId || userProfile?.id);
-  const [activeTab, setActiveTab] = useState<"followers" | "following">("followers");
+  const { followers, following, loading } = useFollowers(
+    userId || userProfile?.id,
+  );
+  const [activeTab, setActiveTab] = useState<"followers" | "following">(
+    "followers",
+  );
 
   if (!isOpen) return null;
 
@@ -39,12 +47,16 @@ export default function FollowersModal({ isOpen, onClose, userId }: FollowersMod
         {/* Header */}
         <div
           className={`flex items-center justify-between p-4 border-b ${
-            theme === "dark" ? "border-gray-800 bg-gray-800/50" : "border-gray-200 bg-gray-50"
+            theme === "dark"
+              ? "border-gray-800 bg-gray-800/50"
+              : "border-gray-200 bg-gray-50"
           }`}
         >
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-blue-500" />
-            <h2 className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <h2
+              className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               {activeTab === "followers" ? "Followers" : "Following"}
             </h2>
           </div>
@@ -126,23 +138,32 @@ export default function FollowersModal({ isOpen, onClose, userId }: FollowersMod
                 >
                   {/* Avatar */}
                   <img
-                    src={user.profile_picture_url || "https://via.placeholder.com/48"}
+                    src={
+                      user.profile_picture_url ||
+                      "https://via.placeholder.com/48"
+                    }
                     alt={user.full_name}
                     className="w-12 h-12 rounded-full object-cover flex-shrink-0"
                   />
 
                   {/* User Info */}
                   <div className="flex-1 min-w-0">
-                    <p className={`font-bold truncate ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                    <p
+                      className={`font-bold truncate ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                    >
                       {user.full_name}
                     </p>
                     {user.username && (
-                      <p className={`text-sm truncate ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                      <p
+                        className={`text-sm truncate ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                      >
                         @{user.username}
                       </p>
                     )}
                     {user.bio && (
-                      <p className={`text-xs line-clamp-1 mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                      <p
+                        className={`text-xs line-clamp-1 mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                      >
                         {user.bio}
                       </p>
                     )}
