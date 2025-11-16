@@ -589,7 +589,7 @@ export default function Home() {
                 className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-semibold"
               >
                 <Settings className="w-4 h-4" />
-                Edit Steps
+                Set Daily Goal
               </button>
             </div>
           </div>
