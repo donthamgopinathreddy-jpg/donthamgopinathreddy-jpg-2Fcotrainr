@@ -52,20 +52,9 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-hidden">
-      <motion.div
-        key={location.pathname}
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -100 }}
-        transition={{
-          type: "tween",
-          duration: 0.3,
-          ease: "easeInOut",
-        }}
-        className="min-h-screen"
-      >
+      <div className="min-h-screen">
         {children}
-      </motion.div>
+      </div>
       <Navigation />
     </div>
   );
