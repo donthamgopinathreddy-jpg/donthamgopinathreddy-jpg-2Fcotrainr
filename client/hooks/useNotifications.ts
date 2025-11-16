@@ -84,59 +84,49 @@ export function useNotifications(userId?: string) {
       return;
     }
 
-    // For real users, try to fetch but silently fail
+    // For real users, try to fetch but silently fail on any error
+    if (!isMountedRef.current) return;
+
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
-      setError(null);
+      let data: NotificationData[] = [];
+      let hasError = false;
 
-      // Create a timeout promise
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Fetch timeout")), 5000),
-      );
+      try {
+        const response = await supabase
+          .from("notifications")
+          .select("*")
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(20);
 
-      // Race between fetch and timeout
-      const fetchPromise = supabase
-        .from("notifications")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-        .limit(20);
-
-      const { data, error: fetchError } = await Promise.race([
-        fetchPromise,
-        timeoutPromise,
-      ]) as any;
+        if (response.error) {
+          hasError = true;
+        } else if (response.data && Array.isArray(response.data)) {
+          data = response.data;
+        }
+      } catch (e) {
+        // Network error or other fetch issue - silently fail
+        hasError = true;
+      }
 
       if (!isMountedRef.current) return;
 
-      if (fetchError) {
-        // Silently handle error - table might not exist
-        if (isMountedRef.current) {
-          setNotifications([]);
-          setUnreadCount(0);
-          setError(null);
-        }
-        return;
+      if (hasError || data.length === 0) {
+        setNotifications([]);
+        setUnreadCount(0);
+      } else {
+        const transformed = data.map(transformNotification);
+        setNotifications(transformed);
+        const unread = transformed.filter((n) => !n.is_read).length;
+        setUnreadCount(unread);
       }
 
-      if (data && Array.isArray(data)) {
-        const transformed = (data as NotificationData[]).map(
-          transformNotification,
-        );
-        if (isMountedRef.current) {
-          setNotifications(transformed);
-          const unread = transformed.filter((n) => !n.is_read).length;
-          setUnreadCount(unread);
-          setError(null);
-        }
-      } else {
-        if (isMountedRef.current) {
-          setNotifications([]);
-          setUnreadCount(0);
-        }
-      }
+      setError(null);
     } catch (err) {
-      // Silently handle all errors (network, timeout, etc)
+      // Catch any unexpected errors
       if (isMountedRef.current) {
         setNotifications([]);
         setUnreadCount(0);
