@@ -654,7 +654,16 @@ export default function UserProfile() {
               theme === "light" ? "bg-gray-50" : "bg-gray-800"
             }`}
           >
-            <div className="text-center">
+            <button
+              onClick={() =>
+                navigate(
+                  `/followers-following?userId=${user?.id}&tab=followers`,
+                )
+              }
+              className={`flex-1 text-center transition-all hover:opacity-75 ${
+                theme === "light" ? "hover:bg-gray-200" : "hover:bg-gray-700"
+              } rounded-lg py-2`}
+            >
               <p
                 className={`text-lg font-bold ${
                   theme === "light" ? "text-gray-900" : "text-white"
@@ -669,8 +678,17 @@ export default function UserProfile() {
               >
                 Followers
               </p>
-            </div>
-            <div className="text-center">
+            </button>
+            <button
+              onClick={() =>
+                navigate(
+                  `/followers-following?userId=${user?.id}&tab=following`,
+                )
+              }
+              className={`flex-1 text-center transition-all hover:opacity-75 ${
+                theme === "light" ? "hover:bg-gray-200" : "hover:bg-gray-700"
+              } rounded-lg py-2`}
+            >
               <p
                 className={`text-lg font-bold ${
                   theme === "light" ? "text-gray-900" : "text-white"
@@ -685,7 +703,7 @@ export default function UserProfile() {
               >
                 Following
               </p>
-            </div>
+            </button>
           </div>
 
           {/* Follow Button (only show for other users, not own profile) */}
