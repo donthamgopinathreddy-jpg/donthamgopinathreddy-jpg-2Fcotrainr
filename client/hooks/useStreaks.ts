@@ -25,7 +25,7 @@ export const useStreaks = () => {
     try {
       setLoading(true);
       const { data, error: fetchError } = await supabase
-        .from("streaks")
+        .from("user_streaks")
         .select("*")
         .eq("user_id", user.id)
         .maybeSingle();
@@ -53,7 +53,7 @@ export const useStreaks = () => {
       } else {
         // Create initial streak record if not exists
         const { data: newStreak, error: createError } = await supabase
-          .from("streaks")
+          .from("user_streaks")
           .insert([
             {
               user_id: user.id,
