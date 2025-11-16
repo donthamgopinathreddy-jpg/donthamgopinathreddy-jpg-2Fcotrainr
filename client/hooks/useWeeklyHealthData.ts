@@ -60,6 +60,38 @@ export const useWeeklyHealthData = () => {
 
       if (mealsError) throw new Error(`Failed to fetch meals: ${mealsError.message}`);
 
+      // Fetch workouts for the week (from user_quest_progress or check if table exists)
+      let workoutMinutesTotal = 0;
+      let workoutMinutesVsLastWeek = 0;
+
+      // Try to fetch from quest completions or workout tracking
+      const { data: questData } = await supabase
+        .from("user_quest_progress")
+        .select("progress, target")
+        .eq("user_id", user.id)
+        .gte("updated_at", `${weekStartStr}T00:00:00`)
+        .lte("updated_at", `${weekEndStr}T23:59:59`);
+
+      if (questData && questData.length > 0) {
+        // Sum up quest progress as a proxy for workout activity
+        workoutMinutesTotal = questData.reduce((sum, q) => sum + (q.progress as number || 0), 0);
+      }
+
+      // Fetch previous week's workout data for comparison
+      const { data: prevQuestData } = await supabase
+        .from("user_quest_progress")
+        .select("progress")
+        .eq("user_id", user.id)
+        .gte("updated_at", `${prevWeekStartStr}T00:00:00`)
+        .lte("updated_at", `${prevWeekEndStr}T23:59:59`);
+
+      if (prevQuestData && prevQuestData.length > 0) {
+        const prevWorkoutTotal = prevQuestData.reduce((sum, q) => sum + (q.progress as number || 0), 0);
+        if (prevWorkoutTotal > 0) {
+          workoutMinutesVsLastWeek = Math.round(((workoutMinutesTotal - prevWorkoutTotal) / prevWorkoutTotal) * 100);
+        }
+      }
+
       // Fetch previous week's health data for comparison
       const prevWeekStart = new Date(weekStartDate);
       prevWeekStart.setDate(prevWeekStart.getDate() - 7);
