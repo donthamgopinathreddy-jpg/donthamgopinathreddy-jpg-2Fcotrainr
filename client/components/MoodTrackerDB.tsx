@@ -51,10 +51,10 @@ export default function MoodTrackerDB() {
 
   return (
     <div
-      className={`rounded-3xl p-6 transition-all duration-300 border-2 ${
+      className={`rounded-3xl p-6 transition-all duration-300 ${
         theme === "dark"
-          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-700/50 shadow-2xl hover:shadow-2xl hover:shadow-pink-500/20"
-          : "bg-gradient-to-br from-white via-pink-50/20 to-rose-50/30 border-pink-300/60 shadow-2xl hover:shadow-2xl hover:shadow-pink-300/30"
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 shadow-2xl shadow-pink-500/20"
+          : "bg-gradient-to-br from-white via-pink-50/20 to-rose-50/30 shadow-2xl shadow-pink-300/30"
       }`}
     >
       {/* Header */}
@@ -81,15 +81,15 @@ export default function MoodTrackerDB() {
         <button
           onClick={() => setShowDropdown(!showDropdown)}
           disabled={isSaving || loading}
-          className={`w-full flex items-center justify-between p-4 rounded-2xl border-2 font-bold text-lg transition-all duration-300 ${
+          className={`w-full flex items-center justify-between p-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
             currentMood
               ? theme === "dark"
-                ? `bg-gradient-to-r ${currentMood.darkGradient} text-white border-transparent shadow-xl ${currentMood.shadow}`
-                : `bg-gradient-to-r ${currentMood.gradient} text-white border-transparent shadow-xl ${currentMood.shadow}`
+                ? `bg-gradient-to-r ${currentMood.darkGradient} text-white shadow-xl ${currentMood.shadow}`
+                : `bg-gradient-to-r ${currentMood.gradient} text-white shadow-xl ${currentMood.shadow}`
               : theme === "dark"
-                ? "bg-gray-800 border-gray-600 text-gray-300 hover:border-pink-500/50 hover:bg-gray-750"
-                : "bg-white border-gray-300 text-gray-700 hover:border-pink-400 hover:bg-pink-50/30 backdrop-blur-sm"
-          } hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed`}
+                ? "bg-gray-800 text-gray-300 hover:bg-gray-750"
+                : "bg-white text-gray-700 hover:bg-pink-50/30 backdrop-blur-sm"
+          } disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           <span className="flex items-center gap-3">
             <span className="text-2xl">{currentMood?.emoji || "😊"}</span>
@@ -100,17 +100,17 @@ export default function MoodTrackerDB() {
 
         {/* Dropdown Menu */}
         {showDropdown && (
-          <div className={`absolute top-full left-0 right-0 mt-2 rounded-2xl border-2 shadow-2xl z-50 overflow-hidden backdrop-blur-sm ${
+          <div className={`absolute top-full left-0 right-0 mt-2 rounded-2xl shadow-2xl z-50 overflow-hidden backdrop-blur-sm ${
             theme === "dark"
-              ? "bg-gray-800/95 border-gray-700"
-              : "bg-white/95 border-pink-200"
+              ? "bg-gray-800/95"
+              : "bg-white/95"
           }`}>
             {moods.map((mood) => (
               <button
                 key={mood.value}
                 onClick={() => handleMoodSelect(mood.value)}
                 disabled={isSaving}
-                className={`w-full px-4 py-4 flex items-center gap-3 text-left font-semibold transition-all duration-200 border-b last:border-b-0 hover:scale-105 hover:px-6 ${
+                className={`w-full px-4 py-4 flex items-center gap-3 text-left font-semibold transition-all duration-200 ${
                   selectedMood === mood.value
                     ? theme === "dark"
                       ? `bg-gradient-to-r ${mood.darkGradient} text-white`
@@ -141,14 +141,14 @@ export default function MoodTrackerDB() {
               key={mood.value}
               onClick={() => handleMoodSelect(mood.value)}
               disabled={isSaving || loading}
-              className={`flex-1 py-3 rounded-xl text-2xl transition-all duration-300 hover:scale-110 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transform ${
+              className={`flex-1 py-3 rounded-xl text-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform ${
                 selectedMood === mood.value
                   ? theme === "dark"
-                    ? `bg-gradient-to-b ${mood.darkGradient} scale-110 shadow-xl ${mood.shadow}`
-                    : `bg-gradient-to-b ${mood.gradient} scale-110 shadow-xl ${mood.shadow}`
+                    ? `bg-gradient-to-b ${mood.darkGradient} shadow-xl ${mood.shadow}`
+                    : `bg-gradient-to-b ${mood.gradient} shadow-xl ${mood.shadow}`
                   : theme === "dark"
-                    ? "bg-gray-700/50 border border-gray-600/50 hover:border-pink-500/50 hover:bg-gray-700/70"
-                    : "bg-white/60 border border-gray-300/50 hover:border-pink-400/60 hover:bg-white/80 backdrop-blur-sm"
+                    ? "bg-gray-700/50 hover:bg-gray-700/70"
+                    : "bg-white/60 hover:bg-white/80 backdrop-blur-sm"
               }`}
             >
               {mood.emoji}
@@ -162,8 +162,8 @@ export default function MoodTrackerDB() {
         <div
           className={`p-4 rounded-2xl text-center font-bold text-sm mb-4 transition-all flex items-center justify-center gap-2 ${
             theme === "dark"
-              ? "bg-gradient-to-r from-green-900/50 to-emerald-900/50 border border-green-700/60 text-green-300"
-              : "bg-gradient-to-r from-green-100/70 to-emerald-100/70 border border-green-400/60 text-green-700"
+              ? "bg-gradient-to-r from-green-900/50 to-emerald-900/50 text-green-300"
+              : "bg-gradient-to-r from-green-100/70 to-emerald-100/70 text-green-700"
           }`}
         >
           <span className="text-xl animate-bounce">✨</span>
@@ -175,8 +175,8 @@ export default function MoodTrackerDB() {
         <div
           className={`p-4 rounded-2xl text-center text-sm font-semibold mb-4 ${
             theme === "dark"
-              ? "bg-gradient-to-r from-blue-900/40 to-cyan-900/40 border border-blue-700/60 text-blue-300"
-              : "bg-gradient-to-r from-blue-100/70 to-cyan-100/70 border border-blue-400/60 text-blue-700"
+              ? "bg-gradient-to-r from-blue-900/40 to-cyan-900/40 text-blue-300"
+              : "bg-gradient-to-r from-blue-100/70 to-cyan-100/70 text-blue-700"
           }`}
         >
           💡 How are you feeling right now? Track your mood daily!
