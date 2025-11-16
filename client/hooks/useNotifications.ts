@@ -231,22 +231,33 @@ export function useNotifications(userId?: string) {
           return true;
         }
 
-        const { error: updateError } = await supabase
+        // Add timeout for update operation
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(
+            () => reject(new Error("Mark as read timeout")),
+            5000,
+          ),
+        );
+
+        const updatePromise = supabase
           .from("notifications")
           .update({ is_read: true })
           .eq("id", notificationId);
 
-        if (updateError) {
-          console.debug("Mark as read error:", updateError?.code);
-          return false;
+        const result = await Promise.race([updatePromise, timeoutPromise]);
+
+        if (result && typeof result === "object") {
+          const typedResult = result as { error: any };
+          if (typedResult.error) {
+            console.debug("Mark as read error:", typedResult.error?.code);
+            return false;
+          }
         }
 
         return true;
       } catch (err) {
-        console.debug(
-          "Mark as read error:",
-          err instanceof Error ? err.message : String(err),
-        );
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        console.debug("Mark as read error:", errorMsg);
         // Still return true since we updated local state
         return true;
       }
