@@ -16,9 +16,7 @@ export default function NotificationsDropdown() {
       <button
         onClick={() => navigate("/notifications")}
         className={`relative p-3 transition-all hover:scale-110 ${
-          theme === "dark"
-            ? "text-white"
-            : "text-white"
+          theme === "dark" ? "text-white" : "text-white"
         }`}
       >
         <Bell className="w-5 h-5" />
