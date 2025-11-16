@@ -400,10 +400,18 @@ const AdminTrainerVerification: React.FC = () => {
                 <h3 className="text-sm font-semibold text-gray-900 mb-4">System Settings</h3>
                 <div className="space-y-2 mb-4">
                   <p className="text-xs text-gray-500 mb-2">Settings & Configuration</p>
-                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
+                  <button
+                    onClick={() => setShowNotificationPrefs(true)}
+                    className="w-full text-left px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded transition-colors flex items-center gap-2"
+                  >
+                    <Bell className="w-4 h-4" />
                     Notification Preferences
                   </button>
-                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded transition-colors">
+                  <button
+                    onClick={() => setShowActivityLog(true)}
+                    className="w-full text-left px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded transition-colors flex items-center gap-2"
+                  >
+                    <Clock className="w-4 h-4" />
                     View Activity Log
                   </button>
                 </div>
