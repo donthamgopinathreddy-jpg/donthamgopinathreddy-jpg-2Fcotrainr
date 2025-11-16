@@ -115,7 +115,7 @@ export const usePINAuth = () => {
       setError(null);
 
       try {
-        const patternHash = CryptoJS.SHA256(pattern.join(",")).toString();
+        const patternHash = await hashPIN(pattern.join(","));
 
         const { error: dbError } = await supabase
           .from("user_security_settings")
@@ -142,7 +142,7 @@ export const usePINAuth = () => {
         setLoading(false);
       }
     },
-    []
+    [hashPIN]
   );
 
   // Verify pattern
