@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { Device } from "@capacitor/device";
+import { Capacitor } from "@capacitor/core";
 
 export type BiometricType = "faceId" | "fingerprint" | "pattern" | "pin" | "none";
 
