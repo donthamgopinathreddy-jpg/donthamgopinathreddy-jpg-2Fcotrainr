@@ -45,15 +45,10 @@ export default function WeeklyCalendar({
               <div className="space-y-3 mb-4 min-h-24">
                 {workouts.length > 0 ? (
                   workouts.map((workout) => (
-                    <div
-                      key={workout.id}
-                      className="group relative"
-                    >
+                    <div key={workout.id} className="group relative">
                       <WorkoutCard
                         workout={workout}
-                        onRemove={() =>
-                          onRemoveWorkout(dayIndex, workout.id)
-                        }
+                        onRemove={() => onRemoveWorkout(dayIndex, workout.id)}
                       />
                     </div>
                   ))

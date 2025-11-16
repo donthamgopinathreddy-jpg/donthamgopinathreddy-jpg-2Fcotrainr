@@ -23,16 +23,50 @@ export const BasicSalsa = () => (
       <ellipse cx="100" cy="90" rx="12" ry="25" fill="#FF6B6B" />
 
       {/* Arms up in salsa pose */}
-      <line x1="88" y1="85" x2="65" y2="55" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="112" y1="85" x2="135" y2="55" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="88"
+        y1="85"
+        x2="65"
+        y2="55"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="112"
+        y1="85"
+        x2="135"
+        y2="55"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Hips swaying */}
       <circle cx="98" cy="115" r="7" fill="#FF6B6B" />
     </g>
 
     {/* Legs grooving */}
-    <line x1="96" y1="115" x2="92" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="salsero" />
-    <line x1="104" y1="115" x2="108" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="salsero" />
+    <line
+      x1="96"
+      y1="115"
+      x2="92"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="salsero"
+    />
+    <line
+      x1="104"
+      y1="115"
+      x2="108"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="salsero"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -62,13 +96,47 @@ export const Merengue = () => (
       <ellipse cx="100" cy="90" rx="13" ry="26" fill="#FF6B6B" />
 
       {/* Arms in happy pose */}
-      <line x1="87" y1="80" x2="60" y2="60" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="113" y1="80" x2="140" y2="60" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="87"
+        y1="80"
+        x2="60"
+        y2="60"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="113"
+        y1="80"
+        x2="140"
+        y2="60"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Bouncing legs */}
-    <line x1="95" y1="116" x2="90" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="merenguero" />
-    <line x1="105" y1="116" x2="110" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="merenguero" />
+    <line
+      x1="95"
+      y1="116"
+      x2="90"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="merenguero"
+    />
+    <line
+      x1="105"
+      y1="116"
+      x2="110"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="merenguero"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -98,13 +166,47 @@ export const Grapevine = () => (
       <ellipse cx="100" cy="92" rx="12" ry="24" fill="#FF6B6B" />
 
       {/* Arms out for balance */}
-      <line x1="88" y1="85" x2="55" y2="70" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="112" y1="85" x2="145" y2="70" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="88"
+        y1="85"
+        x2="55"
+        y2="70"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="112"
+        y1="85"
+        x2="145"
+        y2="70"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Side stepping legs */}
-    <line x1="94" y1="116" x2="85" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="grapeviner" />
-    <line x1="106" y1="116" x2="115" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="grapeviner" />
+    <line
+      x1="94"
+      y1="116"
+      x2="85"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="grapeviner"
+    />
+    <line
+      x1="106"
+      y1="116"
+      x2="115"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="grapeviner"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -132,13 +234,47 @@ export const SideSteps = () => (
       <ellipse cx="100" cy="92" rx="12" ry="24" fill="#FF6B6B" />
 
       {/* Arms in rhythm position */}
-      <line x1="88" y1="82" x2="60" y2="70" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="112" y1="82" x2="140" y2="70" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="88"
+        y1="82"
+        x2="60"
+        y2="70"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="112"
+        y1="82"
+        x2="140"
+        y2="70"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Stepping legs */}
-    <line x1="94" y1="116" x2="88" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="stepper" />
-    <line x1="106" y1="116" x2="112" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="stepper" />
+    <line
+      x1="94"
+      y1="116"
+      x2="88"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="stepper"
+    />
+    <line
+      x1="106"
+      y1="116"
+      x2="112"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="stepper"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -168,16 +304,50 @@ export const Reggaeton = () => (
       <ellipse cx="100" cy="90" rx="13" ry="25" fill="#FF6B6B" />
 
       {/* Arms in hip-hop style */}
-      <line x1="87" y1="78" x2="55" y2="65" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="113" y1="78" x2="145" y2="65" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="87"
+        y1="78"
+        x2="55"
+        y2="65"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="113"
+        y1="78"
+        x2="145"
+        y2="65"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Hip accent */}
       <circle cx="98" cy="114" r="6" fill="#FF6B6B" />
     </g>
 
     {/* Hip rolling legs */}
-    <line x1="96" y1="115" x2="90" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="reggaetoner" />
-    <line x1="104" y1="115" x2="110" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="reggaetoner" />
+    <line
+      x1="96"
+      y1="115"
+      x2="90"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="reggaetoner"
+    />
+    <line
+      x1="104"
+      y1="115"
+      x2="110"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="reggaetoner"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -207,16 +377,48 @@ export const HipRolls = () => (
       <ellipse cx="100" cy="88" rx="13" ry="24" fill="#FF6B6B" />
 
       {/* Arms in rhythm */}
-      <line x1="87" y1="78" x2="55" y2="60" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="113" y1="78" x2="145" y2="60" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="87"
+        y1="78"
+        x2="55"
+        y2="60"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="113"
+        y1="78"
+        x2="145"
+        y2="60"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Hip circles */}
       <circle cx="100" cy="112" r="7" fill="#FF6B6B" />
     </g>
 
     {/* Grounded legs */}
-    <line x1="94" y1="112" x2="90" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="106" y1="112" x2="110" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="94"
+      y1="112"
+      x2="90"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="106"
+      y1="112"
+      x2="110"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -245,13 +447,47 @@ export const FastSyncopated = () => (
       <ellipse cx="100" cy="90" rx="12" ry="24" fill="#FF6B6B" />
 
       {/* Dynamic arms */}
-      <line x1="88" y1="78" x2="50" y2="55" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="112" y1="78" x2="150" y2="55" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="88"
+        y1="78"
+        x2="50"
+        y2="55"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="112"
+        y1="78"
+        x2="150"
+        y2="55"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Fast stepping legs */}
-    <line x1="94" y1="114" x2="88" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="syncoMover" />
-    <line x1="106" y1="114" x2="112" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="syncoMover" />
+    <line
+      x1="94"
+      y1="114"
+      x2="88"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="syncoMover"
+    />
+    <line
+      x1="106"
+      y1="114"
+      x2="112"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="syncoMover"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -281,16 +517,50 @@ export const FullChoreography = () => (
       <ellipse cx="100" cy="88" rx="13" ry="26" fill="#FF6B6B" />
 
       {/* Dynamic arms */}
-      <line x1="87" y1="75" x2="45" y2="50" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="113" y1="75" x2="155" y2="50" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="87"
+        y1="75"
+        x2="45"
+        y2="50"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="113"
+        y1="75"
+        x2="155"
+        y2="50"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Hip movement */}
       <circle cx="98" cy="114" r="7" fill="#FF6B6B" />
     </g>
 
     {/* Dynamic stepping */}
-    <line x1="94" y1="114" x2="85" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="dancer" />
-    <line x1="106" y1="114" x2="115" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" className="dancer" />
+    <line
+      x1="94"
+      y1="114"
+      x2="85"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="dancer"
+    />
+    <line
+      x1="106"
+      y1="114"
+      x2="115"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+      className="dancer"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -324,12 +594,44 @@ export const ChildsPose = () => (
       <ellipse cx="75" cy="110" rx="15" ry="18" fill="#FF6B6B" />
 
       {/* Arms reaching forward */}
-      <line x1="60" y1="100" x2="35" y2="80" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="90" y1="100" x2="115" y2="80" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="60"
+        y1="100"
+        x2="35"
+        y2="80"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="90"
+        y1="100"
+        x2="115"
+        y2="80"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Legs folded */}
-      <line x1="65" y1="128" x2="60" y2="148" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="85" y1="128" x2="90" y2="148" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="65"
+        y1="128"
+        x2="60"
+        y2="148"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="85"
+        y1="128"
+        x2="90"
+        y2="148"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
@@ -354,15 +656,53 @@ export const CatCow = () => (
     <circle cx="140" cy="80" r="10" fill="#E8D4C0" />
 
     {/* Back arching/rounding */}
-    <path d="M 60 110 Q 100 90 140 110" stroke="#FF6B6B" strokeWidth="12" fill="none" strokeLinecap="round" />
+    <path
+      d="M 60 110 Q 100 90 140 110"
+      stroke="#FF6B6B"
+      strokeWidth="12"
+      fill="none"
+      strokeLinecap="round"
+    />
 
     {/* Arms on ground */}
-    <line x1="65" y1="120" x2="55" y2="140" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-    <line x1="135" y1="120" x2="145" y2="140" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="65"
+      y1="120"
+      x2="55"
+      y2="140"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
+    <line
+      x1="135"
+      y1="120"
+      x2="145"
+      y2="140"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Legs on ground */}
-    <line x1="70" y1="120" x2="65" y2="148" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="130" y1="120" x2="135" y2="148" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="70"
+      y1="120"
+      x2="65"
+      y2="148"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="130"
+      y1="120"
+      x2="135"
+      y2="148"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
@@ -388,15 +728,53 @@ export const CobraPose = () => (
       <circle cx="100" cy="75" r="10" fill="#E8D4C0" />
 
       {/* Body arched upward */}
-      <path d="M 100 85 Q 90 110 100 130" stroke="#FF6B6B" strokeWidth="12" fill="none" strokeLinecap="round" />
+      <path
+        d="M 100 85 Q 90 110 100 130"
+        stroke="#FF6B6B"
+        strokeWidth="12"
+        fill="none"
+        strokeLinecap="round"
+      />
 
       {/* Arms supporting */}
-      <line x1="90" y1="95" x2="70" y2="100" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="110" y1="95" x2="130" y2="100" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="90"
+        y1="95"
+        x2="70"
+        y2="100"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="110"
+        y1="95"
+        x2="130"
+        y2="100"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Legs on ground */}
-      <line x1="96" y1="130" x2="92" y2="148" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="104" y1="130" x2="108" y2="148" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="96"
+        y1="130"
+        x2="92"
+        y2="148"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="104"
+        y1="130"
+        x2="108"
+        y2="148"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
@@ -423,15 +801,55 @@ export const DownwardDog = () => (
       <circle cx="100" cy="95" r="9" fill="#E8D4C0" />
 
       {/* Back body forming inverted V */}
-      <line x1="100" y1="104" x2="100" y2="130" stroke="#FF6B6B" strokeWidth="11" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="104"
+        x2="100"
+        y2="130"
+        stroke="#FF6B6B"
+        strokeWidth="11"
+        strokeLinecap="round"
+      />
 
       {/* Arms supporting (angled) */}
-      <line x1="95" y1="105" x2="60" y2="120" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="105" y1="105" x2="140" y2="120" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="95"
+        y1="105"
+        x2="60"
+        y2="120"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="105"
+        y1="105"
+        x2="140"
+        y2="120"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Legs up (angled) */}
-      <line x1="98" y1="130" x2="75" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="102" y1="130" x2="125" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="98"
+        y1="130"
+        x2="75"
+        y2="155"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="102"
+        y1="130"
+        x2="125"
+        y2="155"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
@@ -461,15 +879,55 @@ export const WarriorII = () => (
       <rect x="92" y="78" width="16" height="32" fill="#FF6B6B" rx="2" />
 
       {/* Arms extended out to sides */}
-      <line x1="92" y1="85" x2="45" y2="80" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="108" y1="85" x2="155" y2="80" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="92"
+        y1="85"
+        x2="45"
+        y2="80"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="108"
+        y1="85"
+        x2="155"
+        y2="80"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Front leg bent in lunge */}
-      <line x1="96" y1="110" x2="88" y2="148" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="88" y1="148" x2="85" y2="158" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="96"
+        y1="110"
+        x2="88"
+        y2="148"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="88"
+        y1="148"
+        x2="85"
+        y2="158"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Back leg straight */}
-      <line x1="104" y1="110" x2="118" y2="158" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="104"
+        y1="110"
+        x2="118"
+        y2="158"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
@@ -496,15 +954,53 @@ export const BridgePose = () => (
       <circle cx="100" cy="125" r="10" fill="#E8D4C0" />
 
       {/* Body elevated bridge */}
-      <path d="M 80 115 Q 100 95 120 115" stroke="#FF6B6B" strokeWidth="12" fill="none" strokeLinecap="round" />
+      <path
+        d="M 80 115 Q 100 95 120 115"
+        stroke="#FF6B6B"
+        strokeWidth="12"
+        fill="none"
+        strokeLinecap="round"
+      />
 
       {/* Arms on ground supporting */}
-      <line x1="85" y1="118" x2="65" y2="120" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="115" y1="118" x2="135" y2="120" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="85"
+        y1="118"
+        x2="65"
+        y2="120"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="115"
+        y1="118"
+        x2="135"
+        y2="120"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Legs bent on ground */}
-      <line x1="85" y1="115" x2="80" y2="143" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="115" y1="115" x2="120" y2="143" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="85"
+        y1="115"
+        x2="80"
+        y2="143"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="115"
+        y1="115"
+        x2="120"
+        y2="143"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
@@ -531,19 +1027,59 @@ export const TrianglePose = () => (
       <circle cx="95" cy="65" r="10" fill="#E8D4C0" />
 
       {/* Side body stretch */}
-      <line x1="100" y1="75" x2="100" y2="130" stroke="#FF6B6B" strokeWidth="11" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="75"
+        x2="100"
+        y2="130"
+        stroke="#FF6B6B"
+        strokeWidth="11"
+        strokeLinecap="round"
+      />
 
       {/* Upper arm reaching up */}
-      <line x1="100" y1="82" x2="80" y2="45" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="82"
+        x2="80"
+        y2="45"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Lower arm on leg */}
-      <line x1="100" y1="85" x2="100" y2="135" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="85"
+        x2="100"
+        y2="135"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Front leg */}
-      <line x1="100" y1="130" x2="92" y2="158" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="130"
+        x2="92"
+        y2="158"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
 
       {/* Back leg straight */}
-      <line x1="100" y1="130" x2="125" y2="158" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="130"
+        x2="125"
+        y2="158"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
@@ -570,15 +1106,55 @@ export const PlankFlow = () => (
       <circle cx="50" cy="105" r="9" fill="#E8D4C0" />
 
       {/* Body horizontal */}
-      <line x1="60" y1="110" x2="140" y2="110" stroke="#FF6B6B" strokeWidth="12" strokeLinecap="round" />
+      <line
+        x1="60"
+        y1="110"
+        x2="140"
+        y2="110"
+        stroke="#FF6B6B"
+        strokeWidth="12"
+        strokeLinecap="round"
+      />
 
       {/* Arms supporting */}
-      <line x1="60" y1="110" x2="40" y2="125" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="140" y1="110" x2="160" y2="125" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="60"
+        y1="110"
+        x2="40"
+        y2="125"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="140"
+        y1="110"
+        x2="160"
+        y2="125"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Legs extended */}
-      <line x1="135" y1="110" x2="130" y2="148" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="145" y1="110" x2="150" y2="148" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="135"
+        y1="110"
+        x2="130"
+        y2="148"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="145"
+        y1="110"
+        x2="150"
+        y2="148"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
@@ -608,12 +1184,44 @@ export const CrowPose = () => (
       <ellipse cx="85" cy="108" rx="11" ry="18" fill="#FF6B6B" />
 
       {/* Arms supporting (bent) */}
-      <line x1="76" y1="100" x2="55" y2="110" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="94" y1="100" x2="115" y2="110" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="76"
+        y1="100"
+        x2="55"
+        y2="110"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="94"
+        y1="100"
+        x2="115"
+        y2="110"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Legs up folded */}
-      <line x1="80" y1="126" x2="70" y2="135" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="90" y1="126" x2="100" y2="135" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="80"
+        y1="126"
+        x2="70"
+        y2="135"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="90"
+        y1="126"
+        x2="100"
+        y2="135"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
@@ -640,16 +1248,56 @@ export const HandstandPrep = () => (
       <circle cx="70" cy="75" r="9" fill="#E8D4C0" />
 
       {/* Body mostly upright */}
-      <line x1="70" y1="84" x2="70" y2="120" stroke="#FF6B6B" strokeWidth="11" strokeLinecap="round" />
+      <line
+        x1="70"
+        y1="84"
+        x2="70"
+        y2="120"
+        stroke="#FF6B6B"
+        strokeWidth="11"
+        strokeLinecap="round"
+      />
 
       {/* Arms supporting on ground */}
-      <line x1="64" y1="84" x2="45" y2="100" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="76" y1="84" x2="95" y2="100" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="64"
+        y1="84"
+        x2="45"
+        y2="100"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="76"
+        y1="84"
+        x2="95"
+        y2="100"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* One leg up high */}
-      <line x1="66" y1="120" x2="60" y2="145" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="66"
+        y1="120"
+        x2="60"
+        y2="145"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
       {/* Other leg on ground */}
-      <line x1="74" y1="120" x2="75" y2="143" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="74"
+        y1="120"
+        x2="75"
+        y2="143"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );
@@ -678,12 +1326,44 @@ export const NeckStretch = () => (
     <rect x="90" y="85" width="20" height="40" fill="#FF6B6B" rx="2" />
 
     {/* Arms at sides */}
-    <line x1="90" y1="95" x2="65" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-    <line x1="110" y1="95" x2="135" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="90"
+      y1="95"
+      x2="65"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
+    <line
+      x1="110"
+      y1="95"
+      x2="135"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Legs */}
-    <line x1="92" y1="125" x2="88" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="108" y1="125" x2="112" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="92"
+      y1="125"
+      x2="88"
+      y2="160"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="108"
+      y1="125"
+      x2="112"
+      y2="160"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="170" x2="200" y2="170" stroke="#999" strokeWidth="2" />
@@ -712,16 +1392,48 @@ export const QuadStretch = () => (
       <rect x="67" y="73" width="16" height="35" fill="#FF6B6B" rx="2" />
 
       {/* Arm on hip */}
-      <line x1="83" y1="83" x2="105" y2="75" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="83"
+        y1="83"
+        x2="105"
+        y2="75"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Other arm pulling leg */}
-      <line x1="67" y1="95" x2="55" y2="110" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="67"
+        y1="95"
+        x2="55"
+        y2="110"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Standing leg */}
-      <line x1="73" y1="108" x2="70" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="73"
+        y1="108"
+        x2="70"
+        y2="160"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
 
       {/* Stretched leg pulled up */}
-      <line x1="81" y1="108" x2="85" y2="130" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="81"
+        y1="108"
+        x2="85"
+        y2="130"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Ground */}
@@ -748,16 +1460,56 @@ export const HamstringReach = () => (
       <circle cx="100" cy="55" r="10" fill="#E8D4C0" />
 
       {/* Body folding forward */}
-      <line x1="100" y1="65" x2="100" y2="125" stroke="#FF6B6B" strokeWidth="11" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="65"
+        x2="100"
+        y2="125"
+        stroke="#FF6B6B"
+        strokeWidth="11"
+        strokeLinecap="round"
+      />
 
       {/* Arms reaching down */}
-      <line x1="95" y1="90" x2="90" y2="145" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="105" y1="90" x2="110" y2="145" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="95"
+        y1="90"
+        x2="90"
+        y2="145"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="105"
+        y1="90"
+        x2="110"
+        y2="145"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Legs straight */}
-    <line x1="98" y1="125" x2="95" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="102" y1="125" x2="105" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="98"
+      y1="125"
+      x2="95"
+      y2="160"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="102"
+      y1="125"
+      x2="105"
+      y2="160"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="170" x2="200" y2="170" stroke="#999" strokeWidth="2" />
@@ -786,16 +1538,56 @@ export const DeepLungeStretch = () => (
       <rect x="92" y="73" width="16" height="32" fill="#FF6B6B" rx="2" />
 
       {/* Arms reaching up */}
-      <line x1="92" y1="75" x2="70" y2="45" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="108" y1="75" x2="130" y2="45" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="92"
+        y1="75"
+        x2="70"
+        y2="45"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="108"
+        y1="75"
+        x2="130"
+        y2="45"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Front leg bent deep lunge */}
-    <line x1="96" y1="105" x2="90" y2="150" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="90" y1="150" x2="88" y2="160" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="96"
+      y1="105"
+      x2="90"
+      y2="150"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="90"
+      y1="150"
+      x2="88"
+      y2="160"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Back leg extended */}
-    <line x1="104" y1="105" x2="120" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="104"
+      y1="105"
+      x2="120"
+      y2="160"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="170" x2="200" y2="170" stroke="#999" strokeWidth="2" />
@@ -824,13 +1616,45 @@ export const ThoracicRotation = () => (
       <rect x="92" y="73" width="16" height="35" fill="#FF6B6B" rx="2" />
 
       {/* Arms extending out */}
-      <line x1="100" y1="85" x2="55" y2="75" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="100" y1="95" x2="145" y2="95" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="85"
+        x2="55"
+        y2="75"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="100"
+        y1="95"
+        x2="145"
+        y2="95"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Legs grounded */}
-    <line x1="94" y1="108" x2="90" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="106" y1="108" x2="110" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="94"
+      y1="108"
+      x2="90"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="106"
+      y1="108"
+      x2="110"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="170" x2="200" y2="170" stroke="#999" strokeWidth="2" />
@@ -856,17 +1680,57 @@ export const Splits = () => (
       <circle cx="100" cy="65" r="10" fill="#E8D4C0" />
 
       {/* Body upright on splits */}
-      <line x1="100" y1="75" x2="100" y2="110" stroke="#FF6B6B" strokeWidth="11" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="75"
+        x2="100"
+        y2="110"
+        stroke="#FF6B6B"
+        strokeWidth="11"
+        strokeLinecap="round"
+      />
 
       {/* Arms supporting */}
-      <line x1="95" y1="80" x2="70" y2="70" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="105" y1="80" x2="130" y2="70" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="95"
+        y1="80"
+        x2="70"
+        y2="70"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="105"
+        y1="80"
+        x2="130"
+        y2="70"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Front leg extended */}
-      <line x1="100" y1="110" x2="80" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="110"
+        x2="80"
+        y2="160"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
 
       {/* Back leg extended opposite */}
-      <line x1="100" y1="110" x2="120" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="100"
+        y1="110"
+        x2="120"
+        y2="160"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Ground */}
@@ -893,16 +1757,54 @@ export const DeepBackbend = () => (
       <circle cx="100" cy="60" r="10" fill="#E8D4C0" />
 
       {/* Back body arched */}
-      <path d="M 100 70 Q 95 95 100 125" stroke="#FF6B6B" strokeWidth="11" fill="none" strokeLinecap="round" />
+      <path
+        d="M 100 70 Q 95 95 100 125"
+        stroke="#FF6B6B"
+        strokeWidth="11"
+        fill="none"
+        strokeLinecap="round"
+      />
 
       {/* Arms reaching back */}
-      <line x1="95" y1="85" x2="75" y2="65" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="105" y1="85" x2="125" y2="65" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="95"
+        y1="85"
+        x2="75"
+        y2="65"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="105"
+        y1="85"
+        x2="125"
+        y2="65"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Legs on ground */}
-    <line x1="98" y1="125" x2="94" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="102" y1="125" x2="106" y2="160" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="98"
+      y1="125"
+      x2="94"
+      y2="160"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="102"
+      y1="125"
+      x2="106"
+      y2="160"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="170" x2="200" y2="170" stroke="#999" strokeWidth="2" />
@@ -932,13 +1834,45 @@ export const ArmSwingsWarmup = () => (
 
     {/* Swinging arms */}
     <g className="swinger">
-      <line x1="90" y1="85" x2="50" y2="70" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="110" y1="85" x2="150" y2="70" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="90"
+        y1="85"
+        x2="50"
+        y2="70"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="110"
+        y1="85"
+        x2="150"
+        y2="70"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Legs */}
-    <line x1="92" y1="110" x2="88" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="108" y1="110" x2="112" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="92"
+      y1="110"
+      x2="88"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="108"
+      y1="110"
+      x2="112"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="170" x2="200" y2="170" stroke="#999" strokeWidth="2" />
@@ -967,13 +1901,45 @@ export const MarchingWarmup = () => (
     <rect x="90" y="75" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Arms swinging */}
-    <line x1="90" y1="85" x2="70" y2="75" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-    <line x1="110" y1="85" x2="130" y2="75" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="90"
+      y1="85"
+      x2="70"
+      y2="75"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
+    <line
+      x1="110"
+      y1="85"
+      x2="130"
+      y2="75"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Marching legs */}
     <g className="marcher">
-      <line x1="92" y1="110" x2="88" y2="150" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="108" y1="110" x2="112" y2="150" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="92"
+        y1="110"
+        x2="88"
+        y2="150"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="108"
+        y1="110"
+        x2="112"
+        y2="150"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Ground */}
@@ -1001,13 +1967,45 @@ export const HighKneesWarmup = () => (
     <rect x="90" y="70" width="20" height="32" fill="#FF6B6B" rx="2" />
 
     {/* Arms pumping */}
-    <line x1="90" y1="80" x2="70" y2="65" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-    <line x1="110" y1="80" x2="130" y2="65" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="90"
+      y1="80"
+      x2="70"
+      y2="65"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
+    <line
+      x1="110"
+      y1="80"
+      x2="130"
+      y2="65"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* High knee running */}
     <g className="highKneeer">
-      <line x1="92" y1="102" x2="88" y2="125" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="108" y1="102" x2="110" y2="145" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="92"
+        y1="102"
+        x2="88"
+        y2="125"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="108"
+        y1="102"
+        x2="110"
+        y2="145"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Ground */}
@@ -1036,12 +2034,44 @@ export const JumpingJacksWarmup = () => (
       <rect x="90" y="70" width="20" height="32" fill="#FF6B6B" rx="2" />
 
       {/* Arms up */}
-      <line x1="90" y1="75" x2="60" y2="40" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="110" y1="75" x2="140" y2="40" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="90"
+        y1="75"
+        x2="60"
+        y2="40"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="110"
+        y1="75"
+        x2="140"
+        y2="40"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Legs apart */}
-      <line x1="92" y1="102" x2="75" y2="150" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="108" y1="102" x2="125" y2="150" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="92"
+        y1="102"
+        x2="75"
+        y2="150"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="108"
+        y1="102"
+        x2="125"
+        y2="150"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Ground */}
@@ -1070,12 +2100,44 @@ export const SkaterHopsWarmup = () => (
       <rect x="90" y="75" width="20" height="32" fill="#FF6B6B" rx="2" />
 
       {/* Dynamic arms */}
-      <line x1="90" y1="85" x2="55" y2="75" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="110" y1="85" x2="145" y2="75" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="90"
+        y1="85"
+        x2="55"
+        y2="75"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="110"
+        y1="85"
+        x2="145"
+        y2="75"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Skater legs */}
-      <line x1="92" y1="107" x2="75" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="108" y1="107" x2="125" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="92"
+        y1="107"
+        x2="75"
+        y2="155"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="108"
+        y1="107"
+        x2="125"
+        y2="155"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Ground */}
@@ -1106,12 +2168,44 @@ export const BurpeeWarmupExercise = () => (
       <rect x="90" y="68" width="20" height="32" fill="#FF6B6B" rx="2" />
 
       {/* Arms */}
-      <line x1="90" y1="78" x2="65" y2="65" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="110" y1="78" x2="135" y2="65" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="90"
+        y1="78"
+        x2="65"
+        y2="65"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="110"
+        y1="78"
+        x2="135"
+        y2="65"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
 
       {/* Legs */}
-      <line x1="92" y1="100" x2="88" y2="145" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="108" y1="100" x2="112" y2="145" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="92"
+        y1="100"
+        x2="88"
+        y2="145"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="108"
+        y1="100"
+        x2="112"
+        y2="145"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Ground */}

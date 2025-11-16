@@ -20,15 +20,47 @@ export const Jab = () => (
     <rect x="70" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Stance legs */}
-    <line x1="72" y1="120" x2="68" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="88" y1="120" x2="92" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="72"
+      y1="120"
+      x2="68"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="88"
+      y1="120"
+      x2="92"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Back arm (guard) */}
-    <line x1="70" y1="95" x2="55" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="70"
+      y1="95"
+      x2="55"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Jabbing arm - animated */}
     <g className="jabber">
-      <line x1="90" y1="95" x2="130" y2="90" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="90"
+        y1="95"
+        x2="130"
+        y2="90"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="135" cy="88" r="5" fill="#E8D4C0" />
     </g>
 
@@ -57,15 +89,47 @@ export const Cross = () => (
     <rect x="65" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Stance legs */}
-    <line x1="67" y1="120" x2="63" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="83" y1="120" x2="87" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="67"
+      y1="120"
+      x2="63"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="83"
+      y1="120"
+      x2="87"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Front arm (guard) */}
-    <line x1="85" y1="95" x2="100" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="85"
+      y1="95"
+      x2="100"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Crossing arm - animated */}
     <g className="crosser">
-      <line x1="65" y1="95" x2="120" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="65"
+        y1="95"
+        x2="120"
+        y2="85"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="125" cy="82" r="5" fill="#E8D4C0" />
     </g>
 
@@ -95,15 +159,47 @@ export const JabCrossCombo = () => (
     <rect x="60" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Stance legs */}
-    <line x1="62" y1="120" x2="58" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="78" y1="120" x2="82" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="62"
+      y1="120"
+      x2="58"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="78"
+      y1="120"
+      x2="82"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Guard hand */}
-    <line x1="80" y1="95" x2="100" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="80"
+      y1="95"
+      x2="100"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Combo punches - animated */}
     <g className="comboHands">
-      <line x1="60" y1="95" x2="125" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="60"
+        y1="95"
+        x2="125"
+        y2="85"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="130" cy="82" r="5" fill="#E8D4C0" />
     </g>
 
@@ -132,13 +228,45 @@ export const BasicFootwork = () => (
     <rect x="90" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Guard hands */}
-    <line x1="90" y1="95" x2="70" y2="80" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-    <line x1="110" y1="95" x2="130" y2="80" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="90"
+      y1="95"
+      x2="70"
+      y2="80"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
+    <line
+      x1="110"
+      y1="95"
+      x2="130"
+      y2="80"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Footwork - stepping */}
     <g className="steppers">
-      <line x1="92" y1="120" x2="88" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-      <line x1="108" y1="120" x2="112" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="92"
+        y1="120"
+        x2="88"
+        y2="155"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line
+        x1="108"
+        y1="120"
+        x2="112"
+        y2="155"
+        stroke="#1A1A1A"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Ground */}
@@ -166,15 +294,47 @@ export const Hooks = () => (
     <rect x="65" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Stance legs */}
-    <line x1="67" y1="120" x2="63" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="83" y1="120" x2="87" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="67"
+      y1="120"
+      x2="63"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="83"
+      y1="120"
+      x2="87"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Guard hand */}
-    <line x1="85" y1="95" x2="105" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="85"
+      y1="95"
+      x2="105"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Hook arm - animated */}
     <g className="hooker">
-      <line x1="65" y1="98" x2="105" y2="95" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="65"
+        y1="98"
+        x2="105"
+        y2="95"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="110" cy="93" r="5" fill="#E8D4C0" />
     </g>
 
@@ -203,15 +363,47 @@ export const Uppercuts = () => (
     <rect x="70" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Stance legs */}
-    <line x1="72" y1="120" x2="68" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="88" y1="120" x2="92" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="72"
+      y1="120"
+      x2="68"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="88"
+      y1="120"
+      x2="92"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Guard hand */}
-    <line x1="70" y1="95" x2="55" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="70"
+      y1="95"
+      x2="55"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Uppercut arm - animated */}
     <g className="upper">
-      <line x1="90" y1="120" x2="95" y2="75" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="90"
+        y1="120"
+        x2="95"
+        y2="75"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="97" cy="70" r="5" fill="#E8D4C0" />
     </g>
 
@@ -242,12 +434,44 @@ export const Slips = () => (
     <rect x="70" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Guard hands */}
-    <line x1="70" y1="95" x2="55" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-    <line x1="90" y1="95" x2="105" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="70"
+      y1="95"
+      x2="55"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
+    <line
+      x1="90"
+      y1="95"
+      x2="105"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Stance legs */}
-    <line x1="72" y1="120" x2="68" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="88" y1="120" x2="92" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="72"
+      y1="120"
+      x2="68"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="88"
+      y1="120"
+      x2="92"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -276,15 +500,47 @@ export const Pivots = () => (
       <rect x="90" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
       {/* Guard hands */}
-      <line x1="90" y1="95" x2="70" y2="80" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
-      <line x1="110" y1="95" x2="130" y2="80" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="90"
+        y1="95"
+        x2="70"
+        y2="80"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="110"
+        y1="95"
+        x2="130"
+        y2="80"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Base leg */}
-    <line x1="100" y1="120" x2="100" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="100"
+      y1="120"
+      x2="100"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Back leg pivoting */}
-    <line x1="96" y1="120" x2="85" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="96"
+      y1="120"
+      x2="85"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -313,17 +569,49 @@ export const JabCrossHookCombo = () => (
     <rect x="60" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Guard hand */}
-    <line x1="80" y1="95" x2="100" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="80"
+      y1="95"
+      x2="100"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Combo arm - animated */}
     <g className="comboArm">
-      <line x1="60" y1="95" x2="130" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="60"
+        y1="95"
+        x2="130"
+        y2="85"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="135" cy="82" r="5" fill="#E8D4C0" />
     </g>
 
     {/* Stance legs */}
-    <line x1="62" y1="120" x2="58" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="78" y1="120" x2="82" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="62"
+      y1="120"
+      x2="58"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="78"
+      y1="120"
+      x2="82"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -354,17 +642,49 @@ export const ComplexCombos = () => (
     <rect x="55" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Guard hand */}
-    <line x1="75" y1="95" x2="95" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="75"
+      y1="95"
+      x2="95"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Complex combo arm - rapid animation */}
     <g className="complexArm">
-      <line x1="55" y1="95" x2="135" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="55"
+        y1="95"
+        x2="135"
+        y2="85"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="140" cy="82" r="5" fill="#E8D4C0" />
     </g>
 
     {/* Wide stance legs */}
-    <line x1="57" y1="120" x2="50" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="73" y1="120" x2="80" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="57"
+      y1="120"
+      x2="50"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="73"
+      y1="120"
+      x2="80"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -398,18 +718,50 @@ export const RollSlipCounter = () => (
       <rect x="70" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
       {/* Guard hand */}
-      <line x1="70" y1="95" x2="55" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="70"
+        y1="95"
+        x2="55"
+        y2="85"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </g>
 
     {/* Counter punch arm */}
     <g className="counter">
-      <line x1="90" y1="95" x2="140" y2="90" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="90"
+        y1="95"
+        x2="140"
+        y2="90"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="145" cy="88" r="5" fill="#E8D4C0" />
     </g>
 
     {/* Stance legs */}
-    <line x1="72" y1="120" x2="68" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="88" y1="120" x2="92" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="72"
+      y1="120"
+      x2="68"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="88"
+      y1="120"
+      x2="92"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -442,19 +794,51 @@ export const FastShadowboxing = () => (
 
     {/* Fast jab */}
     <g className="fastJabber">
-      <line x1="85" y1="95" x2="130" y2="90" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="85"
+        y1="95"
+        x2="130"
+        y2="90"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="135" cy="88" r="4" fill="#E8D4C0" />
     </g>
 
     {/* Fast cross */}
     <g className="fastCrosser">
-      <line x1="65" y1="98" x2="125" y2="88" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="65"
+        y1="98"
+        x2="125"
+        y2="88"
+        stroke="#E8D4C0"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
       <circle cx="130" cy="85" r="4" fill="#E8D4C0" />
     </g>
 
     {/* Stance legs */}
-    <line x1="67" y1="120" x2="63" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
-    <line x1="83" y1="120" x2="87" y2="155" stroke="#1A1A1A" strokeWidth="5" strokeLinecap="round" />
+    <line
+      x1="67"
+      y1="120"
+      x2="63"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="83"
+      y1="120"
+      x2="87"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="5"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />
@@ -483,17 +867,49 @@ export const PowerCombinations = () => (
     <rect x="50" y="85" width="20" height="35" fill="#FF6B6B" rx="2" />
 
     {/* Guard hand */}
-    <line x1="70" y1="95" x2="90" y2="85" stroke="#E8D4C0" strokeWidth="4" strokeLinecap="round" />
+    <line
+      x1="70"
+      y1="95"
+      x2="90"
+      y2="85"
+      stroke="#E8D4C0"
+      strokeWidth="4"
+      strokeLinecap="round"
+    />
 
     {/* Power punching arm - animated */}
     <g className="powerArm">
-      <line x1="50" y1="95" x2="140" y2="85" stroke="#E8D4C0" strokeWidth="5" strokeLinecap="round" />
+      <line
+        x1="50"
+        y1="95"
+        x2="140"
+        y2="85"
+        stroke="#E8D4C0"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
       <circle cx="145" cy="82" r="6" fill="#E8D4C0" />
     </g>
 
     {/* Power stance - wide legs */}
-    <line x1="52" y1="120" x2="42" y2="155" stroke="#1A1A1A" strokeWidth="6" strokeLinecap="round" />
-    <line x1="68" y1="120" x2="78" y2="155" stroke="#1A1A1A" strokeWidth="6" strokeLinecap="round" />
+    <line
+      x1="52"
+      y1="120"
+      x2="42"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="6"
+      strokeLinecap="round"
+    />
+    <line
+      x1="68"
+      y1="120"
+      x2="78"
+      y2="155"
+      stroke="#1A1A1A"
+      strokeWidth="6"
+      strokeLinecap="round"
+    />
 
     {/* Ground */}
     <line x1="0" y1="165" x2="200" y2="165" stroke="#999" strokeWidth="2" />

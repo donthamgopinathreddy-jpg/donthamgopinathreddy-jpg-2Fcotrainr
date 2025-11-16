@@ -651,12 +651,14 @@ export default function Home() {
         {moodLogs.length > 0 && <WeeklyMoodAnalytics moodLogs={moodLogs} />}
 
         {/* Training Hub Card */}
-        <div onClick={(e) => {
-          if ((userProfile?.subscription_plan || "free") === "free") {
-            e.preventDefault();
-            setShowSubscriptionModal(true);
-          }
-        }}>
+        <div
+          onClick={(e) => {
+            if ((userProfile?.subscription_plan || "free") === "free") {
+              e.preventDefault();
+              setShowSubscriptionModal(true);
+            }
+          }}
+        >
           <TrainingHubCard />
         </div>
 
@@ -950,7 +952,12 @@ export default function Home() {
       <SubscriptionModal
         isOpen={showSubscriptionModal}
         onClose={() => setShowSubscriptionModal(false)}
-        currentPlan={(userProfile?.subscription_plan || "free") as "free" | "basic" | "premium"}
+        currentPlan={
+          (userProfile?.subscription_plan || "free") as
+            | "free"
+            | "basic"
+            | "premium"
+        }
       />
     </div>
   );

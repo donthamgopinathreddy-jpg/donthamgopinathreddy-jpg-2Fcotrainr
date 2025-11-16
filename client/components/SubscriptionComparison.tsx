@@ -7,9 +7,19 @@ interface SubscriptionComparisonProps {
 
 const FEATURES = [
   { name: "Basic Workouts", free: true, basic: true, premium: true },
-  { name: "Intermediate & Advanced Workouts", free: false, basic: true, premium: true },
+  {
+    name: "Intermediate & Advanced Workouts",
+    free: false,
+    basic: true,
+    premium: true,
+  },
   { name: "Limited Diet Planner", free: false, basic: true, premium: true },
-  { name: "Full Diet Planner (Allergens, Macros)", free: false, basic: false, premium: true },
+  {
+    name: "Full Diet Planner (Allergens, Macros)",
+    free: false,
+    basic: false,
+    premium: true,
+  },
   { name: "Weekly Meal Plans", free: false, basic: false, premium: true },
   { name: "AI Weekly Insights", free: false, basic: false, premium: true },
   { name: "Trainer Review Option", free: false, basic: false, premium: true },

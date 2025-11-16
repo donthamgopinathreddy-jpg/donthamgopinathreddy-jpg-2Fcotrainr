@@ -30,14 +30,24 @@ export interface PlannerState {
   selectedGoal: WorkoutGoal;
 }
 
-const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS_OF_WEEK = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 const DAYS_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export const useWorkoutPlanner = (availableWorkouts: Workout[]) => {
   const [weeklyPlan, setWeeklyPlan] = useState<WeeklyPlan>({});
-  const [selectedCategory, setSelectedCategory] = useState<WorkoutCategory>("gym");
+  const [selectedCategory, setSelectedCategory] =
+    useState<WorkoutCategory>("gym");
   const [selectedLevel, setSelectedLevel] = useState<WorkoutLevel>("beginner");
-  const [selectedGoal, setSelectedGoal] = useState<WorkoutGoal>("general_fitness");
+  const [selectedGoal, setSelectedGoal] =
+    useState<WorkoutGoal>("general_fitness");
 
   // Add/update workout for a specific day
   const addWorkoutToDay = (dayIndex: number, workout: Workout) => {
@@ -103,10 +113,10 @@ export const useWorkoutPlanner = (availableWorkouts: Workout[]) => {
   // Filter workouts by category and level
   const getFilteredWorkouts = (
     category: WorkoutCategory,
-    level: WorkoutLevel
+    level: WorkoutLevel,
   ): Workout[] => {
     return availableWorkouts.filter(
-      (w) => w.category === category && w.level === level
+      (w) => w.category === category && w.level === level,
     );
   };
 
@@ -137,12 +147,19 @@ export const useWorkoutPlanner = (availableWorkouts: Workout[]) => {
 
     if (selectedLevel === "beginner") {
       // Single muscle per day
-      const muscleGroups = ["chest", "back", "shoulders", "arms", "legs", "abs"];
+      const muscleGroups = [
+        "chest",
+        "back",
+        "shoulders",
+        "arms",
+        "legs",
+        "abs",
+      ];
       const muscleWorkouts: Record<string, Workout[]> = {};
 
       muscleGroups.forEach((muscle) => {
-        muscleWorkouts[muscle] = gymWorkouts.filter(
-          (w) => w.description?.toLowerCase().includes(muscle)
+        muscleWorkouts[muscle] = gymWorkouts.filter((w) =>
+          w.description?.toLowerCase().includes(muscle),
         );
       });
 
@@ -162,13 +179,15 @@ export const useWorkoutPlanner = (availableWorkouts: Workout[]) => {
     } else if (selectedLevel === "intermediate") {
       // Push/Pull/Legs/Core split
       const pushWorkouts = gymWorkouts.filter((w) =>
-        w.title.toLowerCase().includes("push")
+        w.title.toLowerCase().includes("push"),
       );
       const pullWorkouts = gymWorkouts.filter((w) =>
-        w.title.toLowerCase().includes("pull")
+        w.title.toLowerCase().includes("pull"),
       );
-      const legWorkouts = gymWorkouts.filter((w) =>
-        w.title.toLowerCase().includes("leg") || w.title.toLowerCase().includes("squat")
+      const legWorkouts = gymWorkouts.filter(
+        (w) =>
+          w.title.toLowerCase().includes("leg") ||
+          w.title.toLowerCase().includes("squat"),
       );
 
       newPlan[0] = pushWorkouts.slice(0, 2); // Mon: Push
@@ -182,9 +201,10 @@ export const useWorkoutPlanner = (availableWorkouts: Workout[]) => {
       }
 
       // Fri: Core
-      const coreWorkouts = gymWorkouts.filter((w) =>
-        w.title.toLowerCase().includes("crunch") ||
-        w.title.toLowerCase().includes("plank")
+      const coreWorkouts = gymWorkouts.filter(
+        (w) =>
+          w.title.toLowerCase().includes("crunch") ||
+          w.title.toLowerCase().includes("plank"),
       );
       if (coreWorkouts.length > 0) {
         newPlan[4] = [coreWorkouts[0]];
@@ -203,10 +223,11 @@ export const useWorkoutPlanner = (availableWorkouts: Workout[]) => {
       }
     } else if (selectedLevel === "advanced") {
       // Strength + Conditioning
-      const advancedWorkouts = gymWorkouts.filter((w) =>
-        w.title.toLowerCase().includes("advanced") ||
-        w.title.toLowerCase().includes("clap") ||
-        w.title.toLowerCase().includes("pistol")
+      const advancedWorkouts = gymWorkouts.filter(
+        (w) =>
+          w.title.toLowerCase().includes("advanced") ||
+          w.title.toLowerCase().includes("clap") ||
+          w.title.toLowerCase().includes("pistol"),
       );
 
       newPlan[0] = advancedWorkouts.slice(0, 2); // Mon: Chest/Shoulders
@@ -220,9 +241,10 @@ export const useWorkoutPlanner = (availableWorkouts: Workout[]) => {
       }
 
       // Fri: Core + Mobility
-      const coreWorkouts = gymWorkouts.filter((w) =>
-        w.title.toLowerCase().includes("plank") ||
-        w.title.toLowerCase().includes("crunch")
+      const coreWorkouts = gymWorkouts.filter(
+        (w) =>
+          w.title.toLowerCase().includes("plank") ||
+          w.title.toLowerCase().includes("crunch"),
       );
       if (coreWorkouts.length > 0) {
         newPlan[4] = [coreWorkouts[0]];

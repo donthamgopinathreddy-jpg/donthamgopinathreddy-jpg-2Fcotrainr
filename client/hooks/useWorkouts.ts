@@ -34,7 +34,8 @@ const DEMO_WORKOUTS: Workout[] = [
     level: "beginner",
     duration_minutes: 15,
     calories_burned: 60,
-    description: "Pushups on an inclined surface for progressive chest training",
+    description:
+      "Pushups on an inclined surface for progressive chest training",
     created_at: new Date().toISOString(),
   },
   {
@@ -702,7 +703,9 @@ export const useWorkouts = () => {
     fetchWorkouts();
   }, [user?.id]);
 
-  const getWorkoutsByLevel = (level: "beginner" | "intermediate" | "advanced") => {
+  const getWorkoutsByLevel = (
+    level: "beginner" | "intermediate" | "advanced",
+  ) => {
     return workouts.filter((w) => w.level === level);
   };
 

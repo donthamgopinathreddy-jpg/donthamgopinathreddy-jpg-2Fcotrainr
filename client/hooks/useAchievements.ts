@@ -51,9 +51,9 @@ export const useAchievements = () => {
     userRank: null,
     totalWeeklySteps: 0,
   });
-  const [weeklyLeaderboard, setWeeklyLeaderboard] = useState<LeaderboardEntry[]>(
-    [],
-  );
+  const [weeklyLeaderboard, setWeeklyLeaderboard] = useState<
+    LeaderboardEntry[]
+  >([]);
   const [leaderboardLoading, setLeaderboardLoading] = useState(false);
 
   // Get week date range

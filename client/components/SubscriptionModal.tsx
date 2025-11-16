@@ -13,9 +13,9 @@ export default function SubscriptionModal({
   onClose,
   currentPlan,
 }: SubscriptionModalProps) {
-  const [selectedPlan, setSelectedPlan] = useState<"free" | "basic" | "premium" | null>(
-    null,
-  );
+  const [selectedPlan, setSelectedPlan] = useState<
+    "free" | "basic" | "premium" | null
+  >(null);
   const [paymentMethod, setPaymentMethod] = useState<"card" | "razorpay">(
     "razorpay",
   );
@@ -87,11 +87,13 @@ export default function SubscriptionModal({
             {selectedPlan ? (
               // Payment Section
               <div className="space-y-6">
-                <div className={`rounded-2xl p-6 border ${
-                  selectedPlan === "free"
-                    ? "bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
-                    : "bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800"
-                }`}>
+                <div
+                  className={`rounded-2xl p-6 border ${
+                    selectedPlan === "free"
+                      ? "bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
+                      : "bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800"
+                  }`}
+                >
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
                     {selectedPlan === "free"
                       ? "Free Plan"
@@ -107,8 +109,19 @@ export default function SubscriptionModal({
                         : "Full access to all features including AI insights"}
                   </p>
                   <div className="text-3xl font-bold">
-                    <span className={selectedPlan === "free" ? "text-gray-600 dark:text-gray-400" : "text-orange-600 dark:text-orange-400"}>
-                      ₹{selectedPlan === "free" ? "0" : selectedPlan === "basic" ? "299" : "599"}
+                    <span
+                      className={
+                        selectedPlan === "free"
+                          ? "text-gray-600 dark:text-gray-400"
+                          : "text-orange-600 dark:text-orange-400"
+                      }
+                    >
+                      ₹
+                      {selectedPlan === "free"
+                        ? "0"
+                        : selectedPlan === "basic"
+                          ? "299"
+                          : "599"}
                     </span>
                     <span className="text-lg text-gray-600 dark:text-gray-400">
                       /month
@@ -118,60 +131,60 @@ export default function SubscriptionModal({
 
                 {selectedPlan !== "free" && (
                   <>
-                {/* Payment Method Selection */}
-                <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
-                    Payment Method
-                  </h4>
-                  <div className="space-y-3">
-                    <label className="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-orange-500 transition-all">
-                      <input
-                        type="radio"
-                        name="payment"
-                        value="razorpay"
-                        checked={paymentMethod === "razorpay"}
-                        onChange={() => setPaymentMethod("razorpay")}
-                        className="w-4 h-4 accent-orange-500"
-                      />
-                      <div className="ml-3 flex-1">
-                        <p className="font-semibold text-gray-900 dark:text-white">
-                          Razorpay (Recommended)
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          UPI, Cards, Net Banking, Wallets
-                        </p>
-                      </div>
-                    </label>
+                    {/* Payment Method Selection */}
+                    <div>
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+                        Payment Method
+                      </h4>
+                      <div className="space-y-3">
+                        <label className="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-orange-500 transition-all">
+                          <input
+                            type="radio"
+                            name="payment"
+                            value="razorpay"
+                            checked={paymentMethod === "razorpay"}
+                            onChange={() => setPaymentMethod("razorpay")}
+                            className="w-4 h-4 accent-orange-500"
+                          />
+                          <div className="ml-3 flex-1">
+                            <p className="font-semibold text-gray-900 dark:text-white">
+                              Razorpay (Recommended)
+                            </p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              UPI, Cards, Net Banking, Wallets
+                            </p>
+                          </div>
+                        </label>
 
-                    <label className="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-orange-500 transition-all">
-                      <input
-                        type="radio"
-                        name="payment"
-                        value="card"
-                        checked={paymentMethod === "card"}
-                        onChange={() => setPaymentMethod("card")}
-                        className="w-4 h-4 accent-orange-500"
-                      />
-                      <div className="ml-3 flex-1">
-                        <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                          <CreditCard className="w-4 h-4" />
-                          Credit/Debit Card
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          Visa, Mastercard, American Express
-                        </p>
+                        <label className="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-orange-500 transition-all">
+                          <input
+                            type="radio"
+                            name="payment"
+                            value="card"
+                            checked={paymentMethod === "card"}
+                            onChange={() => setPaymentMethod("card")}
+                            className="w-4 h-4 accent-orange-500"
+                          />
+                          <div className="ml-3 flex-1">
+                            <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                              <CreditCard className="w-4 h-4" />
+                              Credit/Debit Card
+                            </p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              Visa, Mastercard, American Express
+                            </p>
+                          </div>
+                        </label>
                       </div>
-                    </label>
-                  </div>
-                </div>
+                    </div>
 
-                {/* Payment Info */}
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-4">
-                  <p className="text-sm text-blue-700 dark:text-blue-300">
-                    💡 Your subscription will auto-renew monthly. You can cancel
-                    anytime from your account settings.
-                  </p>
-                </div>
+                    {/* Payment Info */}
+                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-4">
+                      <p className="text-sm text-blue-700 dark:text-blue-300">
+                        💡 Your subscription will auto-renew monthly. You can
+                        cancel anytime from your account settings.
+                      </p>
+                    </div>
                   </>
                 )}
 
@@ -189,7 +202,9 @@ export default function SubscriptionModal({
                     className="flex-1 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     <CreditCard className="w-5 h-5" />
-                    {processingPayment ? "Processing..." : `Pay Now for ${selectedPlan ? selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1) : ''}`}
+                    {processingPayment
+                      ? "Processing..."
+                      : `Pay Now for ${selectedPlan ? selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1) : ""}`}
                   </button>
                 </div>
               </div>

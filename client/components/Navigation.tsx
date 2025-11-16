@@ -1,11 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import {
-  Home,
-  MapPin,
-  MessageCircle,
-  User,
-  Award,
-} from "lucide-react";
+import { Home, MapPin, MessageCircle, User, Award } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useMessages } from "@/hooks/useMessages";
@@ -21,17 +15,62 @@ const Navigation = () => {
 
   const navItems = isTrainer
     ? [
-        { path: "/", label: "Home", icon: Home, color: "from-blue-500 to-cyan-500" },
-        { path: "/achievements", label: "Quest", icon: Award, color: "from-purple-500 to-pink-500" },
-        { path: "/messages", label: "Messages", icon: MessageCircle, color: "from-yellow-500 to-green-500" },
-        { path: "/profile", label: "Profile", icon: User, color: "from-orange-500 to-red-500" },
+        {
+          path: "/",
+          label: "Home",
+          icon: Home,
+          color: "from-blue-500 to-cyan-500",
+        },
+        {
+          path: "/achievements",
+          label: "Quest",
+          icon: Award,
+          color: "from-purple-500 to-pink-500",
+        },
+        {
+          path: "/messages",
+          label: "Messages",
+          icon: MessageCircle,
+          color: "from-yellow-500 to-green-500",
+        },
+        {
+          path: "/profile",
+          label: "Profile",
+          icon: User,
+          color: "from-orange-500 to-red-500",
+        },
       ]
     : [
-        { path: "/", label: "Home", icon: Home, color: "from-blue-500 to-cyan-500" },
-        { path: "/discover", label: "Discover", icon: MapPin, color: "from-indigo-500 to-purple-500" },
-        { path: "/achievements", label: "Quest", icon: Award, color: "from-purple-500 to-pink-500" },
-        { path: "/messages", label: "Messages", icon: MessageCircle, color: "from-yellow-500 to-green-500" },
-        { path: "/profile", label: "Profile", icon: User, color: "from-orange-500 to-red-500" },
+        {
+          path: "/",
+          label: "Home",
+          icon: Home,
+          color: "from-blue-500 to-cyan-500",
+        },
+        {
+          path: "/discover",
+          label: "Discover",
+          icon: MapPin,
+          color: "from-indigo-500 to-purple-500",
+        },
+        {
+          path: "/achievements",
+          label: "Quest",
+          icon: Award,
+          color: "from-purple-500 to-pink-500",
+        },
+        {
+          path: "/messages",
+          label: "Messages",
+          icon: MessageCircle,
+          color: "from-yellow-500 to-green-500",
+        },
+        {
+          path: "/profile",
+          label: "Profile",
+          icon: User,
+          color: "from-orange-500 to-red-500",
+        },
       ];
 
   const handleNavClick = () => {
@@ -115,7 +154,6 @@ const Navigation = () => {
                     />
                   )}
                 </div>
-
               </Link>
             );
           })}

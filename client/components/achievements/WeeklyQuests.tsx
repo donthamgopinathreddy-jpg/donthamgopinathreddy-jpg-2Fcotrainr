@@ -175,9 +175,7 @@ export const WeeklyQuests = ({ variant = "full" }: WeeklyQuestsProps) => {
                   {isCompleted && (
                     <div
                       className={`absolute -bottom-1 -right-1 rounded-full p-0.5 ${
-                        theme === "dark"
-                          ? "bg-green-500"
-                          : "bg-green-600"
+                        theme === "dark" ? "bg-green-500" : "bg-green-600"
                       }`}
                     >
                       <CheckCircle2 className="w-3 h-3 text-white" />

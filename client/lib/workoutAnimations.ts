@@ -843,17 +843,18 @@ const workoutExercises: WorkoutExercise[] = [
 ];
 
 export const getWorkoutsByCategory = (
-  category: "gym" | "boxing" | "zumba" | "yoga" | "stretching" | "warmups"
+  category: "gym" | "boxing" | "zumba" | "yoga" | "stretching" | "warmups",
 ) => workoutExercises.filter((w) => w.category === category);
 
 export const getWorkoutsByLevel = (
-  level: "beginner" | "intermediate" | "advanced"
+  level: "beginner" | "intermediate" | "advanced",
 ) => workoutExercises.filter((w) => w.level === level);
 
 export const getWorkoutsByCategoryAndLevel = (
   category: "gym" | "boxing" | "zumba" | "yoga" | "stretching" | "warmups",
-  level: "beginner" | "intermediate" | "advanced"
-) => workoutExercises.filter((w) => w.category === category && w.level === level);
+  level: "beginner" | "intermediate" | "advanced",
+) =>
+  workoutExercises.filter((w) => w.category === category && w.level === level);
 
 export const getWorkoutById = (id: string) =>
   workoutExercises.find((w) => w.id === id);

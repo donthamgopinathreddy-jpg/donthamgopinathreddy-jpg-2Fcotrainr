@@ -7,7 +7,9 @@ interface SocialCompetitionsProps {
   variant?: "compact" | "full";
 }
 
-export const SocialCompetitions = ({ variant = "full" }: SocialCompetitionsProps) => {
+export const SocialCompetitions = ({
+  variant = "full",
+}: SocialCompetitionsProps) => {
   const { theme } = useTheme();
   const { competitions, loading } = useSocialCompetitions();
   const [selectedCompetitionId, setSelectedCompetitionId] = useState<
@@ -28,9 +30,8 @@ export const SocialCompetitions = ({ variant = "full" }: SocialCompetitionsProps
     );
   }
 
-  const selectedCompetition = competitions.find(
-    (c) => c.id === selectedCompetitionId,
-  ) || competitions[0];
+  const selectedCompetition =
+    competitions.find((c) => c.id === selectedCompetitionId) || competitions[0];
 
   if (variant === "compact") {
     const topParticipant = selectedCompetition?.participants?.[0];
@@ -65,13 +66,12 @@ export const SocialCompetitions = ({ variant = "full" }: SocialCompetitionsProps
         {topParticipant && (
           <div
             className={`rounded-lg p-2 text-sm ${
-              theme === "dark"
-                ? "bg-gray-700/50"
-                : "bg-white/50"
+              theme === "dark" ? "bg-gray-700/50" : "bg-white/50"
             }`}
           >
             <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
-              🥇 Leading: <span className="font-semibold">{topParticipant.full_name}</span>
+              🥇 Leading:{" "}
+              <span className="font-semibold">{topParticipant.full_name}</span>
             </p>
           </div>
         )}
@@ -272,9 +272,7 @@ export const SocialCompetitions = ({ variant = "full" }: SocialCompetitionsProps
                       </p>
                       <p
                         className={`text-xs font-medium ${
-                          theme === "dark"
-                            ? "text-gray-500"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-500" : "text-gray-600"
                         }`}
                       >
                         {selectedCompetition.metric === "steps"

@@ -3,6 +3,7 @@
 ## Overview
 
 A complete **Workout Planner** system that automatically generates structured weekly workout plans based on:
+
 - **Category**: Gym, Yoga, Boxing, Zumba, Stretching, Warmups
 - **Level**: Beginner, Intermediate, Advanced
 - **Goal**: Fat Loss, Muscle Gain, General Fitness
@@ -23,11 +24,13 @@ The planner integrates with the **2D Workout Animation Library** and respects th
 ## Subscription Model
 
 ### Free Users
+
 - **Categories Unlocked**: Gym (basic only), Warmups (basic only), Stretching (basic only)
 - **Levels Available**: Beginner only
 - **Features**: Manual planning, basic stats
 
 ### Basic & Premium Users
+
 - **Categories Unlocked**: All 6 categories
 - **Levels Available**: Beginner, Intermediate, Advanced
 - **Features**: Full access including auto-generation
@@ -35,15 +38,18 @@ The planner integrates with the **2D Workout Animation Library** and respects th
 ## System Architecture
 
 ### 1. **useWorkoutPlanner Hook**
+
 **File**: `client/hooks/useWorkoutPlanner.ts`
 
 Core state management and logic:
+
 - `weeklyPlan` - Track workouts per day (0-6 index)
 - `selectedCategory` - Currently active category
 - `selectedLevel` - Currently active difficulty
 - `selectedGoal` - Fitness goal (fat_loss, muscle_gain, general_fitness)
 
 **Key Methods**:
+
 - `addWorkoutToDay(dayIndex, workout)` - Add workout to specific day
 - `removeWorkoutFromDay(dayIndex, workoutId)` - Remove single workout
 - `clearDay(dayIndex)` - Clear all workouts from day
@@ -51,9 +57,11 @@ Core state management and logic:
 - `getPlanStats()` - Calculate total minutes, calories, category breakdown
 
 ### 2. **WorkoutPlanner Main Component**
+
 **File**: `client/components/WorkoutPlanner.tsx`
 
 Main container component that orchestrates:
+
 - Goal selection (Fat Loss, Muscle Gain, General Fitness)
 - Category selection with subscription gating
 - Level selection with subscription gating
@@ -61,14 +69,17 @@ Main container component that orchestrates:
 - Sub-component rendering (WeeklyCalendar, ChooseWorkoutPanel, Summary)
 
 **Features**:
+
 - Real-time subscription checking
 - Toast notifications for actions
 - State management via useWorkoutPlanner hook
 
 ### 3. **WeeklyCalendar Component**
+
 **File**: `client/components/WorkoutPlanner/WeeklyCalendar.tsx`
 
 7-day horizontal grid view:
+
 - Each day in its own card
 - Shows assigned workouts or empty state
 - "Add Workout" / "Add More" button for each day
@@ -76,9 +87,11 @@ Main container component that orchestrates:
 - Responsive grid layout (1 col mobile, 2 cols tablet, 4 cols desktop)
 
 ### 4. **DayCard Component**
+
 **File**: `client/components/WorkoutPlanner/DayCard.tsx`
 
 Individual workout card with:
+
 - **Animation Preview** - 2D animated thumbnail (20px height)
 - **Level Badge** - Color-coded (green/yellow/red)
 - **Category Chip** - Shows emoji + category name
@@ -86,9 +99,11 @@ Individual workout card with:
 - **Remove Button** - Hover overlay with X button
 
 ### 5. **ChooseWorkoutPanel Component**
+
 **File**: `client/components/WorkoutPlanner/ChooseWorkoutPanel.tsx`
 
 Bottom-sheet modal for workout selection:
+
 - **Header** - Shows category + level filter
 - **Level Filter Buttons** - Switch difficulty with lock states
 - **Workout Grid** - 2x column grid of DayCards with animations
@@ -96,13 +111,16 @@ Bottom-sheet modal for workout selection:
 - **Upgrade Notice** - Shown to free users at bottom
 
 **Interactions**:
+
 - Tap workout card to select and add to day
 - Swipe down or tap X to close
 
 ### 6. **WorkoutSummary Component**
+
 **File**: `client/components/WorkoutPlanner/WorkoutSummary.tsx`
 
 Statistics display with:
+
 - **4-Column Stat Grid**:
   - Total Workouts
   - Total Minutes
@@ -117,6 +135,7 @@ Statistics display with:
 ### GYM Category
 
 **Beginner Split** (Single Muscle Per Day):
+
 ```
 Mon: Chest (3 exercises)
 Tue: Back (3 exercises)
@@ -128,6 +147,7 @@ Sun: Stretching/Mobility
 ```
 
 **Intermediate Split** (Push/Pull/Legs):
+
 ```
 Mon: Push (Chest, Shoulders, Triceps)
 Tue: Pull (Back, Biceps)
@@ -139,6 +159,7 @@ Sun: Light Warmup or Rest
 ```
 
 **Advanced Split** (Strength + Conditioning):
+
 ```
 Mon: Chest/Shoulders Strength
 Tue: Back/Arms Strength
@@ -150,30 +171,35 @@ Sun: Complete Rest
 ```
 
 ### BOXING Category
+
 - **Beginner**: Jab, Cross, basic footwork (3-4 per week)
 - **Intermediate**: Hooks, Uppercuts, combos (3-4 per week)
 - **Advanced**: Power combos, defensive flows (3-4 per week)
 - Complementary days: Yoga, Stretching
 
 ### ZUMBA Category
+
 - **Beginner**: Basic rhythms and steps (3-4 per week)
 - **Intermediate**: 4-8 count choreography blocks (3-4 per week)
 - **Advanced**: Full choreography routines (3-4 per week)
 - Complementary days: Warmups, Stretching
 
 ### YOGA Category
+
 - Daily yoga progression (7 different poses/flows)
 - **Beginner**: Foundational poses + breathing
 - **Intermediate**: Flows and transitions
 - **Advanced**: Power yoga, balance poses, inversions
 
 ### STRETCHING Category
+
 - Daily flexibility work (7 different stretches)
 - **Beginner**: Basic flexibility
 - **Intermediate**: Active mobility
 - **Advanced**: Deep flexibility flows
 
 ### WARMUPS Category
+
 - Pre-workout preparation (5 days, rest on weekends)
 - **Beginner**: Arm swings, marching
 - **Intermediate**: High knees, jumping jacks
@@ -182,23 +208,27 @@ Sun: Complete Rest
 ## UI/UX Design
 
 ### Color Scheme
+
 - **Primary**: Orange/Red gradient (from-orange-500 to-red-500)
 - **Secondary**: Purple gradient for "Suggest Plan" button
 - **Accents**: Green (Beginner), Yellow (Intermediate), Red (Advanced)
 - **Locked State**: Gray with opacity
 
 ### Typography
+
 - **Headers**: Bold (font-bold), 2xl size
 - **Labels**: Semibold (font-semibold), sm size
 - **Stats**: Bold, 2xl size
 
 ### Spacing & Layout
+
 - 6px (0.375rem) gaps between cards
 - 4px (1rem) padding inside cards
 - 2xl rounded corners (rounded-2xl)
 - Glassmorphism: backdrop-blur, white/transparent backgrounds
 
 ### Responsive Breakpoints
+
 - **Mobile**: 1 column for weekly calendar
 - **Tablet** (md): 2 columns for weekly calendar
 - **Desktop** (lg): 4 columns for weekly calendar
@@ -206,6 +236,7 @@ Sun: Complete Rest
 ## Integration Points
 
 ### TrainingHub.tsx
+
 The WorkoutPlanner is integrated as the `WeeklyPlannerSection` in the carousel:
 
 ```typescript
@@ -223,6 +254,7 @@ const WeeklyPlannerSection = () => <WorkoutPlanner />;
 ```
 
 ### Data Flow
+
 1. **Auth Context** → Get user profile and subscription plan
 2. **useWorkouts Hook** → Fetch available workouts
 3. **useWorkoutPlanner Hook** → Manage planner state
@@ -265,12 +297,12 @@ The planner uses a simple state object:
 
 ```typescript
 weeklyPlan = {
-  0: [Workout, Workout],    // Monday
-  1: [Workout],             // Tuesday
-  2: [],                     // Wednesday (empty)
+  0: [Workout, Workout], // Monday
+  1: [Workout], // Tuesday
+  2: [], // Wednesday (empty)
   // ... etc
-  6: [Workout],             // Sunday
-}
+  6: [Workout], // Sunday
+};
 ```
 
 ## Performance Considerations
@@ -305,6 +337,7 @@ weeklyPlan = {
 ## Summary
 
 The Workout Planner is a **complete, production-ready system** that provides:
+
 - Smart weekly planning with auto-generation
 - Subscription-aware access control
 - Beautiful, intuitive UI

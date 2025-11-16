@@ -18,7 +18,6 @@ import TrendGraphsSection from "@/components/TrendGraphsSection";
 import TrainingHubCarousel from "@/components/TrainingHubCarousel";
 import WorkoutPlanner from "@/components/WorkoutPlanner";
 
-
 const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const TREND_METRICS = [
@@ -73,7 +72,6 @@ export default function TrainingHub() {
   const isWeeklyMealPlanLocked = plan !== "premium";
   const isAIInsightsLocked = plan !== "premium";
   const isTrendGraphsLocked = plan === "free";
-
 
   // Handle save diet preferences
   const handleSaveDietPreferences = async () => {
@@ -135,9 +133,7 @@ export default function TrainingHub() {
   };
 
   // Section components
-  const WeeklyPlannerSection = () => (
-    <WorkoutPlanner />
-  );
+  const WeeklyPlannerSection = () => <WorkoutPlanner />;
 
   const DietPlannerSection = () => (
     <div className="space-y-6">
@@ -223,8 +219,8 @@ export default function TrainingHub() {
                 <span>💡</span> Pro Tip
               </p>
               <p className="text-base opacity-95">
-                Try adding a 10-minute walk after meals to improve digestion
-                and boost your daily activity levels.
+                Try adding a 10-minute walk after meals to improve digestion and
+                boost your daily activity levels.
               </p>
             </div>
           </div>
@@ -250,7 +246,10 @@ export default function TrainingHub() {
   );
 
   const TrendSection = () => (
-    <TrendGraphsSection isLocked={isTrendGraphsLocked} metrics={TREND_METRICS} />
+    <TrendGraphsSection
+      isLocked={isTrendGraphsLocked}
+      metrics={TREND_METRICS}
+    />
   );
 
   const carouselSections = [
@@ -318,7 +317,9 @@ export default function TrainingHub() {
                   }`}
                 >
                   <span className="text-lg">{section.icon}</span>
-                  <span className="line-clamp-1">{section.title.split(" ")[0]}</span>
+                  <span className="line-clamp-1">
+                    {section.title.split(" ")[0]}
+                  </span>
                 </button>
               ))}
             </div>

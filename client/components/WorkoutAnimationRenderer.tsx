@@ -14,7 +14,9 @@ export default function WorkoutAnimationRenderer({
 
   if (!workout) {
     return (
-      <div className={`flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg ${className}`}>
+      <div
+        className={`flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg ${className}`}
+      >
         <div className="text-center text-gray-500 dark:text-gray-400">
           <p className="text-sm">Animation not found</p>
         </div>

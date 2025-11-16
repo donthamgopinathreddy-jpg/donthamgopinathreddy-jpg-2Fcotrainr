@@ -185,7 +185,11 @@ export const useSocialCompetitions = () => {
         status: "active",
       };
 
-      setCompetitions([stepsCompetition, workoutCompetition, streakCompetition]);
+      setCompetitions([
+        stepsCompetition,
+        workoutCompetition,
+        streakCompetition,
+      ]);
     } catch (error) {
       console.debug("Error fetching competitions:", error);
     } finally {

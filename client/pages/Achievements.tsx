@@ -63,9 +63,10 @@ export default function Quests() {
     return "🏆";
   };
 
-  const bgClass = theme === "dark"
-    ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950"
-    : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50";
+  const bgClass =
+    theme === "dark"
+      ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950"
+      : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50";
 
   if (loading) {
     return (
@@ -106,15 +107,15 @@ export default function Quests() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <h1
-                className={`text-base sm:text-xl md:text-2xl font-black truncate bg-clip-text text-transparent ${
-                  theme === "dark"
-                    ? "bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"
-                    : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"
-                }`}
-              >
-                🎮 Quests Hub
-              </h1>
-            </div>
+              className={`text-base sm:text-xl md:text-2xl font-black truncate bg-clip-text text-transparent ${
+                theme === "dark"
+                  ? "bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400"
+                  : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"
+              }`}
+            >
+              🎮 Quests Hub
+            </h1>
+          </div>
         </div>
       </div>
 
@@ -129,10 +130,30 @@ export default function Quests() {
         <div className="max-w-5xl mx-auto px-3 sm:px-4">
           <div className="flex gap-1 sm:gap-2 overflow-x-auto">
             {[
-              { id: "quests" as const, label: "Quests", icon: "📋", color: "from-blue-500 to-cyan-500" },
-              { id: "competitions" as const, label: "Competitions", icon: "⚡", color: "from-purple-500 to-pink-500" },
-              { id: "achievements" as const, label: "Badges", icon: "🏆", color: "from-orange-500 to-red-500" },
-              { id: "leaderboard" as const, label: "Leaderboard", icon: "🏅", color: "from-green-500 to-emerald-500" },
+              {
+                id: "quests" as const,
+                label: "Quests",
+                icon: "📋",
+                color: "from-blue-500 to-cyan-500",
+              },
+              {
+                id: "competitions" as const,
+                label: "Competitions",
+                icon: "⚡",
+                color: "from-purple-500 to-pink-500",
+              },
+              {
+                id: "achievements" as const,
+                label: "Badges",
+                icon: "🏆",
+                color: "from-orange-500 to-red-500",
+              },
+              {
+                id: "leaderboard" as const,
+                label: "Leaderboard",
+                icon: "🏅",
+                color: "from-green-500 to-emerald-500",
+              },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -213,7 +234,9 @@ export default function Quests() {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-amber-500/0 group-hover:from-yellow-500/10 group-hover:to-amber-500/10 transition-all" />
                 <div className="relative z-10">
-                  <p className="text-3xl font-bold text-yellow-600">{totalXP}</p>
+                  <p className="text-3xl font-bold text-yellow-600">
+                    {totalXP}
+                  </p>
                   <p
                     className={`text-xs font-medium mt-1 ${
                       theme === "dark" ? "text-yellow-400" : "text-yellow-700"
@@ -304,7 +327,9 @@ export default function Quests() {
                             : "bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 hover:shadow-lg"
                         }`}
                       >
-                        <div className="text-4xl mb-3">{achievement.icon || "🏆"}</div>
+                        <div className="text-4xl mb-3">
+                          {achievement.icon || "🏆"}
+                        </div>
                         <h4
                           className={`font-bold text-sm mb-1 ${
                             theme === "dark" ? "text-white" : "text-gray-900"
@@ -498,9 +523,7 @@ export default function Quests() {
                         </p>
                         <p
                           className={`text-xs ${
-                            theme === "dark"
-                              ? "text-gray-500"
-                              : "text-gray-600"
+                            theme === "dark" ? "text-gray-500" : "text-gray-600"
                           }`}
                         >
                           steps

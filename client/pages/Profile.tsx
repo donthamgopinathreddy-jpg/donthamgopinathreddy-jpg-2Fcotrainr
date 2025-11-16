@@ -590,7 +590,6 @@ export default function Profile() {
             <Edit2 className="w-4 h-4" />
             Edit Profile
           </button>
-
         </div>
 
         {/* ACCOUNT SECTION */}
@@ -1885,7 +1884,6 @@ export default function Profile() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

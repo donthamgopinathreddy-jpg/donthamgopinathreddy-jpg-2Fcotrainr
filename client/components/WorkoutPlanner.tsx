@@ -28,7 +28,7 @@ export default function WorkoutPlanner() {
       return workouts.filter(
         (w) =>
           w.level === "beginner" &&
-          ["gym", "warmups", "stretching"].includes(w.category)
+          ["gym", "warmups", "stretching"].includes(w.category),
       );
     }
     return workouts;
@@ -94,11 +94,7 @@ export default function WorkoutPlanner() {
               ].map((goal) => (
                 <button
                   key={goal.id}
-                  onClick={() =>
-                    planner.setSelectedGoal(
-                      goal.id as any
-                    )
-                  }
+                  onClick={() => planner.setSelectedGoal(goal.id as any)}
                   className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
                     planner.selectedGoal === goal.id
                       ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
@@ -117,43 +113,34 @@ export default function WorkoutPlanner() {
               Workout Category
             </label>
             <div className="flex gap-2 flex-wrap">
-              {[
-                "gym",
-                "yoga",
-                "boxing",
-                "zumba",
-                "stretching",
-                "warmups",
-              ].map((category) => {
-                const isLocked =
-                  plan === "free" &&
-                  !["gym", "warmups", "stretching"].includes(category);
+              {["gym", "yoga", "boxing", "zumba", "stretching", "warmups"].map(
+                (category) => {
+                  const isLocked =
+                    plan === "free" &&
+                    !["gym", "warmups", "stretching"].includes(category);
 
-                return (
-                  <button
-                    key={category}
-                    onClick={() =>
-                      !isLocked &&
-                      planner.setSelectedCategory(
-                        category as any
-                      )
-                    }
-                    disabled={isLocked}
-                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all relative ${
-                      planner.selectedCategory === category
-                        ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
-                        : isLocked
-                          ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed opacity-50"
-                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
-                    }`}
-                  >
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                    {isLocked && (
-                      <Lock className="w-3 h-3 inline ml-1" />
-                    )}
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={category}
+                      onClick={() =>
+                        !isLocked &&
+                        planner.setSelectedCategory(category as any)
+                      }
+                      disabled={isLocked}
+                      className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all relative ${
+                        planner.selectedCategory === category
+                          ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
+                          : isLocked
+                            ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed opacity-50"
+                            : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
+                      }`}
+                    >
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                      {isLocked && <Lock className="w-3 h-3 inline ml-1" />}
+                    </button>
+                  );
+                },
+              )}
             </div>
           </div>
 
@@ -164,15 +151,13 @@ export default function WorkoutPlanner() {
             </label>
             <div className="flex gap-2 flex-wrap">
               {["beginner", "intermediate", "advanced"].map((level) => {
-                const isLocked =
-                  plan === "free" && level !== "beginner";
+                const isLocked = plan === "free" && level !== "beginner";
 
                 return (
                   <button
                     key={level}
                     onClick={() =>
-                      !isLocked &&
-                      planner.setSelectedLevel(level as any)
+                      !isLocked && planner.setSelectedLevel(level as any)
                     }
                     disabled={isLocked}
                     className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
@@ -184,9 +169,7 @@ export default function WorkoutPlanner() {
                     }`}
                   >
                     {level.charAt(0).toUpperCase() + level.slice(1)}
-                    {isLocked && (
-                      <Lock className="w-3 h-3 inline ml-1" />
-                    )}
+                    {isLocked && <Lock className="w-3 h-3 inline ml-1" />}
                   </button>
                 );
               })}

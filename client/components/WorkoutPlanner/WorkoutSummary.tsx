@@ -30,7 +30,7 @@ export default function WorkoutSummary({ stats }: WorkoutSummaryProps) {
       : 0;
 
   const activeCategoryCount = Object.values(stats.categoryBreakdown).filter(
-    (count) => count > 0
+    (count) => count > 0,
   ).length;
 
   return (
@@ -97,38 +97,36 @@ export default function WorkoutSummary({ stats }: WorkoutSummaryProps) {
             Breakdown by Category
           </h4>
           <div className="space-y-2">
-            {Object.entries(stats.categoryBreakdown).map(([category, count]) => {
-              if (count === 0) return null;
+            {Object.entries(stats.categoryBreakdown).map(
+              ([category, count]) => {
+                if (count === 0) return null;
 
-              const percentage =
-                stats.totalWorkouts > 0
-                  ? Math.round((count / stats.totalWorkouts) * 100)
-                  : 0;
+                const percentage =
+                  stats.totalWorkouts > 0
+                    ? Math.round((count / stats.totalWorkouts) * 100)
+                    : 0;
 
-              return (
-                <div key={category} className="space-y-1">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="font-semibold text-gray-700 dark:text-gray-300">
-                      {
-                        categoryIcons[
-                          category as keyof typeof categoryIcons
-                        ]
-                      }{" "}
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
-                    </span>
-                    <span className="text-gray-600 dark:text-gray-400">
-                      {count} ({percentage}%)
-                    </span>
+                return (
+                  <div key={category} className="space-y-1">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">
+                        {categoryIcons[category as keyof typeof categoryIcons]}{" "}
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        {count} ({percentage}%)
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-2">
+                      <div
+                        className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all"
+                        style={{ width: `${percentage}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all"
-                      style={{ width: `${percentage}%` }}
-                    ></div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              },
+            )}
           </div>
         </div>
       )}

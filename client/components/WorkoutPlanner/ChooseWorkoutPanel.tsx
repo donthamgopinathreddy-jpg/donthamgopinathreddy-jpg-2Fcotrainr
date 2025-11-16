@@ -26,8 +26,7 @@ export default function ChooseWorkoutPanel({
 
   // Filter workouts by selected category and level
   const filteredWorkouts = availableWorkouts.filter(
-    (w) =>
-      w.category === planner.selectedCategory && w.level === filterLevel
+    (w) => w.category === planner.selectedCategory && w.level === filterLevel,
   );
 
   return (
@@ -88,7 +87,8 @@ export default function ChooseWorkoutPanel({
           {filteredWorkouts.length > 0 ? (
             <div className="space-y-4">
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                {filteredWorkouts.length} workout{filteredWorkouts.length !== 1 ? "s" : ""} available
+                {filteredWorkouts.length} workout
+                {filteredWorkouts.length !== 1 ? "s" : ""} available
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -98,10 +98,7 @@ export default function ChooseWorkoutPanel({
                     className="cursor-pointer transform transition-all hover:scale-105"
                     onClick={() => onSelectWorkout(workout)}
                   >
-                    <DayCard
-                      workout={workout}
-                      showAnimation={true}
-                    />
+                    <DayCard workout={workout} showAnimation={true} />
                   </div>
                 ))}
               </div>

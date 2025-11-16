@@ -56,9 +56,7 @@ export default function TrainingHubCarousel({
       </div>
 
       {/* Content Section */}
-      <div className="min-h-96">
-        {currentSection.component}
-      </div>
+      <div className="min-h-96">{currentSection.component}</div>
 
       {/* Navigation Controls */}
       <div className="flex items-center justify-between gap-4">

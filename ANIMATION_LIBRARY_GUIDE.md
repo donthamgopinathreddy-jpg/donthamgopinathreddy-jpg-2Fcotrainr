@@ -16,9 +16,11 @@ A complete library of 2D vector-style animated workout exercises for the CoTrain
 ## Category Structure
 
 ### 1. **GYM** (15 exercises)
+
 Building strength and muscle endurance through body weight and resistance exercises.
 
 #### Beginner (6 exercises)
+
 - Wall Pushups
 - Incline Pushups
 - Bodyweight Squats
@@ -27,6 +29,7 @@ Building strength and muscle endurance through body weight and resistance exerci
 - Arm Circles
 
 #### Intermediate (5 exercises)
+
 - Decline Pushups
 - Jump Squats
 - Pike Pushups
@@ -34,6 +37,7 @@ Building strength and muscle endurance through body weight and resistance exerci
 - Plank Variations
 
 #### Advanced (4 exercises)
+
 - Clap Pushups
 - Archer Pushups
 - Pistol Squats
@@ -41,15 +45,18 @@ Building strength and muscle endurance through body weight and resistance exerci
 - Handstand Pushup Progressions
 
 ### 2. **BOXING** (13 exercises)
+
 Combat training techniques with punching combinations and footwork.
 
 #### Beginner (4 exercises)
+
 - Jab
 - Cross
 - Jab-Cross Combo
 - Basic Footwork
 
 #### Intermediate (5 exercises)
+
 - Hooks
 - Uppercuts
 - Slips
@@ -57,75 +64,92 @@ Combat training techniques with punching combinations and footwork.
 - Jab-Cross-Hook Combo
 
 #### Advanced (4 exercises)
+
 - Complex Combos (1-2-3-2)
 - Roll-Slip Counter
 - Fast Shadowboxing
 - Power Combinations
 
 ### 3. **ZUMBA** (8 exercises)
+
 High-energy dance and rhythm-based movements.
 
 #### Beginner (4 exercises)
+
 - Basic Salsa
 - Merengue
 - Grapevine
 - Side Steps
 
 #### Intermediate (3 exercises)
+
 - Reggaeton Steps
 - Hip Rolls
 - Faster Syncopated Moves
 
 #### Advanced (1 exercise)
+
 - Full Choreography
 
 ### 4. **YOGA** (10 exercises)
+
 Flexibility, balance, and mindfulness-focused poses.
 
 #### Beginner (4 exercises)
+
 - Child's Pose
 - Cat-Cow
 - Cobra Pose
 - Downward Dog
 
 #### Intermediate (4 exercises)
+
 - Warrior II
 - Bridge Pose
 - Triangle Pose
 - Plank Flow
 
 #### Advanced (2 exercises)
+
 - Crow Pose
 - Handstand Prep
 
 ### 5. **STRETCHING** (8 exercises)
+
 Flexibility and mobility exercises for recovery and injury prevention.
 
 #### Beginner (3 exercises)
+
 - Neck Stretch
 - Quad Stretch
 - Hamstring Reach
 
 #### Intermediate (2 exercises)
+
 - Deep Lunge Stretch
 - Thoracic Rotation
 
 #### Advanced (2 exercises)
+
 - Splits
 - Deep Backbend
 
 ### 6. **WARMUPS** (7 exercises)
+
 Quick preparation exercises to increase heart rate and mobility.
 
 #### Beginner (2 exercises)
+
 - Arm Swings
 - Marching
 
 #### Intermediate (2 exercises)
+
 - High Knees
 - Jumping Jacks
 
 #### Advanced (3 exercises)
+
 - Skater Hops
 - Burpee Warm-up
 
@@ -250,18 +274,21 @@ function CustomDisplay() {
 ## Animation Specifications
 
 ### Visual Design
+
 - **Color Scheme**: Warm palette with skin tone (#E8D4C0), exercise color (#FF6B6B), neutral grays
 - **Line Weight**: Consistent 4-5px strokes for body parts
 - **Background**: Gradient fills from light gray to darker shades
 - **Overlays**: Subtle gradient overlays to ground figures
 
 ### Animation Timing
+
 - **Duration**: 2-3 seconds per loop (optimized for smooth playback)
 - **Easing**: ease-in-out for natural motion
 - **Infinite**: All animations loop seamlessly
 - **Transforms**: translateX, translateY, rotateZ, scale for variety
 
 ### ViewBox & Scaling
+
 - **Standard ViewBox**: `0 0 200 300` for consistency
 - **Responsive**: SVG scales with container using `className="w-full h-full"`
 - **Aspect Ratio**: Maintains proper proportions across all sizes
@@ -320,6 +347,7 @@ Update the fill/stroke values in SVG elements:
 ### Add New Exercise
 
 1. Create component in appropriate file:
+
 ```typescript
 export const MyNewExercise = () => (
   <svg viewBox="0 0 200 300" className="w-full h-full">
@@ -329,6 +357,7 @@ export const MyNewExercise = () => (
 ```
 
 2. Add metadata to `workoutAnimations.ts`:
+
 ```typescript
 {
   id: "category-level-name-variation",

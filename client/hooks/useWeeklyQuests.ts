@@ -122,7 +122,9 @@ export const useWeeklyQuests = () => {
       const now = new Date();
       const dayOfWeek = now.getDay();
       const startOfWeek = new Date(now);
-      startOfWeek.setDate(now.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      startOfWeek.setDate(
+        now.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1),
+      );
       startOfWeek.setHours(0, 0, 0, 0);
 
       // Fetch completed quests
@@ -168,7 +170,10 @@ export const useWeeklyQuests = () => {
 
         if (quest.category === "steps" && quest.id === "quest_steps_10k") {
           progress = Math.min(todaySteps, quest.target);
-        } else if (quest.category === "steps" && quest.id === "quest_steps_50k") {
+        } else if (
+          quest.category === "steps" &&
+          quest.id === "quest_steps_50k"
+        ) {
           progress = Math.min(weeklySteps, quest.target);
         }
 

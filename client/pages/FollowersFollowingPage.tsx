@@ -15,7 +15,10 @@ export default function FollowersFollowingPage() {
 
   // Get userId from params or search params, default to current user
   const userId = params.userId || searchParams.get("userId") || userProfile?.id;
-  const initialTab = searchParams.get("tab") as "followers" | "following" | null;
+  const initialTab = searchParams.get("tab") as
+    | "followers"
+    | "following"
+    | null;
 
   const { followers, following, loading } = useFollowers(userId);
   const { isFollowing, toggleFollow } = useFollows();
