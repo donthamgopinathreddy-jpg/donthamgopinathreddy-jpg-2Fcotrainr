@@ -29,12 +29,12 @@ export const useWeeklyHealthData = () => {
       const weekEndStr = weekEndDate.toISOString().split("T")[0];
 
       // Calculate previous week dates early
-      const prevWeekStart = new Date(weekStartDate);
-      prevWeekStart.setDate(prevWeekStart.getDate() - 7);
-      const prevWeekEnd = new Date(weekStartDate);
-      prevWeekEnd.setDate(prevWeekEnd.getDate() - 1);
-      const prevWeekStartStr = prevWeekStart.toISOString().split("T")[0];
-      const prevWeekEndStr = prevWeekEnd.toISOString().split("T")[0];
+      const prevWeekStartDate = new Date(weekStartDate);
+      prevWeekStartDate.setDate(prevWeekStartDate.getDate() - 7);
+      const prevWeekEndDate = new Date(weekStartDate);
+      prevWeekEndDate.setDate(prevWeekEndDate.getDate() - 1);
+      const prevWeekStartStr = prevWeekStartDate.toISOString().split("T")[0];
+      const prevWeekEndStr = prevWeekEndDate.toISOString().split("T")[0];
 
       // Fetch user goal from diet preferences
       const { data: dietPrefs, error: dietError } = await supabase
