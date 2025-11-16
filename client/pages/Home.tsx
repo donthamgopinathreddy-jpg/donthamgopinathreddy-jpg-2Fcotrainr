@@ -526,7 +526,7 @@ export default function Home() {
               ✨
             </div>
             <p className={`text-lg font-bold leading-relaxed animate-pulse ${
-              theme === "dark" ? "text-gray-100" : "text-gray-900"
+              theme === "dark" ? "text-orange-100" : "text-orange-900"
             }`}>
               {quote}
             </p>
@@ -535,7 +535,7 @@ export default function Home() {
                 <div
                   key={i}
                   className={`w-2 h-2 rounded-full ${
-                    theme === "dark" ? "bg-gray-500/60" : "bg-gray-400/60"
+                    theme === "dark" ? "bg-orange-600/60" : "bg-orange-400/60"
                   }`}
                   style={{
                     animation: `ping 2s cubic-bezier(0, 0, 0.2, 1) infinite`,
