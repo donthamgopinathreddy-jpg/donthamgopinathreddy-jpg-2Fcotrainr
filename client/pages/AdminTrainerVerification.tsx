@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminTrainerVerification } from "@/hooks/useAdminTrainerVerification";
-import { useActivityLog } from "@/hooks/useActivityLog";
-import { useNotificationPreferences, type NotificationPreferences } from "@/hooks/useNotificationPreferences";
+import { useAdminDashboard } from "@/hooks/useAdminDashboard";
 import { TrainerVerificationCard } from "@/components/TrainerVerificationCard";
 import { Badge } from "@/components/ui/badge";
+import AdminLayout from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import {
   AlertCircle,
   Loader,
-  LogOut,
   Users,
   CheckCircle,
   XCircle,
   Clock,
-  Settings,
-  Upload,
-  Camera,
   X,
-  Bell,
 } from "lucide-react";
 
 const AdminTrainerVerification: React.FC = () => {
