@@ -94,10 +94,10 @@ export function useNotifications(userId?: string) {
       let data: NotificationData[] = [];
 
       try {
+        // Fetch notifications - the RLS policy will handle filtering by auth.uid()
         const response = await supabase
           .from("notifications")
           .select("*")
-          .eq("user_id", userId)
           .order("created_at", { ascending: false })
           .limit(20);
 
