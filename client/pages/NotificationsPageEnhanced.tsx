@@ -22,7 +22,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useFollows } from "@/hooks/useFollows";
 import { supabase } from "@/lib/supabase";
-import { supabase } from "@/lib/supabase";
 
 interface NotificationWithUser {
   id: string;
