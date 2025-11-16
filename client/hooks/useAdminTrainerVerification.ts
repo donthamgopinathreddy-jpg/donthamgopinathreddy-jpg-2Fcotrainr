@@ -29,72 +29,83 @@ export function useAdminTrainerVerification() {
     setError(null);
 
     try {
-      try {
-        let query = supabase
-          .from("trainer_verifications")
-          .select(
-            `
-            *,
-            user:users(id, full_name, email, country)
+      let query = supabase
+        .from("trainer_verifications")
+        .select(
           `
-          )
-          .order("submitted_at", { ascending: false });
+          *,
+          user:users(id, full_name, email, country)
+        `
+        )
+        .order("submitted_at", { ascending: false });
 
-        if (status) {
-          query = query.eq("verification_status", status);
-        }
+      if (status) {
+        query = query.eq("verification_status", status);
+      }
 
-        const { data, error: fetchError } = await query;
+      const { data, error: fetchError } = await query;
 
-        if (fetchError) {
-          const errorMsg = fetchError?.message || JSON.stringify(fetchError);
-          const errorCode = fetchError?.code || "";
-          console.error("Error fetching trainers:", { message: errorMsg, code: errorCode, fullError: fetchError });
+      if (fetchError) {
+        const errorMsg = fetchError?.message || String(fetchError);
+        const errorCode = fetchError?.code || "";
 
-          // Check if it's a table not found error
-          if (errorMsg.includes("does not exist") || errorMsg.includes("relation") || errorCode === "PGRST116") {
-            setError("Trainer verification table not yet initialized. Please wait for database setup to complete.");
-          } else if (errorMsg.includes("permission denied") || errorCode === "PGRST301") {
-            setError("Permission denied: You may not have access to view trainer verifications.");
-          } else {
-            setError(`Failed to fetch trainers: ${errorMsg}`);
-          }
+        console.error("Detailed error fetching trainers:", {
+          message: errorMsg,
+          code: errorCode,
+          status: fetchError?.status,
+          details: fetchError?.details,
+        });
 
-          setTrainers([]);
-          return;
-        }
-
-        // Transform the data to flatten user information
-        const transformedData = (data || []).map((item: any) => ({
-          id: item.id,
-          user_id: item.user_id,
-          name: item.user?.full_name || "Unknown",
-          email: item.user?.email || "",
-          country: item.user?.country,
-          id_document_url: item.id_document_url,
-          selfie_url: item.selfie_url,
-          certificate_url: item.certificate_url,
-          verification_status: item.verification_status,
-          verified_trainer: item.verified_trainer,
-          submitted_at: item.submitted_at,
-          reviewed_by: item.reviewed_by,
-          reviewed_at: item.reviewed_at,
-          rejection_reason: item.rejection_reason,
-        }));
-
-        setTrainers(transformedData);
-      } catch (fetchErr) {
-        const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
-        console.error("Error fetching trainers (catch):", errorMsg);
-
-        if (errorMsg.includes("Failed to fetch")) {
-          setError("Network error: Unable to reach the server. Please check your connection.");
+        // Check if it's a table not found error
+        if (errorMsg.includes("does not exist") || errorMsg.includes("relation") || errorCode === "PGRST116") {
+          setError("Trainer verification table not yet initialized. Please wait for database setup to complete.");
+        } else if (errorMsg.includes("permission denied") || errorCode === "PGRST301") {
+          setError("Permission denied: You may not have access to view trainer verifications.");
+        } else if (errorMsg.includes("RLS") || errorMsg.includes("policy")) {
+          setError("Row-level security policy blocked access. Please contact support.");
         } else {
-          setError("An error occurred while fetching trainers");
+          setError(`Failed to fetch trainers: ${errorMsg}`);
         }
 
         setTrainers([]);
+        return;
       }
+
+      // Transform the data to flatten user information
+      const transformedData = (data || []).map((item: any) => ({
+        id: item.id,
+        user_id: item.user_id,
+        name: item.user?.full_name || "Unknown",
+        email: item.user?.email || "",
+        country: item.user?.country,
+        id_document_url: item.id_document_url,
+        selfie_url: item.selfie_url,
+        certificate_url: item.certificate_url,
+        verification_status: item.verification_status,
+        verified_trainer: item.verified_trainer,
+        submitted_at: item.submitted_at,
+        reviewed_by: item.reviewed_by,
+        reviewed_at: item.reviewed_at,
+        rejection_reason: item.rejection_reason,
+      }));
+
+      setTrainers(transformedData);
+    } catch (fetchErr) {
+      const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+      console.error("Caught error fetching trainers:", {
+        message: errorMsg,
+        stack: fetchErr instanceof Error ? fetchErr.stack : undefined,
+      });
+
+      if (errorMsg.includes("Failed to fetch")) {
+        setError("Network error: Unable to reach the server. Please check your connection.");
+      } else if (errorMsg.includes("timeout")) {
+        setError("Request timeout: The server took too long to respond.");
+      } else {
+        setError(`An error occurred: ${errorMsg}`);
+      }
+
+      setTrainers([]);
     } finally {
       setLoading(false);
     }
