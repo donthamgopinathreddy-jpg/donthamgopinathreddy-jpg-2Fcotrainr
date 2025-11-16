@@ -1,4 +1,5 @@
-import { Lock, Sparkles } from "lucide-react";
+import { Lock, Plus } from "lucide-react";
+import { useState } from "react";
 import { DietPreferences } from "@/hooks/useDietPreferences";
 
 interface ExpandedDietPlannerProps {
@@ -40,10 +41,28 @@ const ALLERGENS = [
   "eggs",
   "shellfish",
   "wheat",
-  "lactose-free",
+  "sesame",
 ];
 
-const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const DIET_TYPES = [
+  { id: "veg", label: "Veg", emoji: "🥬" },
+  { id: "non_veg", label: "Non-Veg", emoji: "🍗" },
+  { id: "vegan", label: "Vegan", emoji: "🌱" },
+  { id: "high_protein", label: "High-Protein", emoji: "💪" },
+  { id: "keto", label: "Keto", emoji: "🥑" },
+];
+
+const FITNESS_GOALS = [
+  { id: "lose_fat", label: "Lose Fat", emoji: "📉" },
+  { id: "build_muscle", label: "Build Muscle", emoji: "💪" },
+  { id: "maintain", label: "Maintain", emoji: "⚖️" },
+];
+
+const BUDGET_OPTIONS = [
+  { id: "low", label: "Low", emoji: "💰" },
+  { id: "medium", label: "Medium", emoji: "💸" },
+  { id: "high", label: "High", emoji: "💎" },
+];
 
 export default function ExpandedDietPlanner({
   plan,
@@ -75,187 +94,213 @@ export default function ExpandedDietPlanner({
   showGeneratedMealPlan,
   weeklyMealPlan,
 }: ExpandedDietPlannerProps) {
+  const [selectedDietTypes, setSelectedDietTypes] = useState<string[]>(
+    dietType ? [dietType] : []
+  );
+
+  const handleDietTypeToggle = (type: string) => {
+    const updated = selectedDietTypes.includes(type)
+      ? selectedDietTypes.filter((t) => t !== type)
+      : [...selectedDietTypes, type];
+    setSelectedDietTypes(updated);
+    // For now keep single select behavior, but updated to support multi
+    setDietType(updated[updated.length - 1] || "");
+  };
+
   const handleAllergenToggle = (allergen: string) => {
     setAllergens(
       allergens.includes(allergen)
         ? allergens.filter((a) => a !== allergen)
-        : [...allergens, allergen],
+        : [...allergens, allergen]
     );
   };
 
   return (
-    <div className="space-y-8">
-      {/* 1. GOAL SELECTOR */}
-      <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl border border-white/60 dark:border-gray-700/60 p-6 hover:shadow-lg transition-all">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
-          1️⃣ Fitness Goal
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { id: "lose_fat", label: "Lose Fat", emoji: "📉" },
-            { id: "build_muscle", label: "Build Muscle", emoji: "💪" },
-            { id: "maintain", label: "Maintain", emoji: "⚖️" },
-          ].map((goal) => (
+    <div className="space-y-6">
+      {/* Fitness Goal */}
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-orange-100 dark:border-orange-900/50 rounded-2xl p-6 hover:shadow-lg transition-all">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">
+            1
+          </span>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+            Fitness Goal
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          {FITNESS_GOALS.map((goal) => (
             <button
               key={goal.id}
               onClick={() => setDietGoal(goal.id)}
-              className={`p-4 rounded-xl transition-all border-2 flex items-center gap-3 ${
+              className={`p-3 rounded-xl transition-all border-2 text-center ${
                 dietGoal === goal.id
-                  ? "bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-600"
-                  : "bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700 hover:border-orange-500"
+                  ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white border-orange-600 shadow-lg"
+                  : "bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700 hover:border-orange-400"
               }`}
             >
-              <span className="text-2xl">{goal.emoji}</span>
-              <span className="font-semibold">{goal.label}</span>
+              <div className="text-2xl mb-1">{goal.emoji}</div>
+              <div className="text-xs font-semibold">{goal.label}</div>
             </button>
           ))}
         </div>
       </div>
 
-      {/* 2. DIET TYPE */}
-      <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl border border-white/60 dark:border-gray-700/60 p-6 hover:shadow-lg transition-all">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
-          2️⃣ Diet Type
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {[
-            { id: "veg", label: "Vegetarian", emoji: "🥬" },
-            { id: "non_veg", label: "Non-Vegetarian", emoji: "🍗" },
-            { id: "vegan", label: "Vegan", emoji: "🌱" },
-            { id: "custom", label: "Custom", emoji: "⚙️" },
-          ].map((type) => (
+      {/* Diet Types - Multi-Select */}
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-orange-100 dark:border-orange-900/50 rounded-2xl p-6 hover:shadow-lg transition-all">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">
+            2
+          </span>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+            Diet Type (Multi-Select)
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {DIET_TYPES.map((type) => (
             <button
               key={type.id}
-              onClick={() => setDietType(type.id)}
-              className={`p-4 rounded-xl transition-all border-2 flex items-center gap-3 ${
-                dietType === type.id
-                  ? "bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-600"
-                  : "bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700 hover:border-orange-500"
+              onClick={() => handleDietTypeToggle(type.id)}
+              className={`p-3 rounded-xl transition-all border-2 text-center ${
+                selectedDietTypes.includes(type.id)
+                  ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white border-orange-600 shadow-lg"
+                  : "bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700 hover:border-orange-400"
               }`}
             >
-              <span className="text-2xl">{type.emoji}</span>
-              <span className="font-semibold text-sm">{type.label}</span>
+              <div className="text-xl mb-1">{type.emoji}</div>
+              <div className="text-xs font-semibold">{type.label}</div>
             </button>
           ))}
         </div>
       </div>
 
-      {/* 3. FOOD PREFERENCES */}
-      <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl border border-white/60 dark:border-gray-700/60 p-6 hover:shadow-lg transition-all">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
-          3️⃣ Food Preferences
-        </h3>
+      {/* Food Preferences */}
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-orange-100 dark:border-orange-900/50 rounded-2xl p-6 hover:shadow-lg transition-all">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">
+            3
+          </span>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+            Food Preferences
+          </h3>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Likes */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-2 block">
               Foods You Like
             </label>
             <textarea
               value={likes}
               onChange={(e) => setLikes(e.target.value)}
-              placeholder="e.g., Chicken, Rice, Broccoli..."
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-white focus:border-orange-500 focus:outline-none transition-colors resize-none h-24"
+              placeholder="Chicken, Rice, Broccoli..."
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-white focus:border-orange-500 focus:outline-none transition-colors resize-none h-20 text-sm"
             />
           </div>
 
-          {/* Dislikes */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-2 block">
               Foods to Avoid
             </label>
             <textarea
               value={dislikes}
               onChange={(e) => setDislikes(e.target.value)}
-              placeholder="e.g., Mushrooms, Olives..."
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-white focus:border-orange-500 focus:outline-none transition-colors resize-none h-24"
+              placeholder="Mushrooms, Olives..."
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-white focus:border-orange-500 focus:outline-none transition-colors resize-none h-20 text-sm"
             />
           </div>
 
-          {/* Must Include */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-2 block">
               Must Include
             </label>
             <textarea
               value={mustInclude}
               onChange={(e) => setMustInclude(e.target.value)}
-              placeholder="e.g., Protein sources, Greens..."
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-white focus:border-orange-500 focus:outline-none transition-colors resize-none h-24"
+              placeholder="Protein, Greens..."
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-white focus:border-orange-500 focus:outline-none transition-colors resize-none h-20 text-sm"
             />
           </div>
         </div>
       </div>
 
-      {/* 4. ALLERGENS (PREMIUM ONLY) */}
+      {/* Allergens - Premium */}
       <div
-        className={`bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl border border-white/60 dark:border-gray-700/60 p-6 hover:shadow-lg transition-all ${
-          plan !== "premium" ? "opacity-50 pointer-events-none relative" : ""
+        className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-orange-100 dark:border-orange-900/50 rounded-2xl p-6 transition-all ${
+          plan !== "premium" ? "opacity-60" : "hover:shadow-lg"
         }`}
       >
-        {plan !== "premium" && (
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-            <div className="bg-white dark:bg-gray-900 px-6 py-3 rounded-xl">
-              <p className="text-sm font-semibold text-orange-600 dark:text-orange-400">
-                🔒 Premium Feature
-              </p>
-            </div>
-          </div>
-        )}
+        <div className="flex items-center gap-2 mb-4">
+          <span className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">
+            4
+          </span>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            Allergens
+            {plan !== "premium" && (
+              <Lock className="w-4 h-4 text-orange-500" />
+            )}
+          </h3>
+        </div>
 
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          4️⃣ Allergens
-          {plan !== "premium" && <Lock className="w-5 h-5 text-orange-500" />}
-        </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
           {ALLERGENS.map((allergen) => (
             <label
               key={allergen}
-              className="flex items-center gap-2 cursor-pointer p-3 rounded-lg hover:bg-white/30 transition-all"
+              className={`flex items-center gap-2 p-3 rounded-lg transition-all cursor-pointer ${
+                plan === "premium"
+                  ? "hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                  : "cursor-not-allowed"
+              }`}
             >
               <input
                 type="checkbox"
                 checked={allergens.includes(allergen)}
                 onChange={() => handleAllergenToggle(allergen)}
-                className="w-5 h-5 rounded accent-orange-500 cursor-pointer"
+                className="w-4 h-4 rounded accent-orange-500 cursor-pointer"
                 disabled={plan !== "premium"}
               />
-              <span className="text-sm capitalize text-gray-700 dark:text-gray-300">
+              <span className="text-sm capitalize font-medium text-gray-700 dark:text-gray-300">
                 {allergen}
               </span>
             </label>
           ))}
         </div>
-      </div>
 
-      {/* 5. MACRO CUSTOMIZATION (PREMIUM ONLY) */}
-      <div
-        className={`bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl border border-white/60 dark:border-gray-700/60 p-6 hover:shadow-lg transition-all ${
-          plan !== "premium" ? "opacity-50 pointer-events-none relative" : ""
-        }`}
-      >
         {plan !== "premium" && (
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-            <div className="bg-white dark:bg-gray-900 px-6 py-3 rounded-xl">
-              <p className="text-sm font-semibold text-orange-600 dark:text-orange-400">
-                �� Premium Feature
-              </p>
-            </div>
+          <div className="mt-4 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <p className="text-xs font-semibold text-orange-700 dark:text-orange-400">
+              🔒 Upgrade to Premium to manage allergens
+            </p>
           </div>
         )}
+      </div>
 
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          5️⃣ Macro Customization
-          {plan !== "premium" && <Lock className="w-5 h-5 text-orange-500" />}
-        </h3>
-        <div className="space-y-6">
-          {/* Protein */}
+      {/* Macro Targets - Premium */}
+      <div
+        className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-orange-100 dark:border-orange-900/50 rounded-2xl p-6 transition-all ${
+          plan !== "premium" ? "opacity-60" : "hover:shadow-lg"
+        }`}
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <span className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">
+            5
+          </span>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            Macro Targets
+            {plan !== "premium" && (
+              <Lock className="w-4 h-4 text-orange-500" />
+            )}
+          </h3>
+        </div>
+
+        <div className="space-y-5">
           <div>
-            <div className="flex justify-between mb-2">
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                Protein (g)
-              </label>
-              <span className="text-sm font-bold text-orange-600 dark:text-orange-400">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Protein
+              </span>
+              <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-sm font-bold">
                 {proteinTarget}g
               </span>
             </div>
@@ -270,13 +315,12 @@ export default function ExpandedDietPlanner({
             />
           </div>
 
-          {/* Carbs */}
           <div>
-            <div className="flex justify-between mb-2">
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                Carbs (g)
-              </label>
-              <span className="text-sm font-bold text-orange-600 dark:text-orange-400">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Carbs
+              </span>
+              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-sm font-bold">
                 {carbsTarget}g
               </span>
             </div>
@@ -291,13 +335,12 @@ export default function ExpandedDietPlanner({
             />
           </div>
 
-          {/* Fats */}
           <div>
-            <div className="flex justify-between mb-2">
-              <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                Fats (g)
-              </label>
-              <span className="text-sm font-bold text-orange-600 dark:text-orange-400">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Fats
+              </span>
+              <span className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full text-sm font-bold">
                 {fatsTarget}g
               </span>
             </div>
@@ -312,118 +355,91 @@ export default function ExpandedDietPlanner({
             />
           </div>
 
-          {/* Summary */}
-          <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 border border-orange-200 dark:border-orange-800/50">
-            <p className="text-sm text-orange-700 dark:text-orange-300">
-              <strong>Total Daily Calories:</strong>{" "}
-              {Math.round(proteinTarget * 4 + carbsTarget * 4 + fatsTarget * 9)}{" "}
+          <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Daily Calories:{" "}
+              <span className="text-orange-600 dark:text-orange-400 text-lg">
+                {Math.round(proteinTarget * 4 + carbsTarget * 4 + fatsTarget * 9)}
+              </span>{" "}
               kcal
             </p>
           </div>
         </div>
-      </div>
 
-      {/* 6. BUDGET FILTER (PREMIUM ONLY) */}
-      <div
-        className={`bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl border border-white/60 dark:border-gray-700/60 p-6 hover:shadow-lg transition-all ${
-          plan !== "premium" ? "opacity-50 pointer-events-none relative" : ""
-        }`}
-      >
         {plan !== "premium" && (
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-            <div className="bg-white dark:bg-gray-900 px-6 py-3 rounded-xl">
-              <p className="text-sm font-semibold text-orange-600 dark:text-orange-400">
-                🔒 Premium Feature
-              </p>
-            </div>
+          <div className="mt-4 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <p className="text-xs font-semibold text-orange-700 dark:text-orange-400">
+              🔒 Upgrade to Premium to customize macros
+            </p>
           </div>
         )}
+      </div>
 
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          6️⃣ Budget Filter
-          {plan !== "premium" && <Lock className="w-5 h-5 text-orange-500" />}
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { id: "low", label: "Low Budget", emoji: "💰" },
-            { id: "medium", label: "Medium Budget", emoji: "💸" },
-            { id: "high", label: "High Budget", emoji: "💎" },
-          ].map((budget) => (
+      {/* Budget - Premium */}
+      <div
+        className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur border border-orange-100 dark:border-orange-900/50 rounded-2xl p-6 transition-all ${
+          plan !== "premium" ? "opacity-60" : "hover:shadow-lg"
+        }`}
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <span className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">
+            6
+          </span>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            Budget Tier
+            {plan !== "premium" && (
+              <Lock className="w-4 h-4 text-orange-500" />
+            )}
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          {BUDGET_OPTIONS.map((budget) => (
             <button
               key={budget.id}
               onClick={() => setBudgetFilter(budget.id)}
               disabled={plan !== "premium"}
-              className={`p-4 rounded-xl transition-all border-2 flex items-center gap-3 ${
+              className={`p-3 rounded-xl transition-all border-2 text-center ${
                 budgetFilter === budget.id
-                  ? "bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-600"
-                  : "bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700 hover:border-orange-500"
-              }`}
+                  ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white border-orange-600 shadow-lg"
+                  : "bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700"
+              } ${plan === "premium" ? "hover:border-orange-400 cursor-pointer" : "cursor-not-allowed"}`}
             >
-              <span className="text-2xl">{budget.emoji}</span>
-              <span className="font-semibold">{budget.label}</span>
+              <div className="text-2xl mb-1">{budget.emoji}</div>
+              <div className="text-xs font-semibold">{budget.label}</div>
             </button>
           ))}
         </div>
-      </div>
 
-      {/* 7. WEEKLY PLAN GENERATOR (PREMIUM ONLY) */}
-      <div
-        className={`bg-white/40 dark:bg-gray-800/40 backdrop-blur-md rounded-2xl border border-white/60 dark:border-gray-700/60 p-6 hover:shadow-lg transition-all ${
-          plan !== "premium" ? "opacity-50 pointer-events-none relative" : ""
-        }`}
-      >
         {plan !== "premium" && (
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-            <div className="bg-white dark:bg-gray-900 px-6 py-3 rounded-xl">
-              <p className="text-sm font-semibold text-orange-600 dark:text-orange-400">
-                🔒 Premium Feature
-              </p>
-            </div>
+          <div className="mt-4 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <p className="text-xs font-semibold text-orange-700 dark:text-orange-400">
+              🔒 Upgrade to Premium to set budget
+            </p>
           </div>
         )}
-
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          7️⃣ Weekly Plan Generator
-          {plan !== "premium" && <Lock className="w-5 h-5 text-orange-500" />}
-        </h3>
-        <button
-          onClick={onGenerateMealPlan}
-          disabled={plan !== "premium"}
-          className="w-full p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-        >
-          <Sparkles className="w-5 h-5" />
-          Generate 7-Day Meal Plan
-        </button>
       </div>
 
-      {/* Generated Meal Plan Display */}
+      {/* Generated Meal Plan */}
       {showGeneratedMealPlan && weeklyMealPlan && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+        <div className="bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-6 border border-purple-200 dark:border-purple-800/50">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
             📅 Your 7-Day Meal Plan
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {weeklyMealPlan.map((day: any, idx: number) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {weeklyMealPlan.slice(0, 4).map((day: any, idx: number) => (
               <div
                 key={idx}
-                className="bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-4 border border-purple-200 dark:border-purple-800/50"
+                className="bg-white/60 dark:bg-gray-900/60 rounded-lg p-4"
               >
-                <h4 className="font-bold text-gray-900 dark:text-white mb-3">
+                <h4 className="font-bold text-gray-900 dark:text-white mb-2">
                   {day.day}
                 </h4>
-                <div className="space-y-2 text-sm">
-                  <p>
-                    <strong>🍳 Breakfast:</strong> {day.meals.breakfast}
-                  </p>
-                  <p>
-                    <strong>🥗 Lunch:</strong> {day.meals.lunch}
-                  </p>
-                  <p>
-                    <strong>🍎 Snack:</strong> {day.meals.snack}
-                  </p>
-                  <p>
-                    <strong>🍽️ Dinner:</strong> {day.meals.dinner}
-                  </p>
+                <div className="space-y-1 text-xs text-gray-700 dark:text-gray-300">
+                  <p>🍳 {day.meals.breakfast}</p>
+                  <p>🥗 {day.meals.lunch}</p>
+                  <p>🍎 {day.meals.snack}</p>
+                  <p>🍽️ {day.meals.dinner}</p>
                 </div>
               </div>
             ))}
@@ -431,22 +447,32 @@ export default function ExpandedDietPlanner({
         </div>
       )}
 
-      {/* 8. ACTION BUTTONS */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-3 pt-4">
         <button
           onClick={onSave}
           disabled={isSaving}
-          className="flex-1 px-6 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 text-sm"
         >
           {isSaving ? "Saving..." : "💾 Save Preferences"}
         </button>
 
         {plan === "premium" && (
           <button
-            onClick={onAskTrainer}
-            className="flex-1 px-6 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg transition-all flex items-center justify-center gap-2"
+            onClick={onGenerateMealPlan}
+            className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg transition-all text-sm flex items-center justify-center gap-2"
           >
-            👨‍🏫 Ask Trainer to Review
+            <Plus className="w-4 h-4" />
+            Generate Plan
+          </button>
+        )}
+
+        {plan === "premium" && (
+          <button
+            onClick={onAskTrainer}
+            className="flex-1 px-6 py-3 bg-white dark:bg-gray-800 text-orange-600 dark:text-orange-400 font-bold rounded-xl hover:shadow-lg transition-all border-2 border-orange-200 dark:border-orange-900/50 text-sm"
+          >
+            👨‍🏫 Ask Trainer
           </button>
         )}
       </div>
