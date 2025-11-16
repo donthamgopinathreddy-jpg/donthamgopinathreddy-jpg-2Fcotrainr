@@ -311,45 +311,38 @@ const AdminTrainerVerification: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              {/* Profile Picture Circle - Only visible when settings closed */}
-              {!showSettings && (
-                <label className="relative cursor-pointer group">
-                  {userProfile?.profile_picture_url ? (
-                    <img
-                      src={userProfile.profile_picture_url}
-                      alt={userProfile.full_name}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-900 to-pink-600 flex items-center justify-center text-white font-bold text-sm">
-                      {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
-                    </div>
-                  )}
-
-                  {/* Camera Icon in Bottom-Right Corner */}
-                  <div className="absolute bottom-0 right-0 bg-pink-600 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg">
-                    {uploadingPic ? (
-                      <Loader className="w-3 h-3 text-white animate-spin" />
-                    ) : (
-                      <Camera className="w-3 h-3 text-white" />
-                    )}
-                  </div>
-
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    disabled={uploadingPic}
-                    onChange={handleProfilePictureUpload}
+              {/* Profile Picture Circle - Shows actual image or fallback avatar */}
+              <label className="relative cursor-pointer group">
+                {userProfile?.profile_picture_url ? (
+                  <img
+                    src={userProfile.profile_picture_url}
+                    alt={userProfile.full_name}
+                    className="w-10 h-10 rounded-full object-cover"
                   />
-                </label>
-              )}
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-900 to-pink-600 flex items-center justify-center text-white font-bold text-sm">
+                    {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
+                  </div>
+                )}
 
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-900 to-pink-600 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">
-                  {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
-                </span>
-              </div>
+                {/* Camera Icon in Bottom-Right Corner */}
+                <div className="absolute bottom-0 right-0 bg-pink-600 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg">
+                  {uploadingPic ? (
+                    <Loader className="w-3 h-3 text-white animate-spin" />
+                  ) : (
+                    <Camera className="w-3 h-3 text-white" />
+                  )}
+                </div>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={uploadingPic}
+                  onChange={handleProfilePictureUpload}
+                />
+              </label>
+
               <div>
                 <p className="text-sm font-semibold text-gray-900">
                   {userProfile?.full_name || "Admin"}
