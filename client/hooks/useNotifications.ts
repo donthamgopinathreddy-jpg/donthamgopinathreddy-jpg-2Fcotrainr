@@ -21,6 +21,8 @@ export interface Notification {
   message: string;
   related_user_id?: string;
   related_id?: string;
+  post_id?: string;
+  comment_id?: string;
   is_read: boolean;
   created_at: string;
 }
