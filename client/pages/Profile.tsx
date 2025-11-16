@@ -80,6 +80,7 @@ export default function Profile() {
   });
 
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showFollowersModal, setShowFollowersModal] = useState(false);
   const [showSecuritySection, setShowSecuritySection] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
