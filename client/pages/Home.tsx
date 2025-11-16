@@ -49,6 +49,7 @@ export default function Home() {
     syncTodaySteps,
     isAvailable: isHealthSyncAvailable,
   } = useHealthSync();
+  const { moodLogs } = useMoodLogs(userProfile?.id);
 
   const [coverImage, setCoverImage] = useState(
     "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop",
