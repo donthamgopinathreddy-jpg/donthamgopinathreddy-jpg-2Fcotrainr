@@ -40,14 +40,14 @@ export const WeeklyQuests = ({ variant = "full" }: WeeklyQuestsProps) => {
         <div className="flex items-start justify-between mb-3">
           <div>
             <p
-              className={`text-sm font-semibold mb-1 ${
+              className={`text-xs sm:text-sm font-semibold mb-1 ${
                 theme === "dark" ? "text-gray-300" : "text-gray-700"
               }`}
             >
               Weekly Quests
             </p>
             <p
-              className={`text-2xl font-bold ${
+              className={`text-xl sm:text-2xl font-bold ${
                 theme === "dark" ? "text-blue-400" : "text-blue-600"
               }`}
             >
@@ -55,7 +55,7 @@ export const WeeklyQuests = ({ variant = "full" }: WeeklyQuestsProps) => {
             </p>
           </div>
           <div
-            className={`text-xl font-bold rounded-lg p-2 ${
+            className={`text-sm sm:text-lg md:text-xl font-bold rounded-lg p-1.5 sm:p-2 ${
               theme === "dark"
                 ? "bg-gray-700/50 text-yellow-400"
                 : "bg-yellow-100/50 text-yellow-600"
@@ -83,11 +83,11 @@ export const WeeklyQuests = ({ variant = "full" }: WeeklyQuestsProps) => {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2
-          className={`text-lg font-bold flex items-center gap-2 ${
+          className={`text-sm sm:text-base md:text-lg font-bold flex items-center gap-2 ${
             theme === "dark" ? "text-white" : "text-gray-900"
           }`}
         >
-          <span className="text-xl">📋</span>
+          <span className="text-lg sm:text-xl">📋</span>
           Weekly Quests
         </h2>
         <div
