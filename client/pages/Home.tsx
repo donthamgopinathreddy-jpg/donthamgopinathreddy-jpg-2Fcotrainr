@@ -956,11 +956,13 @@ export default function Home() {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-sm w-full p-6 space-y-4">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-              Edit Daily Targets
+              Set Daily Goals
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Set your daily goals. Calories burned are calculated from steps.
-            </p>
+            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-3">
+              <p className="text-sm text-blue-900 dark:text-blue-200">
+                ✓ Steps are automatically counted from your device sensors
+              </p>
+            </div>
 
             <div className="space-y-4">
               <div>
