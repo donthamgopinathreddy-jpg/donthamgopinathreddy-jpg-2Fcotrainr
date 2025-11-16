@@ -496,7 +496,9 @@ const AppRoutes = () => {
         path="/admin"
         element={
           <ProtectedRoute>
-            <AdminTrainerVerification />
+            <AdminRoute>
+              <AdminTrainerVerification />
+            </AdminRoute>
           </ProtectedRoute>
         }
       />
@@ -504,7 +506,9 @@ const AppRoutes = () => {
         path="/admin/analytics"
         element={
           <ProtectedRoute>
-            <AdminAnalytics />
+            <AdminRoute>
+              <AdminAnalytics />
+            </AdminRoute>
           </ProtectedRoute>
         }
       />
@@ -512,7 +516,9 @@ const AppRoutes = () => {
         path="/admin/users"
         element={
           <ProtectedRoute>
-            <AdminUserManagement />
+            <AdminRoute>
+              <AdminUserManagement />
+            </AdminRoute>
           </ProtectedRoute>
         }
       />
@@ -520,7 +526,9 @@ const AppRoutes = () => {
         path="/admin/trainers"
         element={
           <ProtectedRoute>
-            <AdminTrainerManagement />
+            <AdminRoute>
+              <AdminTrainerManagement />
+            </AdminRoute>
           </ProtectedRoute>
         }
       />
@@ -528,7 +536,9 @@ const AppRoutes = () => {
         path="/admin/communication"
         element={
           <ProtectedRoute>
-            <AdminCommunication />
+            <AdminRoute>
+              <AdminCommunication />
+            </AdminRoute>
           </ProtectedRoute>
         }
       />
@@ -536,7 +546,9 @@ const AppRoutes = () => {
         path="/admin/system"
         element={
           <ProtectedRoute>
-            <AdminSystemHealth />
+            <AdminRoute>
+              <AdminSystemHealth />
+            </AdminRoute>
           </ProtectedRoute>
         }
       />
@@ -544,7 +556,9 @@ const AppRoutes = () => {
         path="/admin/stats"
         element={
           <ProtectedRoute>
-            <AdminQuickStats />
+            <AdminRoute>
+              <AdminQuickStats />
+            </AdminRoute>
           </ProtectedRoute>
         }
       />
