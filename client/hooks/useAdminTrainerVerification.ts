@@ -31,12 +31,7 @@ export function useAdminTrainerVerification() {
     try {
       let query = supabase
         .from("trainer_verifications")
-        .select(
-          `
-          *,
-          user:users(id, full_name, email, country)
-        `
-        )
+        .select("*")
         .order("submitted_at", { ascending: false });
 
       if (status) {
