@@ -144,8 +144,8 @@ export const useWeeklyHealthData = () => {
         weekEndDate,
         stepsTotal,
         stepsVsLastWeek: Math.round(stepsVsLastWeek * 10) / 10,
-        workoutMinutesTotal: 120, // This would need actual workout tracking data
-        workoutMinutesVsLastWeek: 10,
+        workoutMinutesTotal: Math.round(workoutMinutesTotal),
+        workoutMinutesVsLastWeek: Math.round(workoutMinutesVsLastWeek * 10) / 10,
         caloriesBurned: estimatedCaloriesBurned,
         caloriesConsumed,
         proteinIntakeG,
