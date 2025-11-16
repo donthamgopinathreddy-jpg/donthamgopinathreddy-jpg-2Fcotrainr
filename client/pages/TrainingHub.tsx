@@ -51,10 +51,9 @@ export default function TrainingHub() {
   const { createReviewRequest, loading: reviewLoading } =
     useDietReviewRequests();
 
-  const plan = (userProfile?.subscription_plan || "free") as
-    | "free"
-    | "basic"
-    | "premium";
+  // For testing: Override to show all premium features
+  const plan = "premium" as "free" | "basic" | "premium";
+  // Actual plan: const plan = (userProfile?.subscription_plan || "free") as "free" | "basic" | "premium";
 
   // Workout state
   const [selectedCategory, setSelectedCategory] =
