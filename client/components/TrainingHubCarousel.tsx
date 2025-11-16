@@ -11,10 +11,12 @@ interface Section {
 
 interface TrainingHubCarouselProps {
   sections: Section[];
+  onSectionChange?: (index: number) => void;
 }
 
 export default function TrainingHubCarousel({
   sections,
+  onSectionChange,
 }: TrainingHubCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
