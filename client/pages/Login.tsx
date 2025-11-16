@@ -544,6 +544,123 @@ export default function Login() {
                     )}
                   </div>
                 </>
+              ) : authMethod === "biometric" ? (
+                <>
+                  <div className="space-y-4">
+                    <p className="text-center text-gray-600">
+                      Use {biometricType === "faceId" ? "Face ID" : biometricType === "fingerprint" ? "Fingerprint" : "Biometric"} to sign in
+                    </p>
+                    {!email ? (
+                      <>
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-900">
+                            Email or Username
+                          </label>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="text"
+                              placeholder="Enter your email or username"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="block text-sm font-medium text-gray-900">
+                            Password
+                          </label>
+                          <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              placeholder="Enter your password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              className="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                              {showPassword ? (
+                                <EyeOff className="w-5 h-5" />
+                              ) : (
+                                <Eye className="w-5 h-5" />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                        <button
+                          onClick={async () => {
+                            if (isFormComplete) {
+                              setLoading(true);
+                              try {
+                                let loginEmail = email;
+                                if (!email.includes("@")) {
+                                  const { data: userData } = await supabase
+                                    .from("users")
+                                    .select("email, id")
+                                    .eq("username", email.toLowerCase())
+                                    .single();
+                                  if (userData?.email) {
+                                    loginEmail = userData.email;
+                                    setUserId(userData.id);
+                                  }
+                                } else {
+                                  const { data: userData } = await supabase
+                                    .from("users")
+                                    .select("id")
+                                    .eq("email", email)
+                                    .single();
+                                  if (userData?.id) {
+                                    setUserId(userData.id);
+                                  }
+                                }
+                              } catch (error) {
+                                toast.error("Could not find user account");
+                              } finally {
+                                setLoading(false);
+                              }
+                            }
+                          }}
+                          disabled={!isFormComplete || loading}
+                          className="w-full bg-primary hover:bg-primary/90 disabled:bg-gray-300 text-white font-bold py-3 rounded-lg transition-colors"
+                        >
+                          Continue
+                        </button>
+                      </>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="flex justify-center py-8">
+                          <Fingerprint className="w-16 h-16 text-primary/60" />
+                        </div>
+                        <p className="text-center text-sm text-gray-600">
+                          Place your finger on the sensor or look at the camera to authenticate
+                        </p>
+                        <button
+                          onClick={handleBiometricAuth}
+                          disabled={loading || biometricLoading}
+                          className="w-full bg-primary hover:bg-primary/90 disabled:bg-gray-300 text-white font-bold py-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+                        >
+                          {loading || biometricLoading ? (
+                            <>
+                              <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                              Authenticating...
+                            </>
+                          ) : (
+                            <>
+                              <Fingerprint className="w-5 h-5" />
+                              Use {biometricType === "faceId" ? "Face ID" : biometricType === "fingerprint" ? "Fingerprint" : "Biometric"}
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
               ) : null}
 
               {authMethod === "password" && (
