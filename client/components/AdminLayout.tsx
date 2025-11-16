@@ -232,7 +232,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
       {/* Main Content */}
       <main className="md:ml-64 transition-all duration-300">
         {/* Top Header */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-40 pt-2">
+        <div className="bg-white border-b border-gray-200 sticky top-0 z-40 pt-2" ref={userMenuRef}>
           <div className="px-4 md:px-8 py-4">
             <div className="max-w-7xl">
               <div className="flex items-center justify-between mb-4 md:hidden">
@@ -241,7 +241,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                   <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Menu</div>
                 </div>
                 {/* User Menu Dropdown */}
-                <div className="relative" ref={userMenuRef}>
+                <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
                     className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 transition-colors"
