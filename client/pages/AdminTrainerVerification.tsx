@@ -161,12 +161,89 @@ const AdminTrainerVerification: React.FC = () => {
   const approvedCount = trainers.filter((t) => t.verification_status === "approved").length;
   const rejectedCount = trainers.filter((t) => t.verification_status === "rejected").length;
 
+  const pendingCount = trainers.filter((t) => t.verification_status === "pending").length;
+  const approvedCount = trainers.filter((t) => t.verification_status === "approved").length;
+  const rejectedCount = trainers.filter((t) => t.verification_status === "rejected").length;
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Top Admin Header */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF7A00] to-orange-600 flex items-center justify-center">
+                <span className="text-white font-bold text-lg">
+                  {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
+                </span>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-900">
+                  {userProfile?.full_name || "Admin"}
+                </p>
+                <p className="text-xs text-gray-500">{userProfile?.email}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowSettings(!showSettings)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                title="Settings"
+              >
+                <Settings className="w-5 h-5 text-gray-600" />
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Settings Panel */}
+      {showSettings && (
+        <div className="bg-blue-50 border-b border-blue-200">
+          <div className="max-w-7xl mx-auto px-6 py-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">Admin Information</h3>
+                <div className="space-y-1 text-sm text-gray-600">
+                  <p>
+                    <strong>Role:</strong> System Administrator
+                  </p>
+                  <p>
+                    <strong>Status:</strong> <span className="text-green-600">● Active</span>
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {userProfile?.email}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">Quick Actions</h3>
+                <div className="space-y-2">
+                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-white rounded transition-colors">
+                    View Activity Log
+                  </button>
+                  <button className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-white rounded transition-colors">
+                    System Settings
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Dashboard Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Trainer Verification</h1>
               <p className="text-gray-600 mt-1">Review and approve trainer documents</p>
@@ -174,6 +251,39 @@ const AdminTrainerVerification: React.FC = () => {
             <Badge variant="secondary" className="bg-orange-50 text-orange-700 border-orange-200">
               Admin Only
             </Badge>
+          </div>
+
+          {/* Admin Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-amber-700 font-medium">Pending Reviews</p>
+                  <p className="text-3xl font-bold text-amber-900 mt-1">{pendingCount}</p>
+                </div>
+                <Clock className="w-8 h-8 text-amber-600 opacity-20" />
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-green-700 font-medium">Approved</p>
+                  <p className="text-3xl font-bold text-green-900 mt-1">{approvedCount}</p>
+                </div>
+                <CheckCircle className="w-8 h-8 text-green-600 opacity-20" />
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-red-700 font-medium">Rejected</p>
+                  <p className="text-3xl font-bold text-red-900 mt-1">{rejectedCount}</p>
+                </div>
+                <XCircle className="w-8 h-8 text-red-600 opacity-20" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
