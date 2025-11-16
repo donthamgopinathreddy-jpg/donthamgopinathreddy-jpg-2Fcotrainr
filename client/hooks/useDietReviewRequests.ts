@@ -54,7 +54,7 @@ export const useDietReviewRequests = () => {
       } catch (err) {
         console.debug(
           "Create review request catch error:",
-          err instanceof Error ? err.message : "unknown"
+          err instanceof Error ? err.message : "unknown",
         );
         setError("Failed to create review request");
         return null;
@@ -62,7 +62,7 @@ export const useDietReviewRequests = () => {
         setLoading(false);
       }
     },
-    [user?.id]
+    [user?.id],
   );
 
   const getReviewRequests = useCallback(async (userId: string) => {
@@ -86,7 +86,7 @@ export const useDietReviewRequests = () => {
     } catch (err) {
       console.debug(
         "Get review requests catch error:",
-        err instanceof Error ? err.message : "unknown"
+        err instanceof Error ? err.message : "unknown",
       );
       setError("Failed to fetch review requests");
       return [];
@@ -119,7 +119,7 @@ export const useDietReviewRequests = () => {
       } catch (err) {
         console.debug(
           "Update review request catch error:",
-          err instanceof Error ? err.message : "unknown"
+          err instanceof Error ? err.message : "unknown",
         );
         setError("Failed to update review request");
         return false;
@@ -127,7 +127,7 @@ export const useDietReviewRequests = () => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return {

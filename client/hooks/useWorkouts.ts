@@ -162,7 +162,7 @@ export const useWorkouts = () => {
     } catch (err) {
       console.debug(
         "Workouts catch error:",
-        err instanceof Error ? err.message : "unknown"
+        err instanceof Error ? err.message : "unknown",
       );
       setWorkouts(DEMO_WORKOUTS);
       setError(null);
@@ -180,14 +180,14 @@ export const useWorkouts = () => {
   };
 
   const getWorkoutsByCategory = (
-    category: "gym" | "yoga" | "boxing" | "zumba" | "stretching" | "warmups"
+    category: "gym" | "yoga" | "boxing" | "zumba" | "stretching" | "warmups",
   ) => {
     return workouts.filter((w) => w.category === category);
   };
 
   const getWorkoutsByCategoryAndLevel = (
     category: "gym" | "yoga" | "boxing" | "zumba" | "stretching" | "warmups",
-    level: "basic" | "intermediate" | "advanced"
+    level: "basic" | "intermediate" | "advanced",
   ) => {
     return workouts.filter((w) => w.category === category && w.level === level);
   };

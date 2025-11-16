@@ -7,16 +7,26 @@ import { useDietReviewRequests } from "@/hooks/useDietReviewRequests";
 import SubscriptionBanner from "@/components/SubscriptionBanner";
 import WorkoutCard from "@/components/WorkoutCard";
 
-type WorkoutCategory = "gym" | "yoga" | "boxing" | "zumba" | "stretching" | "warmups";
+type WorkoutCategory =
+  | "gym"
+  | "yoga"
+  | "boxing"
+  | "zumba"
+  | "stretching"
+  | "warmups";
 type WorkoutLevel = "basic" | "intermediate" | "advanced";
 
 export default function TrainingHub() {
   const { userProfile } = useAuth();
   const { workouts, loading: workoutsLoading } = useWorkouts();
   const { preferences } = useDietPreferences();
-  const { createReviewRequest, loading: reviewLoading } = useDietReviewRequests();
+  const { createReviewRequest, loading: reviewLoading } =
+    useDietReviewRequests();
 
-  const plan = (userProfile?.subscription_plan || "free") as "free" | "basic" | "premium";
+  const plan = (userProfile?.subscription_plan || "free") as
+    | "free"
+    | "basic"
+    | "premium";
 
   // Determine what's locked
   const isBasicWorkoutsLocked = plan === "free";
@@ -32,18 +42,26 @@ export default function TrainingHub() {
     return workouts;
   };
 
-  const [selectedCategory, setSelectedCategory] = useState<WorkoutCategory>("gym");
+  const [selectedCategory, setSelectedCategory] =
+    useState<WorkoutCategory>("gym");
   const [selectedLevel, setSelectedLevel] = useState<WorkoutLevel>("basic");
 
-  const categories: WorkoutCategory[] = ["gym", "yoga", "boxing", "zumba", "stretching", "warmups"];
+  const categories: WorkoutCategory[] = [
+    "gym",
+    "yoga",
+    "boxing",
+    "zumba",
+    "stretching",
+    "warmups",
+  ];
   const levels: WorkoutLevel[] = ["basic", "intermediate", "advanced"];
 
   const filteredWorkouts = filterWorkoutsByPlan(
     workouts.filter(
       (w) =>
         w.category === selectedCategory &&
-        (plan === "premium" || plan === "basic" ? true : w.level === "basic")
-    )
+        (plan === "premium" || plan === "basic" ? true : w.level === "basic"),
+    ),
   );
 
   const handleAskTrainerReview = async () => {
@@ -159,7 +177,9 @@ export default function TrainingHub() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                 🍽️ Diet Planner
-                {isDietPlannerLocked && <Lock className="w-6 h-6 text-orange-500" />}
+                {isDietPlannerLocked && (
+                  <Lock className="w-6 h-6 text-orange-500" />
+                )}
               </h2>
               <p className="text-gray-600 dark:text-gray-400">
                 {plan === "free"
@@ -178,7 +198,8 @@ export default function TrainingHub() {
                 Diet Planner Locked
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Upgrade to Basic or Premium to unlock personalized meal planning.
+                Upgrade to Basic or Premium to unlock personalized meal
+                planning.
               </p>
               <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all">
                 Upgrade Now
@@ -245,11 +266,24 @@ export default function TrainingHub() {
                   {/* Allergens */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                      Allergens <span className="text-orange-500">★ Premium</span>
+                      Allergens{" "}
+                      <span className="text-orange-500">★ Premium</span>
                     </label>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {["dairy", "gluten", "nuts", "soy", "eggs", "shellfish", "wheat", "lactose"].map((allergen) => (
-                        <label key={allergen} className="flex items-center gap-2 cursor-pointer">
+                      {[
+                        "dairy",
+                        "gluten",
+                        "nuts",
+                        "soy",
+                        "eggs",
+                        "shellfish",
+                        "wheat",
+                        "lactose",
+                      ].map((allergen) => (
+                        <label
+                          key={allergen}
+                          className="flex items-center gap-2 cursor-pointer"
+                        >
                           <input
                             type="checkbox"
                             className="w-5 h-5 rounded accent-orange-500"
@@ -265,7 +299,8 @@ export default function TrainingHub() {
                   {/* Macros */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                      Macro Targets (g) <span className="text-orange-500">★ Premium</span>
+                      Macro Targets (g){" "}
+                      <span className="text-orange-500">★ Premium</span>
                     </label>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <input
@@ -289,7 +324,8 @@ export default function TrainingHub() {
                   {/* Budget Filter */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                      Daily Budget <span className="text-orange-500">★ Premium</span>
+                      Daily Budget{" "}
+                      <span className="text-orange-500">★ Premium</span>
                     </label>
                     <input
                       type="number"
@@ -348,7 +384,8 @@ export default function TrainingHub() {
                 <div className="border-t border-white/20 pt-4">
                   <p className="text-lg font-semibold mb-2">💡 Pro Tip</p>
                   <p className="text-base opacity-95">
-                    Try adding a 10-minute walk after meals to improve digestion and boost your daily activity levels.
+                    Try adding a 10-minute walk after meals to improve digestion
+                    and boost your daily activity levels.
                   </p>
                 </div>
               </div>
@@ -361,7 +398,9 @@ export default function TrainingHub() {
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
               📊 Trend Graphs
-              {isTrendGraphsLocked && <Lock className="w-6 h-6 text-orange-500" />}
+              {isTrendGraphsLocked && (
+                <Lock className="w-6 h-6 text-orange-500" />
+              )}
             </h2>
           </div>
 
@@ -372,7 +411,8 @@ export default function TrainingHub() {
                 Trend Graphs Locked
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Upgrade to Basic or Premium to view your health trends and progress.
+                Upgrade to Basic or Premium to view your health trends and
+                progress.
               </p>
               <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-lg transition-all">
                 Upgrade Now
@@ -380,28 +420,30 @@ export default function TrainingHub() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {["Steps", "Calories", "Water Intake", "Workouts"].map((metric) => (
-                <div
-                  key={metric}
-                  className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl border border-white/20 p-6"
-                >
-                  <h3 className="font-bold text-gray-900 dark:text-white mb-4">
-                    {metric}
-                  </h3>
-                  <div className="h-40 bg-gradient-to-t from-orange-200 to-transparent dark:from-orange-900/30 rounded-lg flex items-end justify-around p-4">
-                    {[20, 40, 35, 50, 45, 60, 55].map((height, i) => (
-                      <div
-                        key={i}
-                        style={{ height: `${height}%` }}
-                        className="w-4 bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg"
-                      ></div>
-                    ))}
+              {["Steps", "Calories", "Water Intake", "Workouts"].map(
+                (metric) => (
+                  <div
+                    key={metric}
+                    className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl border border-white/20 p-6"
+                  >
+                    <h3 className="font-bold text-gray-900 dark:text-white mb-4">
+                      {metric}
+                    </h3>
+                    <div className="h-40 bg-gradient-to-t from-orange-200 to-transparent dark:from-orange-900/30 rounded-lg flex items-end justify-around p-4">
+                      {[20, 40, 35, 50, 45, 60, 55].map((height, i) => (
+                        <div
+                          key={i}
+                          style={{ height: `${height}%` }}
+                          className="w-4 bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg"
+                        ></div>
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                      Week overview
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                    Week overview
-                  </p>
-                </div>
-              ))}
+                ),
+              )}
             </div>
           )}
         </section>
@@ -410,10 +452,12 @@ export default function TrainingHub() {
         {(isDietPlannerLocked || isTrendGraphsLocked) && (
           <section className="bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-12 text-center text-white">
             <AlertCircle className="w-12 h-12 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold mb-2">Ready to unlock your full potential?</h2>
+            <h2 className="text-3xl font-bold mb-2">
+              Ready to unlock your full potential?
+            </h2>
             <p className="text-lg opacity-90 mb-6">
-              Upgrade to {plan === "free" ? "Basic or Premium" : "Premium"} to access all premium
-              features and accelerate your fitness journey.
+              Upgrade to {plan === "free" ? "Basic or Premium" : "Premium"} to
+              access all premium features and accelerate your fitness journey.
             </p>
             <button className="px-8 py-4 bg-white text-orange-600 font-bold rounded-xl hover:shadow-lg transition-all">
               View Pricing Plans

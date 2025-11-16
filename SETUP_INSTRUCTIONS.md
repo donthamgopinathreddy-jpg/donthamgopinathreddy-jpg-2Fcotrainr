@@ -7,6 +7,7 @@ The Training & Nutrition Hub is now fully implemented and ready to use! Follow t
 ## Step 1: Access the Feature
 
 The page is available at:
+
 ```
 /training-hub
 ```
@@ -18,14 +19,17 @@ Navigate to it in your app after logging in.
 To test the different subscription tiers, you need to set the `subscription_plan` field in your user profile:
 
 ### Option A: Via Database
+
 Update the `profiles` table:
+
 ```sql
-UPDATE profiles 
+UPDATE profiles
 SET subscription_plan = 'free' -- or 'basic', 'premium'
 WHERE id = 'your-user-id';
 ```
 
 ### Option B: Via App
+
 The `subscription_plan` field is automatically read from the user profile. When syncing subscription status from the `subscriptions` table, update the profile accordingly.
 
 ## Step 3: Create Database Tables (Highly Recommended)
@@ -33,6 +37,7 @@ The `subscription_plan` field is automatically read from the user profile. When 
 To fully utilize the feature, create these tables in Supabase:
 
 ### 1. Create Workouts Table
+
 ```sql
 CREATE TABLE IF NOT EXISTS workouts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -59,6 +64,7 @@ VALUES
 ```
 
 ### 2. Create Diet Preferences Table
+
 ```sql
 CREATE TABLE IF NOT EXISTS diet_preferences (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -86,6 +92,7 @@ CREATE POLICY "Users can manage their own diet preferences"
 ```
 
 ### 3. Create Diet Plans Table
+
 ```sql
 CREATE TABLE IF NOT EXISTS diet_plans (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -108,6 +115,7 @@ CREATE POLICY "Users can view and manage their own diet plans"
 ```
 
 ### 4. Create Diet Review Requests Table
+
 ```sql
 CREATE TABLE IF NOT EXISTS diet_review_requests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -138,31 +146,38 @@ CREATE POLICY "Trainers can update review requests"
 ```
 
 ### 5. Update Profiles Table (if not already done)
+
 ```sql
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS subscription_plan VARCHAR(50) DEFAULT 'free';
 
 -- Add check constraint
-ALTER TABLE profiles ADD CONSTRAINT subscription_plan_check 
+ALTER TABLE profiles ADD CONSTRAINT subscription_plan_check
 CHECK (subscription_plan IN ('free', 'basic', 'premium'));
 ```
 
 ## Step 4: How to Test
 
 ### Testing Free Plan
+
 ```sql
 UPDATE profiles SET subscription_plan = 'free' WHERE id = 'your-user-id';
 ```
+
 You should see:
+
 - Only basic workouts available
 - Diet Planner locked
 - Trend graphs locked
 - AI Insights locked
 
 ### Testing Basic Plan
+
 ```sql
 UPDATE profiles SET subscription_plan = 'basic' WHERE id = 'your-user-id';
 ```
+
 You should see:
+
 - All workout levels available
 - Diet Planner unlocked (basic fields only)
 - Trend Graphs unlocked
@@ -170,10 +185,13 @@ You should see:
 - Premium diet features locked
 
 ### Testing Premium Plan
+
 ```sql
 UPDATE profiles SET subscription_plan = 'premium' WHERE id = 'your-user-id';
 ```
+
 You should see:
+
 - All features unlocked
 - Full Diet Planner with allergens, macros, budget
 - AI Insights visible
@@ -216,26 +234,42 @@ Documentation/
 ## Step 6: Customization
 
 ### Add More Workouts
+
 Insert into the workouts table:
+
 ```sql
 INSERT INTO workouts (title, category, level, duration_minutes, calories_burned, thumbnail_url, description)
 VALUES ('Your Workout', 'gym', 'basic', 20, 100, 'https://...', 'Description');
 ```
 
 ### Change Colors
+
 Edit `client/pages/TrainingHub.tsx`:
+
 - Primary orange: Search for `from-orange-500 to-red-500`
 - Replace with your preferred gradient
 
 ### Add More Allergens
+
 Edit the allergens section in `TrainingHub.tsx`:
+
 ```typescript
-const allergensList = ["dairy", "gluten", "nuts", "soy", "eggs", "shellfish", "wheat", "lactose"];
+const allergensList = [
+  "dairy",
+  "gluten",
+  "nuts",
+  "soy",
+  "eggs",
+  "shellfish",
+  "wheat",
+  "lactose",
+];
 ```
 
 ## Step 7: Navigation Integration (Optional)
 
 Add a link to Training Hub in your navigation:
+
 ```typescript
 <a href="/training-hub" className="...">Training & Nutrition Hub</a>
 ```
@@ -243,6 +277,7 @@ Add a link to Training Hub in your navigation:
 ## Known Features
 
 ✅ **Fully Implemented:**
+
 - Subscription-aware feature gating
 - Glassmorphic UI with animations
 - Responsive design (mobile-first)
@@ -251,11 +286,13 @@ Add a link to Training Hub in your navigation:
 - All sections and components
 
 ✅ **Ready for Integration:**
+
 - API endpoints for diet preferences
 - Trainer review request system
 - Trend graph data fetching
 
 ⏳ **Future Enhancements:**
+
 - Real-time health data integration
 - AI-powered insights generation
 - Wearable device synchronization
@@ -264,25 +301,33 @@ Add a link to Training Hub in your navigation:
 ## Troubleshooting
 
 ### Page shows "Free Plan" for everyone
+
 **Solution:** Check if `subscription_plan` field is set in profiles table. Update it:
+
 ```sql
 UPDATE profiles SET subscription_plan = 'basic' WHERE subscription_plan IS NULL;
 ```
 
 ### Workouts not loading
-**Solution:** 
+
+**Solution:**
+
 1. Check if workouts table exists
 2. Verify Supabase connection
 3. The page will fall back to demo data if table doesn't exist
 
 ### Diet Planner fields not visible
+
 **Solution:**
+
 1. Ensure `subscription_plan` is set to 'basic' or 'premium'
 2. Clear browser cache and reload
 3. Check browser console for errors
 
 ### Styles not applying
+
 **Solution:**
+
 1. Ensure Tailwind CSS is properly configured
 2. Rebuild the project: `pnpm run build:client`
 3. Check for CSS conflicts
@@ -299,6 +344,7 @@ UPDATE profiles SET subscription_plan = 'basic' WHERE subscription_plan IS NULL;
 ## Support
 
 For detailed information about each feature, see:
+
 - **Feature Guide:** `TRAINING_HUB_GUIDE.md`
 - **Code Documentation:** Inline comments in source files
 - **API Reference:** See each hook file for detailed documentation

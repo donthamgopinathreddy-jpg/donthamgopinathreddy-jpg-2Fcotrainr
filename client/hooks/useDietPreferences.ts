@@ -65,7 +65,7 @@ export const useDietPreferences = () => {
     } catch (err) {
       console.debug(
         "Diet preferences catch error:",
-        err instanceof Error ? err.message : "unknown"
+        err instanceof Error ? err.message : "unknown",
       );
       setPreferences(null);
       setError(null);
@@ -75,7 +75,7 @@ export const useDietPreferences = () => {
   };
 
   const updatePreferences = async (
-    updates: Partial<Omit<DietPreferences, "id" | "user_id" | "created_at">>
+    updates: Partial<Omit<DietPreferences, "id" | "user_id" | "created_at">>,
   ) => {
     if (!user?.id) {
       setError("User not authenticated");
@@ -122,7 +122,7 @@ export const useDietPreferences = () => {
     } catch (err) {
       console.debug(
         "Update preferences error:",
-        err instanceof Error ? err.message : "unknown"
+        err instanceof Error ? err.message : "unknown",
       );
       setError("Failed to update preferences");
       return false;

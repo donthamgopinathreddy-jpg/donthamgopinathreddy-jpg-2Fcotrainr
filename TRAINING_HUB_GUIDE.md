@@ -7,6 +7,7 @@ The Training & Nutrition Hub is a subscription-aware, feature-rich page that pro
 ## Features by Subscription Tier
 
 ### Free Plan
+
 - ✅ View basic-level workouts only
 - ✅ Basic meal tracking
 - ❌ Intermediate/Advanced workouts (locked)
@@ -15,6 +16,7 @@ The Training & Nutrition Hub is a subscription-aware, feature-rich page that pro
 - ❌ Trend Graphs (locked)
 
 ### Basic Plan
+
 - ✅ All workout levels (Basic, Intermediate, Advanced)
 - ✅ Diet Planner with basic fields:
   - Fitness Goal (Lose Fat, Build Muscle, Maintain)
@@ -30,6 +32,7 @@ The Training & Nutrition Hub is a subscription-aware, feature-rich page that pro
 - ❌ AI Weekly Insights (locked)
 
 ### Premium Plan
+
 - ✅ Everything unlocked
 - ✅ Full Diet Planner with:
   - All basic fields
@@ -48,7 +51,9 @@ The Training & Nutrition Hub is a subscription-aware, feature-rich page that pro
 ## Page Structure
 
 ### 1. Subscription Banner (Top)
+
 Displays current subscription tier with:
+
 - Icon representing the tier
 - Tier name and description
 - What's included in current plan
@@ -56,7 +61,9 @@ Displays current subscription tier with:
 - Glassmorphic design with gradient background
 
 ### 2. Workout Section
+
 **Components:**
+
 - Category chips (Gym, Yoga, Boxing, Zumba, Stretching, Warmups)
 - Level filters (Basic, Intermediate, Advanced)
   - Free users: only "Basic" available
@@ -70,11 +77,14 @@ Displays current subscription tier with:
   - Hover animations
 
 ### 3. Diet Planner Section
+
 **Free Plan:**
+
 - Locked section with blur effect
 - "Upgrade to Unlock" CTA
 
 **Basic Plan:**
+
 - Goal selector
 - Diet type selector
 - Foods you like (textarea)
@@ -82,6 +92,7 @@ Displays current subscription tier with:
 - Save Preferences button
 
 **Premium Plan:**
+
 - All basic fields
 - Allergens checkbox group (8 options)
 - Macro targets (Protein, Carbs, Fats)
@@ -91,14 +102,18 @@ Displays current subscription tier with:
 - Save Preferences button
 
 ### 4. AI Weekly Insights (Premium Only)
+
 Displays:
+
 - Steps change (+12%)
 - Calories change (-180)
 - Consistency score (Good)
 - Personalized coaching tip
 
 ### 5. Trend Graphs Section
+
 Shows graphs for:
+
 - Steps
 - Calories
 - Water Intake
@@ -108,6 +123,7 @@ Shows graphs for:
 **Basic/Premium Plan:** Fully accessible with interactive charts
 
 ### 6. Upgrade CTA Section
+
 - Visible when features are locked
 - Encouraging message
 - "View Pricing Plans" button
@@ -117,6 +133,7 @@ Shows graphs for:
 ### Tables Needed
 
 #### `workouts`
+
 ```sql
 CREATE TABLE workouts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -133,6 +150,7 @@ CREATE TABLE workouts (
 ```
 
 #### `diet_preferences`
+
 ```sql
 CREATE TABLE diet_preferences (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -152,6 +170,7 @@ CREATE TABLE diet_preferences (
 ```
 
 #### `diet_plans`
+
 ```sql
 CREATE TABLE diet_plans (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -167,6 +186,7 @@ CREATE TABLE diet_plans (
 ```
 
 #### `diet_review_requests`
+
 ```sql
 CREATE TABLE diet_review_requests (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -181,6 +201,7 @@ CREATE TABLE diet_review_requests (
 ```
 
 #### Update `profiles` table
+
 ```sql
 ALTER TABLE profiles ADD COLUMN subscription_plan VARCHAR(50) DEFAULT 'free';
 -- Values: 'free', 'basic', 'premium'
@@ -189,6 +210,7 @@ ALTER TABLE profiles ADD COLUMN subscription_plan VARCHAR(50) DEFAULT 'free';
 ## Files Created
 
 ### Hooks
+
 1. **`client/hooks/useWorkouts.ts`**
    - Fetches workouts from Supabase
    - Filters by level and category
@@ -205,6 +227,7 @@ ALTER TABLE profiles ADD COLUMN subscription_plan VARCHAR(50) DEFAULT 'free';
    - Updates request status
 
 ### Components
+
 1. **`client/components/SubscriptionBanner.tsx`**
    - Displays tier information
    - Shows plan benefits
@@ -217,6 +240,7 @@ ALTER TABLE profiles ADD COLUMN subscription_plan VARCHAR(50) DEFAULT 'free';
    - Lock state for restricted workouts
 
 ### Pages
+
 1. **`client/pages/TrainingHub.tsx`**
    - Main hub page
    - All sections and features
@@ -224,6 +248,7 @@ ALTER TABLE profiles ADD COLUMN subscription_plan VARCHAR(50) DEFAULT 'free';
    - Demo data support
 
 ### Updated Files
+
 1. **`client/App.tsx`**
    - Added TrainingHub import
    - Added /training-hub route
@@ -234,11 +259,13 @@ ALTER TABLE profiles ADD COLUMN subscription_plan VARCHAR(50) DEFAULT 'free';
 ## Styling Details
 
 ### Colors
+
 - Primary (Neon Orange): `#FF7A00`
 - Gradients: Orange to Red (`from-orange-500 to-red-500`)
 - Glassmorphism: 20-30% opacity with backdrop blur
 
 ### Design Elements
+
 - Rounded corners: 20-30px (`rounded-2xl`, `rounded-3xl`)
 - Soft transparency effects
 - Blurred backgrounds on locked features
@@ -246,6 +273,7 @@ ALTER TABLE profiles ADD COLUMN subscription_plan VARCHAR(50) DEFAULT 'free';
 - Smooth animations and transitions
 
 ### Responsive Design
+
 - Mobile-first approach
 - Grid layouts that adapt:
   - Mobile: 1 column
@@ -255,20 +283,24 @@ ALTER TABLE profiles ADD COLUMN subscription_plan VARCHAR(50) DEFAULT 'free';
 ## Usage
 
 ### Access the Page
+
 ```
 Navigate to: /training-hub
 ```
 
 ### Update Subscription Plan
+
 In `AuthContext`, when fetching user profile:
+
 ```typescript
 const userProfile = {
   ...profile,
-  subscription_plan: "basic" // or "free", "premium"
+  subscription_plan: "basic", // or "free", "premium"
 };
 ```
 
 ### Add New Workouts (via Supabase)
+
 ```sql
 INSERT INTO workouts (title, category, level, duration_minutes, calories_burned, thumbnail_url, description)
 VALUES ('Workout Name', 'gym', 'basic', 30, 150, 'https://...', 'Description');
@@ -277,6 +309,7 @@ VALUES ('Workout Name', 'gym', 'basic', 30, 150, 'https://...', 'Description');
 ## Demo Data
 
 The page includes demo data for:
+
 - 9 sample workouts across all categories and levels
 - Demo diet preferences
 - Mock AI insights
@@ -287,6 +320,7 @@ This allows testing without Supabase connection.
 ## Feature Implementation
 
 ### Subscription Gating Pattern
+
 ```typescript
 const isDietPlannerLocked = plan === "free";
 
@@ -298,6 +332,7 @@ const isDietPlannerLocked = plan === "free";
 ```
 
 ### Locking UI Effect
+
 - Glassmorphic background: `bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg`
 - Border: `border border-white/20`
 - Rounded corners: `rounded-3xl`
@@ -330,16 +365,19 @@ const isDietPlannerLocked = plan === "free";
 ## Troubleshooting
 
 ### Subscription Plan Not Showing
+
 - Check if `subscription_plan` field exists in `profiles` table
 - Verify user profile is being fetched correctly
 - Check AuthContext for proper field mapping
 
 ### Workouts Not Loading
+
 - Verify workouts table exists
 - Check Supabase connection
 - Falls back to demo data if error occurs
 
 ### Styling Issues
+
 - Ensure Tailwind CSS is properly configured
 - Check dark mode context
 - Verify gradient classes are available
@@ -347,18 +385,35 @@ const isDietPlannerLocked = plan === "free";
 ## API Reference
 
 ### useWorkouts
+
 ```typescript
-const { workouts, loading, error, fetchWorkouts, getWorkoutsByLevel, getWorkoutsByCategory } = useWorkouts();
+const {
+  workouts,
+  loading,
+  error,
+  fetchWorkouts,
+  getWorkoutsByLevel,
+  getWorkoutsByCategory,
+} = useWorkouts();
 ```
 
 ### useDietPreferences
+
 ```typescript
-const { preferences, loading, error, fetchPreferences, updatePreferences } = useDietPreferences();
+const { preferences, loading, error, fetchPreferences, updatePreferences } =
+  useDietPreferences();
 ```
 
 ### useDietReviewRequests
+
 ```typescript
-const { loading, error, createReviewRequest, getReviewRequests, updateReviewRequest } = useDietReviewRequests();
+const {
+  loading,
+  error,
+  createReviewRequest,
+  getReviewRequests,
+  updateReviewRequest,
+} = useDietReviewRequests();
 ```
 
 ## Notes

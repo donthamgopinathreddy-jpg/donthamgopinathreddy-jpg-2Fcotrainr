@@ -6,7 +6,10 @@ interface WorkoutCardProps {
   isLocked?: boolean;
 }
 
-export default function WorkoutCard({ workout, isLocked = false }: WorkoutCardProps) {
+export default function WorkoutCard({
+  workout,
+  isLocked = false,
+}: WorkoutCardProps) {
   const levelColors = {
     basic: "bg-green-100 text-green-800",
     intermediate: "bg-yellow-100 text-yellow-800",

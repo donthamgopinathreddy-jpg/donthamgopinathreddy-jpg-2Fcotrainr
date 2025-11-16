@@ -4,9 +4,7 @@ interface SubscriptionBannerProps {
   plan: "free" | "basic" | "premium";
 }
 
-export default function SubscriptionBanner({
-  plan,
-}: SubscriptionBannerProps) {
+export default function SubscriptionBanner({ plan }: SubscriptionBannerProps) {
   const bannerConfig = {
     free: {
       icon: Lock,
