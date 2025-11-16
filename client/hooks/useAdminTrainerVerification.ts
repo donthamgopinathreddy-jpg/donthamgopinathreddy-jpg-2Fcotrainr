@@ -47,14 +47,17 @@ export function useAdminTrainerVerification() {
         const { data, error: fetchError } = await query;
 
         if (fetchError) {
-          console.error("Error fetching trainers:", fetchError);
+          const errorMsg = fetchError?.message || JSON.stringify(fetchError);
+          const errorCode = fetchError?.code || "";
+          console.error("Error fetching trainers:", { message: errorMsg, code: errorCode, fullError: fetchError });
 
           // Check if it's a table not found error
-          const errorMsg = fetchError?.message || "";
-          if (errorMsg.includes("does not exist") || errorMsg.includes("relation")) {
-            setError("Trainer verification table not yet initialized");
+          if (errorMsg.includes("does not exist") || errorMsg.includes("relation") || errorCode === "PGRST116") {
+            setError("Trainer verification table not yet initialized. Please wait for database setup to complete.");
+          } else if (errorMsg.includes("permission denied") || errorCode === "PGRST301") {
+            setError("Permission denied: You may not have access to view trainer verifications.");
           } else {
-            setError("Failed to fetch trainers for verification");
+            setError(`Failed to fetch trainers: ${errorMsg}`);
           }
 
           setTrainers([]);
