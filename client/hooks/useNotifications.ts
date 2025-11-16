@@ -62,10 +62,10 @@ export function useNotifications(userId?: string) {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const isMounted = useRef(true);
+  const isMountedRef = useRef(true);
 
   const fetchNotifications = useCallback(async () => {
-    if (!userId || !isMounted.current) {
+    if (!userId || !isMountedRef.current) {
       return;
     }
 
@@ -80,7 +80,7 @@ export function useNotifications(userId?: string) {
         .order("created_at", { ascending: false })
         .limit(20);
 
-      if (!isMounted.current) return;
+      if (!isMountedRef.current) return;
 
       if (fetchError) {
         console.debug(
@@ -107,7 +107,7 @@ export function useNotifications(userId?: string) {
         setUnreadCount(0);
       }
     } catch (err) {
-      if (isMounted.current) {
+      if (isMountedRef.current) {
         console.debug(
           "Fetch notifications error:",
           err instanceof Error ? err.message : String(err)
@@ -117,7 +117,7 @@ export function useNotifications(userId?: string) {
         setError(null);
       }
     } finally {
-      if (isMounted.current) {
+      if (isMountedRef.current) {
         setLoading(false);
       }
     }
@@ -136,7 +136,7 @@ export function useNotifications(userId?: string) {
           return false;
         }
 
-        if (isMounted.current) {
+        if (isMountedRef.current) {
           setNotifications((prev) =>
             prev.map((n) =>
               n.id === notificationId ? { ...n, is_read: true } : n
@@ -170,7 +170,7 @@ export function useNotifications(userId?: string) {
         return false;
       }
 
-      if (isMounted.current) {
+      if (isMountedRef.current) {
         setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
         setUnreadCount(0);
       }
@@ -196,7 +196,7 @@ export function useNotifications(userId?: string) {
         return false;
       }
 
-      if (isMounted.current) {
+      if (isMountedRef.current) {
         setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
       }
       return true;
@@ -210,7 +210,7 @@ export function useNotifications(userId?: string) {
   }, []);
 
   useEffect(() => {
-    isMounted.current = true;
+    isMountedRef.current = true;
 
     if (userId) {
       const fetchWithDelay = setTimeout(() => {
@@ -219,26 +219,27 @@ export function useNotifications(userId?: string) {
 
       return () => {
         clearTimeout(fetchWithDelay);
-        isMounted.current = false;
       };
     }
-
-    return () => {
-      isMounted.current = false;
-    };
   }, [userId, fetchNotifications]);
 
   useEffect(() => {
     if (!userId) return;
 
     const interval = setInterval(() => {
-      if (isMounted.current) {
+      if (isMountedRef.current) {
         fetchNotifications();
       }
     }, 30000);
 
     return () => clearInterval(interval);
   }, [userId, fetchNotifications]);
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   return {
     notifications,
