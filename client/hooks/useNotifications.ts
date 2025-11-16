@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 
 export interface NotificationData {
@@ -26,12 +26,6 @@ export interface Notification {
 }
 
 function transformNotification(data: NotificationData): Notification {
-  const typeMap = {
-    like: "like",
-    comment: "comment",
-    follow: "follow",
-  };
-
   let title = "";
   let message = "";
 
@@ -66,14 +60,12 @@ function transformNotification(data: NotificationData): Notification {
 export function useNotifications(userId?: string) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isMounted = useRef(true);
 
-  const fetchNotifications = async () => {
-    if (!userId) {
-      setLoading(false);
-      setNotifications([]);
-      setUnreadCount(0);
+  const fetchNotifications = useCallback(async () => {
+    if (!userId || !isMounted.current) {
       return;
     }
 
@@ -88,20 +80,23 @@ export function useNotifications(userId?: string) {
         .order("created_at", { ascending: false })
         .limit(20);
 
+      if (!isMounted.current) return;
+
       if (fetchError) {
         console.debug(
           "Fetch notifications error:",
           fetchError?.code,
-          fetchError?.message,
+          fetchError?.message
         );
         setNotifications([]);
         setUnreadCount(0);
+        setError(null);
         return;
       }
 
-      if (data) {
+      if (data && Array.isArray(data)) {
         const transformed = (data as NotificationData[]).map(
-          transformNotification,
+          transformNotification
         );
         setNotifications(transformed);
         const unread = transformed.filter((n) => !n.is_read).length;
@@ -112,47 +107,56 @@ export function useNotifications(userId?: string) {
         setUnreadCount(0);
       }
     } catch (err) {
-      console.debug(
-        "Fetch notifications error:",
-        err instanceof Error ? err.message : String(err),
-      );
-      setNotifications([]);
-      setUnreadCount(0);
+      if (isMounted.current) {
+        console.debug(
+          "Fetch notifications error:",
+          err instanceof Error ? err.message : String(err)
+        );
+        setNotifications([]);
+        setUnreadCount(0);
+        setError(null);
+      }
     } finally {
-      setLoading(false);
+      if (isMounted.current) {
+        setLoading(false);
+      }
     }
-  };
+  }, [userId]);
 
-  const markAsRead = async (notificationId: string) => {
-    try {
-      const { error: updateError } = await supabase
-        .from("notifications")
-        .update({ is_read: true })
-        .eq("id", notificationId);
+  const markAsRead = useCallback(
+    async (notificationId: string) => {
+      try {
+        const { error: updateError } = await supabase
+          .from("notifications")
+          .update({ is_read: true })
+          .eq("id", notificationId);
 
-      if (updateError) {
-        console.debug("Mark as read error:", updateError?.code);
+        if (updateError) {
+          console.debug("Mark as read error:", updateError?.code);
+          return false;
+        }
+
+        if (isMounted.current) {
+          setNotifications((prev) =>
+            prev.map((n) =>
+              n.id === notificationId ? { ...n, is_read: true } : n
+            )
+          );
+          setUnreadCount((prev) => Math.max(0, prev - 1));
+        }
+        return true;
+      } catch (err) {
+        console.debug(
+          "Mark as read error:",
+          err instanceof Error ? err.message : String(err)
+        );
         return false;
       }
+    },
+    []
+  );
 
-      setNotifications((prev) =>
-        prev.map((n) =>
-          n.id === notificationId ? { ...n, is_read: true } : n,
-        ),
-      );
-
-      setUnreadCount((prev) => Math.max(0, prev - 1));
-      return true;
-    } catch (err) {
-      console.debug(
-        "Mark as read catch error:",
-        err instanceof Error ? err.message : "Unknown error",
-      );
-      return false;
-    }
-  };
-
-  const markAllAsRead = async () => {
+  const markAllAsRead = useCallback(async () => {
     if (!userId) return false;
 
     try {
@@ -166,19 +170,21 @@ export function useNotifications(userId?: string) {
         return false;
       }
 
-      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
-      setUnreadCount(0);
+      if (isMounted.current) {
+        setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+        setUnreadCount(0);
+      }
       return true;
     } catch (err) {
       console.debug(
-        "Mark all as read catch error:",
-        err instanceof Error ? err.message : "Unknown error",
+        "Mark all as read error:",
+        err instanceof Error ? err.message : String(err)
       );
       return false;
     }
-  };
+  }, [userId]);
 
-  const deleteNotification = async (notificationId: string) => {
+  const deleteNotification = useCallback(async (notificationId: string) => {
     try {
       const { error: deleteError } = await supabase
         .from("notifications")
@@ -190,24 +196,49 @@ export function useNotifications(userId?: string) {
         return false;
       }
 
-      setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
+      if (isMounted.current) {
+        setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
+      }
       return true;
     } catch (err) {
       console.debug(
-        "Delete notification catch error:",
-        err instanceof Error ? err.message : "Unknown error",
+        "Delete notification error:",
+        err instanceof Error ? err.message : String(err)
       );
       return false;
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchNotifications();
+    isMounted.current = true;
 
-    // Refresh notifications every 30 seconds
-    const interval = setInterval(fetchNotifications, 30000);
+    if (userId) {
+      const fetchWithDelay = setTimeout(() => {
+        fetchNotifications();
+      }, 100);
+
+      return () => {
+        clearTimeout(fetchWithDelay);
+        isMounted.current = false;
+      };
+    }
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, [userId, fetchNotifications]);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const interval = setInterval(() => {
+      if (isMounted.current) {
+        fetchNotifications();
+      }
+    }, 30000);
+
     return () => clearInterval(interval);
-  }, [userId]);
+  }, [userId, fetchNotifications]);
 
   return {
     notifications,
