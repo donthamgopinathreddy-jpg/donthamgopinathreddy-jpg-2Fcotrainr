@@ -155,26 +155,39 @@ export function useAdminTrainerVerification() {
     reviewedBy: string
   ) => {
     try {
-      const { error } = await supabase
-        .from("trainer_verifications")
-        .update({
-          verification_status: "rejected",
-          verified_trainer: false,
-          rejection_reason: rejectionReason,
-          reviewed_by: reviewedBy,
-          reviewed_at: new Date().toISOString(),
-        })
-        .eq("id", trainerId);
+      try {
+        const { error } = await supabase
+          .from("trainer_verifications")
+          .update({
+            verification_status: "rejected",
+            verified_trainer: false,
+            rejection_reason: rejectionReason,
+            reviewed_by: reviewedBy,
+            reviewed_at: new Date().toISOString(),
+          })
+          .eq("id", trainerId);
 
-      if (error) {
-        throw error;
+        if (error) {
+          throw error;
+        }
+
+        // Refresh the list
+        await fetchTrainers(currentTab);
+        return true;
+      } catch (fetchErr) {
+        console.error("Error rejecting trainer:", fetchErr);
+        const errorMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+
+        if (errorMsg.includes("Failed to fetch")) {
+          setError("Network error: Unable to reach the server");
+        } else {
+          setError("Failed to reject trainer");
+        }
+
+        return false;
       }
-
-      // Refresh the list
-      await fetchTrainers(currentTab);
-      return true;
     } catch (err) {
-      console.error("Error rejecting trainer:", err);
+      console.error("Error in rejectTrainer:", err);
       setError("Failed to reject trainer");
       return false;
     }
