@@ -552,7 +552,10 @@ export default function Profile() {
           </div>
 
           <div className="flex items-center justify-center gap-6 mb-6">
-            <div className="text-center">
+            <button
+              onClick={() => setShowFollowersModal(true)}
+              className="text-center hover:opacity-80 transition-opacity flex-1"
+            >
               <div
                 className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
               >
@@ -563,9 +566,12 @@ export default function Profile() {
               >
                 Followers
               </p>
-            </div>
+            </button>
             <div className="h-8 w-px bg-orange-300"></div>
-            <div className="text-center">
+            <button
+              onClick={() => setShowFollowersModal(true)}
+              className="text-center hover:opacity-80 transition-opacity flex-1"
+            >
               <div
                 className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
               >
@@ -576,7 +582,7 @@ export default function Profile() {
               >
                 Following
               </p>
-            </div>
+            </button>
           </div>
 
           <button
