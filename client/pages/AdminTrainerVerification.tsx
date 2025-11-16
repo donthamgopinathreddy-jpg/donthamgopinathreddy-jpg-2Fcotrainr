@@ -20,7 +20,7 @@ import {
 
 const AdminTrainerVerification: React.FC = () => {
   const navigate = useNavigate();
-  const { userProfile, signOut } = useAuth();
+  const { userProfile, signOut, updateProfile } = useAuth();
   const { toast } = useToast();
   const {
     trainers,
