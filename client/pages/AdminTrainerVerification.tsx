@@ -433,65 +433,77 @@ const AdminTrainerVerification: React.FC = () => {
             </Badge>
           </div>
 
-          {/* Admin Stats Cards - Compact Style */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-white border border-amber-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
-              <div className="flex items-center justify-between gap-2">
-                <div>
-                  <p className="text-[10px] text-amber-600 font-medium uppercase">Pending</p>
-                  <p className="text-xl font-bold text-amber-900 mt-1">{pendingCount}</p>
+          {/* Admin Stats Cards - Two Column Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Side: Verification Stats */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3 px-2">Trainer Verification Status</h3>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-white border border-amber-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="text-[10px] text-amber-600 font-medium uppercase">Pending</p>
+                      <p className="text-2xl font-bold text-amber-900 mt-1">{pendingCount}</p>
+                    </div>
+                    <Clock className="w-5 h-5 text-amber-400 opacity-60 flex-shrink-0" />
+                  </div>
                 </div>
-                <Clock className="w-5 h-5 text-amber-400 opacity-60 flex-shrink-0" />
+
+                <div className="bg-white border border-green-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="text-[10px] text-green-600 font-medium uppercase">Approved</p>
+                      <p className="text-2xl font-bold text-green-900 mt-1">{approvedCount}</p>
+                    </div>
+                    <CheckCircle className="w-5 h-5 text-green-400 opacity-60 flex-shrink-0" />
+                  </div>
+                </div>
+
+                <div className="bg-white border border-red-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="text-[10px] text-red-600 font-medium uppercase">Rejected</p>
+                      <p className="text-2xl font-bold text-red-900 mt-1">{rejectedCount}</p>
+                    </div>
+                    <XCircle className="w-5 h-5 text-red-400 opacity-60 flex-shrink-0" />
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="bg-white border border-green-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
-              <div className="flex items-center justify-between gap-2">
-                <div>
-                  <p className="text-[10px] text-green-600 font-medium uppercase">Approved</p>
-                  <p className="text-xl font-bold text-green-900 mt-1">{approvedCount}</p>
+            {/* Right Side: User Stats */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3 px-2">Platform Statistics</h3>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-white border border-blue-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="text-[10px] text-blue-600 font-medium uppercase">Total Users</p>
+                      <p className="text-2xl font-bold text-blue-900 mt-1">{trainerCount + clientCount}</p>
+                    </div>
+                    <Users className="w-5 h-5 text-blue-400 opacity-60 flex-shrink-0" />
+                  </div>
                 </div>
-                <CheckCircle className="w-5 h-5 text-green-400 opacity-60 flex-shrink-0" />
-              </div>
-            </div>
 
-            <div className="bg-white border border-red-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
-              <div className="flex items-center justify-between gap-2">
-                <div>
-                  <p className="text-[10px] text-red-600 font-medium uppercase">Rejected</p>
-                  <p className="text-xl font-bold text-red-900 mt-1">{rejectedCount}</p>
+                <div className="bg-white border border-purple-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="text-[10px] text-purple-600 font-medium uppercase">Trainers</p>
+                      <p className="text-2xl font-bold text-purple-900 mt-1">{trainerCount}</p>
+                    </div>
+                    <Users className="w-5 h-5 text-purple-400 opacity-60 flex-shrink-0" />
+                  </div>
                 </div>
-                <XCircle className="w-5 h-5 text-red-400 opacity-60 flex-shrink-0" />
-              </div>
-            </div>
 
-            <div className="bg-white border border-blue-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
-              <div className="flex items-center justify-between gap-2">
-                <div>
-                  <p className="text-[10px] text-blue-600 font-medium uppercase">Total Users</p>
-                  <p className="text-xl font-bold text-blue-900 mt-1">{trainerCount + clientCount}</p>
+                <div className="bg-white border border-indigo-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="text-[10px] text-indigo-600 font-medium uppercase">Clients</p>
+                      <p className="text-2xl font-bold text-indigo-900 mt-1">{clientCount}</p>
+                    </div>
+                    <Users className="w-5 h-5 text-indigo-400 opacity-60 flex-shrink-0" />
+                  </div>
                 </div>
-                <Users className="w-5 h-5 text-blue-400 opacity-60 flex-shrink-0" />
-              </div>
-            </div>
-
-            <div className="bg-white border border-purple-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
-              <div className="flex items-center justify-between gap-2">
-                <div>
-                  <p className="text-[10px] text-purple-600 font-medium uppercase">Trainers</p>
-                  <p className="text-xl font-bold text-purple-900 mt-1">{trainerCount}</p>
-                </div>
-                <Users className="w-5 h-5 text-purple-400 opacity-60 flex-shrink-0" />
-              </div>
-            </div>
-
-            <div className="bg-white border border-indigo-100 rounded-lg p-3 hover:shadow-sm transition-shadow">
-              <div className="flex items-center justify-between gap-2">
-                <div>
-                  <p className="text-[10px] text-indigo-600 font-medium uppercase">Clients</p>
-                  <p className="text-xl font-bold text-indigo-900 mt-1">{clientCount}</p>
-                </div>
-                <Users className="w-5 h-5 text-indigo-400 opacity-60 flex-shrink-0" />
               </div>
             </div>
           </div>
