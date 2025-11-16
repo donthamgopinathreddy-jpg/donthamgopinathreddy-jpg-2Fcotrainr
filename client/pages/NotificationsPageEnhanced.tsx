@@ -606,7 +606,9 @@ export default function NotificationsPageEnhanced() {
   return (
     <div
       className={`min-h-screen pb-24 ${
-        theme === "dark" ? "bg-gray-950" : "bg-gray-50"
+        theme === "dark"
+          ? "bg-gray-950"
+          : "bg-gradient-to-b from-orange-50 via-yellow-50 to-orange-50"
       }`}
     >
       {/* Header */}
@@ -614,7 +616,7 @@ export default function NotificationsPageEnhanced() {
         className={`sticky top-0 z-40 ${
           theme === "dark"
             ? "bg-gray-900 border-gray-800"
-            : "bg-white border-gray-200"
+            : "bg-white/80 backdrop-blur-md border-orange-200"
         } border-b p-4`}
       >
         <div className="max-w-4xl mx-auto">
@@ -624,7 +626,7 @@ export default function NotificationsPageEnhanced() {
               className={`p-2 rounded-lg transition-colors ${
                 theme === "dark"
                   ? "hover:bg-gray-800 text-white"
-                  : "hover:bg-gray-100 text-black"
+                  : "hover:bg-orange-100 text-gray-900"
               }`}
             >
               <ArrowLeft className="w-5 h-5" />
@@ -634,7 +636,7 @@ export default function NotificationsPageEnhanced() {
                 theme === "dark" ? "text-white" : "text-gray-900"
               }`}
             >
-              <Bell className="w-6 h-6 text-pink-500" />
+              <Bell className="w-6 h-6 text-orange-500" />
               Notifications
             </h1>
           </div>
