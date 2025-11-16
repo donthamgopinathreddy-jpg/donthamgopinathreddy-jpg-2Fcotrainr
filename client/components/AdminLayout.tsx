@@ -211,7 +211,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
       {/* Main Content */}
       <main className="md:ml-64 transition-all duration-300">
         {/* Top Header */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
           <div className="px-4 md:px-8 py-6">
             <div className="max-w-7xl">
               <div className="flex items-start justify-between">
