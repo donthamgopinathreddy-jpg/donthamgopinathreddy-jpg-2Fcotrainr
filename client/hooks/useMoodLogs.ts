@@ -133,24 +133,56 @@ export function useMoodLogs(userId?: string) {
         return true;
       }
 
-      const { error: insertError } = await supabase.from("mood_logs").insert([
-        {
-          user_id: userId,
-          mood_value: moodValue,
-          mood_emoji: moodEmoji,
-          notes: notes || null,
-          date: today,
-          created_at: new Date().toISOString(),
-        },
-      ]);
+      // First check if mood log already exists for today
+      const { data: existingLog, error: fetchExistingError } = await supabase
+        .from("mood_logs")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("date", today)
+        .single();
 
-      if (insertError) {
-        console.debug("Add mood log error:", insertError?.code, insertError?.message);
+      if (fetchExistingError && fetchExistingError?.code !== "PGRST116") {
+        // PGRST116 = no rows returned, which is expected for new mood logs
+        if (!fetchExistingError?.message?.includes("does not exist")) {
+          console.debug("Check existing mood error:", fetchExistingError?.code);
+        }
+      }
+
+      let result;
+
+      if (existingLog) {
+        // Update existing mood log for today
+        result = await supabase
+          .from("mood_logs")
+          .update({
+            mood_value: moodValue,
+            mood_emoji: moodEmoji,
+            notes: notes || null,
+          })
+          .eq("id", existingLog.id);
+      } else {
+        // Insert new mood log
+        result = await supabase.from("mood_logs").insert([
+          {
+            user_id: userId,
+            mood_value: moodValue,
+            mood_emoji: moodEmoji,
+            notes: notes || null,
+            date: today,
+            created_at: new Date().toISOString(),
+          },
+        ]);
+      }
+
+      const { error } = result;
+
+      if (error) {
+        console.debug("Add mood log error:", error?.code, error?.message);
 
         // If table doesn't exist, handle gracefully
         if (
-          insertError?.message?.includes("does not exist") ||
-          insertError?.code === "PGRST116"
+          error?.message?.includes("does not exist") ||
+          error?.code === "PGRST116"
         ) {
           // Table doesn't exist yet, but still save to local state
           setTodayMood({
@@ -166,7 +198,7 @@ export function useMoodLogs(userId?: string) {
           return true;
         }
 
-        setError(insertError?.message || "Failed to add mood log");
+        setError(error?.message || "Failed to add mood log");
         return false;
       }
 
