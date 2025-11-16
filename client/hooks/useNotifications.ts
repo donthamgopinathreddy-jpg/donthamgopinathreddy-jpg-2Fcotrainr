@@ -86,7 +86,7 @@ export function useNotifications(userId?: string) {
         console.debug(
           "Fetch notifications error:",
           fetchError?.code,
-          fetchError?.message
+          fetchError?.message,
         );
         setNotifications([]);
         setUnreadCount(0);
@@ -96,7 +96,7 @@ export function useNotifications(userId?: string) {
 
       if (data && Array.isArray(data)) {
         const transformed = (data as NotificationData[]).map(
-          transformNotification
+          transformNotification,
         );
         setNotifications(transformed);
         const unread = transformed.filter((n) => !n.is_read).length;
@@ -110,7 +110,7 @@ export function useNotifications(userId?: string) {
       if (isMountedRef.current) {
         console.debug(
           "Fetch notifications error:",
-          err instanceof Error ? err.message : String(err)
+          err instanceof Error ? err.message : String(err),
         );
         setNotifications([]);
         setUnreadCount(0);
@@ -123,38 +123,35 @@ export function useNotifications(userId?: string) {
     }
   }, [userId]);
 
-  const markAsRead = useCallback(
-    async (notificationId: string) => {
-      try {
-        const { error: updateError } = await supabase
-          .from("notifications")
-          .update({ is_read: true })
-          .eq("id", notificationId);
+  const markAsRead = useCallback(async (notificationId: string) => {
+    try {
+      const { error: updateError } = await supabase
+        .from("notifications")
+        .update({ is_read: true })
+        .eq("id", notificationId);
 
-        if (updateError) {
-          console.debug("Mark as read error:", updateError?.code);
-          return false;
-        }
-
-        if (isMountedRef.current) {
-          setNotifications((prev) =>
-            prev.map((n) =>
-              n.id === notificationId ? { ...n, is_read: true } : n
-            )
-          );
-          setUnreadCount((prev) => Math.max(0, prev - 1));
-        }
-        return true;
-      } catch (err) {
-        console.debug(
-          "Mark as read error:",
-          err instanceof Error ? err.message : String(err)
-        );
+      if (updateError) {
+        console.debug("Mark as read error:", updateError?.code);
         return false;
       }
-    },
-    []
-  );
+
+      if (isMountedRef.current) {
+        setNotifications((prev) =>
+          prev.map((n) =>
+            n.id === notificationId ? { ...n, is_read: true } : n,
+          ),
+        );
+        setUnreadCount((prev) => Math.max(0, prev - 1));
+      }
+      return true;
+    } catch (err) {
+      console.debug(
+        "Mark as read error:",
+        err instanceof Error ? err.message : String(err),
+      );
+      return false;
+    }
+  }, []);
 
   const markAllAsRead = useCallback(async () => {
     if (!userId) return false;
@@ -178,7 +175,7 @@ export function useNotifications(userId?: string) {
     } catch (err) {
       console.debug(
         "Mark all as read error:",
-        err instanceof Error ? err.message : String(err)
+        err instanceof Error ? err.message : String(err),
       );
       return false;
     }
@@ -203,7 +200,7 @@ export function useNotifications(userId?: string) {
     } catch (err) {
       console.debug(
         "Delete notification error:",
-        err instanceof Error ? err.message : String(err)
+        err instanceof Error ? err.message : String(err),
       );
       return false;
     }

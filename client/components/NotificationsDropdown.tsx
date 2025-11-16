@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Bell, X, CheckCircle, Users, Trophy, Calendar, MessageSquare, Loader } from "lucide-react";
+import {
+  Bell,
+  X,
+  CheckCircle,
+  Users,
+  Trophy,
+  Calendar,
+  MessageSquare,
+  Loader,
+} from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,7 +17,14 @@ import { toast } from "sonner";
 export default function NotificationsDropdown() {
   const { theme } = useTheme();
   const { userProfile } = useAuth();
-  const { notifications, unreadCount, loading, markAsRead, markAllAsRead, deleteNotification } = useNotifications(userProfile?.id);
+  const {
+    notifications,
+    unreadCount,
+    loading,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+  } = useNotifications(userProfile?.id);
   const [isOpen, setIsOpen] = useState(false);
 
   const getNotificationIcon = (type: string) => {
@@ -31,16 +47,26 @@ export default function NotificationsDropdown() {
   const getNotificationColor = (type: string) => {
     switch (type) {
       case "follow":
-        return theme === "dark" ? "bg-blue-900/30 border-blue-700/50" : "bg-blue-50 border-blue-200";
+        return theme === "dark"
+          ? "bg-blue-900/30 border-blue-700/50"
+          : "bg-blue-50 border-blue-200";
       case "meeting":
-        return theme === "dark" ? "bg-purple-900/30 border-purple-700/50" : "bg-purple-50 border-purple-200";
+        return theme === "dark"
+          ? "bg-purple-900/30 border-purple-700/50"
+          : "bg-purple-50 border-purple-200";
       case "goal_achieved":
       case "achievement":
-        return theme === "dark" ? "bg-amber-900/30 border-amber-700/50" : "bg-amber-50 border-amber-200";
+        return theme === "dark"
+          ? "bg-amber-900/30 border-amber-700/50"
+          : "bg-amber-50 border-amber-200";
       case "message":
-        return theme === "dark" ? "bg-green-900/30 border-green-700/50" : "bg-green-50 border-green-200";
+        return theme === "dark"
+          ? "bg-green-900/30 border-green-700/50"
+          : "bg-green-50 border-green-200";
       default:
-        return theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-gray-50 border-gray-200";
+        return theme === "dark"
+          ? "bg-gray-800 border-gray-700"
+          : "bg-gray-50 border-gray-200";
     }
   };
 
@@ -56,7 +82,7 @@ export default function NotificationsDropdown() {
     if (diffMins < 60) return `${diffMins}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
     if (diffDays < 7) return `${diffDays}d ago`;
-    
+
     return notifDate.toLocaleDateString();
   };
 
