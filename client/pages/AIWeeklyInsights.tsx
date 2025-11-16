@@ -120,29 +120,17 @@ export default function AIWeeklyInsights() {
 
         {/* Goal Alignment */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Card className="p-6 bg-white/80 backdrop-blur border-orange-100">
+          <Card className="p-6 bg-gradient-to-br from-blue-400 via-cyan-400 to-teal-400 dark:from-blue-700 dark:via-cyan-600 dark:to-teal-600 border-0 shadow-lg">
             <div className="flex items-center gap-3 mb-4">
-              <Target className="w-6 h-6 text-orange-500" />
-              <h3 className="text-lg font-bold">Goal Alignment</h3>
+              <Target className="w-6 h-6 text-white" />
+              <h3 className="text-lg font-bold text-white">Goal Alignment</h3>
             </div>
 
-            <div className={`p-4 rounded-lg mb-4 ${
-              insights.goalAlignment.status === "On Track"
-                ? "bg-green-100 border border-green-200"
-                : insights.goalAlignment.status === "Almost There"
-                ? "bg-yellow-100 border border-yellow-200"
-                : "bg-red-100 border border-red-200"
-            }`}>
-              <div className={`text-2xl font-bold ${
-                insights.goalAlignment.status === "On Track"
-                  ? "text-green-700"
-                  : insights.goalAlignment.status === "Almost There"
-                  ? "text-yellow-700"
-                  : "text-red-700"
-              }`}>
+            <div className="p-4 rounded-lg mb-4 bg-white/30 border border-white/40">
+              <div className="text-2xl font-bold text-white">
                 {insights.goalAlignment.status}
               </div>
-              <div className="text-sm mt-1 text-gray-700">{insights.goalAlignment.reason}</div>
+              <div className="text-sm mt-1 text-white drop-shadow">{insights.goalAlignment.reason}</div>
             </div>
           </Card>
 
