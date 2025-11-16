@@ -267,7 +267,7 @@ export default function Home() {
       if (isDemoMode) {
         // Save to localStorage in demo mode
         localStorage.setItem(`targets_${userProfile.id}`, bioValue);
-        toast.success(`���� Added ${amount} steps!`);
+        toast.success(`��� Added ${amount} steps!`);
         return;
       }
 
@@ -606,7 +606,7 @@ export default function Home() {
                 </span>
               </div>
               <span className="text-sm font-bold text-orange-600">
-                {stepsCompleted.toLocaleString()} / {stepsGoal.toLocaleString()}
+                {steps.toLocaleString()} / {stepsGoal.toLocaleString()}
               </span>
             </div>
             <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
