@@ -1,194 +1,181 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+
+export type PermissionType = "notifications" | "location" | "camera" | "microphone" | "calls";
 
 export interface PermissionStatus {
-  camera: "granted" | "denied" | "prompt" | "unknown";
-  microphone: "granted" | "denied" | "prompt" | "unknown";
-  notifications: "granted" | "denied" | "prompt" | "unknown";
-  location: "granted" | "denied" | "prompt" | "unknown";
+  type: PermissionType;
+  status: "granted" | "denied" | "prompt" | "unknown";
+  displayName: string;
+  icon: string;
+  description: string;
 }
 
-export const usePermissions = () => {
-  const [permissions, setPermissions] = useState<PermissionStatus>({
-    camera: "prompt",
-    microphone: "prompt",
-    notifications: "prompt",
-    location: "prompt",
+export function usePermissions() {
+  const [permissions, setPermissions] = useState<Record<PermissionType, boolean>>({
+    notifications: false,
+    location: false,
+    camera: false,
+    microphone: false,
+    calls: false,
   });
+
   const [loading, setLoading] = useState(false);
 
-  // Request camera permission
-  const requestCamera = useCallback(async () => {
+  const getPermissionStatus = useCallback(async (type: PermissionType): Promise<boolean> => {
     try {
-      setLoading(true);
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      stream.getTracks().forEach((track) => track.stop());
-      setPermissions((prev) => ({ ...prev, camera: "granted" }));
-      return true;
-    } catch (error: any) {
-      if (error.name === "NotAllowedError") {
-        setPermissions((prev) => ({ ...prev, camera: "denied" }));
-      } else if (error.name === "NotFoundError") {
-        setPermissions((prev) => ({ ...prev, camera: "unknown" }));
+      // Check if browser supports Permissions API
+      if (!navigator.permissions) {
+        console.debug("Permissions API not supported");
+        return false;
       }
-      console.error("Camera permission error:", error);
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
-  // Request microphone permission
-  const requestMicrophone = useCallback(async () => {
-    try {
-      setLoading(true);
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach((track) => track.stop());
-      setPermissions((prev) => ({ ...prev, microphone: "granted" }));
-      return true;
-    } catch (error: any) {
-      if (error.name === "NotAllowedError") {
-        setPermissions((prev) => ({ ...prev, microphone: "denied" }));
-      } else if (error.name === "NotFoundError") {
-        setPermissions((prev) => ({ ...prev, microphone: "unknown" }));
+      switch (type) {
+        case "notifications":
+          return Notification.permission === "granted";
+
+        case "camera":
+          if ("permissions" in navigator) {
+            const result = await navigator.permissions.query({ name: "camera" as any });
+            return result.state === "granted";
+          }
+          return false;
+
+        case "microphone":
+          if ("permissions" in navigator) {
+            const result = await navigator.permissions.query({ name: "microphone" as any });
+            return result.state === "granted";
+          }
+          return false;
+
+        case "location":
+          if ("permissions" in navigator) {
+            const result = await navigator.permissions.query({ name: "geolocation" as any });
+            return result.state === "granted";
+          }
+          return false;
+
+        case "calls":
+          // For calls, we check if getUserMedia is available
+          return !!navigator.mediaDevices?.getUserMedia;
+
+        default:
+          return false;
       }
-      console.error("Microphone permission error:", error);
+    } catch (err) {
+      console.debug(`Error checking ${type} permission:`, err);
       return false;
-    } finally {
-      setLoading(false);
     }
   }, []);
 
-  // Request notification permission
-  const requestNotification = useCallback(async () => {
-    if (!("Notification" in window)) {
-      setPermissions((prev) => ({ ...prev, notifications: "unknown" }));
-      return false;
-    }
-
-    if (Notification.permission === "granted") {
-      setPermissions((prev) => ({ ...prev, notifications: "granted" }));
-      return true;
-    }
-
-    if (Notification.permission === "denied") {
-      setPermissions((prev) => ({ ...prev, notifications: "denied" }));
-      return false;
-    }
-
+  const requestPermission = useCallback(async (type: PermissionType): Promise<boolean> => {
     try {
       setLoading(true);
-      const permission = await Notification.requestPermission();
-      setPermissions((prev) => ({
-        ...prev,
-        notifications: permission as "granted" | "denied",
-      }));
-      return permission === "granted";
-    } catch (error) {
-      console.error("Notification permission error:", error);
+
+      switch (type) {
+        case "notifications":
+          if ("Notification" in window) {
+            const permission = await Notification.requestPermission();
+            const granted = permission === "granted";
+            setPermissions((prev) => ({ ...prev, notifications: granted }));
+            return granted;
+          }
+          return false;
+
+        case "camera":
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            stream.getTracks().forEach((track) => track.stop());
+            setPermissions((prev) => ({ ...prev, camera: true }));
+            return true;
+          } catch (err) {
+            console.debug("Camera permission denied:", err);
+            setPermissions((prev) => ({ ...prev, camera: false }));
+            return false;
+          }
+
+        case "microphone":
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            stream.getTracks().forEach((track) => track.stop());
+            setPermissions((prev) => ({ ...prev, microphone: true }));
+            return true;
+          } catch (err) {
+            console.debug("Microphone permission denied:", err);
+            setPermissions((prev) => ({ ...prev, microphone: false }));
+            return false;
+          }
+
+        case "location":
+          return new Promise((resolve) => {
+            navigator.geolocation.getCurrentPosition(
+              () => {
+                setPermissions((prev) => ({ ...prev, location: true }));
+                resolve(true);
+              },
+              () => {
+                setPermissions((prev) => ({ ...prev, location: false }));
+                resolve(false);
+              }
+            );
+          });
+
+        case "calls":
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              video: true,
+              audio: true,
+            });
+            stream.getTracks().forEach((track) => track.stop());
+            setPermissions((prev) => ({ ...prev, calls: true }));
+            return true;
+          } catch (err) {
+            console.debug("Calls permission denied:", err);
+            setPermissions((prev) => ({ ...prev, calls: false }));
+            return false;
+          }
+
+        default:
+          return false;
+      }
+    } catch (err) {
+      console.debug(`Error requesting ${type} permission:`, err);
       return false;
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Request location permission
-  const requestLocation = useCallback(async () => {
-    if (!("geolocation" in navigator)) {
-      setPermissions((prev) => ({ ...prev, location: "unknown" }));
-      return false;
-    }
-
-    try {
-      setLoading(true);
-      return new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            console.log("Location granted:", position.coords);
-            setPermissions((prev) => ({ ...prev, location: "granted" }));
-            resolve(true);
-          },
-          (error) => {
-            console.error("Location permission error:", error);
-            if (error.code === error.PERMISSION_DENIED) {
-              setPermissions((prev) => ({ ...prev, location: "denied" }));
-            } else {
-              setPermissions((prev) => ({ ...prev, location: "prompt" }));
-            }
-            resolve(false);
-          },
-          {
-            enableHighAccuracy: false,
-            timeout: 5000,
-            maximumAge: 0,
-          },
-        );
-      });
-    } catch (error) {
-      console.error("Location error:", error);
-      setPermissions((prev) => ({ ...prev, location: "unknown" }));
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Request all permissions at once
-  const requestAllPermissions = useCallback(async () => {
+  const checkAllPermissions = useCallback(async () => {
     setLoading(true);
     try {
-      const cameraResult = await requestCamera();
-      const micResult = await requestMicrophone();
-      const notifResult = await requestNotification();
-      const locationResult = await requestLocation();
-
-      return {
-        camera: cameraResult,
-        microphone: micResult,
-        notifications: notifResult,
-        location: locationResult,
+      const types: PermissionType[] = ["notifications", "location", "camera", "microphone", "calls"];
+      const results: Record<PermissionType, boolean> = {
+        notifications: false,
+        location: false,
+        camera: false,
+        microphone: false,
+        calls: false,
       };
+
+      for (const type of types) {
+        results[type] = await getPermissionStatus(type);
+      }
+
+      setPermissions(results);
     } finally {
       setLoading(false);
     }
-  }, [requestCamera, requestMicrophone, requestNotification, requestLocation]);
+  }, [getPermissionStatus]);
 
-  // Check current permission status
-  const checkPermissions = useCallback(async () => {
-    try {
-      if ("permissions" in navigator) {
-        const queries = [
-          { name: "camera" as const },
-          { name: "microphone" as const },
-          { name: "notifications" as const },
-          { name: "geolocation" as const },
-        ];
-
-        for (const query of queries) {
-          try {
-            const status = await (navigator.permissions as any).query(query);
-            setPermissions((prev) => ({
-              ...prev,
-              [query.name === "geolocation" ? "location" : query.name]:
-                status.state,
-            }));
-          } catch (e) {
-            console.warn(`Could not query ${query.name} permission:`, e);
-          }
-        }
-      }
-    } catch (error) {
-      console.warn("Error checking permissions:", error);
-    }
-  }, []);
+  useEffect(() => {
+    checkAllPermissions();
+  }, [checkAllPermissions]);
 
   return {
     permissions,
     loading,
-    requestCamera,
-    requestMicrophone,
-    requestNotification,
-    requestLocation,
-    requestAllPermissions,
-    checkPermissions,
+    requestPermission,
+    checkAllPermissions,
+    getPermissionStatus,
   };
-};
+}
