@@ -518,8 +518,8 @@ export default function Home() {
         {/* Motivational Quote Tile */}
         <div className={`rounded-3xl p-6 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg ${
           theme === "dark"
-            ? "bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700/50 shadow-md"
-            : "bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-300/40 shadow-md"
+            ? "bg-gradient-to-br from-orange-900/40 to-amber-900/30 border border-orange-700/40 shadow-md"
+            : "bg-gradient-to-br from-orange-100 to-amber-50 border border-orange-300/40 shadow-md"
         }`}>
           <div className="relative z-10">
             <div className="text-3xl mb-3 animate-bounce" style={{ animationDuration: '3s' }}>
