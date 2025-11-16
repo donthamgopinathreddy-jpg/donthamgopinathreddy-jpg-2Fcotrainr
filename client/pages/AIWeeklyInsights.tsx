@@ -254,16 +254,16 @@ export default function AIWeeklyInsights() {
 
         {/* Weekly Challenges */}
         <Card className="p-6 mb-8 bg-white/80 backdrop-blur border-orange-100">
-          <h3 className="text-lg font-bold mb-6">Weekly Challenges</h3>
+          <h3 className="text-lg font-bold mb-6 text-black dark:text-white">Weekly Challenges</h3>
 
           <div className="space-y-4">
             {insights.challenges.map((challenge, idx) => (
-              <div key={idx} className="p-4 border border-orange-100 rounded-lg bg-gradient-to-r from-orange-50 to-yellow-50">
+              <div key={idx} className="p-4 border-2 border-orange-400 rounded-lg bg-gradient-to-r from-orange-300 to-yellow-300 dark:from-orange-700 dark:to-yellow-700">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-sm">{challenge.name}</h4>
-                  <span className="text-orange-600 font-bold">{challenge.target}</span>
+                  <h4 className="font-bold text-sm text-black dark:text-white">{challenge.name}</h4>
+                  <span className="text-black dark:text-white font-bold text-sm">{challenge.target}</span>
                 </div>
-                <p className="text-sm text-gray-700">{challenge.description}</p>
+                <p className="text-sm font-medium text-black dark:text-white">{challenge.description}</p>
                 <div className="mt-3">
                   <Progress value={60} className="h-2" />
                 </div>
