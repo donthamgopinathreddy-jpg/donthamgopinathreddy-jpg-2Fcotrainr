@@ -518,8 +518,8 @@ export default function Home() {
         {/* Motivational Quote Tile */}
         <div className={`rounded-3xl p-6 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl ${
           theme === "dark"
-            ? "bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 border border-pink-700/50 shadow-lg shadow-pink-900/50"
-            : "bg-gradient-to-br from-orange-400 via-pink-400 to-red-500 border border-orange-300/50 shadow-lg shadow-orange-400/30"
+            ? "bg-gradient-to-br from-blue-900 via-cyan-900 to-teal-900 border border-cyan-700/50 shadow-lg shadow-cyan-900/50"
+            : "bg-gradient-to-br from-blue-500 via-cyan-400 to-emerald-500 border border-blue-400/50 shadow-lg shadow-blue-400/30"
         }`}>
           <div className="absolute inset-0 opacity-20">
             <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
