@@ -650,6 +650,16 @@ export default function Home() {
         {/* Weekly Mood Analytics */}
         {moodLogs.length > 0 && <WeeklyMoodAnalytics moodLogs={moodLogs} />}
 
+        {/* Training Hub Card */}
+        <div onClick={(e) => {
+          if ((userProfile?.subscription_plan || "free") === "free") {
+            e.preventDefault();
+            setShowSubscriptionModal(true);
+          }
+        }}>
+          <TrainingHubCard />
+        </div>
+
         {/* Progress Tracker */}
         <ProgressTracker />
 
