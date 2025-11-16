@@ -26,6 +26,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
   const [showActivityLog, setShowActivityLog] = useState(false);
   const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { logs: activityLogs } = useActivityLog(userProfile?.id);
   const { preferences: notifPrefs, updatePreferences: updateNotifPrefs } =
