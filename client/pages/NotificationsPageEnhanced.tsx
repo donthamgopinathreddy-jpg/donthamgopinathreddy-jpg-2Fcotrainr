@@ -433,11 +433,12 @@ export default function NotificationsPageEnhanced() {
                               {/* User Info */}
                               <div className="flex-1 min-w-0">
                                 <button
-                                  onClick={() =>
-                                    navigate(
-                                      `/profile/${notification.actor?.id}`,
-                                    )
-                                  }
+                                  onClick={() => {
+                                    const actorId = notification.actor?.id;
+                                    if (actorId) {
+                                      navigate(`/profile/${actorId}`);
+                                    }
+                                  }}
                                   className="text-left hover:opacity-80 transition-opacity"
                                 >
                                   <p
