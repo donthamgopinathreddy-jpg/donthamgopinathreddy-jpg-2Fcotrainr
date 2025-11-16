@@ -30,7 +30,7 @@ import NotificationsDropdown from "@/components/NotificationsDropdown";
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
   "You're doing amazing, keep it up! 💪",
-  "Progress over perfection! 🎯",
+  "Progress over perfection! ����",
   "Your body is a temple, treat it right! ��️",
   "One day or day one, you decide! ��",
 ];
@@ -783,6 +783,24 @@ export default function Home() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Daily Streak Section */}
+        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 px-2">
+            📊 Your Progress
+          </h2>
+          <StreaksCard compact={false} />
+        </div>
+
+        {/* Mood Tracker Section */}
+        <div className="mt-6">
+          <MoodTrackerDB />
+        </div>
+
+        {/* Progress Goals Section */}
+        <div className="mt-6">
+          <ProgressTracker />
         </div>
 
         {/* Latest Feed Posts */}
