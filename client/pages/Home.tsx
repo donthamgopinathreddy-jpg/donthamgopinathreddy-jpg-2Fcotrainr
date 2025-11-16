@@ -6,6 +6,8 @@ import ProgressTracker from "@/components/ProgressTracker";
 import MoodTrackerDB from "@/components/MoodTrackerDB";
 import WeeklyMoodAnalytics from "@/components/WeeklyMoodAnalytics";
 import NotificationsDropdown from "@/components/NotificationsDropdown";
+import TrainingHubCard from "@/components/TrainingHubCard";
+import SubscriptionModal from "@/components/SubscriptionModal";
 import {
   Dumbbell,
   Apple,
