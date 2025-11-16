@@ -55,15 +55,29 @@ export function useNotificationPreferences(userId?: string) {
           system_alerts: true,
         };
 
-        const { data: newPrefs, error: createError } = await supabase
-          .from("notification_preferences")
-          .insert(defaultPrefs)
-          .select()
-          .single();
+        try {
+          const { data: newPrefs, error: createError } = await supabase
+            .from("notification_preferences")
+            .insert(defaultPrefs)
+            .select()
+            .single();
 
-        if (createError) {
-          console.error("Error creating preferences:", createError);
-          // Don't show error to user, just set to defaults
+          if (createError) {
+            console.warn("Could not create preferences (table may not exist):", createError.message);
+            // Use defaults in memory if table doesn't exist
+            setPreferences({
+              id: "temp",
+              user_id: userId,
+              ...defaultPrefs,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            } as NotificationPreferences);
+          } else if (newPrefs) {
+            setPreferences(newPrefs);
+          }
+        } catch (err) {
+          console.warn("Error creating preferences (table may not exist):", err);
+          // Use defaults in memory if table doesn't exist
           setPreferences({
             id: "temp",
             user_id: userId,
@@ -71,8 +85,6 @@ export function useNotificationPreferences(userId?: string) {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           } as NotificationPreferences);
-        } else if (newPrefs) {
-          setPreferences(newPrefs);
         }
       }
     } catch (err) {
