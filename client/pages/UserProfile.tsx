@@ -890,7 +890,9 @@ export default function UserProfile() {
                           theme === "light" ? "text-gray-600" : "text-gray-400"
                         }
                       >
-                        {postComments[post.id] ? postComments[post.id].length : post.comments_count}
+                        {postComments[post.id]
+                          ? postComments[post.id].length
+                          : post.comments_count}
                       </span>
                     </button>
                   </div>

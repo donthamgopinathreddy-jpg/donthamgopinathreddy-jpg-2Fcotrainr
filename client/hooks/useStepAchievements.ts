@@ -81,10 +81,10 @@ const STEP_ACHIEVEMENTS: StepAchievement[] = [
 export const useStepAchievements = (dailySteps: number) => {
   const { userProfile } = useAuth();
   const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>(
-    []
+    [],
   );
   const [newlyUnlocked, setNewlyUnlocked] = useState<StepAchievement | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(false);
 
@@ -154,9 +154,7 @@ export const useStepAchievements = (dailySteps: number) => {
                 description: achievement.description,
                 type: achievement.type,
                 icon: achievement.icon,
-                points: Math.ceil(
-                  achievement.stepThreshold / 1000
-                ) * 10 || 10,
+                points: Math.ceil(achievement.stepThreshold / 1000) * 10 || 10,
               })
               .select("id")
               .single();
@@ -164,7 +162,7 @@ export const useStepAchievements = (dailySteps: number) => {
             if (createError || !newAchievement) {
               console.debug(
                 "Error creating achievement:",
-                createError || "No data returned"
+                createError || "No data returned",
               );
               continue;
             }

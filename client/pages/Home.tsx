@@ -98,11 +98,7 @@ export default function Home() {
         setCoverImage(userProfile.cover_image_url);
       }
     }
-  }, [
-    userProfile?.id,
-    userProfile?.bio,
-    userProfile?.cover_image_url,
-  ]);
+  }, [userProfile?.id, userProfile?.bio, userProfile?.cover_image_url]);
 
   // Fetch latest feed
   useEffect(() => {
@@ -658,7 +654,8 @@ export default function Home() {
               />
             </div>
             <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-              ~{caloriesBurned} cal from {steps} steps {isTracking && "🔄 Auto-tracking"}
+              ~{caloriesBurned} cal from {steps} steps{" "}
+              {isTracking && "🔄 Auto-tracking"}
             </p>
           </button>
 

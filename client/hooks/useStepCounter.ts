@@ -54,7 +54,7 @@ export const useStepCounter = () => {
               const magnitude = calculateMagnitude(
                 accel.x || 0,
                 accel.y || 0,
-                accel.z || 0
+                accel.z || 0,
               );
 
               accelerometerDataRef.current.push(magnitude);
@@ -167,7 +167,7 @@ export const useStepCounter = () => {
         console.debug("Error saving steps:", error);
       }
     },
-    [userProfile?.id]
+    [userProfile?.id],
   );
 
   // Auto-save steps every 30 seconds
@@ -192,12 +192,9 @@ export const useStepCounter = () => {
     lastStepTimeRef.current = 0;
   }, []);
 
-  const manualAddStep = useCallback(
-    (count: number = 1) => {
-      setSteps((prev) => prev + count);
-    },
-    []
-  );
+  const manualAddStep = useCallback((count: number = 1) => {
+    setSteps((prev) => prev + count);
+  }, []);
 
   return {
     steps: totalStepsToday + steps,
