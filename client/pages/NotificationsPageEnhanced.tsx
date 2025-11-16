@@ -115,16 +115,21 @@ export default function NotificationsPageEnhanced() {
         );
         let commentData: { [key: string]: any } = {};
         if (commentNotifs.length > 0) {
-          const commentIds = commentNotifs.map((n) => (n as any).comment_id);
-          const { data: comments } = await supabase
-            .from("post_comments")
-            .select("id, content")
-            .in("id", commentIds);
+          try {
+            const commentIds = commentNotifs.map((n) => (n as any).comment_id);
+            const { data: comments, error: commentError } = await supabase
+              .from("post_comments")
+              .select("id, content")
+              .in("id", commentIds);
 
-          if (comments) {
-            comments.forEach((comment) => {
-              commentData[comment.id] = comment.content;
-            });
+            if (!commentError && comments) {
+              comments.forEach((comment) => {
+                commentData[comment.id] = comment.content;
+              });
+            }
+          } catch (commentErr) {
+            console.debug("Error fetching comment content:", commentErr);
+            // Continue without comment content
           }
         }
 
