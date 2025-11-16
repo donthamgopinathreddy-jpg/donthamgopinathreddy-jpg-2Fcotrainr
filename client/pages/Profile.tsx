@@ -1888,6 +1888,13 @@ export default function Profile() {
           </div>
         </div>
       )}
+
+      {/* FOLLOWERS MODAL */}
+      <FollowersModal
+        isOpen={showFollowersModal}
+        onClose={() => setShowFollowersModal(false)}
+        userId={userProfile?.id}
+      />
     </div>
   );
 }
