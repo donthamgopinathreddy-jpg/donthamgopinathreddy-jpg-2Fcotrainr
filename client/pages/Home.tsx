@@ -4,6 +4,7 @@ import GlassyTile from "@/components/GlassyTile";
 import StreaksCard from "@/components/StreaksCard";
 import ProgressTracker from "@/components/ProgressTracker";
 import MoodTrackerDB from "@/components/MoodTrackerDB";
+import WeeklyMoodAnalytics from "@/components/WeeklyMoodAnalytics";
 import NotificationsDropdown from "@/components/NotificationsDropdown";
 import {
   Dumbbell,
@@ -333,7 +334,7 @@ export default function Home() {
 
       if (error) throw error;
 
-      toast.success(`✓ Added ${amount} steps!`);
+      toast.success(`�� Added ${amount} steps!`);
     } catch (error) {
       console.error("Error saving steps:", error);
       toast.error("Failed to save steps");
