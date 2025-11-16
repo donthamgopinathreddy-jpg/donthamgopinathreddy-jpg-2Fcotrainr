@@ -93,6 +93,7 @@ export default function Profile() {
     faceRecognition: false,
   });
   const [isSavingBiometrics, setIsSavingBiometrics] = useState(false);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
   const [passwordForm, setPasswordForm] = useState({
     current: "",
