@@ -10,7 +10,14 @@ export default function FollowersFollowingPage() {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { userProfile } = useAuth();
-  const { followers, following, loading } = useFollowers(userProfile?.id);
+  const params = useParams<{ userId?: string }>();
+  const [searchParams] = useSearchParams();
+
+  // Get userId from params or search params, default to current user
+  const userId = params.userId || searchParams.get("userId") || userProfile?.id;
+  const initialTab = searchParams.get("tab") as "followers" | "following" | null;
+
+  const { followers, following, loading } = useFollowers(userId);
   const { isFollowing, toggleFollow } = useFollows();
   const [activeTab, setActiveTab] = useState<"followers" | "following">(
     "followers",
