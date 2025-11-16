@@ -10,65 +10,6 @@ export default function NotificationsDropdown() {
   const { userProfile } = useAuth();
   const { unreadCount } = useNotifications(userProfile?.id);
 
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case "follow":
-        return <Users className="w-4 h-4 text-blue-500" />;
-      case "meeting":
-        return <Calendar className="w-4 h-4 text-purple-500" />;
-      case "goal_achieved":
-        return <Trophy className="w-4 h-4 text-yellow-500" />;
-      case "achievement":
-        return <Trophy className="w-4 h-4 text-amber-500" />;
-      case "message":
-        return <MessageSquare className="w-4 h-4 text-green-500" />;
-      default:
-        return <Bell className="w-4 h-4 text-gray-500" />;
-    }
-  };
-
-  const getNotificationColor = (type: string) => {
-    switch (type) {
-      case "follow":
-        return theme === "dark"
-          ? "bg-blue-900/30 border-blue-700/50"
-          : "bg-blue-50 border-blue-200";
-      case "meeting":
-        return theme === "dark"
-          ? "bg-purple-900/30 border-purple-700/50"
-          : "bg-purple-50 border-purple-200";
-      case "goal_achieved":
-      case "achievement":
-        return theme === "dark"
-          ? "bg-amber-900/30 border-amber-700/50"
-          : "bg-amber-50 border-amber-200";
-      case "message":
-        return theme === "dark"
-          ? "bg-green-900/30 border-green-700/50"
-          : "bg-green-50 border-green-200";
-      default:
-        return theme === "dark"
-          ? "bg-gray-800 border-gray-700"
-          : "bg-gray-50 border-gray-200";
-    }
-  };
-
-  const formatTime = (date: string) => {
-    const now = new Date();
-    const notifDate = new Date(date);
-    const diffMs = now.getTime() - notifDate.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return "just now";
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-
-    return notifDate.toLocaleDateString();
-  };
-
   return (
     <div className="relative">
       {/* Bell Button */}
