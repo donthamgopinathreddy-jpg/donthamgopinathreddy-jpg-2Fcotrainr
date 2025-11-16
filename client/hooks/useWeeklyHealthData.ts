@@ -28,20 +28,9 @@ export const useWeeklyHealthData = () => {
       const weekStartStr = weekStartDate.toISOString().split("T")[0];
       const weekEndStr = weekEndDate.toISOString().split("T")[0];
 
-      // Fetch user profile for subscription level
-      const { data: profiles, error: profileError } = await supabase
-        .from("profiles")
-        .select("subscription_plan")
-        .eq("id", user.id)
-        .single();
-
-      if (profileError) {
-        console.debug("Profile fetch warning:", profileError.message);
-      }
-
       // Fetch user goal from diet preferences
       const { data: dietPrefs, error: dietError } = await supabase
-        .from("diet_preferences")
+        .from("user_diet_preferences")
         .select("goal")
         .eq("user_id", user.id)
         .single();
