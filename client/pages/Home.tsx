@@ -4,6 +4,7 @@ import GlassyTile from "@/components/GlassyTile";
 import StreaksCard from "@/components/StreaksCard";
 import MoodTrackerDB from "@/components/MoodTrackerDB";
 import ProgressTracker from "@/components/ProgressTracker";
+import WeeklyMoodDropdown from "@/components/WeeklyMoodDropdown";
 import SubscriptionModal from "@/components/SubscriptionModal";
 import {
   Dumbbell,
@@ -30,7 +31,7 @@ import NotificationsDropdown from "@/components/NotificationsDropdown";
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
   "You're doing amazing, keep it up! 💪",
-  "Progress over perfection! ����",
+  "Progress over perfection! 🎯",
   "Your body is a temple, treat it right! ��️",
   "One day or day one, you decide! ��",
 ];
@@ -796,6 +797,11 @@ export default function Home() {
         {/* Mood Tracker Section */}
         <div className="mt-6">
           <MoodTrackerDB />
+        </div>
+
+        {/* Weekly Mood Dropdown */}
+        <div className="mt-6">
+          <WeeklyMoodDropdown />
         </div>
 
         {/* Progress Goals Section */}
