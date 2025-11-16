@@ -116,6 +116,8 @@ export default function Profile() {
   const [verificationDocs, setVerificationDocs] = useState({
     idUploaded: false,
     selfieUploaded: false,
+    idUrl: "",
+    selfieUrl: "",
   });
   const [isUploadingDocs, setIsUploadingDocs] = useState(false);
 
