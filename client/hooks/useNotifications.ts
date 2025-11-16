@@ -331,22 +331,33 @@ export function useNotifications(userId?: string) {
           return true;
         }
 
-        const { error: deleteError } = await supabase
+        // Add timeout for delete operation
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(
+            () => reject(new Error("Delete notification timeout")),
+            5000,
+          ),
+        );
+
+        const deletePromise = supabase
           .from("notifications")
           .delete()
           .eq("id", notificationId);
 
-        if (deleteError) {
-          console.debug("Delete notification error:", deleteError?.code);
-          return false;
+        const result = await Promise.race([deletePromise, timeoutPromise]);
+
+        if (result && typeof result === "object") {
+          const typedResult = result as { error: any };
+          if (typedResult.error) {
+            console.debug("Delete notification error:", typedResult.error?.code);
+            return false;
+          }
         }
 
         return true;
       } catch (err) {
-        console.debug(
-          "Delete notification error:",
-          err instanceof Error ? err.message : String(err),
-        );
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        console.debug("Delete notification error:", errorMsg);
         // Still return true since we updated local state
         return true;
       }
