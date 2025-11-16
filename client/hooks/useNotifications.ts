@@ -69,7 +69,7 @@ export function useNotifications(userId?: string) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchNotifications = async (retryCount = 0) => {
+  const fetchNotifications = async () => {
     if (!userId) {
       setLoading(false);
       setNotifications([]);
@@ -81,60 +81,40 @@ export function useNotifications(userId?: string) {
       setLoading(true);
       setError(null);
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      const { data, error: fetchError } = await supabase
+        .from("notifications")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(20);
 
-      try {
-        const { data, error: fetchError } = await supabase
-          .from("notifications")
-          .select("*")
-          .eq("user_id", userId)
-          .order("created_at", { ascending: false })
-          .limit(20);
+      if (fetchError) {
+        console.debug(
+          "Fetch notifications error:",
+          fetchError?.code,
+          fetchError?.message,
+        );
+        setNotifications([]);
+        setUnreadCount(0);
+        return;
+      }
 
-        clearTimeout(timeoutId);
-
-        if (fetchError) {
-          console.debug(
-            "Fetch notifications error:",
-            fetchError?.code,
-            fetchError?.message,
-          );
-          setError(null);
-          setNotifications([]);
-          setUnreadCount(0);
-          return;
-        }
-
-        if (data) {
-          const transformed = (data as NotificationData[]).map(
-            transformNotification,
-          );
-          setNotifications(transformed);
-          const unread = transformed.filter((n) => !n.is_read).length;
-          setUnreadCount(unread);
-          setError(null);
-        }
-      } catch (fetchErr) {
-        clearTimeout(timeoutId);
-        if (
-          fetchErr instanceof Error &&
-          fetchErr.message === "The operation was aborted"
-        ) {
-          console.debug("Fetch notifications timeout");
-        } else {
-          console.debug(
-            "Fetch notifications inner error:",
-            fetchErr instanceof Error ? fetchErr.message : "Unknown error",
-          );
-        }
+      if (data) {
+        const transformed = (data as NotificationData[]).map(
+          transformNotification,
+        );
+        setNotifications(transformed);
+        const unread = transformed.filter((n) => !n.is_read).length;
+        setUnreadCount(unread);
+        setError(null);
+      } else {
         setNotifications([]);
         setUnreadCount(0);
       }
     } catch (err) {
       console.debug(
-        "Fetch notifications catch error:",
-        err instanceof Error ? err.message : "Unknown error",
+        "Fetch notifications error:",
+        err instanceof Error ? err.message : String(err),
       );
       setNotifications([]);
       setUnreadCount(0);
