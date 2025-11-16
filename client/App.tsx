@@ -221,6 +221,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Notifications />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/profile"
         element={
           <ProtectedRoute>
