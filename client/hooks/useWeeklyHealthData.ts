@@ -103,8 +103,8 @@ export const useWeeklyHealthData = () => {
         userGoal = goalMap[dietPrefs.goal] || "Maintain";
       }
 
-      // Get subscription level from profiles or default to "free"
-      const subscriptionLevel = (profiles?.subscription_plan || "free") as "free" | "basic" | "premium";
+      // Default subscription level to "free" (no profile subscription column exists)
+      const subscriptionLevel = "free" as "free" | "basic" | "premium";
 
       const data: WeeklyInsightData = {
         userId: user.id,
