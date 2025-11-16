@@ -6,7 +6,6 @@ import {
   TrendingUp,
   AlertCircle,
   Sparkles,
-  Plus,
   ArrowRight,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
