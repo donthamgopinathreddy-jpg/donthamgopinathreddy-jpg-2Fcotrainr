@@ -97,15 +97,20 @@ export default function NotificationsPageEnhanced() {
         // Batch fetch all user data in one query
         let usersData: { [key: string]: any } = {};
         if (actorIds.size > 0) {
-          const { data: users } = await supabase
-            .from("users")
-            .select("id, full_name, profile_picture_url, username")
-            .in("id", Array.from(actorIds));
+          try {
+            const { data: users, error: usersError } = await supabase
+              .from("users")
+              .select("id, full_name, profile_picture_url, username")
+              .in("id", Array.from(actorIds));
 
-          if (users) {
-            users.forEach((user) => {
-              usersData[user.id] = user;
-            });
+            if (!usersError && users) {
+              users.forEach((user) => {
+                usersData[user.id] = user;
+              });
+            }
+          } catch (userErr) {
+            console.debug("Error fetching user data:", userErr);
+            // Continue without user data
           }
         }
 
