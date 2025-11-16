@@ -186,6 +186,14 @@ export default function NotificationsPageEnhanced() {
             }
           }
 
+          // Add post image if available
+          if ((notif as any).type === "like" || (notif as any).type === "comment") {
+            const postId = (notif as any).post_id;
+            if (postId && postData[postId]) {
+              enrichedNotif.post_image_url = postData[postId];
+            }
+          }
+
           return enrichedNotif;
         });
 
