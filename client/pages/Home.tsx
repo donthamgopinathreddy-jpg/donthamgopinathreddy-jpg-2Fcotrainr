@@ -301,7 +301,7 @@ export default function Home() {
         userProfile.id.includes("demo");
 
       // Save to Supabase
-      const bioValue = `${stepsCompleted}|${newWater}`;
+      const bioValue = `${steps}|${newWater}`;
 
       if (isDemoMode) {
         // Save to localStorage in demo mode
