@@ -530,8 +530,8 @@ export default function Home() {
             <div className="text-3xl mb-3 animate-bounce" style={{ animationDuration: '3s' }}>
               ✨
             </div>
-            <p className={`text-xl font-bold leading-relaxed animate-pulse ${
-              theme === "dark" ? "text-white" : "text-white"
+            <p className={`text-lg font-bold leading-relaxed animate-pulse ${
+              theme === "dark" ? "text-gray-100" : "text-gray-900"
             }`}>
               {quote}
             </p>
