@@ -492,10 +492,6 @@ export default function Home() {
           </label>
         </div>
 
-        {/* Greeting */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 to-transparent p-6">
-          <p className="text-white text-base font-medium">{quote}</p>
-        </div>
       </div>
 
       {/* Profile Section */}
@@ -519,6 +515,43 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 -mt-8 pb-24 relative z-20 space-y-6">
+        {/* Motivational Quote Tile */}
+        <div className={`rounded-3xl p-6 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl ${
+          theme === "dark"
+            ? "bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 border border-pink-700/50 shadow-lg shadow-pink-900/50"
+            : "bg-gradient-to-br from-orange-400 via-pink-400 to-red-500 border border-orange-300/50 shadow-lg shadow-orange-400/30"
+        }`}>
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+          </div>
+
+          <div className="relative z-10">
+            <div className="text-3xl mb-3 animate-bounce" style={{ animationDuration: '3s' }}>
+              ✨
+            </div>
+            <p className={`text-xl font-bold leading-relaxed animate-pulse ${
+              theme === "dark" ? "text-white" : "text-white"
+            }`}>
+              {quote}
+            </p>
+            <div className="mt-4 flex gap-1 justify-end">
+              {[...Array(3)].map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-2 h-2 rounded-full ${
+                    theme === "dark" ? "bg-white/40" : "bg-white/60"
+                  }`}
+                  style={{
+                    animation: `ping 2s cubic-bezier(0, 0, 0.2, 1) infinite`,
+                    animationDelay: `${i * 0.3}s`
+                  }}
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Health Sync Permission Banner */}
         {isHealthSyncAvailable &&
           !hasPermission &&
