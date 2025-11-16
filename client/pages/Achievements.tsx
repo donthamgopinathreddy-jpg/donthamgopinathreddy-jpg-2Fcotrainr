@@ -189,7 +189,7 @@ export default function Quests() {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-red-500/0 group-hover:from-orange-500/10 group-hover:to-red-500/10 transition-all" />
                 <div className="relative z-10">
-                  <p className="text-3xl font-bold text-orange-600">
+                  <p className="text-2xl sm:text-3xl font-bold text-orange-600">
                     {unlockedList.length}
                   </p>
                   <p
