@@ -127,20 +127,20 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-screen w-64 bg-black text-white z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto
+        className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-orange-100 via-orange-50 to-yellow-100 text-gray-900 z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex flex-col h-full">
           {/* Logo/Header */}
-          <div className="p-6 border-b border-gray-700">
-            <h1 className="text-2xl font-bold text-white">
+          <div className="p-6 border-b border-orange-200">
+            <h1 className="text-2xl font-bold text-orange-900">
               CoTrainr Admin
             </h1>
-            <p className="text-xs text-gray-400 mt-1">Dashboard</p>
+            <p className="text-xs text-orange-600 mt-1">Dashboard</p>
           </div>
 
           {/* User Profile Section */}
-          <div className="p-4 border-b border-gray-700">
+          <div className="p-4 border-b border-orange-200">
             <div className="flex items-center gap-3">
               <label className="relative cursor-pointer group">
                 {userProfile?.profile_picture_url ? (
