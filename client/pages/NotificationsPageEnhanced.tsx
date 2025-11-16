@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -12,6 +12,8 @@ import {
   Calendar,
   MessageSquare,
   User,
+  Heart,
+  MessageCircle,
 } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -45,6 +47,13 @@ interface NotificationWithUser {
   };
 }
 
+interface GroupedNotifications {
+  today: NotificationWithUser[];
+  yesterday: NotificationWithUser[];
+  last7Days: NotificationWithUser[];
+  older: NotificationWithUser[];
+}
+
 export default function NotificationsPageEnhanced() {
   const navigate = useNavigate();
   const { theme } = useTheme();
@@ -67,104 +76,102 @@ export default function NotificationsPageEnhanced() {
     Map<string, boolean>
   >(new Map());
   const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
-  const [longPressNotifId, setLongPressNotifId] = useState<string | null>(null);
 
+  // Batch fetch all actor users for better performance
   useEffect(() => {
     const enrichNotifications = async () => {
-      const enriched: NotificationWithUser[] = [];
+      if (notifications.length === 0) {
+        setNotificationsWithUsers([]);
+        return;
+      }
 
-      for (const notif of notifications) {
-        const enrichedNotif = { ...notif } as NotificationWithUser;
+      try {
+        // Get all unique actor IDs
+        const actorIds = new Set<string>();
+        notifications.forEach((notif) => {
+          const actorId = notif.related_user_id || (notif as any).actor_id;
+          if (actorId) actorIds.add(actorId);
+        });
 
-        // Get the actor ID (could be from related_user_id or as actor_id property)
-        const actorId = notif.related_user_id || (notif as any).actor_id;
+        // Batch fetch all user data in one query
+        let usersData: { [key: string]: any } = {};
+        if (actorIds.size > 0) {
+          const { data: users } = await supabase
+            .from("users")
+            .select("id, full_name, profile_picture_url, username")
+            .in("id", Array.from(actorIds));
 
-        if (actorId) {
-          try {
-            const { data: userData } = await supabase
-              .from("users")
-              .select("id, full_name, profile_picture_url, username")
-              .eq("id", actorId)
-              .single();
-
-            if (userData) {
-              enrichedNotif.actor = userData;
-              enrichedNotif.actor_id = actorId;
-            }
-          } catch (error) {
-            console.debug("Error fetching actor user:", error);
+          if (users) {
+            users.forEach((user) => {
+              usersData[user.id] = user;
+            });
           }
         }
 
-        enriched.push(enrichedNotif);
-      }
+        // Enrich notifications
+        const enriched = notifications.map((notif) => {
+          const enrichedNotif = { ...notif } as NotificationWithUser;
+          const actorId = notif.related_user_id || (notif as any).actor_id;
 
-      setNotificationsWithUsers(enriched);
+          if (actorId && usersData[actorId]) {
+            enrichedNotif.actor = usersData[actorId];
+            enrichedNotif.actor_id = actorId;
+          }
+
+          return enrichedNotif;
+        });
+
+        setNotificationsWithUsers(enriched);
+      } catch (error) {
+        console.debug("Error enriching notifications:", error);
+        setNotificationsWithUsers(
+          notifications.map((n) => ({ ...n } as NotificationWithUser)),
+        );
+      }
     };
 
     enrichNotifications();
   }, [notifications]);
 
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case "follow":
-        return <Users className="w-6 h-6 text-blue-500" />;
-      case "meeting":
-        return <Calendar className="w-6 h-6 text-purple-500" />;
-      case "goal_achieved":
-        return <Trophy className="w-6 h-6 text-yellow-500" />;
-      case "achievement":
-        return <Trophy className="w-6 h-6 text-amber-500" />;
-      case "message":
-        return <MessageSquare className="w-6 h-6 text-green-500" />;
-      default:
-        return <Bell className="w-6 h-6 text-gray-500" />;
-    }
-  };
-
-  const getNotificationColor = (type: string) => {
-    switch (type) {
-      case "follow":
-        return theme === "dark"
-          ? "bg-blue-900/30 border-blue-700/50"
-          : "bg-blue-50 border-blue-200";
-      case "meeting":
-        return theme === "dark"
-          ? "bg-purple-900/30 border-purple-700/50"
-          : "bg-purple-50 border-purple-200";
-      case "goal_achieved":
-      case "achievement":
-        return theme === "dark"
-          ? "bg-amber-900/30 border-amber-700/50"
-          : "bg-amber-50 border-amber-200";
-      case "message":
-        return theme === "dark"
-          ? "bg-green-900/30 border-green-700/50"
-          : "bg-green-50 border-green-200";
-      default:
-        return theme === "dark"
-          ? "bg-gray-800 border-gray-700"
-          : "bg-gray-50 border-gray-200";
-    }
-  };
-
-  const formatTime = (date: string) => {
+  // Memoized grouped notifications
+  const groupedNotifications = useMemo(() => {
     const now = new Date();
-    const notifDate = new Date(date);
-    const diffMs = now.getTime() - notifDate.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-    if (diffMins < 1) return "just now";
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
+    const groups: GroupedNotifications = {
+      today: [],
+      yesterday: [],
+      last7Days: [],
+      older: [],
+    };
 
-    return notifDate.toLocaleDateString();
-  };
+    notificationsWithUsers.forEach((notif) => {
+      const notifDate = new Date(notif.created_at);
+      const notifDateOnly = new Date(
+        notifDate.getFullYear(),
+        notifDate.getMonth(),
+        notifDate.getDate(),
+      );
 
-  const handleSelectNotification = (id: string) => {
+      if (notifDateOnly.getTime() === today.getTime()) {
+        groups.today.push(notif);
+      } else if (notifDateOnly.getTime() === yesterday.getTime()) {
+        groups.yesterday.push(notif);
+      } else if (notifDateOnly.getTime() >= sevenDaysAgo.getTime()) {
+        groups.last7Days.push(notif);
+      } else {
+        groups.older.push(notif);
+      }
+    });
+
+    return groups;
+  }, [notificationsWithUsers]);
+
+  const selectNotification = (id: string) => {
     const newSelected = new Set(selectedNotifications);
     if (newSelected.has(id)) {
       newSelected.delete(id);
@@ -192,17 +199,273 @@ export default function NotificationsPageEnhanced() {
     }
   };
 
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case "follow":
+        return <Users className="w-5 h-5 text-blue-500" />;
+      case "like":
+        return <Heart className="w-5 h-5 text-red-500" />;
+      case "comment":
+        return <MessageCircle className="w-5 h-5 text-green-500" />;
+      case "meeting":
+        return <Calendar className="w-5 h-5 text-purple-500" />;
+      case "goal_achieved":
+        return <Trophy className="w-5 h-5 text-yellow-500" />;
+      case "achievement":
+        return <Trophy className="w-5 h-5 text-amber-500" />;
+      case "message":
+        return <MessageSquare className="w-5 h-5 text-green-500" />;
+      default:
+        return <Bell className="w-5 h-5 text-gray-500" />;
+    }
+  };
+
+  const formatTime = (date: string) => {
+    const now = new Date();
+    const notifDate = new Date(date);
+    const diffMs = now.getTime() - notifDate.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+
+    return notifDate.toLocaleDateString();
+  };
+
+  const NotificationCard = ({ notification }: { notification: NotificationWithUser }) => {
+    let longPressTimer: NodeJS.Timeout;
+
+    const handleLongPress = () => {
+      if (!isMultiSelectMode) {
+        setIsMultiSelectMode(true);
+        setSelectedNotifications(new Set([notification.id]));
+      }
+    };
+
+    const handleMouseDown = () => {
+      longPressTimer = setTimeout(handleLongPress, 500);
+    };
+
+    const handleMouseUp = () => {
+      clearTimeout(longPressTimer);
+    };
+
+    const handleTouchStart = () => {
+      longPressTimer = setTimeout(handleLongPress, 500);
+    };
+
+    const handleTouchEnd = () => {
+      clearTimeout(longPressTimer);
+    };
+
+    return (
+      <div
+        className={`p-4 rounded-xl border transition-all ${
+          !notification.is_read
+            ? theme === "dark"
+              ? "bg-gray-800/50 border-gray-700 shadow-sm"
+              : "bg-blue-50/50 border-gray-200 shadow-sm"
+            : theme === "dark"
+              ? "bg-gray-900/30 border-gray-800"
+              : "bg-white border-gray-200"
+        } ${isMultiSelectMode ? "cursor-pointer" : ""}`}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onClick={() => {
+          if (isMultiSelectMode) {
+            selectNotification(notification.id);
+          }
+        }}
+      >
+        <div className="flex items-start gap-3">
+          {/* Checkbox - only in multi-select mode */}
+          {isMultiSelectMode && (
+            <input
+              type="checkbox"
+              checked={selectedNotifications.has(notification.id)}
+              onChange={() => selectNotification(notification.id)}
+              className="mt-1 rounded cursor-pointer"
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+
+          {/* Icon */}
+          <div className="flex-shrink-0 mt-0.5">
+            {getNotificationIcon(notification.type)}
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <p
+              className={`font-semibold text-sm ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              {notification.title}
+            </p>
+            <p
+              className={`text-sm mt-1 ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}
+            >
+              {notification.message}
+            </p>
+            <p
+              className={`text-xs mt-2 ${
+                theme === "dark" ? "text-gray-500" : "text-gray-500"
+              }`}
+            >
+              {formatTime(notification.created_at)}
+            </p>
+          </div>
+
+          {/* Delete Button - X */}
+          {!isMultiSelectMode && (
+            <button
+              onClick={() => deleteNotification(notification.id)}
+              className={`p-1.5 rounded-lg transition-colors flex-shrink-0 ${
+                theme === "dark"
+                  ? "hover:bg-gray-700 text-gray-400 hover:text-gray-200"
+                  : "hover:bg-gray-100 text-gray-600 hover:text-gray-900"
+              }`}
+              title="Delete notification"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* User card for interactions */}
+        {notification.actor &&
+          (notification.type === "follow" ||
+            notification.type === "like" ||
+            notification.type === "comment") && (
+            <div className="mt-3 p-2.5 rounded-lg bg-gray-100/50 dark:bg-gray-800/50 flex items-center gap-2.5">
+              <button
+                onClick={() => {
+                  const actorId = notification.actor?.id;
+                  if (actorId) navigate(`/profile/${actorId}`);
+                }}
+                className="flex-shrink-0"
+              >
+                <div
+                  className={`w-10 h-10 rounded-full border flex items-center justify-center overflow-hidden hover:ring-2 hover:ring-orange-500 transition-all ${
+                    theme === "dark"
+                      ? "bg-gray-700 border-gray-600"
+                      : "bg-gray-200 border-gray-300"
+                  }`}
+                >
+                  {notification.actor.profile_picture_url ? (
+                    <img
+                      src={notification.actor.profile_picture_url}
+                      alt={notification.actor.full_name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User className="w-5 h-5 text-gray-500" />
+                  )}
+                </div>
+              </button>
+
+              <button
+                onClick={() => {
+                  const actorId = notification.actor?.id;
+                  if (actorId) navigate(`/profile/${actorId}`);
+                }}
+                className="flex-1 text-left min-w-0 hover:opacity-80 transition-opacity"
+              >
+                <p
+                  className={`text-sm font-semibold truncate ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  {notification.actor.full_name}
+                </p>
+                {notification.actor.username && (
+                  <p
+                    className={`text-xs truncate ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
+                    @{notification.actor.username}
+                  </p>
+                )}
+              </button>
+
+              {notification.type === "follow" && (
+                <button
+                  onClick={() => handleToggleFollow(notification.actor!.id)}
+                  disabled={
+                    isTogglingFollow.get(notification.actor!.id) || false
+                  }
+                  className={`flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all disabled:opacity-50 ${
+                    isFollowing(notification.actor!.id)
+                      ? theme === "dark"
+                        ? "bg-gray-700 text-white hover:bg-gray-600"
+                        : "bg-gray-300 text-gray-900 hover:bg-gray-400"
+                      : "bg-blue-500 text-white hover:bg-blue-600"
+                  }`}
+                >
+                  {isTogglingFollow.get(notification.actor!.id) ? (
+                    <Loader className="w-3 h-3 animate-spin" />
+                  ) : isFollowing(notification.actor!.id) ? (
+                    "Following"
+                  ) : (
+                    "Follow"
+                  )}
+                </button>
+              )}
+            </div>
+          )}
+      </div>
+    );
+  };
+
+  const NotificationSection = ({
+    title,
+    notifications: notifs,
+  }: {
+    title: string;
+    notifications: NotificationWithUser[];
+  }) => {
+    if (notifs.length === 0) return null;
+
+    return (
+      <div className="mb-6">
+        <h2
+          className={`text-sm font-bold px-1 py-2 mb-2 ${
+            theme === "dark" ? "text-gray-400" : "text-gray-600"
+          }`}
+        >
+          {title}
+        </h2>
+        <div className="space-y-2">
+          {notifs.map((notif) => (
+            <NotificationCard key={notif.id} notification={notif} />
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       className={`min-h-screen pb-24 ${
-        theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+        theme === "dark" ? "bg-gray-950" : "bg-gray-50"
       }`}
     >
       {/* Header */}
       <div
         className={`sticky top-0 z-40 ${
           theme === "dark"
-            ? "bg-gray-800 border-gray-700"
+            ? "bg-gray-900 border-gray-800"
             : "bg-white border-gray-200"
         } border-b p-4`}
       >
@@ -211,9 +474,7 @@ export default function NotificationsPageEnhanced() {
             <button
               onClick={() => navigate(-1)}
               className={`p-2 rounded-lg transition-colors ${
-                theme === "dark"
-                  ? "hover:bg-gray-700 text-white"
-                  : "hover:bg-gray-100 text-black"
+                theme === "dark" ? "hover:bg-gray-800 text-white" : "hover:bg-gray-100 text-black"
               }`}
             >
               <ArrowLeft className="w-5 h-5" />
@@ -279,244 +540,35 @@ export default function NotificationsPageEnhanced() {
             }`}
           >
             <Bell className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p className="text-lg font-semibold mb-2">No notifications yet</p>
-            <p className="text-sm">Check back later for updates</p>
+            <p className="text-lg font-semibold mb-2">All caught up!</p>
+            <p className="text-sm">No new notifications</p>
           </div>
         ) : (
-          <div className="space-y-3">
-            {notificationsWithUsers.map((notification) => {
-              let longPressTimer: NodeJS.Timeout;
-
-              const handleLongPress = () => {
-                if (!isMultiSelectMode) {
-                  setIsMultiSelectMode(true);
-                  setSelectedNotifications(new Set([notification.id]));
-                }
-              };
-
-              const handleMouseDown = () => {
-                longPressTimer = setTimeout(handleLongPress, 500);
-              };
-
-              const handleMouseUp = () => {
-                clearTimeout(longPressTimer);
-              };
-
-              const handleTouchStart = () => {
-                longPressTimer = setTimeout(handleLongPress, 500);
-              };
-
-              const handleTouchEnd = () => {
-                clearTimeout(longPressTimer);
-              };
-
-              return (
-                <div
-                  key={notification.id}
-                  className={`p-5 rounded-2xl border-l-4 transition-all ${
-                    !notification.is_read
-                      ? theme === "dark"
-                        ? "bg-gray-800/50 border-pink-500 shadow-md"
-                        : "bg-blue-50/50 border-pink-500 shadow-md"
-                      : theme === "dark"
-                        ? "bg-gray-800/20 border-transparent"
-                        : "bg-white border-transparent"
-                  } ${getNotificationColor(notification.type)} ${
-                    isMultiSelectMode ? "cursor-pointer" : ""
-                  }`}
-                  onMouseDown={handleMouseDown}
-                  onMouseUp={handleMouseUp}
-                  onMouseLeave={handleMouseUp}
-                  onTouchStart={handleTouchStart}
-                  onTouchEnd={handleTouchEnd}
-                  onClick={() => {
-                    if (isMultiSelectMode) {
-                      handleSelectNotification(notification.id);
-                    }
-                  }}
-                >
-                  <div className="flex items-start gap-4">
-                    {/* Checkbox - only shown in multi-select mode */}
-                    {isMultiSelectMode && (
-                      <input
-                        type="checkbox"
-                        checked={selectedNotifications.has(notification.id)}
-                        onChange={() =>
-                          handleSelectNotification(notification.id)
-                        }
-                        className="mt-1 rounded cursor-pointer"
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    )}
-
-                    {/* Icon and User Info (for follow notifications) */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className="flex-shrink-0 mt-1">
-                          {getNotificationIcon(notification.type)}
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-1">
-                          <h3
-                            className={`text-lg font-bold mb-1 ${
-                              theme === "dark" ? "text-white" : "text-gray-900"
-                            }`}
-                          >
-                            {notification.title}
-                          </h3>
-                          <p
-                            className={`text-base mb-3 ${
-                              theme === "dark"
-                                ? "text-gray-300"
-                                : "text-gray-700"
-                            }`}
-                          >
-                            {notification.message}
-                          </p>
-                          <p
-                            className={`text-xs ${
-                              theme === "dark"
-                                ? "text-gray-500"
-                                : "text-gray-500"
-                            }`}
-                          >
-                            {formatTime(notification.created_at)}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* User card for follow, like, and comment notifications */}
-                      {notification.actor &&
-                        (notification.type === "follow" ||
-                          notification.type === "like" ||
-                          notification.type === "comment") && (
-                          <div
-                            className={`mt-4 p-3 rounded-xl border ${
-                              theme === "dark"
-                                ? "bg-gray-700/30 border-gray-600"
-                                : "bg-gray-50 border-gray-200"
-                            }`}
-                          >
-                            <div className="flex items-center gap-3">
-                              {/* Avatar */}
-                              <button
-                                onClick={() => {
-                                  const actorId = notification.actor?.id;
-                                  if (actorId) {
-                                    navigate(`/profile/${actorId}`);
-                                  }
-                                }}
-                                className="flex-shrink-0"
-                              >
-                                <div
-                                  className={`w-12 h-12 rounded-full border-2 flex items-center justify-center overflow-hidden hover:ring-2 hover:ring-orange-500 transition-all ${
-                                    theme === "dark"
-                                      ? "bg-gray-700 border-gray-600"
-                                      : "bg-gray-100 border-gray-300"
-                                  }`}
-                                >
-                                  {notification.actor.profile_picture_url ? (
-                                    <img
-                                      src={
-                                        notification.actor.profile_picture_url
-                                      }
-                                      alt={notification.actor.full_name}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  ) : (
-                                    <User className="w-6 h-6 text-gray-500" />
-                                  )}
-                                </div>
-                              </button>
-
-                              {/* User Info */}
-                              <div className="flex-1 min-w-0">
-                                <button
-                                  onClick={() => {
-                                    const actorId = notification.actor?.id;
-                                    if (actorId) {
-                                      navigate(`/profile/${actorId}`);
-                                    }
-                                  }}
-                                  className="text-left hover:opacity-80 transition-opacity"
-                                >
-                                  <p
-                                    className={`font-semibold text-sm ${
-                                      theme === "dark"
-                                        ? "text-white"
-                                        : "text-gray-900"
-                                    }`}
-                                  >
-                                    {notification.actor.full_name}
-                                  </p>
-                                  {notification.actor.username && (
-                                    <p
-                                      className={`text-xs ${
-                                        theme === "dark"
-                                          ? "text-gray-400"
-                                          : "text-gray-600"
-                                      }`}
-                                    >
-                                      @{notification.actor.username}
-                                    </p>
-                                  )}
-                                </button>
-                              </div>
-
-                              {/* Follow Button */}
-                              {notification.type === "follow" && (
-                                <button
-                                  onClick={() =>
-                                    handleToggleFollow(notification.actor!.id)
-                                  }
-                                  disabled={
-                                    isTogglingFollow.get(
-                                      notification.actor!.id,
-                                    ) || false
-                                  }
-                                  className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm transition-all disabled:opacity-50 ${
-                                    isFollowing(notification.actor!.id)
-                                      ? theme === "dark"
-                                        ? "bg-gray-700 text-white hover:bg-gray-600"
-                                        : "bg-gray-200 text-gray-900 hover:bg-gray-300"
-                                      : "bg-orange-500 text-white hover:bg-orange-600"
-                                  }`}
-                                >
-                                  {isTogglingFollow.get(
-                                    notification.actor!.id,
-                                  ) ? (
-                                    <Loader className="w-4 h-4 animate-spin" />
-                                  ) : isFollowing(notification.actor!.id) ? (
-                                    "Following"
-                                  ) : (
-                                    "Follow"
-                                  )}
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                    </div>
-
-                    {/* Delete Button - X */}
-                    {!isMultiSelectMode && (
-                      <button
-                        onClick={() => deleteNotification(notification.id)}
-                        className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
-                          theme === "dark"
-                            ? "hover:bg-gray-700 text-gray-400 hover:text-gray-200"
-                            : "hover:bg-gray-200 text-gray-600 hover:text-gray-900"
-                        }`}
-                        title="Delete notification"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+          <div>
+            {groupedNotifications.today.length > 0 && (
+              <NotificationSection
+                title="Today"
+                notifications={groupedNotifications.today}
+              />
+            )}
+            {groupedNotifications.yesterday.length > 0 && (
+              <NotificationSection
+                title="Yesterday"
+                notifications={groupedNotifications.yesterday}
+              />
+            )}
+            {groupedNotifications.last7Days.length > 0 && (
+              <NotificationSection
+                title="Last 7 Days"
+                notifications={groupedNotifications.last7Days}
+              />
+            )}
+            {groupedNotifications.older.length > 0 && (
+              <NotificationSection
+                title="Older"
+                notifications={groupedNotifications.older}
+              />
+            )}
           </div>
         )}
       </div>
