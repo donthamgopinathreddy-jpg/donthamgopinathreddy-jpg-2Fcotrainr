@@ -15,8 +15,6 @@ import {
   Home,
   Camera,
   Loader,
-  Bell,
-  Clock,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
