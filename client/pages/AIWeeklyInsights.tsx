@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ArrowLeft, TrendingUp, Target, Zap, Droplets, Moon, Award, Unlock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAIWeeklyInsights, type WeeklyInsightData, type AIInsights } from "@/hooks/useAIWeeklyInsights";
+import { useAIWeeklyInsights, type AIInsights } from "@/hooks/useAIWeeklyInsights";
+import { useWeeklyHealthData } from "@/hooks/useWeeklyHealthData";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -11,36 +12,17 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function AIWeeklyInsights() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { generateInsights, loading, error } = useAIWeeklyInsights();
+  const { generateInsights, loading: generatingInsights } = useAIWeeklyInsights();
+  const { weeklyData, loading: loadingData, error: dataError } = useWeeklyHealthData();
   const [insights, setInsights] = useState<AIInsights | null>(null);
-  const [demoMode, setDemoMode] = useState(true);
-
-  // Demo data for development
-  const demoData: WeeklyInsightData = {
-    userId: user?.id || "demo-user",
-    weekStartDate: new Date(new Date().setDate(new Date().getDate() - 7)),
-    weekEndDate: new Date(),
-    stepsTotal: 85000,
-    stepsVsLastWeek: 15,
-    workoutMinutesTotal: 180,
-    workoutMinutesVsLastWeek: 20,
-    caloriesBurned: 2800,
-    caloriesConsumed: 2200,
-    weightChangeKg: -0.5,
-    proteinIntakeG: 140,
-    hydrationGlasses: 50,
-    sleepHours: 7.2,
-    goal: "Lose Fat",
-    subscriptionLevel: "premium",
-  };
 
   useEffect(() => {
-    if (demoMode) {
-      generateInsights(demoData).then((result) => {
+    if (weeklyData) {
+      generateInsights(weeklyData).then((result) => {
         if (result) setInsights(result);
       });
     }
-  }, [demoMode, generateInsights]);
+  }, [weeklyData, generateInsights]);
 
   const chunkStepsData = [
     { day: "Mon", steps: 12000, target: 10000 },
