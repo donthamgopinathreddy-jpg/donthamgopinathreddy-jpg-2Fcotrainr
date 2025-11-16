@@ -9,7 +9,7 @@ interface WebAuthnCredential {
 
 export const useBiometricAuth = () => {
   const [isAvailable, setIsAvailable] = useState(
-    () => !!navigator.credentials?.create && !!window.PublicKeyCredential
+    () => !!navigator.credentials?.create && !!window.PublicKeyCredential,
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -63,7 +63,9 @@ export const useBiometricAuth = () => {
           userId: userId,
           deviceName: deviceName,
           credentialPublicKey: btoa(
-            String.fromCharCode(...new Uint8Array((credential as any).response.getPublicKey()))
+            String.fromCharCode(
+              ...new Uint8Array((credential as any).response.getPublicKey()),
+            ),
           ),
           counter: 0,
           credentialDeviceType: "single-device",
@@ -95,68 +97,71 @@ export const useBiometricAuth = () => {
         setLoading(false);
       }
     },
-    [isAvailable]
+    [isAvailable],
   );
 
   // Authenticate using biometric
-  const authenticateWithBiometric = useCallback(async (userId: string) => {
-    if (!isAvailable) {
-      setError("Biometric authentication is not available on this device");
-      return null;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Get challenge from server
-      const challenge = crypto.getRandomValues(new Uint8Array(32));
-
-      const assertion = await navigator.credentials.get({
-        publicKey: {
-          challenge: challenge,
-          userVerification: "preferred",
-          timeout: 60000,
-        },
-      });
-
-      if (!assertion || assertion.type !== "public-key") {
-        setError("Biometric authentication failed");
+  const authenticateWithBiometric = useCallback(
+    async (userId: string) => {
+      if (!isAvailable) {
+        setError("Biometric authentication is not available on this device");
         return null;
       }
 
-      // Verify with backend and sign in
-      return {
-        credentialId: (assertion as any).id,
-        clientDataJSON: btoa(
-          String.fromCharCode(
-            ...new Uint8Array((assertion as any).response.clientDataJSON)
-          )
-        ),
-        authenticatorData: btoa(
-          String.fromCharCode(
-            ...new Uint8Array((assertion as any).response.authenticatorData)
-          )
-        ),
-        signature: btoa(
-          String.fromCharCode(
-            ...new Uint8Array((assertion as any).response.signature)
-          )
-        ),
-      };
-    } catch (err: any) {
-      const errorMsg =
-        err?.name === "NotAllowedError"
-          ? "Authentication was cancelled"
-          : err?.name === "NotSupportedError"
-            ? "Biometric authentication is not supported on this device"
-            : `Authentication failed: ${err?.message || "Unknown error"}`;
-      setError(errorMsg);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  }, [isAvailable]);
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Get challenge from server
+        const challenge = crypto.getRandomValues(new Uint8Array(32));
+
+        const assertion = await navigator.credentials.get({
+          publicKey: {
+            challenge: challenge,
+            userVerification: "preferred",
+            timeout: 60000,
+          },
+        });
+
+        if (!assertion || assertion.type !== "public-key") {
+          setError("Biometric authentication failed");
+          return null;
+        }
+
+        // Verify with backend and sign in
+        return {
+          credentialId: (assertion as any).id,
+          clientDataJSON: btoa(
+            String.fromCharCode(
+              ...new Uint8Array((assertion as any).response.clientDataJSON),
+            ),
+          ),
+          authenticatorData: btoa(
+            String.fromCharCode(
+              ...new Uint8Array((assertion as any).response.authenticatorData),
+            ),
+          ),
+          signature: btoa(
+            String.fromCharCode(
+              ...new Uint8Array((assertion as any).response.signature),
+            ),
+          ),
+        };
+      } catch (err: any) {
+        const errorMsg =
+          err?.name === "NotAllowedError"
+            ? "Authentication was cancelled"
+            : err?.name === "NotSupportedError"
+              ? "Biometric authentication is not supported on this device"
+              : `Authentication failed: ${err?.message || "Unknown error"}`;
+        setError(errorMsg);
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [isAvailable],
+  );
 
   return {
     isAvailable,

@@ -43,7 +43,7 @@ export const usePINAuth = () => {
               pin_enabled: true,
               updated_at: new Date().toISOString(),
             },
-            { onConflict: "user_id" }
+            { onConflict: "user_id" },
           );
 
         if (dbError) {
@@ -59,7 +59,7 @@ export const usePINAuth = () => {
         setLoading(false);
       }
     },
-    [hashPIN]
+    [hashPIN],
   );
 
   // Verify PIN
@@ -95,7 +95,7 @@ export const usePINAuth = () => {
         setLoading(false);
       }
     },
-    [hashPIN]
+    [hashPIN],
   );
 
   // Set up pattern
@@ -126,7 +126,7 @@ export const usePINAuth = () => {
               pattern_enabled: true,
               updated_at: new Date().toISOString(),
             },
-            { onConflict: "user_id" }
+            { onConflict: "user_id" },
           );
 
         if (dbError) {
@@ -142,7 +142,7 @@ export const usePINAuth = () => {
         setLoading(false);
       }
     },
-    [hashPIN]
+    [hashPIN],
   );
 
   // Verify pattern
@@ -178,7 +178,7 @@ export const usePINAuth = () => {
         setLoading(false);
       }
     },
-    [hashPIN]
+    [hashPIN],
   );
 
   // Check if PIN is enabled
@@ -197,19 +197,22 @@ export const usePINAuth = () => {
   }, []);
 
   // Check if pattern is enabled
-  const isPatternEnabled = useCallback(async (userId: string): Promise<boolean> => {
-    try {
-      const { data } = await supabase
-        .from("user_security_settings")
-        .select("pattern_enabled")
-        .eq("user_id", userId)
-        .single();
+  const isPatternEnabled = useCallback(
+    async (userId: string): Promise<boolean> => {
+      try {
+        const { data } = await supabase
+          .from("user_security_settings")
+          .select("pattern_enabled")
+          .eq("user_id", userId)
+          .single();
 
-      return data?.pattern_enabled || false;
-    } catch {
-      return false;
-    }
-  }, []);
+        return data?.pattern_enabled || false;
+      } catch {
+        return false;
+      }
+    },
+    [],
+  );
 
   return {
     loading,

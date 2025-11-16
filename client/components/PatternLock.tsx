@@ -70,11 +70,7 @@ export default function PatternLock({
       ctx.font = "bold 12px Arial";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(
-        point.index.toString(),
-        point.x,
-        point.y
-      );
+      ctx.fillText(point.index.toString(), point.x, point.y);
     });
 
     // Draw lines between selected points
@@ -106,7 +102,7 @@ export default function PatternLock({
 
   const getPointAtCoordinates = (x: number, y: number): Point | undefined => {
     return points.find(
-      (point) => Math.hypot(point.x - x, point.y - y) <= dotRadius
+      (point) => Math.hypot(point.x - x, point.y - y) <= dotRadius,
     );
   };
 

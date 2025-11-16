@@ -175,7 +175,6 @@ export default function Home() {
 
   const stepsGoal = stepsTarget;
 
-
   // Calculate BMI
   const heightInMeters = userHeight / 100;
   const bmi =
@@ -239,7 +238,6 @@ export default function Home() {
       toast.error("Failed to save targets");
     }
   };
-
 
   const handleAddWater = async (amount: number) => {
     try {
@@ -589,7 +587,6 @@ export default function Home() {
               </div>
             </div>
           )}
-
 
           {/* Water Intake Progress */}
           <button
