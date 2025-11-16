@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, Lock, Unlock, Palette } from "lucide-react";
+import { ArrowLeft, Lock, Unlock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAchievements } from "@/hooks/useAchievements";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import WeeklyQuests from "@/components/achievements/WeeklyQuests";
 import SocialCompetitions from "@/components/achievements/SocialCompetitions";
-
-type AestheticStyle = "minimal" | "vibrant";
 
 export default function Achievements() {
   const navigate = useNavigate();
@@ -27,7 +25,6 @@ export default function Achievements() {
   const [activeTab, setActiveTab] = useState<
     "quests" | "competitions" | "achievements" | "leaderboard"
   >("quests");
-  const [aestheticStyle, setAestheticStyle] = useState<AestheticStyle>("minimal");
 
   useEffect(() => {
     const ids = new Set(unlockedAchievements.map((ua) => ua.achievement_id));
@@ -61,7 +58,7 @@ export default function Achievements() {
 
   const getRankMedal = (rank: number): string => {
     if (rank === 1) return "🥇";
-    if (rank === 2) return "🥈";
+    if (rank === 2) return "��";
     if (rank === 3) return "🥉";
     return "🏆";
   };
