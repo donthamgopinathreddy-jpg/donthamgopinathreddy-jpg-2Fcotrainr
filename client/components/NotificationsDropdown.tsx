@@ -163,7 +163,7 @@ export default function NotificationsDropdown() {
             </div>
 
             {/* Notifications List */}
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-96 overflow-y-auto sm:max-h-screen md:max-h-96">
               {loading ? (
                 <div className="flex items-center justify-center py-8">
                   <Loader className="w-5 h-5 animate-spin text-gray-500" />
