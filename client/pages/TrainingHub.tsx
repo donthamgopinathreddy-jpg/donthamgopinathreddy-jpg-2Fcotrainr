@@ -20,6 +20,7 @@ import WeeklyWorkoutPlanner from "@/components/WeeklyWorkoutPlanner";
 import ExpandedDietPlanner from "@/components/ExpandedDietPlanner";
 import AskTrainerModal from "@/components/AskTrainerModal";
 import TrendGraphsSection from "@/components/TrendGraphsSection";
+import TrainingHubCarousel from "@/components/TrainingHubCarousel";
 
 type WorkoutCategory =
   | "gym"
@@ -196,6 +197,309 @@ export default function TrainingHub() {
     }
   };
 
+  // Section components
+  const WorkoutsSection = () => (
+    <div className="space-y-6">
+      {/* Category Chips */}
+      <div className="flex flex-wrap gap-3">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+              selectedCategory === cat
+                ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105"
+                : "bg-white/40 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 border-2 border-white/60 dark:border-gray-700/60 backdrop-blur-md hover:border-orange-500"
+            }`}
+          >
+            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {/* Difficulty Level */}
+      <div className="space-y-3">
+        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+          Difficulty Level
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {levels.map((level) => {
+            const isLocked = plan === "free" && level !== "basic";
+            return (
+              <button
+                key={level}
+                onClick={() => !isLocked && setSelectedLevel(level)}
+                disabled={isLocked}
+                className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                  selectedLevel === level
+                    ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
+                    : isLocked
+                      ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed opacity-50"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
+                }`}
+              >
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+                {isLocked && <Lock className="w-3 h-3 inline ml-1" />}
+              </button>
+            );
+          })}
+        </div>
+        {plan === "free" && (
+          <p className="text-xs text-orange-600 dark:text-orange-400">
+            💡 Upgrade to unlock Intermediate and Advanced workouts
+          </p>
+        )}
+      </div>
+
+      {/* Workout Cards Grid */}
+      {workoutsLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="h-64 bg-gray-200 dark:bg-gray-700 rounded-2xl"
+            ></div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredWorkouts.length > 0 ? (
+            filteredWorkouts.map((workout) => (
+              <div
+                key={workout.id}
+                className="relative group"
+                onClick={() => {
+                  if (plan !== "free" || workout.level === "basic") {
+                    setSelectedDayForWorkout(workout.id);
+                    setShowWorkoutModal(true);
+                  }
+                }}
+              >
+                <WorkoutCard workout={workout} />
+                {plan === "free" && workout.level !== "basic" && (
+                  <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:flex opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="text-center text-white">
+                      <Lock className="w-8 h-8 mx-auto mb-2" />
+                      <p className="text-sm font-semibold">Upgrade to unlock</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <p className="text-gray-500 dark:text-gray-400 text-lg">
+                No workouts found
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+  const WeeklyPlannerSection = () => (
+    <div className="space-y-6">
+      {isWorkoutLocked ? (
+        <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-white/20 p-12 text-center">
+          <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Workout Planner Locked
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            Upgrade to unlock the weekly workout planner
+          </p>
+          <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
+            Upgrade Now
+          </button>
+        </div>
+      ) : (
+        <>
+          <WeeklyWorkoutPlanner
+            weeklyPlan={weeklyPlan}
+            workouts={workouts}
+            onSelectDay={(day) => {
+              setSelectedDayForWorkout(day);
+              setShowWorkoutModal(true);
+            }}
+            onRemoveWorkout={(day) => {
+              const newPlan = { ...weeklyPlan };
+              delete newPlan[day];
+              setWeeklyPlan(newPlan);
+            }}
+          />
+
+          {/* Weekly Summary */}
+          <div className="bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-2xl p-6 border border-orange-200 dark:border-orange-800/50">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-orange-600 dark:text-orange-400 font-semibold">
+                  📊 This Week's Summary
+                </p>
+                <p className="text-lg text-gray-900 dark:text-white font-bold mt-2">
+                  {weeklyStats.count} Workouts • {weeklyStats.minutes} Minutes
+                </p>
+              </div>
+              <div className="text-4xl">💪</div>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+  const DietPlannerSection = () => (
+    <div className="space-y-6">
+      {isDietLocked ? (
+        <div className="relative">
+          <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-xl rounded-3xl border border-white/20 p-12 text-center">
+            <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Diet Planner Locked
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto mb-6">
+              Upgrade to Basic or Premium to unlock personalized diet planning.
+            </p>
+            <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
+              Upgrade Now
+            </button>
+          </div>
+        </div>
+      ) : (
+        <ExpandedDietPlanner
+          plan={plan}
+          preferences={preferences}
+          dietGoal={dietGoal}
+          setDietGoal={setDietGoal}
+          dietType={dietType}
+          setDietType={setDietType}
+          likes={likes}
+          setLikes={setLikes}
+          dislikes={dislikes}
+          setDislikes={setDislikes}
+          mustInclude={mustInclude}
+          setMustInclude={setMustInclude}
+          allergens={allergens}
+          setAllergens={setAllergens}
+          proteinTarget={proteinTarget}
+          setProteinTarget={setProteinTarget}
+          carbsTarget={carbsTarget}
+          setCarbsTarget={setCarbsTarget}
+          fatsTarget={fatsTarget}
+          setFatsTarget={setFatsTarget}
+          budgetFilter={budgetFilter}
+          setBudgetFilter={setBudgetFilter}
+          onGenerateMealPlan={handleGenerateWeeklyMealPlan}
+          onAskTrainer={() => setShowTrainerModal(true)}
+          onSave={handleSaveDietPreferences}
+          isSaving={savingDiet}
+          showGeneratedMealPlan={showGeneratedMealPlan}
+          weeklyMealPlan={weeklyMealPlan}
+        />
+      )}
+    </div>
+  );
+
+  const AIInsightsSection = () => (
+    <div>
+      {!isAIInsightsLocked && (
+        <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-3xl p-8 text-white backdrop-blur-lg border border-white/20 shadow-2xl overflow-hidden relative">
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+          </div>
+
+          <div className="relative z-10 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                <p className="text-sm opacity-90">Steps Change</p>
+                <p className="text-3xl font-bold mt-1">+12%</p>
+                <p className="text-xs opacity-75 mt-1">vs last week</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                <p className="text-sm opacity-90">Calories Burned</p>
+                <p className="text-3xl font-bold mt-1">-180 kcal</p>
+                <p className="text-xs opacity-75 mt-1">weekly average</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                <p className="text-sm opacity-90">Consistency</p>
+                <p className="text-3xl font-bold mt-1">Good 🎯</p>
+                <p className="text-xs opacity-75 mt-1">Keep it up!</p>
+              </div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+              <p className="text-lg font-semibold mb-2 flex items-center gap-2">
+                <span>💡</span> Pro Tip
+              </p>
+              <p className="text-base opacity-95">
+                Try adding a 10-minute walk after meals to improve digestion
+                and boost your daily activity levels.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isAIInsightsLocked && (
+        <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-white/20 p-12 text-center">
+          <Sparkles className="w-20 h-20 text-orange-500 mx-auto mb-4" />
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Premium Feature Locked
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto mb-6">
+            Upgrade to Premium to unlock AI-powered weekly insights and coaching
+            tips.
+          </p>
+          <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
+            Upgrade to Premium
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
+  const TrendSection = () => (
+    <TrendGraphsSection isLocked={isTrendGraphsLocked} metrics={TREND_METRICS} />
+  );
+
+  const carouselSections = [
+    {
+      id: "workouts",
+      title: "Workout Library",
+      description: "Browse and select your favorite workouts",
+      icon: "🏋️",
+      component: <WorkoutsSection />,
+    },
+    {
+      id: "weekly-planner",
+      title: "Weekly Workout Planner",
+      description: "Plan your workouts for the week ahead",
+      icon: "📅",
+      component: <WeeklyPlannerSection />,
+    },
+    {
+      id: "diet",
+      title: "Diet Planner",
+      description: "Customize your personalized nutrition plan",
+      icon: "🍎",
+      component: <DietPlannerSection />,
+    },
+    {
+      id: "insights",
+      title: "AI Weekly Insights",
+      description: "Get personalized coaching and progress tracking",
+      icon: "✨",
+      component: <AIInsightsSection />,
+    },
+    {
+      id: "trends",
+      title: "Trend Graphs",
+      description: "Track your fitness progress over time",
+      icon: "📈",
+      component: <TrendSection />,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-20 pb-32">
       {/* Animated background elements */}
@@ -205,7 +509,7 @@ export default function TrainingHub() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 relative z-10 space-y-12">
-        {/* 1. HEADER */}
+        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-3">
             Training & Nutrition Hub
@@ -215,322 +519,15 @@ export default function TrainingHub() {
           </p>
         </div>
 
-        {/* 2. SUBSCRIPTION BANNER */}
+        {/* Subscription Banner */}
         <SubscriptionBanner plan={plan} />
 
-        {/* 3. WORKOUT CATEGORIES */}
-        <section className="space-y-6">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              🏋️ Workouts
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              Choose your preferred workout category and difficulty level
-            </p>
-          </div>
+        {/* Carousel */}
+        <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-gray-700/20 p-8">
+          <TrainingHubCarousel sections={carouselSections} />
+        </div>
 
-          {/* Category Chips */}
-          <div className="flex flex-wrap gap-3">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-                  selectedCategory === cat
-                    ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105"
-                    : "bg-white/40 dark:bg-gray-800/40 text-gray-700 dark:text-gray-300 border-2 border-white/60 dark:border-gray-700/60 backdrop-blur-md hover:border-orange-500"
-                }`}
-              >
-                {cat.charAt(0).toUpperCase() + cat.slice(1)}
-              </button>
-            ))}
-          </div>
-
-          {/* 4. WORKOUT LEVELS */}
-          <div className="space-y-3">
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Difficulty Level
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {levels.map((level) => {
-                const isLocked = plan === "free" && level !== "basic";
-                return (
-                  <button
-                    key={level}
-                    onClick={() => !isLocked && setSelectedLevel(level)}
-                    disabled={isLocked}
-                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
-                      selectedLevel === level
-                        ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
-                        : isLocked
-                          ? "bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed opacity-50"
-                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
-                    }`}
-                  >
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                    {isLocked && <Lock className="w-3 h-3 inline ml-1" />}
-                  </button>
-                );
-              })}
-            </div>
-            {plan === "free" && (
-              <p className="text-xs text-orange-600 dark:text-orange-400">
-                💡 Upgrade to unlock Intermediate and Advanced workouts
-              </p>
-            )}
-          </div>
-
-          {/* 5. WORKOUT CARDS GRID */}
-          {workoutsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
-              {[...Array(6)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-64 bg-gray-200 dark:bg-gray-700 rounded-2xl"
-                ></div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredWorkouts.length > 0 ? (
-                filteredWorkouts.map((workout) => (
-                  <div
-                    key={workout.id}
-                    className="relative group"
-                    onClick={() => {
-                      if (plan !== "free" || workout.level === "basic") {
-                        setSelectedDayForWorkout(workout.id);
-                        setShowWorkoutModal(true);
-                      }
-                    }}
-                  >
-                    <WorkoutCard workout={workout} />
-                    {plan === "free" && workout.level !== "basic" && (
-                      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:flex opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="text-center text-white">
-                          <Lock className="w-8 h-8 mx-auto mb-2" />
-                          <p className="text-sm font-semibold">
-                            Upgrade to unlock
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-full text-center py-12">
-                  <p className="text-gray-500 dark:text-gray-400 text-lg">
-                    No workouts found
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-
-        {/* 6. WEEKLY WORKOUT PLANNER */}
-        <section className="space-y-6">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-              📅 Weekly Workout Planner
-              {isWorkoutLocked && <Lock className="w-6 h-6 text-orange-500" />}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              Plan your workouts for the week ahead
-            </p>
-          </div>
-
-          {isWorkoutLocked ? (
-            <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-white/20 p-12 text-center">
-              <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Workout Planner Locked
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Upgrade to unlock the weekly workout planner
-              </p>
-              <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
-                Upgrade Now
-              </button>
-            </div>
-          ) : (
-            <WeeklyWorkoutPlanner
-              weeklyPlan={weeklyPlan}
-              workouts={workouts}
-              onSelectDay={(day) => {
-                setSelectedDayForWorkout(day);
-                setShowWorkoutModal(true);
-              }}
-              onRemoveWorkout={(day) => {
-                const newPlan = { ...weeklyPlan };
-                delete newPlan[day];
-                setWeeklyPlan(newPlan);
-              }}
-            />
-          )}
-
-          {/* Weekly Summary */}
-          {!isWorkoutLocked && (
-            <div className="bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-2xl p-6 border border-orange-200 dark:border-orange-800/50">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-orange-600 dark:text-orange-400 font-semibold">
-                    📊 This Week's Summary
-                  </p>
-                  <p className="text-lg text-gray-900 dark:text-white font-bold mt-2">
-                    {weeklyStats.count} Workouts • {weeklyStats.minutes} Minutes
-                  </p>
-                </div>
-                <div className="text-4xl">💪</div>
-              </div>
-            </div>
-          )}
-        </section>
-
-        {/* 7. DIET PLANNER (FULL SECTION) */}
-        <section className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                🍎 Diet Planner
-                {isDietLocked && <Lock className="w-6 h-6 text-orange-500" />}
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400">
-                {plan === "free"
-                  ? "Customize your nutrition with basic preferences."
-                  : plan === "basic"
-                    ? "Set up your personalized diet plan (limited features)."
-                    : "Full control over your nutrition with AI assistance."}
-              </p>
-            </div>
-          </div>
-
-          {isDietLocked ? (
-            <div className="relative">
-              <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-xl rounded-3xl border border-white/20 p-12 text-center">
-                <Lock className="w-20 h-20 text-orange-500 mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  Diet Planner Locked
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto mb-6">
-                  Upgrade to Basic or Premium to unlock personalized diet
-                  planning.
-                </p>
-                <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
-                  Upgrade Now
-                </button>
-              </div>
-            </div>
-          ) : (
-            <ExpandedDietPlanner
-              plan={plan}
-              preferences={preferences}
-              dietGoal={dietGoal}
-              setDietGoal={setDietGoal}
-              dietType={dietType}
-              setDietType={setDietType}
-              likes={likes}
-              setLikes={setLikes}
-              dislikes={dislikes}
-              setDislikes={setDislikes}
-              mustInclude={mustInclude}
-              setMustInclude={setMustInclude}
-              allergens={allergens}
-              setAllergens={setAllergens}
-              proteinTarget={proteinTarget}
-              setProteinTarget={setProteinTarget}
-              carbsTarget={carbsTarget}
-              setCarbsTarget={setCarbsTarget}
-              fatsTarget={fatsTarget}
-              setFatsTarget={setFatsTarget}
-              budgetFilter={budgetFilter}
-              setBudgetFilter={setBudgetFilter}
-              onGenerateMealPlan={handleGenerateWeeklyMealPlan}
-              onAskTrainer={() => setShowTrainerModal(true)}
-              onSave={handleSaveDietPreferences}
-              isSaving={savingDiet}
-              showGeneratedMealPlan={showGeneratedMealPlan}
-              weeklyMealPlan={weeklyMealPlan}
-            />
-          )}
-        </section>
-
-        {/* 8. AI WEEKLY INSIGHTS - Premium Only */}
-        {!isAIInsightsLocked && (
-          <section className="space-y-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-              <Sparkles className="w-8 h-8 text-orange-500" />
-              AI Weekly Insights
-            </h2>
-
-            <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-3xl p-8 text-white backdrop-blur-lg border border-white/20 shadow-2xl overflow-hidden relative">
-              <div className="absolute inset-0 opacity-30">
-                <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-              </div>
-
-              <div className="relative z-10 space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                    <p className="text-sm opacity-90">Steps Change</p>
-                    <p className="text-3xl font-bold mt-1">+12%</p>
-                    <p className="text-xs opacity-75 mt-1">vs last week</p>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                    <p className="text-sm opacity-90">Calories Burned</p>
-                    <p className="text-3xl font-bold mt-1">-180 kcal</p>
-                    <p className="text-xs opacity-75 mt-1">weekly average</p>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                    <p className="text-sm opacity-90">Consistency</p>
-                    <p className="text-3xl font-bold mt-1">Good 🎯</p>
-                    <p className="text-xs opacity-75 mt-1">Keep it up!</p>
-                  </div>
-                </div>
-
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                  <p className="text-lg font-semibold mb-2 flex items-center gap-2">
-                    <span>💡</span> Pro Tip
-                  </p>
-                  <p className="text-base opacity-95">
-                    Try adding a 10-minute walk after meals to improve digestion
-                    and boost your daily activity levels.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {isAIInsightsLocked && (
-          <section className="space-y-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-              <Sparkles className="w-8 h-8 text-gray-400" />
-              AI Weekly Insights
-            </h2>
-
-            <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-white/20 p-12 text-center">
-              <Sparkles className="w-20 h-20 text-orange-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Premium Feature Locked
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto mb-6">
-                Upgrade to Premium to unlock AI-powered weekly insights and
-                coaching tips.
-              </p>
-              <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl hover:shadow-xl transition-all">
-                Upgrade to Premium
-              </button>
-            </div>
-          </section>
-        )}
-
-        {/* 9. TREND GRAPHS */}
-        <TrendGraphsSection
-          isLocked={isTrendGraphsLocked}
-          metrics={TREND_METRICS}
-        />
-
-        {/* 10. UPGRADE CTA */}
+        {/* Upgrade CTA */}
         {(isDietLocked || isTrendGraphsLocked || isAIInsightsLocked) && (
           <section className="bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-12 text-center text-white shadow-2xl border border-white/20 overflow-hidden relative">
             <div className="absolute inset-0 opacity-20">
