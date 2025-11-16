@@ -1,33 +1,14 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Bell,
-  X,
-  CheckCircle,
-  Users,
-  Trophy,
-  Calendar,
-  MessageSquare,
-  Loader,
-} from "lucide-react";
+import { Bell } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "sonner";
 
 export default function NotificationsDropdown() {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { userProfile } = useAuth();
-  const {
-    notifications,
-    unreadCount,
-    loading,
-    markAsRead,
-    markAllAsRead,
-    deleteNotification,
-  } = useNotifications(userProfile?.id);
-  const [isOpen, setIsOpen] = useState(false);
+  const { unreadCount } = useNotifications(userProfile?.id);
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
