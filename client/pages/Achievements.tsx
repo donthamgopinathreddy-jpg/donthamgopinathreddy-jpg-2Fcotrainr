@@ -299,13 +299,9 @@ export default function Quests() {
                       <div
                         key={achievement.id}
                         className={`rounded-xl p-4 transition-all ${
-                          aestheticStyle === "vibrant"
-                            ? theme === "dark"
-                              ? "bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-500/30 hover:border-green-500/50"
-                              : "bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 hover:shadow-lg"
-                            : theme === "dark"
-                              ? "bg-gray-800/50 border border-gray-700/50 hover:border-gray-600/50"
-                              : "bg-white border border-gray-200 hover:shadow-md"
+                          theme === "dark"
+                            ? "bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-500/30 hover:border-green-500/50"
+                            : "bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 hover:shadow-lg"
                         }`}
                       >
                         <div className="text-4xl mb-3">{achievement.icon || "🏆"}</div>
