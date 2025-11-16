@@ -49,26 +49,26 @@ export default function AIWeeklyInsights() {
 
   const isPremium = weeklyData.subscriptionLevel === "premium";
 
-  // Generate chart data based on real weekly data (safe to call since weeklyData is guaranteed to exist)
+  // Generate chart data based on real weekly averages (no fake variation)
   const generateChartData = () => {
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    const dailyTarget = Math.round(weeklyData.stepsTotal / 7);
+    const dailyAverage = Math.round(weeklyData.stepsTotal / 7);
 
     return days.map((day) => ({
       day,
-      steps: dailyTarget + Math.random() * 4000 - 2000, // Realistic variation
-      target: dailyTarget,
+      steps: dailyAverage,
+      target: dailyAverage,
     }));
   };
 
   const generateProteinData = () => {
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    const dailyProteinTarget = Math.round(weeklyData.proteinIntakeG / 7);
+    const dailyAverage = Math.round(weeklyData.proteinIntakeG / 7);
 
     return days.map((day) => ({
       day,
-      actual: Math.round(dailyProteinTarget + Math.random() * 40 - 20), // Realistic variation
-      target: dailyProteinTarget,
+      actual: dailyAverage,
+      target: dailyAverage,
     }));
   };
 
