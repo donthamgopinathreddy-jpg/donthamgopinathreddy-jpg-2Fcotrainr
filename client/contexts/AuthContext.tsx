@@ -7,7 +7,7 @@ interface UserProfile {
   username: string;
   full_name: string;
   email: string;
-  role: "client" | "trainer";
+  role: "client" | "trainer" | "admin";
   gender?: string;
   weight_kg?: number;
   height_cm?: number;
