@@ -178,11 +178,29 @@ export default function Login() {
   };
 
   const handleBiometricAuth = async () => {
+    if (!userId) {
+      toast.error("Please enter your credentials first");
+      return;
+    }
+
     setLoading(true);
     try {
-      // Biometric authentication would be implemented here
-      // For now, show placeholder
-      toast.info("Biometric authentication will be available soon");
+      // Check if biometric is enabled for this user
+      const isBioEnabled = await isBiometricEnabled(userId);
+      if (!isBioEnabled) {
+        toast.error("Biometric authentication is not enabled for your account");
+        return;
+      }
+
+      // Trigger biometric authentication
+      const success = await authenticateWithBiometric();
+      if (success) {
+        // After biometric verification, sign in the user
+        await authSignIn(email, password);
+        toast.success("Login successful!");
+      } else {
+        toast.error("Biometric authentication failed");
+      }
     } catch (error: any) {
       console.error("Biometric auth error:", error);
       toast.error(error?.message || "Biometric authentication failed");
