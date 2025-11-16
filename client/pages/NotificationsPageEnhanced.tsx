@@ -125,7 +125,7 @@ export default function NotificationsPageEnhanced() {
       } catch (error) {
         console.debug("Error enriching notifications:", error);
         setNotificationsWithUsers(
-          notifications.map((n) => ({ ...n } as NotificationWithUser)),
+          notifications.map((n) => ({ ...n }) as NotificationWithUser),
         );
       }
     };
@@ -236,7 +236,11 @@ export default function NotificationsPageEnhanced() {
     return notifDate.toLocaleDateString();
   };
 
-  const NotificationCard = ({ notification }: { notification: NotificationWithUser }) => {
+  const NotificationCard = ({
+    notification,
+  }: {
+    notification: NotificationWithUser;
+  }) => {
     let longPressTimer: NodeJS.Timeout;
 
     const handleLongPress = () => {
@@ -474,7 +478,9 @@ export default function NotificationsPageEnhanced() {
             <button
               onClick={() => navigate(-1)}
               className={`p-2 rounded-lg transition-colors ${
-                theme === "dark" ? "hover:bg-gray-800 text-white" : "hover:bg-gray-100 text-black"
+                theme === "dark"
+                  ? "hover:bg-gray-800 text-white"
+                  : "hover:bg-gray-100 text-black"
               }`}
             >
               <ArrowLeft className="w-5 h-5" />
