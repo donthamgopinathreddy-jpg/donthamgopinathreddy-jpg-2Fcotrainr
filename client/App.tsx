@@ -226,6 +226,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/diet-plan-creator"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <DietPlanCreator />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/leaderboard"
         element={
           <ProtectedRoute>
