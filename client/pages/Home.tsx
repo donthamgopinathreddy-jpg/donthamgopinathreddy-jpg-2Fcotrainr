@@ -28,7 +28,6 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
 import { useHealthSync } from "@/hooks/useHealthSync";
 import { useMoodLogs } from "@/hooks/useMoodLogs";
-import PermissionsModal from "@/components/PermissionsModal";
 
 const MOTIVATIONAL_QUOTES = [
   "Every step counts towards your goal! 🚀",
@@ -66,7 +65,6 @@ export default function Home() {
   const [showHealthPermissionPrompt, setShowHealthPermissionPrompt] = useState(
     isHealthSyncAvailable && !hasPermission,
   );
-  const [showPermissionsModal, setShowPermissionsModal] = useState(false);
 
   // Sync user data from profile and health sync
   useEffect(() => {
@@ -1089,11 +1087,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Permissions Modal */}
-      <PermissionsModal
-        isOpen={showPermissionsModal}
-        onClose={() => setShowPermissionsModal(false)}
-      />
     </div>
   );
 }
