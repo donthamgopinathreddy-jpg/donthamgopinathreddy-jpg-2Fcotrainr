@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminTrainerVerification } from "@/hooks/useAdminTrainerVerification";
 import { TrainerVerificationCard } from "@/components/TrainerVerificationCard";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase";
 import {
   AlertCircle,
   Loader,
@@ -14,6 +15,7 @@ import {
   XCircle,
   Clock,
   Settings,
+  Upload,
 } from "lucide-react";
 
 const AdminTrainerVerification: React.FC = () => {
