@@ -80,7 +80,6 @@ export default function Profile() {
   });
 
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showFollowersModal, setShowFollowersModal] = useState(false);
   const [showSecuritySection, setShowSecuritySection] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -553,7 +552,7 @@ export default function Profile() {
 
           <div className="flex items-center justify-center gap-6 mb-6">
             <button
-              onClick={() => setShowFollowersModal(true)}
+              onClick={() => navigate("/followers")}
               className="text-center hover:opacity-80 transition-opacity flex-1"
             >
               <div
@@ -569,7 +568,7 @@ export default function Profile() {
             </button>
             <div className="h-8 w-px bg-orange-300"></div>
             <button
-              onClick={() => setShowFollowersModal(true)}
+              onClick={() => navigate("/following")}
               className="text-center hover:opacity-80 transition-opacity flex-1"
             >
               <div
