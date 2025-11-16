@@ -20,6 +20,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
   const [uploadingPic, setUploadingPic] = useState(false);
   const [showActivityLog, setShowActivityLog] = useState(false);
   const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [showPasswordFields, setShowPasswordFields] = useState(false);
 
   const { logs: activityLogs } = useActivityLog(userProfile?.id);
   const { preferences: notifPrefs, updatePreferences: updateNotifPrefs } =
