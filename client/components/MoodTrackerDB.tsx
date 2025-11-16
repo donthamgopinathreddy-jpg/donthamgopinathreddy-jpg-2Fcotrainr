@@ -3,6 +3,7 @@ import { Smile, Loader } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useMoodLogs } from "@/hooks/useMoodLogs";
 import { useAuth } from "@/contexts/AuthContext";
+import MoodSuggestions from "./MoodSuggestions";
 import { toast } from "sonner";
 
 export default function MoodTrackerDB() {
