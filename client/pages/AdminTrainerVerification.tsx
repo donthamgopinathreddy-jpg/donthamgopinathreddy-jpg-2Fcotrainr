@@ -288,23 +288,35 @@ const AdminTrainerVerification: React.FC = () => {
               <div className="bg-white rounded-lg border border-gray-200 p-4">
                 <h3 className="text-sm font-semibold text-gray-900 mb-4">Profile Picture</h3>
                 <div className="flex flex-col items-center gap-3">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FF7A00] to-orange-600 flex items-center justify-center text-white font-bold text-xl">
-                    {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
-                  </div>
-                  <label className="flex items-center gap-2 px-3 py-2 bg-[#FF7A00] text-white text-sm font-medium rounded-lg hover:bg-[#E67000] cursor-pointer transition-colors">
-                    <span>Change Picture</span>
+                  {userProfile?.profile_picture_url ? (
+                    <img
+                      src={userProfile.profile_picture_url}
+                      alt={userProfile.full_name}
+                      className="w-16 h-16 rounded-full object-cover border-2 border-[#FF7A00]"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FF7A00] to-orange-600 flex items-center justify-center text-white font-bold text-xl">
+                      {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
+                    </div>
+                  )}
+                  <label className="flex items-center gap-2 px-3 py-2 bg-[#FF7A00] text-white text-sm font-medium rounded-lg hover:bg-[#E67000] cursor-pointer transition-colors disabled:opacity-50">
+                    {uploadingPic ? (
+                      <>
+                        <Loader className="w-4 h-4 animate-spin" />
+                        <span>Uploading...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-4 h-4" />
+                        <span>Change Picture</span>
+                      </>
+                    )}
                     <input
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={(e) => {
-                        // Image upload functionality can be implemented here
-                        toast({
-                          title: "Profile Picture",
-                          description: "Profile picture feature coming soon",
-                          variant: "default",
-                        });
-                      }}
+                      disabled={uploadingPic}
+                      onChange={handleProfilePictureUpload}
                     />
                   </label>
                 </div>
