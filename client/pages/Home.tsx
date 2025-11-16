@@ -579,6 +579,33 @@ export default function Home() {
             </div>
           )}
 
+          {/* Calories Burned */}
+          <button
+            onClick={() => navigate("/activity/steps")}
+            className="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Flame className="w-5 h-5 text-red-600" />
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  Calories
+                </span>
+              </div>
+              <span className="text-sm font-bold text-red-600">
+                {Math.round(steps * 0.05)} cal
+              </span>
+            </div>
+            <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-red-600 to-orange-600 transition-all duration-500 shadow-lg shadow-red-600/50"
+                style={{ width: `${Math.min(Math.round((steps * 0.05) / 20), 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              Burned from steps
+            </p>
+          </button>
+
           {/* Water Intake Progress */}
           <button
             onClick={() => navigate("/activity/water")}
