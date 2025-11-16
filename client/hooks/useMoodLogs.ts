@@ -43,6 +43,17 @@ export function useMoodLogs(userId?: string) {
     try {
       setLoading(true);
 
+      // Check if demo user
+      const isDemoMode = userId.startsWith("demo-user") || userId.includes("demo");
+
+      if (isDemoMode) {
+        // For demo users, just reset state
+        setMoodLogs([]);
+        setTodayMood(null);
+        setError(null);
+        return;
+      }
+
       // Get last 7 days of mood logs
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -55,8 +66,20 @@ export function useMoodLogs(userId?: string) {
         .order("date", { ascending: false });
 
       if (fetchError) {
+        // If table doesn't exist, that's okay
+        if (
+          fetchError?.message?.includes("does not exist") ||
+          fetchError?.code === "PGRST116"
+        ) {
+          console.debug("Mood logs table not yet created");
+          setMoodLogs([]);
+          setTodayMood(null);
+          setError(null);
+          return;
+        }
+
         console.debug("Fetch mood logs error:", fetchError?.code);
-        setError(fetchError?.message || "Failed to fetch mood logs");
+        setError(null); // Don't show error to user
         setMoodLogs([]);
         return;
       }
@@ -75,7 +98,7 @@ export function useMoodLogs(userId?: string) {
         "Fetch mood logs catch error:",
         err instanceof Error ? err.message : "Unknown error"
       );
-      setError("Failed to fetch mood logs");
+      setError(null);
       setMoodLogs([]);
     } finally {
       setLoading(false);
