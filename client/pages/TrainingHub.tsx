@@ -156,36 +156,47 @@ export default function TrainingHub() {
           </div>
         </div>
       ) : (
-        <ExpandedDietPlanner
-          plan={plan}
-          preferences={preferences}
-          dietGoal={dietGoal}
-          setDietGoal={setDietGoal}
-          dietType={dietType}
-          setDietType={setDietType}
-          likes={likes}
-          setLikes={setLikes}
-          dislikes={dislikes}
-          setDislikes={setDislikes}
-          mustInclude={mustInclude}
-          setMustInclude={setMustInclude}
-          allergens={allergens}
-          setAllergens={setAllergens}
-          proteinTarget={proteinTarget}
-          setProteinTarget={setProteinTarget}
-          carbsTarget={carbsTarget}
-          setCarbsTarget={setCarbsTarget}
-          fatsTarget={fatsTarget}
-          setFatsTarget={setFatsTarget}
-          budgetFilter={budgetFilter}
-          setBudgetFilter={setBudgetFilter}
-          onGenerateMealPlan={handleGenerateWeeklyMealPlan}
-          onAskTrainer={() => setShowTrainerModal(true)}
-          onSave={handleSaveDietPreferences}
-          isSaving={savingDiet}
-          showGeneratedMealPlan={showGeneratedMealPlan}
-          weeklyMealPlan={weeklyMealPlan}
-        />
+        <div className="space-y-6">
+          <ExpandedDietPlanner
+            plan={plan}
+            preferences={preferences}
+            dietGoal={dietGoal}
+            setDietGoal={setDietGoal}
+            dietType={dietType}
+            setDietType={setDietType}
+            likes={likes}
+            setLikes={setLikes}
+            dislikes={dislikes}
+            setDislikes={setDislikes}
+            mustInclude={mustInclude}
+            setMustInclude={setMustInclude}
+            allergens={allergens}
+            setAllergens={setAllergens}
+            proteinTarget={proteinTarget}
+            setProteinTarget={setProteinTarget}
+            carbsTarget={carbsTarget}
+            setCarbsTarget={setCarbsTarget}
+            fatsTarget={fatsTarget}
+            setFatsTarget={setFatsTarget}
+            budgetFilter={budgetFilter}
+            setBudgetFilter={setBudgetFilter}
+            onGenerateMealPlan={handleGenerateWeeklyMealPlan}
+            onAskTrainer={() => setShowTrainerModal(true)}
+            onSave={handleSaveDietPreferences}
+            isSaving={savingDiet}
+            showGeneratedMealPlan={showGeneratedMealPlan}
+            weeklyMealPlan={weeklyMealPlan}
+          />
+
+          <button
+            onClick={() => navigate("/diet-plan-creator")}
+            className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:shadow-lg text-white font-bold py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-2"
+          >
+            <Plus className="w-5 h-5" />
+            Advanced Diet Plan Creator
+            <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
       )}
     </div>
   );
