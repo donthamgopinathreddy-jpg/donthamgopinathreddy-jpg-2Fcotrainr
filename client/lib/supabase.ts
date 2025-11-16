@@ -61,6 +61,6 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: true,
   },
   global: {
-    fetch: createFetchWithRetry(),
+    fetch: createFetchWithTimeout(),
   },
 });
