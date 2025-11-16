@@ -1,14 +1,17 @@
 import { useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
-import CryptoJS from "crypto-js";
 
 export const usePINAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Hash PIN securely
-  const hashPIN = useCallback((pin: string): string => {
-    return CryptoJS.SHA256(pin).toString();
+  // Hash PIN securely using Web Crypto API
+  const hashPIN = useCallback(async (pin: string): Promise<string> => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(pin);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
   }, []);
 
   // Set up PIN for user
