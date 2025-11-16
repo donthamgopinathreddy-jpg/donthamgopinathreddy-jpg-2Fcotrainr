@@ -45,25 +45,6 @@ export default function TrainingHub() {
 
   // UI state
   const [showTrainerModal, setShowTrainerModal] = useState(false);
-
-  // Diet state
-  const [dietGoal, setDietGoal] = useState(preferences?.goal || "");
-  const [dietType, setDietType] = useState(preferences?.diet_type || "");
-  const [likes, setLikes] = useState((preferences?.likes || []).join(", "));
-  const [dislikes, setDislikes] = useState(
-    (preferences?.dislikes || []).join(", "),
-  );
-  const [mustInclude, setMustInclude] = useState("");
-  const [allergens, setAllergens] = useState<string[]>(
-    preferences?.allergies || [],
-  );
-  const [proteinTarget, setProteinTarget] = useState(150);
-  const [carbsTarget, setCarbsTarget] = useState(250);
-  const [fatsTarget, setFatsTarget] = useState(70);
-  const [budgetFilter, setBudgetFilter] = useState("medium");
-  const [savingDiet, setSavingDiet] = useState(false);
-  const [weeklyMealPlan, setWeeklyMealPlan] = useState<any>(null);
-  const [showGeneratedMealPlan, setShowGeneratedMealPlan] = useState(false);
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
 
   // Subscription gating
