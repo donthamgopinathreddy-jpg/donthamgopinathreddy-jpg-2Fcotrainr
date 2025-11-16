@@ -171,7 +171,7 @@ export const WeeklyQuests = ({ variant = "full" }: WeeklyQuestsProps) => {
               <div className="flex items-start gap-3">
                 {/* Icon and Completion */}
                 <div className="relative flex-shrink-0">
-                  <div className="text-2xl">{quest.icon}</div>
+                  <div className="text-xl sm:text-2xl">{quest.icon}</div>
                   {isCompleted && (
                     <div
                       className={`absolute -bottom-1 -right-1 rounded-full p-0.5 ${
