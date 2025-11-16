@@ -28,14 +28,27 @@ export const useWeeklyHealthData = () => {
       const weekStartStr = weekStartDate.toISOString().split("T")[0];
       const weekEndStr = weekEndDate.toISOString().split("T")[0];
 
-      // Fetch user profile for goal and subscription
-      const { data: userProfile, error: userError } = await supabase
-        .from("users")
-        .select("subscription_plan, weight_kg")
+      // Fetch user profile for subscription level
+      const { data: profiles, error: profileError } = await supabase
+        .from("profiles")
+        .select("subscription_plan")
         .eq("id", user.id)
         .single();
 
-      if (userError) throw new Error(`Failed to fetch user profile: ${userError.message}`);
+      if (profileError) {
+        console.debug("Profile fetch warning:", profileError.message);
+      }
+
+      // Fetch user goal from diet preferences
+      const { data: dietPrefs, error: dietError } = await supabase
+        .from("diet_preferences")
+        .select("goal")
+        .eq("user_id", user.id)
+        .single();
+
+      if (dietError) {
+        console.debug("Diet preferences fetch warning:", dietError.message);
+      }
 
       // Fetch health sync data for the week
       const { data: healthData, error: healthError } = await supabase
