@@ -447,6 +447,16 @@ export default function Home() {
           className="w-full h-full object-cover"
         />
 
+        {/* Welcome Text - Top Left */}
+        <div className="absolute top-4 left-4 z-10">
+          <h1 className="text-4xl font-bold text-white drop-shadow-lg">
+            Welcome,
+          </h1>
+          <p className="text-2xl font-bold text-white drop-shadow-lg">
+            {userProfile?.full_name?.split(" ")[0] || "User"}
+          </p>
+        </div>
+
         {/* Header Actions */}
         <div className="absolute top-4 right-4 flex gap-3">
           {/* Notification Dropdown */}
@@ -504,13 +514,6 @@ export default function Home() {
             />
           </div>
 
-          {/* Welcome Text */}
-          <div className="pb-2">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Welcome, {userProfile?.full_name?.split(" ")[0] || "User"}
-            </h1>
-            <p className="text-gray-600 text-sm">Ready to train?</p>
-          </div>
         </div>
       </div>
 
