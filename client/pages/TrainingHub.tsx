@@ -47,6 +47,25 @@ export default function TrainingHub() {
   const [showTrainerModal, setShowTrainerModal] = useState(false);
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
 
+  // Handle ask trainer review
+  const handleAskTrainerReview = async (trainerId: string | null) => {
+    try {
+      const result = await createReviewRequest(
+        "diet-plan-" + Date.now(),
+        trainerId || undefined,
+      );
+
+      if (result) {
+        toast.success("Review request sent to trainer!");
+        setShowTrainerModal(false);
+      } else {
+        toast.error("Failed to send review request");
+      }
+    } catch (err) {
+      toast.error("An error occurred");
+    }
+  };
+
   // Subscription gating
   const isDietLocked = plan === "free";
   const isAllergenLocked = plan !== "premium";
