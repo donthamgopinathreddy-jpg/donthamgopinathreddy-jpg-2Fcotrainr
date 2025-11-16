@@ -1,156 +1,185 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/contexts/AuthContext";
 
 export interface Notification {
   id: string;
   user_id: string;
-  actor_id: string;
-  type: "like" | "comment" | "follow";
-  post_id?: string;
-  comment_id?: string;
-  content?: string;
+  type: "follow" | "meeting" | "goal_achieved" | "goal_reminder" | "achievement" | "message";
+  title: string;
+  message: string;
+  related_user_id?: string;
+  related_id?: string;
   is_read: boolean;
   created_at: string;
-  actor?: {
-    id: string;
-    username: string;
+  related_user?: {
     full_name: string;
     profile_picture_url?: string;
   };
 }
 
-export const useNotifications = () => {
-  const { userProfile } = useAuth();
+export function useNotifications(userId?: string) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch notifications
   const fetchNotifications = async () => {
-    if (!userProfile?.id) return;
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
 
-    setLoading(true);
     try {
-      const { data, error } = await supabase
+      setLoading(true);
+
+      const { data, error: fetchError } = await supabase
         .from("notifications")
         .select(
-          "id, user_id, actor_id, type, post_id, comment_id, content, is_read, created_at",
+          `
+          id,
+          user_id,
+          type,
+          title,
+          message,
+          related_user_id,
+          related_id,
+          is_read,
+          created_at,
+          users!notifications_related_user_id_fkey (
+            full_name,
+            profile_picture_url
+          )
+        `
         )
-        .eq("user_id", userProfile.id)
+        .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(20);
 
-      if (error) {
-        console.error("Error fetching notifications:", error);
-        setNotifications([]);
-        setUnreadCount(0);
+      if (fetchError) {
+        console.debug("Fetch notifications error:", fetchError?.code);
+        setError(fetchError?.message || "Failed to fetch notifications");
         return;
       }
 
-      // Fetch actor info for each notification
-      const notificationIds = (data || []).map((n) => n.actor_id);
-      const uniqueActorIds = [...new Set(notificationIds)];
+      if (data) {
+        const formattedNotifications: Notification[] = data.map((notif: any) => ({
+          ...notif,
+          related_user: notif.users,
+        }));
+        setNotifications(formattedNotifications);
 
-      let actorMap: { [key: string]: any } = {};
-
-      if (uniqueActorIds.length > 0) {
-        const { data: actorsData } = await supabase
-          .from("users")
-          .select("id, username, full_name, profile_picture_url")
-          .in("id", uniqueActorIds);
-
-        if (actorsData) {
-          actorMap = Object.fromEntries(actorsData.map((a) => [a.id, a]));
-        }
+        const unread = formattedNotifications.filter((n) => !n.is_read).length;
+        setUnreadCount(unread);
+        setError(null);
       }
-
-      const notificationsWithActors = (data || []).map((n) => ({
-        ...n,
-        actor: actorMap[n.actor_id],
-      }));
-
-      setNotifications(notificationsWithActors);
-
-      // Count unread
-      const unread = notificationsWithActors.filter((n) => !n.is_read).length;
-      setUnreadCount(unread);
-    } catch (error) {
-      console.error("Error in fetchNotifications:", error);
-      setNotifications([]);
-      setUnreadCount(0);
+    } catch (err) {
+      console.debug(
+        "Fetch notifications catch error:",
+        err instanceof Error ? err.message : "Unknown error"
+      );
+      setError("Failed to fetch notifications");
     } finally {
       setLoading(false);
     }
   };
 
-  // Mark notification as read
   const markAsRead = async (notificationId: string) => {
     try {
-      await supabase
+      const { error: updateError } = await supabase
         .from("notifications")
         .update({ is_read: true })
         .eq("id", notificationId);
 
+      if (updateError) {
+        console.debug("Mark as read error:", updateError?.code);
+        return false;
+      }
+
       setNotifications((prev) =>
         prev.map((n) =>
-          n.id === notificationId ? { ...n, is_read: true } : n,
-        ),
+          n.id === notificationId ? { ...n, is_read: true } : n
+        )
       );
 
       setUnreadCount((prev) => Math.max(0, prev - 1));
-    } catch (error) {
-      console.error("Error marking notification as read:", error);
+      return true;
+    } catch (err) {
+      console.debug(
+        "Mark as read catch error:",
+        err instanceof Error ? err.message : "Unknown error"
+      );
+      return false;
     }
   };
 
-  // Mark all as read
   const markAllAsRead = async () => {
-    if (!userProfile?.id) return;
+    if (!userId) return false;
 
     try {
-      await supabase
+      const { error: updateError } = await supabase
         .from("notifications")
         .update({ is_read: true })
-        .eq("user_id", userProfile.id)
+        .eq("user_id", userId)
         .eq("is_read", false);
 
-      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+      if (updateError) {
+        console.debug("Mark all as read error:", updateError?.code);
+        return false;
+      }
+
+      setNotifications((prev) =>
+        prev.map((n) => ({ ...n, is_read: true }))
+      );
       setUnreadCount(0);
-    } catch (error) {
-      console.error("Error marking all as read:", error);
+      return true;
+    } catch (err) {
+      console.debug(
+        "Mark all as read catch error:",
+        err instanceof Error ? err.message : "Unknown error"
+      );
+      return false;
     }
   };
 
-  // Delete notification
   const deleteNotification = async (notificationId: string) => {
     try {
-      await supabase.from("notifications").delete().eq("id", notificationId);
+      const { error: deleteError } = await supabase
+        .from("notifications")
+        .delete()
+        .eq("id", notificationId);
+
+      if (deleteError) {
+        console.debug("Delete notification error:", deleteError?.code);
+        return false;
+      }
 
       setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
-    } catch (error) {
-      console.error("Error deleting notification:", error);
+      return true;
+    } catch (err) {
+      console.debug(
+        "Delete notification catch error:",
+        err instanceof Error ? err.message : "Unknown error"
+      );
+      return false;
     }
   };
 
   useEffect(() => {
-    if (userProfile?.id) {
-      fetchNotifications();
+    fetchNotifications();
 
-      // Set up polling for new notifications
-      const interval = setInterval(fetchNotifications, 5000); // Poll every 5 seconds
-
-      return () => clearInterval(interval);
-    }
-  }, [userProfile?.id]);
+    // Refresh notifications every 30 seconds
+    const interval = setInterval(fetchNotifications, 30000);
+    return () => clearInterval(interval);
+  }, [userId]);
 
   return {
     notifications,
     unreadCount,
     loading,
-    fetchNotifications,
+    error,
     markAsRead,
     markAllAsRead,
     deleteNotification,
+    refetch: fetchNotifications,
   };
-};
+}
