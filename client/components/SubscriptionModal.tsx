@@ -13,7 +13,7 @@ export default function SubscriptionModal({
   onClose,
   currentPlan,
 }: SubscriptionModalProps) {
-  const [selectedPlan, setSelectedPlan] = useState<"basic" | "premium" | null>(
+  const [selectedPlan, setSelectedPlan] = useState<"free" | "basic" | "premium" | null>(
     null,
   );
   const [paymentMethod, setPaymentMethod] = useState<"card" | "razorpay">(
