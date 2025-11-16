@@ -8,21 +8,16 @@ import { UserProfile } from "@/contexts/AuthContext";
 export const isUserAdmin = (userProfile: UserProfile | null): boolean => {
   if (!userProfile) return false;
 
-  // Check if user has admin role (extend role type when needed)
-  // For now, you can customize this based on your requirements:
-  // Option 1: Check email domains
-  // if (userProfile.email?.endsWith("@cotrainr.app")) return true;
+  // Check if user has admin role
+  if (userProfile.role === "admin") return true;
 
-  // Option 2: Check a specific admin list
+  // Fallback: Check a specific admin email list
   const adminEmails = [
     "cotrainr26@gmail.com",
     "admin@cotrainr.app",
   ];
 
   if (adminEmails.includes(userProfile.email)) return true;
-
-  // Option 3: You can add an is_admin field to users table and check it here
-  // if ((userProfile as any).is_admin) return true;
 
   return false;
 };
