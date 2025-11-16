@@ -264,6 +264,36 @@ export default function NotificationsPageEnhanced() {
     return notifDate.toLocaleDateString();
   };
 
+  const getNotificationMessage = (
+    notification: NotificationWithUser
+  ): { title: string; message: string; commentContent?: string } => {
+    const actorName = notification.actor?.full_name || "Someone";
+
+    switch (notification.type) {
+      case "like":
+        return {
+          title: actorName,
+          message: `${actorName} liked your post`,
+        };
+      case "comment":
+        return {
+          title: actorName,
+          message: `${actorName} commented on your post`,
+          commentContent: notification.content,
+        };
+      case "follow":
+        return {
+          title: actorName,
+          message: `${actorName} followed you`,
+        };
+      default:
+        return {
+          title: notification.title,
+          message: notification.message,
+        };
+    }
+  };
+
   const NotificationCard = ({
     notification,
   }: {
@@ -293,6 +323,8 @@ export default function NotificationsPageEnhanced() {
     const handleTouchEnd = () => {
       clearTimeout(longPressTimer);
     };
+
+    const { title, message, commentContent } = getNotificationMessage(notification);
 
     return (
       <div
@@ -340,15 +372,26 @@ export default function NotificationsPageEnhanced() {
                 theme === "dark" ? "text-white" : "text-gray-900"
               }`}
             >
-              {notification.title}
+              {title}
             </p>
             <p
               className={`text-sm mt-1 ${
                 theme === "dark" ? "text-gray-400" : "text-gray-600"
               }`}
             >
-              {notification.message}
+              {message}
             </p>
+            {commentContent && (
+              <p
+                className={`text-sm mt-2 p-3 rounded-lg border-l-2 border-blue-500 ${
+                  theme === "dark"
+                    ? "bg-gray-700/50 text-gray-200"
+                    : "bg-gray-100 text-gray-800"
+                }`}
+              >
+                "{commentContent}"
+              </p>
+            )}
             <p
               className={`text-xs mt-2 ${
                 theme === "dark" ? "text-gray-500" : "text-gray-500"
