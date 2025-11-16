@@ -44,11 +44,13 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onActivityLogChange,
   showNotificationPrefs = false,
   onNotificationPrefsChange,
+  sidebarOpen = false,
+  onSidebarChange,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { userProfile } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const setSidebarOpen = (open: boolean) => onSidebarChange?.(open);
 
   const navigationItems = [
     {
