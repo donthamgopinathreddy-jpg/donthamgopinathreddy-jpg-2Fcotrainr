@@ -66,6 +66,7 @@ export default function Home() {
   const [showHealthPermissionPrompt, setShowHealthPermissionPrompt] = useState(
     isHealthSyncAvailable && !hasPermission,
   );
+  const [showPermissionsModal, setShowPermissionsModal] = useState(false);
 
   // Sync user data from profile and health sync
   useEffect(() => {
