@@ -173,24 +173,29 @@ const AdminTrainerVerification: React.FC = () => {
       setUploadingPic(true);
 
       const fileExt = file.name.split(".").pop() || "jpg";
-      const fileName = `${userProfile.id}-profile-${Date.now()}.${fileExt}`;
+      const fileName = `admin-profile-${Date.now()}.${fileExt}`;
+
+      // First, try to create the bucket if it doesn't exist
+      try {
+        await supabase.storage.createBucket("profiles", { public: true });
+      } catch (bucketErr) {
+        // Bucket might already exist, continue
+        console.debug("Bucket creation note:", bucketErr);
+      }
 
       // Upload to Supabase storage
-      const { data, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from("profiles")
         .upload(fileName, file, { upsert: true });
 
       if (uploadError) {
+        console.error("Upload error:", uploadError);
         throw new Error(uploadError.message || "Failed to upload file");
       }
 
-      if (!data) {
-        throw new Error("No response from storage service");
-      }
-
-      // Construct the public URL manually to avoid response parsing issues
-      const baseUrl = `https://jnvfoyjhflheohculqbb.supabase.co/storage/v1/object/public`;
-      const profileUrl = `${baseUrl}/profiles/${fileName}`;
+      // Construct the public URL
+      const projectId = "jnvfoyjhflheohculqbb";
+      const profileUrl = `https://${projectId}.supabase.co/storage/v1/object/public/profiles/${fileName}`;
 
       // Update user profile in database
       const { error: updateError } = await supabase
@@ -199,22 +204,25 @@ const AdminTrainerVerification: React.FC = () => {
         .eq("id", userProfile.id);
 
       if (updateError) {
+        console.error("Database update error:", updateError);
         throw new Error(updateError.message || "Failed to update profile");
       }
 
-      // Update local state to reflect the new picture immediately
+      // Update local state
       try {
         await updateProfile({ profile_picture_url: profileUrl });
       } catch (stateErr) {
-        console.warn("Local state update warning:", stateErr);
-        // Continue - database was updated successfully
+        console.warn("Local state update:", stateErr);
       }
 
       toast({
         title: "Success",
-        description: "Profile picture saved successfully",
+        description: "Profile picture saved successfully!",
         variant: "default",
       });
+
+      // Reset the input
+      e.target.value = "";
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : String(err);
       console.error("Profile picture upload error:", errorMsg);
