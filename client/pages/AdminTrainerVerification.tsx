@@ -466,6 +466,56 @@ const AdminTrainerVerification: React.FC = () => {
         </div>
       )}
 
+      {/* Admin Dashboard Navigation */}
+      <div className="bg-gradient-to-r from-slate-50 to-gray-50 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex flex-wrap gap-2 overflow-x-auto pb-2">
+            <button
+              onClick={() => navigate("/admin")}
+              className="px-4 py-2 bg-white border-2 border-blue-500 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors whitespace-nowrap"
+            >
+              Trainer Verification
+            </button>
+            <button
+              onClick={() => navigate("/admin/analytics")}
+              className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap"
+            >
+              📊 Analytics
+            </button>
+            <button
+              onClick={() => navigate("/admin/users")}
+              className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap"
+            >
+              👥 User Management
+            </button>
+            <button
+              onClick={() => navigate("/admin/trainers")}
+              className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap"
+            >
+              🏃 Trainer Management
+            </button>
+            <button
+              onClick={() => navigate("/admin/communication")}
+              className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap"
+            >
+              💬 Communication
+            </button>
+            <button
+              onClick={() => navigate("/admin/system")}
+              className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap"
+            >
+              ⚙️ System Health
+            </button>
+            <button
+              onClick={() => navigate("/admin/stats")}
+              className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap"
+            >
+              📈 Quick Stats
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Admin Dashboard Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
