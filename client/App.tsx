@@ -39,6 +39,7 @@ import TrainerSignup from "./pages/TrainerSignup";
 import TrainerDashboard from "./pages/TrainerDashboard";
 import TrainerClientDetail from "./pages/TrainerClientDetail";
 import ActivityDetail from "./pages/ActivityDetail";
+import AdminTrainerVerification from "./pages/AdminTrainerVerification";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
 import Leaderboard from "./pages/Leaderboard";
