@@ -30,6 +30,8 @@ interface AdminSidebarProps {
   onActivityLogChange?: (show: boolean) => void;
   showNotificationPrefs?: boolean;
   onNotificationPrefsChange?: (show: boolean) => void;
+  sidebarOpen?: boolean;
+  onSidebarChange?: (open: boolean) => void;
 }
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({
