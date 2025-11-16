@@ -340,4 +340,4 @@ const Achievements = () => {
   );
 };
 
-export default Leaderboard;
+export default Achievements;
