@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Backspace, X } from "lucide-react";
+import { Delete, X } from "lucide-react";
 
 interface PINEntrypadProps {
   onPINSubmit: (pin: string) => void;
@@ -97,7 +97,7 @@ export default function PINEntrypad({
           disabled={isLoading || pin.length === 0}
           className="py-4 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50 transition-colors flex items-center justify-center"
         >
-          <Backspace className="w-6 h-6" />
+          <Delete className="w-6 h-6" />
         </button>
       </div>
 
