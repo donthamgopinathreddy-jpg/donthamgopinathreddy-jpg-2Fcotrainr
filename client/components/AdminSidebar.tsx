@@ -95,15 +95,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
   const isActive = (path: string) => location.pathname === path;
 
-  const colorClasses = {
-    blue: "bg-blue-100 text-blue-600 border-l-4 border-blue-600",
-    purple: "bg-purple-100 text-purple-600 border-l-4 border-purple-600",
-    pink: "bg-pink-100 text-pink-600 border-l-4 border-pink-600",
-    orange: "bg-orange-100 text-orange-600 border-l-4 border-orange-600",
-    green: "bg-green-100 text-green-600 border-l-4 border-green-600",
-    red: "bg-red-100 text-red-600 border-l-4 border-red-600",
-    yellow: "bg-yellow-100 text-yellow-600 border-l-4 border-yellow-600",
-  };
+  // Removed colorClasses - using flat black theme
 
   return (
     <>
