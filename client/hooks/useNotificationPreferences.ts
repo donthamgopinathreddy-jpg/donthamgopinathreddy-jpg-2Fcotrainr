@@ -34,11 +34,12 @@ export function useNotificationPreferences(userId?: string) {
         .eq("user_id", userId)
         .single();
 
-      if (fetchError && fetchError.code !== "PGRST116") {
+      if (fetchError) {
         // PGRST116 = no rows found (expected for first-time users)
-        console.error("Error fetching preferences:", fetchError);
-        setError("Failed to fetch notification preferences");
-        return;
+        // Other errors like table not found should be handled gracefully
+        if (fetchError.code !== "PGRST116") {
+          console.error("Error fetching preferences:", fetchError.message || JSON.stringify(fetchError));
+        }
       }
 
       if (data) {
