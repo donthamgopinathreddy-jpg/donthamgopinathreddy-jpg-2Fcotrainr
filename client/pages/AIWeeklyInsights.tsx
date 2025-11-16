@@ -24,32 +24,6 @@ export default function AIWeeklyInsights() {
     }
   }, [weeklyData, generateInsights]);
 
-  // Generate chart data based on real weekly data
-  const generateChartData = () => {
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    const dailyTarget = Math.round(weeklyData.stepsTotal / 7);
-
-    return days.map((day) => ({
-      day,
-      steps: dailyTarget + Math.random() * 4000 - 2000, // Realistic variation
-      target: dailyTarget,
-    }));
-  };
-
-  const generateProteinData = () => {
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    const dailyProteinTarget = Math.round(weeklyData.proteinIntakeG / 7);
-
-    return days.map((day) => ({
-      day,
-      actual: Math.round(dailyProteinTarget + Math.random() * 40 - 20), // Realistic variation
-      target: dailyProteinTarget,
-    }));
-  };
-
-  const chunkStepsData = generateChartData();
-  const proteinData = generateProteinData();
-
   if (loadingData || generatingInsights) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center pb-24">
