@@ -4,7 +4,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useActivityLog } from "@/hooks/useActivityLog";
 import { useNotificationPreferences, type NotificationPreferences } from "@/hooks/useNotificationPreferences";
 import AdminSidebar from "./AdminSidebar";
-import { X, LogOut, Bell, Clock } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { X, LogOut, Bell, Clock, Eye, EyeOff } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
