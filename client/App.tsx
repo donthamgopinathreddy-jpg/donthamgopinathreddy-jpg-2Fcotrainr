@@ -24,7 +24,7 @@ import VideoCall from "./pages/VideoCall";
 import VideoMeeting from "./pages/VideoMeeting";
 import VideoSessions from "./pages/VideoSessions";
 import Subscription from "./pages/Subscription";
-import Achievements from "./pages/Achievements";
+import AchievementsPage from "./pages/Achievements";
 import TrainingModes from "./pages/TrainingModes";
 import DietPlans from "./pages/DietPlans";
 import DietPlanDetail from "./pages/DietPlanDetail";
