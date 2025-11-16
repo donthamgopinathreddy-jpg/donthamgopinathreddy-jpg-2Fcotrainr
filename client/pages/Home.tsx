@@ -629,29 +629,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Streaks Card */}
-        <StreaksCard compact={false} />
-
-        {/* Mood Tracker */}
-        <MoodTrackerDB />
-
-        {/* Weekly Mood Analytics */}
-        {moodLogs.length > 0 && <WeeklyMoodAnalytics moodLogs={moodLogs} />}
-
-        {/* Training Hub Card */}
-        <div
-          onClick={(e) => {
-            if ((userProfile?.subscription_plan || "free") === "free") {
-              e.preventDefault();
-              setShowSubscriptionModal(true);
-            }
-          }}
-        >
-          <TrainingHubCard />
-        </div>
-
-        {/* Progress Tracker */}
-        <ProgressTracker />
 
         {/* BMI Index Card */}
         <div
@@ -872,7 +849,7 @@ export default function Home() {
             </h2>
             <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-3">
               <p className="text-sm text-blue-900 dark:text-blue-200">
-                ✓ Steps are automatically counted from your device sensors
+                �� Steps are automatically counted from your device sensors
               </p>
             </div>
 
