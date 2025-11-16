@@ -146,23 +146,25 @@ export default function NotificationsPageEnhanced() {
         // Fetch post images for like and comment notifications
         const postNotifs = notifications.filter(
           (n) =>
-            ((n as any).type === "like" || (n as any).type === "comment") &&
-            (n as any).post_id
+            (n.type === "like" || n.type === "comment") &&
+            n.post_id
         );
         let postData: { [key: string]: any } = {};
         if (postNotifs.length > 0) {
           try {
-            const postIds = postNotifs.map((n) => (n as any).post_id);
+            const postIds = postNotifs.map((n) => n.post_id).filter(Boolean) as string[];
             const uniquePostIds = Array.from(new Set(postIds));
-            const { data: posts, error: postError } = await supabase
-              .from("posts")
-              .select("id, image_url")
-              .in("id", uniquePostIds);
+            if (uniquePostIds.length > 0) {
+              const { data: posts, error: postError } = await supabase
+                .from("posts")
+                .select("id, image_url")
+                .in("id", uniquePostIds);
 
-            if (!postError && posts) {
-              posts.forEach((post) => {
-                postData[post.id] = post.image_url;
-              });
+              if (!postError && posts) {
+                posts.forEach((post) => {
+                  postData[post.id] = post.image_url;
+                });
+              }
             }
           } catch (postErr) {
             console.debug("Error fetching post images:", postErr);
