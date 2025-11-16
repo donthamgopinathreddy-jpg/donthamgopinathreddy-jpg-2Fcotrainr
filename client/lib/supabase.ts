@@ -32,6 +32,60 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
   }
 }
 
+// Custom fetch wrapper with retry logic and better error handling
+const createFetchWithRetry = () => {
+  return async (url: string | Request, options?: RequestInit) => {
+    let lastError: Error | null = null;
+    const maxRetries = 2;
+    const retryDelay = 500;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        // Create a timeout for the fetch request
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
+
+        try {
+          const response = await fetch(url, {
+            ...options,
+            signal: controller.signal,
+          });
+          clearTimeout(timeout);
+          return response;
+        } finally {
+          clearTimeout(timeout);
+        }
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+
+        // Don't retry on abort errors (timeouts)
+        if (lastError.name === "AbortError") {
+          throw new Error("Request timeout - Supabase server not responding");
+        }
+
+        // Retry on network errors, but not on the last attempt
+        if (attempt < maxRetries) {
+          console.debug(
+            `Fetch attempt ${attempt + 1} failed, retrying in ${retryDelay}ms...`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, retryDelay));
+          continue;
+        }
+
+        // If we've exhausted retries, throw the error
+        throw lastError;
+      }
+    }
+
+    // This should never be reached, but just in case
+    if (lastError) {
+      throw lastError;
+    }
+
+    throw new Error("Unknown fetch error");
+  };
+};
+
 // Create client with proper configuration
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -39,5 +93,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     storage: storageImpl,
     detectSessionInUrl: true,
+  },
+  global: {
+    fetch: createFetchWithRetry(),
   },
 });
