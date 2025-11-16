@@ -237,6 +237,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/ai-weekly-insights"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <AIWeeklyInsights />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/leaderboard"
         element={
           <ProtectedRoute>
