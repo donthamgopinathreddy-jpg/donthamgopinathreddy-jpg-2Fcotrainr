@@ -103,12 +103,20 @@ export function useNotifications(userId?: string) {
           .limit(20);
 
         if (response.error) {
+          console.debug(
+            "Supabase notifications error:",
+            response.error?.message || response.error,
+          );
           hasError = true;
         } else if (response.data && Array.isArray(response.data)) {
           data = response.data;
         }
       } catch (e) {
-        // Network error or other fetch issue - silently fail
+        // Network error or other fetch issue
+        console.debug(
+          "Fetch notifications error:",
+          e instanceof Error ? e.message : String(e),
+        );
         hasError = true;
       }
 
