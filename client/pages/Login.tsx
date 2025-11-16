@@ -139,48 +139,6 @@ export default function Login() {
     }
   };
 
-  const handlePINSubmit = async (pin: string) => {
-    if (!userId) {
-      toast.error("User information missing");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const isValid = await verifyPIN(userId, pin);
-      if (isValid) {
-        // After PIN verification, sign in the user
-        await authSignIn(email, password);
-        toast.success("Login successful!");
-      }
-    } catch (error: any) {
-      console.error("PIN verification error:", error);
-      toast.error(error?.message || "PIN verification failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePatternSubmit = async (pattern: number[]) => {
-    if (!userId) {
-      toast.error("User information missing");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      // Pattern verification would happen here
-      // For now, we'll just sign in
-      await authSignIn(email, password);
-      toast.success("Login successful!");
-    } catch (error: any) {
-      console.error("Pattern verification error:", error);
-      toast.error(error?.message || "Pattern verification failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleBiometricAuth = async () => {
     if (!userId) {
       toast.error("Please enter your credentials first");
