@@ -309,7 +309,19 @@ export default function Login() {
                     <p className="text-sm text-gray-600 text-center mb-3">
                       Or sign in with
                     </p>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className={`grid ${biometricAvailable ? "grid-cols-3" : "grid-cols-2"} gap-3`}>
+                      {biometricAvailable && (
+                        <button
+                          onClick={() => setAuthMethod("biometric")}
+                          className="flex flex-col items-center justify-center gap-1 py-3 rounded-lg border-2 border-gray-300 hover:border-primary hover:bg-primary/10 transition-all"
+                          title={`${biometricType === "faceId" ? "Face ID" : biometricType === "fingerprint" ? "Fingerprint" : biometricType === "pattern" ? "Pattern" : "Biometric"} Authentication`}
+                        >
+                          <Fingerprint className="w-5 h-5 text-gray-600" />
+                          <span className="text-xs font-semibold text-gray-600">
+                            {biometricType === "faceId" ? "Face" : biometricType === "fingerprint" ? "Print" : "Bio"}
+                          </span>
+                        </button>
+                      )}
                       <button
                         onClick={() => setAuthMethod("pin")}
                         className="flex items-center justify-center gap-2 py-3 rounded-lg border-2 border-gray-300 hover:border-primary hover:bg-primary/10 transition-all"
