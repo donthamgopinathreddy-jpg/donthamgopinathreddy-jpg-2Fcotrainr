@@ -121,7 +121,47 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const RoleBasedHome = () => {
-  const { userProfile } = useAuth();
+  const { userProfile, loading } = useAuth();
+
+  // Wait for auth to load before redirecting
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+        <div className="text-center">
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2Fc659d255956c4643b6576a691786eec0%2Fe823f4816a094df5bccc1efcb008e8ff?format=webp&width=800"
+            alt="CoTrainr"
+            className="h-20 w-auto mx-auto mb-8"
+          />
+          <div className="animate-spin h-8 w-8 text-orange-500 mx-auto mb-4">
+            <svg viewBox="0 0 50 50">
+              <circle
+                className="opacity-30"
+                cx="25"
+                cy="25"
+                r="20"
+                stroke="currentColor"
+                strokeWidth="5"
+                fill="none"
+              />
+              <circle
+                className="text-orange-500"
+                cx="25"
+                cy="25"
+                r="20"
+                stroke="currentColor"
+                strokeWidth="5"
+                fill="none"
+                strokeDasharray="100"
+                strokeDashoffset="75"
+              />
+            </svg>
+          </div>
+          <p className="text-slate-600 mt-4">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (isUserAdmin(userProfile)) {
     return <Navigate to="/admin" replace />;
