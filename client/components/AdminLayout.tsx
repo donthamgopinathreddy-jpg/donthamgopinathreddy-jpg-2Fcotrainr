@@ -231,72 +231,21 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
 
       {/* Main Content */}
       <main className="md:ml-64 transition-all duration-300">
-        {/* Top Header */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-40 pt-2" ref={userMenuRef}>
+        {/* Top Header - Minimal with hamburger and welcome text */}
+        <div className="bg-white border-b border-gray-200 sticky top-0 z-40" ref={userMenuRef}>
           <div className="px-4 md:px-8 py-4">
-            <div className="max-w-7xl">
-              <div className="flex items-center justify-between mb-4 md:hidden">
-                {/* Mobile Header - Shows hamburger indication */}
-                <div className="flex items-center gap-3 flex-1">
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Menu</div>
-                </div>
-                {/* User Menu Dropdown */}
-                <div className="relative">
-                  <button
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    {userProfile?.profile_picture_url ? (
-                      <img
-                        src={userProfile.profile_picture_url}
-                        alt={userProfile.full_name}
-                        className="w-6 h-6 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
-                        {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
-                      </div>
-                    )}
-                  </button>
+            <div className="flex items-center justify-between">
+              {/* Left side - Hamburger (handled in AdminSidebar) */}
+              <div className="flex-1"></div>
 
-                  {/* Dropdown Menu */}
-                  {showUserMenu && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                      <div className="p-3 border-b border-gray-200">
-                        <p className="text-sm font-semibold text-gray-900">{userProfile?.full_name}</p>
-                        <p className="text-xs text-gray-500">{userProfile?.email}</p>
-                      </div>
-                      <button
-                        onClick={() => {
-                          setShowSettings(true);
-                          setShowUserMenu(false);
-                        }}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
-                      >
-                        <User className="w-4 h-4" />
-                        Settings
-                      </button>
-                      <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 text-sm border-t border-gray-200"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
+              {/* Center - Welcome text */}
+              <div className="flex-1 text-center">
+                <h2 className="text-lg font-semibold text-gray-900">Welcome, <span className="text-orange-600">Admin</span></h2>
               </div>
 
-              {/* Page Title Section */}
-              <div className="flex items-start justify-between">
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
-                  {description && <p className="text-gray-600 mt-1">{description}</p>}
-                </div>
-
-                {/* Desktop User Menu Dropdown */}
-                <div className="relative hidden md:block">
+              {/* Right side - User Menu */}
+              <div className="flex-1 flex justify-end">
+                <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
                     className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
@@ -312,7 +261,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                         {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
                       </div>
                     )}
-                    <ChevronDown className="w-4 h-4 text-gray-600" />
+                    <ChevronDown className="w-4 h-4 text-gray-600 hidden md:block" />
                   </button>
 
                   {/* Dropdown Menu */}
@@ -344,6 +293,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Page Title and Description - Outside Header */}
+        <div className="px-4 md:px-8 py-6 border-b border-gray-200 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-4xl font-bold text-gray-900">{title}</h1>
+            {description && <p className="text-gray-600 mt-2">{description}</p>}
           </div>
         </div>
 
