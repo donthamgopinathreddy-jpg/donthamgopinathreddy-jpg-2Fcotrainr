@@ -177,7 +177,7 @@ const RoleBasedHome = () => {
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { userProfile, loading } = useAuth();
 
-  if (loading) {
+  if (loading || !userProfile) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white">
         <div className="text-center">
@@ -216,8 +216,27 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
+  // If user is not admin, show error message instead of redirecting to avoid loops
   if (!isUserAdmin(userProfile)) {
-    return <Navigate to="/" replace />;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+        <div className="text-center">
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2Fc659d255956c4643b6576a691786eec0%2Fe823f4816a094df5bccc1efcb008e8ff?format=webp&width=800"
+            alt="CoTrainr"
+            className="h-20 w-auto mx-auto mb-8 opacity-50"
+          />
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
+          <p className="text-gray-600 mb-8">You don't have permission to access this page.</p>
+          <a
+            href="/"
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Go to Home
+          </a>
+        </div>
+      </div>
+    );
   }
 
   return <>{children}</>;
