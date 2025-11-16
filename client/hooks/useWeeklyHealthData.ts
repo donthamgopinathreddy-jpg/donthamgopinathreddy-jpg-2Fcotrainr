@@ -41,7 +41,7 @@ export const useWeeklyHealthData = () => {
         .from("user_diet_preferences")
         .select("goal")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
 
       if (dietError) {
         console.debug("Diet preferences fetch warning:", dietError.message);
