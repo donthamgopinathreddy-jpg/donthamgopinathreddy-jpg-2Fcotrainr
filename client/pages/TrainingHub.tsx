@@ -84,6 +84,7 @@ export default function TrainingHub() {
   const [savingDiet, setSavingDiet] = useState(false);
   const [weeklyMealPlan, setWeeklyMealPlan] = useState<any>(null);
   const [showGeneratedMealPlan, setShowGeneratedMealPlan] = useState(false);
+  const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
 
   // Subscription gating
   const isWorkoutLocked = plan === "free";
