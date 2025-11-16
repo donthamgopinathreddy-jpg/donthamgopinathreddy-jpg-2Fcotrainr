@@ -422,21 +422,21 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ThemeProvider>
-          <LanguageProvider>
-            <AuthProvider>
-              <BrowserRouter>
+      <BrowserRouter>
+        <TooltipProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              <AuthProvider>
                 <AuthInitializer>
                   <Toaster />
                   <Sonner />
                   <AppRoutes />
                 </AuthInitializer>
-              </BrowserRouter>
-            </AuthProvider>
-          </LanguageProvider>
-        </ThemeProvider>
-      </TooltipProvider>
+              </AuthProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </TooltipProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   );
 };
