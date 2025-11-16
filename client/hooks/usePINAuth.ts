@@ -69,7 +69,7 @@ export const usePINAuth = () => {
       setError(null);
 
       try {
-        const hashedPin = hashPIN(pin);
+        const hashedPin = await hashPIN(pin);
 
         const { data, error: dbError } = await supabase
           .from("user_security_settings")
