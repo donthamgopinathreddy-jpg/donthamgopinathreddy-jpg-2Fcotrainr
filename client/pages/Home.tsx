@@ -70,7 +70,7 @@ export default function Home() {
     isHealthSyncAvailable && !hasPermission,
   );
 
-  // Sync user data from profile and health sync
+  // Sync user data from profile and auto step counter
   useEffect(() => {
     if (userProfile) {
       const isDemoMode =
@@ -90,15 +90,8 @@ export default function Home() {
 
       // Parse the bio value safely
       const parts = bioValue.split("|");
-      let steps = parseInt(parts[0] || "0") || 0;
       const water = parseFloat(parts[1] || "0") || 0;
 
-      // Prioritize synced steps from health sync if available
-      if (syncedSteps > 0 && isHealthSyncAvailable) {
-        steps = syncedSteps;
-      }
-
-      setStepsCompleted(steps);
       setWaterConsumed(water);
 
       if (userProfile.cover_image_url) {
@@ -109,8 +102,6 @@ export default function Home() {
     userProfile?.id,
     userProfile?.bio,
     userProfile?.cover_image_url,
-    syncedSteps,
-    isHealthSyncAvailable,
   ]);
 
   // Fetch latest feed
