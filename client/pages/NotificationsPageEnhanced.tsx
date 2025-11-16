@@ -68,6 +68,7 @@ export default function NotificationsPageEnhanced() {
     markAsRead,
     markAllAsRead,
     deleteNotification,
+    refetch,
   } = useNotifications(userProfile?.id);
   const { isFollowing, toggleFollow } = useFollows();
   const [selectedNotifications, setSelectedNotifications] = useState<
@@ -683,7 +684,11 @@ export default function NotificationsPageEnhanced() {
                 </>
               ) : (
                 <button
-                  onClick={() => markAllAsRead()}
+                  onClick={async () => {
+                    await markAllAsRead();
+                    // Refetch after marking all as read to sync with other instances
+                    setTimeout(() => refetch(), 100);
+                  }}
                   className="text-xs font-semibold text-orange-600 hover:text-orange-700 flex items-center gap-1"
                 >
                   <CheckCircle className="w-4 h-4" />
