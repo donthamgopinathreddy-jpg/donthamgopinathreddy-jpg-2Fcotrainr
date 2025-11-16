@@ -151,8 +151,7 @@ export function useNotifications(userId?: string) {
       const { error: updateError } = await supabase
         .from("notifications")
         .update({ is_read: true })
-        .eq("user_id", userId)
-        .eq("is_read", false);
+        .eq("user_id", userId);
 
       if (updateError) {
         console.debug("Mark all as read error:", updateError?.code);
