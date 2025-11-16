@@ -216,26 +216,46 @@ export const useBiometricAuth = () => {
 
   // iOS authentication (native bridge)
   const authenticateIOS = async (): Promise<boolean> => {
-    // This would call native iOS code via Capacitor
-    // For now, return a simulated success
-    // In production, you'd implement this in native Swift
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 1000);
-    });
+    try {
+      // Call native iOS biometric authentication
+      if (Capacitor.isNativePlatform()) {
+        // Try to call the BiometricAuth plugin if it exists
+        const result = await (window as any).BiometricAuth?.authenticate?.();
+        return result === true;
+      }
+
+      // Fallback simulation for web development
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(true);
+        }, 1000);
+      });
+    } catch (err) {
+      console.error("iOS biometric error:", err);
+      return false;
+    }
   };
 
   // Android authentication (native bridge)
   const authenticateAndroid = async (): Promise<boolean> => {
-    // This would call native Android code via Capacitor
-    // For now, return a simulated success
-    // In production, you'd implement this in native Kotlin
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 1000);
-    });
+    try {
+      // Call native Android biometric authentication
+      if (Capacitor.isNativePlatform()) {
+        // Try to call the BiometricAuth plugin if it exists
+        const result = await (window as any).BiometricAuth?.authenticate?.();
+        return result === true;
+      }
+
+      // Fallback simulation for web development
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(true);
+        }, 1000);
+      });
+    } catch (err) {
+      console.error("Android biometric error:", err);
+      return false;
+    }
   };
 
   // Initialize biometric capabilities on mount
