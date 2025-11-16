@@ -14,7 +14,7 @@ const BiometricAuthPlugin = registerPlugin<BiometricAuthPlugin>(
   "BiometricAuth",
   {
     web: undefined,
-  }
+  },
 );
 
 /**

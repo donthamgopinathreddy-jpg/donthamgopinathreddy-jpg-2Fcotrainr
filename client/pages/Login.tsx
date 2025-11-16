@@ -309,7 +309,9 @@ export default function Login() {
                     <p className="text-sm text-gray-600 text-center mb-3">
                       Or sign in with
                     </p>
-                    <div className={`grid ${biometricAvailable ? "grid-cols-3" : "grid-cols-2"} gap-3`}>
+                    <div
+                      className={`grid ${biometricAvailable ? "grid-cols-3" : "grid-cols-2"} gap-3`}
+                    >
                       {biometricAvailable && (
                         <button
                           onClick={() => setAuthMethod("biometric")}
@@ -318,7 +320,11 @@ export default function Login() {
                         >
                           <Fingerprint className="w-5 h-5 text-gray-600" />
                           <span className="text-xs font-semibold text-gray-600">
-                            {biometricType === "faceId" ? "Face" : biometricType === "fingerprint" ? "Print" : "Bio"}
+                            {biometricType === "faceId"
+                              ? "Face"
+                              : biometricType === "fingerprint"
+                                ? "Print"
+                                : "Bio"}
                           </span>
                         </button>
                       )}
@@ -548,7 +554,13 @@ export default function Login() {
                 <>
                   <div className="space-y-4">
                     <p className="text-center text-gray-600">
-                      Use {biometricType === "faceId" ? "Face ID" : biometricType === "fingerprint" ? "Fingerprint" : "Biometric"} to sign in
+                      Use{" "}
+                      {biometricType === "faceId"
+                        ? "Face ID"
+                        : biometricType === "fingerprint"
+                          ? "Fingerprint"
+                          : "Biometric"}{" "}
+                      to sign in
                     </p>
                     {!email ? (
                       <>
@@ -638,7 +650,8 @@ export default function Login() {
                           <Fingerprint className="w-16 h-16 text-primary/60" />
                         </div>
                         <p className="text-center text-sm text-gray-600">
-                          Place your finger on the sensor or look at the camera to authenticate
+                          Place your finger on the sensor or look at the camera
+                          to authenticate
                         </p>
                         <button
                           onClick={handleBiometricAuth}
@@ -653,7 +666,12 @@ export default function Login() {
                           ) : (
                             <>
                               <Fingerprint className="w-5 h-5" />
-                              Use {biometricType === "faceId" ? "Face ID" : biometricType === "fingerprint" ? "Fingerprint" : "Biometric"}
+                              Use{" "}
+                              {biometricType === "faceId"
+                                ? "Face ID"
+                                : biometricType === "fingerprint"
+                                  ? "Fingerprint"
+                                  : "Biometric"}
                             </>
                           )}
                         </button>

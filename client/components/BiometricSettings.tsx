@@ -70,13 +70,14 @@ export default function BiometricSettings({ userId }: BiometricSettingsProps) {
     return null;
   }
 
-  const biometricLabel = {
-    faceId: "Face ID",
-    fingerprint: "Fingerprint",
-    pattern: "Pattern",
-    pin: "PIN",
-    none: "Biometric Authentication",
-  }[biometricType] || "Biometric Authentication";
+  const biometricLabel =
+    {
+      faceId: "Face ID",
+      fingerprint: "Fingerprint",
+      pattern: "Pattern",
+      pin: "PIN",
+      none: "Biometric Authentication",
+    }[biometricType] || "Biometric Authentication";
 
   return (
     <div className="space-y-4">
@@ -87,9 +88,7 @@ export default function BiometricSettings({ userId }: BiometricSettingsProps) {
               <Fingerprint className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">
-                {biometricLabel}
-              </h3>
+              <h3 className="font-semibold text-gray-900">{biometricLabel}</h3>
               <p className="text-sm text-gray-600 mt-1">
                 Use your device's biometric authentication to sign in securely
               </p>
@@ -154,9 +153,7 @@ export default function BiometricSettings({ userId }: BiometricSettingsProps) {
             When enabled, you can use {biometricLabel.toLowerCase()} to sign in
           </li>
           <li>Your biometric data is never sent to our servers</li>
-          <li>
-            It stays securely stored on your device and managed by the OS
-          </li>
+          <li>It stays securely stored on your device and managed by the OS</li>
           <li>You can disable this anytime in settings</li>
         </ul>
       </div>

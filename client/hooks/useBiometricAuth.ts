@@ -3,7 +3,12 @@ import { supabase } from "@/lib/supabase";
 import { Device } from "@capacitor/device";
 import { Capacitor } from "@capacitor/core";
 
-export type BiometricType = "faceId" | "fingerprint" | "pattern" | "pin" | "none";
+export type BiometricType =
+  | "faceId"
+  | "fingerprint"
+  | "pattern"
+  | "pin"
+  | "none";
 
 interface BiometricAuthState {
   isAvailable: boolean;
@@ -38,7 +43,7 @@ export const useBiometricAuth = () => {
         // Android: Check for available biometric methods
         // Prefer fingerprint, then face recognition, then pattern/pin
         const biometricInfo = await getAndroidBiometricInfo();
-        
+
         if (biometricInfo.hasFingerprint) {
           biometricType = "fingerprint";
           isAvailable = true;
@@ -101,7 +106,9 @@ export const useBiometricAuth = () => {
           );
 
         if (dbError) {
-          throw new Error(`Failed to enable biometric auth: ${dbError.message}`);
+          throw new Error(
+            `Failed to enable biometric auth: ${dbError.message}`,
+          );
         }
 
         setState((prev) => ({
@@ -160,29 +167,33 @@ export const useBiometricAuth = () => {
   }, []);
 
   // Check if biometric auth is enabled for user
-  const isBiometricEnabled = useCallback(async (userId: string) => {
-    try {
-      const { data } = await supabase
-        .from("user_security_settings")
-        .select("biometric_enabled, biometric_type")
-        .eq("user_id", userId)
-        .single();
+  const isBiometricEnabled = useCallback(
+    async (userId: string) => {
+      try {
+        const { data } = await supabase
+          .from("user_security_settings")
+          .select("biometric_enabled, biometric_type")
+          .eq("user_id", userId)
+          .single();
 
-      if (data?.biometric_enabled) {
-        setState((prev) => ({
-          ...prev,
-          isEnabled: true,
-          biometricType: (data.biometric_type as BiometricType) || state.biometricType,
-        }));
-        return true;
+        if (data?.biometric_enabled) {
+          setState((prev) => ({
+            ...prev,
+            isEnabled: true,
+            biometricType:
+              (data.biometric_type as BiometricType) || state.biometricType,
+          }));
+          return true;
+        }
+
+        return false;
+      } catch (err) {
+        console.error("Error checking biometric status:", err);
+        return false;
       }
-
-      return false;
-    } catch (err) {
-      console.error("Error checking biometric status:", err);
-      return false;
-    }
-  }, [state.biometricType]);
+    },
+    [state.biometricType],
+  );
 
   // Trigger biometric authentication (native implementation)
   const authenticateWithBiometric = useCallback(async (): Promise<boolean> => {

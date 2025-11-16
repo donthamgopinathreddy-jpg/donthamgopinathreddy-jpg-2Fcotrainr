@@ -17,21 +17,23 @@ import BiometricSettings from "@/components/BiometricSettings";
 In your profile page's security settings section, add the BiometricSettings component:
 
 ```tsx
-{showSecuritySection && (
-  <div className="space-y-6">
-    {/* Existing security settings */}
-    
-    {/* Add Biometric Settings */}
-    {userProfile?.id && (
-      <>
-        <hr className="border-gray-200" />
-        <BiometricSettings userId={userProfile.id} />
-      </>
-    )}
-    
-    {/* Other settings... */}
-  </div>
-)}
+{
+  showSecuritySection && (
+    <div className="space-y-6">
+      {/* Existing security settings */}
+
+      {/* Add Biometric Settings */}
+      {userProfile?.id && (
+        <>
+          <hr className="border-gray-200" />
+          <BiometricSettings userId={userProfile.id} />
+        </>
+      )}
+
+      {/* Other settings... */}
+    </div>
+  );
+}
 ```
 
 ### 3. Complete Example
@@ -103,23 +105,24 @@ The `BiometricSettings` component provides:
 
 ```typescript
 interface BiometricSettingsProps {
-  userId: string;  // Required: The user's ID from Supabase auth
+  userId: string; // Required: The user's ID from Supabase auth
 }
 ```
 
 ## Styling
 
 The component uses Tailwind CSS classes and is styled to match:
+
 - CoTrainr design system
 - Existing profile page styling
 - Light and dark mode support
 
 ## Browser/Device Support
 
-| Platform | Status | Notes |
-|----------|--------|-------|
-| iOS App | ✅ Full | Face ID / Touch ID |
-| Android App | ✅ Full | Fingerprint / Face |
+| Platform     | Status     | Notes                 |
+| ------------ | ---------- | --------------------- |
+| iOS App      | ✅ Full    | Face ID / Touch ID    |
+| Android App  | ✅ Full    | Fingerprint / Face    |
 | Web (Chrome) | ⚠️ Limited | Simulated for testing |
 | Web (Safari) | ⚠️ Limited | Simulated for testing |
 
@@ -216,6 +219,7 @@ Example customization:
 ## Questions?
 
 If you have questions about:
+
 - **Integration**: Check this file
 - **Setup**: See `BIOMETRIC_AUTH_SETUP.md`
 - **Code**: Review the component files

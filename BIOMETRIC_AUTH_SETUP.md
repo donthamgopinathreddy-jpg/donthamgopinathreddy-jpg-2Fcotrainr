@@ -5,6 +5,7 @@ This guide explains how to set up biometric authentication for the CoTrainr mobi
 ## Overview
 
 The app now supports native device biometric authentication:
+
 - **iOS**: Face ID (iPhone X+) or Touch ID (older models)
 - **Android**: Fingerprint, Face Recognition, Pattern, or PIN
 
@@ -13,6 +14,7 @@ Users can authenticate using their device's native authentication method without
 ## Web Implementation
 
 The web-side implementation is already complete:
+
 - `client/hooks/useBiometricAuth.ts` - React hook for biometric authentication
 - `client/lib/capacitorBridge.ts` - Capacitor bridge to native code
 - `client/pages/Login.tsx` - Updated login page with biometric option
@@ -22,6 +24,7 @@ The web-side implementation is already complete:
 ### Android Setup
 
 1. **Update dependencies** in `android/app/build.gradle`:
+
    ```gradle
    dependencies {
        // Add biometric dependencies
@@ -31,12 +34,13 @@ The web-side implementation is already complete:
    ```
 
 2. **Update AndroidManifest.xml** with biometric permissions:
+
    ```xml
    <manifest ...>
        <!-- Biometric permissions -->
        <uses-permission android:name="android.permission.USE_BIOMETRIC" />
        <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-       
+
        <application ...>
            <!-- MainActivity remains the same -->
        </application>
@@ -44,19 +48,20 @@ The web-side implementation is already complete:
    ```
 
 3. **Implement Capacitor Plugin Bridge** in `android/app/src/main/java/com/cotrainr/app/BiometricAuthPlugin.kt`:
+
    ```kotlin
    import com.getcapacitor.JSObject
    import com.getcapacitor.PluginCall
    import com.getcapacitor.annotation.CapacitorPlugin
    import com.getcapacitor.annotation.Permission
-   
+
    @CapacitorPlugin(
        name = "BiometricAuth",
        permissions = [Permission(strings = ["android.permission.USE_BIOMETRIC"])]
    )
    class BiometricAuthPlugin : Plugin() {
        private val biometricAuth by lazy { BiometricAuth(context) }
-   
+
        @PluginMethod
        fun authenticate(call: PluginCall) {
            biometricAuth.authenticate(
@@ -80,7 +85,7 @@ The web-side implementation is already complete:
                }
            )
        }
-   
+
        @PluginMethod
        fun getPrimaryBiometricType(call: PluginCall) {
            val type = biometricAuth.getPrimaryBiometricType()
@@ -88,7 +93,7 @@ The web-side implementation is already complete:
            result.put("type", type)
            call.resolve(result)
        }
-   
+
        @PluginMethod
        fun isAvailable(call: PluginCall) {
            val available = biometricAuth.getAvailableBiometricMethods() != "none"
@@ -100,10 +105,11 @@ The web-side implementation is already complete:
    ```
 
 4. **Register the plugin** in `MainActivity.kt`:
+
    ```kotlin
    import android.os.Bundle
    import com.cotrainr.app.BiometricAuthPlugin
-   
+
    class MainActivity : AppCompatActivity() {
        override fun onCreate(savedInstanceState: Bundle?) {
            super.onCreate(savedInstanceState)
@@ -115,6 +121,7 @@ The web-side implementation is already complete:
 ### iOS Setup
 
 1. **Update Info.plist** with required keys:
+
    ```xml
    <key>NSFaceIDUsageDescription</key>
    <string>We need access to Face ID to authenticate you securely</string>
@@ -123,6 +130,7 @@ The web-side implementation is already complete:
    ```
 
 2. **Update Podfile** to include LocalAuthentication framework:
+
    ```ruby
    target 'App' do
      pod 'Capacitor'
@@ -132,12 +140,13 @@ The web-side implementation is already complete:
    ```
 
 3. **Implement Capacitor Plugin Bridge** in `ios/App/App/BiometricAuthPlugin.swift`:
+
    ```swift
    import Capacitor
-   
+
    @objc(BiometricAuthPlugin)
    public class BiometricAuthPlugin: CAPPlugin {
-       
+
        @objc func authenticate(_ call: CAPPluginCall) {
            BiometricAuth.authenticate(
                reason: "Sign in to CoTrainr",
@@ -154,14 +163,14 @@ The web-side implementation is already complete:
                }
            )
        }
-       
+
        @objc func getPrimaryBiometricType(_ call: CAPPluginCall) {
            let type = BiometricAuth.getPrimaryBiometricType()
            var result = JSObject()
            result["type"] = type
            call.resolve(result)
        }
-       
+
        @objc func isAvailable(_ call: CAPPluginCall) {
            let available = BiometricAuth.getAvailableBiometricMethods() != "none"
            var result = JSObject()
@@ -174,14 +183,14 @@ The web-side implementation is already complete:
 4. **Register the plugin** in `capacitor.config.ts`:
    ```typescript
    const config: CapacitorConfig = {
-     appId: 'com.cotrainr.app',
-     appName: 'CoTrainr',
-     webDir: 'dist/spa',
+     appId: "com.cotrainr.app",
+     appName: "CoTrainr",
+     webDir: "dist/spa",
      plugins: {
        BiometricAuth: {
          // Plugin configuration
-       }
-     }
+       },
+     },
    };
    ```
 
@@ -226,18 +235,21 @@ CREATE POLICY "Users can insert their own security settings"
 ## Testing
 
 ### On Android:
+
 1. Build the app with biometric support enabled
 2. Test on an Android device or emulator with biometric capabilities
 3. Verify that the biometric prompt appears when selecting "Biometric" login
 4. Test fallback to PIN/Pattern if biometric fails
 
 ### On iOS:
+
 1. Build the app and run on an iPhone/iPad with Face ID or Touch ID
 2. Test that Face ID/Touch ID prompt appears
 3. Verify authentication flow works
 4. Test fallback mechanisms
 
 ### On Web:
+
 1. The app simulates biometric authentication (1.5 second delay)
 2. Test the login flow works as expected
 3. Verify PIN and Pattern authentication still work as fallbacks
@@ -262,16 +274,19 @@ CREATE POLICY "Users can insert their own security settings"
 ## Troubleshooting
 
 ### Plugin not found error:
+
 - Ensure the plugin is properly registered in MainActivity/AppDelegate
 - Run `npx cap sync` after making changes
 - Rebuild the native app
 
 ### Biometric not available:
+
 - Check if device has biometric hardware
 - Verify permissions are granted in AndroidManifest.xml/Info.plist
 - Test with device credentials as fallback
 
 ### Native bridge not working:
+
 - Check Capacitor console logs
 - Ensure plugin return values match expected JSObject structure
 - Verify plugin is registered before app loads
