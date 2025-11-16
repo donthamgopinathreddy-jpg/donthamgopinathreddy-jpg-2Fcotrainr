@@ -17,6 +17,7 @@ interface UserProfile {
   phone_number?: string;
   age?: number;
   date_of_birth?: string;
+  subscription_plan?: "free" | "basic" | "premium";
 }
 
 interface DemoUser {
