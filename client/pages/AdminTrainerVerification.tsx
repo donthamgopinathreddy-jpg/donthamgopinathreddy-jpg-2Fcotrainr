@@ -448,61 +448,52 @@ const AdminTrainerVerification: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-6">
-        {/* Tabs/Filters */}
-        <div className="flex gap-2 mb-8">
+        {/* Tabs/Filters - Underline Style */}
+        <div className="flex gap-6 mb-8 border-b border-gray-200">
           <button
             onClick={() => setCurrentTab("pending")}
-            className={`flex-1 px-4 py-3 font-medium rounded-lg transition-all ${
+            className={`px-1 py-3 font-medium border-b-2 transition-colors ${
               currentTab === "pending"
-                ? "bg-amber-100 text-amber-900 border border-amber-300"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200 border border-transparent"
+                ? "border-amber-400 text-amber-600"
+                : "border-transparent text-gray-600 hover:text-gray-900"
             }`}
           >
-            <div className="flex items-center justify-center gap-2">
-              <Clock className="w-4 h-4" />
-              <span>Pending</span>
-              {pendingCount > 0 && (
-                <span className="ml-1 bg-amber-200 text-amber-900 text-xs font-bold px-2 py-0.5 rounded">
-                  {pendingCount}
-                </span>
-              )}
-            </div>
+            Pending
+            {pendingCount > 0 && (
+              <span className="ml-2 bg-amber-100 text-amber-800 text-xs font-semibold px-2 py-0.5 rounded-full">
+                {pendingCount}
+              </span>
+            )}
           </button>
           <button
             onClick={() => setCurrentTab("approved")}
-            className={`flex-1 px-4 py-3 font-medium rounded-lg transition-all ${
+            className={`px-1 py-3 font-medium border-b-2 transition-colors ${
               currentTab === "approved"
-                ? "bg-green-100 text-green-900 border border-green-300"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200 border border-transparent"
+                ? "border-green-400 text-green-600"
+                : "border-transparent text-gray-600 hover:text-gray-900"
             }`}
           >
-            <div className="flex items-center justify-center gap-2">
-              <CheckCircle className="w-4 h-4" />
-              <span>Approved</span>
-              {approvedCount > 0 && (
-                <span className="ml-1 bg-green-200 text-green-900 text-xs font-bold px-2 py-0.5 rounded">
-                  {approvedCount}
-                </span>
-              )}
-            </div>
+            Approved
+            {approvedCount > 0 && (
+              <span className="ml-2 bg-green-100 text-green-800 text-xs font-semibold px-2 py-0.5 rounded-full">
+                {approvedCount}
+              </span>
+            )}
           </button>
           <button
             onClick={() => setCurrentTab("rejected")}
-            className={`flex-1 px-4 py-3 font-medium rounded-lg transition-all ${
+            className={`px-1 py-3 font-medium border-b-2 transition-colors ${
               currentTab === "rejected"
-                ? "bg-red-100 text-red-900 border border-red-300"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200 border border-transparent"
+                ? "border-red-400 text-red-600"
+                : "border-transparent text-gray-600 hover:text-gray-900"
             }`}
           >
-            <div className="flex items-center justify-center gap-2">
-              <XCircle className="w-4 h-4" />
-              <span>Rejected</span>
-              {rejectedCount > 0 && (
-                <span className="ml-1 bg-red-200 text-red-900 text-xs font-bold px-2 py-0.5 rounded">
-                  {rejectedCount}
-                </span>
-              )}
-            </div>
+            Rejected
+            {rejectedCount > 0 && (
+              <span className="ml-2 bg-red-100 text-red-800 text-xs font-semibold px-2 py-0.5 rounded-full">
+                {rejectedCount}
+              </span>
+            )}
           </button>
         </div>
 
