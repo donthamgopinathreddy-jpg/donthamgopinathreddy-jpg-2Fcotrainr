@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminTrainerVerification } from "@/hooks/useAdminTrainerVerification";
 import { useActivityLog } from "@/hooks/useActivityLog";
-import { useNotificationPreferences } from "@/hooks/useNotificationPreferences";
+import { useNotificationPreferences, type NotificationPreferences } from "@/hooks/useNotificationPreferences";
 import { TrainerVerificationCard } from "@/components/TrainerVerificationCard";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
