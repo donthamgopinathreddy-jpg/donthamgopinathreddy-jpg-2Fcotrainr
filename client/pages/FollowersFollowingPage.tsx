@@ -22,19 +22,23 @@ export default function FollowersFollowingPage() {
   const [activeTab, setActiveTab] = useState<"followers" | "following">(
     initialTab || "followers",
   );
-  const [followingStates, setFollowingStates] = useState<Map<string, boolean> | null>(null);
+  const [followingStates, setFollowingStates] = useState<Map<string, boolean>>(
+    new Map(),
+  );
   const [isTogglingFollow, setIsTogglingFollow] = useState<
     Map<string, boolean>
   >(new Map());
 
   useEffect(() => {
-    const states = new Map<string, boolean>();
     const listToCheck = activeTab === "followers" ? followers : following;
-    listToCheck.forEach((user) => {
-      states.set(user.id, isFollowing(user.id));
-    });
-    setFollowingStates(states);
-  }, [followers, following, activeTab]);
+    if (listToCheck.length > 0) {
+      const states = new Map<string, boolean>();
+      listToCheck.forEach((user) => {
+        states.set(user.id, isFollowing(user.id));
+      });
+      setFollowingStates(states);
+    }
+  }, [followers.length, following.length, activeTab]);
 
   const handleToggleFollow = async (userId: string) => {
     setIsTogglingFollow((prev) => new Map(prev).set(userId, true));
@@ -53,17 +57,6 @@ export default function FollowersFollowingPage() {
   };
 
   const currentList = activeTab === "followers" ? followers : following;
-
-  // Initialize followingStates only once to avoid unnecessary updates
-  if (!followingStates || followingStates.size === 0) {
-    const states = new Map<string, boolean>();
-    currentList.forEach((user) => {
-      states.set(user.id, isFollowing(user.id));
-    });
-    if (states.size > 0) {
-      setFollowingStates(states);
-    }
-  }
 
   return (
     <div
