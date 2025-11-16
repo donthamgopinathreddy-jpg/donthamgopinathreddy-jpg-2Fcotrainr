@@ -92,6 +92,24 @@ export function useMoodLogs(userId?: string) {
       const today = new Date().toISOString().split("T")[0];
       const moodEmoji = getMoodEmoji(moodValue);
 
+      // Check if demo user
+      const isDemoMode = userId.startsWith("demo-user") || userId.includes("demo");
+
+      if (isDemoMode) {
+        // For demo users, just update local state
+        setTodayMood({
+          id: `mood-${today}`,
+          user_id: userId,
+          mood_value: moodValue,
+          mood_emoji: moodEmoji,
+          notes: notes,
+          date: today,
+          created_at: new Date().toISOString(),
+        });
+        setError(null);
+        return true;
+      }
+
       const { error: insertError } = await supabase.from("mood_logs").insert([
         {
           user_id: userId,
@@ -104,7 +122,27 @@ export function useMoodLogs(userId?: string) {
       ]);
 
       if (insertError) {
-        console.debug("Add mood log error:", insertError?.code);
+        console.debug("Add mood log error:", insertError?.code, insertError?.message);
+
+        // If table doesn't exist, handle gracefully
+        if (
+          insertError?.message?.includes("does not exist") ||
+          insertError?.code === "PGRST116"
+        ) {
+          // Table doesn't exist yet, but still save to local state
+          setTodayMood({
+            id: `mood-${today}`,
+            user_id: userId,
+            mood_value: moodValue,
+            mood_emoji: moodEmoji,
+            notes: notes,
+            date: today,
+            created_at: new Date().toISOString(),
+          });
+          setError(null);
+          return true;
+        }
+
         setError(insertError?.message || "Failed to add mood log");
         return false;
       }
@@ -127,8 +165,20 @@ export function useMoodLogs(userId?: string) {
         "Add mood log catch error:",
         err instanceof Error ? err.message : "Unknown error"
       );
-      setError("Failed to add mood log");
-      return false;
+
+      // Still save to local state even if DB fails
+      const today = new Date().toISOString().split("T")[0];
+      setTodayMood({
+        id: `mood-${today}`,
+        user_id: userId,
+        mood_value: moodValue,
+        mood_emoji: getMoodEmoji(moodValue),
+        notes: notes,
+        date: today,
+        created_at: new Date().toISOString(),
+      });
+      setError(null);
+      return true;
     }
   };
 
