@@ -162,6 +162,84 @@ const AdminTrainerVerification: React.FC = () => {
     }
   };
 
+  const handleProfilePictureUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file || !userProfile) return;
+
+    try {
+      setUploadingPic(true);
+
+      // Upload to Supabase storage
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${userProfile.id}-profile.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from("profiles")
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data } = supabase.storage
+        .from("profiles")
+        .getPublicUrl(fileName);
+
+      const profileUrl = data.publicUrl;
+
+      // Update user profile in database
+      const { error: updateError } = await supabase
+        .from("users")
+        .update({ profile_picture_url: profileUrl })
+        .eq("id", userProfile.id);
+
+      if (updateError) throw updateError;
+
+      toast({
+        title: "Success",
+        description: "Profile picture updated successfully",
+        variant: "default",
+      });
+    } catch (err) {
+      console.error("Profile picture upload error:", err);
+      toast({
+        title: "Error",
+        description: "Failed to upload profile picture",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingPic(false);
+    }
+  };
+
+  // Fetch trainer and client counts
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const { data: trainers, error: trainersError } = await supabase
+          .from("users")
+          .select("id", { count: "exact" })
+          .eq("role", "trainer");
+
+        const { data: clients, error: clientsError } = await supabase
+          .from("users")
+          .select("id", { count: "exact" })
+          .eq("role", "client");
+
+        if (!trainersError && trainers) {
+          setTrainerCount(trainers.length);
+        }
+        if (!clientsError && clients) {
+          setClientCount(clients.length);
+        }
+      } catch (err) {
+        console.error("Error fetching counts:", err);
+      }
+    };
+
+    fetchCounts();
+  }, []);
+
   const pendingCount = trainers.filter((t) => t.verification_status === "pending").length;
   const approvedCount = trainers.filter((t) => t.verification_status === "approved").length;
   const rejectedCount = trainers.filter((t) => t.verification_status === "rejected").length;
