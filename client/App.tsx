@@ -46,6 +46,7 @@ import AdminTrainerManagement from "./pages/AdminTrainerManagement";
 import AdminCommunication from "./pages/AdminCommunication";
 import AdminSystemHealth from "./pages/AdminSystemHealth";
 import AdminQuickStats from "./pages/AdminQuickStats";
+import AdminSettings from "./pages/AdminSettings";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
 import Leaderboard from "./pages/Leaderboard";
