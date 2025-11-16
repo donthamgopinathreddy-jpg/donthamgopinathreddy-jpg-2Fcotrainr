@@ -447,6 +447,54 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/admin/analytics"
+        element={
+          <ProtectedRoute>
+            <AdminAnalytics />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <ProtectedRoute>
+            <AdminUserManagement />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/trainers"
+        element={
+          <ProtectedRoute>
+            <AdminTrainerManagement />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/communication"
+        element={
+          <ProtectedRoute>
+            <AdminCommunication />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/system"
+        element={
+          <ProtectedRoute>
+            <AdminSystemHealth />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/stats"
+        element={
+          <ProtectedRoute>
+            <AdminQuickStats />
+          </ProtectedRoute>
+        }
+      />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
