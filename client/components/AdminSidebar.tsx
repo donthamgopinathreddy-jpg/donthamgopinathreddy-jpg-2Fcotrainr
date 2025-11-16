@@ -95,6 +95,12 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
       path: "/admin/stats",
       color: "yellow",
     },
+    {
+      icon: Settings,
+      label: "Settings",
+      path: "/admin/settings",
+      color: "gray",
+    },
   ];
 
   const isActive = (path: string) => location.pathname === path;
