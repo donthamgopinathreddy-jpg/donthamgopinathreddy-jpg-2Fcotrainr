@@ -39,6 +39,7 @@ interface NotificationWithUser {
   is_read: boolean;
   created_at: string;
   actor_id?: string;
+  content?: string;
   actor?: {
     id: string;
     full_name: string;
