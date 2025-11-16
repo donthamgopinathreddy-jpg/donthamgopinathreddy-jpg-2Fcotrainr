@@ -206,7 +206,9 @@ export default function NotificationsPageEnhanced() {
             <button
               onClick={() => navigate(-1)}
               className={`p-2 rounded-lg transition-colors ${
-                theme === "dark" ? "hover:bg-gray-700 text-white" : "hover:bg-gray-100 text-black"
+                theme === "dark"
+                  ? "hover:bg-gray-700 text-white"
+                  : "hover:bg-gray-100 text-black"
               }`}
             >
               <ArrowLeft className="w-5 h-5" />
