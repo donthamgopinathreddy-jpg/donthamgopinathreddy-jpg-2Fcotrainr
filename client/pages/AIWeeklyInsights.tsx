@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, TrendingUp, Target, Zap, Droplets, Moon, Award, Unlock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAIWeeklyInsights, type AIInsights } from "@/hooks/useAIWeeklyInsights";
