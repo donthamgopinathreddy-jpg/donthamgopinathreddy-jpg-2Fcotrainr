@@ -103,12 +103,12 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
   return (
     <>
-      {/* Mobile Toggle Button */}
+      {/* Mobile Toggle Button - Orange icon without background */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-5 left-4 z-50 md:hidden p-2 rounded-lg transition-all duration-200 hover:scale-110 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600 shadow-lg hover:shadow-xl"
+        className="fixed top-5 left-4 z-50 md:hidden p-1 transition-all duration-200 hover:scale-110"
       >
-        {sidebarOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
+        {sidebarOpen ? <X className="w-6 h-6 text-orange-500" /> : <Menu className="w-6 h-6 text-orange-500" />}
       </button>
 
       {/* Sidebar Overlay for Mobile */}
