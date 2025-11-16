@@ -43,6 +43,7 @@ interface NotificationWithUser {
   created_at: string;
   actor_id?: string;
   content?: string;
+  post_image_url?: string;
   actor?: {
     id: string;
     full_name: string;
