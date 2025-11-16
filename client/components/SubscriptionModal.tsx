@@ -29,18 +29,22 @@ export default function SubscriptionModal({
     try {
       setProcessingPayment(true);
 
-      // Mock payment processing - in production, integrate Razorpay
-      const planPrices = {
-        basic: 299,
-        premium: 599,
-      };
+      if (selectedPlan === "free") {
+        alert(`Switched to ${selectedPlan.toUpperCase()} plan`);
+      } else {
+        // Mock payment processing - in production, integrate Razorpay
+        const planPrices = {
+          basic: 299,
+          premium: 599,
+        };
 
-      const amount = planPrices[selectedPlan];
+        const amount = planPrices[selectedPlan];
 
-      // Simulating Razorpay payment
-      alert(
-        `Processing payment for ${selectedPlan.toUpperCase()} plan: ₹${amount}/month\n\nIn production, this would redirect to Razorpay payment gateway.`,
-      );
+        // Simulating Razorpay payment
+        alert(
+          `Processing payment for ${selectedPlan.toUpperCase()} plan: ₹${amount}/month\n\nIn production, this would redirect to Razorpay payment gateway.`,
+        );
+      }
 
       // TODO: Integrate actual Razorpay payment here
       // After successful payment, update user's subscription_plan in database
