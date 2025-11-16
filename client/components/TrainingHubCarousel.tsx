@@ -58,39 +58,20 @@ export default function TrainingHubCarousel({
       {/* Content Section */}
       <div className="min-h-96">{currentSection.component}</div>
 
-      {/* Navigation Controls */}
-      <div className="flex items-center justify-between gap-4">
-        <button
-          onClick={goToPrevious}
-          className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white hover:shadow-lg transition-all hover:scale-110 active:scale-95"
-          aria-label="Previous section"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-
-        {/* Slide Indicators */}
-        <div className="flex gap-2 flex-1 justify-center">
-          {sections.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`h-2 rounded-full transition-all ${
-                index === currentIndex
-                  ? "bg-orange-500 w-8"
-                  : "bg-gray-300 dark:bg-gray-700 w-2 hover:bg-orange-400"
-              }`}
-              aria-label={`Go to section ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        <button
-          onClick={goToNext}
-          className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white hover:shadow-lg transition-all hover:scale-110 active:scale-95"
-          aria-label="Next section"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
+      {/* Navigation Controls - Dots Only */}
+      <div className="flex gap-2 justify-center">
+        {sections.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`h-2 rounded-full transition-all ${
+              index === currentIndex
+                ? "bg-orange-500 w-8"
+                : "bg-gray-300 dark:bg-gray-700 w-2 hover:bg-orange-400"
+            }`}
+            aria-label={`Go to section ${index + 1}`}
+          />
+        ))}
       </div>
 
       {/* Section Counter */}
