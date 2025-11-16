@@ -28,7 +28,6 @@ export default function NotificationsDropdown() {
           </span>
         )}
       </button>
-
     </div>
   );
 }

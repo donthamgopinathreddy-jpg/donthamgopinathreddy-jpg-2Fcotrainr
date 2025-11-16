@@ -22,7 +22,14 @@ import { supabase } from "@/lib/supabase";
 interface NotificationWithUser {
   id: string;
   user_id: string;
-  type: "like" | "comment" | "follow" | "meeting" | "goal_achieved" | "achievement" | "message";
+  type:
+    | "like"
+    | "comment"
+    | "follow"
+    | "meeting"
+    | "goal_achieved"
+    | "achievement"
+    | "message";
   title: string;
   message: string;
   related_user_id?: string;
@@ -327,150 +334,159 @@ export default function NotificationsPageEnhanced() {
                       <input
                         type="checkbox"
                         checked={selectedNotifications.has(notification.id)}
-                        onChange={() => handleSelectNotification(notification.id)}
+                        onChange={() =>
+                          handleSelectNotification(notification.id)
+                        }
                         className="mt-1 rounded cursor-pointer"
                         onClick={(e) => e.stopPropagation()}
                       />
                     )}
 
-                  {/* Icon and User Info (for follow notifications) */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="flex-shrink-0 mt-1">
-                        {getNotificationIcon(notification.type)}
+                    {/* Icon and User Info (for follow notifications) */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start gap-3 mb-3">
+                        <div className="flex-shrink-0 mt-1">
+                          {getNotificationIcon(notification.type)}
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1">
+                          <h3
+                            className={`text-lg font-bold mb-1 ${
+                              theme === "dark" ? "text-white" : "text-gray-900"
+                            }`}
+                          >
+                            {notification.title}
+                          </h3>
+                          <p
+                            className={`text-base mb-3 ${
+                              theme === "dark"
+                                ? "text-gray-300"
+                                : "text-gray-700"
+                            }`}
+                          >
+                            {notification.message}
+                          </p>
+                          <p
+                            className={`text-xs ${
+                              theme === "dark"
+                                ? "text-gray-500"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {formatTime(notification.created_at)}
+                          </p>
+                        </div>
                       </div>
 
-                      {/* Content */}
-                      <div className="flex-1">
-                        <h3
-                          className={`text-lg font-bold mb-1 ${
-                            theme === "dark" ? "text-white" : "text-gray-900"
-                          }`}
-                        >
-                          {notification.title}
-                        </h3>
-                        <p
-                          className={`text-base mb-3 ${
-                            theme === "dark"
-                              ? "text-gray-300"
-                              : "text-gray-700"
-                          }`}
-                        >
-                          {notification.message}
-                        </p>
-                        <p
-                          className={`text-xs ${
-                            theme === "dark"
-                              ? "text-gray-500"
-                              : "text-gray-500"
-                          }`}
-                        >
-                          {formatTime(notification.created_at)}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* User card for follow, like, and comment notifications */}
-                    {notification.actor &&
-                      (notification.type === "follow" ||
-                        notification.type === "like" ||
-                        notification.type === "comment") && (
-                        <div
-                          className={`mt-4 p-3 rounded-xl border ${
-                            theme === "dark"
-                              ? "bg-gray-700/30 border-gray-600"
-                              : "bg-gray-50 border-gray-200"
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            {/* Avatar */}
-                            <button
-                              onClick={() =>
-                                navigate(`/profile/${notification.actor?.id}`)
-                              }
-                              className="flex-shrink-0"
-                            >
-                              <div
-                                className={`w-12 h-12 rounded-full border-2 flex items-center justify-center overflow-hidden hover:ring-2 hover:ring-orange-500 transition-all ${
-                                  theme === "dark"
-                                    ? "bg-gray-700 border-gray-600"
-                                    : "bg-gray-100 border-gray-300"
-                                }`}
-                              >
-                                {notification.actor.profile_picture_url ? (
-                                  <img
-                                    src={notification.actor.profile_picture_url}
-                                    alt={notification.actor.full_name}
-                                    className="w-full h-full object-cover"
-                                  />
-                                ) : (
-                                  <User className="w-6 h-6 text-gray-500" />
-                                )}
-                              </div>
-                            </button>
-
-                            {/* User Info */}
-                            <div className="flex-1 min-w-0">
+                      {/* User card for follow, like, and comment notifications */}
+                      {notification.actor &&
+                        (notification.type === "follow" ||
+                          notification.type === "like" ||
+                          notification.type === "comment") && (
+                          <div
+                            className={`mt-4 p-3 rounded-xl border ${
+                              theme === "dark"
+                                ? "bg-gray-700/30 border-gray-600"
+                                : "bg-gray-50 border-gray-200"
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              {/* Avatar */}
                               <button
                                 onClick={() =>
                                   navigate(`/profile/${notification.actor?.id}`)
                                 }
-                                className="text-left hover:opacity-80 transition-opacity"
+                                className="flex-shrink-0"
                               >
-                                <p
-                                  className={`font-semibold text-sm ${
+                                <div
+                                  className={`w-12 h-12 rounded-full border-2 flex items-center justify-center overflow-hidden hover:ring-2 hover:ring-orange-500 transition-all ${
                                     theme === "dark"
-                                      ? "text-white"
-                                      : "text-gray-900"
+                                      ? "bg-gray-700 border-gray-600"
+                                      : "bg-gray-100 border-gray-300"
                                   }`}
                                 >
-                                  {notification.actor.full_name}
-                                </p>
-                                {notification.actor.username && (
+                                  {notification.actor.profile_picture_url ? (
+                                    <img
+                                      src={
+                                        notification.actor.profile_picture_url
+                                      }
+                                      alt={notification.actor.full_name}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : (
+                                    <User className="w-6 h-6 text-gray-500" />
+                                  )}
+                                </div>
+                              </button>
+
+                              {/* User Info */}
+                              <div className="flex-1 min-w-0">
+                                <button
+                                  onClick={() =>
+                                    navigate(
+                                      `/profile/${notification.actor?.id}`,
+                                    )
+                                  }
+                                  className="text-left hover:opacity-80 transition-opacity"
+                                >
                                   <p
-                                    className={`text-xs ${
+                                    className={`font-semibold text-sm ${
                                       theme === "dark"
-                                        ? "text-gray-400"
-                                        : "text-gray-600"
+                                        ? "text-white"
+                                        : "text-gray-900"
                                     }`}
                                   >
-                                    @{notification.actor.username}
+                                    {notification.actor.full_name}
                                   </p>
-                                )}
-                              </button>
-                            </div>
+                                  {notification.actor.username && (
+                                    <p
+                                      className={`text-xs ${
+                                        theme === "dark"
+                                          ? "text-gray-400"
+                                          : "text-gray-600"
+                                      }`}
+                                    >
+                                      @{notification.actor.username}
+                                    </p>
+                                  )}
+                                </button>
+                              </div>
 
-                            {/* Follow Button */}
-                            {notification.type === "follow" && (
-                              <button
-                                onClick={() =>
-                                  handleToggleFollow(notification.actor!.id)
-                                }
-                                disabled={
-                                  isTogglingFollow.get(notification.actor!.id) ||
-                                  false
-                                }
-                                className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm transition-all disabled:opacity-50 ${
-                                  isFollowing(notification.actor!.id)
-                                    ? theme === "dark"
-                                      ? "bg-gray-700 text-white hover:bg-gray-600"
-                                      : "bg-gray-200 text-gray-900 hover:bg-gray-300"
-                                    : "bg-orange-500 text-white hover:bg-orange-600"
-                                }`}
-                              >
-                                {isTogglingFollow.get(notification.actor!.id) ? (
-                                  <Loader className="w-4 h-4 animate-spin" />
-                                ) : isFollowing(notification.actor!.id) ? (
-                                  "Following"
-                                ) : (
-                                  "Follow"
-                                )}
-                              </button>
-                            )}
+                              {/* Follow Button */}
+                              {notification.type === "follow" && (
+                                <button
+                                  onClick={() =>
+                                    handleToggleFollow(notification.actor!.id)
+                                  }
+                                  disabled={
+                                    isTogglingFollow.get(
+                                      notification.actor!.id,
+                                    ) || false
+                                  }
+                                  className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium text-sm transition-all disabled:opacity-50 ${
+                                    isFollowing(notification.actor!.id)
+                                      ? theme === "dark"
+                                        ? "bg-gray-700 text-white hover:bg-gray-600"
+                                        : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                                      : "bg-orange-500 text-white hover:bg-orange-600"
+                                  }`}
+                                >
+                                  {isTogglingFollow.get(
+                                    notification.actor!.id,
+                                  ) ? (
+                                    <Loader className="w-4 h-4 animate-spin" />
+                                  ) : isFollowing(notification.actor!.id) ? (
+                                    "Following"
+                                  ) : (
+                                    "Follow"
+                                  )}
+                                </button>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      )}
-                  </div>
+                        )}
+                    </div>
 
                     {/* Delete Button - X */}
                     {!isMultiSelectMode && (

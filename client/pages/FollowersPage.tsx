@@ -12,9 +12,9 @@ export default function FollowersPage() {
   const { userProfile } = useAuth();
   const { followers, loading } = useFollowers(userProfile?.id);
   const { isFollowing, toggleFollow } = useFollows();
-  const [followingStates, setFollowingStates] = useState<
-    Map<string, boolean>
-  >(new Map());
+  const [followingStates, setFollowingStates] = useState<Map<string, boolean>>(
+    new Map(),
+  );
   const [isTogglingFollow, setIsTogglingFollow] = useState<
     Map<string, boolean>
   >(new Map());
@@ -119,7 +119,9 @@ export default function FollowersPage() {
                 >
                   <div
                     className={`w-14 h-14 rounded-full border-2 flex items-center justify-center overflow-hidden hover:ring-2 hover:ring-orange-500 transition-all ${
-                      theme === "dark" ? "bg-gray-700 border-gray-600" : "bg-gray-100 border-gray-300"
+                      theme === "dark"
+                        ? "bg-gray-700 border-gray-600"
+                        : "bg-gray-100 border-gray-300"
                     }`}
                   >
                     {follower.profile_picture_url ? (
@@ -150,9 +152,7 @@ export default function FollowersPage() {
                     {follower.username && (
                       <p
                         className={`text-xs ${
-                          theme === "dark"
-                            ? "text-gray-400"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
                         @{follower.username}
@@ -161,9 +161,7 @@ export default function FollowersPage() {
                     {follower.bio && (
                       <p
                         className={`text-xs line-clamp-1 mt-1 ${
-                          theme === "dark"
-                            ? "text-gray-400"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
                         {follower.bio}
