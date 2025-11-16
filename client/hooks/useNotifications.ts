@@ -76,10 +76,8 @@ export function useNotifications(userId?: string) {
     if (isDemoMode) {
       // For demo users, return empty notifications immediately
       if (isMountedRef.current) {
-        setLoading(true);
         setNotifications([]);
         setUnreadCount(0);
-        setLoading(false);
       }
       return;
     }
@@ -102,15 +100,24 @@ export function useNotifications(userId?: string) {
           .limit(20);
 
         if (response.error) {
-          // Check if it's a "not found" error (table doesn't exist)
+          // Check if it's a "not found" error or permission error
           const errorMsg = response.error?.message || "";
+          const errorCode = response.error?.code || "";
+
           if (
             errorMsg.includes("does not exist") ||
             errorMsg.includes("relation") ||
-            response.error?.code === "PGRST116"
+            errorCode === "PGRST116"
           ) {
             // Table doesn't exist yet - use empty array
             console.debug("Notifications table not yet created");
+            data = [];
+          } else if (
+            errorCode === "PGRST301" ||
+            errorMsg.includes("permission denied")
+          ) {
+            // RLS policy blocked - use empty array
+            console.debug("RLS policy blocked notifications access");
             data = [];
           } else {
             console.debug(
