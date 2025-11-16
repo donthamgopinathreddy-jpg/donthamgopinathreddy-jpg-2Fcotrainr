@@ -41,15 +41,15 @@ export function useAdminTrainerVerification() {
       const { data, error: fetchError } = await query;
 
       if (fetchError) {
-        const errorMsg = fetchError?.message || String(fetchError);
+        const errorMsg = fetchError?.message || "";
         const errorCode = fetchError?.code || "";
 
-        console.error("Detailed error fetching trainers:", {
-          message: errorMsg,
-          code: errorCode,
-          status: fetchError?.status,
-          details: fetchError?.details,
-        });
+        console.error("Detailed error fetching trainers:");
+        console.error("Message:", errorMsg);
+        console.error("Code:", errorCode);
+        console.error("Status:", fetchError?.status);
+        console.error("Details:", fetchError?.details);
+        console.error("Full error:", JSON.stringify(fetchError, null, 2));
 
         // Check if it's a table not found error
         if (errorMsg.includes("does not exist") || errorMsg.includes("relation") || errorCode === "PGRST116") {
