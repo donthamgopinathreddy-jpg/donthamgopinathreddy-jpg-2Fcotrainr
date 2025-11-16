@@ -36,14 +36,14 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
 const createFetchWithRetry = () => {
   return async (url: string | Request, options?: RequestInit) => {
     let lastError: Error | null = null;
-    const maxRetries = 2;
-    const retryDelay = 500;
+    const maxRetries = 1;
+    const retryDelay = 300;
 
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
       try {
-        // Create a timeout for the fetch request
+        // Create a timeout for the fetch request (reduced from 10s to 5s)
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 10000);
+        const timeout = setTimeout(() => controller.abort(), 5000);
 
         try {
           const response = await fetch(url, {
@@ -60,7 +60,9 @@ const createFetchWithRetry = () => {
 
         // Don't retry on abort errors (timeouts)
         if (lastError.name === "AbortError") {
-          throw new Error("Request timeout - Supabase server not responding");
+          lastError = new Error("Request timeout - Supabase server not responding");
+          // Still throw timeout errors without retry
+          throw lastError;
         }
 
         // Retry on network errors, but not on the last attempt
