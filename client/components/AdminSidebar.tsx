@@ -155,7 +155,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
                   </div>
                 )}
 
-                <div className="absolute bottom-0 right-0 bg-pink-600 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg">
+                <div className="absolute bottom-0 right-0 bg-orange-600 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg">
                   {uploadingPic ? (
                     <Loader className="w-3 h-3 text-white animate-spin" />
                   ) : (
