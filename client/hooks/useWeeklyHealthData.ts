@@ -56,7 +56,8 @@ export const useWeeklyHealthData = () => {
         .lte("sync_date", weekEndStr)
         .order("sync_date", { ascending: true });
 
-      if (healthError) throw new Error(`Failed to fetch health data: ${healthError.message}`);
+      if (healthError)
+        throw new Error(`Failed to fetch health data: ${healthError.message}`);
 
       // Fetch meals for the week
       const { data: mealsData, error: mealsError } = await supabase
@@ -66,7 +67,8 @@ export const useWeeklyHealthData = () => {
         .gte("logged_at", `${weekStartStr}T00:00:00`)
         .lte("logged_at", `${weekEndStr}T23:59:59`);
 
-      if (mealsError) throw new Error(`Failed to fetch meals: ${mealsError.message}`);
+      if (mealsError)
+        throw new Error(`Failed to fetch meals: ${mealsError.message}`);
 
       // Fetch workouts for the week (from user_quest_progress or check if table exists)
       let workoutMinutesTotal = 0;
@@ -82,7 +84,10 @@ export const useWeeklyHealthData = () => {
 
       if (questData && questData.length > 0) {
         // Sum up quest progress as a proxy for workout activity
-        workoutMinutesTotal = questData.reduce((sum, q) => sum + (q.progress as number || 0), 0);
+        workoutMinutesTotal = questData.reduce(
+          (sum, q) => sum + ((q.progress as number) || 0),
+          0,
+        );
       }
 
       // Fetch previous week's workout data for comparison
@@ -94,9 +99,14 @@ export const useWeeklyHealthData = () => {
         .lte("updated_at", `${prevWeekEndStr}T23:59:59`);
 
       if (prevQuestData && prevQuestData.length > 0) {
-        const prevWorkoutTotal = prevQuestData.reduce((sum, q) => sum + (q.progress as number || 0), 0);
+        const prevWorkoutTotal = prevQuestData.reduce(
+          (sum, q) => sum + ((q.progress as number) || 0),
+          0,
+        );
         if (prevWorkoutTotal > 0) {
-          workoutMinutesVsLastWeek = Math.round(((workoutMinutesTotal - prevWorkoutTotal) / prevWorkoutTotal) * 100);
+          workoutMinutesVsLastWeek = Math.round(
+            ((workoutMinutesTotal - prevWorkoutTotal) / prevWorkoutTotal) * 100,
+          );
         }
       }
 
@@ -108,15 +118,23 @@ export const useWeeklyHealthData = () => {
         .gte("sync_date", prevWeekStartStr)
         .lte("sync_date", prevWeekEndStr);
 
-      if (prevHealthError) console.debug("Failed to fetch previous week data:", prevHealthError);
+      if (prevHealthError)
+        console.debug("Failed to fetch previous week data:", prevHealthError);
 
       // Calculate totals from real data
-      const stepsTotal = healthData?.reduce((sum, d) => sum + (d.steps || 0), 0) || 0;
-      const prevStepsTotal = prevHealthData?.reduce((sum, d) => sum + (d.steps || 0), 0) || 0;
-      const stepsVsLastWeek = prevStepsTotal > 0 ? ((stepsTotal - prevStepsTotal) / prevStepsTotal) * 100 : 0;
+      const stepsTotal =
+        healthData?.reduce((sum, d) => sum + (d.steps || 0), 0) || 0;
+      const prevStepsTotal =
+        prevHealthData?.reduce((sum, d) => sum + (d.steps || 0), 0) || 0;
+      const stepsVsLastWeek =
+        prevStepsTotal > 0
+          ? ((stepsTotal - prevStepsTotal) / prevStepsTotal) * 100
+          : 0;
 
-      const caloriesConsumed = mealsData?.reduce((sum, m) => sum + (m.calories || 0), 0) || 0;
-      const proteinIntakeG = mealsData?.reduce((sum, m) => sum + (m.protein_g || 0), 0) || 0;
+      const caloriesConsumed =
+        mealsData?.reduce((sum, m) => sum + (m.calories || 0), 0) || 0;
+      const proteinIntakeG =
+        mealsData?.reduce((sum, m) => sum + (m.protein_g || 0), 0) || 0;
 
       // Log real data for debugging
       console.log("🏃 Weekly Health Data Fetched:", {
@@ -132,7 +150,9 @@ export const useWeeklyHealthData = () => {
 
       // Estimate calories burned (roughly 1.2-1.5x BMR per day + activity)
       // Using a simple estimate: 500 calories per 10,000 steps + 300 base per day
-      const estimatedCaloriesBurned = Math.round((stepsTotal / 10000) * 500 + 300 * 7);
+      const estimatedCaloriesBurned = Math.round(
+        (stepsTotal / 10000) * 500 + 300 * 7,
+      );
 
       // Estimate hydration (assume 8 glasses per day)
       const hydrationGlasses = 56; // 8 glasses * 7 days
@@ -140,7 +160,10 @@ export const useWeeklyHealthData = () => {
       // Get user's goal from diet preferences or default to "Maintain"
       let userGoal: "Lose Fat" | "Build Muscle" | "Maintain" = "Maintain";
       if (dietPrefs?.goal) {
-        const goalMap: Record<string, "Lose Fat" | "Build Muscle" | "Maintain"> = {
+        const goalMap: Record<
+          string,
+          "Lose Fat" | "Build Muscle" | "Maintain"
+        > = {
           lose_fat: "Lose Fat",
           build_muscle: "Build Muscle",
           maintain: "Maintain",
@@ -158,7 +181,8 @@ export const useWeeklyHealthData = () => {
         stepsTotal,
         stepsVsLastWeek: Math.round(stepsVsLastWeek * 10) / 10,
         workoutMinutesTotal: Math.round(workoutMinutesTotal),
-        workoutMinutesVsLastWeek: Math.round(workoutMinutesVsLastWeek * 10) / 10,
+        workoutMinutesVsLastWeek:
+          Math.round(workoutMinutesVsLastWeek * 10) / 10,
         caloriesBurned: estimatedCaloriesBurned,
         caloriesConsumed,
         proteinIntakeG,
@@ -169,7 +193,8 @@ export const useWeeklyHealthData = () => {
 
       setWeeklyData(data);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to fetch weekly data";
+      const message =
+        err instanceof Error ? err.message : "Failed to fetch weekly data";
       setError(message);
       console.debug("Weekly data fetch error:", message);
     } finally {

@@ -17,7 +17,7 @@ export default function SimpleDietPlanner({ plan }: SimpleDietPlannerProps) {
 
   const toggleDiet = (diet: string) => {
     setDietTypes((prev) =>
-      prev.includes(diet) ? prev.filter((d) => d !== diet) : [...prev, diet]
+      prev.includes(diet) ? prev.filter((d) => d !== diet) : [...prev, diet],
     );
   };
 
@@ -29,30 +29,30 @@ export default function SimpleDietPlanner({ plan }: SimpleDietPlannerProps) {
     const mealSuggestions = {
       breakfast: {
         veg: "Vegetable Oats with Berries",
-        "non_veg": "Egg & Chicken Scramble",
+        non_veg: "Egg & Chicken Scramble",
         vegan: "Oatmeal with Almond Milk",
-        "high_protein": "Protein Pancakes",
+        high_protein: "Protein Pancakes",
         keto: "Eggs & Avocado",
       },
       lunch: {
         veg: "Paneer Curry with Rice",
-        "non_veg": "Grilled Chicken with Rice",
+        non_veg: "Grilled Chicken with Rice",
         vegan: "Lentil Curry with Rice",
-        "high_protein": "Protein-Rich Salad",
+        high_protein: "Protein-Rich Salad",
         keto: "Grilled Fish with Veggies",
       },
       snack: {
         veg: "Greek Yogurt",
-        "non_veg": "Boiled Eggs",
+        non_veg: "Boiled Eggs",
         vegan: "Roasted Chickpeas",
-        "high_protein": "Protein Bar",
+        high_protein: "Protein Bar",
         keto: "Nuts & Cheese",
       },
       dinner: {
         veg: "Vegetable Stew with Roti",
-        "non_veg": "Salmon with Vegetables",
+        non_veg: "Salmon with Vegetables",
         vegan: "Bean Soup with Bread",
-        "high_protein": "Lean Meat with Veggies",
+        high_protein: "Lean Meat with Veggies",
         keto: "Steak with Salad",
       },
     };
@@ -65,17 +65,21 @@ export default function SimpleDietPlanner({ plan }: SimpleDietPlannerProps) {
 
     const meals = {
       breakfast:
-        mealSuggestions.breakfast[activeDiet as keyof typeof mealSuggestions.breakfast] ||
-        "Oats with Berries",
+        mealSuggestions.breakfast[
+          activeDiet as keyof typeof mealSuggestions.breakfast
+        ] || "Oats with Berries",
       lunch:
-        mealSuggestions.lunch[activeDiet as keyof typeof mealSuggestions.lunch] ||
-        "Rice with Curry",
+        mealSuggestions.lunch[
+          activeDiet as keyof typeof mealSuggestions.lunch
+        ] || "Rice with Curry",
       snack:
-        mealSuggestions.snack[activeDiet as keyof typeof mealSuggestions.snack] ||
-        "Healthy Snack",
+        mealSuggestions.snack[
+          activeDiet as keyof typeof mealSuggestions.snack
+        ] || "Healthy Snack",
       dinner:
-        mealSuggestions.dinner[activeDiet as keyof typeof mealSuggestions.dinner] ||
-        "Dinner Bowl",
+        mealSuggestions.dinner[
+          activeDiet as keyof typeof mealSuggestions.dinner
+        ] || "Dinner Bowl",
     };
 
     setGeneratedMeals({
@@ -83,9 +87,9 @@ export default function SimpleDietPlanner({ plan }: SimpleDietPlannerProps) {
       dietTypes: dietTypes.length > 0 ? dietTypes : ["Mixed"],
       calories,
       meals,
-      protein: Math.round(calories * 0.3 / 4),
-      carbs: Math.round(calories * 0.4 / 4),
-      fats: Math.round(calories * 0.3 / 9),
+      protein: Math.round((calories * 0.3) / 4),
+      carbs: Math.round((calories * 0.4) / 4),
+      fats: Math.round((calories * 0.3) / 9),
     });
 
     setLoading(false);
@@ -134,9 +138,7 @@ export default function SimpleDietPlanner({ plan }: SimpleDietPlannerProps) {
               }`}
             >
               {diet}
-              {dietTypes.includes(diet) && (
-                <span className="ml-1">✓</span>
-              )}
+              {dietTypes.includes(diet) && <span className="ml-1">✓</span>}
             </button>
           ))}
         </div>
@@ -229,7 +231,9 @@ export default function SimpleDietPlanner({ plan }: SimpleDietPlannerProps) {
                 <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
                   {generatedMeals.carbs}g
                 </p>
-                <p className="text-xs text-gray-600 dark:text-gray-400">carbs</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  carbs
+                </p>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-2">
                 <p className="text-xl font-bold text-yellow-600 dark:text-yellow-400">

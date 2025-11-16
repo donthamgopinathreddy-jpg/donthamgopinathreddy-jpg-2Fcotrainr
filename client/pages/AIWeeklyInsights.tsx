@@ -1,19 +1,46 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, TrendingUp, Target, Zap, Droplets, Moon, Award, Unlock } from "lucide-react";
+import {
+  ArrowLeft,
+  TrendingUp,
+  Target,
+  Zap,
+  Droplets,
+  Moon,
+  Award,
+  Unlock,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAIWeeklyInsights, type AIInsights } from "@/hooks/useAIWeeklyInsights";
+import {
+  useAIWeeklyInsights,
+  type AIInsights,
+} from "@/hooks/useAIWeeklyInsights";
 import { useWeeklyHealthData } from "@/hooks/useWeeklyHealthData";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+} from "recharts";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function AIWeeklyInsights() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { generateInsights, loading: generatingInsights } = useAIWeeklyInsights();
-  const { weeklyData, loading: loadingData, error: dataError } = useWeeklyHealthData();
+  const { generateInsights, loading: generatingInsights } =
+    useAIWeeklyInsights();
+  const {
+    weeklyData,
+    loading: loadingData,
+    error: dataError,
+  } = useWeeklyHealthData();
   const [insights, setInsights] = useState<AIInsights | null>(null);
 
   useEffect(() => {
@@ -29,7 +56,9 @@ export default function AIWeeklyInsights() {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center pb-24">
         <div className="text-center">
           <div className="animate-spin h-8 w-8 text-orange-500 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading your insights...</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Loading your insights...
+          </p>
         </div>
       </div>
     );
@@ -40,7 +69,8 @@ export default function AIWeeklyInsights() {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center pb-24">
         <div className="text-center">
           <p className="text-red-600 dark:text-red-400">
-            {dataError || "Unable to load your weekly insights. Please try again later."}
+            {dataError ||
+              "Unable to load your weekly insights. Please try again later."}
           </p>
         </div>
       </div>
@@ -86,7 +116,9 @@ export default function AIWeeklyInsights() {
           >
             <ArrowLeft className="w-5 h-5 text-orange-500 group-hover:text-orange-600 transition" />
           </button>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent">AI Weekly Insights</h1>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent">
+            AI Weekly Insights
+          </h1>
         </div>
       </div>
 
@@ -94,25 +126,39 @@ export default function AIWeeklyInsights() {
         {/* Weekly Summary Header */}
         <Card className="p-6 mb-8 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white border-0">
           <h2 className="text-2xl font-bold mb-2">Week Overview</h2>
-          <p className="opacity-90">Week of {weeklyData.weekStartDate.toLocaleDateString()}</p>
+          <p className="opacity-90">
+            Week of {weeklyData.weekStartDate.toLocaleDateString()}
+          </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
             <div className="bg-white/20 backdrop-blur p-4 rounded-lg">
-              <div className="text-2xl font-bold">{insights.progressOverview.stepsTotal.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                {insights.progressOverview.stepsTotal.toLocaleString()}
+              </div>
               <div className="text-sm opacity-90">Steps</div>
-              <div className="text-sm font-semibold mt-1">{insights.progressOverview.stepsVsLastWeek}</div>
+              <div className="text-sm font-semibold mt-1">
+                {insights.progressOverview.stepsVsLastWeek}
+              </div>
             </div>
             <div className="bg-white/20 backdrop-blur p-4 rounded-lg">
-              <div className="text-2xl font-bold">{insights.progressOverview.workoutMinutes}</div>
+              <div className="text-2xl font-bold">
+                {insights.progressOverview.workoutMinutes}
+              </div>
               <div className="text-sm opacity-90">Workout Min</div>
-              <div className="text-sm font-semibold mt-1">{insights.progressOverview.workoutVsLastWeek}</div>
+              <div className="text-sm font-semibold mt-1">
+                {insights.progressOverview.workoutVsLastWeek}
+              </div>
             </div>
             <div className="bg-white/20 backdrop-blur p-4 rounded-lg">
-              <div className="text-2xl font-bold">{insights.progressOverview.caloriesBurned}</div>
+              <div className="text-2xl font-bold">
+                {insights.progressOverview.caloriesBurned}
+              </div>
               <div className="text-sm opacity-90">Burned</div>
             </div>
             <div className="bg-white/20 backdrop-blur p-4 rounded-lg">
-              <div className="text-2xl font-bold">{insights.progressOverview.caloriesConsumed}</div>
+              <div className="text-2xl font-bold">
+                {insights.progressOverview.caloriesConsumed}
+              </div>
               <div className="text-sm opacity-90">Consumed</div>
             </div>
           </div>
@@ -130,7 +176,9 @@ export default function AIWeeklyInsights() {
               <div className="text-2xl font-bold text-white">
                 {insights.goalAlignment.status}
               </div>
-              <div className="text-sm mt-1 text-white drop-shadow">{insights.goalAlignment.reason}</div>
+              <div className="text-sm mt-1 text-white drop-shadow">
+                {insights.goalAlignment.reason}
+              </div>
             </div>
           </Card>
 
@@ -139,7 +187,9 @@ export default function AIWeeklyInsights() {
             <h3 className="text-lg font-bold mb-4 text-white flex items-center gap-2">
               <span className="text-2xl">🎯</span>Coach's Message
             </h3>
-            <p className="text-lg font-semibold text-white drop-shadow">"{insights.coachMessage}"</p>
+            <p className="text-lg font-semibold text-white drop-shadow">
+              "{insights.coachMessage}"
+            </p>
           </Card>
         </div>
 
@@ -147,23 +197,40 @@ export default function AIWeeklyInsights() {
         <Card className="p-6 mb-8 bg-white/80 backdrop-blur border-orange-100">
           <div className="flex items-center gap-3 mb-6">
             <Award className="w-6 h-6 text-orange-500" />
-            <h3 className="text-lg font-bold text-black dark:text-white">Achievements & Streaks</h3>
+            <h3 className="text-lg font-bold text-black dark:text-white">
+              Achievements & Streaks
+            </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {insights.achievements.personalRecords.map((pr, idx) => (
-              <div key={idx} className="p-4 bg-gradient-to-br from-purple-400 to-purple-300 dark:from-purple-700 dark:to-purple-600 rounded-lg border-2 border-purple-500">
-                <div className="text-sm font-bold text-black dark:text-white">{pr}</div>
+              <div
+                key={idx}
+                className="p-4 bg-gradient-to-br from-purple-400 to-purple-300 dark:from-purple-700 dark:to-purple-600 rounded-lg border-2 border-purple-500"
+              >
+                <div className="text-sm font-bold text-black dark:text-white">
+                  {pr}
+                </div>
               </div>
             ))}
             {insights.achievements.milestones.map((ms, idx) => (
-              <div key={idx} className="p-4 bg-gradient-to-br from-blue-400 to-blue-300 dark:from-blue-700 dark:to-blue-600 rounded-lg border-2 border-blue-500">
-                <div className="text-sm font-bold text-black dark:text-white">{ms}</div>
+              <div
+                key={idx}
+                className="p-4 bg-gradient-to-br from-blue-400 to-blue-300 dark:from-blue-700 dark:to-blue-600 rounded-lg border-2 border-blue-500"
+              >
+                <div className="text-sm font-bold text-black dark:text-white">
+                  {ms}
+                </div>
               </div>
             ))}
             {insights.achievements.streaks.map((st, idx) => (
-              <div key={idx} className="p-4 bg-gradient-to-br from-orange-400 to-orange-300 dark:from-orange-700 dark:to-orange-600 rounded-lg border-2 border-orange-500">
-                <div className="text-sm font-bold text-black dark:text-white">{st}</div>
+              <div
+                key={idx}
+                className="p-4 bg-gradient-to-br from-orange-400 to-orange-300 dark:from-orange-700 dark:to-orange-600 rounded-lg border-2 border-orange-500"
+              >
+                <div className="text-sm font-bold text-black dark:text-white">
+                  {st}
+                </div>
               </div>
             ))}
           </div>
@@ -182,8 +249,18 @@ export default function AIWeeklyInsights() {
                 <XAxis dataKey="day" />
                 <YAxis />
                 <Tooltip />
-                <Line type="monotone" dataKey="steps" stroke="#ff7a00" strokeWidth={2} />
-                <Line type="monotone" dataKey="target" stroke="#ccc" strokeDasharray="5 5" />
+                <Line
+                  type="monotone"
+                  dataKey="steps"
+                  stroke="#ff7a00"
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="target"
+                  stroke="#ccc"
+                  strokeDasharray="5 5"
+                />
               </LineChart>
             </ResponsiveContainer>
           </Card>
@@ -210,13 +287,20 @@ export default function AIWeeklyInsights() {
         <Card className="p-6 mb-8 bg-white/80 backdrop-blur border-orange-100">
           <div className="flex items-center gap-3 mb-6">
             <Zap className="w-6 h-6 text-orange-500" />
-            <h3 className="text-lg font-bold text-black dark:text-white">AI Observations</h3>
+            <h3 className="text-lg font-bold text-black dark:text-white">
+              AI Observations
+            </h3>
           </div>
 
           <div className="space-y-3">
             {insights.aiObservations.map((obs, idx) => (
-              <div key={idx} className="p-3 bg-gradient-to-r from-orange-300 to-yellow-300 dark:from-orange-600 dark:to-yellow-600 rounded-lg border-2 border-orange-400 dark:border-orange-700">
-                <p className="text-sm font-medium text-black dark:text-white">{obs}</p>
+              <div
+                key={idx}
+                className="p-3 bg-gradient-to-r from-orange-300 to-yellow-300 dark:from-orange-600 dark:to-yellow-600 rounded-lg border-2 border-orange-400 dark:border-orange-700"
+              >
+                <p className="text-sm font-medium text-black dark:text-white">
+                  {obs}
+                </p>
               </div>
             ))}
           </div>
@@ -226,41 +310,70 @@ export default function AIWeeklyInsights() {
         <Card className="p-6 mb-8 bg-white/80 backdrop-blur border-orange-100">
           <div className="flex items-center gap-3 mb-6">
             <TrendingUp className="w-6 h-6 text-orange-500" />
-            <h3 className="text-lg font-bold text-black dark:text-white">Personalized Recommendations</h3>
+            <h3 className="text-lg font-bold text-black dark:text-white">
+              Personalized Recommendations
+            </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 rounded-lg border-2 border-purple-400 bg-gradient-to-br from-purple-300 to-purple-200 dark:from-purple-700 dark:to-purple-600">
-              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">💪 Workout</h4>
-              <p className="text-sm font-medium text-black dark:text-white">{insights.recommendations.workoutSuggestion}</p>
+              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">
+                💪 Workout
+              </h4>
+              <p className="text-sm font-medium text-black dark:text-white">
+                {insights.recommendations.workoutSuggestion}
+              </p>
             </div>
             <div className="p-4 rounded-lg border-2 border-green-400 bg-gradient-to-br from-green-300 to-green-200 dark:from-green-700 dark:to-green-600">
-              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">🍗 Diet</h4>
-              <p className="text-sm font-medium text-black dark:text-white">{insights.recommendations.dietModification}</p>
+              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">
+                🍗 Diet
+              </h4>
+              <p className="text-sm font-medium text-black dark:text-white">
+                {insights.recommendations.dietModification}
+              </p>
             </div>
             <div className="p-4 rounded-lg border-2 border-blue-400 bg-gradient-to-br from-blue-300 to-blue-200 dark:from-blue-700 dark:to-blue-600">
-              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">💧 Hydration</h4>
-              <p className="text-sm font-medium text-black dark:text-white">{insights.recommendations.hydrationTarget}</p>
+              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">
+                💧 Hydration
+              </h4>
+              <p className="text-sm font-medium text-black dark:text-white">
+                {insights.recommendations.hydrationTarget}
+              </p>
             </div>
             <div className="p-4 rounded-lg border-2 border-pink-400 bg-gradient-to-br from-pink-300 to-pink-200 dark:from-pink-700 dark:to-pink-600">
-              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">👟 Steps</h4>
-              <p className="text-sm font-medium text-black dark:text-white">{insights.recommendations.stepChallenge}</p>
+              <h4 className="font-bold text-sm mb-2 text-black dark:text-white">
+                👟 Steps
+              </h4>
+              <p className="text-sm font-medium text-black dark:text-white">
+                {insights.recommendations.stepChallenge}
+              </p>
             </div>
           </div>
         </Card>
 
         {/* Weekly Challenges */}
         <Card className="p-6 mb-8 bg-white/80 backdrop-blur border-orange-100">
-          <h3 className="text-lg font-bold mb-6 text-black dark:text-white">Weekly Challenges</h3>
+          <h3 className="text-lg font-bold mb-6 text-black dark:text-white">
+            Weekly Challenges
+          </h3>
 
           <div className="space-y-4">
             {insights.challenges.map((challenge, idx) => (
-              <div key={idx} className="p-4 border-2 border-orange-400 rounded-lg bg-gradient-to-r from-orange-300 to-yellow-300 dark:from-orange-700 dark:to-yellow-700">
+              <div
+                key={idx}
+                className="p-4 border-2 border-orange-400 rounded-lg bg-gradient-to-r from-orange-300 to-yellow-300 dark:from-orange-700 dark:to-yellow-700"
+              >
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-bold text-sm text-black dark:text-white">{challenge.name}</h4>
-                  <span className="text-black dark:text-white font-bold text-sm">{challenge.target}</span>
+                  <h4 className="font-bold text-sm text-black dark:text-white">
+                    {challenge.name}
+                  </h4>
+                  <span className="text-black dark:text-white font-bold text-sm">
+                    {challenge.target}
+                  </span>
                 </div>
-                <p className="text-sm font-medium text-black dark:text-white">{challenge.description}</p>
+                <p className="text-sm font-medium text-black dark:text-white">
+                  {challenge.description}
+                </p>
                 <div className="mt-3">
                   <Progress value={60} className="h-2" />
                 </div>
@@ -275,9 +388,12 @@ export default function AIWeeklyInsights() {
             <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent" />
             <div className="relative z-10 text-center">
               <Unlock className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-purple-900 mb-2">Premium Insights Locked</h3>
+              <h3 className="text-2xl font-bold text-purple-900 mb-2">
+                Premium Insights Locked
+              </h3>
               <p className="text-purple-800 mb-6">
-                Upgrade to unlock deeper AI health insights, recovery scores, advanced predictions, and meal plan optimization
+                Upgrade to unlock deeper AI health insights, recovery scores,
+                advanced predictions, and meal plan optimization
               </p>
               <Button className="bg-purple-600 hover:bg-purple-700 text-white">
                 Upgrade to Premium
@@ -292,7 +408,9 @@ export default function AIWeeklyInsights() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="p-4 rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100">
                   <h4 className="font-semibold mb-2">Micronutrient Analysis</h4>
-                  <p className="text-sm">{insights.premiumInsights.micronutrients}</p>
+                  <p className="text-sm">
+                    {insights.premiumInsights.micronutrients}
+                  </p>
                 </div>
 
                 <div className="p-4 rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100">
@@ -300,21 +418,38 @@ export default function AIWeeklyInsights() {
                   <div className="text-3xl font-bold text-purple-600 mb-2">
                     {insights.premiumInsights.recoveryScore}/100
                   </div>
-                  <Progress value={insights.premiumInsights.recoveryScore} className="h-2" />
+                  <Progress
+                    value={insights.premiumInsights.recoveryScore}
+                    className="h-2"
+                  />
                 </div>
 
                 <div className="p-4 rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100">
                   <h4 className="font-semibold mb-2">Predictions</h4>
                   <ul className="text-sm space-y-2">
-                    <li>��� Steps: {insights.premiumInsights.predictions.predictedSteps.toLocaleString()}</li>
-                    <li>⚖️ Weight: {insights.premiumInsights.predictions.predictedWeight}</li>
-                    <li>🔥 Deficit: {insights.premiumInsights.predictions.predictedCalorieBalance}</li>
+                    <li>
+                      ��� Steps:{" "}
+                      {insights.premiumInsights.predictions.predictedSteps.toLocaleString()}
+                    </li>
+                    <li>
+                      ⚖️ Weight:{" "}
+                      {insights.premiumInsights.predictions.predictedWeight}
+                    </li>
+                    <li>
+                      🔥 Deficit:{" "}
+                      {
+                        insights.premiumInsights.predictions
+                          .predictedCalorieBalance
+                      }
+                    </li>
                   </ul>
                 </div>
 
                 <div className="p-4 rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100">
                   <h4 className="font-semibold mb-2">Protein Consistency</h4>
-                  <p className="text-sm">{insights.premiumInsights.predictions.proteinConsistency}</p>
+                  <p className="text-sm">
+                    {insights.premiumInsights.predictions.proteinConsistency}
+                  </p>
                 </div>
               </div>
             )}

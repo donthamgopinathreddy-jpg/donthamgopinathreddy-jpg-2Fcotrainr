@@ -95,7 +95,7 @@ export default function ExpandedDietPlanner({
   weeklyMealPlan,
 }: ExpandedDietPlannerProps) {
   const [selectedDietTypes, setSelectedDietTypes] = useState<string[]>(
-    dietType ? [dietType] : []
+    dietType ? [dietType] : [],
   );
 
   const handleDietTypeToggle = (type: string) => {
@@ -111,7 +111,7 @@ export default function ExpandedDietPlanner({
     setAllergens(
       allergens.includes(allergen)
         ? allergens.filter((a) => a !== allergen)
-        : [...allergens, allergen]
+        : [...allergens, allergen],
     );
   };
 
@@ -237,9 +237,7 @@ export default function ExpandedDietPlanner({
           </span>
           <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
             Allergens
-            {plan !== "premium" && (
-              <Lock className="w-4 h-4 text-orange-500" />
-            )}
+            {plan !== "premium" && <Lock className="w-4 h-4 text-orange-500" />}
           </h3>
         </div>
 
@@ -288,9 +286,7 @@ export default function ExpandedDietPlanner({
           </span>
           <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
             Macro Targets
-            {plan !== "premium" && (
-              <Lock className="w-4 h-4 text-orange-500" />
-            )}
+            {plan !== "premium" && <Lock className="w-4 h-4 text-orange-500" />}
           </h3>
         </div>
 
@@ -359,7 +355,9 @@ export default function ExpandedDietPlanner({
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               Daily Calories:{" "}
               <span className="text-orange-600 dark:text-orange-400 text-lg">
-                {Math.round(proteinTarget * 4 + carbsTarget * 4 + fatsTarget * 9)}
+                {Math.round(
+                  proteinTarget * 4 + carbsTarget * 4 + fatsTarget * 9,
+                )}
               </span>{" "}
               kcal
             </p>
@@ -387,9 +385,7 @@ export default function ExpandedDietPlanner({
           </span>
           <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
             Budget Tier
-            {plan !== "premium" && (
-              <Lock className="w-4 h-4 text-orange-500" />
-            )}
+            {plan !== "premium" && <Lock className="w-4 h-4 text-orange-500" />}
           </h3>
         </div>
 

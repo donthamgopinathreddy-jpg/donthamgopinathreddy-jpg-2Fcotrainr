@@ -86,27 +86,66 @@ export const useAIWeeklyInsights = () => {
         // Calculate trends and metrics
         const calorieBalance = data.caloriesBurned - data.caloriesConsumed;
         const isDeficit = calorieBalance > 0;
-        const proteinPercentage = (data.proteinIntakeG / (data.caloriesConsumed * 0.25)) * 100;
+        const proteinPercentage =
+          (data.proteinIntakeG / (data.caloriesConsumed * 0.25)) * 100;
 
         // Generate insights
         const insights: AIInsights = {
           progressOverview: {
             stepsTotal: data.stepsTotal,
-            stepsVsLastWeek: data.stepsVsLastWeek > 0 ? `+${data.stepsVsLastWeek.toFixed(1)}%` : `${data.stepsVsLastWeek.toFixed(1)}%`,
+            stepsVsLastWeek:
+              data.stepsVsLastWeek > 0
+                ? `+${data.stepsVsLastWeek.toFixed(1)}%`
+                : `${data.stepsVsLastWeek.toFixed(1)}%`,
             workoutMinutes: data.workoutMinutesTotal,
-            workoutVsLastWeek: data.workoutMinutesVsLastWeek > 0 ? `+${data.workoutMinutesVsLastWeek.toFixed(1)}%` : `${data.workoutMinutesVsLastWeek.toFixed(1)}%`,
+            workoutVsLastWeek:
+              data.workoutMinutesVsLastWeek > 0
+                ? `+${data.workoutMinutesVsLastWeek.toFixed(1)}%`
+                : `${data.workoutMinutesVsLastWeek.toFixed(1)}%`,
             caloriesBurned: data.caloriesBurned,
             caloriesConsumed: data.caloriesConsumed,
-            weightChange: data.weightChangeKg ? `${data.weightChangeKg > 0 ? '+' : ''}${data.weightChangeKg.toFixed(1)} kg` : null,
+            weightChange: data.weightChangeKg
+              ? `${data.weightChangeKg > 0 ? "+" : ""}${data.weightChangeKg.toFixed(1)} kg`
+              : null,
           },
 
           trendInsights: {
-            stepsTrend: data.stepsVsLastWeek > 10 ? "📈 Excellent improvement" : data.stepsVsLastWeek > 0 ? "📈 Good progress" : "📉 Slight decline",
-            workoutConsistency: data.workoutMinutesTotal > 150 ? "✅ Very consistent" : data.workoutMinutesTotal > 90 ? "✅ Consistent" : "⚠️ Could improve",
-            calorieBalance: isDeficit ? "✅ Calorie deficit achieved" : calorieBalance < 500 ? "⚠️ Near balance" : "❌ Surplus detected",
-            proteinIntakeTrend: proteinPercentage > 30 ? "✅ Excellent protein intake" : proteinPercentage > 20 ? "✅ Good protein intake" : "⚠️ Low protein intake",
-            sleepTrend: data.sleepHours ? (data.sleepHours >= 7 ? "✅ Good sleep" : data.sleepHours >= 6 ? "⚠️ Adequate sleep" : "❌ Poor sleep") : null,
-            hydrationConsistency: data.hydrationGlasses >= 56 ? "✅ Excellent hydration" : data.hydrationGlasses >= 35 ? "✅ Good hydration" : "⚠️ Needs more water",
+            stepsTrend:
+              data.stepsVsLastWeek > 10
+                ? "📈 Excellent improvement"
+                : data.stepsVsLastWeek > 0
+                  ? "📈 Good progress"
+                  : "📉 Slight decline",
+            workoutConsistency:
+              data.workoutMinutesTotal > 150
+                ? "✅ Very consistent"
+                : data.workoutMinutesTotal > 90
+                  ? "✅ Consistent"
+                  : "⚠️ Could improve",
+            calorieBalance: isDeficit
+              ? "✅ Calorie deficit achieved"
+              : calorieBalance < 500
+                ? "⚠️ Near balance"
+                : "❌ Surplus detected",
+            proteinIntakeTrend:
+              proteinPercentage > 30
+                ? "✅ Excellent protein intake"
+                : proteinPercentage > 20
+                  ? "✅ Good protein intake"
+                  : "⚠️ Low protein intake",
+            sleepTrend: data.sleepHours
+              ? data.sleepHours >= 7
+                ? "✅ Good sleep"
+                : data.sleepHours >= 6
+                  ? "⚠️ Adequate sleep"
+                  : "❌ Poor sleep"
+              : null,
+            hydrationConsistency:
+              data.hydrationGlasses >= 56
+                ? "✅ Excellent hydration"
+                : data.hydrationGlasses >= 35
+                  ? "✅ Good hydration"
+                  : "⚠️ Needs more water",
           },
 
           achievements: {
@@ -115,16 +154,23 @@ export const useAIWeeklyInsights = () => {
             streaks: generateStreaks(data),
           },
 
-          aiObservations: generateAIObservations(data, calorieBalance, proteinPercentage),
+          aiObservations: generateAIObservations(
+            data,
+            calorieBalance,
+            proteinPercentage,
+          ),
 
           goalAlignment: getGoalAlignment(data, calorieBalance),
 
           recommendations: {
             workoutSuggestion: getWorkoutSuggestion(data),
             dietModification: getDietModification(data, proteinPercentage),
-            hydrationTarget: `Aim for ${Math.ceil(data.hydrationGlasses / 7 * 8)} glasses of water daily to stay hydrated`,
-            stepChallenge: `Try to walk ${data.stepsTotal > 100000 ? Math.round(data.stepsTotal * 1.1 / 1000) * 1000 : "100,000"} steps next week`,
-            sleepImprovement: data.sleepHours && data.sleepHours < 7 ? "Aim for 7-9 hours of sleep; try a consistent sleep schedule" : null,
+            hydrationTarget: `Aim for ${Math.ceil((data.hydrationGlasses / 7) * 8)} glasses of water daily to stay hydrated`,
+            stepChallenge: `Try to walk ${data.stepsTotal > 100000 ? Math.round((data.stepsTotal * 1.1) / 1000) * 1000 : "100,000"} steps next week`,
+            sleepImprovement:
+              data.sleepHours && data.sleepHours < 7
+                ? "Aim for 7-9 hours of sleep; try a consistent sleep schedule"
+                : null,
           },
 
           challenges: generateChallenges(data),
@@ -135,13 +181,21 @@ export const useAIWeeklyInsights = () => {
         // Add premium insights if applicable
         if (data.subscriptionLevel === "premium") {
           insights.premiumInsights = {
-            micronutrients: "Excellent intake of essential vitamins and minerals",
+            micronutrients:
+              "Excellent intake of essential vitamins and minerals",
             recoveryScore: calculateRecoveryScore(data),
             predictions: {
-              predictedSteps: Math.round(data.stepsTotal * (1 + data.stepsVsLastWeek / 100)),
-              predictedWeight: data.weightChangeKg ? `${(data.weightChangeKg * 4).toFixed(1)} kg in 4 weeks` : "Stable",
+              predictedSteps: Math.round(
+                data.stepsTotal * (1 + data.stepsVsLastWeek / 100),
+              ),
+              predictedWeight: data.weightChangeKg
+                ? `${(data.weightChangeKg * 4).toFixed(1)} kg in 4 weeks`
+                : "Stable",
               predictedCalorieBalance: `${(calorieBalance * 7).toFixed(0)} kcal weekly deficit`,
-              proteinConsistency: proteinPercentage > 30 ? "Excellent - continue current intake" : "Could improve - increase by 10-15g daily",
+              proteinConsistency:
+                proteinPercentage > 30
+                  ? "Excellent - continue current intake"
+                  : "Could improve - increase by 10-15g daily",
             },
           };
         }
@@ -172,14 +226,15 @@ export const useAIWeeklyInsights = () => {
 
         return insights;
       } catch (err) {
-        const message = err instanceof Error ? err.message : "Failed to generate insights";
+        const message =
+          err instanceof Error ? err.message : "Failed to generate insights";
         setError(message);
         return null;
       } finally {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { generateInsights, loading, error };
@@ -218,7 +273,9 @@ function generateMilestones(data: WeeklyInsightData): string[] {
     milestones.push("💧 Perfect hydration week");
   }
 
-  return milestones.length > 0 ? milestones : ["🚀 Build toward your next milestone!"];
+  return milestones.length > 0
+    ? milestones
+    : ["🚀 Build toward your next milestone!"];
 }
 
 function generateStreaks(data: WeeklyInsightData): string[] {
@@ -228,52 +285,86 @@ function generateStreaks(data: WeeklyInsightData): string[] {
   ];
 }
 
-function generateAIObservations(data: WeeklyInsightData, calorieBalance: number, proteinPercentage: number): string[] {
+function generateAIObservations(
+  data: WeeklyInsightData,
+  calorieBalance: number,
+  proteinPercentage: number,
+): string[] {
   const observations: string[] = [];
 
   if (data.stepsVsLastWeek > 20) {
-    observations.push(`You walked ${data.stepsVsLastWeek.toFixed(0)}% more this week—great improvement!`);
+    observations.push(
+      `You walked ${data.stepsVsLastWeek.toFixed(0)}% more this week—great improvement!`,
+    );
   }
 
   if (proteinPercentage < 25) {
-    observations.push("Protein intake was low this week; try adding eggs, lentils, or Greek yogurt.");
+    observations.push(
+      "Protein intake was low this week; try adding eggs, lentils, or Greek yogurt.",
+    );
   }
 
   if (data.workoutMinutesTotal > data.workoutMinutesVsLastWeek) {
-    observations.push("Your workout frequency is increasing—keep up the momentum!");
+    observations.push(
+      "Your workout frequency is increasing—keep up the momentum!",
+    );
   }
 
   if (data.hydrationGlasses < 35) {
-    observations.push("Water intake was lower than ideal; prioritize hydration this week.");
+    observations.push(
+      "Water intake was lower than ideal; prioritize hydration this week.",
+    );
   }
 
   if (calorieBalance > 500) {
-    observations.push("Strong calorie deficit achieved—you're on track with your fat loss goal.");
+    observations.push(
+      "Strong calorie deficit achieved—you're on track with your fat loss goal.",
+    );
   }
 
-  return observations.length > 0 ? observations : ["You're maintaining your routine well!"];
+  return observations.length > 0
+    ? observations
+    : ["You're maintaining your routine well!"];
 }
 
-function getGoalAlignment(data: WeeklyInsightData, calorieBalance: number): { status: "On Track" | "Almost There" | "Needs Improvement"; reason: string } {
+function getGoalAlignment(
+  data: WeeklyInsightData,
+  calorieBalance: number,
+): {
+  status: "On Track" | "Almost There" | "Needs Improvement";
+  reason: string;
+} {
   if (data.goal === "Lose Fat") {
     if (calorieBalance > 500) {
       return { status: "On Track", reason: "Strong calorie deficit achieved" };
     } else if (calorieBalance > 0) {
-      return { status: "Almost There", reason: "Small deficit detected—increase activity" };
+      return {
+        status: "Almost There",
+        reason: "Small deficit detected—increase activity",
+      };
     } else {
-      return { status: "Needs Improvement", reason: "Calorie surplus detected—watch intake" };
+      return {
+        status: "Needs Improvement",
+        reason: "Calorie surplus detected—watch intake",
+      };
     }
   } else if (data.goal === "Build Muscle") {
     if (data.proteinIntakeG > 1.6 * 70) {
       return { status: "On Track", reason: "Protein intake is excellent" };
     } else {
-      return { status: "Needs Improvement", reason: "Increase protein intake for muscle growth" };
+      return {
+        status: "Needs Improvement",
+        reason: "Increase protein intake for muscle growth",
+      };
     }
   } else {
     if (Math.abs(calorieBalance) < 500) {
       return { status: "On Track", reason: "Calories are balanced" };
     } else {
-      return { status: "Almost There", reason: "Fine-tune your calorie intake" };
+      return {
+        status: "Almost There",
+        reason: "Fine-tune your calorie intake",
+      };
     }
   }
 }
@@ -288,7 +379,10 @@ function getWorkoutSuggestion(data: WeeklyInsightData): string {
   }
 }
 
-function getDietModification(data: WeeklyInsightData, proteinPercentage: number): string {
+function getDietModification(
+  data: WeeklyInsightData,
+  proteinPercentage: number,
+): string {
   if (proteinPercentage < 20) {
     return "Increase protein intake to 1.6-2.2g per kg of body weight";
   } else if (proteinPercentage > 40) {
@@ -298,11 +392,13 @@ function getDietModification(data: WeeklyInsightData, proteinPercentage: number)
   }
 }
 
-function generateChallenges(data: WeeklyInsightData): { name: string; target: string; description: string }[] {
+function generateChallenges(
+  data: WeeklyInsightData,
+): { name: string; target: string; description: string }[] {
   return [
     {
       name: "Step Challenge",
-      target: `${Math.round(data.stepsTotal * 1.1 / 1000) * 1000} steps`,
+      target: `${Math.round((data.stepsTotal * 1.1) / 1000) * 1000} steps`,
       description: "Walk 10% more steps next week",
     },
     {

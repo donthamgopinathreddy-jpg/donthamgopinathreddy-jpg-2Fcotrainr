@@ -1,18 +1,41 @@
 import React, { useState } from "react";
 import { Sparkles, X, Plus } from "lucide-react";
-import { useDietPlanGenerator, type DietPreferences, type MealPlan } from "@/hooks/useDietPlanGenerator";
+import {
+  useDietPlanGenerator,
+  type DietPreferences,
+  type MealPlan,
+} from "@/hooks/useDietPlanGenerator";
 
 interface TrainingHubDietPlannerProps {
   plan: "free" | "basic" | "premium";
 }
 
-const DIET_TYPES = ["Veg", "Non-Veg", "Vegan", "High-Protein", "Keto", "Custom"];
-const ALLERGENS = ["Dairy", "Gluten", "Nuts", "Soy", "Eggs", "Wheat", "Shellfish", "Sesame"];
+const DIET_TYPES = [
+  "Veg",
+  "Non-Veg",
+  "Vegan",
+  "High-Protein",
+  "Keto",
+  "Custom",
+];
+const ALLERGENS = [
+  "Dairy",
+  "Gluten",
+  "Nuts",
+  "Soy",
+  "Eggs",
+  "Wheat",
+  "Shellfish",
+  "Sesame",
+];
 const BUDGETS = ["Low", "Medium", "High"];
 const CULTURAL_PREFS = ["South Indian", "North Indian", "Western"];
 
-export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerProps) {
-  const { generateMealPlan, generateWeeklyPlan, loading, error } = useDietPlanGenerator();
+export default function TrainingHubDietPlanner({
+  plan,
+}: TrainingHubDietPlannerProps) {
+  const { generateMealPlan, generateWeeklyPlan, loading, error } =
+    useDietPlanGenerator();
   const [mealPlan, setMealPlan] = useState<MealPlan | null>(null);
   const [showForm, setShowForm] = useState(true);
 
@@ -57,9 +80,18 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
   const handleGenerateMeal = async () => {
     const updatedPrefs: DietPreferences = {
       ...preferences,
-      preferredFoods: foodLikes.split(",").map((f) => f.trim()).filter((f) => f),
-      dislikedFoods: foodDislikes.split(",").map((f) => f.trim()).filter((f) => f),
-      mustIncludeFoods: foodMustInclude.split(",").map((f) => f.trim()).filter((f) => f),
+      preferredFoods: foodLikes
+        .split(",")
+        .map((f) => f.trim())
+        .filter((f) => f),
+      dislikedFoods: foodDislikes
+        .split(",")
+        .map((f) => f.trim())
+        .filter((f) => f),
+      mustIncludeFoods: foodMustInclude
+        .split(",")
+        .map((f) => f.trim())
+        .filter((f) => f),
     };
 
     if (otherAllergen) {
@@ -78,31 +110,43 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
     return (
       <div className="bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900/40 dark:to-orange-900/20 rounded-xl p-4 border border-orange-200 dark:border-orange-800/50">
         <div className="flex items-start justify-between mb-2">
-          <h4 className="font-bold text-gray-900 dark:text-white">{meal.name}</h4>
+          <h4 className="font-bold text-gray-900 dark:text-white">
+            {meal.name}
+          </h4>
           <span className="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">
             {label}
           </span>
         </div>
         <div className="grid grid-cols-2 gap-2 text-xs mb-2">
           <div className="bg-white dark:bg-gray-800 p-2 rounded">
-            <div className="font-bold text-orange-600 dark:text-orange-400">{meal.calories || 0}</div>
+            <div className="font-bold text-orange-600 dark:text-orange-400">
+              {meal.calories || 0}
+            </div>
             <div className="text-gray-600 dark:text-gray-400">kcal</div>
           </div>
           <div className="bg-white dark:bg-gray-800 p-2 rounded">
-            <div className="font-bold text-red-600 dark:text-red-400">{meal.protein_g || 0}g</div>
+            <div className="font-bold text-red-600 dark:text-red-400">
+              {meal.protein_g || 0}g
+            </div>
             <div className="text-gray-600 dark:text-gray-400">protein</div>
           </div>
           <div className="bg-white dark:bg-gray-800 p-2 rounded">
-            <div className="font-bold text-blue-600 dark:text-blue-400">{meal.carbs_g || 0}g</div>
+            <div className="font-bold text-blue-600 dark:text-blue-400">
+              {meal.carbs_g || 0}g
+            </div>
             <div className="text-gray-600 dark:text-gray-400">carbs</div>
           </div>
           <div className="bg-white dark:bg-gray-800 p-2 rounded">
-            <div className="font-bold text-yellow-600 dark:text-yellow-400">{meal.fats_g || 0}g</div>
+            <div className="font-bold text-yellow-600 dark:text-yellow-400">
+              {meal.fats_g || 0}g
+            </div>
             <div className="text-gray-600 dark:text-gray-400">fats</div>
           </div>
         </div>
         {meal.prep_time_minutes && (
-          <p className="text-xs text-gray-600 dark:text-gray-400">⏱️ {meal.prep_time_minutes} min</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400">
+            ⏱️ {meal.prep_time_minutes} min
+          </p>
         )}
       </div>
     );
@@ -112,8 +156,13 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
     return (
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">✨ Your Meal Plan</h3>
-          <button onClick={() => setShowForm(true)} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+            ✨ Your Meal Plan
+          </h3>
+          <button
+            onClick={() => setShowForm(true)}
+            className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+          >
             <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
           </button>
         </div>
@@ -122,19 +171,27 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
         <div className="bg-gradient-to-r from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-900/10 rounded-xl p-4 border border-orange-200 dark:border-orange-900/50">
           <div className="grid grid-cols-4 gap-2 text-center text-xs">
             <div>
-              <p className="font-bold text-orange-700 dark:text-orange-300">{mealPlan.totals.calories}</p>
+              <p className="font-bold text-orange-700 dark:text-orange-300">
+                {mealPlan.totals.calories}
+              </p>
               <p className="text-gray-600 dark:text-gray-400">kcal</p>
             </div>
             <div>
-              <p className="font-bold text-red-700 dark:text-red-300">{mealPlan.totals.protein.toFixed(0)}g</p>
+              <p className="font-bold text-red-700 dark:text-red-300">
+                {mealPlan.totals.protein.toFixed(0)}g
+              </p>
               <p className="text-gray-600 dark:text-gray-400">protein</p>
             </div>
             <div>
-              <p className="font-bold text-blue-700 dark:text-blue-300">{mealPlan.totals.carbs.toFixed(0)}g</p>
+              <p className="font-bold text-blue-700 dark:text-blue-300">
+                {mealPlan.totals.carbs.toFixed(0)}g
+              </p>
               <p className="text-gray-600 dark:text-gray-400">carbs</p>
             </div>
             <div>
-              <p className="font-bold text-yellow-700 dark:text-yellow-300">{mealPlan.totals.fats.toFixed(0)}g</p>
+              <p className="font-bold text-yellow-700 dark:text-yellow-300">
+                {mealPlan.totals.fats.toFixed(0)}g
+              </p>
               <p className="text-gray-600 dark:text-gray-400">fats</p>
             </div>
           </div>
@@ -163,12 +220,16 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
     <div className="space-y-4 max-h-[700px] overflow-y-auto pr-2">
       {/* Goal */}
       <div>
-        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">🎯 Goal</label>
+        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">
+          🎯 Goal
+        </label>
         <div className="grid grid-cols-3 gap-2">
           {["Lose Fat", "Build Muscle", "Maintain"].map((goal) => (
             <button
               key={goal}
-              onClick={() => setPreferences((prev) => ({ ...prev, goal: goal as any }))}
+              onClick={() =>
+                setPreferences((prev) => ({ ...prev, goal: goal as any }))
+              }
               className={`py-2 px-3 rounded-lg text-xs font-medium border-2 transition-all ${
                 preferences.goal === goal
                   ? "bg-orange-500 text-white border-orange-600"
@@ -183,7 +244,9 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
 
       {/* Diet Types */}
       <div>
-        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">🍽️ Diet Types</label>
+        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">
+          🍽️ Diet Types
+        </label>
         <div className="grid grid-cols-2 gap-2">
           {DIET_TYPES.map((type) => (
             <button
@@ -204,22 +267,33 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
       {/* Calories */}
       <div>
         <div className="flex justify-between mb-1">
-          <label className="text-xs font-bold text-gray-900 dark:text-white">🔥 Daily Calories</label>
-          <span className="text-xs font-bold text-orange-600 dark:text-orange-400">{preferences.dailyCalorieTarget}</span>
+          <label className="text-xs font-bold text-gray-900 dark:text-white">
+            🔥 Daily Calories
+          </label>
+          <span className="text-xs font-bold text-orange-600 dark:text-orange-400">
+            {preferences.dailyCalorieTarget}
+          </span>
         </div>
         <input
           type="range"
           min="1200"
           max="3500"
           value={preferences.dailyCalorieTarget}
-          onChange={(e) => setPreferences((prev) => ({ ...prev, dailyCalorieTarget: parseInt(e.target.value) }))}
+          onChange={(e) =>
+            setPreferences((prev) => ({
+              ...prev,
+              dailyCalorieTarget: parseInt(e.target.value),
+            }))
+          }
           className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg accent-orange-500"
         />
       </div>
 
       {/* Food Preferences */}
       <div>
-        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">❤️ Foods You Like</label>
+        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">
+          ❤️ Foods You Like
+        </label>
         <input
           type="text"
           value={foodLikes}
@@ -231,7 +305,9 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
 
       {/* Disliked Foods */}
       <div>
-        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">😞 Foods to Avoid</label>
+        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">
+          😞 Foods to Avoid
+        </label>
         <input
           type="text"
           value={foodDislikes}
@@ -243,7 +319,9 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
 
       {/* Must Include */}
       <div>
-        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">⭐ Must Include</label>
+        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">
+          ⭐ Must Include
+        </label>
         <input
           type="text"
           value={foodMustInclude}
@@ -255,7 +333,9 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
 
       {/* Cultural Preference */}
       <div>
-        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">🌍 Cultural Preference</label>
+        <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">
+          🌍 Cultural Preference
+        </label>
         <div className="grid grid-cols-3 gap-2">
           {CULTURAL_PREFS.map((pref) => (
             <button
@@ -276,7 +356,9 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
       {/* Allergens */}
       {plan === "premium" && (
         <div>
-          <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">⚠️ Allergens</label>
+          <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">
+            ⚠️ Allergens
+          </label>
           <div className="grid grid-cols-2 gap-1">
             {ALLERGENS.map((allergen) => (
               <label key={allergen} className="flex items-center gap-2 text-xs">
@@ -286,7 +368,9 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
                   onChange={() => handleAllergenToggle(allergen)}
                   className="w-4 h-4 rounded accent-orange-500"
                 />
-                <span className="text-gray-900 dark:text-white">{allergen}</span>
+                <span className="text-gray-900 dark:text-white">
+                  {allergen}
+                </span>
               </label>
             ))}
           </div>
@@ -303,12 +387,19 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
       {/* Budget */}
       {plan === "premium" && (
         <div>
-          <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">💰 Budget</label>
+          <label className="text-xs font-bold text-gray-900 dark:text-white mb-2 block">
+            💰 Budget
+          </label>
           <div className="grid grid-cols-3 gap-2">
             {BUDGETS.map((budget) => (
               <button
                 key={budget}
-                onClick={() => setPreferences((prev) => ({ ...prev, budgetTier: budget as any }))}
+                onClick={() =>
+                  setPreferences((prev) => ({
+                    ...prev,
+                    budgetTier: budget as any,
+                  }))
+                }
                 className={`py-2 px-3 rounded-lg text-xs font-medium border-2 transition-all ${
                   preferences.budgetTier === budget
                     ? "bg-orange-500 text-white border-orange-600"
@@ -322,7 +413,11 @@ export default function TrainingHubDietPlanner({ plan }: TrainingHubDietPlannerP
         </div>
       )}
 
-      {error && <div className="p-3 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg text-xs">{error}</div>}
+      {error && (
+        <div className="p-3 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg text-xs">
+          {error}
+        </div>
+      )}
 
       <button
         onClick={handleGenerateMeal}

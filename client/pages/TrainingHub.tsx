@@ -75,8 +75,6 @@ export default function TrainingHub() {
   const isAIInsightsLocked = plan !== "premium";
   const isTrendGraphsLocked = plan === "free";
 
-
-
   // Section components
   const WeeklyPlannerSection = () => <WorkoutPlanner />;
 

@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChefHat, Sparkles, Calendar, TrendingUp, AlertCircle } from "lucide-react";
+import {
+  ChefHat,
+  Sparkles,
+  Calendar,
+  TrendingUp,
+  AlertCircle,
+} from "lucide-react";
 
 /* ============================================================
    DATA MODELS
@@ -72,11 +78,19 @@ const FOOD_DATABASE: Meal[] = [
     protein: 10,
     carbs: 60,
     fats: 6,
-    micros: { fiber: 5, iron: 2, calcium: 40, potassium: 220, vitaminA: 5, vitaminC: 8, vitaminB12: 0 },
+    micros: {
+      fiber: 5,
+      iron: 2,
+      calcium: 40,
+      potassium: 220,
+      vitaminA: 5,
+      vitaminC: 8,
+      vitaminB12: 0,
+    },
     ingredients: ["Oats", "Banana", "Milk"],
     instructions: ["Cook oats", "Add banana on top"],
     allergens: ["dairy"],
-    dietType: ["veg", "high-protein"]
+    dietType: ["veg", "high-protein"],
   },
   {
     id: "2",
@@ -85,11 +99,19 @@ const FOOD_DATABASE: Meal[] = [
     protein: 22,
     carbs: 10,
     fats: 16,
-    micros: { fiber: 2, iron: 1, calcium: 200, potassium: 100, vitaminA: 6, vitaminC: 4, vitaminB12: 0 },
+    micros: {
+      fiber: 2,
+      iron: 1,
+      calcium: 200,
+      potassium: 100,
+      vitaminA: 6,
+      vitaminC: 4,
+      vitaminB12: 0,
+    },
     ingredients: ["Paneer", "Veggies"],
     instructions: ["Stir fry paneer", "Add veggies"],
     allergens: ["dairy"],
-    dietType: ["veg", "high-protein"]
+    dietType: ["veg", "high-protein"],
   },
   {
     id: "3",
@@ -98,11 +120,19 @@ const FOOD_DATABASE: Meal[] = [
     protein: 42,
     carbs: 38,
     fats: 4,
-    micros: { fiber: 0, iron: 2, calcium: 12, potassium: 150, vitaminA: 0, vitaminC: 0, vitaminB12: 1 },
+    micros: {
+      fiber: 0,
+      iron: 2,
+      calcium: 12,
+      potassium: 150,
+      vitaminA: 0,
+      vitaminC: 0,
+      vitaminB12: 1,
+    },
     ingredients: ["Chicken", "Rice"],
     instructions: ["Grill chicken", "Cook rice"],
     allergens: [],
-    dietType: ["non-veg", "high-protein"]
+    dietType: ["non-veg", "high-protein"],
   },
   {
     id: "4",
@@ -111,11 +141,19 @@ const FOOD_DATABASE: Meal[] = [
     protein: 20,
     carbs: 30,
     fats: 10,
-    micros: { fiber: 3, iron: 3, calcium: 55, potassium: 140, vitaminA: 5, vitaminC: 0, vitaminB12: 1.2 },
+    micros: {
+      fiber: 3,
+      iron: 3,
+      calcium: 55,
+      potassium: 140,
+      vitaminA: 5,
+      vitaminC: 0,
+      vitaminB12: 1.2,
+    },
     ingredients: ["Eggs", "Whole Wheat Bread"],
     instructions: ["Boil eggs", "Toast bread"],
     allergens: ["eggs", "gluten"],
-    dietType: ["veg", "high-protein"]
+    dietType: ["veg", "high-protein"],
   },
   {
     id: "5",
@@ -124,11 +162,19 @@ const FOOD_DATABASE: Meal[] = [
     protein: 15,
     carbs: 55,
     fats: 8,
-    micros: { fiber: 8, iron: 4, calcium: 50, potassium: 300, vitaminA: 2, vitaminC: 5, vitaminB12: 0 },
+    micros: {
+      fiber: 8,
+      iron: 4,
+      calcium: 50,
+      potassium: 300,
+      vitaminA: 2,
+      vitaminC: 5,
+      vitaminB12: 0,
+    },
     ingredients: ["Lentils", "Whole Wheat Flour"],
     instructions: ["Cook dal", "Make roti"],
     allergens: [],
-    dietType: ["veg", "high-protein"]
+    dietType: ["veg", "high-protein"],
   },
   {
     id: "6",
@@ -137,12 +183,20 @@ const FOOD_DATABASE: Meal[] = [
     protein: 45,
     carbs: 15,
     fats: 18,
-    micros: { fiber: 3, iron: 1.5, calcium: 60, potassium: 400, vitaminA: 100, vitaminC: 90, vitaminB12: 3 },
+    micros: {
+      fiber: 3,
+      iron: 1.5,
+      calcium: 60,
+      potassium: 400,
+      vitaminA: 100,
+      vitaminC: 90,
+      vitaminB12: 3,
+    },
     ingredients: ["Salmon", "Broccoli"],
     instructions: ["Bake salmon", "Steam broccoli"],
     allergens: ["fish"],
-    dietType: ["non-veg", "high-protein"]
-  }
+    dietType: ["non-veg", "high-protein"],
+  },
 ];
 
 /* ============================================================
@@ -151,10 +205,19 @@ const FOOD_DATABASE: Meal[] = [
 
 function filterMeals(pref: DietPreferences): Meal[] {
   return FOOD_DATABASE.filter((meal) => {
-    const dietMatch = pref.dietType.length === 0 || pref.dietType.some((d) => meal.dietType.includes(d));
-    const allergenSafe = pref.allergens.every((a) => !meal.allergens.includes(a));
-    const dislikesSafe = pref.dislikes.every((d) => !meal.ingredients.includes(d));
-    const likesMatch = pref.likes.length > 0 ? pref.likes.some((l) => meal.ingredients.includes(l)) : true;
+    const dietMatch =
+      pref.dietType.length === 0 ||
+      pref.dietType.some((d) => meal.dietType.includes(d));
+    const allergenSafe = pref.allergens.every(
+      (a) => !meal.allergens.includes(a),
+    );
+    const dislikesSafe = pref.dislikes.every(
+      (d) => !meal.ingredients.includes(d),
+    );
+    const likesMatch =
+      pref.likes.length > 0
+        ? pref.likes.some((l) => meal.ingredients.includes(l))
+        : true;
 
     return dietMatch && allergenSafe && dislikesSafe && likesMatch;
   });
@@ -182,7 +245,7 @@ function generateDailyPlan(pref: DietPreferences): DailyMealPlan {
       carbs: acc.carbs + meal.carbs,
       fats: acc.fats + meal.fats,
     }),
-    { calories: 0, protein: 0, carbs: 0, fats: 0 }
+    { calories: 0, protein: 0, carbs: 0, fats: 0 },
   );
 
   return {
@@ -255,11 +318,20 @@ export default function AdvancedDietPlanner() {
   const handleGoalChange = (goal: "fat_loss" | "muscle_gain" | "maintain") => {
     setPrefs((prev) => ({ ...prev, goals: goal }));
     if (goal === "fat_loss") {
-      setPrefs((prev) => ({ ...prev, macroTargets: { protein: 130, carbs: 150, fats: 50 } }));
+      setPrefs((prev) => ({
+        ...prev,
+        macroTargets: { protein: 130, carbs: 150, fats: 50 },
+      }));
     } else if (goal === "muscle_gain") {
-      setPrefs((prev) => ({ ...prev, macroTargets: { protein: 180, carbs: 250, fats: 70 } }));
+      setPrefs((prev) => ({
+        ...prev,
+        macroTargets: { protein: 180, carbs: 250, fats: 70 },
+      }));
     } else {
-      setPrefs((prev) => ({ ...prev, macroTargets: { protein: 120, carbs: 200, fats: 60 } }));
+      setPrefs((prev) => ({
+        ...prev,
+        macroTargets: { protein: 120, carbs: 200, fats: 60 },
+      }));
     }
   };
 
@@ -283,7 +355,9 @@ export default function AdvancedDietPlanner() {
               Advanced Diet Planner
             </h1>
           </div>
-          <p className="text-gray-600 dark:text-gray-400">Generate personalized meal plans based on your goals and preferences</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Generate personalized meal plans based on your goals and preferences
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -297,27 +371,37 @@ export default function AdvancedDietPlanner() {
 
               {/* Goals */}
               <div className="mb-6">
-                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">Fitness Goal</h3>
+                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">
+                  Fitness Goal
+                </h3>
                 <div className="space-y-2">
-                  {(["fat_loss", "muscle_gain", "maintain"] as const).map((goal) => (
-                    <button
-                      key={goal}
-                      onClick={() => handleGoalChange(goal)}
-                      className={`w-full px-4 py-2 rounded-lg transition-all ${
-                        prefs.goals === goal
-                          ? "bg-orange-500 text-white shadow-lg"
-                          : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-                      }`}
-                    >
-                      {goal === "fat_loss" ? "🔥 Fat Loss" : goal === "muscle_gain" ? "💪 Muscle Gain" : "⚖️ Maintain"}
-                    </button>
-                  ))}
+                  {(["fat_loss", "muscle_gain", "maintain"] as const).map(
+                    (goal) => (
+                      <button
+                        key={goal}
+                        onClick={() => handleGoalChange(goal)}
+                        className={`w-full px-4 py-2 rounded-lg transition-all ${
+                          prefs.goals === goal
+                            ? "bg-orange-500 text-white shadow-lg"
+                            : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                        }`}
+                      >
+                        {goal === "fat_loss"
+                          ? "🔥 Fat Loss"
+                          : goal === "muscle_gain"
+                            ? "💪 Muscle Gain"
+                            : "⚖️ Maintain"}
+                      </button>
+                    ),
+                  )}
                 </div>
               </div>
 
               {/* Diet Types */}
               <div className="mb-6">
-                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">Diet Type</h3>
+                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">
+                  Diet Type
+                </h3>
                 <div className="space-y-2">
                   {["veg", "non-veg"].map((type) => (
                     <button
@@ -337,14 +421,21 @@ export default function AdvancedDietPlanner() {
 
               {/* Calories */}
               <div className="mb-6">
-                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">Daily Calories: {prefs.calorieTarget}</h3>
+                <h3 className="font-semibold text-sm mb-3 text-gray-700 dark:text-gray-300">
+                  Daily Calories: {prefs.calorieTarget}
+                </h3>
                 <input
                   type="range"
                   min="1500"
                   max="3500"
                   step="100"
                   value={prefs.calorieTarget}
-                  onChange={(e) => setPrefs((prev) => ({ ...prev, calorieTarget: parseInt(e.target.value) }))}
+                  onChange={(e) =>
+                    setPrefs((prev) => ({
+                      ...prev,
+                      calorieTarget: parseInt(e.target.value),
+                    }))
+                  }
                   className="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
@@ -371,7 +462,9 @@ export default function AdvancedDietPlanner() {
               {error && (
                 <div className="mt-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg flex gap-2">
                   <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
-                  <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                  <p className="text-sm text-red-700 dark:text-red-300">
+                    {error}
+                  </p>
                 </div>
               )}
             </Card>
@@ -418,24 +511,45 @@ export default function AdvancedDietPlanner() {
                 {activeTab === "weekly" && weekly && (
                   <div className="space-y-4">
                     {weekly.days.map((day, idx) => (
-                      <div key={idx} className="p-4 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-lg">
-                        <h3 className="font-semibold text-lg mb-3">📅 Day {idx + 1}</h3>
+                      <div
+                        key={idx}
+                        className="p-4 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-lg"
+                      >
+                        <h3 className="font-semibold text-lg mb-3">
+                          📅 Day {idx + 1}
+                        </h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div className="bg-white/50 dark:bg-gray-800/50 p-2 rounded">
-                            <p className="text-gray-600 dark:text-gray-400">Calories</p>
-                            <p className="font-bold text-orange-600">{day.totalCalories}</p>
+                            <p className="text-gray-600 dark:text-gray-400">
+                              Calories
+                            </p>
+                            <p className="font-bold text-orange-600">
+                              {day.totalCalories}
+                            </p>
                           </div>
                           <div className="bg-white/50 dark:bg-gray-800/50 p-2 rounded">
-                            <p className="text-gray-600 dark:text-gray-400">Protein</p>
-                            <p className="font-bold text-blue-600">{day.totalProtein}g</p>
+                            <p className="text-gray-600 dark:text-gray-400">
+                              Protein
+                            </p>
+                            <p className="font-bold text-blue-600">
+                              {day.totalProtein}g
+                            </p>
                           </div>
                           <div className="bg-white/50 dark:bg-gray-800/50 p-2 rounded">
-                            <p className="text-gray-600 dark:text-gray-400">Carbs</p>
-                            <p className="font-bold text-green-600">{day.totalCarbs}g</p>
+                            <p className="text-gray-600 dark:text-gray-400">
+                              Carbs
+                            </p>
+                            <p className="font-bold text-green-600">
+                              {day.totalCarbs}g
+                            </p>
                           </div>
                           <div className="bg-white/50 dark:bg-gray-800/50 p-2 rounded">
-                            <p className="text-gray-600 dark:text-gray-400">Fats</p>
-                            <p className="font-bold text-red-600">{day.totalFats}g</p>
+                            <p className="text-gray-600 dark:text-gray-400">
+                              Fats
+                            </p>
+                            <p className="font-bold text-red-600">
+                              {day.totalFats}g
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -446,8 +560,13 @@ export default function AdvancedDietPlanner() {
             ) : (
               <Card className="p-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur border-orange-100 text-center">
                 <Calendar className="w-16 h-16 text-orange-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No Plan Generated Yet</h3>
-                <p className="text-gray-600 dark:text-gray-400">Configure your preferences and generate a meal plan to get started!</p>
+                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  No Plan Generated Yet
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Configure your preferences and generate a meal plan to get
+                  started!
+                </p>
               </Card>
             )}
           </div>
@@ -463,7 +582,9 @@ function MealCard({ meal, mealType }: { meal: Meal; mealType: string }) {
   return (
     <div className="p-4 bg-gradient-to-r from-orange-100 to-yellow-100 dark:from-orange-900/30 dark:to-yellow-900/30 rounded-lg border-l-4 border-orange-500">
       <h4 className="font-semibold text-lg mb-2">{mealType}</h4>
-      <p className="text-gray-700 dark:text-gray-300 font-medium mb-2">{meal.name}</p>
+      <p className="text-gray-700 dark:text-gray-300 font-medium mb-2">
+        {meal.name}
+      </p>
       <div className="grid grid-cols-4 gap-2 text-sm">
         <div>
           <p className="text-gray-600 dark:text-gray-400">Cal</p>

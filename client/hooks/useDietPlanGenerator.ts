@@ -61,7 +61,8 @@ export const useDietPlanGenerator = () => {
           proteinAdjustment = 1.25; // 25% increase
         }
 
-        const adjustedCalories = preferences.dailyCalorieTarget * calorieAdjustment;
+        const adjustedCalories =
+          preferences.dailyCalorieTarget * calorieAdjustment;
         const adjustedProtein = preferences.proteinTarget * proteinAdjustment;
 
         // Build query filters
@@ -86,9 +87,11 @@ export const useDietPlanGenerator = () => {
         // Additional filtering based on preferences
         mealData = mealData.filter((meal: any) => {
           // Check disliked foods in ingredients
-          const mealIngredients = (meal.ingredients || []).join(" ").toLowerCase();
+          const mealIngredients = (meal.ingredients || [])
+            .join(" ")
+            .toLowerCase();
           const dislikedMatch = preferences.dislikedFoods.some((food) =>
-            mealIngredients.includes(food.toLowerCase())
+            mealIngredients.includes(food.toLowerCase()),
           );
           if (dislikedMatch) return false;
 
@@ -96,7 +99,7 @@ export const useDietPlanGenerator = () => {
           if (preferences.dietTypes.length > 0) {
             const mealDietTypes = meal.diet_types || [];
             const isCompatible = preferences.dietTypes.some((dt: string) =>
-              mealDietTypes.includes(dt)
+              mealDietTypes.includes(dt),
             );
 
             if (!isCompatible) {
@@ -124,20 +127,12 @@ export const useDietPlanGenerator = () => {
           breakfast: selectMealForType(
             mealData,
             "Breakfast",
-            adjustedCalories * 0.25
+            adjustedCalories * 0.25,
           ),
           snack1: selectMealForType(mealData, "Snack", adjustedCalories * 0.1),
-          lunch: selectMealForType(
-            mealData,
-            "Lunch",
-            adjustedCalories * 0.35
-          ),
+          lunch: selectMealForType(mealData, "Lunch", adjustedCalories * 0.35),
           snack2: selectMealForType(mealData, "Snack", adjustedCalories * 0.1),
-          dinner: selectMealForType(
-            mealData,
-            "Dinner",
-            adjustedCalories * 0.2
-          ),
+          dinner: selectMealForType(mealData, "Dinner", adjustedCalories * 0.2),
           totals: {
             calories: 0,
             protein: 0,
@@ -161,14 +156,15 @@ export const useDietPlanGenerator = () => {
 
         return mealPlan;
       } catch (err) {
-        const message = err instanceof Error ? err.message : "Failed to generate meal plan";
+        const message =
+          err instanceof Error ? err.message : "Failed to generate meal plan";
         setError(message);
         return null;
       } finally {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   const generateWeeklyPlan = useCallback(
@@ -184,7 +180,7 @@ export const useDietPlanGenerator = () => {
 
       return weeklyPlan.length === 7 ? weeklyPlan : null;
     },
-    [generateMealPlan]
+    [generateMealPlan],
   );
 
   return {
@@ -195,7 +191,11 @@ export const useDietPlanGenerator = () => {
   };
 };
 
-function selectMealForType(meals: any[], mealType: string, targetCalories: number): any {
+function selectMealForType(
+  meals: any[],
+  mealType: string,
+  targetCalories: number,
+): any {
   const typedMeals = meals.filter((meal) => meal.meal_type === mealType);
 
   if (typedMeals.length === 0) {

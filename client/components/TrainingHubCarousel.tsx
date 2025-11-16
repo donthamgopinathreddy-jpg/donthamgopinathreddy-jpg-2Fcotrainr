@@ -27,7 +27,6 @@ export default function TrainingHubCarousel({
     }
   }, [externalIndex]);
 
-
   const currentSection = sections[currentIndex];
 
   return (

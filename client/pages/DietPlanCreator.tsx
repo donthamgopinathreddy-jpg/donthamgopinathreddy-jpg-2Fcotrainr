@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useDietPlanGenerator, type DietPreferences, type MealPlan } from "@/hooks/useDietPlanGenerator";
+import {
+  useDietPlanGenerator,
+  type DietPreferences,
+  type MealPlan,
+} from "@/hooks/useDietPlanGenerator";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,7 +21,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export default function DietPlanCreator() {
   const navigate = useNavigate();
-  const { generateMealPlan, generateWeeklyPlan, loading, error } = useDietPlanGenerator();
+  const { generateMealPlan, generateWeeklyPlan, loading, error } =
+    useDietPlanGenerator();
   const [mealPlan, setMealPlan] = useState<MealPlan | null>(null);
   const [weeklyPlan, setWeeklyPlan] = useState<MealPlan[]>([]);
   const [currentWeekDay, setCurrentWeekDay] = useState(0);
@@ -37,9 +42,31 @@ export default function DietPlanCreator() {
     budgetTier: "Medium",
   });
 
-  const dietTypeOptions = ["Veg", "Non-Veg", "Vegan", "High-Protein", "Keto", "Custom"];
-  const allergenOptions = ["Dairy", "Gluten", "Nuts", "Soy", "Eggs", "Wheat", "Shellfish", "Sesame"];
-  const culturalOptions = ["South Indian", "North Indian", "Western", "Asian", "Middle Eastern"];
+  const dietTypeOptions = [
+    "Veg",
+    "Non-Veg",
+    "Vegan",
+    "High-Protein",
+    "Keto",
+    "Custom",
+  ];
+  const allergenOptions = [
+    "Dairy",
+    "Gluten",
+    "Nuts",
+    "Soy",
+    "Eggs",
+    "Wheat",
+    "Shellfish",
+    "Sesame",
+  ];
+  const culturalOptions = [
+    "South Indian",
+    "North Indian",
+    "Western",
+    "Asian",
+    "Middle Eastern",
+  ];
 
   const handleDietTypeToggle = (type: string) => {
     setPreferences((prev) => ({
@@ -160,7 +187,12 @@ export default function DietPlanCreator() {
             {/* Goal Selection */}
             <div>
               <Label className="font-semibold mb-3 block">Fitness Goal</Label>
-              <Select value={preferences.goal} onValueChange={(value: any) => setPreferences((prev) => ({ ...prev, goal: value }))}>
+              <Select
+                value={preferences.goal}
+                onValueChange={(value: any) =>
+                  setPreferences((prev) => ({ ...prev, goal: value }))
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -175,7 +207,12 @@ export default function DietPlanCreator() {
             {/* Budget Tier */}
             <div>
               <Label className="font-semibold mb-3 block">Budget Tier</Label>
-              <Select value={preferences.budgetTier} onValueChange={(value: any) => setPreferences((prev) => ({ ...prev, budgetTier: value }))}>
+              <Select
+                value={preferences.budgetTier}
+                onValueChange={(value: any) =>
+                  setPreferences((prev) => ({ ...prev, budgetTier: value }))
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -189,11 +226,16 @@ export default function DietPlanCreator() {
 
             {/* Cultural Preference */}
             <div>
-              <Label className="font-semibold mb-3 block">Cultural Preference</Label>
+              <Label className="font-semibold mb-3 block">
+                Cultural Preference
+              </Label>
               <Select
                 value={preferences.culturalPreference || ""}
                 onValueChange={(value) =>
-                  setPreferences((prev) => ({ ...prev, culturalPreference: value }))
+                  setPreferences((prev) => ({
+                    ...prev,
+                    culturalPreference: value,
+                  }))
                 }
               >
                 <SelectTrigger>
@@ -212,10 +254,15 @@ export default function DietPlanCreator() {
 
           {/* Diet Types - Multi-Select */}
           <div className="mt-6">
-            <Label className="font-semibold mb-4 block">Diet Types (Multi-select)</Label>
+            <Label className="font-semibold mb-4 block">
+              Diet Types (Multi-select)
+            </Label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {dietTypeOptions.map((type) => (
-                <label key={type} className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-orange-50 cursor-pointer">
+                <label
+                  key={type}
+                  className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-orange-50 cursor-pointer"
+                >
                   <Checkbox
                     checked={preferences.dietTypes.includes(type)}
                     onCheckedChange={() => handleDietTypeToggle(type)}
@@ -228,10 +275,15 @@ export default function DietPlanCreator() {
 
           {/* Allergens - Multi-Select */}
           <div className="mt-6">
-            <Label className="font-semibold mb-4 block">Allergens to Avoid</Label>
+            <Label className="font-semibold mb-4 block">
+              Allergens to Avoid
+            </Label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {allergenOptions.map((allergen) => (
-                <label key={allergen} className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-red-50 cursor-pointer">
+                <label
+                  key={allergen}
+                  className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:bg-red-50 cursor-pointer"
+                >
                   <Checkbox
                     checked={preferences.allergens.includes(allergen)}
                     onCheckedChange={() => handleAllergenToggle(allergen)}
@@ -245,7 +297,9 @@ export default function DietPlanCreator() {
           {/* Calorie and Macro Targets */}
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label className="font-semibold mb-2 block">Daily Calorie Target</Label>
+              <Label className="font-semibold mb-2 block">
+                Daily Calorie Target
+              </Label>
               <Input
                 type="number"
                 value={preferences.dailyCalorieTarget}
@@ -259,7 +313,9 @@ export default function DietPlanCreator() {
             </div>
 
             <div>
-              <Label className="font-semibold mb-2 block">Protein Target (g)</Label>
+              <Label className="font-semibold mb-2 block">
+                Protein Target (g)
+              </Label>
               <Input
                 type="number"
                 value={preferences.proteinTarget}
@@ -273,7 +329,9 @@ export default function DietPlanCreator() {
             </div>
 
             <div>
-              <Label className="font-semibold mb-2 block">Carbs Target (g)</Label>
+              <Label className="font-semibold mb-2 block">
+                Carbs Target (g)
+              </Label>
               <Input
                 type="number"
                 value={preferences.carbsTarget}
@@ -287,7 +345,9 @@ export default function DietPlanCreator() {
             </div>
 
             <div>
-              <Label className="font-semibold mb-2 block">Fats Target (g)</Label>
+              <Label className="font-semibold mb-2 block">
+                Fats Target (g)
+              </Label>
               <Input
                 type="number"
                 value={preferences.fatsTarget}
@@ -320,7 +380,11 @@ export default function DietPlanCreator() {
             </Button>
           </div>
 
-          {error && <div className="mt-4 p-4 bg-red-50 text-red-700 rounded-lg text-sm">{error}</div>}
+          {error && (
+            <div className="mt-4 p-4 bg-red-50 text-red-700 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
         </Card>
 
         {/* Daily Meal Plan */}
@@ -336,23 +400,33 @@ export default function DietPlanCreator() {
             {/* Totals Summary */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
               <Card className="p-4 bg-gradient-to-br from-orange-100 to-orange-50">
-                <div className="text-2xl font-bold text-orange-600">{mealPlan.totals.calories}</div>
+                <div className="text-2xl font-bold text-orange-600">
+                  {mealPlan.totals.calories}
+                </div>
                 <div className="text-xs text-gray-600">Total Calories</div>
               </Card>
               <Card className="p-4 bg-gradient-to-br from-red-100 to-red-50">
-                <div className="text-2xl font-bold text-red-600">{mealPlan.totals.protein.toFixed(1)}</div>
+                <div className="text-2xl font-bold text-red-600">
+                  {mealPlan.totals.protein.toFixed(1)}
+                </div>
                 <div className="text-xs text-gray-600">Protein (g)</div>
               </Card>
               <Card className="p-4 bg-gradient-to-br from-blue-100 to-blue-50">
-                <div className="text-2xl font-bold text-blue-600">{mealPlan.totals.carbs.toFixed(1)}</div>
+                <div className="text-2xl font-bold text-blue-600">
+                  {mealPlan.totals.carbs.toFixed(1)}
+                </div>
                 <div className="text-xs text-gray-600">Carbs (g)</div>
               </Card>
               <Card className="p-4 bg-gradient-to-br from-yellow-100 to-yellow-50">
-                <div className="text-2xl font-bold text-yellow-600">{mealPlan.totals.fats.toFixed(1)}</div>
+                <div className="text-2xl font-bold text-yellow-600">
+                  {mealPlan.totals.fats.toFixed(1)}
+                </div>
                 <div className="text-xs text-gray-600">Fats (g)</div>
               </Card>
               <Card className="p-4 bg-gradient-to-br from-green-100 to-green-50">
-                <div className="text-2xl font-bold text-green-600">{mealPlan.totals.fiber.toFixed(1)}</div>
+                <div className="text-2xl font-bold text-green-600">
+                  {mealPlan.totals.fiber.toFixed(1)}
+                </div>
                 <div className="text-xs text-gray-600">Fiber (g)</div>
               </Card>
             </div>
@@ -380,28 +454,42 @@ export default function DietPlanCreator() {
 
             {/* Day Navigation */}
             <div className="flex gap-2 mb-6 overflow-x-auto">
-              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentWeekDay(idx)}
-                  className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
-                    currentWeekDay === idx
-                      ? "bg-orange-500 text-white"
-                      : "bg-gray-100 hover:bg-gray-200"
-                  }`}
-                >
-                  {day}
-                </button>
-              ))}
+              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
+                (day, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentWeekDay(idx)}
+                    className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition ${
+                      currentWeekDay === idx
+                        ? "bg-orange-500 text-white"
+                        : "bg-gray-100 hover:bg-gray-200"
+                    }`}
+                  >
+                    {day}
+                  </button>
+                ),
+              )}
             </div>
 
             {/* Current Day Meals */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <MealCard meal={weeklyPlan[currentWeekDay].breakfast} label="Breakfast" />
-              <MealCard meal={weeklyPlan[currentWeekDay].snack1} label="Snack 1" />
+              <MealCard
+                meal={weeklyPlan[currentWeekDay].breakfast}
+                label="Breakfast"
+              />
+              <MealCard
+                meal={weeklyPlan[currentWeekDay].snack1}
+                label="Snack 1"
+              />
               <MealCard meal={weeklyPlan[currentWeekDay].lunch} label="Lunch" />
-              <MealCard meal={weeklyPlan[currentWeekDay].snack2} label="Snack 2" />
-              <MealCard meal={weeklyPlan[currentWeekDay].dinner} label="Dinner" />
+              <MealCard
+                meal={weeklyPlan[currentWeekDay].snack2}
+                label="Snack 2"
+              />
+              <MealCard
+                meal={weeklyPlan[currentWeekDay].dinner}
+                label="Dinner"
+              />
             </div>
           </Card>
         )}
