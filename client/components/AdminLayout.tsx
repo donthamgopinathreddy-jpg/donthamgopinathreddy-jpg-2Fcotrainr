@@ -220,6 +220,54 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
                   <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
                   {description && <p className="text-gray-600 mt-1">{description}</p>}
                 </div>
+
+                {/* User Menu Dropdown */}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    {userProfile?.profile_picture_url ? (
+                      <img
+                        src={userProfile.profile_picture_url}
+                        alt={userProfile.full_name}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                        {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
+                      </div>
+                    )}
+                    <ChevronDown className="w-4 h-4 text-gray-600" />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                      <div className="p-3 border-b border-gray-200">
+                        <p className="text-sm font-semibold text-gray-900">{userProfile?.full_name}</p>
+                        <p className="text-xs text-gray-500">{userProfile?.email}</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setShowSettings(true);
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                      >
+                        <User className="w-4 h-4" />
+                        Settings
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 text-sm border-t border-gray-200"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
