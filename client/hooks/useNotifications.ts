@@ -69,42 +69,53 @@ export function useNotifications(userId?: string) {
       return;
     }
 
+    // Check if user is demo user to use mock data
+    const isDemoMode =
+      userId.startsWith("demo-user") || userId.includes("demo");
+
+    if (isDemoMode) {
+      // For demo users, return empty notifications immediately
+      if (isMountedRef.current) {
+        setLoading(true);
+        setNotifications([]);
+        setUnreadCount(0);
+        setLoading(false);
+      }
+      return;
+    }
+
+    // For real users, try to fetch but silently fail
     try {
       setLoading(true);
       setError(null);
 
-      // Check if user is demo user to use mock data
-      const isDemoMode =
-        userId.startsWith("demo-user") || userId.includes("demo");
+      // Create a timeout promise
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Fetch timeout")), 5000),
+      );
 
-      if (isDemoMode) {
-        // For demo users, return empty notifications
-        if (isMountedRef.current) {
-          setNotifications([]);
-          setUnreadCount(0);
-          setLoading(false);
-        }
-        return;
-      }
-
-      const { data, error: fetchError } = await supabase
+      // Race between fetch and timeout
+      const fetchPromise = supabase
         .from("notifications")
         .select("*")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(20);
 
+      const { data, error: fetchError } = await Promise.race([
+        fetchPromise,
+        timeoutPromise,
+      ]) as any;
+
       if (!isMountedRef.current) return;
 
       if (fetchError) {
-        console.debug(
-          "Fetch notifications error:",
-          fetchError?.code,
-          fetchError?.message,
-        );
-        setNotifications([]);
-        setUnreadCount(0);
-        setError(null);
+        // Silently handle error - table might not exist
+        if (isMountedRef.current) {
+          setNotifications([]);
+          setUnreadCount(0);
+          setError(null);
+        }
         return;
       }
 
@@ -112,21 +123,21 @@ export function useNotifications(userId?: string) {
         const transformed = (data as NotificationData[]).map(
           transformNotification,
         );
-        setNotifications(transformed);
-        const unread = transformed.filter((n) => !n.is_read).length;
-        setUnreadCount(unread);
-        setError(null);
+        if (isMountedRef.current) {
+          setNotifications(transformed);
+          const unread = transformed.filter((n) => !n.is_read).length;
+          setUnreadCount(unread);
+          setError(null);
+        }
       } else {
-        setNotifications([]);
-        setUnreadCount(0);
+        if (isMountedRef.current) {
+          setNotifications([]);
+          setUnreadCount(0);
+        }
       }
     } catch (err) {
+      // Silently handle all errors (network, timeout, etc)
       if (isMountedRef.current) {
-        console.debug(
-          "Fetch notifications error:",
-          err instanceof Error ? err.message : String(err),
-        );
-        // Silently fail and return empty notifications
         setNotifications([]);
         setUnreadCount(0);
         setError(null);
