@@ -547,7 +547,11 @@ export default function TrainingHub() {
 
         {/* Carousel */}
         <div className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-gray-700/20 p-8">
-          <TrainingHubCarousel sections={carouselSections} />
+          <TrainingHubCarousel
+            sections={carouselSections}
+            currentIndex={currentCarouselIndex}
+            onSectionChange={setCurrentCarouselIndex}
+          />
         </div>
 
         {/* Upgrade CTA */}
