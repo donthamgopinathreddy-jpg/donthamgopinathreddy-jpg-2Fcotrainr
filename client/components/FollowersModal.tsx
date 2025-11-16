@@ -112,7 +112,11 @@ export default function FollowersModal({ isOpen, onClose, userId }: FollowersMod
               </p>
             </div>
           ) : (
-            <div className="divide-y" className={theme === "dark" ? "divide-gray-800" : "divide-gray-200"}>
+            <div
+              className={`divide-y ${
+                theme === "dark" ? "divide-gray-800" : "divide-gray-200"
+              }`}
+            >
               {displayList.map((user) => (
                 <div
                   key={user.id}
