@@ -142,6 +142,32 @@ export default function NotificationsPageEnhanced() {
           }
         }
 
+        // Fetch post images for like and comment notifications
+        const postNotifs = notifications.filter(
+          (n) =>
+            ((n as any).type === "like" || (n as any).type === "comment") &&
+            (n as any).post_id
+        );
+        let postData: { [key: string]: any } = {};
+        if (postNotifs.length > 0) {
+          try {
+            const postIds = postNotifs.map((n) => (n as any).post_id);
+            const { data: posts, error: postError } = await supabase
+              .from("posts")
+              .select("id, image_url")
+              .in("id", postIds);
+
+            if (!postError && posts) {
+              posts.forEach((post) => {
+                postData[post.id] = post.image_url;
+              });
+            }
+          } catch (postErr) {
+            console.debug("Error fetching post images:", postErr);
+            // Continue without post images
+          }
+        }
+
         // Enrich notifications
         const enriched = notifications.map((notif) => {
           const enrichedNotif = { ...notif } as NotificationWithUser;
