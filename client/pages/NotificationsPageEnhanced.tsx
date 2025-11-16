@@ -273,27 +273,68 @@ export default function NotificationsPageEnhanced() {
           </div>
         ) : (
           <div className="space-y-3">
-            {notificationsWithUsers.map((notification) => (
-              <div
-                key={notification.id}
-                className={`p-5 rounded-2xl border-l-4 transition-all ${
-                  !notification.is_read
-                    ? theme === "dark"
-                      ? "bg-gray-800/50 border-pink-500 shadow-md"
-                      : "bg-blue-50/50 border-pink-500 shadow-md"
-                    : theme === "dark"
-                      ? "bg-gray-800/20 border-transparent"
-                      : "bg-white border-transparent"
-                } ${getNotificationColor(notification.type)}`}
-              >
-                <div className="flex items-start gap-4">
-                  {/* Checkbox */}
-                  <input
-                    type="checkbox"
-                    checked={selectedNotifications.has(notification.id)}
-                    onChange={() => handleSelectNotification(notification.id)}
-                    className="mt-1 rounded cursor-pointer"
-                  />
+            {notificationsWithUsers.map((notification) => {
+              let longPressTimer: NodeJS.Timeout;
+
+              const handleLongPress = () => {
+                if (!isMultiSelectMode) {
+                  setIsMultiSelectMode(true);
+                  setSelectedNotifications(new Set([notification.id]));
+                }
+              };
+
+              const handleMouseDown = () => {
+                longPressTimer = setTimeout(handleLongPress, 500);
+              };
+
+              const handleMouseUp = () => {
+                clearTimeout(longPressTimer);
+              };
+
+              const handleTouchStart = () => {
+                longPressTimer = setTimeout(handleLongPress, 500);
+              };
+
+              const handleTouchEnd = () => {
+                clearTimeout(longPressTimer);
+              };
+
+              return (
+                <div
+                  key={notification.id}
+                  className={`p-5 rounded-2xl border-l-4 transition-all ${
+                    !notification.is_read
+                      ? theme === "dark"
+                        ? "bg-gray-800/50 border-pink-500 shadow-md"
+                        : "bg-blue-50/50 border-pink-500 shadow-md"
+                      : theme === "dark"
+                        ? "bg-gray-800/20 border-transparent"
+                        : "bg-white border-transparent"
+                  } ${getNotificationColor(notification.type)} ${
+                    isMultiSelectMode ? "cursor-pointer" : ""
+                  }`}
+                  onMouseDown={handleMouseDown}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                  onTouchStart={handleTouchStart}
+                  onTouchEnd={handleTouchEnd}
+                  onClick={() => {
+                    if (isMultiSelectMode) {
+                      handleSelectNotification(notification.id);
+                    }
+                  }}
+                >
+                  <div className="flex items-start gap-4">
+                    {/* Checkbox - only shown in multi-select mode */}
+                    {isMultiSelectMode && (
+                      <input
+                        type="checkbox"
+                        checked={selectedNotifications.has(notification.id)}
+                        onChange={() => handleSelectNotification(notification.id)}
+                        className="mt-1 rounded cursor-pointer"
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    )}
 
                   {/* Icon and User Info (for follow notifications) */}
                   <div className="flex-1 min-w-0">
@@ -430,21 +471,24 @@ export default function NotificationsPageEnhanced() {
                       )}
                   </div>
 
-                  {/* Delete Button */}
-                  <button
-                    onClick={() => deleteNotification(notification.id)}
-                    className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
-                      theme === "dark"
-                        ? "hover:bg-gray-700 text-gray-400"
-                        : "hover:bg-gray-200 text-gray-600"
-                    }`}
-                    title="Delete notification"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
+                    {/* Delete Button - X */}
+                    {!isMultiSelectMode && (
+                      <button
+                        onClick={() => deleteNotification(notification.id)}
+                        className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
+                          theme === "dark"
+                            ? "hover:bg-gray-700 text-gray-400 hover:text-gray-200"
+                            : "hover:bg-gray-200 text-gray-600 hover:text-gray-900"
+                        }`}
+                        title="Delete notification"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
