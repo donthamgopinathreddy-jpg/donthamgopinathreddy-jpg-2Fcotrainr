@@ -18,8 +18,7 @@ import {
 } from "lucide-react";
 
 const AdminTrainerVerification: React.FC = () => {
-  const navigate = useNavigate();
-  const { userProfile, signOut, updateProfile } = useAuth();
+  const { userProfile } = useAuth();
   const { toast } = useToast();
   const {
     trainers,
@@ -33,43 +32,12 @@ const AdminTrainerVerification: React.FC = () => {
     reReviewTrainer,
   } = useAdminTrainerVerification();
 
+  const { stats } = useAdminDashboard();
+
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [rejectingTrainerId, setRejectingTrainerId] = useState<string | null>(null);
-  const [showSettings, setShowSettings] = useState(false);
-  const [uploadingPic, setUploadingPic] = useState(false);
-  const [trainerCount, setTrainerCount] = useState(0);
-  const [clientCount, setClientCount] = useState(0);
-  const [showActivityLog, setShowActivityLog] = useState(false);
-  const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
 
-  // Hooks for activity log and notification preferences
-  const { logs: activityLogs } = useActivityLog(userProfile?.id);
-  const {
-    preferences: notifPrefs,
-    updatePreferences: updateNotifPrefs,
-  } = useNotificationPreferences(userProfile?.id);
-
-  const handleLogout = async () => {
-    try {
-      await signOut();
-      toast({
-        title: "Logged out",
-        description: "You have been logged out successfully",
-        variant: "default",
-      });
-      navigate("/");
-    } catch (err) {
-      console.error("Logout error:", err);
-      toast({
-        title: "Error",
-        description: "Failed to log out",
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Check if user is admin (for now, we'll allow access - this should be enforced via backend)
   if (!userProfile) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
