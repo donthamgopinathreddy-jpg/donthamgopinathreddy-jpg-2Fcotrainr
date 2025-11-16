@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Bell,
   X,
@@ -15,6 +16,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
 export default function NotificationsDropdown() {
+  const navigate = useNavigate();
   const { theme } = useTheme();
   const { userProfile } = useAuth();
   const {
@@ -270,7 +272,7 @@ export default function NotificationsDropdown() {
                 <button
                   onClick={() => {
                     setIsOpen(false);
-                    window.location.href = "/notifications";
+                    navigate("/notifications");
                   }}
                   className="text-xs font-semibold text-blue-500 hover:text-blue-600"
                 >
