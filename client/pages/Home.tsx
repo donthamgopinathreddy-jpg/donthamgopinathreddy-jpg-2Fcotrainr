@@ -452,10 +452,10 @@ export default function Home() {
 
         {/* Welcome Text - Top Left */}
         <div className="absolute top-4 left-4 z-10">
-          <h1 className="text-4xl font-bold text-white drop-shadow-lg">
+          <h1 className="text-4xl font-bold text-gray-900 drop-shadow-sm">
             Welcome,
           </h1>
-          <p className="text-2xl font-bold text-white drop-shadow-lg">
+          <p className="text-2xl font-bold text-gray-900 drop-shadow-sm">
             {userProfile?.full_name?.split(" ")[0] || "User"}
           </p>
         </div>
