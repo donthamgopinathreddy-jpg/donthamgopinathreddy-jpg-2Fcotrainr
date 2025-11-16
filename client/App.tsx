@@ -302,7 +302,7 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <AppLayout>
-              <Achievements />
+              <Leaderboard />
             </AppLayout>
           </ProtectedRoute>
         }
