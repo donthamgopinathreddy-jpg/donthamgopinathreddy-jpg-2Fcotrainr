@@ -38,6 +38,9 @@ const AdminTrainerVerification: React.FC = () => {
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [rejectingTrainerId, setRejectingTrainerId] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [uploadingPic, setUploadingPic] = useState(false);
+  const [trainerCount, setTrainerCount] = useState(0);
+  const [clientCount, setClientCount] = useState(0);
 
   const handleLogout = async () => {
     try {
