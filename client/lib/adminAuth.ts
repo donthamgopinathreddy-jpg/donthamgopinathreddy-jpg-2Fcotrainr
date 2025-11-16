@@ -15,7 +15,7 @@ export const isUserAdmin = (userProfile: UserProfile | null): boolean => {
 
   // Option 2: Check a specific admin list
   const adminEmails = [
-    // Add admin emails here
+    "cotrainr26@gmail.com",
     "admin@cotrainr.app",
   ];
 
