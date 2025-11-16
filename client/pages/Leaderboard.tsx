@@ -6,7 +6,7 @@ import { useAchievements } from "@/hooks/useAchievements";
 import { Trophy, TrendingUp, Zap, Star, Medal } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const Achievements = () => {
+const Leaderboard = () => {
   const { theme } = useTheme();
   const { userProfile } = useAuth();
   const { user } = useAuth();
@@ -340,4 +340,4 @@ const Achievements = () => {
   );
 };
 
-export default Achievements;
+export default Leaderboard;
