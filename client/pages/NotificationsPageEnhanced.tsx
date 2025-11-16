@@ -109,6 +109,25 @@ export default function NotificationsPageEnhanced() {
           }
         }
 
+        // Fetch comment content for comment notifications
+        const commentNotifs = notifications.filter(
+          (n) => (n as any).type === "comment" && (n as any).comment_id
+        );
+        let commentData: { [key: string]: any } = {};
+        if (commentNotifs.length > 0) {
+          const commentIds = commentNotifs.map((n) => (n as any).comment_id);
+          const { data: comments } = await supabase
+            .from("post_comments")
+            .select("id, content")
+            .in("id", commentIds);
+
+          if (comments) {
+            comments.forEach((comment) => {
+              commentData[comment.id] = comment.content;
+            });
+          }
+        }
+
         // Enrich notifications
         const enriched = notifications.map((notif) => {
           const enrichedNotif = { ...notif } as NotificationWithUser;
@@ -117,6 +136,14 @@ export default function NotificationsPageEnhanced() {
           if (actorId && usersData[actorId]) {
             enrichedNotif.actor = usersData[actorId];
             enrichedNotif.actor_id = actorId;
+          }
+
+          // Add comment content if available
+          if ((notif as any).type === "comment") {
+            const commentId = (notif as any).comment_id;
+            if (commentId && commentData[commentId]) {
+              enrichedNotif.content = commentData[commentId];
+            }
           }
 
           return enrichedNotif;
