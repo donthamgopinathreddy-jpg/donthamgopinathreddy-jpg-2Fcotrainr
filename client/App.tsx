@@ -36,6 +36,7 @@ import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
 import Leaderboard from "./pages/Leaderboard";
 import TrainerBookingPayment from "./pages/TrainerBookingPayment";
+import Notifications from "./pages/Notifications";
 import Navigation from "./components/Navigation";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
