@@ -16,13 +16,14 @@ import ExpandedDietPlanner from "@/components/ExpandedDietPlanner";
 import AskTrainerModal from "@/components/AskTrainerModal";
 import TrendGraphsSection from "@/components/TrendGraphsSection";
 import TrainingHubCarousel from "@/components/TrainingHubCarousel";
+import WorkoutPlanner from "@/components/WorkoutPlanner";
 
 
 const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const TREND_METRICS = [
   { name: "Steps", icon: "👣", color: "from-blue-400 to-blue-600" },
-  { name: "Calories", icon: "🔥", color: "from-red-400 to-red-600" },
+  { name: "Calories", icon: "���", color: "from-red-400 to-red-600" },
   { name: "Water", icon: "💧", color: "from-cyan-400 to-cyan-600" },
   { name: "Workouts", icon: "💪", color: "from-orange-400 to-orange-600" },
 ];
