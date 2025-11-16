@@ -22,41 +22,33 @@ export function useNotifications(userId?: string) {
   const fetchNotifications = async () => {
     if (!userId) {
       setLoading(false);
+      setNotifications([]);
+      setUnreadCount(0);
       return;
     }
 
     try {
       setLoading(true);
+      setError(null);
 
       const { data, error: fetchError } = await supabase
         .from("notifications")
-        .select(
-          `
-          id,
-          user_id,
-          type,
-          title,
-          message,
-          related_user_id,
-          related_id,
-          is_read,
-          created_at
-        `
-        )
+        .select("*")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(20);
 
       if (fetchError) {
-        console.debug("Fetch notifications error:", fetchError?.code);
-        setError(fetchError?.message || "Failed to fetch notifications");
+        console.debug("Fetch notifications error:", fetchError?.code, fetchError?.message);
+        setError(null); // Don't show error to user, just log it
+        setNotifications([]);
+        setUnreadCount(0);
         return;
       }
 
       if (data) {
         setNotifications(data);
-
-        const unread = formattedNotifications.filter((n) => !n.is_read).length;
+        const unread = data.filter((n) => !n.is_read).length;
         setUnreadCount(unread);
         setError(null);
       }
@@ -65,7 +57,9 @@ export function useNotifications(userId?: string) {
         "Fetch notifications catch error:",
         err instanceof Error ? err.message : "Unknown error"
       );
-      setError("Failed to fetch notifications");
+      setNotifications([]);
+      setUnreadCount(0);
+      // Don't show error UI to user
     } finally {
       setLoading(false);
     }
