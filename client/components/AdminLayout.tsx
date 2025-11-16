@@ -233,16 +233,21 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title, description 
       <main className="md:ml-64 transition-all duration-300">
         {/* Top Header - Minimal with hamburger and welcome text */}
         <div className="bg-white border-b border-gray-200 sticky top-0 z-40" ref={userMenuRef}>
-          <div className="px-4 md:px-8 py-6">
+          <div className="px-4 md:px-8 py-4">
             <div className="flex items-center justify-between">
               {/* Left side - Hamburger (handled in AdminSidebar) */}
               <div className="flex-1"></div>
 
-              {/* Right side - Welcome text with impact */}
-              <div className="flex justify-end">
-                <h2 className="text-3xl md:text-4xl font-black text-gray-900">
-                  Welcome, <span className="text-orange-600">Admin</span>
-                </h2>
+              {/* Right side - Welcome text stacked */}
+              <div className="flex justify-end text-right">
+                <div className="flex flex-col">
+                  <h2 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight">
+                    Welcome
+                  </h2>
+                  <p className="text-sm md:text-base font-semibold text-orange-600 mt-1">
+                    Admin
+                  </p>
+                </div>
               </div>
             </div>
           </div>
