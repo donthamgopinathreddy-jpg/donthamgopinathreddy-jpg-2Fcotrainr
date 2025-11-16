@@ -1,5 +1,7 @@
-import { Clock, Flame } from "lucide-react";
+import { Clock, Flame, Lock } from "lucide-react";
 import { Workout } from "@/hooks/useWorkouts";
+import WorkoutAnimationRenderer from "@/components/WorkoutAnimationRenderer";
+import { getWorkoutById } from "@/lib/workoutAnimations";
 
 interface WorkoutCardProps {
   workout: Workout;
@@ -25,15 +27,23 @@ export default function WorkoutCard({
     warmups: "🔥",
   };
 
+  // Try to get the animation for this workout
+  const animatedWorkout = getWorkoutById(workout.id);
+
   return (
     <div
       className={`relative overflow-hidden rounded-2xl transition-all duration-300 hover:shadow-xl ${
         isLocked ? "opacity-50" : "hover:scale-105"
       }`}
     >
-      {/* Thumbnail */}
+      {/* Animation/Thumbnail */}
       <div className="relative h-40 bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden">
-        {workout.thumbnail_url ? (
+        {animatedWorkout ? (
+          <WorkoutAnimationRenderer
+            workoutId={workout.id}
+            className="w-full h-full"
+          />
+        ) : workout.thumbnail_url ? (
           <img
             src={workout.thumbnail_url}
             alt={workout.title}
@@ -41,7 +51,7 @@ export default function WorkoutCard({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-5xl">
-            {categoryEmojis[workout.category]}
+            {categoryEmojis[workout.category as keyof typeof categoryEmojis]}
           </div>
         )}
 
@@ -51,7 +61,7 @@ export default function WorkoutCard({
         {/* Level badge */}
         <div
           className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold uppercase ${
-            levelColors[workout.level]
+            levelColors[workout.level as keyof typeof levelColors]
           }`}
         >
           {workout.level}
@@ -61,7 +71,7 @@ export default function WorkoutCard({
         {isLocked && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <div className="text-white text-center">
-              <div className="text-4xl mb-2">🔒</div>
+              <Lock className="w-8 h-8 mx-auto mb-2" />
               <p className="text-sm font-semibold">Locked</p>
             </div>
           </div>
