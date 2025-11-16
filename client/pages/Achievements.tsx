@@ -112,7 +112,7 @@ export default function Quests() {
                     : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"
                 }`}
               >
-                🎮 Achievements Hub
+                🎮 Quests Hub
               </h1>
             </div>
         </div>
