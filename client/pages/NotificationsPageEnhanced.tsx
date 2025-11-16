@@ -466,12 +466,13 @@ export default function NotificationsPageEnhanced() {
                         const actorId = notification.actor?.id;
                         if (actorId) navigate(`/profile/${actorId}`);
                       }}
-                      className="text-left hover:opacity-70 transition-opacity"
+                      className="text-left hover:opacity-70 transition-opacity block w-full"
                     >
                       <p
                         className={`text-sm font-bold truncate ${
                           theme === "dark" ? "text-white" : "text-gray-900"
                         }`}
+                        title={notification.actor.full_name}
                       >
                         {notification.actor.full_name}
                       </p>
@@ -550,7 +551,7 @@ export default function NotificationsPageEnhanced() {
                   disabled={
                     isTogglingFollow.get(notification.actor!.id) || false
                   }
-                  className={`flex-shrink-0 px-5 py-1.5 rounded-full text-xs font-bold transition-all disabled:opacity-50 ${
+                  className={`flex-shrink-0 ml-2 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all disabled:opacity-50 ${
                     isFollowing(notification.actor!.id)
                       ? theme === "dark"
                         ? "bg-gray-700 text-white hover:bg-gray-600"
