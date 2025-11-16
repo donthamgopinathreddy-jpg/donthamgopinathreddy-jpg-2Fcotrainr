@@ -184,10 +184,10 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
                     navigate(item.path);
                     setSidebarOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  className={`w-full flex items-center gap-3 px-4 py-2 transition-all duration-200 ${
                     active
                       ? "bg-gray-800 text-white border-l-4 border-orange-500"
-                      : "text-gray-400 hover:bg-gray-900 hover:text-white"
+                      : "text-gray-400 hover:text-white"
                   }`}
                 >
                   <Icon className="w-5 h-5 flex-shrink-0" />
