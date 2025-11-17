@@ -9,30 +9,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-// Determine if we should use the proxy
-const shouldUseProxy = () => {
-  if (typeof window === "undefined") return false;
-
-  const currentUrl = new URL(window.location.href);
-  const isLocalhost = currentUrl.hostname === "localhost" || currentUrl.hostname === "127.0.0.1";
-
-  // Use proxy for non-localhost environments to avoid CORS issues
-  const shouldProxy = !isLocalhost;
-  console.log("[Supabase] Proxy decision:", {
-    hostname: currentUrl.hostname,
-    isLocalhost,
-    shouldProxy,
-  });
-  return shouldProxy;
-};
-
+// Always use the direct Supabase URL - it should handle CORS properly
 const getApiUrl = () => {
-  if (typeof window !== "undefined" && shouldUseProxy()) {
-    const currentUrl = new URL(window.location.href);
-    const proxyUrl = `${currentUrl.origin}/supabase-api`;
-    console.log("[Supabase] Using proxy URL:", proxyUrl);
-    return proxyUrl;
-  }
   console.log("[Supabase] Using direct Supabase URL:", supabaseUrl);
   return supabaseUrl;
 };
