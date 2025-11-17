@@ -80,37 +80,61 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     console.log("[API] Sign in attempt for:", email);
     console.log("[API] Using Supabase URL:", SUPABASE_URL);
 
-    // Set a timeout for the authentication call
-    const authPromise = supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    // Sign in with a reasonable timeout
+    let data: any;
+    let authError: any;
 
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => {
-        reject(new Error("Authentication request timed out (30s)"));
-      }, 30000);
-    });
+    try {
+      const result = await Promise.race([
+        supabase.auth.signInWithPassword({ email, password }),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Authentication request timed out (30s)")), 30000)
+        ),
+      ]);
 
-    const { data, error } = (await Promise.race([
-      authPromise,
-      timeoutPromise,
-    ])) as any;
+      // If we got here, auth was successful
+      data = result;
+    } catch (err) {
+      authError = err;
+    }
 
-    if (error) {
-      console.error("[API] Sign in error response:", {
-        message: error.message,
-        status: error.status,
-        code: (error as any).code,
+    if (authError) {
+      console.error("[API] Sign in error:", {
+        message: authError.message,
+        status: authError?.status || "unknown",
+        code: authError?.code || "unknown",
       });
+
+      // Check if it's a timeout
+      if (authError.message?.includes("timed out")) {
+        return res.status(504).json({
+          error: "Authentication service temporarily unavailable",
+        });
+      }
+
+      // Check if it's an authentication error
+      if (authError.message?.includes("Invalid login credentials")) {
+        return res.status(401).json({
+          error: "Invalid email or password",
+        });
+      }
+
       return res.status(401).json({
-        error: error.message,
-        status: error.status,
+        error: authError.message || "Authentication failed",
+        status: authError?.status,
+      });
+    }
+
+    // Data will be undefined if auth failed - handle that case
+    if (!data || !data.user) {
+      console.error("[API] Sign in returned empty user data");
+      return res.status(401).json({
+        error: "Authentication failed - no user returned",
       });
     }
 
     console.log("[API] Sign in successful for:", email);
-    console.log("[API] User ID:", data.user?.id);
+    console.log("[API] User ID:", data.user.id);
 
     res.json({
       session: data.session,
