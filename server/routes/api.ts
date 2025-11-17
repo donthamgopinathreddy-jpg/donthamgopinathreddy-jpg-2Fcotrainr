@@ -18,11 +18,36 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Health check
-router.get("/health", (_req: Request, res: Response) => {
-  res.json({
-    status: "ok",
-    message: "Supabase API wrapper is running",
-  });
+router.get("/health", async (_req: Request, res: Response) => {
+  try {
+    console.log("[API] Health check requested");
+
+    // Test if we can reach Supabase
+    console.log("[API] Testing Supabase connectivity...");
+
+    const testResponse = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+      },
+    });
+
+    console.log("[API] Supabase connectivity test status:", testResponse.status);
+
+    res.json({
+      status: "ok",
+      message: "Supabase API wrapper is running",
+      supabase_reachable: testResponse.ok,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("[API] Health check error:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Supabase API wrapper health check failed",
+      error: error instanceof Error ? error.message : "Unknown error",
+      timestamp: new Date().toISOString(),
+    });
+  }
 });
 
 // Auth endpoints
