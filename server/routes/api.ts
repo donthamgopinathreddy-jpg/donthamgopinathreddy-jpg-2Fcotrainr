@@ -64,31 +64,58 @@ router.get("/health", async (_req: Request, res: Response) => {
 
 // Auth endpoints
 router.post("/auth/signin", async (req: Request, res: Response) => {
-  try {
-    console.log("[API] Received sign in request");
-    console.log("[API] Request body:", JSON.stringify(req.body));
+  console.log("[API] ===== SIGN IN REQUEST RECEIVED =====");
+  console.log("[API] Method:", req.method);
+  console.log("[API] Path:", req.path);
+  console.log("[API] Headers:", {
+    "content-type": req.headers["content-type"],
+    "content-length": req.headers["content-length"],
+  });
 
+  try {
+    console.log("[API] Parsing request body...");
     const { email, password } = req.body;
 
+    console.log("[API] Request body parsed:");
+    console.log("[API] Email provided:", !!email);
+    console.log("[API] Password provided:", !!password);
+
     if (!email || !password) {
-      console.error("[API] Missing email or password in request");
+      console.error("[API] ❌ Missing email or password in request");
+      console.error("[API] Received body:", JSON.stringify(req.body));
       return res.status(400).json({
         error: "Missing email or password",
       });
     }
 
-    console.log("[API] Sign in attempt for:", email);
-    console.log("[API] Using Supabase URL:", SUPABASE_URL);
+    console.log("[API] ✓ Sign in attempt for:", email);
+    console.log("[API] Supabase URL configured:", !!SUPABASE_URL);
+    console.log("[API] Supabase Key configured:", !!SUPABASE_ANON_KEY);
+
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      console.error("[API] ❌ Missing Supabase configuration");
+      return res.status(500).json({
+        error: "Server configuration error",
+      });
+    }
+
+    console.log("[API] Calling Supabase auth.signInWithPassword...");
 
     // Call Supabase auth directly
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const result = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
+    console.log("[API] Supabase response received");
+    console.log("[API] Has error:", !!result.error);
+    console.log("[API] Has user:", !!result.data?.user);
+
+    const { data, error } = result;
+
     // Check for errors
     if (error) {
-      console.error("[API] Sign in error:", {
+      console.error("[API] ❌ Sign in error from Supabase:", {
         message: error.message,
         status: error.status,
         code: (error as any).code,
@@ -102,29 +129,48 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
 
     // Verify we got a valid user
     if (!data || !data.user) {
-      console.error("[API] Sign in returned empty user data");
+      console.error("[API] ❌ Sign in returned empty user data");
       return res.status(401).json({
         error: "Authentication failed - no user returned",
       });
     }
 
-    console.log("[API] Sign in successful for:", email);
+    console.log("[API] ✓ Sign in successful for:", email);
     console.log("[API] User ID:", data.user.id);
+    console.log("[API] Session exists:", !!data.session);
 
     res.json({
       session: data.session,
       user: data.user,
     });
+
+    console.log("[API] ===== SIGN IN RESPONSE SENT =====");
   } catch (error) {
-    console.error("[API] Unexpected sign in error:", error);
-    console.error("[API] Error details:", {
-      name: error instanceof Error ? error.name : "Unknown",
-      message: error instanceof Error ? error.message : "Unknown error",
-      stack: error instanceof Error ? error.stack : "No stack",
+    console.error("[API] ❌ ===== UNEXPECTED ERROR =====");
+    console.error("[API] Error:", error);
+    console.error("[API] Error type:", typeof error);
+    console.error("[API] Error instanceof Error:", error instanceof Error);
+
+    if (error instanceof Error) {
+      console.error("[API] Error name:", error.name);
+      console.error("[API] Error message:", error.message);
+      console.error("[API] Error stack:", error.stack);
+    }
+
+    const statusCode = (error as any)?.status || 500;
+    const errorMessage =
+      error instanceof Error ? error.message : String(error);
+
+    console.error("[API] Sending error response:", {
+      status: statusCode,
+      error: errorMessage,
     });
-    res.status(500).json({
-      error: error instanceof Error ? error.message : "Unknown error",
+
+    res.status(statusCode).json({
+      error: errorMessage || "Unknown error",
     });
+
+    console.log("[API] ===== ERROR RESPONSE SENT =====");
   }
 });
 
