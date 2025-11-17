@@ -285,6 +285,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/proxy-test" element={<ProxyTest />} />
       <Route path="/onboarding" element={<Onboarding />} />
       <Route
         path="/"
