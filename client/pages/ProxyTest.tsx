@@ -113,10 +113,36 @@ export default function ProxyTest() {
 
   return (
     <div className="min-h-screen bg-background p-4">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">Proxy Test Page</h1>
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-2xl font-bold mb-6">API & Authentication Test Page</h1>
 
         <div className="space-y-4">
+          {/* Input Fields */}
+          <div className="bg-card border border-border rounded-lg p-4 space-y-3">
+            <h3 className="font-semibold">Test Credentials</h3>
+            <div>
+              <label className="block text-sm font-medium mb-1">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2 border border-border rounded-lg bg-background"
+                placeholder="Enter email"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2 border border-border rounded-lg bg-background"
+                placeholder="Enter password"
+              />
+            </div>
+          </div>
+
+          {/* Status */}
           <div>
             <h2 className="text-lg font-semibold mb-2">Status</h2>
             <div className="bg-card border border-border rounded-lg p-4 font-mono text-sm">
@@ -124,6 +150,7 @@ export default function ProxyTest() {
             </div>
           </div>
 
+          {/* Response */}
           <div>
             <h2 className="text-lg font-semibold mb-2">Response</h2>
             <div className="bg-card border border-border rounded-lg p-4 font-mono text-sm max-h-96 overflow-auto whitespace-pre-wrap">
@@ -131,41 +158,49 @@ export default function ProxyTest() {
             </div>
           </div>
 
-          <div className="flex gap-4">
+          {/* Test Buttons */}
+          <div className="grid grid-cols-2 gap-2">
             <button
-              onClick={testProxy}
-              className="flex-1 bg-primary text-primary-foreground font-bold py-2 rounded-lg"
+              onClick={testPing}
+              className="bg-blue-500 text-white font-bold py-2 rounded-lg hover:bg-blue-600"
             >
-              Test Proxy Connection
+              Test /api/ping
             </button>
             <button
-              onClick={testAuth}
-              className="flex-1 bg-secondary text-secondary-foreground font-bold py-2 rounded-lg"
+              onClick={testHealth}
+              className="bg-green-500 text-white font-bold py-2 rounded-lg hover:bg-green-600"
             >
-              Test Auth
+              Test /api/supabase/health
+            </button>
+            <button
+              onClick={testAuthAPI}
+              className="bg-orange-500 text-white font-bold py-2 rounded-lg hover:bg-orange-600"
+            >
+              Test /api/supabase/auth/signin
+            </button>
+            <button
+              onClick={testAuthContext}
+              className="bg-purple-500 text-white font-bold py-2 rounded-lg hover:bg-purple-600"
+            >
+              Test AuthContext
             </button>
           </div>
 
+          {/* Debug Info */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <h3 className="font-semibold mb-2">Debugging Info:</h3>
             <ul className="text-sm space-y-1">
               <li>
-                Supabase URL: <code className="bg-white px-2 py-1 rounded">{import.meta.env.VITE_SUPABASE_URL}</code>
+                Supabase URL: <code className="bg-white px-2 py-1 rounded text-xs">{import.meta.env.VITE_SUPABASE_URL}</code>
               </li>
               <li>
-                Current Hostname: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? window.location.hostname : "N/A"}</code>
+                Current Hostname: <code className="bg-white px-2 py-1 rounded text-xs">{typeof window !== "undefined" ? window.location.hostname : "N/A"}</code>
               </li>
               <li>
-                Current Protocol: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? window.location.protocol : "N/A"}</code>
+                Current Origin: <code className="bg-white px-2 py-1 rounded text-xs">{typeof window !== "undefined" ? window.location.origin : "N/A"}</code>
               </li>
               <li>
-                Current Origin: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? window.location.origin : "N/A"}</code>
-              </li>
-              <li>
-                Health Endpoint: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? `${window.location.origin}/api/supabase/health` : "N/A"}</code>
-              </li>
-              <li>
-                Auth Endpoint: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? `${window.location.origin}/api/supabase/auth/signin` : "N/A"}</code>
+                Environment: <code className="bg-white px-2 py-1 rounded text-xs">{import.meta.env.MODE}</code>
               </li>
             </ul>
           </div>
