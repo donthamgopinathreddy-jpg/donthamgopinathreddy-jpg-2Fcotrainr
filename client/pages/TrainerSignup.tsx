@@ -238,7 +238,9 @@ export default function TrainerSignup() {
       toast({
         title: "Success",
         description:
-          "Your trainer application has been submitted! Please wait for admin verification.",
+          uploadWarnings.length > 0
+            ? `Your trainer application has been submitted! Please wait for admin verification. Note: ${uploadWarnings.join("; ")}`
+            : "Your trainer application has been submitted! Please wait for admin verification.",
       });
 
       // Navigate to profile after successful submission
