@@ -28,15 +28,20 @@ router.get("/health", (_req: Request, res: Response) => {
 // Auth endpoints
 router.post("/auth/signin", async (req: Request, res: Response) => {
   try {
+    console.log("[API] Received sign in request");
+    console.log("[API] Request body:", JSON.stringify(req.body));
+
     const { email, password } = req.body;
 
     if (!email || !password) {
+      console.error("[API] Missing email or password in request");
       return res.status(400).json({
         error: "Missing email or password",
       });
     }
 
     console.log("[API] Sign in attempt for:", email);
+    console.log("[API] Using Supabase URL:", SUPABASE_URL);
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -44,7 +49,11 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     });
 
     if (error) {
-      console.error("[API] Sign in error:", error);
+      console.error("[API] Sign in error response:", {
+        message: error.message,
+        status: error.status,
+        code: (error as any).code,
+      });
       return res.status(401).json({
         error: error.message,
         status: error.status,
@@ -52,6 +61,7 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     }
 
     console.log("[API] Sign in successful for:", email);
+    console.log("[API] User ID:", data.user?.id);
 
     res.json({
       session: data.session,
@@ -59,6 +69,11 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("[API] Unexpected sign in error:", error);
+    console.error("[API] Error details:", {
+      name: error instanceof Error ? error.name : "Unknown",
+      message: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : "No stack",
+    });
     res.status(500).json({
       error: error instanceof Error ? error.message : "Unknown error",
     });
