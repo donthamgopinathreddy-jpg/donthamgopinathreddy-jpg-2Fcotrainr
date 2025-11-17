@@ -267,6 +267,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("[Auth] Signing in user:", email);
 
       // Use our API wrapper instead of calling Supabase directly
+      console.log("[Auth] Sending request to /api/supabase/auth/signin");
+
       const response = await fetch("/api/supabase/auth/signin", {
         method: "POST",
         headers: {
@@ -278,15 +280,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }),
       });
 
+      console.log("[Auth] Received response with status:", response.status);
+
       if (!response.ok) {
-        const error = await response.json();
-        console.error("[Auth] Sign in error from API:", error);
-        throw new Error(error.error || "Sign in failed");
+        console.log("[Auth] Response not ok, parsing error...");
+        let errorData: any;
+        try {
+          errorData = await response.json();
+        } catch (parseError) {
+          console.error("[Auth] Could not parse error response as JSON");
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        console.error("[Auth] Sign in error from API:", errorData);
+        throw new Error(errorData.error || "Sign in failed");
       }
 
       const { session, user } = await response.json();
 
-      console.log("[Auth] Sign in successful");
+      console.log("[Auth] Sign in successful for user:", user?.email);
 
       if (session) {
         // Store the session in Supabase client
@@ -299,6 +310,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error: any) {
       console.error("[Auth] Error signing in:", error);
+      console.error("[Auth] Error type:", error?.name);
+      console.error("[Auth] Error message:", error?.message);
       const errorMessage = error?.message || String(error);
       throw new Error(errorMessage);
     }
