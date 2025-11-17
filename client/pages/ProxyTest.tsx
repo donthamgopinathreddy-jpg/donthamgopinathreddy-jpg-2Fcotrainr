@@ -7,22 +7,21 @@ export default function ProxyTest() {
 
   const testProxy = async () => {
     try {
-      setStatus("Testing direct fetch to proxy endpoint...");
+      setStatus("Testing direct fetch to API endpoint...");
 
-      // First, just test if /supabase-api/ itself is accessible
-      console.log("Fetching from /supabase-api/health");
+      // Test the /api/supabase/health endpoint
+      console.log("Fetching from /api/supabase/health");
 
-      const response = await fetch("/supabase-api/health", {
+      const response = await fetch("/api/supabase/health", {
         method: "GET",
         headers: {
-          "apikey": import.meta.env.VITE_SUPABASE_ANON_KEY,
           "Content-Type": "application/json",
         },
       });
 
-      const text = await response.text();
-      setResponse(`Status: ${response.status}\nResponse: ${text}`);
-      setStatus(`Proxy test completed - Status ${response.status}`);
+      const json = await response.json();
+      setResponse(`Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`);
+      setStatus(`API test completed - Status ${response.status}`);
     } catch (error) {
       setStatus("Fetch Error: " + String(error));
       setResponse(`Error type: ${error instanceof Error ? error.name : typeof error}\nMessage: ${String(error)}`);
@@ -32,22 +31,28 @@ export default function ProxyTest() {
 
   const testAuth = async () => {
     try {
-      setStatus("Testing auth client...");
-      console.log("[ProxyTest] Supabase client:", supabase);
-      console.log("[ProxyTest] Auth:", supabase.auth);
-      
-      // Test sign in - this should fail with invalid credentials but should reach our proxy/supabase
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: "test@example.com",
-        password: "testpass123",
+      setStatus("Testing auth via API endpoint...");
+      console.log("[ProxyTest] Testing /api/supabase/auth/signin");
+
+      // Test sign in via our API wrapper - this should fail with invalid credentials but should reach our server
+      const response = await fetch("/api/supabase/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: "test@example.com",
+          password: "testpass123",
+        }),
       });
 
-      if (error) {
-        setStatus("Auth error (expected): " + error.message);
-        setResponse(JSON.stringify(error, null, 2));
+      const json = await response.json();
+      setResponse(`Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`);
+
+      if (response.ok) {
+        setStatus("Auth test successful (got token)");
       } else {
-        setStatus("Unexpected success");
-        setResponse(JSON.stringify(data, null, 2));
+        setStatus(`Auth test completed - Got expected error: ${json.error}`);
       }
     } catch (error) {
       setStatus("Caught error: " + String(error));
@@ -57,6 +62,7 @@ export default function ProxyTest() {
         code: errorObj.code,
         details: errorObj.details,
       }, null, 2));
+      console.error("[ProxyTest] Error:", error);
     }
   };
 
