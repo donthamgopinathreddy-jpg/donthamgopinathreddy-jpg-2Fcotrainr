@@ -1,15 +1,39 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function ProxyTest() {
-  const [status, setStatus] = useState<string>("Testing...");
+  const { signIn: authSignIn } = useAuth();
+  const [status, setStatus] = useState<string>("Ready to test");
   const [response, setResponse] = useState<string>("");
+  const [email, setEmail] = useState("cotrainr26@gmail.com");
+  const [password, setPassword] = useState("Cotrainr@261025");
 
-  const testProxy = async () => {
+  const testPing = async () => {
     try {
-      setStatus("Testing direct fetch to API endpoint...");
+      setStatus("Testing /api/ping endpoint...");
+      console.log("Fetching from /api/ping");
 
-      // Test the /api/supabase/health endpoint
+      const response = await fetch("/api/ping", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const json = await response.json();
+      setResponse(`Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`);
+      setStatus(`Ping test completed - Status ${response.status}`);
+    } catch (error) {
+      setStatus("Fetch Error: " + String(error));
+      setResponse(`Error type: ${error instanceof Error ? error.name : typeof error}\nMessage: ${String(error)}`);
+      console.error("[ProxyTest] Fetch error:", error);
+    }
+  };
+
+  const testHealth = async () => {
+    try {
+      setStatus("Testing /api/supabase/health endpoint...");
       console.log("Fetching from /api/supabase/health");
 
       const response = await fetch("/api/supabase/health", {
@@ -21,7 +45,7 @@ export default function ProxyTest() {
 
       const json = await response.json();
       setResponse(`Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`);
-      setStatus(`API test completed - Status ${response.status}`);
+      setStatus(`Health test completed - Status ${response.status}`);
     } catch (error) {
       setStatus("Fetch Error: " + String(error));
       setResponse(`Error type: ${error instanceof Error ? error.name : typeof error}\nMessage: ${String(error)}`);
@@ -29,9 +53,9 @@ export default function ProxyTest() {
     }
   };
 
-  const testAuth = async () => {
+  const testAuthAPI = async () => {
     try {
-      setStatus("Testing auth via API endpoint...");
+      setStatus("Testing /api/supabase/auth/signin endpoint...");
       console.log("[ProxyTest] Testing /api/supabase/auth/signin");
 
       // Test sign in via our API wrapper - this should fail with invalid credentials but should reach our server
@@ -41,8 +65,8 @@ export default function ProxyTest() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "test@example.com",
-          password: "testpass123",
+          email: email || "test@example.com",
+          password: password || "testpass123",
         }),
       });
 
@@ -52,7 +76,7 @@ export default function ProxyTest() {
       if (response.ok) {
         setStatus("Auth test successful (got token)");
       } else {
-        setStatus(`Auth test completed - Got expected error: ${json.error}`);
+        setStatus(`Auth test completed - Error: ${json.error}`);
       }
     } catch (error) {
       setStatus("Caught error: " + String(error));
@@ -63,6 +87,27 @@ export default function ProxyTest() {
         details: errorObj.details,
       }, null, 2));
       console.error("[ProxyTest] Error:", error);
+    }
+  };
+
+  const testAuthContext = async () => {
+    try {
+      setStatus("Testing AuthContext signIn method...");
+      console.log("[ProxyTest] Testing authSignIn");
+
+      await authSignIn(email || "test@example.com", password || "testpass123");
+
+      setStatus("Auth context test successful!");
+      setResponse("User signed in successfully");
+    } catch (error) {
+      setStatus("Auth context error: " + String(error));
+      const errorObj = error as any;
+      setResponse(JSON.stringify({
+        message: errorObj?.message,
+        code: errorObj?.code,
+        details: errorObj?.details,
+      }, null, 2));
+      console.error("[ProxyTest] Auth context error:", error);
     }
   };
 
