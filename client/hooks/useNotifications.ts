@@ -222,6 +222,9 @@ export function useNotifications(userId?: string) {
               data = typedResponse.data;
             }
           }
+        } else {
+          console.debug("No session available for notifications fetch");
+          data = [];
         }
       } catch (e) {
         // Network error, timeout, or other fetch issue - silently handle
