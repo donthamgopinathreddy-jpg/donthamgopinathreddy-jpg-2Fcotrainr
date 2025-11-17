@@ -249,9 +249,15 @@ const AdminUserDetail: React.FC = () => {
                 onChange={(e) => setNewRole(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-900 bg-white"
               >
-                <option value="client" className="text-gray-900">Client</option>
-                <option value="trainer" className="text-gray-900">Trainer</option>
-                <option value="admin" className="text-gray-900">Admin</option>
+                <option value="client" className="text-gray-900">
+                  Client
+                </option>
+                <option value="trainer" className="text-gray-900">
+                  Trainer
+                </option>
+                <option value="admin" className="text-gray-900">
+                  Admin
+                </option>
               </select>
             </div>
 

@@ -112,10 +112,18 @@ const AdminUserManagement: React.FC = () => {
           onChange={(e) => setRoleFilter(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-900 bg-white"
         >
-          <option value="all" className="text-gray-900">All Roles</option>
-          <option value="client" className="text-gray-900">Clients</option>
-          <option value="trainer" className="text-gray-900">Trainers</option>
-          <option value="admin" className="text-gray-900">Admins</option>
+          <option value="all" className="text-gray-900">
+            All Roles
+          </option>
+          <option value="client" className="text-gray-900">
+            Clients
+          </option>
+          <option value="trainer" className="text-gray-900">
+            Trainers
+          </option>
+          <option value="admin" className="text-gray-900">
+            Admins
+          </option>
         </select>
       </div>
 
