@@ -105,7 +105,16 @@ export default function ProxyTest() {
                 Current Hostname: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? window.location.hostname : "N/A"}</code>
               </li>
               <li>
-                Using Proxy: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" && window.location.hostname !== "localhost" ? "Yes" : "No"}</code>
+                Current Protocol: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? window.location.protocol : "N/A"}</code>
+              </li>
+              <li>
+                Current Origin: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? window.location.origin : "N/A"}</code>
+              </li>
+              <li>
+                Using Proxy: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1" ? "Yes" : "No"}</code>
+              </li>
+              <li>
+                Proxy URL: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? `${window.location.origin}/supabase-api` : "N/A"}</code>
               </li>
             </ul>
           </div>
