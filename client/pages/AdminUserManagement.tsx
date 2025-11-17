@@ -133,8 +133,8 @@ const AdminUserManagement: React.FC = () => {
         </div>
       </div>
 
-      {/* Users List */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      {/* Users List - Desktop View */}
+      <div className="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden">
         {loading ? (
           <div className="flex justify-center items-center py-12">
             <Loader className="w-8 h-8 text-blue-600 animate-spin" />
@@ -211,7 +211,10 @@ const AdminUserManagement: React.FC = () => {
                       </p>
                     </td>
                     <td className="px-6 py-4">
-                      <button className="text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                      <button
+                        onClick={() => handleViewUser(user.id)}
+                        className="text-blue-600 hover:text-blue-700 flex items-center gap-1 hover:underline transition-colors"
+                      >
                         <Eye className="w-4 h-4" />
                         View
                       </button>
@@ -221,6 +224,68 @@ const AdminUserManagement: React.FC = () => {
               </tbody>
             </table>
           </div>
+        )}
+      </div>
+
+      {/* Users List - Mobile View */}
+      <div className="md:hidden space-y-4">
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+          </div>
+        ) : filteredUsers.length === 0 ? (
+          <div className="p-8 text-center bg-white rounded-xl border border-gray-200">
+            <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600">No users found</p>
+          </div>
+        ) : (
+          filteredUsers.map((user) => (
+            <div
+              key={user.id}
+              className="bg-white rounded-lg border border-gray-200 p-4"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <p className="font-semibold text-gray-900 text-sm">
+                    {user.full_name}
+                  </p>
+                </div>
+                <span
+                  className={`ml-2 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
+                    user.role === "trainer"
+                      ? "bg-purple-100 text-purple-700"
+                      : "bg-blue-100 text-blue-700"
+                  }`}
+                >
+                  {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                </span>
+              </div>
+
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <p className="text-xs text-gray-600 truncate">{user.email}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <p className="text-xs text-gray-600">
+                    {user.country || "N/A"}
+                  </p>
+                </div>
+                <p className="text-xs text-gray-500">
+                  Joined {new Date(user.created_at).toLocaleDateString()}
+                </p>
+              </div>
+
+              <button
+                onClick={() => handleViewUser(user.id)}
+                className="w-full flex items-center justify-between px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors text-sm font-medium"
+              >
+                <span>View Profile</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          ))
         )}
       </div>
     </AdminLayout>
