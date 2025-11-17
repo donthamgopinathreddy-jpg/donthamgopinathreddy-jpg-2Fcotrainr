@@ -13,21 +13,42 @@ router.get("/test", (_req: Request, res: Response) => {
 });
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+const SUPABASE_ANON_KEY =
+  process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
 console.log("[API] Initializing Supabase API wrapper");
 console.log("[API] Environment check:");
-console.log("[API] VITE_SUPABASE_URL:", process.env.VITE_SUPABASE_URL ? "set" : "not set");
-console.log("[API] SUPABASE_URL:", process.env.SUPABASE_URL ? "set" : "not set");
+console.log(
+  "[API] VITE_SUPABASE_URL:",
+  process.env.VITE_SUPABASE_URL ? "set" : "not set",
+);
+console.log(
+  "[API] SUPABASE_URL:",
+  process.env.SUPABASE_URL ? "set" : "not set",
+);
 console.log("[API] Final SUPABASE_URL:", SUPABASE_URL ? "set" : "not set");
-console.log("[API] VITE_SUPABASE_ANON_KEY:", process.env.VITE_SUPABASE_ANON_KEY ? "set" : "not set");
-console.log("[API] SUPABASE_ANON_KEY:", process.env.SUPABASE_ANON_KEY ? "set" : "not set");
-console.log("[API] Final SUPABASE_ANON_KEY:", SUPABASE_ANON_KEY ? "set" : "not set");
+console.log(
+  "[API] VITE_SUPABASE_ANON_KEY:",
+  process.env.VITE_SUPABASE_ANON_KEY ? "set" : "not set",
+);
+console.log(
+  "[API] SUPABASE_ANON_KEY:",
+  process.env.SUPABASE_ANON_KEY ? "set" : "not set",
+);
+console.log(
+  "[API] Final SUPABASE_ANON_KEY:",
+  SUPABASE_ANON_KEY ? "set" : "not set",
+);
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   const errorMsg = `[API] Missing Supabase configuration. SUPABASE_URL: ${!!SUPABASE_URL}, SUPABASE_ANON_KEY: ${!!SUPABASE_ANON_KEY}`;
   console.error(errorMsg);
-  console.error("[API] Available env vars:", Object.keys(process.env).filter(k => k.includes("SUPABASE") || k.includes("VITE")));
+  console.error(
+    "[API] Available env vars:",
+    Object.keys(process.env).filter(
+      (k) => k.includes("SUPABASE") || k.includes("VITE"),
+    ),
+  );
   throw new Error(errorMsg);
 }
 
@@ -111,7 +132,8 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("[API] Sign in error:", error);
-    const message = error instanceof Error ? error.message : "Internal server error";
+    const message =
+      error instanceof Error ? error.message : "Internal server error";
     res.status(500).json({
       error: message,
     });
