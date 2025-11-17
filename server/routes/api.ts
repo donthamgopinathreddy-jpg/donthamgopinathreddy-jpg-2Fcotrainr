@@ -40,7 +40,10 @@ router.get("/health", async (_req: Request, res: Response) => {
       },
     });
 
-    console.log("[API] Supabase connectivity test status:", testResponse.status);
+    console.log(
+      "[API] Supabase connectivity test status:",
+      testResponse.status,
+    );
 
     res.json({
       status: "ok",
@@ -89,7 +92,10 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
       }, 30000);
     });
 
-    const { data, error } = await Promise.race([authPromise, timeoutPromise]) as any;
+    const { data, error } = (await Promise.race([
+      authPromise,
+      timeoutPromise,
+    ])) as any;
 
     if (error) {
       console.error("[API] Sign in error response:", {
@@ -245,7 +251,10 @@ router.get("/notifications", async (req: Request, res: Response) => {
       return { data, error };
     })();
 
-    const response = await Promise.race([fetchPromise, timeoutPromise]) as any;
+    const response = (await Promise.race([
+      fetchPromise,
+      timeoutPromise,
+    ])) as any;
 
     if (response.error) {
       console.error("[API] Notifications fetch error:", response.error);
@@ -254,7 +263,10 @@ router.get("/notifications", async (req: Request, res: Response) => {
       });
     }
 
-    console.log("[API] Notifications fetched successfully, count:", response.data?.length || 0);
+    console.log(
+      "[API] Notifications fetched successfully, count:",
+      response.data?.length || 0,
+    );
 
     res.json({
       data: response.data || [],

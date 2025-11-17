@@ -22,11 +22,15 @@ export default function ProxyTest() {
       });
 
       const json = await response.json();
-      setResponse(`Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`);
+      setResponse(
+        `Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`,
+      );
       setStatus(`Ping test completed - Status ${response.status}`);
     } catch (error) {
       setStatus("Fetch Error: " + String(error));
-      setResponse(`Error type: ${error instanceof Error ? error.name : typeof error}\nMessage: ${String(error)}`);
+      setResponse(
+        `Error type: ${error instanceof Error ? error.name : typeof error}\nMessage: ${String(error)}`,
+      );
       console.error("[ProxyTest] Fetch error:", error);
     }
   };
@@ -44,11 +48,15 @@ export default function ProxyTest() {
       });
 
       const json = await response.json();
-      setResponse(`Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`);
+      setResponse(
+        `Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`,
+      );
       setStatus(`Health test completed - Status ${response.status}`);
     } catch (error) {
       setStatus("Fetch Error: " + String(error));
-      setResponse(`Error type: ${error instanceof Error ? error.name : typeof error}\nMessage: ${String(error)}`);
+      setResponse(
+        `Error type: ${error instanceof Error ? error.name : typeof error}\nMessage: ${String(error)}`,
+      );
       console.error("[ProxyTest] Fetch error:", error);
     }
   };
@@ -71,7 +79,9 @@ export default function ProxyTest() {
       });
 
       const json = await response.json();
-      setResponse(`Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`);
+      setResponse(
+        `Status: ${response.status}\nResponse: ${JSON.stringify(json, null, 2)}`,
+      );
 
       if (response.ok) {
         setStatus("Auth test successful (got token)");
@@ -81,11 +91,17 @@ export default function ProxyTest() {
     } catch (error) {
       setStatus("Caught error: " + String(error));
       const errorObj = error as any;
-      setResponse(JSON.stringify({
-        message: errorObj.message,
-        code: errorObj.code,
-        details: errorObj.details,
-      }, null, 2));
+      setResponse(
+        JSON.stringify(
+          {
+            message: errorObj.message,
+            code: errorObj.code,
+            details: errorObj.details,
+          },
+          null,
+          2,
+        ),
+      );
       console.error("[ProxyTest] Error:", error);
     }
   };
@@ -102,11 +118,17 @@ export default function ProxyTest() {
     } catch (error) {
       setStatus("Auth context error: " + String(error));
       const errorObj = error as any;
-      setResponse(JSON.stringify({
-        message: errorObj?.message,
-        code: errorObj?.code,
-        details: errorObj?.details,
-      }, null, 2));
+      setResponse(
+        JSON.stringify(
+          {
+            message: errorObj?.message,
+            code: errorObj?.code,
+            details: errorObj?.details,
+          },
+          null,
+          2,
+        ),
+      );
       console.error("[ProxyTest] Auth context error:", error);
     }
   };
@@ -114,7 +136,9 @@ export default function ProxyTest() {
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">API & Authentication Test Page</h1>
+        <h1 className="text-2xl font-bold mb-6">
+          API & Authentication Test Page
+        </h1>
 
         <div className="space-y-4">
           {/* Input Fields */}
@@ -191,16 +215,32 @@ export default function ProxyTest() {
             <h3 className="font-semibold mb-2">Debugging Info:</h3>
             <ul className="text-sm space-y-1">
               <li>
-                Supabase URL: <code className="bg-white px-2 py-1 rounded text-xs">{import.meta.env.VITE_SUPABASE_URL}</code>
+                Supabase URL:{" "}
+                <code className="bg-white px-2 py-1 rounded text-xs">
+                  {import.meta.env.VITE_SUPABASE_URL}
+                </code>
               </li>
               <li>
-                Current Hostname: <code className="bg-white px-2 py-1 rounded text-xs">{typeof window !== "undefined" ? window.location.hostname : "N/A"}</code>
+                Current Hostname:{" "}
+                <code className="bg-white px-2 py-1 rounded text-xs">
+                  {typeof window !== "undefined"
+                    ? window.location.hostname
+                    : "N/A"}
+                </code>
               </li>
               <li>
-                Current Origin: <code className="bg-white px-2 py-1 rounded text-xs">{typeof window !== "undefined" ? window.location.origin : "N/A"}</code>
+                Current Origin:{" "}
+                <code className="bg-white px-2 py-1 rounded text-xs">
+                  {typeof window !== "undefined"
+                    ? window.location.origin
+                    : "N/A"}
+                </code>
               </li>
               <li>
-                Environment: <code className="bg-white px-2 py-1 rounded text-xs">{import.meta.env.MODE}</code>
+                Environment:{" "}
+                <code className="bg-white px-2 py-1 rounded text-xs">
+                  {import.meta.env.MODE}
+                </code>
               </li>
             </ul>
           </div>

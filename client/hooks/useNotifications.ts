@@ -128,7 +128,10 @@ export function useNotifications(userId?: string) {
               if (!response.ok) {
                 const error = await response.json();
                 return {
-                  error: { message: error.error || "Failed to fetch notifications", code: "API_ERROR" },
+                  error: {
+                    message: error.error || "Failed to fetch notifications",
+                    code: "API_ERROR",
+                  },
                   data: null,
                 };
               }
@@ -205,7 +208,10 @@ export function useNotifications(userId?: string) {
                 );
                 data = [];
               }
-            } else if (typedResponse.data && Array.isArray(typedResponse.data)) {
+            } else if (
+              typedResponse.data &&
+              Array.isArray(typedResponse.data)
+            ) {
               data = typedResponse.data;
             }
           }
