@@ -168,27 +168,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     },
   ) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            username: userData.username,
-            full_name: userData.full_name,
-            role: userData.role,
-          },
+      // Use our API wrapper for sign up
+      const response = await fetch("/api/supabase/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          email,
+          password,
+          options: {
+            data: {
+              username: userData.username,
+              full_name: userData.full_name,
+              role: userData.role,
+            },
+          },
+        }),
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const error = await response.json();
+        const errorMsg = error.error || "Sign up failed";
+        console.error("Sign up error:", errorMsg);
+        throw new Error(errorMsg);
+      }
 
-      if (data.user) {
-        setUser(data.user);
+      const { session, user } = await response.json();
 
-        // Create user profile in users table - WAIT for this to complete
+      if (user) {
+        setUser(user);
+
+        // Set the session in Supabase client
+        if (session) {
+          await supabase.auth.setSession(session);
+        }
+
+        // Create user profile in users table
         try {
           const { error: profileError } = await supabase.from("users").insert({
-            id: data.user.id,
+            id: user.id,
             email,
             username: userData.username,
             full_name: userData.full_name,
@@ -214,7 +233,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const { error: trainerError } = await supabase
               .from("trainers")
               .insert({
-                id: data.user.id,
+                id: user.id,
                 years_of_experience: 0,
               });
             if (trainerError) {
@@ -234,7 +253,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Fetch the created profile
-        await fetchUserProfile(data.user.id);
+        await fetchUserProfile(user.id);
       }
     } catch (error: any) {
       console.error("Error signing up:", error);
