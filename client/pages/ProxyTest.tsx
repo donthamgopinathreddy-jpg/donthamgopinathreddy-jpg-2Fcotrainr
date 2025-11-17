@@ -7,20 +7,26 @@ export default function ProxyTest() {
 
   const testProxy = async () => {
     try {
-      setStatus("Testing Supabase connection...");
-      
-      // Test 1: Check if we can reach Supabase health endpoint
+      setStatus("Testing direct fetch to proxy endpoint...");
+
+      // First, just test if /supabase-api/ itself is accessible
+      console.log("Fetching from /supabase-api/health");
+
       const response = await fetch("/supabase-api/health", {
+        method: "GET",
         headers: {
-          apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+          "apikey": import.meta.env.VITE_SUPABASE_ANON_KEY,
+          "Content-Type": "application/json",
         },
       });
 
-      setResponse(`Status: ${response.status}\n${await response.text()}`);
-      setStatus("Proxy test completed");
+      const text = await response.text();
+      setResponse(`Status: ${response.status}\nResponse: ${text}`);
+      setStatus(`Proxy test completed - Status ${response.status}`);
     } catch (error) {
-      setStatus("Error: " + String(error));
-      setResponse("");
+      setStatus("Fetch Error: " + String(error));
+      setResponse(`Error type: ${error instanceof Error ? error.name : typeof error}\nMessage: ${String(error)}`);
+      console.error("[ProxyTest] Fetch error:", error);
     }
   };
 
