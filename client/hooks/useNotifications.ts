@@ -96,93 +96,118 @@ export function useNotifications(userId?: string) {
       let data: NotificationData[] = [];
 
       try {
-        // Create a timeout promise
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(
-            () => reject(new Error("Notifications fetch timeout")),
-            8000,
-          ),
-        );
+        // Get the session to get the auth token
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
 
-        // Create the fetch promise with its own error handling
-        const fetchPromise = (async () => {
-          try {
-            // Fetch notifications - the RLS policy will handle filtering by auth.uid()
-            const response = await supabase
-              .from("notifications")
-              .select("*")
-              .order("created_at", { ascending: false })
-              .limit(20);
+        if (!session?.access_token) {
+          console.debug("No session available for notifications fetch");
+          data = [];
+        } else {
+          // Create a timeout promise
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(
+              () => reject(new Error("Notifications fetch timeout")),
+              10000,
+            ),
+          );
 
-            return response;
-          } catch (fetchError) {
-            // Handle fetch-level errors (network errors, etc.)
-            const errorMsg =
-              fetchError instanceof Error
-                ? fetchError.message
-                : String(fetchError);
-            console.debug("Notifications fetch-level error:", errorMsg);
+          // Create the fetch promise with its own error handling
+          const fetchPromise = (async () => {
+            try {
+              // Fetch notifications from our API wrapper
+              const response = await fetch("/api/supabase/notifications", {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${session.access_token}`,
+                },
+              });
 
-            if (errorMsg.includes("Failed to fetch")) {
-              console.debug(
-                "Network connectivity issue - notifications unavailable",
-              );
+              if (!response.ok) {
+                const error = await response.json();
+                return {
+                  error: { message: error.error || "Failed to fetch notifications", code: "API_ERROR" },
+                  data: null,
+                };
+              }
+
+              const result = await response.json();
+              return {
+                error: null,
+                data: result.data || [],
+              };
+            } catch (fetchError) {
+              // Handle fetch-level errors (network errors, etc.)
+              const errorMsg =
+                fetchError instanceof Error
+                  ? fetchError.message
+                  : String(fetchError);
+              console.debug("Notifications fetch-level error:", errorMsg);
+
+              if (errorMsg.includes("Failed to fetch")) {
+                console.debug(
+                  "Network connectivity issue - notifications unavailable",
+                );
+              }
+
+              // Return a structured error response that matches Supabase response format
+              return {
+                error: { message: errorMsg, code: "FETCH_ERROR" },
+                data: null,
+              };
             }
+          })();
 
-            // Return a structured error response that matches Supabase response format
-            return {
-              error: { message: errorMsg, code: "FETCH_ERROR" },
-              data: null,
+          // Race between fetch and timeout
+          const response = await Promise.race([fetchPromise, timeoutPromise]);
+
+          if (response && typeof response === "object") {
+            const typedResponse = response as {
+              error: any;
+              data: NotificationData[] | null;
             };
-          }
-        })();
 
-        // Race between fetch and timeout
-        const response = await Promise.race([fetchPromise, timeoutPromise]);
+            if (typedResponse.error) {
+              // Check if it's a "not found" error or permission error
+              const errorMsg = typedResponse.error?.message || "";
+              const errorCode = typedResponse.error?.code || "";
 
-        if (response && typeof response === "object") {
-          const typedResponse = response as {
-            error: any;
-            data: NotificationData[] | null;
-          };
-
-          if (typedResponse.error) {
-            // Check if it's a "not found" error or permission error
-            const errorMsg = typedResponse.error?.message || "";
-            const errorCode = typedResponse.error?.code || "";
-
-            if (
-              errorMsg.includes("does not exist") ||
-              errorMsg.includes("relation") ||
-              errorCode === "PGRST116"
-            ) {
-              // Table doesn't exist yet - use empty array
-              console.debug("Notifications table not yet created");
-              data = [];
-            } else if (
-              errorCode === "PGRST301" ||
-              errorMsg.includes("permission denied")
-            ) {
-              // RLS policy blocked - use empty array
-              console.debug("RLS policy blocked notifications access");
-              data = [];
-            } else if (
-              errorCode === "FETCH_ERROR" ||
-              errorMsg.includes("Failed to fetch") ||
-              errorMsg.includes("Network")
-            ) {
-              // Network error - use empty array
-              console.debug("Network error accessing notifications");
-              data = [];
-            } else {
-              console.debug(
-                "Supabase notifications error:",
-                typedResponse.error?.message || typedResponse.error,
-              );
-              data = [];
+              if (
+                errorMsg.includes("does not exist") ||
+                errorMsg.includes("relation") ||
+                errorCode === "PGRST116"
+              ) {
+                // Table doesn't exist yet - use empty array
+                console.debug("Notifications table not yet created");
+                data = [];
+              } else if (
+                errorCode === "PGRST301" ||
+                errorMsg.includes("permission denied")
+              ) {
+                // RLS policy blocked - use empty array
+                console.debug("RLS policy blocked notifications access");
+                data = [];
+              } else if (
+                errorCode === "FETCH_ERROR" ||
+                errorCode === "API_ERROR" ||
+                errorMsg.includes("Failed to fetch") ||
+                errorMsg.includes("Network")
+              ) {
+                // Network error - use empty array
+                console.debug("Network error accessing notifications");
+                data = [];
+              } else {
+                console.debug(
+                  "Notifications error:",
+                  typedResponse.error?.message || typedResponse.error,
+                );
+                data = [];
+              }
+            } else if (typedResponse.data && Array.isArray(typedResponse.data)) {
+              data = typedResponse.data;
             }
-          } else if (typedResponse.data && Array.isArray(typedResponse.data)) {
-            data = typedResponse.data;
           }
         }
       } catch (e) {
