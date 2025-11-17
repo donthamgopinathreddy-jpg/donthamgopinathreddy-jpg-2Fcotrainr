@@ -148,7 +148,7 @@ export function useAdminTrainerVerification() {
         setLoading(false);
       }
     },
-    [],
+    [currentTab],
   );
 
   const approveTrainer = async (trainerId: string, reviewedBy: string) => {
