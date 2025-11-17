@@ -17,14 +17,23 @@ const shouldUseProxy = () => {
   const isLocalhost = currentUrl.hostname === "localhost" || currentUrl.hostname === "127.0.0.1";
 
   // Use proxy for non-localhost environments to avoid CORS issues
-  return !isLocalhost;
+  const shouldProxy = !isLocalhost;
+  console.log("[Supabase] Proxy decision:", {
+    hostname: currentUrl.hostname,
+    isLocalhost,
+    shouldProxy,
+  });
+  return shouldProxy;
 };
 
 const getApiUrl = () => {
   if (typeof window !== "undefined" && shouldUseProxy()) {
     const currentUrl = new URL(window.location.href);
-    return `${currentUrl.origin}/supabase-api`;
+    const proxyUrl = `${currentUrl.origin}/supabase-api`;
+    console.log("[Supabase] Using proxy URL:", proxyUrl);
+    return proxyUrl;
   }
+  console.log("[Supabase] Using direct Supabase URL:", supabaseUrl);
   return supabaseUrl;
 };
 
