@@ -206,4 +206,65 @@ router.post("/auth/signout", async (req: Request, res: Response) => {
   }
 });
 
+// Notifications endpoint
+router.get("/notifications", async (req: Request, res: Response) => {
+  try {
+    console.log("[API] Notifications endpoint called");
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return res.status(401).json({
+        error: "Missing authorization header",
+      });
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+
+    // Create a client with the user's session
+    const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    });
+
+    // Fetch notifications with timeout
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Notifications fetch timeout")), 10000),
+    );
+
+    const fetchPromise = (async () => {
+      const { data, error } = await userClient
+        .from("notifications")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      return { data, error };
+    })();
+
+    const response = await Promise.race([fetchPromise, timeoutPromise]) as any;
+
+    if (response.error) {
+      console.error("[API] Notifications fetch error:", response.error);
+      return res.status(400).json({
+        error: response.error.message,
+      });
+    }
+
+    console.log("[API] Notifications fetched successfully, count:", response.data?.length || 0);
+
+    res.json({
+      data: response.data || [],
+    });
+  } catch (error) {
+    console.error("[API] Unexpected notifications error:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
+
 export default router;
