@@ -58,10 +58,12 @@ const useProxy = shouldUseProxy();
 console.log("[Supabase] Initializing client", {
   useProxy,
   apiUrl,
+  originalUrl: supabaseUrl,
   isDevelopment: typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"),
 });
 
-export const supabase = createClient(apiUrl, supabaseAnonKey, {
+// Create the client with the appropriate URL
+const clientOptions: any = {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
@@ -73,4 +75,18 @@ export const supabase = createClient(apiUrl, supabaseAnonKey, {
       "X-Supabase-Proxy": useProxy ? "true" : "false",
     },
   },
-});
+};
+
+// If using proxy, we need to set the auth endpoints correctly
+if (useProxy) {
+  console.log("[Supabase] Configuring auth endpoints for proxy");
+  clientOptions.auth = {
+    ...clientOptions.auth,
+    autoRefreshToken: true,
+    persistSession: true,
+    storage: storageImpl,
+    detectSessionInUrl: true,
+  };
+}
+
+export const supabase = createClient(apiUrl, supabaseAnonKey, clientOptions);
