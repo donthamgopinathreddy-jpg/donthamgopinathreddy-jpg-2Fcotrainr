@@ -109,10 +109,107 @@ export default function TrainerSignup() {
   const isStep2Complete = formData.specialties.length > 0 && formData.bio && formData.experience;
   const isStep3Complete = formData.certifications.length > 0 && formData.idProof;
 
-  const handleSubmit = () => {
-    console.log("Trainer signup submitted:", formData);
-    // TODO: Submit to backend
-    navigate("/profile");
+  const uploadFile = async (file: File, bucket: string, path: string) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .upload(path, file, { upsert: true });
+
+      if (error) throw error;
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from(bucket).getPublicUrl(path);
+
+      return publicUrl;
+    } catch (err) {
+      console.error(`Error uploading file to ${bucket}:`, err);
+      throw err;
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!userProfile) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to become a trainer",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // 1. Update user role to trainer
+      const { error: roleError } = await supabase
+        .from("users")
+        .update({ role: "trainer" })
+        .eq("id", userProfile.id);
+
+      if (roleError) throw roleError;
+
+      // 2. Upload ID proof if exists
+      let idDocUrl = null;
+      if (formData.idProof) {
+        try {
+          const fileName = `${userProfile.id}/id_${Date.now()}.${formData.idProof.name.split(".").pop()}`;
+          idDocUrl = await uploadFile(
+            formData.idProof,
+            "trainer-documents",
+            fileName,
+          );
+        } catch (err) {
+          console.warn("Error uploading ID document:", err);
+        }
+      }
+
+      // 3. Upload first certification if exists
+      let certUrl = null;
+      if (formData.certifications.length > 0) {
+        try {
+          const cert = formData.certifications[0];
+          const fileName = `${userProfile.id}/cert_${Date.now()}.${cert.name.split(".").pop()}`;
+          certUrl = await uploadFile(cert, "trainer-documents", fileName);
+        } catch (err) {
+          console.warn("Error uploading certification:", err);
+        }
+      }
+
+      // 4. Create trainer verification record
+      const { error: verificationError } = await supabase
+        .from("trainer_verifications")
+        .insert({
+          user_id: userProfile.id,
+          id_document_url: idDocUrl,
+          certificate_url: certUrl,
+          verification_status: "pending",
+          submitted_at: new Date().toISOString(),
+        });
+
+      if (verificationError) throw verificationError;
+
+      toast({
+        title: "Success",
+        description:
+          "Your trainer application has been submitted! Please wait for admin verification.",
+      });
+
+      // Navigate to profile after successful submission
+      setTimeout(() => {
+        navigate("/profile");
+      }, 1500);
+    } catch (err) {
+      console.error("Error submitting trainer signup:", err);
+      toast({
+        title: "Error",
+        description:
+          err instanceof Error ? err.message : "Failed to submit trainer application",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
