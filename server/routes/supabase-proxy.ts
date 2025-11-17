@@ -97,10 +97,16 @@ export async function handleSupabaseProxy(req: Request, res: Response) {
     // Send response
     res.send(Buffer.from(buffer));
   } catch (error) {
-    console.error("[Supabase Proxy] Error:", error);
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : "";
+    console.error("[Supabase Proxy] Error:", errorMsg);
+    console.error("[Supabase Proxy] Stack:", errorStack);
+
     res.status(500).json({
       error: "Failed to proxy request to Supabase",
-      details: error instanceof Error ? error.message : String(error),
+      details: errorMsg,
+      path: req.url,
+      method: req.method,
     });
   }
 }
