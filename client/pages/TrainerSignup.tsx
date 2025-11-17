@@ -210,30 +210,36 @@ export default function TrainerSignup() {
       }
 
       // 4. Create trainer verification record
-      console.log("Creating trainer verification record...", {
+      const verificationData = {
         user_id: userProfile.id,
         id_document_url: idDocUrl,
         certificate_url: certUrl,
-        verification_status: "pending",
-      });
+        verification_status: "pending" as const,
+        submitted_at: new Date().toISOString(),
+      };
+
+      console.log("Creating trainer verification record...", verificationData);
 
       const { data, error: verificationError } = await supabase
         .from("trainer_verifications")
-        .insert({
-          user_id: userProfile.id,
-          id_document_url: idDocUrl,
-          certificate_url: certUrl,
-          verification_status: "pending",
-          submitted_at: new Date().toISOString(),
-        })
+        .insert([verificationData])
         .select();
 
       if (verificationError) {
-        console.error("Verification insert error:", verificationError);
+        console.error("Verification insert error details:", {
+          message: verificationError.message,
+          code: verificationError.code,
+          details: verificationError.details,
+          hint: verificationError.hint,
+        });
         throw new Error(`Failed to create verification record: ${verificationError.message}`);
       }
 
-      console.log("Trainer verification record created:", data);
+      if (!data || data.length === 0) {
+        throw new Error("Trainer verification record was not created (no data returned)");
+      }
+
+      console.log("Trainer verification record created successfully:", data[0]);
 
       toast({
         title: "Success",
