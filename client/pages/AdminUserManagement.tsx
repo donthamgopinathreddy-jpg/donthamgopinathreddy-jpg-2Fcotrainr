@@ -73,6 +73,10 @@ const AdminUserManagement: React.FC = () => {
     setFilteredUsers(filtered);
   };
 
+  const handleViewUser = (userId: string) => {
+    navigate(`/admin/users/${userId}`);
+  };
+
   if (!userProfile) {
     return <div>Please log in</div>;
   }
