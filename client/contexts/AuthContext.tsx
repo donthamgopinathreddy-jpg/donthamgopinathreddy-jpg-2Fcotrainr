@@ -246,20 +246,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     try {
       console.log("[Auth] Signing in user:", email);
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+
+      // Use our API wrapper instead of calling Supabase directly
+      const response = await fetch("/api/supabase/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
 
-      if (error) {
-        console.error("[Auth] Sign in error from Supabase:", error);
-        throw error;
+      if (!response.ok) {
+        const error = await response.json();
+        console.error("[Auth] Sign in error from API:", error);
+        throw new Error(error.error || "Sign in failed");
       }
 
+      const { session, user } = await response.json();
+
       console.log("[Auth] Sign in successful");
-      if (data.user) {
-        setUser(data.user);
-        await fetchUserProfile(data.user.id);
+
+      if (session) {
+        // Store the session in Supabase client
+        await supabase.auth.setSession(session);
+      }
+
+      if (user) {
+        setUser(user);
+        await fetchUserProfile(user.id);
       }
     } catch (error: any) {
       console.error("[Auth] Error signing in:", error);
