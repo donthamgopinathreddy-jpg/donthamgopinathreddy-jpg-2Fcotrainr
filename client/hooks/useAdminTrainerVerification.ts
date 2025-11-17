@@ -345,6 +345,9 @@ export function useAdminTrainerVerification() {
   };
 
   useEffect(() => {
+    // fetchTrainers is memoized with empty dependency array, so it's safe to not include it
+    // Only depend on currentTab to refetch when tab changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     fetchTrainers(currentTab);
   }, [currentTab]);
 
