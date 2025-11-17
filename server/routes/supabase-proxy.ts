@@ -13,14 +13,17 @@ export default function supabaseProxy(_req: Request, res: Response, next: NextFu
   next();
 }
 
-// Main proxy handler
+// Main proxy handler for both REST and Auth endpoints
 export async function handleSupabaseProxy(req: Request, res: Response) {
   try {
     // Get the path from the request, removing the /supabase-api prefix
     const path = req.url;
 
     // Build the full Supabase URL
+    // Path should already include /rest/v1/ or /auth/v1/ etc
     const url = new URL(`${SUPABASE_URL}${path}`);
+
+    console.log(`[Supabase Proxy] ${req.method} ${url.pathname}`);
 
     const headers: Record<string, string> = {
       apikey: SUPABASE_ANON_KEY!,
@@ -32,12 +35,29 @@ export async function handleSupabaseProxy(req: Request, res: Response) {
       headers.Authorization = req.headers.authorization;
     }
 
+    // For POST/PUT requests, parse and forward the body
+    let body: string | undefined;
+    if (req.method !== "GET" && req.method !== "HEAD") {
+      if (typeof req.body === "string") {
+        body = req.body;
+      } else if (req.body) {
+        body = JSON.stringify(req.body);
+      }
+    }
+
     // Make the request to Supabase
-    const supabaseRes = await fetch(url.toString(), {
+    const fetchOptions: RequestInit = {
       method: req.method,
       headers,
-      body: req.method !== "GET" && req.method !== "HEAD" ? JSON.stringify(req.body) : undefined,
-    });
+    };
+
+    if (body) {
+      fetchOptions.body = body;
+    }
+
+    console.log(`[Supabase Proxy] Fetching: ${url.toString()}`);
+
+    const supabaseRes = await fetch(url.toString(), fetchOptions);
 
     // Get the response body
     const buffer = await supabaseRes.arrayBuffer();
@@ -58,10 +78,12 @@ export async function handleSupabaseProxy(req: Request, res: Response) {
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey");
 
+    console.log(`[Supabase Proxy] Response: ${supabaseRes.status}`);
+
     // Send response
     res.send(Buffer.from(buffer));
   } catch (error) {
-    console.error("Supabase proxy error:", error);
+    console.error("[Supabase Proxy] Error:", error);
     res.status(500).json({
       error: "Failed to proxy request to Supabase",
       details: error instanceof Error ? error.message : String(error),
