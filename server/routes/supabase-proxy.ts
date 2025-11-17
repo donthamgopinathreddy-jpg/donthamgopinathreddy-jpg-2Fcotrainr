@@ -21,25 +21,41 @@ export async function handleSupabaseProxy(req: Request, res: Response) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey, x-supabase-auth-token");
   res.setHeader("Access-Control-Max-Age", "86400");
 
+  // Log the incoming request
+  console.log(`[Proxy] Received ${req.method} ${req.originalUrl || req.url}`);
+  console.log(`[Proxy] Base URL: ${SUPABASE_URL}`);
+  console.log(`[Proxy] Has anon key: ${!!SUPABASE_ANON_KEY}`);
+
   // Handle preflight requests
   if (req.method === "OPTIONS") {
+    console.log("[Proxy] Handling CORS preflight");
     res.status(200).end();
     return;
   }
 
   try {
     // Get the path from the request
+    // When mounted at /supabase-api/, Express strips that prefix
     let path = req.url;
 
-    // The path at this point might be something like:
+    // The path at this point should be something like:
     // /rest/v1/users?select=*
     // /auth/v1/token
     // etc. (the /supabase-api prefix is already removed by Express routing)
 
-    // Build the full Supabase URL by appending the path
-    const url = new URL(`${SUPABASE_URL}${path}`);
+    if (!path.startsWith("/")) {
+      path = "/" + path;
+    }
 
-    console.log(`[Supabase Proxy] ${req.method} ${path} -> ${url.href}`);
+    // Build the full Supabase URL by appending the path
+    if (!SUPABASE_URL) {
+      throw new Error("VITE_SUPABASE_URL is not set");
+    }
+
+    const fullUrl = `${SUPABASE_URL}${path}`;
+    console.log(`[Proxy] Full URL: ${fullUrl}`);
+
+    const url = new URL(fullUrl);
 
     const headers: Record<string, string> = {
       apikey: SUPABASE_ANON_KEY!,
