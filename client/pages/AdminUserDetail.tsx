@@ -69,23 +69,31 @@ const AdminUserDetail: React.FC = () => {
 
     setUpdating(true);
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("users")
         .update({ role: newRole })
-        .eq("id", user.id);
+        .eq("id", user.id)
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
 
-      setUser({ ...user, role: newRole });
-      toast({
-        title: "Success",
-        description: "User role updated successfully",
-      });
+      if (data && data.length > 0) {
+        setUser({ ...user, role: newRole });
+        toast({
+          title: "Success",
+          description: "User role updated successfully",
+        });
+      } else {
+        throw new Error("No data returned from update");
+      }
     } catch (err) {
       console.error("Error updating user role:", err);
       toast({
         title: "Error",
-        description: "Failed to update user role",
+        description: `Failed to update user role: ${err instanceof Error ? err.message : "Unknown error"}`,
         variant: "destructive",
       });
     } finally {
