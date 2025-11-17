@@ -15,6 +15,18 @@ export default function supabaseProxy(_req: Request, res: Response, next: NextFu
 
 // Main proxy handler for both REST and Auth endpoints
 export async function handleSupabaseProxy(req: Request, res: Response) {
+  // Add CORS headers immediately
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey, x-supabase-auth-token");
+  res.setHeader("Access-Control-Max-Age", "86400");
+
+  // Handle preflight requests
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+
   try {
     // Get the path from the request
     let path = req.url;
@@ -31,12 +43,15 @@ export async function handleSupabaseProxy(req: Request, res: Response) {
 
     const headers: Record<string, string> = {
       apikey: SUPABASE_ANON_KEY!,
-      "Content-Type": "application/json",
+      "Content-Type": req.headers["content-type"] || "application/json",
     };
 
-    // Copy authorization header if present
+    // Copy relevant headers from the request
     if (req.headers.authorization) {
       headers.Authorization = req.headers.authorization;
+    }
+    if (req.headers["x-supabase-auth-token"]) {
+      headers["x-supabase-auth-token"] = req.headers["x-supabase-auth-token"] as string;
     }
 
     // For POST/PUT requests, parse and forward the body
