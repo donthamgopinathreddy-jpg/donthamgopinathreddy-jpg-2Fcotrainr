@@ -32,11 +32,13 @@ export function useAdminTrainerVerification() {
       setError(null);
 
       try {
+        // Always fetch all trainers first
         let query = supabase
           .from("trainer_verifications")
           .select("*")
           .order("submitted_at", { ascending: false });
 
+        // Apply status filter if provided
         if (status) {
           query = query.eq("verification_status", status);
         }
