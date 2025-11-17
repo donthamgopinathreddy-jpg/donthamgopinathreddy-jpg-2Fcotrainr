@@ -269,53 +269,80 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log("[Auth] Signing in user:", email);
 
+      if (!email || !password) {
+        throw new Error("Email and password are required");
+      }
+
       // Use our API wrapper instead of calling Supabase directly
       console.log("[Auth] Sending request to /api/supabase/auth/signin");
 
-      const response = await fetch("/api/supabase/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      console.log("[Auth] Received response with status:", response.status);
+      try {
+        const response = await fetch("/api/supabase/auth/signin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+          signal: controller.signal,
+        });
 
-      if (!response.ok) {
-        console.log("[Auth] Response not ok, parsing error...");
-        let errorData: any;
+        clearTimeout(timeoutId);
+
+        console.log("[Auth] Received response with status:", response.status);
+
+        let responseData: any;
         try {
-          errorData = await response.json();
+          responseData = await response.json();
         } catch (parseError) {
-          console.error("[Auth] Could not parse error response as JSON");
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          console.error("[Auth] Could not parse response as JSON");
+          throw new Error("Invalid response from server");
         }
-        console.error("[Auth] Sign in error from API:", errorData);
-        throw new Error(errorData.error || "Sign in failed");
-      }
 
-      const { session, user } = await response.json();
+        if (!response.ok) {
+          console.error("[Auth] Sign in error from API:", responseData);
+          const errorMessage = responseData?.error || `Sign in failed (${response.status})`;
+          throw new Error(errorMessage);
+        }
 
-      console.log("[Auth] Sign in successful for user:", user?.email);
+        const { session, user } = responseData;
 
-      if (session) {
-        // Store the session in Supabase client
-        await supabase.auth.setSession(session);
-      }
+        if (!user) {
+          throw new Error("No user data returned from server");
+        }
 
-      if (user) {
+        console.log("[Auth] Sign in successful for user:", user.email);
+
+        if (session) {
+          // Store the session in Supabase client
+          try {
+            await supabase.auth.setSession(session);
+          } catch (sessionError) {
+            console.warn("[Auth] Could not set session in Supabase client:", sessionError);
+            // Continue anyway - user state is still valid
+          }
+        }
+
         setUser(user);
         await fetchUserProfile(user.id);
+      } catch (fetchError: any) {
+        clearTimeout(timeoutId);
+
+        if (fetchError.name === "AbortError") {
+          throw new Error("Sign in request timed out - please try again");
+        }
+        throw fetchError;
       }
     } catch (error: any) {
       console.error("[Auth] Error signing in:", error);
       console.error("[Auth] Error type:", error?.name);
       console.error("[Auth] Error message:", error?.message);
-      const errorMessage = error?.message || String(error);
+      const errorMessage = error?.message || "Sign in failed";
       throw new Error(errorMessage);
     }
   };
