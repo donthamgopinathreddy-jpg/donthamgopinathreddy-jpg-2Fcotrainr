@@ -455,16 +455,24 @@ export default function TrainerSignup() {
             <div className="flex gap-3 mt-8">
               <button
                 onClick={() => setStep(2)}
-                className="flex-1 bg-card border border-border text-foreground font-bold py-3 rounded-xl hover:bg-muted transition-all"
+                disabled={isSubmitting}
+                className="flex-1 bg-card border border-border text-foreground font-bold py-3 rounded-xl hover:bg-muted transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 ← Back
               </button>
               <button
                 onClick={handleSubmit}
-                disabled={!isStep3Complete}
-                className="flex-1 bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-orange-500/30 transition-all"
+                disabled={!isStep3Complete || isSubmitting}
+                className="flex-1 bg-gradient-primary text-gray-900 font-bold py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-orange-500/30 transition-all flex items-center justify-center gap-2"
               >
-                Submit Application
+                {isSubmitting ? (
+                  <>
+                    <Loader className="w-4 h-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit Application"
+                )}
               </button>
             </div>
           </div>
