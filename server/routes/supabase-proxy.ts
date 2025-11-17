@@ -86,16 +86,11 @@ export async function handleSupabaseProxy(req: Request, res: Response) {
 
     // Copy relevant response headers
     supabaseRes.headers.forEach((value, key) => {
-      // Skip sensitive headers
-      if (!["set-cookie", "connection", "transfer-encoding"].includes(key.toLowerCase())) {
+      // Skip sensitive headers and ones we've already set
+      if (!["set-cookie", "connection", "transfer-encoding", "access-control-allow-origin", "access-control-allow-methods", "access-control-allow-headers"].includes(key.toLowerCase())) {
         res.setHeader(key, value);
       }
     });
-
-    // Add CORS headers
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, apikey");
 
     console.log(`[Supabase Proxy] Response: ${supabaseRes.status}`);
 
