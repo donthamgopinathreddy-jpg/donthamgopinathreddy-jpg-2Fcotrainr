@@ -97,18 +97,26 @@ export function useNotifications(userId?: string) {
 
       try {
         // Get the session to get the auth token
+        // Try to get cached session first without network call
         let session = null;
-        try {
-          const result = await supabase.auth.getSession();
-          session = result?.data?.session;
-        } catch (sessionError) {
-          const errorMsg =
-            sessionError instanceof Error
-              ? sessionError.message
-              : String(sessionError);
-          console.debug("Failed to get session for notifications:", errorMsg);
-          // Continue with empty data instead of throwing
-          session = null;
+
+        // Try to get session from supabase client's internal state
+        const { data: { session: currentSession } } = await supabase.auth.getSession().catch(() => ({
+          data: { session: null },
+        }));
+        session = currentSession;
+
+        // Fallback: if no session from API, try localStorage
+        if (!session) {
+          try {
+            const stored = localStorage.getItem("supabase.auth.token");
+            if (stored) {
+              const parsed = JSON.parse(stored);
+              session = parsed.currentSession || parsed;
+            }
+          } catch (_e) {
+            // localStorage access failed, continue with null session
+          }
         }
 
         if (session?.access_token) {
