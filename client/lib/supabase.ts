@@ -9,21 +9,21 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-// Determine the API endpoint based on environment
-// In browser, use the proxy endpoint to avoid CORS issues
-const getApiUrl = () => {
-  // In development or if running on same domain, use proxy
-  if (typeof window !== "undefined") {
-    const currentUrl = new URL(window.location.href);
-    const isLocalhost = currentUrl.hostname === "localhost" || currentUrl.hostname === "127.0.0.1";
+// Determine if we should use the proxy
+const shouldUseProxy = () => {
+  if (typeof window === "undefined") return false;
 
-    // Use direct Supabase URL for localhost development, proxy for production
-    if (isLocalhost) {
-      return supabaseUrl;
-    } else {
-      // Use relative proxy URL for production
-      return `${currentUrl.origin}/supabase-api`;
-    }
+  const currentUrl = new URL(window.location.href);
+  const isLocalhost = currentUrl.hostname === "localhost" || currentUrl.hostname === "127.0.0.1";
+
+  // Use proxy for non-localhost environments to avoid CORS issues
+  return !isLocalhost;
+};
+
+const getApiUrl = () => {
+  if (typeof window !== "undefined" && shouldUseProxy()) {
+    const currentUrl = new URL(window.location.href);
+    return `${currentUrl.origin}/supabase-api`;
   }
   return supabaseUrl;
 };
