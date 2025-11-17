@@ -142,25 +142,33 @@ export default function TrainerSignup() {
 
     try {
       // 1. Update user role to trainer
+      console.log("Updating user role to trainer...");
       const { error: roleError } = await supabase
         .from("users")
         .update({ role: "trainer" })
         .eq("id", userProfile.id);
 
-      if (roleError) throw roleError;
+      if (roleError) {
+        console.error("Role update error:", roleError);
+        throw new Error(`Failed to update role: ${roleError.message}`);
+      }
+      console.log("Role updated successfully");
 
       // 2. Upload ID proof if exists
       let idDocUrl = null;
       if (formData.idProof) {
         try {
+          console.log("Uploading ID document...");
           const fileName = `${userProfile.id}/id_${Date.now()}.${formData.idProof.name.split(".").pop()}`;
           idDocUrl = await uploadFile(
             formData.idProof,
             "trainer-documents",
             fileName,
           );
+          console.log("ID document uploaded:", idDocUrl);
         } catch (err) {
-          console.warn("Error uploading ID document:", err);
+          console.warn("Warning: Error uploading ID document:", err);
+          // Continue without ID document URL
         }
       }
 
@@ -168,16 +176,26 @@ export default function TrainerSignup() {
       let certUrl = null;
       if (formData.certifications.length > 0) {
         try {
+          console.log("Uploading certification...");
           const cert = formData.certifications[0];
           const fileName = `${userProfile.id}/cert_${Date.now()}.${cert.name.split(".").pop()}`;
           certUrl = await uploadFile(cert, "trainer-documents", fileName);
+          console.log("Certification uploaded:", certUrl);
         } catch (err) {
-          console.warn("Error uploading certification:", err);
+          console.warn("Warning: Error uploading certification:", err);
+          // Continue without certification URL
         }
       }
 
       // 4. Create trainer verification record
-      const { error: verificationError } = await supabase
+      console.log("Creating trainer verification record...", {
+        user_id: userProfile.id,
+        id_document_url: idDocUrl,
+        certificate_url: certUrl,
+        verification_status: "pending",
+      });
+
+      const { data, error: verificationError } = await supabase
         .from("trainer_verifications")
         .insert({
           user_id: userProfile.id,
@@ -185,9 +203,15 @@ export default function TrainerSignup() {
           certificate_url: certUrl,
           verification_status: "pending",
           submitted_at: new Date().toISOString(),
-        });
+        })
+        .select();
 
-      if (verificationError) throw verificationError;
+      if (verificationError) {
+        console.error("Verification insert error:", verificationError);
+        throw new Error(`Failed to create verification record: ${verificationError.message}`);
+      }
+
+      console.log("Trainer verification record created:", data);
 
       toast({
         title: "Success",
@@ -201,10 +225,12 @@ export default function TrainerSignup() {
       }, 1500);
     } catch (err) {
       console.error("Error submitting trainer signup:", err);
+      const errorMessage = err instanceof Error ? err.message : "Failed to submit trainer application";
+      console.error("Full error details:", err);
+
       toast({
         title: "Error",
-        description:
-          err instanceof Error ? err.message : "Failed to submit trainer application",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
