@@ -117,10 +117,10 @@ export default function ProxyTest() {
                 Current Origin: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? window.location.origin : "N/A"}</code>
               </li>
               <li>
-                Using Proxy: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1" ? "Yes" : "No"}</code>
+                Health Endpoint: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? `${window.location.origin}/api/supabase/health` : "N/A"}</code>
               </li>
               <li>
-                Proxy URL: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? `${window.location.origin}/supabase-api` : "N/A"}</code>
+                Auth Endpoint: <code className="bg-white px-2 py-1 rounded">{typeof window !== "undefined" ? `${window.location.origin}/api/supabase/auth/signin` : "N/A"}</code>
               </li>
             </ul>
           </div>
