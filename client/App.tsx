@@ -42,6 +42,7 @@ import ActivityDetail from "./pages/ActivityDetail";
 import AdminTrainerVerification from "./pages/AdminTrainerVerification";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminUserManagement from "./pages/AdminUserManagement";
+import AdminUserDetail from "./pages/AdminUserDetail";
 import AdminTrainerManagement from "./pages/AdminTrainerManagement";
 import AdminCommunication from "./pages/AdminCommunication";
 import AdminSystemHealth from "./pages/AdminSystemHealth";
