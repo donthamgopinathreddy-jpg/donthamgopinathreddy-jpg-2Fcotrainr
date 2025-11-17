@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import { handleDemo } from "./routes/demo";
-import { handleSupabaseProxy } from "./routes/supabase-proxy";
+import apiRouter from "./routes/api";
 
 export function createServer() {
   const app = express();
@@ -18,18 +18,8 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
-  // Health check for proxy
-  app.get("/api/proxy-health", (_req, res) => {
-    res.json({
-      status: "ok",
-      supabaseUrl: process.env.VITE_SUPABASE_URL,
-      hasAnonKey: !!process.env.VITE_SUPABASE_ANON_KEY,
-    });
-  });
-
-  // Supabase REST API proxy - handle all requests to /supabase-api/*
-  // This must come before other routes so it can intercept all supabase-api requests
-  app.use("/supabase-api/", handleSupabaseProxy);
+  // Supabase API wrapper - all auth and data operations go through here
+  app.use("/api/supabase/", apiRouter);
 
   return app;
 }
