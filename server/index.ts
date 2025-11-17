@@ -18,6 +18,15 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Health check for proxy
+  app.get("/api/proxy-health", (_req, res) => {
+    res.json({
+      status: "ok",
+      supabaseUrl: process.env.VITE_SUPABASE_URL,
+      hasAnonKey: !!process.env.VITE_SUPABASE_ANON_KEY,
+    });
+  });
+
   // Supabase REST API proxy - handle all requests to /supabase-api/*
   // This must come before other routes so it can intercept all supabase-api requests
   app.use("/supabase-api/", handleSupabaseProxy);
