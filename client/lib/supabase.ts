@@ -9,6 +9,25 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+// Determine the API endpoint based on environment
+// In browser, use the proxy endpoint to avoid CORS issues
+const getApiUrl = () => {
+  // In development or if running on same domain, use proxy
+  if (typeof window !== "undefined") {
+    const currentUrl = new URL(window.location.href);
+    const isLocalhost = currentUrl.hostname === "localhost" || currentUrl.hostname === "127.0.0.1";
+
+    // Use direct Supabase URL for localhost development, proxy for production
+    if (isLocalhost) {
+      return supabaseUrl;
+    } else {
+      // Use relative proxy URL for production
+      return `${currentUrl.origin}/supabase-api`;
+    }
+  }
+  return supabaseUrl;
+};
+
 // For Capacitor native apps, we need to use Preferences instead of localStorage
 let storageImpl: any = localStorage;
 
@@ -33,7 +52,10 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
 }
 
 // Create client with proper configuration
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+const apiUrl = getApiUrl();
+console.log("Supabase API endpoint:", apiUrl);
+
+export const supabase = createClient(apiUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
