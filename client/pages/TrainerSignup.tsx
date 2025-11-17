@@ -151,6 +151,14 @@ export default function TrainerSignup() {
     setIsSubmitting(true);
 
     try {
+      // Verify user is authenticated
+      console.log("Verifying authentication...");
+      const { data: { user: authUser }, error: authError } = await supabase.auth.getUser();
+      if (authError || !authUser) {
+        throw new Error("Authentication failed. Please log in again.");
+      }
+      console.log("Authentication verified for user:", authUser.id);
+
       // 1. Update user role to trainer
       console.log("Updating user role to trainer for user:", userProfile.id);
       const { error: roleError } = await supabase
