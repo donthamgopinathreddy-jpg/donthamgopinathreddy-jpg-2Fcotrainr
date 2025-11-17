@@ -80,52 +80,23 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     console.log("[API] Sign in attempt for:", email);
     console.log("[API] Using Supabase URL:", SUPABASE_URL);
 
-    // Sign in with a timeout
-    let data: any;
-    let error: any;
+    // Call Supabase auth directly
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    try {
-      const result = (await Promise.race([
-        supabase.auth.signInWithPassword({ email, password }),
-        new Promise((_, reject) =>
-          setTimeout(
-            () => reject(new Error("Authentication request timed out (30s)")),
-            30000,
-          ),
-        ),
-      ])) as any;
-
-      // Supabase returns { data, error } - check both
-      data = result?.data;
-      error = result?.error;
-    } catch (err) {
-      error = err;
-    }
-
+    // Check for errors
     if (error) {
-      const errorMessage = error.message || String(error);
       console.error("[API] Sign in error:", {
-        message: errorMessage,
-        status: error?.status || "unknown",
-        code: error?.code || "unknown",
+        message: error.message,
+        status: error.status,
+        code: (error as any).code,
       });
 
-      // Check if it's a timeout
-      if (errorMessage?.includes("timed out")) {
-        return res.status(504).json({
-          error: "Authentication service temporarily unavailable",
-        });
-      }
-
-      // Check if it's an authentication error
-      if (errorMessage?.includes("Invalid login credentials")) {
-        return res.status(401).json({
-          error: "Invalid email or password",
-        });
-      }
-
       return res.status(401).json({
-        error: errorMessage || "Authentication failed",
+        error: error.message || "Authentication failed",
+        status: error.status,
       });
     }
 
