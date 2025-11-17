@@ -13,7 +13,9 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 router.all("/*", async (req: Request, res: Response) => {
   try {
     const path = req.params[0] || "";
-    const url = new URL(`${SUPABASE_URL}/rest/v1/${path}`);
+    // The path already includes /rest/v1/, so we just append it directly
+    const fullPath = path.startsWith("/") ? path : `/${path}`;
+    const url = new URL(`${SUPABASE_URL}${fullPath}`);
 
     // Copy query parameters
     Object.entries(req.query).forEach(([key, value]) => {
