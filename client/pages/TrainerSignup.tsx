@@ -138,11 +138,21 @@ export default function TrainerSignup() {
       return;
     }
 
+    if (!userProfile.id) {
+      toast({
+        title: "Error",
+        description: "User ID is missing. Please refresh and try again.",
+        variant: "destructive",
+      });
+      console.error("User profile missing ID:", userProfile);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       // 1. Update user role to trainer
-      console.log("Updating user role to trainer...");
+      console.log("Updating user role to trainer for user:", userProfile.id);
       const { error: roleError } = await supabase
         .from("users")
         .update({ role: "trainer" })
