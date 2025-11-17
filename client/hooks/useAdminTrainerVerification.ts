@@ -27,7 +27,7 @@ export function useAdminTrainerVerification() {
   >("pending");
 
   const fetchTrainers = useCallback(
-    async (status?: "pending" | "approved" | "rejected") => {
+    async (status: "pending" | "approved" | "rejected" = "pending") => {
       setLoading(true);
       setError(null);
 
