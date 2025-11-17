@@ -101,11 +101,29 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
 
     console.log("[API] Calling Supabase auth.signInWithPassword...");
 
-    // Call Supabase auth directly
-    const result = await supabase.auth.signInWithPassword({
+    // Call Supabase auth with timeout protection
+    const timeoutMs = 8000; // 8 second timeout
+    const authPromise = supabase.auth.signInWithPassword({
       email,
       password,
     });
+
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(
+        () => reject(new Error("Supabase auth request timeout")),
+        timeoutMs,
+      );
+    });
+
+    let result: any;
+    try {
+      result = await Promise.race([authPromise, timeoutPromise]);
+    } catch (timeoutError) {
+      console.error("[API] Auth timeout error:", timeoutError);
+      return res.status(504).json({
+        error: "Authentication service timeout - please try again",
+      });
+    }
 
     console.log("[API] Supabase response received");
     console.log("[API] Has error:", !!result.error);
