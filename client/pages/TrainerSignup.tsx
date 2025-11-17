@@ -174,6 +174,8 @@ export default function TrainerSignup() {
 
       // 2. Upload ID proof if exists
       let idDocUrl = null;
+      let uploadWarnings = [];
+
       if (formData.idProof) {
         try {
           console.log("Uploading ID document...");
@@ -186,7 +188,8 @@ export default function TrainerSignup() {
           console.log("ID document uploaded:", idDocUrl);
         } catch (err) {
           console.warn("Warning: Error uploading ID document:", err);
-          // Continue without ID document URL
+          uploadWarnings.push("Could not upload ID document - it will be stored without this file");
+          // Continue without ID document URL - it's not critical
         }
       }
 
@@ -201,7 +204,8 @@ export default function TrainerSignup() {
           console.log("Certification uploaded:", certUrl);
         } catch (err) {
           console.warn("Warning: Error uploading certification:", err);
-          // Continue without certification URL
+          uploadWarnings.push("Could not upload certification - it will be stored without this file");
+          // Continue without certification URL - it's not critical
         }
       }
 
