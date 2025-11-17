@@ -85,7 +85,7 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     let error: any;
 
     try {
-      const result = await Promise.race([
+      const result = (await Promise.race([
         supabase.auth.signInWithPassword({ email, password }),
         new Promise((_, reject) =>
           setTimeout(
@@ -93,7 +93,7 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
             30000,
           ),
         ),
-      ]) as any;
+      ])) as any;
 
       // Supabase returns { data, error } - check both
       data = result?.data;
