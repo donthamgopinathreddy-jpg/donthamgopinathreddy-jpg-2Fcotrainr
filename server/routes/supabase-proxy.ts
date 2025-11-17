@@ -1,6 +1,4 @@
-import express, { Request, Response } from "express";
-
-const router = express.Router();
+import express, { Request, Response, NextFunction } from "express";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY;
@@ -9,17 +7,21 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   console.error("Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables");
 }
 
-// Use a middleware function to handle all requests
-const proxyHandler = async (req: Request, res: Response) => {
+// Create middleware function that can be used with app.use()
+export default function supabaseProxy(_req: Request, res: Response, next: NextFunction) {
+  // This is a no-op - actual proxy logic is in the server
+  next();
+}
+
+// Main proxy handler
+export async function handleSupabaseProxy(req: Request, res: Response) {
   try {
-    // Get the path from the request
-    // Remove the /supabase-api prefix to get the actual path
+    // Get the path from the request, removing the /supabase-api prefix
     const path = req.url;
-    
+
     // Build the full Supabase URL
     const url = new URL(`${SUPABASE_URL}${path}`);
 
-    // Copy query parameters (they're already in req.url)
     const headers: Record<string, string> = {
       apikey: SUPABASE_ANON_KEY!,
       "Content-Type": "application/json",
@@ -65,14 +67,4 @@ const proxyHandler = async (req: Request, res: Response) => {
       details: error instanceof Error ? error.message : String(error),
     });
   }
-};
-
-// Handle all HTTP methods
-router.get("/:path(*)", proxyHandler);
-router.post("/:path(*)", proxyHandler);
-router.put("/:path(*)", proxyHandler);
-router.patch("/:path(*)", proxyHandler);
-router.delete("/:path(*)", proxyHandler);
-router.options("/:path(*)", proxyHandler);
-
-export default router;
+}
