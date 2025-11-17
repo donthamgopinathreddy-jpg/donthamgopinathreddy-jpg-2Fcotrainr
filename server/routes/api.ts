@@ -237,40 +237,64 @@ router.get("/notifications", async (req: Request, res: Response) => {
     });
 
     // Fetch notifications with timeout
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Notifications fetch timeout")), 10000),
-    );
+    const timeoutPromise = new Promise<any>((_, reject) => {
+      const timeoutId = setTimeout(() => {
+        clearTimeout(timeoutId);
+        reject(new Error("Notifications fetch timeout"));
+      }, 15000);
+    });
 
     const fetchPromise = (async () => {
-      const { data, error } = await userClient
-        .from("notifications")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(20);
+      try {
+        const { data, error } = await userClient
+          .from("notifications")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(20);
 
-      return { data, error };
+        if (error) {
+          console.error("[API] Supabase notifications error:", error);
+        }
+
+        return { data, error };
+      } catch (fetchError) {
+        console.error("[API] Notifications fetch caught error:", fetchError);
+        return {
+          data: null,
+          error: fetchError instanceof Error ? fetchError.message : String(fetchError),
+        };
+      }
     })();
 
-    const response = (await Promise.race([
-      fetchPromise,
-      timeoutPromise,
-    ])) as any;
+    try {
+      const response = (await Promise.race([
+        fetchPromise,
+        timeoutPromise,
+      ])) as any;
 
-    if (response.error) {
-      console.error("[API] Notifications fetch error:", response.error);
-      return res.status(400).json({
-        error: response.error.message,
+      if (response.error) {
+        console.error("[API] Notifications fetch error:", response.error);
+        // On error, return empty array to prevent app crashes
+        return res.json({
+          data: [],
+        });
+      }
+
+      console.log(
+        "[API] Notifications fetched successfully, count:",
+        response.data?.length || 0,
+      );
+
+      res.json({
+        data: response.data || [],
+      });
+    } catch (raceError) {
+      console.error("[API] Notifications race error:", raceError);
+      // Return empty array instead of error to prevent app crashes
+      res.json({
+        data: [],
       });
     }
-
-    console.log(
-      "[API] Notifications fetched successfully, count:",
-      response.data?.length || 0,
-    );
-
-    res.json({
-      data: response.data || [],
-    });
   } catch (error) {
     console.error("[API] Unexpected notifications error:", error);
     res.status(500).json({
