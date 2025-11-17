@@ -97,14 +97,21 @@ export function useNotifications(userId?: string) {
 
       try {
         // Get the session to get the auth token
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
+        let session = null;
+        try {
+          const result = await supabase.auth.getSession();
+          session = result?.data?.session;
+        } catch (sessionError) {
+          const errorMsg =
+            sessionError instanceof Error
+              ? sessionError.message
+              : String(sessionError);
+          console.debug("Failed to get session for notifications:", errorMsg);
+          // Continue with empty data instead of throwing
+          session = null;
+        }
 
-        if (!session?.access_token) {
-          console.debug("No session available for notifications fetch");
-          data = [];
-        } else {
+        if (session?.access_token) {
           // Create a timeout promise
           const timeoutPromise = new Promise((_, reject) =>
             setTimeout(
