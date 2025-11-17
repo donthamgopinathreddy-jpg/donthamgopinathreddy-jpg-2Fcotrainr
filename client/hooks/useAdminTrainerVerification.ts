@@ -346,7 +346,7 @@ export function useAdminTrainerVerification() {
 
   useEffect(() => {
     fetchTrainers(currentTab);
-  }, [currentTab, fetchTrainers]);
+  }, [currentTab]);
 
   return {
     trainers,
