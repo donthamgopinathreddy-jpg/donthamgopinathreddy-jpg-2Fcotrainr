@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
-import { Users, Search, Loader, Mail, MapPin, Eye } from "lucide-react";
+import { Users, Search, Loader, Mail, MapPin, Eye, ChevronRight } from "lucide-react";
 
 interface User {
   id: string;
