@@ -84,7 +84,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }
           }
         } catch (sessionError) {
-          console.warn("Session check failed, continuing without initial session:", sessionError);
+          console.warn(
+            "Session check failed, continuing without initial session:",
+            sessionError,
+          );
           if (isMounted) {
             setUser(null);
           }
@@ -306,7 +309,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (!response.ok) {
           console.error("[Auth] Sign in error from API:", responseData);
-          const errorMessage = responseData?.error || `Sign in failed (${response.status})`;
+          const errorMessage =
+            responseData?.error || `Sign in failed (${response.status})`;
           throw new Error(errorMessage);
         }
 
@@ -323,7 +327,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           try {
             await supabase.auth.setSession(session);
           } catch (sessionError) {
-            console.warn("[Auth] Could not set session in Supabase client:", sessionError);
+            console.warn(
+              "[Auth] Could not set session in Supabase client:",
+              sessionError,
+            );
             // Continue anyway - user state is still valid
           }
         }

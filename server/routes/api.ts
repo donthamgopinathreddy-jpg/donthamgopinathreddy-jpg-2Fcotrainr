@@ -88,7 +88,10 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
       const result = await Promise.race([
         supabase.auth.signInWithPassword({ email, password }),
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Authentication request timed out (30s)")), 30000)
+          setTimeout(
+            () => reject(new Error("Authentication request timed out (30s)")),
+            30000,
+          ),
         ),
       ]);
 
