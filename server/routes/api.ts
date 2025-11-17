@@ -261,7 +261,10 @@ router.get("/notifications", async (req: Request, res: Response) => {
         console.error("[API] Notifications fetch caught error:", fetchError);
         return {
           data: null,
-          error: fetchError instanceof Error ? fetchError.message : String(fetchError),
+          error:
+            fetchError instanceof Error
+              ? fetchError.message
+              : String(fetchError),
         };
       }
     })();
