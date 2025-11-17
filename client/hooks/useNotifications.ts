@@ -97,25 +97,41 @@ export function useNotifications(userId?: string) {
 
       try {
         // Get the session to get the auth token
-        // Try to get cached session first without network call
+        // Avoid network calls if possible - try localStorage first
         let session = null;
 
-        // Try to get session from supabase client's internal state
-        const { data: { session: currentSession } } = await supabase.auth.getSession().catch(() => ({
-          data: { session: null },
-        }));
-        session = currentSession;
-
-        // Fallback: if no session from API, try localStorage
-        if (!session) {
-          try {
+        // Try to get session from localStorage without making a network call
+        try {
+          if (typeof window !== "undefined" && window.localStorage) {
             const stored = localStorage.getItem("supabase.auth.token");
             if (stored) {
-              const parsed = JSON.parse(stored);
-              session = parsed.currentSession || parsed;
+              try {
+                const parsed = JSON.parse(stored);
+                // Supabase stores session as { currentSession: {...}, expiresAt: ... }
+                session = parsed.currentSession || parsed;
+              } catch (_parseError) {
+                // Not valid JSON or doesn't have expected format
+                console.debug("Could not parse stored session");
+              }
             }
-          } catch (_e) {
-            // localStorage access failed, continue with null session
+          }
+        } catch (_storageError) {
+          // localStorage access failed, continue
+          console.debug("localStorage not accessible for notifications");
+        }
+
+        // If still no session, try the API call as fallback
+        if (!session) {
+          try {
+            const result = await supabase.auth.getSession();
+            session = result?.data?.session;
+          } catch (sessionError) {
+            const errorMsg =
+              sessionError instanceof Error
+                ? sessionError.message
+                : String(sessionError);
+            console.debug("Failed to get session for notifications:", errorMsg);
+            session = null;
           }
         }
 
