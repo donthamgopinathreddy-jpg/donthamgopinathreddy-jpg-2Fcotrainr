@@ -50,88 +50,82 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Check auth state on mount
+  // Check auth state on mount and listen for changes
   useEffect(() => {
     let isMounted = true;
+    let subscription: any = null;
 
-    const checkAuth = async () => {
+    const initializeAuth = async () => {
       try {
-        console.log("Checking auth state...");
+        console.log("Initializing auth...");
 
-        // Set a timeout of 8 seconds for auth check (Supabase can be slow on Fly.dev)
-        const timeoutPromise = new Promise((resolve) => {
-          setTimeout(() => {
-            console.warn("Auth check timeout - proceeding without session");
-            resolve(null);
-          }, 8000);
-        });
-
-        const authPromise = (async () => {
-          // First check if there's a session
+        // First check if there's already a session
+        try {
           const {
             data: { session },
           } = await supabase.auth.getSession();
-          console.log("Session found:", session?.user?.email);
 
-          if (session?.user) {
-            if (isMounted) {
+          if (isMounted) {
+            console.log("Session found:", session?.user?.email);
+            if (session?.user) {
               setUser(session.user);
-            }
-            await fetchUserProfile(session.user.id);
-          } else {
-            // If no session, try getUser as backup
-            const {
-              data: { user },
-            } = await supabase.auth.getUser();
-            if (user) {
-              if (isMounted) {
-                setUser(user);
-              }
-              await fetchUserProfile(user.id);
+              await fetchUserProfile(session.user.id);
             } else {
-              if (isMounted) {
+              // If no session, try getUser as backup
+              const {
+                data: { user },
+              } = await supabase.auth.getUser();
+              if (user) {
+                setUser(user);
+                await fetchUserProfile(user.id);
+              } else {
                 setUser(null);
               }
             }
           }
-        })();
-
-        // Race between auth check and timeout
-        await Promise.race([authPromise, timeoutPromise]);
-      } catch (error) {
-        console.error("Error checking auth:", error);
-        if (isMounted) {
-          setUser(null);
+        } catch (sessionError) {
+          console.warn("Session check failed, continuing without initial session:", sessionError);
+          if (isMounted) {
+            setUser(null);
+          }
         }
       } finally {
         if (isMounted) {
-          // Mark loading as done AFTER auth check completes
           setLoading(false);
         }
       }
     };
 
-    checkAuth();
+    // Initialize auth state on mount
+    initializeAuth();
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth state changed:", event, session?.user?.email);
-      if (isMounted) {
-        setUser(session?.user || null);
+    // Listen for auth state changes
+    const setupAuthListener = async () => {
+      const {
+        data: { subscription: authSubscription },
+      } = supabase.auth.onAuthStateChange(async (event, session) => {
+        console.log("Auth state changed:", event, session?.user?.email);
+        if (isMounted) {
+          setUser(session?.user || null);
 
-        if (session?.user) {
-          await fetchUserProfile(session.user.id);
-        } else {
-          setUserProfile(null);
+          if (session?.user) {
+            await fetchUserProfile(session.user.id);
+          } else {
+            setUserProfile(null);
+          }
         }
-      }
-    });
+      });
+
+      subscription = authSubscription;
+    };
+
+    setupAuthListener();
 
     return () => {
       isMounted = false;
-      subscription?.unsubscribe();
+      if (subscription) {
+        subscription.unsubscribe();
+      }
     };
   }, []);
 
