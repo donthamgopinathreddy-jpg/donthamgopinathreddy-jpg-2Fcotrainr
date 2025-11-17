@@ -1,13 +1,14 @@
 import "dotenv/config";
 import express from "express";
 import { handleDemo } from "./routes/demo";
+import supabaseProxy from "./routes/supabase-proxy";
 
 export function createServer() {
   const app = express();
 
-  // Only add middleware for /api routes to prevent interference with client requests
-  app.use("/api", express.json());
-  app.use("/api", express.urlencoded({ extended: true }));
+  // Add JSON middleware globally for proper request parsing
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   // Example API routes
   app.get("/api/ping", (_req, res) => {
@@ -16,6 +17,9 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Supabase REST API proxy - handle all requests to /supabase-api/*
+  app.use("/supabase-api/", supabaseProxy);
 
   return app;
 }
