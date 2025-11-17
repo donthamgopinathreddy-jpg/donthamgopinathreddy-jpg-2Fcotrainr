@@ -297,8 +297,13 @@ router.get("/notifications", async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.error("[API] Unexpected notifications error:", error);
-    res.status(500).json({
-      error: error instanceof Error ? error.message : "Unknown error",
+    console.error("[API] Error details:", {
+      name: error instanceof Error ? error.name : "Unknown",
+      message: error instanceof Error ? error.message : String(error),
+    });
+    // Return empty array instead of error to prevent app crashes
+    res.json({
+      data: [],
     });
   }
 });
