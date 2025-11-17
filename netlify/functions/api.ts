@@ -3,8 +3,14 @@ import { createServer } from "../../server";
 
 console.log("[Netlify] Initializing API function");
 console.log("[Netlify] NODE_ENV:", process.env.NODE_ENV);
-console.log("[Netlify] VITE_SUPABASE_URL:", process.env.VITE_SUPABASE_URL ? "✓" : "✗");
-console.log("[Netlify] VITE_SUPABASE_ANON_KEY:", process.env.VITE_SUPABASE_ANON_KEY ? "✓" : "✗");
+console.log(
+  "[Netlify] VITE_SUPABASE_URL:",
+  process.env.VITE_SUPABASE_URL ? "✓" : "✗",
+);
+console.log(
+  "[Netlify] VITE_SUPABASE_ANON_KEY:",
+  process.env.VITE_SUPABASE_ANON_KEY ? "✓" : "✗",
+);
 
 let app: any = null;
 
@@ -36,7 +42,10 @@ export const handler = async (event: any, context: any) => {
     return response;
   } catch (error) {
     console.error("[Netlify] Handler error:", error);
-    console.error("[Netlify] Error details:", error instanceof Error ? error.stack : String(error));
+    console.error(
+      "[Netlify] Error details:",
+      error instanceof Error ? error.stack : String(error),
+    );
 
     return {
       statusCode: 502,

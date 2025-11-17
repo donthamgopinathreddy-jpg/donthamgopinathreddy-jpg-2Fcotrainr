@@ -176,8 +176,7 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     }
 
     const statusCode = (error as any)?.status || 500;
-    const errorMessage =
-      error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
 
     console.error("[API] Sending error response:", {
       status: statusCode,
