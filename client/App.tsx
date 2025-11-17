@@ -594,6 +594,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/admin/users/:userId"
+        element={
+          <ProtectedRoute>
+            <AdminRoute>
+              <AdminUserDetail />
+            </AdminRoute>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/admin/trainers"
         element={
           <ProtectedRoute>
