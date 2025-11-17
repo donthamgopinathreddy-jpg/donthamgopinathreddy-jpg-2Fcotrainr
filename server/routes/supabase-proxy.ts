@@ -16,14 +16,18 @@ export default function supabaseProxy(_req: Request, res: Response, next: NextFu
 // Main proxy handler for both REST and Auth endpoints
 export async function handleSupabaseProxy(req: Request, res: Response) {
   try {
-    // Get the path from the request, removing the /supabase-api prefix
-    const path = req.url;
+    // Get the path from the request
+    let path = req.url;
 
-    // Build the full Supabase URL
-    // Path should already include /rest/v1/ or /auth/v1/ etc
+    // The path at this point might be something like:
+    // /rest/v1/users?select=*
+    // /auth/v1/token
+    // etc. (the /supabase-api prefix is already removed by Express routing)
+
+    // Build the full Supabase URL by appending the path
     const url = new URL(`${SUPABASE_URL}${path}`);
 
-    console.log(`[Supabase Proxy] ${req.method} ${url.pathname}`);
+    console.log(`[Supabase Proxy] ${req.method} ${path} -> ${url.href}`);
 
     const headers: Record<string, string> = {
       apikey: SUPABASE_ANON_KEY!,
