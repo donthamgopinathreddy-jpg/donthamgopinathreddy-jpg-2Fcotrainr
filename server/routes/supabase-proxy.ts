@@ -10,12 +10,11 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 }
 
 // Proxy all requests to Supabase REST API
-router.all("/*", async (req: Request, res: Response) => {
+router.all("*", async (req: Request, res: Response) => {
   try {
-    const path = req.params[0] || "";
-    // The path already includes /rest/v1/, so we just append it directly
-    const fullPath = path.startsWith("/") ? path : `/${path}`;
-    const url = new URL(`${SUPABASE_URL}${fullPath}`);
+    const path = req.baseUrl.replace("/supabase-api", "") || req.url;
+    // Build the full Supabase URL
+    const url = new URL(`${SUPABASE_URL}${path}`);
 
     // Copy query parameters
     Object.entries(req.query).forEach(([key, value]) => {
