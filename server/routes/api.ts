@@ -80,9 +80,9 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     console.log("[API] Sign in attempt for:", email);
     console.log("[API] Using Supabase URL:", SUPABASE_URL);
 
-    // Sign in with a reasonable timeout
+    // Sign in with a timeout
     let data: any;
-    let authError: any;
+    let error: any;
 
     try {
       const result = await Promise.race([
@@ -93,42 +93,43 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
             30000,
           ),
         ),
-      ]);
+      ]) as any;
 
-      // If we got here, auth was successful
-      data = result;
+      // Supabase returns { data, error } - check both
+      data = result?.data;
+      error = result?.error;
     } catch (err) {
-      authError = err;
+      error = err;
     }
 
-    if (authError) {
+    if (error) {
+      const errorMessage = error.message || String(error);
       console.error("[API] Sign in error:", {
-        message: authError.message,
-        status: authError?.status || "unknown",
-        code: authError?.code || "unknown",
+        message: errorMessage,
+        status: error?.status || "unknown",
+        code: error?.code || "unknown",
       });
 
       // Check if it's a timeout
-      if (authError.message?.includes("timed out")) {
+      if (errorMessage?.includes("timed out")) {
         return res.status(504).json({
           error: "Authentication service temporarily unavailable",
         });
       }
 
       // Check if it's an authentication error
-      if (authError.message?.includes("Invalid login credentials")) {
+      if (errorMessage?.includes("Invalid login credentials")) {
         return res.status(401).json({
           error: "Invalid email or password",
         });
       }
 
       return res.status(401).json({
-        error: authError.message || "Authentication failed",
-        status: authError?.status,
+        error: errorMessage || "Authentication failed",
       });
     }
 
-    // Data will be undefined if auth failed - handle that case
+    // Verify we got a valid user
     if (!data || !data.user) {
       console.error("[API] Sign in returned empty user data");
       return res.status(401).json({
