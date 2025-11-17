@@ -74,7 +74,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.log("Session found:", session?.user?.email);
 
           if (session?.user) {
-            setUser(session.user);
+            if (isMounted) {
+              setUser(session.user);
+            }
             await fetchUserProfile(session.user.id);
           } else {
             // If no session, try getUser as backup
@@ -82,10 +84,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               data: { user },
             } = await supabase.auth.getUser();
             if (user) {
-              setUser(user);
+              if (isMounted) {
+                setUser(user);
+              }
               await fetchUserProfile(user.id);
             } else {
-              setUser(null);
+              if (isMounted) {
+                setUser(null);
+              }
             }
           }
         })();
@@ -94,7 +100,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await Promise.race([authPromise, timeoutPromise]);
       } catch (error) {
         console.error("Error checking auth:", error);
-        setUser(null);
+        if (isMounted) {
+          setUser(null);
+        }
       } finally {
         if (isMounted) {
           // Mark loading as done AFTER auth check completes
@@ -105,25 +113,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     checkAuth();
 
-    return () => {
-      isMounted = false;
-    };
-
     // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session?.user?.email);
-      setUser(session?.user || null);
+      if (isMounted) {
+        setUser(session?.user || null);
 
-      if (session?.user) {
-        await fetchUserProfile(session.user.id);
-      } else {
-        setUserProfile(null);
+        if (session?.user) {
+          await fetchUserProfile(session.user.id);
+        } else {
+          setUserProfile(null);
+        }
       }
     });
 
-    return () => subscription?.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const fetchUserProfile = async (userId: string) => {
