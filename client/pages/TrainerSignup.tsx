@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Upload, Plus, X } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
+import { ArrowLeft, Upload, Plus, X, Loader } from "lucide-react";
 import GlassyTile from "@/components/GlassyTile";
 
 interface TrainerFormData {
