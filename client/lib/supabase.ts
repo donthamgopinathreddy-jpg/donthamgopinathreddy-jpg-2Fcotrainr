@@ -53,7 +53,13 @@ if (typeof window !== "undefined" && (window as any).Capacitor) {
 
 // Create client with proper configuration
 const apiUrl = getApiUrl();
-console.log("Supabase API endpoint:", apiUrl);
+const useProxy = shouldUseProxy();
+
+console.log("[Supabase] Initializing client", {
+  useProxy,
+  apiUrl,
+  isDevelopment: typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"),
+});
 
 export const supabase = createClient(apiUrl, supabaseAnonKey, {
   auth: {
@@ -61,5 +67,10 @@ export const supabase = createClient(apiUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     storage: storageImpl,
     detectSessionInUrl: true,
+  },
+  global: {
+    headers: {
+      "X-Supabase-Proxy": useProxy ? "true" : "false",
+    },
   },
 });
