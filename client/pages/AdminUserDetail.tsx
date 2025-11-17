@@ -239,23 +239,21 @@ const AdminUserDetail: React.FC = () => {
               <select
                 value={newRole}
                 onChange={(e) => setNewRole(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-900 bg-white"
               >
-                <option value="client">Client</option>
-                <option value="trainer">Trainer</option>
-                <option value="admin">Admin</option>
+                <option value="client" className="text-gray-900">Client</option>
+                <option value="trainer" className="text-gray-900">Trainer</option>
+                <option value="admin" className="text-gray-900">Admin</option>
               </select>
             </div>
 
-            {newRole !== user.role && (
-              <button
-                onClick={handleRoleChange}
-                disabled={updating}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-              >
-                {updating ? "Updating..." : "Update Role"}
-              </button>
-            )}
+            <button
+              onClick={handleRoleChange}
+              disabled={updating || newRole === user.role}
+              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+            >
+              {updating ? "Updating..." : "Update Role"}
+            </button>
 
             <div className="text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
               <p>
