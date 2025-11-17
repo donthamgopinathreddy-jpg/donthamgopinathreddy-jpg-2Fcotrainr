@@ -3,8 +3,12 @@ import express, { Request, Response, NextFunction } from "express";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY;
 
+console.log("[Proxy Init] VITE_SUPABASE_URL:", SUPABASE_URL);
+console.log("[Proxy Init] VITE_SUPABASE_ANON_KEY present:", !!SUPABASE_ANON_KEY);
+console.log("[Proxy Init] All env vars starting with VITE:", Object.keys(process.env).filter(k => k.startsWith("VITE")));
+
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.error("Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables");
+  console.error("[Proxy Init] ERROR: Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables");
 }
 
 // Create middleware function that can be used with app.use()
