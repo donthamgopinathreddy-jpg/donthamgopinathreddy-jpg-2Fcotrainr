@@ -16,10 +16,10 @@ try {
   throw error;
 }
 
-const handler = serverless(app);
+const netlifyHandler = serverless(app);
 
 // Wrap handler with error logging
-export const lambdaHandler = async (event: any, context: any) => {
+export const handler = async (event: any, context: any) => {
   try {
     console.log("[Netlify] Request received:", {
       method: event.httpMethod,
@@ -27,7 +27,7 @@ export const lambdaHandler = async (event: any, context: any) => {
       headers: Object.keys(event.headers || {}),
     });
 
-    const response = await handler(event, context);
+    const response = await netlifyHandler(event, context);
 
     console.log("[Netlify] Response sent:", {
       statusCode: response.statusCode,
@@ -36,6 +36,8 @@ export const lambdaHandler = async (event: any, context: any) => {
     return response;
   } catch (error) {
     console.error("[Netlify] Handler error:", error);
+    console.error("[Netlify] Error details:", error instanceof Error ? error.stack : String(error));
+
     return {
       statusCode: 502,
       body: JSON.stringify({
@@ -44,6 +46,3 @@ export const lambdaHandler = async (event: any, context: any) => {
     };
   }
 };
-
-// Export both handler names for compatibility
-export { lambdaHandler as handler };
