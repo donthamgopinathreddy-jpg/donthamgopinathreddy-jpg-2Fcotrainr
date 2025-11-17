@@ -38,7 +38,10 @@ const SPECIALTY_OPTIONS = [
 
 export default function TrainerSignup() {
   const navigate = useNavigate();
+  const { userProfile } = useAuth();
+  const { toast } = useToast();
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<TrainerFormData>({
     fullName: "",
     phone: "",
