@@ -377,15 +377,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signOut = async () => {
     try {
+      console.log("[Auth] Starting sign out process");
+
       // Try to logout from Supabase, but don't fail if it errors
       try {
         await supabase.auth.signOut({ scope: "local" });
+        console.log("[Auth] Supabase signOut completed");
       } catch (signoutError) {
         console.warn("Supabase signOut error (non-critical):", signoutError);
         // Continue anyway - we'll still clear local state
       }
-    } finally {
-      // Always clear local auth state, regardless of server response
+
+      // Clear local auth state immediately
+      console.log("[Auth] Clearing local auth state");
       setUser(null);
       setUserProfile(null);
 
@@ -393,10 +397,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (typeof window !== "undefined") {
         try {
           localStorage.removeItem("supabase.auth.token");
+          localStorage.removeItem("sb-jnvfoyjhflheohculqbb-auth-token");
+          // Clear all supabase related keys
+          Object.keys(localStorage).forEach((key) => {
+            if (key.includes("supabase") || key.includes("sb-")) {
+              localStorage.removeItem(key);
+            }
+          });
+          console.log("[Auth] Cleared all auth tokens from localStorage");
         } catch (e) {
           console.warn("Could not clear localStorage:", e);
         }
       }
+
+      console.log("[Auth] Sign out completed successfully");
+    } catch (error) {
+      console.error("[Auth] Unexpected sign out error:", error);
+      // Still clear state even if there's an error
+      setUser(null);
+      setUserProfile(null);
+      throw error;
     }
   };
 
