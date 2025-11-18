@@ -54,10 +54,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     let isMounted = true;
     let subscription: any = null;
+    let timeoutId: NodeJS.Timeout | null = null;
 
     const initializeAuth = async () => {
       try {
         console.log("Initializing auth...");
+
+        // Add timeout to prevent infinite loading
+        timeoutId = setTimeout(() => {
+          if (isMounted) {
+            console.warn("Auth initialization timeout - forcing load state to false");
+            setLoading(false);
+          }
+        }, 5000);
 
         // First check if there's already a session
         try {
@@ -93,6 +102,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }
         }
       } finally {
+        if (timeoutId) clearTimeout(timeoutId);
         if (isMounted) {
           setLoading(false);
         }
@@ -103,29 +113,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     initializeAuth();
 
     // Listen for auth state changes
-    const setupAuthListener = async () => {
-      const {
-        data: { subscription: authSubscription },
-      } = supabase.auth.onAuthStateChange(async (event, session) => {
-        console.log("Auth state changed:", event, session?.user?.email);
-        if (isMounted) {
-          setUser(session?.user || null);
+    const setupAuthListener = () => {
+      try {
+        const {
+          data: { subscription: authSubscription },
+        } = supabase.auth.onAuthStateChange(async (event, session) => {
+          console.log("Auth state changed:", event, session?.user?.email);
+          if (isMounted) {
+            setUser(session?.user || null);
 
-          if (session?.user) {
-            await fetchUserProfile(session.user.id);
-          } else {
-            setUserProfile(null);
+            if (session?.user) {
+              await fetchUserProfile(session.user.id);
+            } else {
+              setUserProfile(null);
+            }
           }
-        }
-      });
+        });
 
-      subscription = authSubscription;
+        subscription = authSubscription;
+      } catch (error) {
+        console.error("Error setting up auth listener:", error);
+      }
     };
 
     setupAuthListener();
 
     return () => {
       isMounted = false;
+      if (timeoutId) clearTimeout(timeoutId);
       if (subscription) {
         subscription.unsubscribe();
       }
