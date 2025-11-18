@@ -254,38 +254,38 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
 };
 
 // Separate component to handle permissions that uses useAuth
-// Wrapped in error boundary to prevent context errors
 const PermissionRequester = () => {
-  try {
-    const { user } = useAuth();
+  const context = useContext(AuthContext);
 
-    useEffect(() => {
-      if (user) {
-        // Request permissions on app startup for authenticated users
-        const requestInitialPermissions = async () => {
-          try {
-            // Request notifications (can be called without user interaction in many cases)
-            if (
-              "Notification" in window &&
-              Notification.permission === "default"
-            ) {
-              await Notification.requestPermission();
-            }
-          } catch (error) {
-            console.debug("Permission request result:", error);
-          }
-        };
-
-        requestInitialPermissions();
-      }
-    }, [user]);
-
-    return null;
-  } catch (error) {
-    // Context not yet available, silently ignore
-    console.debug("PermissionRequester context not yet available");
+  // If context is not available yet, don't try to use useAuth
+  if (!context) {
     return null;
   }
+
+  const { user } = context;
+
+  useEffect(() => {
+    if (user) {
+      // Request permissions on app startup for authenticated users
+      const requestInitialPermissions = async () => {
+        try {
+          // Request notifications (can be called without user interaction in many cases)
+          if (
+            "Notification" in window &&
+            Notification.permission === "default"
+          ) {
+            await Notification.requestPermission();
+          }
+        } catch (error) {
+          console.debug("Permission request result:", error);
+        }
+      };
+
+      requestInitialPermissions();
+    }
+  }, [user]);
+
+  return null;
 };
 
 const AppRoutes = () => {
