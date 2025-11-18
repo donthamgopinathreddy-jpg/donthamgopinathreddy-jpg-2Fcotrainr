@@ -12,7 +12,7 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AuthProvider, useAuth, AuthContext } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Onboarding from "./pages/Onboarding";
