@@ -1612,7 +1612,7 @@ export default function Profile() {
               } catch (error) {
                 console.error("Logout error:", error);
                 toast.error(
-                  error instanceof Error ? error.message : "Failed to logout"
+                  error instanceof Error ? error.message : "Failed to logout",
                 );
               }
             }}
