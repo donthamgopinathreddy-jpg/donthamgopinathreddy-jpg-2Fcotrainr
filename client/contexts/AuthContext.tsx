@@ -351,8 +351,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }
         }
 
+        // Update user state immediately for responsive navigation
         setUser(user);
-        await fetchUserProfile(user.id);
+
+        // Fetch profile in background without blocking navigation
+        fetchUserProfile(user.id).catch((err) => {
+          console.debug("Background profile fetch failed:", err);
+        });
       } catch (fetchError: any) {
         clearTimeout(timeoutId);
 
