@@ -1599,23 +1599,25 @@ export default function Profile() {
           </button>
 
           <button
-            onClick={async () => {
+            onClick={async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
               try {
                 console.log("Logout button clicked");
-                await signOut();
-                console.log("Sign out completed, waiting for redirect...");
+                const result = await signOut();
+                console.log("Sign out completed:", result);
                 toast.success("Logged out successfully");
-                // Let ProtectedRoute handle the redirect automatically
-                // This gives React a chance to process the state change
-                await new Promise((resolve) => setTimeout(resolve, 100));
-                // Fallback manual navigation in case redirect doesn't work
+                // Immediate navigation without delay
                 navigate("/login", { replace: true });
               } catch (error) {
                 console.error("Logout error:", error);
-                toast.error("Failed to logout");
+                toast.error(
+                  error instanceof Error ? error.message : "Failed to logout"
+                );
               }
             }}
-            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-all shadow-sm hover:shadow-md ${
+            type="button"
+            className={`w-full flex items-center gap-3 p-4 rounded-lg transition-all shadow-sm hover:shadow-md cursor-pointer ${
               theme === "dark"
                 ? "bg-gradient-to-r from-red-900/80 to-orange-900/80 border border-red-800 hover:from-red-800 hover:to-orange-800 text-red-200"
                 : "bg-gradient-to-r from-red-100 to-orange-100 border border-red-300 hover:from-red-200 hover:to-orange-200 text-red-900"
