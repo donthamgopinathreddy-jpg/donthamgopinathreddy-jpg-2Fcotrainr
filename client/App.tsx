@@ -57,7 +57,6 @@ import Upgrade from "./pages/Upgrade";
 import TrainerBookingPayment from "./pages/TrainerBookingPayment";
 import NotificationsPageEnhanced from "./pages/NotificationsPageEnhanced";
 import FollowersFollowingPage from "./pages/FollowersFollowingPage";
-import NotificationsPageEnhanced from "./pages/NotificationsPageEnhanced";
 import Navigation from "./components/Navigation";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { isUserAdmin } from "@/lib/adminAuth";
