@@ -411,6 +411,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       console.log("[Auth] Sign out completed successfully");
+      return true;
     } catch (error) {
       console.error("[Auth] Unexpected sign out error:", error);
       // Still clear state even if there's an error
