@@ -1601,11 +1601,15 @@ export default function Profile() {
           <button
             onClick={async () => {
               try {
+                console.log("Logout button clicked");
                 await signOut();
+                console.log("Sign out completed, waiting for redirect...");
                 toast.success("Logged out successfully");
-                setTimeout(() => {
-                  navigate("/login", { replace: true });
-                }, 500);
+                // Let ProtectedRoute handle the redirect automatically
+                // This gives React a chance to process the state change
+                await new Promise((resolve) => setTimeout(resolve, 100));
+                // Fallback manual navigation in case redirect doesn't work
+                navigate("/login", { replace: true });
               } catch (error) {
                 console.error("Logout error:", error);
                 toast.error("Failed to logout");
