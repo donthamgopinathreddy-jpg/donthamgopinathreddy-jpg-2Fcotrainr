@@ -55,7 +55,7 @@ import UserProfile from "./pages/UserProfile";
 import Leaderboard from "./pages/Leaderboard";
 import Upgrade from "./pages/Upgrade";
 import TrainerBookingPayment from "./pages/TrainerBookingPayment";
-import Notifications from "./pages/Notifications";
+import NotificationsPageEnhanced from "./pages/NotificationsPageEnhanced";
 import FollowersFollowingPage from "./pages/FollowersFollowingPage";
 import NotificationsPageEnhanced from "./pages/NotificationsPageEnhanced";
 import Navigation from "./components/Navigation";
