@@ -1,42 +1,64 @@
 import { useState, useEffect } from "react";
 import {
   Users,
-  BookOpen,
-  Calendar,
-  MessageSquare,
-  TrendingUp,
   LogOut,
   Menu,
   X,
+  Eye,
+  Trash2,
   Shield,
   Activity,
+  Clock,
+  AlertCircle,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import AdminSidebar from "@/components/AdminSidebar";
 
-interface AdminStats {
-  totalUsers: number;
-  totalTrainers: number;
-  totalBookings: number;
-  totalMessages: number;
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  full_name: string;
+  role: string;
+  created_at: string;
+}
+
+interface LoginLog {
+  id: string;
+  email: string;
+  login_status: string;
+  login_time: string;
+  ip_address: string;
+}
+
+interface ActivityLog {
+  id: string;
+  user_id: string;
+  activity_type: string;
+  description: string;
+  created_at: string;
 }
 
 export default function AdminDashboard() {
   const { userProfile, signOut } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [stats, setStats] = useState<AdminStats>({
+  const [activeTab, setActiveTab] = useState<"overview" | "users" | "logs">(
+    "overview",
+  );
+  const [users, setUsers] = useState<User[]>([]);
+  const [loginLogs, setLoginLogs] = useState<LoginLog[]>([]);
+  const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
     totalUsers: 0,
     totalTrainers: 0,
-    totalBookings: 0,
-    totalMessages: 0,
+    totalClients: 0,
+    lastLoginCount: 0,
   });
-  const [activeTab, setActiveTab] = useState("overview");
-  const [users, setUsers] = useState<any[]>([]);
-  const [trainers, setTrainers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
 
   // Redirect if not admin
   useEffect(() => {
@@ -46,50 +68,59 @@ export default function AdminDashboard() {
     }
   }, [userProfile, navigate]);
 
-  // Fetch admin stats and data
+  // Fetch admin data
   useEffect(() => {
+    if (!userProfile || userProfile.role !== "admin") return;
+
     const fetchAdminData = async () => {
       try {
         setLoading(true);
 
-        // Fetch all users
-        const { data: allUsers, error: usersError } = await supabase
+        // Fetch users
+        const { data: usersData, error: usersError } = await supabase
           .from("users")
           .select("*");
 
-        if (usersError) throw usersError;
+        if (!usersError && usersData) {
+          setUsers(usersData);
 
-        // Fetch all trainers
-        const { data: allTrainers, error: trainersError } = await supabase
-          .from("trainers")
-          .select("*");
+          const trainers = usersData.filter((u) => u.role === "trainer").length;
+          const clients = usersData.filter((u) => u.role === "client").length;
 
-        if (trainersError) throw trainersError;
+          setStats({
+            totalUsers: usersData.length,
+            totalTrainers: trainers,
+            totalClients: clients,
+            lastLoginCount: 0,
+          });
+        }
 
-        // Fetch all bookings
-        const { data: allBookings, error: bookingsError } = await supabase
-          .from("bookings")
-          .select("*");
+        // Fetch login logs
+        const { data: logsData, error: logsError } = await supabase
+          .from("user_login_logs")
+          .select("*")
+          .order("login_time", { ascending: false })
+          .limit(50);
 
-        if (bookingsError) throw bookingsError;
+        if (!logsError && logsData) {
+          setLoginLogs(logsData);
+          const lastLogin = logsData.filter(
+            (l) => l.login_status === "success",
+          ).length;
+          setStats((prev) => ({ ...prev, lastLoginCount: lastLogin }));
+        }
 
-        // Fetch all messages
-        const { data: allMessages, error: messagesError } = await supabase
-          .from("messages")
-          .select("*");
+        // Fetch activity logs
+        const { data: activityData, error: activityError } = await supabase
+          .from("user_activity_logs")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(50);
 
-        if (messagesError) throw messagesError;
-
-        setStats({
-          totalUsers: allUsers?.length || 0,
-          totalTrainers: allTrainers?.length || 0,
-          totalBookings: allBookings?.length || 0,
-          totalMessages: allMessages?.length || 0,
-        });
-
-        setUsers(allUsers || []);
-        setTrainers(allTrainers || []);
-      } catch (error) {
+        if (!activityError && activityData) {
+          setActivityLogs(activityData);
+        }
+      } catch (error: any) {
         console.error("Error fetching admin data:", error);
         toast.error("Failed to load admin data");
       } finally {
@@ -97,322 +128,395 @@ export default function AdminDashboard() {
       }
     };
 
-    if (userProfile?.role === "admin") {
-      fetchAdminData();
-    }
+    fetchAdminData();
   }, [userProfile]);
 
-  const handleSignOut = async () => {
+  const handleDeleteUser = async (userId: string) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) {
+      return;
+    }
+
     try {
-      await signOut();
-      navigate("/login");
-      toast.success("Signed out successfully");
-    } catch (error) {
-      console.error("Sign out error:", error);
-      toast.error("Failed to sign out");
+      // Delete user from public.users table
+      const { error: deleteError } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", userId);
+
+      if (deleteError) {
+        toast.error("Failed to delete user");
+        return;
+      }
+
+      // Log admin action
+      await supabase.from("admin_action_logs").insert({
+        admin_id: userProfile?.id,
+        action_type: "user_deleted",
+        target_user_id: userId,
+        description: `Admin deleted user ${userId}`,
+      });
+
+      // Refresh users
+      const { data: usersData } = await supabase.from("users").select("*");
+      if (usersData) {
+        setUsers(usersData);
+        toast.success("User deleted successfully");
+      }
+    } catch (error: any) {
+      console.error("Error deleting user:", error);
+      toast.error("Failed to delete user");
     }
   };
 
-  if (!userProfile || userProfile.role !== "admin") {
-    return null;
-  }
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/login");
+  };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
       <div
-        className={`${
-          sidebarOpen ? "w-64" : "w-20"
-        } bg-gradient-to-b from-slate-900 to-slate-800 text-white transition-all duration-300 overflow-y-auto`}
+        className={`${sidebarOpen ? "w-64" : "w-20"} bg-gray-900 text-white transition-all duration-300 fixed h-screen overflow-y-auto`}
       >
-        <div className="p-6 flex items-center justify-between">
-          {sidebarOpen && <h1 className="text-xl font-bold">Admin Panel</h1>}
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="hover:bg-slate-700 p-2 rounded"
-          >
-            {sidebarOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
-        </div>
-
-        <nav className="mt-8 space-y-2 px-4">
-          {[
-            { id: "overview", label: "Overview", icon: Activity },
-            { id: "users", label: "Users", icon: Users },
-            { id: "trainers", label: "Trainers", icon: BookOpen },
-            { id: "bookings", label: "Bookings", icon: Calendar },
-            { id: "messages", label: "Messages", icon: MessageSquare },
-          ].map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => setActiveTab(id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${
-                activeTab === id
-                  ? "bg-orange-500 text-white"
-                  : "hover:bg-slate-700 text-gray-300"
-              }`}
-            >
-              <Icon className="w-5 h-5" />
-              {sidebarOpen && <span>{label}</span>}
-            </button>
-          ))}
-        </nav>
-
-        <div className="absolute bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 p-4">
-          <button
-            onClick={handleSignOut}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 text-gray-300 transition"
-          >
-            <LogOut className="w-5 h-5" />
-            {sidebarOpen && <span>Sign Out</span>}
-          </button>
-        </div>
+        <AdminSidebar isOpen={sidebarOpen} />
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-8">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-            <p className="text-gray-600 mt-2">
-              Welcome, {userProfile?.full_name || "Admin"}
-            </p>
+      <div className={`${sidebarOpen ? "ml-64" : "ml-20"} flex-1 transition-all duration-300`}>
+        {/* Header */}
+        <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-2 hover:bg-gray-100 rounded-lg"
+            >
+              {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-sm text-gray-600">
+              {userProfile?.full_name || userProfile?.email}
+            </div>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2"
+            >
+              <LogOut size={16} />
+              Logout
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          {/* Tabs */}
+          <div className="flex gap-4 mb-6 border-b border-gray-200">
+            <button
+              onClick={() => setActiveTab("overview")}
+              className={`px-4 py-2 font-medium border-b-2 transition-colors ${
+                activeTab === "overview"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setActiveTab("users")}
+              className={`px-4 py-2 font-medium border-b-2 transition-colors ${
+                activeTab === "users"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Users
+            </button>
+            <button
+              onClick={() => setActiveTab("logs")}
+              className={`px-4 py-2 font-medium border-b-2 transition-colors ${
+                activeTab === "logs"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Activity Logs
+            </button>
           </div>
 
+          {/* Loading State */}
+          {loading && (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="animate-spin h-8 w-8 text-blue-600 mx-auto mb-4">
+                  <svg viewBox="0 0 50 50">
+                    <circle
+                      className="opacity-30"
+                      cx="25"
+                      cy="25"
+                      r="20"
+                      stroke="currentColor"
+                      strokeWidth="5"
+                      fill="none"
+                    />
+                    <circle
+                      className="text-blue-600"
+                      cx="25"
+                      cy="25"
+                      r="20"
+                      stroke="currentColor"
+                      strokeWidth="5"
+                      fill="none"
+                      strokeDasharray="100"
+                      strokeDashoffset="75"
+                    />
+                  </svg>
+                </div>
+                <p className="text-gray-600">Loading...</p>
+              </div>
+            </div>
+          )}
+
           {/* Overview Tab */}
-          {activeTab === "overview" && (
-            <div className="space-y-8">
-              {/* Stats Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[
-                  {
-                    title: "Total Users",
-                    value: stats.totalUsers,
-                    icon: Users,
-                    color: "blue",
-                  },
-                  {
-                    title: "Total Trainers",
-                    value: stats.totalTrainers,
-                    icon: BookOpen,
-                    color: "purple",
-                  },
-                  {
-                    title: "Total Bookings",
-                    value: stats.totalBookings,
-                    icon: Calendar,
-                    color: "green",
-                  },
-                  {
-                    title: "Total Messages",
-                    value: stats.totalMessages,
-                    icon: MessageSquare,
-                    color: "orange",
-                  },
-                ].map(({ title, value, icon: Icon, color }) => (
-                  <div
-                    key={title}
-                    className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-gray-600 text-sm font-medium">
-                          {title}
-                        </p>
-                        <p className="text-3xl font-bold text-gray-900 mt-2">
-                          {value}
-                        </p>
-                      </div>
-                      <Icon className="w-12 h-12 text-gray-300 opacity-50" />
+          {activeTab === "overview" && !loading && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-4 gap-6">
+                <div className="bg-white p-6 rounded-lg shadow">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-gray-600 text-sm">Total Users</p>
+                      <p className="text-3xl font-bold text-gray-900">
+                        {stats.totalUsers}
+                      </p>
                     </div>
+                    <Users className="text-blue-600" size={32} />
                   </div>
-                ))}
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-gray-600 text-sm">Trainers</p>
+                      <p className="text-3xl font-bold text-gray-900">
+                        {stats.totalTrainers}
+                      </p>
+                    </div>
+                    <Shield className="text-green-600" size={32} />
+                  </div>
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-gray-600 text-sm">Clients</p>
+                      <p className="text-3xl font-bold text-gray-900">
+                        {stats.totalClients}
+                      </p>
+                    </div>
+                    <Activity className="text-purple-600" size={32} />
+                  </div>
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-gray-600 text-sm">Recent Logins</p>
+                      <p className="text-3xl font-bold text-gray-900">
+                        {stats.lastLoginCount}
+                      </p>
+                    </div>
+                    <Clock className="text-orange-600" size={32} />
+                  </div>
+                </div>
               </div>
 
-              {/* Quick Actions */}
-              <div className="bg-white rounded-xl shadow-md p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">
-                  Quick Actions
+              {/* Recent Activity */}
+              <div className="bg-white rounded-lg shadow p-6">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
+                  Recent Activity
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <button className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition">
-                    View All Users
-                  </button>
-                  <button className="px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition">
-                    View All Trainers
-                  </button>
-                  <button className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition">
-                    View All Bookings
-                  </button>
-                  <button className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition">
-                    View All Messages
-                  </button>
+                <div className="space-y-4">
+                  {activityLogs.slice(0, 5).map((log) => (
+                    <div
+                      key={log.id}
+                      className="flex items-start gap-3 pb-4 border-b border-gray-200 last:border-b-0"
+                    >
+                      <Activity
+                        size={20}
+                        className="text-blue-600 mt-1 flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900 capitalize">
+                          {log.activity_type.replace(/_/g, " ")}
+                        </p>
+                        {log.description && (
+                          <p className="text-sm text-gray-600 truncate">
+                            {log.description}
+                          </p>
+                        )}
+                        <p className="text-xs text-gray-500">
+                          {new Date(log.created_at).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           )}
 
           {/* Users Tab */}
-          {activeTab === "users" && (
-            <div className="bg-white rounded-xl shadow-md overflow-hidden">
-              <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900">All Users</h2>
-              </div>
+          {activeTab === "users" && !loading && (
+            <div className="bg-white rounded-lg shadow overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
+                  <thead className="bg-gray-100 border-b border-gray-200">
                     <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                        Name
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
                         Email
                       </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                        Name
+                      </th>
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
                         Role
                       </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
                         Joined
+                      </th>
+                      <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">
+                        Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
-                          Loading...
+                  <tbody className="divide-y divide-gray-200">
+                    {users.map((user) => (
+                      <tr key={user.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          {user.email}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          {user.full_name || user.username}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-medium ${
+                              user.role === "admin"
+                                ? "bg-red-100 text-red-800"
+                                : user.role === "trainer"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-blue-100 text-blue-800"
+                            }`}
+                          >
+                            {user.role}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          {new Date(user.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <button
+                            onClick={() => handleDeleteUser(user.id)}
+                            className="text-red-600 hover:text-red-900 font-medium text-sm flex items-center gap-1 ml-auto"
+                          >
+                            <Trash2 size={16} />
+                            Delete
+                          </button>
                         </td>
                       </tr>
-                    ) : users.length === 0 ? (
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Logs Tab */}
+          {activeTab === "logs" && !loading && (
+            <div className="space-y-6">
+              {/* Login Logs */}
+              <div className="bg-white rounded-lg shadow p-6">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
+                  Login History
+                </h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-100 border-b border-gray-200">
                       <tr>
-                        <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
-                          No users found
-                        </td>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                          Email
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                          Time
+                        </th>
+                        <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                          IP Address
+                        </th>
                       </tr>
-                    ) : (
-                      users.map((user) => (
-                        <tr key={user.id} className="border-b border-gray-200 hover:bg-gray-50">
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {loginLogs.map((log) => (
+                        <tr key={log.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 text-sm text-gray-900">
-                            {user.full_name || "—"}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-600">
-                            {user.email}
+                            {log.email}
                           </td>
                           <td className="px-6 py-4 text-sm">
                             <span
-                              className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                user.role === "admin"
-                                  ? "bg-red-100 text-red-800"
-                                  : user.role === "trainer"
-                                  ? "bg-blue-100 text-blue-800"
-                                  : "bg-green-100 text-green-800"
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                log.login_status === "success"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
                               }`}
                             >
-                              {user.role}
+                              {log.login_status}
                             </span>
                           </td>
                           <td className="px-6 py-4 text-sm text-gray-600">
-                            {new Date(user.created_at).toLocaleDateString()}
+                            {new Date(log.login_time).toLocaleString()}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-600">
+                            {log.ip_address || "N/A"}
                           </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          )}
 
-          {/* Trainers Tab */}
-          {activeTab === "trainers" && (
-            <div className="bg-white rounded-xl shadow-md overflow-hidden">
-              <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900">
-                  All Trainers
+              {/* Activity Logs */}
+              <div className="bg-white rounded-lg shadow p-6">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
+                  User Activity
                 </h2>
+                <div className="space-y-4">
+                  {activityLogs.map((log) => (
+                    <div
+                      key={log.id}
+                      className="flex items-start gap-3 pb-4 border-b border-gray-200 last:border-b-0"
+                    >
+                      <Activity
+                        size={20}
+                        className="text-blue-600 mt-1 flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900 capitalize">
+                          {log.activity_type.replace(/_/g, " ")}
+                        </p>
+                        {log.description && (
+                          <p className="text-sm text-gray-600 truncate">
+                            {log.description}
+                          </p>
+                        )}
+                        <p className="text-xs text-gray-500">
+                          {new Date(log.created_at).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                        Trainer
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                        Experience
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                        Rate
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                        Rating
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                        Verified
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                          Loading...
-                        </td>
-                      </tr>
-                    ) : trainers.length === 0 ? (
-                      <tr>
-                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                          No trainers found
-                        </td>
-                      </tr>
-                    ) : (
-                      trainers.map((trainer) => (
-                        <tr key={trainer.id} className="border-b border-gray-200 hover:bg-gray-50">
-                          <td className="px-6 py-4 text-sm text-gray-900">
-                            {trainer.id}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-600">
-                            {trainer.years_of_experience || "—"} years
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-600">
-                            ${trainer.hourly_rate || "—"}
-                          </td>
-                          <td className="px-6 py-4 text-sm text-gray-600">
-                            {trainer.rating || "—"} ⭐
-                          </td>
-                          <td className="px-6 py-4 text-sm">
-                            {trainer.verified ? (
-                              <span className="text-green-600 font-semibold flex items-center gap-1">
-                                <Shield className="w-4 h-4" /> Verified
-                              </span>
-                            ) : (
-                              <span className="text-gray-500">Not Verified</span>
-                            )}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* Bookings & Messages Tabs - Placeholder */}
-          {(activeTab === "bookings" || activeTab === "messages") && (
-            <div className="bg-white rounded-xl shadow-md p-8 text-center">
-              <TrendingUp className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-600 mb-2">
-                {activeTab === "bookings" ? "Bookings Management" : "Messages Management"}
-              </h3>
-              <p className="text-gray-500">
-                Comprehensive management tools coming soon
-              </p>
             </div>
           )}
         </div>
