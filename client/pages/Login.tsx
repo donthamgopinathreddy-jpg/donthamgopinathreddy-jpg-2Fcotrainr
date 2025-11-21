@@ -47,10 +47,15 @@ export default function Login() {
         </div>
 
         {/* Login Form */}
-        <form onSubmit={handleLogin} className="bg-slate-800/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl space-y-6">
+        <form
+          onSubmit={handleLogin}
+          className="bg-slate-800/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl space-y-6"
+        >
           {/* Email Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-slate-300">Email Address</label>
+            <label className="block text-sm font-semibold text-slate-300">
+              Email Address
+            </label>
             <div className="relative group">
               <Mail className="absolute left-4 top-4 w-5 h-5 text-slate-500 group-focus-within:text-orange-500 transition-colors" />
               <input
@@ -65,7 +70,9 @@ export default function Login() {
 
           {/* Password Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-slate-300">Password</label>
+            <label className="block text-sm font-semibold text-slate-300">
+              Password
+            </label>
             <div className="relative group">
               <Lock className="absolute left-4 top-4 w-5 h-5 text-slate-500 group-focus-within:text-orange-500 transition-colors" />
               <input

@@ -1,12 +1,26 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Mail, Lock, User, Ruler, Weight, Users } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  User,
+  Ruler,
+  Weight,
+  Users,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import Logo from "@/components/Logo";
 
-const DOWNLOAD_REASONS = ["Find Trainers", "Fitness Tracking", "Workout Plans", "Other"];
+const DOWNLOAD_REASONS = [
+  "Find Trainers",
+  "Fitness Tracking",
+  "Workout Plans",
+  "Other",
+];
 
 interface SignupData {
   username: string;
@@ -24,7 +38,15 @@ interface SignupData {
   otherReason: string;
 }
 
-type SignupStep = "username" | "email" | "password" | "height" | "weight" | "profile" | "survey" | "complete";
+type SignupStep =
+  | "username"
+  | "email"
+  | "password"
+  | "height"
+  | "weight"
+  | "profile"
+  | "survey"
+  | "complete";
 
 export default function PremiumSignup() {
   const navigate = useNavigate();
@@ -50,7 +72,9 @@ export default function PremiumSignup() {
     otherReason: "",
   });
 
-  const [usernameStatus, setUsernameStatus] = useState<"checking" | "available" | "taken" | null>(null);
+  const [usernameStatus, setUsernameStatus] = useState<
+    "checking" | "available" | "taken" | null
+  >(null);
 
   // Height conversion helpers
   const cmToFeetInches = (cm: number) => {
@@ -68,7 +92,12 @@ export default function PremiumSignup() {
     setData((prev) => {
       const cm = parseInt(value) || 0;
       const { feet, inches } = cmToFeetInches(cm);
-      return { ...prev, height_cm: value, height_ft: feet.toString(), height_in: inches.toString() };
+      return {
+        ...prev,
+        height_cm: value,
+        height_ft: feet.toString(),
+        height_in: inches.toString(),
+      };
     });
   };
 
@@ -211,7 +240,9 @@ export default function PremiumSignup() {
         await supabase.from("user_surveys").insert({
           user_id: authData.user.id,
           download_reasons: data.downloadReasons,
-          other_reason: data.downloadReasons.includes("Other") ? data.otherReason : null,
+          other_reason: data.downloadReasons.includes("Other")
+            ? data.otherReason
+            : null,
         });
       }
 
@@ -225,14 +256,34 @@ export default function PremiumSignup() {
   };
 
   const handleBack = () => {
-    const steps: SignupStep[] = ["username", "email", "password", "height", "weight", "profile", "survey"];
+    const steps: SignupStep[] = [
+      "username",
+      "email",
+      "password",
+      "height",
+      "weight",
+      "profile",
+      "survey",
+    ];
     const currentIndex = steps.indexOf(step);
     if (currentIndex > 0) {
       setStep(steps[currentIndex - 1]);
     }
   };
 
-  const progressPercent = (["username", "email", "password", "height", "weight", "profile", "survey"].indexOf(step) + 1) / 8 * 100;
+  const progressPercent =
+    (([
+      "username",
+      "email",
+      "password",
+      "height",
+      "weight",
+      "profile",
+      "survey",
+    ].indexOf(step) +
+      1) /
+      8) *
+    100;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
@@ -246,7 +297,9 @@ export default function PremiumSignup() {
         {/* Header */}
         <div className="text-center mb-8">
           <Logo size="lg" className="mx-auto mb-4" />
-          <p className="text-slate-400 text-sm">Transform your fitness journey</p>
+          <p className="text-slate-400 text-sm">
+            Transform your fitness journey
+          </p>
         </div>
 
         {/* Progress Bar */}
@@ -257,7 +310,19 @@ export default function PremiumSignup() {
               style={{ width: `${progressPercent}%` }}
             ></div>
           </div>
-          <p className="text-center text-slate-500 text-xs mt-3">Step {["username", "email", "password", "height", "weight", "profile", "survey"].indexOf(step) + 1} of 7</p>
+          <p className="text-center text-slate-500 text-xs mt-3">
+            Step{" "}
+            {[
+              "username",
+              "email",
+              "password",
+              "height",
+              "weight",
+              "profile",
+              "survey",
+            ].indexOf(step) + 1}{" "}
+            of 7
+          </p>
         </div>
 
         {/* Step Forms with smooth transitions */}
@@ -266,8 +331,12 @@ export default function PremiumSignup() {
           {step === "username" && (
             <div className="animate-fadeIn space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">Choose your username</h2>
-                <p className="text-slate-400 text-sm">Make it unique and memorable</p>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Choose your username
+                </h2>
+                <p className="text-slate-400 text-sm">
+                  Make it unique and memorable
+                </p>
               </div>
 
               <div className="relative group">
@@ -283,8 +352,14 @@ export default function PremiumSignup() {
                   className="w-full pl-12 pr-4 py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 {usernameStatus && (
-                  <span className={`absolute right-4 top-4 text-sm font-semibold ${usernameStatus === "available" ? "text-green-400" : usernameStatus === "checking" ? "text-blue-400" : "text-red-400"}`}>
-                    {usernameStatus === "available" ? "✓" : usernameStatus === "checking" ? "..." : "✗"}
+                  <span
+                    className={`absolute right-4 top-4 text-sm font-semibold ${usernameStatus === "available" ? "text-green-400" : usernameStatus === "checking" ? "text-blue-400" : "text-red-400"}`}
+                  >
+                    {usernameStatus === "available"
+                      ? "✓"
+                      : usernameStatus === "checking"
+                        ? "..."
+                        : "✗"}
                   </span>
                 )}
               </div>
@@ -295,8 +370,12 @@ export default function PremiumSignup() {
           {step === "email" && (
             <div className="animate-fadeIn space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">Enter your email</h2>
-                <p className="text-slate-400 text-sm">We'll use this to sign you in</p>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Enter your email
+                </h2>
+                <p className="text-slate-400 text-sm">
+                  We'll use this to sign you in
+                </p>
               </div>
 
               <div className="relative group">
@@ -316,7 +395,9 @@ export default function PremiumSignup() {
           {step === "password" && (
             <div className="animate-fadeIn space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">Create a password</h2>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Create a password
+                </h2>
                 <p className="text-slate-400 text-sm">At least 6 characters</p>
               </div>
 
@@ -326,7 +407,9 @@ export default function PremiumSignup() {
                   <input
                     type={showPassword ? "text" : "password"}
                     value={data.password}
-                    onChange={(e) => setData({ ...data, password: e.target.value })}
+                    onChange={(e) =>
+                      setData({ ...data, password: e.target.value })
+                    }
                     placeholder="••••••••"
                     className="w-full pl-12 pr-12 py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
@@ -335,7 +418,11 @@ export default function PremiumSignup() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-4 text-slate-500 hover:text-slate-300 transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
 
@@ -344,7 +431,9 @@ export default function PremiumSignup() {
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     value={data.confirmPassword}
-                    onChange={(e) => setData({ ...data, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setData({ ...data, confirmPassword: e.target.value })
+                    }
                     placeholder="••••••••"
                     className="w-full pl-12 pr-12 py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
@@ -353,7 +442,11 @@ export default function PremiumSignup() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-4 top-4 text-slate-500 hover:text-slate-300 transition-colors"
                   >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showConfirmPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -364,8 +457,12 @@ export default function PremiumSignup() {
           {step === "height" && (
             <div className="animate-fadeIn space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">What's your height?</h2>
-                <p className="text-slate-400 text-sm">Help us personalize your experience</p>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  What's your height?
+                </h2>
+                <p className="text-slate-400 text-sm">
+                  Help us personalize your experience
+                </p>
               </div>
 
               <div className="space-y-4">
@@ -378,7 +475,9 @@ export default function PremiumSignup() {
                     placeholder="0"
                     className="w-full pl-12 pr-12 py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
-                  <span className="absolute right-4 top-4 text-slate-400 text-sm">cm</span>
+                  <span className="absolute right-4 top-4 text-slate-400 text-sm">
+                    cm
+                  </span>
                 </div>
 
                 <div className="text-center text-slate-500 text-sm">Or</div>
@@ -392,7 +491,9 @@ export default function PremiumSignup() {
                       placeholder="0"
                       className="w-full pl-4 pr-10 py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all text-center"
                     />
-                    <span className="absolute right-3 top-4 text-slate-400 text-sm">ft</span>
+                    <span className="absolute right-3 top-4 text-slate-400 text-sm">
+                      ft
+                    </span>
                   </div>
                   <div className="relative group">
                     <input
@@ -402,7 +503,9 @@ export default function PremiumSignup() {
                       placeholder="0"
                       className="w-full pl-4 pr-10 py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all text-center"
                     />
-                    <span className="absolute right-3 top-4 text-slate-400 text-sm">in</span>
+                    <span className="absolute right-3 top-4 text-slate-400 text-sm">
+                      in
+                    </span>
                   </div>
                 </div>
               </div>
@@ -413,8 +516,12 @@ export default function PremiumSignup() {
           {step === "weight" && (
             <div className="animate-fadeIn space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">What's your weight?</h2>
-                <p className="text-slate-400 text-sm">This helps us track your progress</p>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  What's your weight?
+                </h2>
+                <p className="text-slate-400 text-sm">
+                  This helps us track your progress
+                </p>
               </div>
 
               <div className="space-y-4">
@@ -428,7 +535,9 @@ export default function PremiumSignup() {
                     step="0.1"
                     className="w-full pl-12 pr-12 py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
-                  <span className="absolute right-4 top-4 text-slate-400 text-sm">kg</span>
+                  <span className="absolute right-4 top-4 text-slate-400 text-sm">
+                    kg
+                  </span>
                 </div>
 
                 <div className="text-center text-slate-500 text-sm">Or</div>
@@ -443,7 +552,9 @@ export default function PremiumSignup() {
                     step="0.1"
                     className="w-full pl-12 pr-12 py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
-                  <span className="absolute right-4 top-4 text-slate-400 text-sm">lbs</span>
+                  <span className="absolute right-4 top-4 text-slate-400 text-sm">
+                    lbs
+                  </span>
                 </div>
               </div>
             </div>
@@ -453,16 +564,24 @@ export default function PremiumSignup() {
           {step === "profile" && (
             <div className="animate-fadeIn space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">Complete your profile</h2>
-                <p className="text-slate-400 text-sm">Tell us a bit about yourself</p>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Complete your profile
+                </h2>
+                <p className="text-slate-400 text-sm">
+                  Tell us a bit about yourself
+                </p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-2">Gender</label>
+                  <label className="block text-sm font-semibold text-slate-300 mb-2">
+                    Gender
+                  </label>
                   <select
                     value={data.gender}
-                    onChange={(e) => setData({ ...data, gender: e.target.value })}
+                    onChange={(e) =>
+                      setData({ ...data, gender: e.target.value })
+                    }
                     className="w-full px-4 py-4 bg-slate-700/50 border border-slate-600 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   >
                     <option value="male">Male</option>
@@ -472,7 +591,9 @@ export default function PremiumSignup() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-300 mb-3">What's your role?</label>
+                  <label className="block text-sm font-semibold text-slate-300 mb-3">
+                    What's your role?
+                  </label>
                   <div className="grid grid-cols-2 gap-3">
                     {(["client", "trainer"] as const).map((r) => (
                       <button
@@ -497,8 +618,12 @@ export default function PremiumSignup() {
           {step === "survey" && (
             <div className="animate-fadeIn space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">Why CoTrainr?</h2>
-                <p className="text-slate-400 text-sm">Help us understand your goals</p>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Why CoTrainr?
+                </h2>
+                <p className="text-slate-400 text-sm">
+                  Help us understand your goals
+                </p>
               </div>
 
               <div className="space-y-3">
@@ -519,7 +644,8 @@ export default function PremiumSignup() {
                         : "bg-slate-700/50 border-slate-600 text-slate-300 hover:border-orange-500"
                     }`}
                   >
-                    {data.downloadReasons.includes(reason) ? "✓ " : "◯ "} {reason}
+                    {data.downloadReasons.includes(reason) ? "✓ " : "◯ "}{" "}
+                    {reason}
                   </button>
                 ))}
               </div>
@@ -527,7 +653,9 @@ export default function PremiumSignup() {
               {data.downloadReasons.includes("Other") && (
                 <textarea
                   value={data.otherReason}
-                  onChange={(e) => setData({ ...data, otherReason: e.target.value })}
+                  onChange={(e) =>
+                    setData({ ...data, otherReason: e.target.value })
+                  }
                   placeholder="Tell us more..."
                   className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
                   rows={3}
@@ -552,14 +680,21 @@ export default function PremiumSignup() {
             disabled={loading}
             className="flex-1 px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:opacity-50 text-white font-semibold rounded-2xl transition-all shadow-lg hover:shadow-orange-500/50 active:scale-95"
           >
-            {loading ? "Creating..." : step === "survey" ? "Create Account" : "Next"}
+            {loading
+              ? "Creating..."
+              : step === "survey"
+                ? "Create Account"
+                : "Next"}
           </button>
         </div>
 
         {/* Login Link */}
         <p className="text-center text-slate-400 text-sm mt-6">
           Already have an account?{" "}
-          <button onClick={() => navigate("/login")} className="text-orange-400 hover:text-orange-300 font-semibold transition-colors">
+          <button
+            onClick={() => navigate("/login")}
+            className="text-orange-400 hover:text-orange-300 font-semibold transition-colors"
+          >
             Sign in
           </button>
         </p>
