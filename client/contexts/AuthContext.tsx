@@ -190,49 +190,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  const fetchUserProfile = async (userId: string) => {
-    try {
-      console.log("Fetching user profile for:", userId);
-
-      // Skip if no user ID
-      if (!userId) return;
-
-      // Get current session (should have access token)
-      const {
-        data: { session: currentSession },
-      } = await supabase.auth.getSession();
-
-      if (!currentSession?.access_token) {
-        console.warn("No access token available - cannot fetch profile");
-        return;
-      }
-
-      // Fetch user profile from API
-      const response = await fetch("/api/supabase/users/profile", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentSession.access_token}`,
-        },
-      });
-
-      if (!response.ok) {
-        console.error("Failed to fetch user profile:", response.status);
-        return;
-      }
-
-      const result = await response.json();
-
-      if (result.data) {
-        console.log("User profile fetched successfully");
-        setUserProfile(result.data);
-      }
-    } catch (error: any) {
-      console.error("Error fetching user profile:", error?.message);
-      // Silently fail - profile is optional
-    }
-  };
-
   const signUp = async (
     email: string,
     password: string,
