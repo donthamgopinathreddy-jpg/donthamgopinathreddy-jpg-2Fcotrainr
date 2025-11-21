@@ -119,7 +119,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.log("[Auth] Checking for existing session...");
           const {
             data: { session },
+            error: sessionError,
           } = await supabase.auth.getSession();
+
+          if (sessionError) {
+            console.warn(
+              "[Auth] Session check error (may be token refresh issue):",
+              sessionError,
+            );
+            // Clear invalid session
+            if (isMounted) {
+              setUser(null);
+              setUserProfile(null);
+            }
+            return;
+          }
 
           if (isMounted) {
             if (session?.user) {
@@ -134,13 +148,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               setUser(null);
             }
           }
-        } catch (sessionError) {
+        } catch (sessionError: any) {
           console.warn(
             "Session check failed, continuing without initial session:",
-            sessionError,
+            sessionError?.message,
           );
           if (isMounted) {
             setUser(null);
+            setUserProfile(null);
           }
         }
       } finally {
