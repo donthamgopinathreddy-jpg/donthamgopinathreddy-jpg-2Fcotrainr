@@ -43,7 +43,7 @@ export function createServer() {
 
   // Catch-all handler: serve index.html for all non-API routes
   // This allows React Router to handle client-side routing
-  app.get("*", (_req, res) => {
+  app.use((_req, res) => {
     console.log("[Server] Serving index.html for route:", _req.path);
     res.sendFile(path.join(staticDir, "index.html"));
   });
