@@ -356,10 +356,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         let responseData: any;
         try {
-          responseData = await response.json();
+          const responseText = await response.text();
+          console.log("[Auth] Raw response text:", responseText.substring(0, 200));
+
+          if (!responseText) {
+            throw new Error("Empty response from server");
+          }
+
+          responseData = JSON.parse(responseText);
         } catch (parseError) {
-          console.error("[Auth] Could not parse response as JSON");
-          throw new Error("Invalid response from server");
+          console.error("[Auth] Could not parse response as JSON:", parseError);
+          console.error("[Auth] Response status:", response.status);
+          console.error("[Auth] Response headers:", {
+            contentType: response.headers.get("content-type"),
+            contentLength: response.headers.get("content-length"),
+          });
+          throw new Error(`Invalid response from server: ${parseError instanceof Error ? parseError.message : "Unknown parse error"}`);
         }
 
         if (!response.ok) {
