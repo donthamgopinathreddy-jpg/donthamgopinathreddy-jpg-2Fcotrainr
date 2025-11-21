@@ -679,12 +679,14 @@ const App = () => {
           <ThemeProvider>
             <LanguageProvider>
               <AuthProvider>
-                <AuthInitializer>
-                  <PermissionRequester />
-                  <Toaster />
-                  <Sonner />
-                  <AppRoutes />
-                </AuthInitializer>
+                <ErrorBoundary>
+                  <AuthInitializer>
+                    <PermissionRequester />
+                    <Toaster />
+                    <Sonner />
+                    <AppRoutes />
+                  </AuthInitializer>
+                </ErrorBoundary>
               </AuthProvider>
             </LanguageProvider>
           </ThemeProvider>
