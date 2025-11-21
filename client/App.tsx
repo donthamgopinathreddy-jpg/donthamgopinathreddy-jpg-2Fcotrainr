@@ -576,11 +576,15 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/admin/setup"
+        element={<AdminSetup />}
+      />
+      <Route
         path="/admin"
         element={
           <ProtectedRoute>
             <AdminRoute>
-              <AdminTrainerVerification />
+              <AdminDashboard />
             </AdminRoute>
           </ProtectedRoute>
         }
