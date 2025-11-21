@@ -159,48 +159,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const {
           data: { subscription: authSubscription },
-        } = supabase.auth.onAuthStateChange(
-          async (event, session) => {
-            console.log("Auth state changed:", event, session?.user?.email);
+        } = supabase.auth.onAuthStateChange((event, session) => {
+          console.log("Auth state changed:", event, session?.user?.email);
 
-            // Handle token refresh errors
-            if (event === "SIGNED_OUT" || !session) {
-              if (isMounted) {
-                setUser(null);
-                setUserProfile(null);
-              }
-              return;
-            }
-
+          // Handle token refresh errors and signed out
+          if (event === "SIGNED_OUT" || !session) {
             if (isMounted) {
-              setUser(session?.user || null);
-
-              if (session?.user) {
-                // Fetch profile without blocking
-                fetchUserProfile(session.user.id).catch((err) => {
-                  console.warn("Profile fetch failed:", err);
-                });
-              } else {
-                setUserProfile(null);
-              }
+              setUser(null);
+              setUserProfile(null);
             }
-          },
-          {
-            onError: (error) => {
-              console.error("Auth state change error:", error);
-              // Clear session on token errors
-              if (
-                error?.message?.includes("Refresh Token") ||
-                error?.message?.includes("Invalid token")
-              ) {
-                if (isMounted) {
-                  setUser(null);
-                  setUserProfile(null);
-                }
-              }
-            },
-          } as any,
-        );
+            return;
+          }
+
+          if (isMounted) {
+            setUser(session?.user || null);
+
+            if (session?.user) {
+              // Fetch profile without blocking
+              fetchUserProfile(session.user.id).catch((err) => {
+                console.warn("Profile fetch failed:", err);
+              });
+            } else {
+              setUserProfile(null);
+            }
+          }
+        });
 
         subscription = authSubscription;
       } catch (error) {
