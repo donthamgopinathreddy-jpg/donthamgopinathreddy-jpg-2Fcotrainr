@@ -343,6 +343,37 @@ export default function Signup() {
             </select>
           </div>
 
+          {/* Role Selection */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-3">
+              What's your role?
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              {(["client", "trainer"] as const).map((r) => (
+                <label
+                  key={r}
+                  className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    formData.role === r
+                      ? "border-orange-500 bg-orange-50"
+                      : "border-gray-300 bg-white hover:border-orange-300"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value={r}
+                    checked={formData.role === r}
+                    onChange={(e) =>
+                      setFormData({ ...formData, role: e.target.value as any })
+                    }
+                    className="mr-2"
+                  />
+                  <span className="font-semibold text-gray-900 capitalize">{r}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
           {/* Download Reasons */}
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-3">
