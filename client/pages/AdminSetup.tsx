@@ -60,7 +60,9 @@ export default function AdminSetup() {
       }
 
       if (!response.ok) {
-        const errorMessage = result?.error || `Failed to create admin account (${response.status})`;
+        const errorMessage =
+          result?.error ||
+          `Failed to create admin account (${response.status})`;
         toast.error(errorMessage);
         return;
       }
@@ -72,7 +74,11 @@ export default function AdminSetup() {
       }, 2000);
     } catch (error) {
       console.error("Setup error:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to create admin account");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to create admin account",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -83,9 +89,7 @@ export default function AdminSetup() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Success!
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Success!</h1>
           <p className="text-gray-600 mb-4">
             Admin account created successfully. Redirecting to login...
           </p>
@@ -98,16 +102,17 @@ export default function AdminSetup() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Admin Setup
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Setup</h1>
           <p className="text-gray-600">Create your admin account</p>
         </div>
 
         <form onSubmit={handleCreateAdmin} className="space-y-5">
           {/* Email Input */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Email Address
             </label>
             <div className="relative">
@@ -126,7 +131,10 @@ export default function AdminSetup() {
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Password
             </label>
             <div className="relative">

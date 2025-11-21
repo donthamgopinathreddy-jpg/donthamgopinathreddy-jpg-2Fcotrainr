@@ -237,7 +237,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (parseError) {
         console.error("Sign up: Could not parse response as JSON:", parseError);
         if (!response.ok) {
-          throw new Error(`Server returned ${response.status}: Could not parse response`);
+          throw new Error(
+            `Server returned ${response.status}: Could not parse response`,
+          );
         }
         responseData = {};
       }
@@ -275,7 +277,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 years_of_experience: 0,
               });
             if (trainerError) {
-              console.warn("Trainer profile creation error:", trainerError?.message);
+              console.warn(
+                "Trainer profile creation error:",
+                trainerError?.message,
+              );
             }
           } catch (err: any) {
             console.warn("Trainer profile creation error:", err?.message);
@@ -331,14 +336,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.error("[Auth] Could not parse response as JSON:", parseError);
           // If JSON parsing fails and response is not ok, we'll throw below
           if (!response.ok) {
-            throw new Error(`Server returned ${response.status}: Could not parse response`);
+            throw new Error(
+              `Server returned ${response.status}: Could not parse response`,
+            );
           }
           responseData = {};
         }
 
         // Check if response was successful
         if (!response.ok) {
-          const errorMessage = responseData?.error || `Sign in failed (${response.status})`;
+          const errorMessage =
+            responseData?.error || `Sign in failed (${response.status})`;
           throw new Error(errorMessage);
         }
 

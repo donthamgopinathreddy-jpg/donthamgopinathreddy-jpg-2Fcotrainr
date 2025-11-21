@@ -566,10 +566,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/admin/setup"
-        element={<AdminSetup />}
-      />
+      <Route path="/admin/setup" element={<AdminSetup />} />
       <Route
         path="/admin"
         element={

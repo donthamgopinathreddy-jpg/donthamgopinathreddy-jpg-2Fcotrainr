@@ -90,7 +90,7 @@ export default function AdminDashboard() {
         if (!usersError && usersData) {
           // Filter out demo users (demo users have IDs starting with "demo-user")
           const realUsers = usersData.filter(
-            (u) => !u.id.startsWith("demo-user") && !u.id.includes("demo")
+            (u) => !u.id.startsWith("demo-user") && !u.id.includes("demo"),
           );
           setUsers(realUsers);
 
@@ -170,7 +170,7 @@ export default function AdminDashboard() {
       const { data: usersData } = await supabase.from("users").select("*");
       if (usersData) {
         const realUsers = usersData.filter(
-          (u) => !u.id.startsWith("demo-user") && !u.id.includes("demo")
+          (u) => !u.id.startsWith("demo-user") && !u.id.includes("demo"),
         );
         setUsers(realUsers);
         toast.success("User deleted successfully");
@@ -196,7 +196,9 @@ export default function AdminDashboard() {
       </div>
 
       {/* Main Content */}
-      <div className={`${sidebarOpen ? "ml-64" : "ml-20"} flex-1 transition-all duration-300`}>
+      <div
+        className={`${sidebarOpen ? "ml-64" : "ml-20"} flex-1 transition-all duration-300`}
+      >
         {/* Header */}
         <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -206,7 +208,9 @@ export default function AdminDashboard() {
             >
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
-            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Admin Dashboard
+            </h1>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-600">

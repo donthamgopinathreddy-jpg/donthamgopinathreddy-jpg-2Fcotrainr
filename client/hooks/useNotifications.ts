@@ -173,7 +173,8 @@ export function useNotifications(userId?: string) {
               if (!response.ok) {
                 return {
                   error: {
-                    message: responseData.error || "Failed to fetch notifications",
+                    message:
+                      responseData.error || "Failed to fetch notifications",
                     code: "API_ERROR",
                   },
                   data: null,

@@ -48,7 +48,9 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen = true }) => {
               className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors text-left"
             >
               <Icon size={20} className={`text-${item.color}-400`} />
-              {isOpen && <span className="text-sm font-medium">{item.label}</span>}
+              {isOpen && (
+                <span className="text-sm font-medium">{item.label}</span>
+              )}
             </button>
           );
         })}
