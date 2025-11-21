@@ -331,6 +331,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error("Email and password are required");
       }
 
+      // Test API connectivity first
+      try {
+        console.log("[Auth] Testing API connectivity with ping endpoint");
+        const pingResponse = await fetch("/api/ping", { method: "GET" });
+        console.log("[Auth] Ping response status:", pingResponse.status);
+        if (!pingResponse.ok) {
+          console.warn("[Auth] API ping failed with status:", pingResponse.status);
+        }
+      } catch (pingError) {
+        console.error("[Auth] API connectivity test failed:", pingError);
+      }
+
       // Use our API wrapper instead of calling Supabase directly
       console.log("[Auth] Sending request to /api/supabase/auth/signin");
 
