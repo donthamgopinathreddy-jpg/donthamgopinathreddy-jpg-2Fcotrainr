@@ -17,6 +17,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Onboarding from "./pages/Onboarding";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import ClearSession from "./pages/ClearSession";
 import Home from "./pages/Home";
 import TrainerHome from "./pages/TrainerHome";
