@@ -426,6 +426,18 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/nutrition"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <ErrorBoundary>
+                <NutritionTracker />
+              </ErrorBoundary>
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/upgrade"
         element={
           <ProtectedRoute>
