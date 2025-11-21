@@ -85,27 +85,15 @@ export default function Login() {
 
     setLoading(true);
     try {
-      let loginEmail = email;
+      let loginEmail = email.trim();
 
-      // If user entered a username (no @ symbol), look up their email
-      if (!email.includes("@")) {
-        try {
-          const { data: userData } = await supabase
-            .from("users")
-            .select("email")
-            .eq("username", email.toLowerCase())
-            .single();
-
-          if (userData?.email) {
-            loginEmail = userData.email;
-          } else {
-            // If username not found, assume it's an email anyway and try
-            loginEmail = email;
+      if (!loginEmail.includes("@")) {
+        const lookup = await lookupUserIdentifier(loginEmail);
+        if (lookup?.email) {
+          loginEmail = lookup.email;
+          if (lookup.id) {
+            setUserId(lookup.id);
           }
-        } catch (err) {
-          // If lookup fails, try the input as-is (might be email)
-          console.warn("Username lookup failed, trying as email:", err);
-          loginEmail = email;
         }
       }
 
