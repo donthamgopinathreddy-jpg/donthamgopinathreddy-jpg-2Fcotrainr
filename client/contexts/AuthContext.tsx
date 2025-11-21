@@ -362,27 +362,48 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         console.log("[Auth] Sign in successful for user:", user.email);
-
-        if (session) {
-          // Store the session in Supabase client
-          try {
-            await supabase.auth.setSession(session);
-          } catch (sessionError) {
-            console.warn(
-              "[Auth] Could not set session in Supabase client:",
-              sessionError,
-            );
-            // Continue anyway - user state is still valid
-          }
-        }
+        console.log("[Auth] Session received:", {
+          hasSession: !!session,
+          hasAccessToken: !!session?.access_token,
+          user_id: user.id,
+        });
 
         // Update user state immediately for responsive navigation
         setUser(user);
 
-        // Fetch profile in background without blocking navigation
-        fetchUserProfile(user.id).catch((err) => {
-          console.debug("Background profile fetch failed:", err);
-        });
+        if (session) {
+          // Store the session in Supabase client
+          try {
+            console.log("[Auth] Setting session in Supabase client...");
+            const result = await supabase.auth.setSession(session);
+            console.log("[Auth] Session set, result:", {
+              hasUser: !!result.data?.user,
+              user_id: result.data?.user?.id,
+              hasSession: !!result.data?.session,
+            });
+
+            // Verify session was set
+            const {
+              data: { session: verifySession },
+            } = await supabase.auth.getSession();
+            console.log("[Auth] Verified session after setSession:", {
+              hasSession: !!verifySession,
+              hasAccessToken: !!verifySession?.access_token,
+            });
+          } catch (sessionError: any) {
+            console.error("[Auth] Error setting session:", {
+              message: sessionError?.message,
+              cause: sessionError?.cause,
+            });
+            // Continue anyway - user state is still valid
+          }
+        } else {
+          console.warn("[Auth] No session returned from API");
+        }
+
+        // Fetch profile with improved logging
+        console.log("[Auth] Fetching user profile for:", user.id);
+        await fetchUserProfile(user.id);
       } catch (fetchError: any) {
         clearTimeout(timeoutId);
 
