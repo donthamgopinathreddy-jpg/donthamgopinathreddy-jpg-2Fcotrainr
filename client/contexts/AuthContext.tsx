@@ -218,6 +218,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handleRefreshFailure = () => {
+      console.warn("[Auth] Token refresh failure detected - forcing sign out");
+      setUser(null);
+      setUserProfile(null);
+      toast.error("Session expired. Please sign in again.");
+    };
+
+    window.addEventListener("supabase-token-refresh-failed", handleRefreshFailure);
+    return () => {
+      window.removeEventListener(
+        "supabase-token-refresh-failed",
+        handleRefreshFailure,
+      );
+    };
+  }, []);
+
   const signUp = async (
     email: string,
     password: string,
