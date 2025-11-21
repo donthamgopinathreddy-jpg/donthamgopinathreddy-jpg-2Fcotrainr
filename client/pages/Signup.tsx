@@ -67,7 +67,7 @@ export default function Signup() {
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -144,8 +144,7 @@ export default function Signup() {
           user_id: authData.user.id,
           download_reasons: formData.downloadReasons,
           other_reason:
-            formData.downloadReasons.includes("Other") &&
-            formData.otherReason
+            formData.downloadReasons.includes("Other") && formData.otherReason
               ? formData.otherReason
               : null,
         });
@@ -368,7 +367,9 @@ export default function Signup() {
                     }
                     className="mr-2"
                   />
-                  <span className="font-semibold text-gray-900 capitalize">{r}</span>
+                  <span className="font-semibold text-gray-900 capitalize">
+                    {r}
+                  </span>
                 </label>
               ))}
             </div>

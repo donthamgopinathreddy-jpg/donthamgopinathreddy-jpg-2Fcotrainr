@@ -117,10 +117,7 @@ export default function NutritionTracker() {
 
   const handleDeleteMeal = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from("meals_log")
-        .delete()
-        .eq("id", id);
+      const { error } = await supabase.from("meals_log").delete().eq("id", id);
 
       if (error) throw error;
 
@@ -147,7 +144,9 @@ export default function NutritionTracker() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Nutrition Tracker</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Nutrition Tracker
+          </h1>
           <p className="text-gray-600">Track your meals and nutrition intake</p>
         </div>
 
@@ -155,22 +154,30 @@ export default function NutritionTracker() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-xl p-4 shadow">
             <p className="text-gray-600 text-sm">Calories</p>
-            <p className="text-2xl font-bold text-orange-600">{totalCalories}</p>
+            <p className="text-2xl font-bold text-orange-600">
+              {totalCalories}
+            </p>
             <p className="text-xs text-gray-500">kcal</p>
           </div>
           <div className="bg-white rounded-xl p-4 shadow">
             <p className="text-gray-600 text-sm">Protein</p>
-            <p className="text-2xl font-bold text-red-600">{totalProtein.toFixed(1)}</p>
+            <p className="text-2xl font-bold text-red-600">
+              {totalProtein.toFixed(1)}
+            </p>
             <p className="text-xs text-gray-500">g</p>
           </div>
           <div className="bg-white rounded-xl p-4 shadow">
             <p className="text-gray-600 text-sm">Carbs</p>
-            <p className="text-2xl font-bold text-blue-600">{totalCarbs.toFixed(1)}</p>
+            <p className="text-2xl font-bold text-blue-600">
+              {totalCarbs.toFixed(1)}
+            </p>
             <p className="text-xs text-gray-500">g</p>
           </div>
           <div className="bg-white rounded-xl p-4 shadow">
             <p className="text-gray-600 text-sm">Fat</p>
-            <p className="text-2xl font-bold text-yellow-600">{totalFat.toFixed(1)}</p>
+            <p className="text-2xl font-bold text-yellow-600">
+              {totalFat.toFixed(1)}
+            </p>
             <p className="text-xs text-gray-500">g</p>
           </div>
         </div>
@@ -256,7 +263,9 @@ export default function NutritionTracker() {
                 <input
                   type="text"
                   value={formData.unit}
-                  onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, unit: e.target.value })
+                  }
                   placeholder="g, ml, etc"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
@@ -272,7 +281,10 @@ export default function NutritionTracker() {
                 type="number"
                 value={formData.calories}
                 onChange={(e) =>
-                  setFormData({ ...formData, calories: parseInt(e.target.value) })
+                  setFormData({
+                    ...formData,
+                    calories: parseInt(e.target.value),
+                  })
                 }
                 placeholder="0"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -376,11 +388,12 @@ export default function NutritionTracker() {
                             {meal.food_name}
                           </p>
                           <p className="text-sm text-gray-600">
-                            {meal.quantity}{meal.unit} • {meal.calories} kcal
+                            {meal.quantity}
+                            {meal.unit} • {meal.calories} kcal
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
-                            P: {meal.protein_g}g • C: {meal.carbs_g}g • F: {meal.fat_g}
-                            g
+                            P: {meal.protein_g}g • C: {meal.carbs_g}g • F:{" "}
+                            {meal.fat_g}g
                           </p>
                         </div>
                         <button
@@ -393,7 +406,7 @@ export default function NutritionTracker() {
                     ))}
                   </div>
                 </div>
-              ) : null
+              ) : null,
             )}
           </div>
         )}

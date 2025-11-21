@@ -40,7 +40,10 @@ export default function Login() {
         </div>
 
         {/* Login Form */}
-        <form onSubmit={handleLogin} className="bg-white rounded-2xl shadow-lg p-8 space-y-6">
+        <form
+          onSubmit={handleLogin}
+          className="bg-white rounded-2xl shadow-lg p-8 space-y-6"
+        >
           {/* Email Input */}
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-2">

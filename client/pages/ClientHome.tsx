@@ -26,7 +26,7 @@ export default function ClientHome() {
 
   const fetchTodaysFitness = async () => {
     if (!userProfile?.id) return;
-    
+
     try {
       const today = new Date().toISOString().split("T")[0];
       const { data, error } = await supabase
@@ -65,18 +65,16 @@ export default function ClientHome() {
       const newSteps = fitnessData.steps + amount;
       const newCalories = newSteps * 0.05;
 
-      const { error } = await supabase
-        .from("fitness_tracking")
-        .upsert({
-          user_id: userProfile.id,
-          date: today,
-          steps: newSteps,
-          calories_burned: newCalories,
-          water_liters: fitnessData.water_liters,
-        });
+      const { error } = await supabase.from("fitness_tracking").upsert({
+        user_id: userProfile.id,
+        date: today,
+        steps: newSteps,
+        calories_burned: newCalories,
+        water_liters: fitnessData.water_liters,
+      });
 
       if (error) throw error;
-      
+
       setFitnessData((prev) => ({
         ...prev,
         steps: newSteps,
@@ -96,18 +94,16 @@ export default function ClientHome() {
       const today = new Date().toISOString().split("T")[0];
       const newWater = fitnessData.water_liters + amount;
 
-      const { error } = await supabase
-        .from("fitness_tracking")
-        .upsert({
-          user_id: userProfile.id,
-          date: today,
-          steps: fitnessData.steps,
-          calories_burned: fitnessData.calories_burned,
-          water_liters: newWater,
-        });
+      const { error } = await supabase.from("fitness_tracking").upsert({
+        user_id: userProfile.id,
+        date: today,
+        steps: fitnessData.steps,
+        calories_burned: fitnessData.calories_burned,
+        water_liters: newWater,
+      });
 
       if (error) throw error;
-      
+
       setFitnessData((prev) => ({
         ...prev,
         water_liters: newWater,
@@ -120,7 +116,9 @@ export default function ClientHome() {
   };
 
   const bmi = calculateBMI();
-  const waterGoal = userProfile?.weight_kg ? userProfile.weight_kg * 30 / 1000 : 2;
+  const waterGoal = userProfile?.weight_kg
+    ? (userProfile.weight_kg * 30) / 1000
+    : 2;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 p-6 pb-20">
@@ -142,7 +140,9 @@ export default function ClientHome() {
             {/* BMI Card */}
             {bmi && (
               <div className="bg-white rounded-2xl p-6 shadow-lg">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Your BMI</h2>
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  Your BMI
+                </h2>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-5xl font-bold text-orange-600">{bmi}</p>
@@ -204,25 +204,33 @@ export default function ClientHome() {
             <div className="bg-white rounded-2xl p-6 shadow-lg">
               <div className="flex items-center gap-3 mb-4">
                 <Flame className="w-6 h-6 text-red-600" />
-                <h2 className="text-lg font-semibold text-gray-900">Calories Burned</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Calories Burned
+                </h2>
               </div>
               <p className="text-4xl font-bold text-red-600">
                 {Math.round(fitnessData.calories_burned)}
               </p>
-              <p className="text-gray-600 text-sm">From {fitnessData.steps} steps</p>
+              <p className="text-gray-600 text-sm">
+                From {fitnessData.steps} steps
+              </p>
             </div>
 
             {/* Water Card */}
             <div className="bg-white rounded-2xl p-6 shadow-lg">
               <div className="flex items-center gap-3 mb-4">
                 <Droplet className="w-6 h-6 text-blue-600" />
-                <h2 className="text-lg font-semibold text-gray-900">Water Intake</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Water Intake
+                </h2>
               </div>
               <div className="mb-4">
                 <p className="text-4xl font-bold text-blue-600">
                   {fitnessData.water_liters}L
                 </p>
-                <p className="text-gray-600 text-sm">Goal: {waterGoal.toFixed(1)}L</p>
+                <p className="text-gray-600 text-sm">
+                  Goal: {waterGoal.toFixed(1)}L
+                </p>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
                 <div
@@ -253,13 +261,17 @@ export default function ClientHome() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Utensils className="w-6 h-6 text-green-600" />
-                  <h2 className="text-lg font-semibold text-gray-900">Nutrition Tracker</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Nutrition Tracker
+                  </h2>
                 </div>
                 <button className="text-orange-600 hover:text-orange-700 font-semibold text-sm">
                   View Details →
                 </button>
               </div>
-              <p className="text-gray-600 text-sm mt-2">Track your meals and nutrition intake</p>
+              <p className="text-gray-600 text-sm mt-2">
+                Track your meals and nutrition intake
+              </p>
             </div>
           </div>
         )}

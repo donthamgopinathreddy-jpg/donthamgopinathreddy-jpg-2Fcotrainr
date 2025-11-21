@@ -43,7 +43,9 @@ export default function TrainerHome() {
       // Fetch clients
       const { data: clientsData, error: clientsError } = await supabase
         .from("trainer_clients")
-        .select("client_id, users!inner(id, full_name, email, gender, height_cm, weight_kg, created_at)")
+        .select(
+          "client_id, users!inner(id, full_name, email, gender, height_cm, weight_kg, created_at)",
+        )
         .eq("trainer_id", userProfile.id)
         .eq("status", "active");
 
@@ -80,7 +82,9 @@ export default function TrainerHome() {
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             Welcome, {userProfile?.full_name || "Trainer"}!
           </h1>
-          <p className="text-gray-600">Manage your clients and track your progress</p>
+          <p className="text-gray-600">
+            Manage your clients and track your progress
+          </p>
         </div>
 
         {/* Stats */}
@@ -124,7 +128,9 @@ export default function TrainerHome() {
 
         {/* Clients Section */}
         <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Clients</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Your Clients
+          </h2>
 
           {loading ? (
             <div className="flex justify-center py-12">
@@ -134,7 +140,9 @@ export default function TrainerHome() {
             <div className="text-center py-12">
               <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-600">No active clients yet</p>
-              <p className="text-gray-500 text-sm">Start building your client base</p>
+              <p className="text-gray-500 text-sm">
+                Start building your client base
+              </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -200,7 +208,9 @@ export default function TrainerHome() {
 
         {/* Trainer Profile Section */}
         <div className="bg-white rounded-2xl p-6 shadow-lg mt-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Profile</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Your Profile
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-2">
