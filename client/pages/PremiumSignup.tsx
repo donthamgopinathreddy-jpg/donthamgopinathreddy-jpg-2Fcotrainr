@@ -248,11 +248,32 @@ export default function PremiumSignup() {
       console.log("Auth user:", authData?.user?.id);
 
       if (authData?.user?.id) {
+        const userId = authData.user.id;
+        console.log("Creating user profile...");
+
+        // Create user profile
+        const { error: profileError } = await supabase.from("users").insert({
+          id: userId,
+          email: data.email,
+          username: data.username.toLowerCase(),
+          full_name: data.username,
+          role: data.role,
+          gender: data.gender,
+          height_cm: data.height_cm ? parseInt(data.height_cm) : null,
+          weight_kg: data.weight_kg ? parseFloat(data.weight_kg) : null,
+        });
+
+        if (profileError) {
+          console.error("Profile creation error:", profileError);
+          throw new Error("Failed to create profile: " + profileError.message);
+        }
+        console.log("User profile created successfully");
+
         console.log("Inserting survey data...");
         const { error: surveyError } = await supabase
           .from("user_surveys")
           .insert({
-            user_id: authData.user.id,
+            user_id: userId,
             download_reasons: data.downloadReasons,
             other_reason: data.downloadReasons.includes("Other")
               ? data.otherReason
@@ -261,7 +282,7 @@ export default function PremiumSignup() {
 
         if (surveyError) {
           console.error("Survey insert error:", surveyError);
-          throw surveyError;
+          // Don't throw - survey is optional
         }
         console.log("Survey data inserted successfully");
       }
