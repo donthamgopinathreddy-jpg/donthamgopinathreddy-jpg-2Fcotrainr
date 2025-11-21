@@ -1,7 +1,12 @@
 import "dotenv/config";
 import express from "express";
+import path from "path";
 import { handleDemo } from "./routes/demo";
 import apiRouter from "./routes/api";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export function createServer() {
   const app = express();
@@ -30,6 +35,18 @@ export function createServer() {
   // Supabase API wrapper - all auth and data operations go through here
   console.log("[Server] Registering /api/supabase/ routes");
   app.use("/api/supabase/", apiRouter);
+
+  // Serve static files from the dist/spa directory in production
+  const staticDir = path.join(__dirname, "../dist/spa");
+  console.log("[Server] Static directory:", staticDir);
+  app.use(express.static(staticDir));
+
+  // Catch-all handler: serve index.html for all non-API routes
+  // This allows React Router to handle client-side routing
+  app.get("*", (_req, res) => {
+    console.log("[Server] Serving index.html for route:", _req.path);
+    res.sendFile(path.join(staticDir, "index.html"));
+  });
 
   return app;
 }
