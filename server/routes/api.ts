@@ -174,10 +174,14 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
 
     console.log("[API] Sign up attempt for:", email, "with role:", role);
 
+    console.log("[API] Calling Supabase auth.signUp...");
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options,
+      options: {
+        ...options,
+        emailRedirectTo: undefined,
+      },
     });
 
     if (error) {
@@ -185,14 +189,20 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
         message: error.message,
         status: error.status,
         code: (error as any).code,
+        details: (error as any).details,
       });
       return res.status(400).json({
         error: error.message || "Authentication failed",
         status: error.status,
+        details: (error as any).details,
       });
     }
 
-    console.log("[API] Supabase auth returned user:", data.user?.id);
+    console.log("[API] Supabase auth response:", {
+      userId: data.user?.id,
+      userEmail: data.user?.email,
+      sessionExists: !!data.session,
+    });
 
     const userId = data.user?.id;
     if (!userId) {
@@ -204,32 +214,43 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
 
     // Extract user data from options if provided
     const userData = options?.data || {};
+    const username = userData.username || email.split("@")[0];
+
+    // Validate required fields
+    if (!email) {
+      return res.status(400).json({
+        error: "Email is required",
+      });
+    }
+    if (!username) {
+      return res.status(400).json({
+        error: "Username is required",
+      });
+    }
 
     // Create user profile with all provided data
     const profileData = {
       id: userId,
       email,
-      username: userData.username || email.split("@")[0],
+      username,
       full_name: userData.full_name || null,
       role: userData.role || role || "client",
       gender: userData.gender || null,
-      weight_kg: userData.weight_kg || null,
-      height_cm: userData.height_cm || null,
+      weight_kg: userData.weight_kg ? parseFloat(userData.weight_kg) : null,
+      height_cm: userData.height_cm ? parseInt(userData.height_cm) : null,
       phone_number: userData.phone_number || null,
-      age: userData.age || null,
+      age: userData.age ? parseInt(userData.age) : null,
       date_of_birth: userData.date_of_birth || null,
     };
 
-    console.log("[API] Creating user profile with data:", {
+    console.log("[API] Profile data prepared:", {
       id: profileData.id,
       email: profileData.email,
       username: profileData.username,
       role: profileData.role,
-      hasFullName: !!profileData.full_name,
-      hasHeight: !!profileData.height_cm,
-      hasWeight: !!profileData.weight_kg,
     });
 
+    console.log("[API] Inserting profile into users table...");
     const { error: profileError, data: insertedData } = await supabase
       .from("users")
       .insert([profileData]);
@@ -241,9 +262,19 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
         details: profileError.details,
         hint: (profileError as any).hint,
       });
+
+      // Try to rollback the auth user if profile creation failed
+      try {
+        console.log("[API] Attempting to delete orphaned auth user...");
+        await supabase.auth.admin.deleteUser(userId);
+      } catch (deleteError) {
+        console.warn("[API] Could not delete orphaned user:", deleteError);
+      }
+
       return res.status(400).json({
         error: "Failed to create user profile: " + profileError.message,
         details: profileError.details,
+        hint: (profileError as any).hint,
       });
     }
 
