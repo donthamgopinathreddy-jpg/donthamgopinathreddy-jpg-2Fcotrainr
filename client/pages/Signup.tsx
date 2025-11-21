@@ -131,7 +131,7 @@ export default function Signup() {
       await signUp(formData.email, formData.password, {
         username: formData.username.toLowerCase(),
         full_name: formData.username,
-        role: "client",
+        role: formData.role,
         height_cm: parseInt(formData.height),
         weight_kg: parseInt(formData.weight),
         gender: formData.gender,
