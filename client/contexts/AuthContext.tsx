@@ -354,29 +354,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         console.log("[Auth] Received response with status:", response.status);
 
-        // Read response body directly as JSON - simplest approach
+        // Read response body as text once, then parse
+        let bodyText = "";
         let responseData: any;
-        if (!response.ok) {
-          // For error responses, parse JSON to get error message
-          try {
-            responseData = await response.json();
-            console.error("[Auth] Sign in error from API (status: " + response.status + "):", responseData);
-            const errorMessage =
-              responseData?.error || `Sign in failed (${response.status})`;
-            throw new Error(errorMessage);
-          } catch (parseError) {
-            // If we can't parse the JSON, return generic error
-            throw new Error(`Sign in failed (${response.status}): ${parseError instanceof Error ? parseError.message : "Unknown error"}`);
-          }
+
+        try {
+          bodyText = await response.text();
+          console.log("[Auth] Got response body");
+        } catch (readError) {
+          console.error("[Auth] Could not read response body:", readError);
+          throw new Error(`Could not read server response: ${readError instanceof Error ? readError.message : "Unknown error"}`);
         }
 
-        // For successful responses, parse JSON
+        // Try to parse as JSON
         try {
-          responseData = await response.json();
-          console.log("[Auth] Successfully parsed JSON response");
+          responseData = bodyText ? JSON.parse(bodyText) : {};
+          console.log("[Auth] Parsed JSON successfully");
         } catch (parseError) {
-          console.error("[Auth] Could not parse response as JSON:", parseError instanceof Error ? parseError.message : String(parseError));
-          throw new Error(`Invalid response from server: ${parseError instanceof Error ? parseError.message : "Unknown error"}`);
+          console.error("[Auth] Response is not valid JSON:", bodyText.substring(0, 100));
+          responseData = { error: bodyText || "Invalid server response" };
+        }
+
+        // Check if response was successful
+        if (!response.ok) {
+          const errorMessage = responseData?.error || `Sign in failed (${response.status})`;
+          throw new Error(errorMessage);
         }
 
         const { session, user } = responseData;
