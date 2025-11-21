@@ -78,7 +78,10 @@ const handleTokenRefreshFailure = async () => {
       );
     }
   } catch (eventError) {
-    console.warn("[Supabase] Could not dispatch refresh failure event", eventError);
+    console.warn(
+      "[Supabase] Could not dispatch refresh failure event",
+      eventError,
+    );
   }
 };
 

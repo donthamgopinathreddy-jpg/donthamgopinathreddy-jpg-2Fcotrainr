@@ -270,7 +270,8 @@ export default function PremiumSignup() {
       navigate("/");
     } catch (error: any) {
       console.error("Signup error:", error);
-      const errorMessage = error?.message || error?.toString?.() || "Signup failed";
+      const errorMessage =
+        error?.message || error?.toString?.() || "Signup failed";
       console.error("Detailed error:", errorMessage);
       toast.error(errorMessage);
     } finally {

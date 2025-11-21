@@ -245,7 +245,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       toast.error("Session expired. Please sign in again.");
     };
 
-    window.addEventListener("supabase-token-refresh-failed", handleRefreshFailure);
+    window.addEventListener(
+      "supabase-token-refresh-failed",
+      handleRefreshFailure,
+    );
     return () => {
       window.removeEventListener(
         "supabase-token-refresh-failed",
