@@ -371,35 +371,24 @@ export default function Login() {
                         </div>
                         <button
                           onClick={async () => {
-                            if (isFormComplete) {
-                              setLoading(true);
-                              try {
-                                let loginEmail = email;
-                                if (!email.includes("@")) {
-                                  const { data: userData } = await supabase
-                                    .from("users")
-                                    .select("email, id")
-                                    .eq("username", email.toLowerCase())
-                                    .single();
-                                  if (userData?.email) {
-                                    loginEmail = userData.email;
-                                    setUserId(userData.id);
-                                  }
-                                } else {
-                                  const { data: userData } = await supabase
-                                    .from("users")
-                                    .select("id")
-                                    .eq("email", email)
-                                    .single();
-                                  if (userData?.id) {
-                                    setUserId(userData.id);
-                                  }
-                                }
-                              } catch (error) {
-                                toast.error("Could not find user account");
-                              } finally {
-                                setLoading(false);
+                            if (!isFormComplete) {
+                              return;
+                            }
+                            setLoading(true);
+                            try {
+                              const lookup = await lookupUserIdentifier(email);
+                              if (lookup?.email) {
+                                setEmail(lookup.email);
                               }
+                              if (lookup?.id) {
+                                setUserId(lookup.id);
+                              } else {
+                                toast.error("Could not find user account");
+                              }
+                            } catch (error) {
+                              toast.error("Could not find user account");
+                            } finally {
+                              setLoading(false);
                             }
                           }}
                           disabled={!isFormComplete || loading}
