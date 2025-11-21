@@ -223,6 +223,76 @@ router.post("/auth/signout", async (req: Request, res: Response) => {
   }
 });
 
+// Get user profile endpoint
+router.get("/users/profile", async (req: Request, res: Response) => {
+  try {
+    console.log("[API] Get user profile endpoint called");
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return res.status(401).json({
+        error: "Missing authorization header",
+      });
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+
+    // Create a client with the user's session
+    const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    });
+
+    // First get the current user from auth
+    const {
+      data: { user },
+      error: authError,
+    } = await userClient.auth.getUser();
+
+    if (authError || !user) {
+      console.error("[API] Error getting auth user:", authError?.message);
+      return res.status(401).json({
+        error: "Not authenticated",
+      });
+    }
+
+    console.log("[API] Fetching profile for user:", user.id);
+
+    // Fetch user profile from users table
+    const { data, error } = await userClient
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+    if (error) {
+      console.error("[API] Error fetching user profile:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+      });
+      return res.status(400).json({
+        error: error.message || "Failed to fetch user profile",
+      });
+    }
+
+    console.log("[API] Successfully fetched user profile for:", user.id);
+
+    res.json({
+      data,
+    });
+  } catch (error) {
+    console.error("[API] Unexpected error in get profile:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
+
 // Notifications endpoint
 router.get("/notifications", async (req: Request, res: Response) => {
   try {
