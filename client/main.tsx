@@ -1,6 +1,31 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 
+// Global error handler for Supabase token refresh errors
+if (typeof window !== "undefined") {
+  window.addEventListener("error", (event) => {
+    if (
+      event.message?.includes("Refresh Token") ||
+      event.message?.includes("Invalid Refresh Token")
+    ) {
+      console.error("[App] Token refresh error caught:", event.error);
+      event.preventDefault();
+    }
+  });
+
+  // Handle unhandled promise rejections
+  window.addEventListener("unhandledrejection", (event) => {
+    if (
+      event.reason?.message?.includes("Refresh Token") ||
+      event.reason?.message?.includes("Invalid Refresh Token") ||
+      event.reason?.message?.includes("AuthApiError")
+    ) {
+      console.error("[App] Unhandled token refresh error:", event.reason);
+      event.preventDefault();
+    }
+  });
+}
+
 console.log(
   "main.tsx: Starting app initialization at",
   new Date().toISOString(),
