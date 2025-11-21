@@ -143,7 +143,7 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
 // Sign up endpoint
 router.post("/auth/signup", async (req: Request, res: Response) => {
   try {
-    const { email, password, options } = req.body;
+    const { email, password, options, role = "client" } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({
@@ -151,7 +151,7 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
       });
     }
 
-    console.log("[API] Sign up attempt for:", email);
+    console.log("[API] Sign up attempt for:", email, "with role:", role);
 
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -167,7 +167,31 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
       });
     }
 
-    console.log("[API] Sign up successful for:", email);
+    const userId = data.user?.id;
+    if (!userId) {
+      return res.status(400).json({
+        error: "No user ID returned from auth",
+      });
+    }
+
+    // Create user profile with the specified role
+    const { error: profileError } = await supabase
+      .from("users")
+      .insert({
+        id: userId,
+        email,
+        username: email.split("@")[0],
+        role,
+      });
+
+    if (profileError) {
+      console.error("[API] Profile creation error:", profileError);
+      return res.status(400).json({
+        error: "Failed to create user profile",
+      });
+    }
+
+    console.log("[API] Sign up successful for:", email, "with role:", role);
 
     res.json({
       session: data.session,
