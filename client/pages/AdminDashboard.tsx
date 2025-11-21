@@ -94,11 +94,11 @@ export default function AdminDashboard() {
           );
           setUsers(realUsers);
 
-          const trainers = usersData.filter((u) => u.role === "trainer").length;
-          const clients = usersData.filter((u) => u.role === "client").length;
+          const trainers = realUsers.filter((u) => u.role === "trainer").length;
+          const clients = realUsers.filter((u) => u.role === "client").length;
 
           setStats({
-            totalUsers: usersData.length,
+            totalUsers: realUsers.length,
             totalTrainers: trainers,
             totalClients: clients,
             lastLoginCount: 0,
