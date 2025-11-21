@@ -36,9 +36,9 @@ export default defineConfig(({ mode }) => ({
   },
 }));
 
-function expressPlugin(): Plugin {
-  let expressServer: http.Server | null = null;
+let expressServer: http.Server | null = null;
 
+function expressPlugin(): Plugin {
   return {
     name: "express-plugin",
     apply: "serve",
@@ -50,15 +50,6 @@ function expressPlugin(): Plugin {
       expressServer.listen(3001, "localhost", () => {
         console.log("[Express] Server running on http://localhost:3001");
       });
-
-      // Return cleanup hook that Vite will call on shutdown
-      return () => {
-        // This cleanup runs when Vite shuts down
-      };
-    },
-    handleHotUpdate() {
-      // Keep the hook to signal proper plugin integration
-      return [];
     },
   };
 }
