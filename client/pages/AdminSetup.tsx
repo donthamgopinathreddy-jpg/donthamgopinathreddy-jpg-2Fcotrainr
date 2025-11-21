@@ -38,33 +38,24 @@ export default function AdminSetup() {
 
       console.log("[AdminSetup] Response status:", response.status);
 
+      // Read the response body only once
+      let responseBody = "";
+      try {
+        responseBody = await response.text();
+        console.log("[AdminSetup] Response body length:", responseBody.length);
+      } catch (readError) {
+        console.error("[AdminSetup] Failed to read response:", readError);
+        toast.error("Failed to read server response");
+        return;
+      }
+
+      // Parse JSON if possible
       let result: any = {};
-
-      if (response.ok) {
+      if (responseBody) {
         try {
-          result = await response.json();
-          console.log("[AdminSetup] Success response parsed");
-        } catch (parseError) {
-          console.error("[AdminSetup] Failed to parse success response:", parseError);
-          result = {};
-        }
-      } else {
-        // For error responses, try to read as text first to diagnose issues
-        let errorText = "";
-        try {
-          errorText = await response.text();
-          console.log("[AdminSetup] Error response text:", errorText.substring(0, 200));
-
-          if (errorText) {
-            try {
-              result = JSON.parse(errorText);
-            } catch {
-              result = { error: errorText };
-            }
-          }
-        } catch (textError) {
-          console.error("[AdminSetup] Could not read error response:", textError);
-          result = { error: `Server error (${response.status})` };
+          result = JSON.parse(responseBody);
+        } catch {
+          result = { error: responseBody };
         }
       }
 
