@@ -176,8 +176,14 @@ export default function Login() {
       // Trigger biometric authentication
       const success = await authenticateWithBiometric();
       if (success) {
-        // After biometric verification, sign in the user
-        await authSignIn(email, password);
+        let loginIdentifier = email.trim();
+        if (!loginIdentifier.includes("@")) {
+          const lookup = await lookupUserIdentifier(loginIdentifier);
+          if (lookup?.email) {
+            loginIdentifier = lookup.email;
+          }
+        }
+        await authSignIn(loginIdentifier, password);
         toast.success("Login successful!");
       } else {
         toast.error("Biometric authentication failed");
