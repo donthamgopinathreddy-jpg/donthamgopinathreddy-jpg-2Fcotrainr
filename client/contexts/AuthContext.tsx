@@ -72,26 +72,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         // First check if there's already a session
         try {
+          console.log("[Auth] Checking for existing session...");
           const {
             data: { session },
           } = await supabase.auth.getSession();
 
           if (isMounted) {
-            console.log("Session found:", session?.user?.email);
             if (session?.user) {
+              console.log("Session found:", session.user.email);
               setUser(session.user);
-              await fetchUserProfile(session.user.id);
+              // Fetch profile asynchronously without blocking initialization
+              fetchUserProfile(session.user.id).catch((err) =>
+                console.error("Profile fetch error:", err),
+              );
             } else {
-              // If no session, try getUser as backup
-              const {
-                data: { user },
-              } = await supabase.auth.getUser();
-              if (user) {
-                setUser(user);
-                await fetchUserProfile(user.id);
-              } else {
-                setUser(null);
-              }
+              console.log("[Auth] No session found - user will need to login");
+              setUser(null);
             }
           }
         } catch (sessionError) {
