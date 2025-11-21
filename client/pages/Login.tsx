@@ -38,6 +38,38 @@ export default function Login() {
   );
   const [userId, setUserId] = useState<string | null>(null);
 
+  type LookupResult = {
+    id: string | null;
+    email: string | null;
+  };
+
+  const lookupUserIdentifier = async (
+    identifier: string,
+  ): Promise<LookupResult | null> => {
+    const normalized = identifier.trim().toLowerCase();
+    if (!normalized) return null;
+
+    try {
+      const { data, error } = await supabase.rpc("lookup_user_login", {
+        p_identifier: normalized,
+      });
+
+      if (error) {
+        console.warn("User lookup failed:", error);
+        return null;
+      }
+
+      if (Array.isArray(data) && data.length > 0) {
+        const [result] = data as LookupResult[];
+        return result;
+      }
+    } catch (err) {
+      console.warn("User lookup error:", err);
+    }
+
+    return null;
+  };
+
   // Use effect to redirect if already logged in (e.g., from browser back button)
   useEffect(() => {
     if (user) {
