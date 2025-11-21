@@ -156,21 +156,33 @@ export function useNotifications(userId?: string) {
                 },
               });
 
-              if (!response.ok) {
-                const error = await response.json();
+              let responseData: any = {};
+
+              try {
+                responseData = await response.json();
+              } catch (parseError) {
                 return {
                   error: {
-                    message: error.error || "Failed to fetch notifications",
+                    message: "Failed to parse notifications response",
+                    code: "PARSE_ERROR",
+                  },
+                  data: null,
+                };
+              }
+
+              if (!response.ok) {
+                return {
+                  error: {
+                    message: responseData.error || "Failed to fetch notifications",
                     code: "API_ERROR",
                   },
                   data: null,
                 };
               }
 
-              const result = await response.json();
               return {
                 error: null,
-                data: result.data || [],
+                data: responseData.data || [],
               };
             } catch (fetchError) {
               // Handle fetch-level errors (network errors, etc.)
