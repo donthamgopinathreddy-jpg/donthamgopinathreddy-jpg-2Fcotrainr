@@ -40,15 +40,6 @@ import TrainerSignup from "./pages/TrainerSignup";
 import TrainerDashboard from "./pages/TrainerDashboard";
 import TrainerClientDetail from "./pages/TrainerClientDetail";
 import ActivityDetail from "./pages/ActivityDetail";
-import AdminTrainerVerification from "./pages/AdminTrainerVerification";
-import AdminAnalytics from "./pages/AdminAnalytics";
-import AdminUserManagement from "./pages/AdminUserManagement";
-import AdminUserDetail from "./pages/AdminUserDetail";
-import AdminTrainerManagement from "./pages/AdminTrainerManagement";
-import AdminCommunication from "./pages/AdminCommunication";
-import AdminSystemHealth from "./pages/AdminSystemHealth";
-import AdminQuickStats from "./pages/AdminQuickStats";
-import AdminSettings from "./pages/AdminSettings";
 import ProxyTest from "./pages/ProxyTest";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
@@ -585,86 +576,6 @@ const AppRoutes = () => {
           <ProtectedRoute>
             <AdminRoute>
               <AdminDashboard />
-            </AdminRoute>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/analytics"
-        element={
-          <ProtectedRoute>
-            <AdminRoute>
-              <AdminAnalytics />
-            </AdminRoute>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/users"
-        element={
-          <ProtectedRoute>
-            <AdminRoute>
-              <AdminUserManagement />
-            </AdminRoute>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/users/:userId"
-        element={
-          <ProtectedRoute>
-            <AdminRoute>
-              <AdminUserDetail />
-            </AdminRoute>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/trainers"
-        element={
-          <ProtectedRoute>
-            <AdminRoute>
-              <AdminTrainerManagement />
-            </AdminRoute>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/communication"
-        element={
-          <ProtectedRoute>
-            <AdminRoute>
-              <AdminCommunication />
-            </AdminRoute>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/system"
-        element={
-          <ProtectedRoute>
-            <AdminRoute>
-              <AdminSystemHealth />
-            </AdminRoute>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/stats"
-        element={
-          <ProtectedRoute>
-            <AdminRoute>
-              <AdminQuickStats />
-            </AdminRoute>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/settings"
-        element={
-          <ProtectedRoute>
-            <AdminRoute>
-              <AdminSettings />
             </AdminRoute>
           </ProtectedRoute>
         }
