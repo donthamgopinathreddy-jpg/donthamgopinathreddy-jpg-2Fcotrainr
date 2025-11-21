@@ -161,6 +161,7 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
 router.post("/auth/signup", async (req: Request, res: Response) => {
   try {
     console.log("[API] Sign up endpoint called");
+    console.log("[API] Request body:", JSON.stringify(req.body, null, 2));
 
     const { email, password, options, role = "client" } = req.body;
 
@@ -180,15 +181,22 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
     });
 
     if (error) {
-      console.error("[API] Sign up error:", error);
+      console.error("[API] Supabase auth signup error:", {
+        message: error.message,
+        status: error.status,
+        code: (error as any).code,
+      });
       return res.status(400).json({
-        error: error.message,
+        error: error.message || "Authentication failed",
         status: error.status,
       });
     }
 
+    console.log("[API] Supabase auth returned user:", data.user?.id);
+
     const userId = data.user?.id;
     if (!userId) {
+      console.error("[API] No user ID in auth response");
       return res.status(400).json({
         error: "No user ID returned from auth",
       });
@@ -222,26 +230,30 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
       hasWeight: !!profileData.weight_kg,
     });
 
-    const { error: profileError } = await supabase
+    const { error: profileError, data: insertedData } = await supabase
       .from("users")
-      .insert(profileData);
+      .insert([profileData]);
 
     if (profileError) {
       console.error("[API] Profile creation error:", {
         message: profileError.message,
         code: profileError.code,
         details: profileError.details,
+        hint: (profileError as any).hint,
       });
       return res.status(400).json({
         error: "Failed to create user profile: " + profileError.message,
+        details: profileError.details,
       });
     }
 
+    console.log("[API] User profile created successfully");
     console.log("[API] Sign up successful for:", email, "with role:", role);
 
     res.json({
       session: data.session,
       user: data.user,
+      profile: insertedData,
     });
   } catch (error) {
     console.error("[API] Unexpected sign up error:", error);
