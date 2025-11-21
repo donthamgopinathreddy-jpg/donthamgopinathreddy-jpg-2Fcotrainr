@@ -160,9 +160,12 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
 // Sign up endpoint
 router.post("/auth/signup", async (req: Request, res: Response) => {
   try {
+    console.log("[API] Sign up endpoint called");
+
     const { email, password, options, role = "client" } = req.body;
 
     if (!email || !password) {
+      console.log("[API] Missing email or password for signup");
       return res.status(400).json({
         error: "Missing email or password",
       });
