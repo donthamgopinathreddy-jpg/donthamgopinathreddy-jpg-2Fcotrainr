@@ -243,48 +243,31 @@ export default function PremiumSignup() {
         gender: data.gender,
       });
 
-      console.log("Signup successful, getting user...");
+      console.log("Signup successful, inserting survey data...");
       const { data: authData } = await supabase.auth.getUser();
       console.log("Auth user:", authData?.user?.id);
 
       if (authData?.user?.id) {
         const userId = authData.user.id;
-        console.log("Creating user profile...");
+        try {
+          const { error: surveyError } = await supabase
+            .from("user_surveys")
+            .insert({
+              user_id: userId,
+              download_reasons: data.downloadReasons,
+              other_reason: data.downloadReasons.includes("Other")
+                ? data.otherReason
+                : null,
+            });
 
-        // Create user profile
-        const { error: profileError } = await supabase.from("users").insert({
-          id: userId,
-          email: data.email,
-          username: data.username.toLowerCase(),
-          full_name: data.username,
-          role: data.role,
-          gender: data.gender,
-          height_cm: data.height_cm ? parseInt(data.height_cm) : null,
-          weight_kg: data.weight_kg ? parseFloat(data.weight_kg) : null,
-        });
-
-        if (profileError) {
-          console.error("Profile creation error:", profileError);
-          throw new Error("Failed to create profile: " + profileError.message);
+          if (surveyError) {
+            console.warn("Survey insert error (non-fatal):", surveyError);
+            // Don't throw - survey is optional
+          }
+          console.log("Survey data inserted successfully");
+        } catch (surveyErr) {
+          console.warn("Survey insertion failed (non-fatal):", surveyErr);
         }
-        console.log("User profile created successfully");
-
-        console.log("Inserting survey data...");
-        const { error: surveyError } = await supabase
-          .from("user_surveys")
-          .insert({
-            user_id: userId,
-            download_reasons: data.downloadReasons,
-            other_reason: data.downloadReasons.includes("Other")
-              ? data.otherReason
-              : null,
-          });
-
-        if (surveyError) {
-          console.error("Survey insert error:", surveyError);
-          // Don't throw - survey is optional
-        }
-        console.log("Survey data inserted successfully");
       }
 
       toast.success("Account created!");
