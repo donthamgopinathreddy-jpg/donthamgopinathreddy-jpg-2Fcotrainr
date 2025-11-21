@@ -179,7 +179,7 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
       email,
       password,
       options: {
-        ...options,
+        data: options?.data || {},
         emailRedirectTo: undefined,
       },
     });
@@ -212,79 +212,11 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
       });
     }
 
-    // Extract user data from options if provided
-    const userData = options?.data || {};
-    const username = userData.username || email.split("@")[0];
-
-    // Validate required fields
-    if (!email) {
-      return res.status(400).json({
-        error: "Email is required",
-      });
-    }
-    if (!username) {
-      return res.status(400).json({
-        error: "Username is required",
-      });
-    }
-
-    // Create user profile with all provided data
-    const profileData = {
-      id: userId,
-      email,
-      username,
-      full_name: userData.full_name || null,
-      role: userData.role || role || "client",
-      gender: userData.gender || null,
-      weight_kg: userData.weight_kg ? parseFloat(userData.weight_kg) : null,
-      height_cm: userData.height_cm ? parseInt(userData.height_cm) : null,
-      phone_number: userData.phone_number || null,
-      age: userData.age ? parseInt(userData.age) : null,
-      date_of_birth: userData.date_of_birth || null,
-    };
-
-    console.log("[API] Profile data prepared:", {
-      id: profileData.id,
-      email: profileData.email,
-      username: profileData.username,
-      role: profileData.role,
-    });
-
-    console.log("[API] Inserting profile into users table...");
-    const { error: profileError, data: insertedData } = await supabase
-      .from("users")
-      .insert([profileData]);
-
-    if (profileError) {
-      console.error("[API] Profile creation error:", {
-        message: profileError.message,
-        code: profileError.code,
-        details: profileError.details,
-        hint: (profileError as any).hint,
-      });
-
-      // Try to rollback the auth user if profile creation failed
-      try {
-        console.log("[API] Attempting to delete orphaned auth user...");
-        await supabase.auth.admin.deleteUser(userId);
-      } catch (deleteError) {
-        console.warn("[API] Could not delete orphaned user:", deleteError);
-      }
-
-      return res.status(400).json({
-        error: "Failed to create user profile: " + profileError.message,
-        details: profileError.details,
-        hint: (profileError as any).hint,
-      });
-    }
-
-    console.log("[API] User profile created successfully");
-    console.log("[API] Sign up successful for:", email, "with role:", role);
+    console.log("[API] Sign up successful for:", email);
 
     res.json({
       session: data.session,
       user: data.user,
-      profile: insertedData,
     });
   } catch (error) {
     console.error("[API] Unexpected sign up error:", error);
