@@ -27,6 +27,7 @@ export default function Signup() {
     height: "",
     weight: "",
     gender: "male",
+    role: "client" as "client" | "trainer" | "admin",
     downloadReasons: [] as string[],
     otherReason: "",
   });
