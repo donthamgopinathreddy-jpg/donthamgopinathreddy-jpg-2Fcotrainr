@@ -276,32 +276,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           await supabase.auth.setSession(session);
         }
 
-        // Create user profile in users table
-        try {
-          const { error: profileError } = await supabase.from("users").insert({
-            id: user.id,
-            email,
-            username: userData.username,
-            full_name: userData.full_name,
-            role: userData.role,
-            gender: userData.gender || null,
-            weight_kg: userData.weight_kg || null,
-            height_cm: userData.height_cm || null,
-            phone_number: userData.phone_number || null,
-            age: userData.age || null,
-            date_of_birth: userData.date_of_birth || null,
-          });
+        // Server has already created the profile during signup
+        // Just wait a bit for database replication and fetch it
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
-          if (profileError) {
-            const errorMsg =
-              profileError?.message ||
-              profileError?.details ||
-              String(profileError);
-            console.warn("Profile creation error:", errorMsg);
-          }
+        // Fetch the created profile
+        await fetchUserProfile(user.id);
 
-          // Create trainer profile if role is trainer
-          if (userData.role === "trainer") {
+        // Create trainer profile if role is trainer (server handles users table, but trainers table needs separate entry)
+        if (userData.role === "trainer") {
+          try {
             const { error: trainerError } = await supabase
               .from("trainers")
               .insert({
@@ -309,23 +293,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 years_of_experience: 0,
               });
             if (trainerError) {
-              const errorMsg =
-                trainerError?.message ||
-                trainerError?.details ||
-                String(trainerError);
-              console.warn("Trainer profile error:", errorMsg);
+              console.warn("Trainer profile creation error:", trainerError?.message);
             }
+          } catch (err: any) {
+            console.warn("Trainer profile creation error:", err?.message);
           }
-        } catch (err: any) {
-          const errorMsg = err?.message || String(err);
-          console.warn("Profile creation error:", errorMsg);
         }
-
-        // Wait a bit for the database to process
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        // Fetch the created profile
-        await fetchUserProfile(user.id);
       }
     } catch (error: any) {
       console.error("Error signing up:", error);
