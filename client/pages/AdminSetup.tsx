@@ -36,20 +36,41 @@ export default function AdminSetup() {
         }),
       });
 
+      console.log("[AdminSetup] Response status:", response.status);
+
       let result: any = {};
 
-      try {
-        result = await response.json();
-      } catch (parseError) {
-        console.error("Failed to parse response as JSON:", parseError);
-        if (!response.ok) {
-          throw new Error(`Server returned ${response.status}: Could not parse response`);
+      if (response.ok) {
+        try {
+          result = await response.json();
+          console.log("[AdminSetup] Success response parsed");
+        } catch (parseError) {
+          console.error("[AdminSetup] Failed to parse success response:", parseError);
+          result = {};
         }
-        result = {};
+      } else {
+        // For error responses, try to read as text first to diagnose issues
+        let errorText = "";
+        try {
+          errorText = await response.text();
+          console.log("[AdminSetup] Error response text:", errorText.substring(0, 200));
+
+          if (errorText) {
+            try {
+              result = JSON.parse(errorText);
+            } catch {
+              result = { error: errorText };
+            }
+          }
+        } catch (textError) {
+          console.error("[AdminSetup] Could not read error response:", textError);
+          result = { error: `Server error (${response.status})` };
+        }
       }
 
       if (!response.ok) {
-        toast.error(result.error || "Failed to create admin account");
+        const errorMessage = result?.error || `Failed to create admin account (${response.status})`;
+        toast.error(errorMessage);
         return;
       }
 
