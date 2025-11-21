@@ -4,6 +4,7 @@ import { Eye, EyeOff, Mail, Lock, User, Ruler, Weight, Users } from "lucide-reac
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
+import Logo from "@/components/Logo";
 
 const DOWNLOAD_REASONS = ["Find Trainers", "Fitness Tracking", "Workout Plans", "Other"];
 
@@ -244,9 +245,7 @@ export default function PremiumSignup() {
       <div className="w-full max-w-md relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-black bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent mb-2">
-            CoTrainr
-          </h1>
+          <Logo size="lg" className="mx-auto mb-4" />
           <p className="text-slate-400 text-sm">Transform your fitness journey</p>
         </div>
 
