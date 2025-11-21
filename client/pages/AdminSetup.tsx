@@ -36,7 +36,17 @@ export default function AdminSetup() {
         }),
       });
 
-      const result = await response.json();
+      let result: any = {};
+
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        console.error("Failed to parse response as JSON:", parseError);
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}: Could not parse response`);
+        }
+        result = {};
+      }
 
       if (!response.ok) {
         toast.error(result.error || "Failed to create admin account");
@@ -50,7 +60,7 @@ export default function AdminSetup() {
       }, 2000);
     } catch (error) {
       console.error("Setup error:", error);
-      toast.error("Failed to create admin account");
+      toast.error(error instanceof Error ? error.message : "Failed to create admin account");
     } finally {
       setIsLoading(false);
     }
