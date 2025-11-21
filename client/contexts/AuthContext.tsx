@@ -149,87 +149,42 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log("Fetching user profile for:", userId);
 
-      // Add timeout to prevent infinite hanging
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(
-          () => reject(new Error("Profile fetch timeout")),
-          3000,
-        ),
-      );
+      // Skip if no user ID
+      if (!userId) return;
 
-      // Check current auth state with timeout
-      const sessionPromise = (async () => {
-        const {
-          data: { session: currentSession },
-        } = await supabase.auth.getSession();
-        return currentSession;
-      })();
-
-      const currentSession = await Promise.race([
-        sessionPromise,
-        timeoutPromise,
-      ] as any);
-
-      console.log(
-        "Current session when fetching profile:",
-        currentSession ? "exists" : "missing",
-      );
+      // Get current session (should have access token)
+      const {
+        data: { session: currentSession },
+      } = await supabase.auth.getSession();
 
       if (!currentSession?.access_token) {
-        console.warn(
-          "No access token in session - cannot fetch profile yet",
-        );
+        console.warn("No access token available - cannot fetch profile");
         return;
       }
 
-      // Use API endpoint to fetch profile with proper server-side authentication
-      console.log(
-        "[Auth] Fetching profile from API with access token:",
-        currentSession.access_token.substring(0, 20) + "...",
-      );
-
-      const response = await Promise.race([
-        fetch("/api/supabase/users/profile", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${currentSession.access_token}`,
-          },
-        }),
-        timeoutPromise,
-      ] as any);
-
-      const result = await Promise.race([
-        response.json(),
-        timeoutPromise,
-      ] as any);
+      // Fetch user profile from API
+      const response = await fetch("/api/supabase/users/profile", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentSession.access_token}`,
+        },
+      });
 
       if (!response.ok) {
-        console.error("API error fetching user profile:", {
-          status: response.status,
-          error: result.error,
-        });
-        // Non-blocking error - continue without profile data
+        console.error("Failed to fetch user profile:", response.status);
         return;
       }
 
+      const result = await response.json();
+
       if (result.data) {
-        console.log("User profile fetched successfully:", {
-          id: result.data.id,
-          email: result.data.email,
-          username: result.data.username,
-          role: result.data.role,
-        });
+        console.log("User profile fetched successfully");
         setUserProfile(result.data);
-      } else {
-        console.warn("No profile data returned from API for user:", userId);
       }
     } catch (error: any) {
-      console.error("Profile fetch exception:", {
-        message: error?.message,
-        stack: error?.stack,
-      });
-      // Don't re-throw - let initialization continue
+      console.error("Error fetching user profile:", error?.message);
+      // Silently fail - profile is optional
     }
   };
 
