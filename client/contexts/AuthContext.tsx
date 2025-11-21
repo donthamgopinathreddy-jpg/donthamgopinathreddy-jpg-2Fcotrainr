@@ -248,14 +248,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }),
       });
 
+      let responseData: any = {};
+
+      try {
+        responseData = await response.json();
+      } catch (parseError) {
+        console.error("Sign up: Could not parse response as JSON:", parseError);
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}: Could not parse response`);
+        }
+        responseData = {};
+      }
+
       if (!response.ok) {
-        const error = await response.json();
-        const errorMsg = error.error || "Sign up failed";
+        const errorMsg = responseData.error || "Sign up failed";
         console.error("Sign up error:", errorMsg);
         throw new Error(errorMsg);
       }
 
-      const { session, user } = await response.json();
+      const { session, user } = responseData;
 
       if (user) {
         setUser(user);
