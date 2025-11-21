@@ -347,7 +347,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
           if (profileError) {
             console.error("[Auth] Profile creation error:", profileError);
-            throw new Error("Failed to create profile: " + profileError.message);
+            throw new Error(
+              "Failed to create profile: " + profileError.message,
+            );
           }
           console.log("[Auth] User profile created successfully");
         } catch (profileErr: any) {
@@ -372,7 +374,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               );
             }
           } catch (err: any) {
-            console.warn("[Auth] Trainer profile creation error:", err?.message);
+            console.warn(
+              "[Auth] Trainer profile creation error:",
+              err?.message,
+            );
           }
         }
 
