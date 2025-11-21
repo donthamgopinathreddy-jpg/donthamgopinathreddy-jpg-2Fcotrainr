@@ -366,31 +366,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         console.log("[Auth] Received response with status:", response.status);
 
-        // Read response body only once
+        // Read response body ONLY ONCE - directly as JSON
         let responseData: any;
         try {
-          const contentType = response.headers.get("content-type") || "";
-          console.log("[Auth] Response content-type:", contentType);
-
-          if (!contentType.includes("application/json")) {
-            const responseText = await response.text();
-            console.error("[Auth] Response is not JSON, got:", responseText.substring(0, 100));
-            throw new Error(`Expected JSON response, got ${contentType || "unknown content type"}`);
-          }
-
+          // Simply parse the JSON - don't check headers or do anything else that might consume the stream
           responseData = await response.json();
           console.log("[Auth] Successfully parsed JSON response");
         } catch (parseError) {
-          console.error("[Auth] Could not parse response as JSON:", parseError instanceof Error ? parseError.message : parseError);
+          console.error("[Auth] Could not parse response as JSON:", parseError instanceof Error ? parseError.message : String(parseError));
           console.error("[Auth] Response status:", response.status);
-          const contentType = response.headers.get("content-type");
-          console.error("[Auth] Content-Type:", contentType);
-          throw new Error(`Invalid response from server: ${parseError instanceof Error ? parseError.message : "Unknown parse error"}`);
+          console.error("[Auth] Content-Type:", response.headers.get("content-type"));
+          throw new Error(`Invalid response from server: ${parseError instanceof Error ? parseError.message : "Unknown error"}`);
         }
 
-        // Now check if response was successful
+        // Check if response was successful (this doesn't consume the body)
         if (!response.ok) {
-          console.error("[Auth] Sign in error from API:", responseData);
+          console.error("[Auth] Sign in error from API (status: " + response.status + "):", responseData);
           const errorMessage =
             responseData?.error || `Sign in failed (${response.status})`;
           throw new Error(errorMessage);
