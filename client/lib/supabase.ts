@@ -56,13 +56,48 @@ export const supabase = createClient(apiUrl, supabaseAnonKey, {
   },
 });
 
+const handleTokenRefreshFailure = async () => {
+  console.error(
+    "[Supabase] Token refresh failed - clearing local session to avoid errors",
+  );
+  try {
+    await supabase.auth.signOut();
+  } catch (signOutError) {
+    console.error(
+      "[Supabase] Failed to sign out after refresh failure:",
+      signOutError,
+    );
+  }
+
+  try {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("supabase-token-refresh-failed", {
+          detail: { reason: "INVALID_REFRESH_TOKEN" },
+        }),
+      );
+    }
+  } catch (eventError) {
+    console.warn("[Supabase] Could not dispatch refresh failure event", eventError);
+  }
+};
+
 // Handle token refresh errors gracefully
 supabase.auth.onAuthStateChange((event, session) => {
-  if (event === "TOKEN_REFRESHED") {
-    console.log("[Supabase] Token refreshed successfully");
-  } else if (event === "SIGNED_OUT") {
-    console.log("[Supabase] User signed out");
-  } else if (event === "SIGNED_IN") {
-    console.log("[Supabase] User signed in");
+  switch (event) {
+    case "TOKEN_REFRESHED":
+      console.log("[Supabase] Token refreshed successfully");
+      break;
+    case "TOKEN_REFRESH_FAILED":
+      handleTokenRefreshFailure();
+      break;
+    case "SIGNED_OUT":
+      console.log("[Supabase] User signed out");
+      break;
+    case "SIGNED_IN":
+      console.log("[Supabase] User signed in");
+      break;
+    default:
+      break;
   }
 });
