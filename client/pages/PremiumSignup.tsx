@@ -273,10 +273,22 @@ export default function PremiumSignup() {
       toast.success("Account created!");
       navigate("/");
     } catch (error: any) {
-      console.error("Signup error:", error);
+      console.error("PremiumSignup: Signup error:", error);
       const errorMessage =
         error?.message || error?.toString?.() || "Signup failed";
-      console.error("Detailed error:", errorMessage);
+      console.error("PremiumSignup: Detailed error:", {
+        message: errorMessage,
+        stack: error?.stack,
+        errorObj: error,
+      });
+      console.error("PremiumSignup: Form data was:", {
+        username: data.username,
+        email: data.email,
+        height_cm: data.height_cm,
+        weight_kg: data.weight_kg,
+        gender: data.gender,
+        role: data.role,
+      });
       toast.error(errorMessage);
     } finally {
       setLoading(false);
