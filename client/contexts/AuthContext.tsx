@@ -175,7 +175,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         currentSession.access_token.substring(0, 20) + "...",
       );
 
-      const response = await fetch("/api/users/profile", {
+      const response = await fetch("/api/supabase/users/profile", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
