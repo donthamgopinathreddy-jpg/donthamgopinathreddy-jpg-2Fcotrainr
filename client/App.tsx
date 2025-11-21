@@ -168,8 +168,8 @@ const RoleBasedHome = () => {
     );
   }
 
-  if (isUserAdmin(userProfile)) {
-    return <Navigate to="/admin" replace />;
+  if (userProfile?.role === "admin") {
+    return <AdminDashboard />;
   }
 
   if (userProfile?.role === "trainer") {
