@@ -2,6 +2,7 @@ import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { createServer } from "./server";
+import http from "http";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -11,6 +12,13 @@ export default defineConfig(({ mode }) => ({
     fs: {
       allow: [".", "./client", "./shared"],
       deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
+    },
+    proxy: {
+      "/api/": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+        ws: true,
+      },
     },
   },
   build: {
@@ -29,14 +37,27 @@ export default defineConfig(({ mode }) => ({
 }));
 
 function expressPlugin(): Plugin {
+  let expressServer: http.Server | null = null;
+
   return {
     name: "express-plugin",
-    apply: "serve", // Only apply during development (serve mode)
-    configureServer(server) {
+    apply: "serve",
+    configureServer() {
       const app = createServer();
 
-      // Add Express app as middleware to Vite dev server
-      server.middlewares.use(app);
+      // Start Express on a separate port to avoid response stream issues with Vite middleware
+      expressServer = http.createServer(app);
+      expressServer.listen(3001, "localhost", () => {
+        console.log("[Express] Server running on http://localhost:3001");
+      });
+
+      return () => {
+        if (expressServer) {
+          expressServer.close(() => {
+            console.log("[Express] Server closed");
+          });
+        }
+      };
     },
   };
 }
