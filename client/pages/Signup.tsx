@@ -1,0 +1,406 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff, Mail, Lock, User, Weight, Ruler } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+
+const DOWNLOAD_REASONS = [
+  "Find Trainers",
+  "Fitness Tracking",
+  "Workout Plans",
+  "Other",
+];
+
+export default function Signup() {
+  const navigate = useNavigate();
+  const { signUp } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    height: "",
+    weight: "",
+    gender: "male",
+    downloadReasons: [] as string[],
+    otherReason: "",
+  });
+
+  const [usernameStatus, setUsernameStatus] = useState<
+    "checking" | "available" | "taken" | null
+  >(null);
+
+  // Check username availability
+  const checkUsername = async (username: string) => {
+    if (!username) {
+      setUsernameStatus(null);
+      return;
+    }
+
+    setUsernameStatus("checking");
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .select("id")
+        .eq("username", username.toLowerCase())
+        .single();
+
+      if (error?.code === "PGRST116") {
+        // No rows = available
+        setUsernameStatus("available");
+      } else if (data) {
+        setUsernameStatus("taken");
+      } else {
+        setUsernameStatus("available");
+      }
+    } catch (err) {
+      setUsernameStatus("taken");
+    }
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "username") {
+      checkUsername(value);
+    }
+  };
+
+  const handleReasonToggle = (reason: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      downloadReasons: prev.downloadReasons.includes(reason)
+        ? prev.downloadReasons.filter((r) => r !== reason)
+        : [...prev.downloadReasons, reason],
+    }));
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validation
+    if (
+      !formData.username ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    if (!formData.height || !formData.weight) {
+      toast.error("Please enter your height and weight");
+      return;
+    }
+
+    if (usernameStatus !== "available") {
+      toast.error("Username is not available");
+      return;
+    }
+
+    if (formData.downloadReasons.length === 0) {
+      toast.error("Please select at least one reason");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Sign up with auth
+      await signUp(formData.email, formData.password, {
+        username: formData.username.toLowerCase(),
+        full_name: formData.username,
+        role: "client",
+        height_cm: parseInt(formData.height),
+        weight_kg: parseInt(formData.weight),
+        gender: formData.gender,
+      });
+
+      // Store survey data
+      const { data: authData } = await supabase.auth.getUser();
+      if (authData?.user?.id) {
+        await supabase.from("user_surveys").insert({
+          user_id: authData.user.id,
+          download_reasons: formData.downloadReasons,
+          other_reason:
+            formData.downloadReasons.includes("Other") &&
+            formData.otherReason
+              ? formData.otherReason
+              : null,
+        });
+      }
+
+      toast.success("Account created successfully!");
+      navigate("/");
+    } catch (error: any) {
+      toast.error(error.message || "Signup failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 flex flex-col items-center justify-center p-4 py-8">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-orange-600 mb-2">CoTrainr</h1>
+          <p className="text-gray-600">Create your account</p>
+        </div>
+
+        {/* Signup Form */}
+        <form
+          onSubmit={handleSignup}
+          className="bg-white rounded-2xl shadow-lg p-8 space-y-5"
+        >
+          {/* Username */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Username
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="your_username"
+              />
+            </div>
+            {usernameStatus && (
+              <p
+                className={`text-sm mt-1 ${
+                  usernameStatus === "available"
+                    ? "text-green-600"
+                    : usernameStatus === "checking"
+                      ? "text-blue-600"
+                      : "text-red-600"
+                }`}
+              >
+                {usernameStatus === "available"
+                  ? "✓ Available"
+                  : usernameStatus === "checking"
+                    ? "Checking..."
+                    : "✗ Not available"}
+              </p>
+            )}
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Email Address
+            </label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="your@email.com"
+              />
+            </div>
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Confirm Password
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Height */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Height (cm)
+            </label>
+            <div className="relative">
+              <Ruler className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+              <input
+                type="number"
+                name="height"
+                value={formData.height}
+                onChange={handleInputChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="170"
+                min="100"
+                max="250"
+              />
+            </div>
+          </div>
+
+          {/* Weight */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Weight (kg)
+            </label>
+            <div className="relative">
+              <Weight className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+              <input
+                type="number"
+                name="weight"
+                value={formData.weight}
+                onChange={handleInputChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="70"
+                min="30"
+                max="300"
+                step="0.1"
+              />
+            </div>
+          </div>
+
+          {/* Gender */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Gender
+            </label>
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          {/* Download Reasons */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-3">
+              Why did you download this app? (select all that apply)
+            </label>
+            <div className="space-y-2">
+              {DOWNLOAD_REASONS.map((reason) => (
+                <label
+                  key={reason}
+                  className="flex items-center gap-3 p-3 border border-gray-300 rounded-lg hover:bg-orange-50 cursor-pointer transition-colors"
+                >
+                  <input
+                    type="checkbox"
+                    checked={formData.downloadReasons.includes(reason)}
+                    onChange={() => handleReasonToggle(reason)}
+                    className="w-5 h-5 text-orange-600 rounded focus:ring-2 focus:ring-orange-500"
+                  />
+                  <span className="text-gray-900">{reason}</span>
+                </label>
+              ))}
+            </div>
+
+            {/* Other reason text field */}
+            {formData.downloadReasons.includes("Other") && (
+              <textarea
+                name="otherReason"
+                value={formData.otherReason}
+                onChange={handleInputChange}
+                placeholder="Please specify..."
+                className="w-full mt-3 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                rows={3}
+              />
+            )}
+          </div>
+
+          {/* Signup Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:opacity-50 text-white font-bold py-3 rounded-lg transition-all mt-6"
+          >
+            {loading ? "Creating account..." : "Sign Up"}
+          </button>
+
+          {/* Login Link */}
+          <div className="text-center">
+            <p className="text-gray-600">
+              Already have an account?{" "}
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
+                className="text-orange-600 font-semibold hover:text-orange-700"
+              >
+                Sign in here
+              </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
