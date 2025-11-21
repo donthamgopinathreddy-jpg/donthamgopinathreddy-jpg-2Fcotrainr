@@ -226,6 +226,14 @@ export default function PremiumSignup() {
   const handleSignup = async () => {
     setLoading(true);
     try {
+      console.log("Starting signup with data:", {
+        email: data.email,
+        username: data.username,
+        role: data.role,
+        height_cm: data.height_cm,
+        weight_kg: data.weight_kg,
+      });
+
       await signUp(data.email, data.password, {
         username: data.username.toLowerCase(),
         full_name: data.username,
@@ -235,21 +243,36 @@ export default function PremiumSignup() {
         gender: data.gender,
       });
 
+      console.log("Signup successful, getting user...");
       const { data: authData } = await supabase.auth.getUser();
+      console.log("Auth user:", authData?.user?.id);
+
       if (authData?.user?.id) {
-        await supabase.from("user_surveys").insert({
-          user_id: authData.user.id,
-          download_reasons: data.downloadReasons,
-          other_reason: data.downloadReasons.includes("Other")
-            ? data.otherReason
-            : null,
-        });
+        console.log("Inserting survey data...");
+        const { error: surveyError } = await supabase
+          .from("user_surveys")
+          .insert({
+            user_id: authData.user.id,
+            download_reasons: data.downloadReasons,
+            other_reason: data.downloadReasons.includes("Other")
+              ? data.otherReason
+              : null,
+          });
+
+        if (surveyError) {
+          console.error("Survey insert error:", surveyError);
+          throw surveyError;
+        }
+        console.log("Survey data inserted successfully");
       }
 
       toast.success("Account created!");
       navigate("/");
     } catch (error: any) {
-      toast.error(error.message || "Signup failed");
+      console.error("Signup error:", error);
+      const errorMessage = error?.message || error?.toString?.() || "Signup failed";
+      console.error("Detailed error:", errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
