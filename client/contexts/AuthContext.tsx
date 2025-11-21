@@ -153,6 +153,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log("Fetching user profile for:", userId);
 
+      // Check current auth state
+      const {
+        data: { session: currentSession },
+      } = await supabase.auth.getSession();
+      console.log(
+        "Current session when fetching profile:",
+        currentSession ? "exists" : "missing",
+      );
+
       const { data, error } = await supabase
         .from("users")
         .select("*")
@@ -161,18 +170,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (error) {
         const errorMsg = error?.message || error?.details || String(error);
-        console.debug("Error fetching user profile:", errorMsg);
+        console.error("Error fetching user profile:", {
+          userId,
+          error: errorMsg,
+          errorCode: error?.code,
+          errorHint: error?.hint,
+        });
         // Non-blocking error - continue without profile data
         return;
       }
 
       if (data) {
-        console.debug("User profile fetched successfully:", data);
+        console.log("User profile fetched successfully:", {
+          id: data.id,
+          email: data.email,
+          username: data.username,
+          role: data.role,
+        });
         setUserProfile(data);
+      } else {
+        console.warn("No profile data returned for user:", userId);
       }
     } catch (error: any) {
-      // Silently continue - app works without profile data initially
-      console.debug("Profile fetch error (non-blocking):", error?.message);
+      console.error("Profile fetch exception:", {
+        message: error?.message,
+        stack: error?.stack,
+      });
     }
   };
 
