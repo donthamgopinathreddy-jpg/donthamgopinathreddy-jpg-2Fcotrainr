@@ -21,6 +21,7 @@ import Signup from "./pages/Signup";
 import ClearSession from "./pages/ClearSession";
 import ClientHome from "./pages/ClientHome";
 import TrainerHome from "./pages/TrainerHome";
+import NutritionTracker from "./pages/NutritionTracker";
 import Home from "./pages/Home";
 import Discover from "./pages/Discover";
 import Messages from "./pages/Messages";
