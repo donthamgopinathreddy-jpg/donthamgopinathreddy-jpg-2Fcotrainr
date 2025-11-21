@@ -1,234 +1,59 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import {
-  Menu,
-  X,
-  BarChart3,
-  Users,
-  Shield,
-  MessageSquare,
-  Activity,
-  Zap,
-  Settings,
-  LogOut,
-  Home,
-  Camera,
-  Loader,
-  Bell,
-  Clock,
-} from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { BarChart3, Users, Activity, Home } from "lucide-react";
 
 interface AdminSidebarProps {
-  showSettings?: boolean;
-  onSettingsChange?: (show: boolean) => void;
-  onLogout?: () => void;
-  onProfilePictureUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  uploadingPic?: boolean;
-  showActivityLog?: boolean;
-  onActivityLogChange?: (show: boolean) => void;
-  showNotificationPrefs?: boolean;
-  onNotificationPrefsChange?: (show: boolean) => void;
-  sidebarOpen?: boolean;
-  onSidebarChange?: (open: boolean) => void;
+  isOpen?: boolean;
 }
 
-const AdminSidebar: React.FC<AdminSidebarProps> = ({
-  showSettings = false,
-  onSettingsChange,
-  onLogout,
-  onProfilePictureUpload,
-  uploadingPic = false,
-  showActivityLog = false,
-  onActivityLogChange,
-  showNotificationPrefs = false,
-  onNotificationPrefsChange,
-  sidebarOpen = false,
-  onSidebarChange,
-}) => {
+const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen = true }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { userProfile } = useAuth();
-  const setSidebarOpen = (open: boolean) => onSidebarChange?.(open);
 
   const navigationItems = [
     {
       icon: Home,
-      label: "Trainer Verification",
+      label: "Dashboard",
       path: "/admin",
       color: "blue",
     },
     {
-      icon: BarChart3,
-      label: "Analytics",
-      path: "/admin/analytics",
-      color: "purple",
-    },
-    {
       icon: Users,
-      label: "User Management",
+      label: "Users",
       path: "/admin/users",
       color: "pink",
     },
     {
-      icon: Shield,
-      label: "Trainer Management",
-      path: "/admin/trainers",
-      color: "orange",
-    },
-    {
-      icon: MessageSquare,
-      label: "Communication",
-      path: "/admin/communication",
-      color: "green",
-    },
-    {
       icon: Activity,
-      label: "System Health",
-      path: "/admin/system",
-      color: "red",
-    },
-    {
-      icon: Zap,
-      label: "Quick Stats",
-      path: "/admin/stats",
-      color: "yellow",
-    },
-    {
-      icon: Settings,
-      label: "Settings",
-      path: "/admin/settings",
-      color: "gray",
+      label: "Activity",
+      path: "/admin/activity",
+      color: "green",
     },
   ];
 
-  const isActive = (path: string) => location.pathname === path;
-
-  // Removed colorClasses - using flat black theme
-
   return (
-    <>
-      {/* Mobile Toggle Button - White icon */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-5 left-4 z-50 md:hidden p-1 transition-all duration-200 hover:scale-110 drop-shadow-md"
-      >
-        {sidebarOpen ? (
-          <X className="w-6 h-6 text-white" />
-        ) : (
-          <Menu className="w-6 h-6 text-white" />
-        )}
-      </button>
+    <div className="h-full bg-gray-900 text-white p-4">
+      {/* Logo/Title */}
+      <div className="mb-8">
+        {isOpen && <h1 className="text-xl font-bold">Admin</h1>}
+      </div>
 
-      {/* Sidebar Overlay for Mobile */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-orange-100 via-orange-50 to-yellow-100 text-gray-900 z-40 transition-transform duration-300 md:translate-x-0 overflow-y-auto shadow-lg shadow-black/10
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
-        style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.08) 100%), linear-gradient(to bottom, rgb(254, 243, 219) 0%, rgb(255, 247, 237) 50%, rgb(254, 240, 199) 100%)`,
-        }}
-      >
-        <div className="flex flex-col h-full">
-          {/* Logo/Header */}
-          <div className="p-6 border-b border-orange-200">
-            <h1 className="text-2xl font-bold text-orange-900">
-              CoTrainr Admin
-            </h1>
-            <p className="text-xs text-orange-600 mt-1">Dashboard</p>
-          </div>
-
-          {/* User Profile Section */}
-          <div className="p-4 border-b border-orange-200">
-            <div className="flex items-center gap-3">
-              <label className="relative cursor-pointer group">
-                {userProfile?.profile_picture_url ? (
-                  <img
-                    src={userProfile.profile_picture_url}
-                    alt={userProfile.full_name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
-                    {userProfile?.full_name?.[0]?.toUpperCase() || "A"}
-                  </div>
-                )}
-
-                <div className="absolute bottom-0 right-0 bg-orange-600 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg">
-                  {uploadingPic ? (
-                    <Loader className="w-3 h-3 text-white animate-spin" />
-                  ) : (
-                    <Camera className="w-3 h-3 text-white" />
-                  )}
-                </div>
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  disabled={uploadingPic}
-                  onChange={onProfilePictureUpload}
-                />
-              </label>
-
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-orange-900 truncate">
-                  {userProfile?.full_name || "Admin"}
-                </p>
-                <p className="text-xs text-orange-600 truncate">
-                  {userProfile?.email}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Navigation Items */}
-          <nav className="flex-1 p-4 space-y-2">
-            {navigationItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.path);
-
-              return (
-                <button
-                  key={item.path}
-                  onClick={() => {
-                    navigate(item.path);
-                    setSidebarOpen(false);
-                  }}
-                  className={`w-full flex items-center gap-3 px-4 py-2 transition-all duration-200 rounded-lg ${
-                    active
-                      ? "bg-orange-300 text-orange-900 border-l-4 border-orange-600 shadow-md"
-                      : "text-orange-700 hover:text-orange-900 hover:bg-orange-150"
-                  }`}
-                >
-                  <Icon className="w-5 h-5 flex-shrink-0" />
-                  <span className="font-medium text-sm">{item.label}</span>
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Logout */}
-          <div className="p-4 border-t border-orange-200">
+      {/* Navigation */}
+      <nav className="space-y-2">
+        {navigationItems.map((item) => {
+          const Icon = item.icon;
+          return (
             <button
-              onClick={onLogout}
-              className="w-full flex items-center gap-3 px-4 py-2 text-red-600 hover:text-red-700 hover:bg-red-100 transition-all duration-200 font-medium text-sm rounded-lg"
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors text-left"
             >
-              <LogOut className="w-5 h-5" />
-              Logout
+              <Icon size={20} className={`text-${item.color}-400`} />
+              {isOpen && <span className="text-sm font-medium">{item.label}</span>}
             </button>
-          </div>
-        </div>
-      </aside>
-    </>
+          );
+        })}
+      </nav>
+    </div>
   );
 };
 
