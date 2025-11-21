@@ -259,11 +259,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         // Server has already created the profile during signup
-        // Just wait a bit for database replication and fetch it
+        // Just wait a bit for database replication
         await new Promise((resolve) => setTimeout(resolve, 500));
 
-        // Fetch the created profile
-        await fetchUserProfile(user.id);
+        // Fetch the created profile (async, non-blocking)
+        fetchUserProfile(user.id);
 
         // Create trainer profile if role is trainer (server handles users table, but trainers table needs separate entry)
         if (userData.role === "trainer") {
