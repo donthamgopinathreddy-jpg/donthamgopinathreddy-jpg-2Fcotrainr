@@ -162,34 +162,48 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         currentSession ? "exists" : "missing",
       );
 
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", userId)
-        .single();
+      if (!currentSession?.access_token) {
+        console.warn(
+          "No access token in session - cannot fetch profile yet",
+        );
+        return;
+      }
 
-      if (error) {
-        const errorMsg = error?.message || error?.details || String(error);
-        console.error("Error fetching user profile:", {
-          userId,
-          error: errorMsg,
-          errorCode: error?.code,
-          errorHint: error?.hint,
+      // Use API endpoint to fetch profile with proper server-side authentication
+      console.log(
+        "[Auth] Fetching profile from API with access token:",
+        currentSession.access_token.substring(0, 20) + "...",
+      );
+
+      const response = await fetch("/api/users/profile", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentSession.access_token}`,
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error("API error fetching user profile:", {
+          status: response.status,
+          error: result.error,
         });
         // Non-blocking error - continue without profile data
         return;
       }
 
-      if (data) {
+      if (result.data) {
         console.log("User profile fetched successfully:", {
-          id: data.id,
-          email: data.email,
-          username: data.username,
-          role: data.role,
+          id: result.data.id,
+          email: result.data.email,
+          username: result.data.username,
+          role: result.data.role,
         });
-        setUserProfile(data);
+        setUserProfile(result.data);
       } else {
-        console.warn("No profile data returned for user:", userId);
+        console.warn("No profile data returned from API for user:", userId);
       }
     } catch (error: any) {
       console.error("Profile fetch exception:", {
