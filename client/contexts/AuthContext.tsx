@@ -115,13 +115,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const {
           data: { subscription: authSubscription },
-        } = supabase.auth.onAuthStateChange(async (event, session) => {
+        } = supabase.auth.onAuthStateChange((event, session) => {
           console.log("Auth state changed:", event, session?.user?.email);
           if (isMounted) {
             setUser(session?.user || null);
 
             if (session?.user) {
-              await fetchUserProfile(session.user.id);
+              // Fetch profile without blocking
+              fetchUserProfile(session.user.id);
             } else {
               setUserProfile(null);
             }
