@@ -82,13 +82,17 @@ export default function AdminDashboard() {
       try {
         setLoading(true);
 
-        // Fetch users
+        // Fetch users (excluding demo users)
         const { data: usersData, error: usersError } = await supabase
           .from("users")
           .select("*");
 
         if (!usersError && usersData) {
-          setUsers(usersData);
+          // Filter out demo users (demo users have IDs starting with "demo-user")
+          const realUsers = usersData.filter(
+            (u) => !u.id.startsWith("demo-user") && !u.id.includes("demo")
+          );
+          setUsers(realUsers);
 
           const trainers = usersData.filter((u) => u.role === "trainer").length;
           const clients = usersData.filter((u) => u.role === "client").length;
