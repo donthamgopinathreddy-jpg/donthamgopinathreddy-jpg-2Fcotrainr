@@ -169,7 +169,8 @@ const RoleBasedHome = () => {
     return <TrainerHome />;
   }
 
-  return <Home />;
+  // Default to client home for "client" role or any other case
+  return <ClientHome />;
 };
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
