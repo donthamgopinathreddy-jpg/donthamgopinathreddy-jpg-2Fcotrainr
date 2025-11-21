@@ -366,20 +366,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         console.log("[Auth] Received response with status:", response.status);
 
-        // Read response body ONLY ONCE - directly as JSON
+        // Clone response to avoid stream consumption issues
+        const responseClone = response.clone();
+
+        // Read response body directly as JSON
         let responseData: any;
         try {
-          // Simply parse the JSON - don't check headers or do anything else that might consume the stream
-          responseData = await response.json();
+          responseData = await responseClone.json();
           console.log("[Auth] Successfully parsed JSON response");
         } catch (parseError) {
           console.error("[Auth] Could not parse response as JSON:", parseError instanceof Error ? parseError.message : String(parseError));
           console.error("[Auth] Response status:", response.status);
-          console.error("[Auth] Content-Type:", response.headers.get("content-type"));
+
+          // Try to read as text for debugging
+          try {
+            const textContent = await response.text();
+            console.error("[Auth] Response text:", textContent.substring(0, 200));
+          } catch (e) {
+            console.error("[Auth] Could not read response as text either");
+          }
+
           throw new Error(`Invalid response from server: ${parseError instanceof Error ? parseError.message : "Unknown error"}`);
         }
 
-        // Check if response was successful (this doesn't consume the body)
+        // Check if response was successful
         if (!response.ok) {
           console.error("[Auth] Sign in error from API (status: " + response.status + "):", responseData);
           const errorMessage =
