@@ -153,10 +153,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log("Fetching user profile for:", userId);
 
-      // Check current auth state
-      const {
-        data: { session: currentSession },
-      } = await supabase.auth.getSession();
+      // Add timeout to prevent infinite hanging
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(
+          () => reject(new Error("Profile fetch timeout")),
+          3000,
+        ),
+      );
+
+      // Check current auth state with timeout
+      const sessionPromise = (async () => {
+        const {
+          data: { session: currentSession },
+        } = await supabase.auth.getSession();
+        return currentSession;
+      })();
+
+      const currentSession = await Promise.race([
+        sessionPromise,
+        timeoutPromise,
+      ] as any);
+
       console.log(
         "Current session when fetching profile:",
         currentSession ? "exists" : "missing",
@@ -175,15 +192,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         currentSession.access_token.substring(0, 20) + "...",
       );
 
-      const response = await fetch("/api/supabase/users/profile", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentSession.access_token}`,
-        },
-      });
+      const response = await Promise.race([
+        fetch("/api/supabase/users/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${currentSession.access_token}`,
+          },
+        }),
+        timeoutPromise,
+      ] as any);
 
-      const result = await response.json();
+      const result = await Promise.race([
+        response.json(),
+        timeoutPromise,
+      ] as any);
 
       if (!response.ok) {
         console.error("API error fetching user profile:", {
@@ -210,6 +233,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         message: error?.message,
         stack: error?.stack,
       });
+      // Don't re-throw - let initialization continue
     }
   };
 
