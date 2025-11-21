@@ -166,10 +166,13 @@ export default function AdminDashboard() {
         description: `Admin deleted user ${userId}`,
       });
 
-      // Refresh users
+      // Refresh users (excluding demo users)
       const { data: usersData } = await supabase.from("users").select("*");
       if (usersData) {
-        setUsers(usersData);
+        const realUsers = usersData.filter(
+          (u) => !u.id.startsWith("demo-user") && !u.id.includes("demo")
+        );
+        setUsers(realUsers);
         toast.success("User deleted successfully");
       }
     } catch (error: any) {
