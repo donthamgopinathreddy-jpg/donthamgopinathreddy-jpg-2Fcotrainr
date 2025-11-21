@@ -51,13 +51,14 @@ function expressPlugin(): Plugin {
         console.log("[Express] Server running on http://localhost:3001");
       });
 
+      // Return cleanup hook that Vite will call on shutdown
       return () => {
-        if (expressServer) {
-          expressServer.close(() => {
-            console.log("[Express] Server closed");
-          });
-        }
+        // This cleanup runs when Vite shuts down
       };
+    },
+    handleHotUpdate() {
+      // Keep the hook to signal proper plugin integration
+      return [];
     },
   };
 }
