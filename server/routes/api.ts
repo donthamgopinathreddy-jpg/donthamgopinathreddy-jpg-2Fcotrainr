@@ -194,20 +194,46 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
       });
     }
 
-    // Create user profile with the specified role
+    // Extract user data from options if provided
+    const userData = options?.data || {};
+
+    // Create user profile with all provided data
+    const profileData = {
+      id: userId,
+      email,
+      username: userData.username || email.split("@")[0],
+      full_name: userData.full_name || null,
+      role: userData.role || role || "client",
+      gender: userData.gender || null,
+      weight_kg: userData.weight_kg || null,
+      height_cm: userData.height_cm || null,
+      phone_number: userData.phone_number || null,
+      age: userData.age || null,
+      date_of_birth: userData.date_of_birth || null,
+    };
+
+    console.log("[API] Creating user profile with data:", {
+      id: profileData.id,
+      email: profileData.email,
+      username: profileData.username,
+      role: profileData.role,
+      hasFullName: !!profileData.full_name,
+      hasHeight: !!profileData.height_cm,
+      hasWeight: !!profileData.weight_kg,
+    });
+
     const { error: profileError } = await supabase
       .from("users")
-      .insert({
-        id: userId,
-        email,
-        username: email.split("@")[0],
-        role,
-      });
+      .insert(profileData);
 
     if (profileError) {
-      console.error("[API] Profile creation error:", profileError);
+      console.error("[API] Profile creation error:", {
+        message: profileError.message,
+        code: profileError.code,
+        details: profileError.details,
+      });
       return res.status(400).json({
-        error: "Failed to create user profile",
+        error: "Failed to create user profile: " + profileError.message,
       });
     }
 
