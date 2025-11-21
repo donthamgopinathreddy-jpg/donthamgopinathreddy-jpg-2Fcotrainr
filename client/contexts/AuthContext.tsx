@@ -354,35 +354,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         console.log("[Auth] Received response with status:", response.status);
 
-        // Clone response to avoid stream consumption issues
-        const responseClone = response.clone();
-
-        // Read response body directly as JSON
+        // Read response body directly as JSON - simplest approach
         let responseData: any;
+        if (!response.ok) {
+          // For error responses, parse JSON to get error message
+          try {
+            responseData = await response.json();
+            console.error("[Auth] Sign in error from API (status: " + response.status + "):", responseData);
+            const errorMessage =
+              responseData?.error || `Sign in failed (${response.status})`;
+            throw new Error(errorMessage);
+          } catch (parseError) {
+            // If we can't parse the JSON, return generic error
+            throw new Error(`Sign in failed (${response.status}): ${parseError instanceof Error ? parseError.message : "Unknown error"}`);
+          }
+        }
+
+        // For successful responses, parse JSON
         try {
-          responseData = await responseClone.json();
+          responseData = await response.json();
           console.log("[Auth] Successfully parsed JSON response");
         } catch (parseError) {
           console.error("[Auth] Could not parse response as JSON:", parseError instanceof Error ? parseError.message : String(parseError));
-          console.error("[Auth] Response status:", response.status);
-
-          // Try to read as text for debugging
-          try {
-            const textContent = await response.text();
-            console.error("[Auth] Response text:", textContent.substring(0, 200));
-          } catch (e) {
-            console.error("[Auth] Could not read response as text either");
-          }
-
           throw new Error(`Invalid response from server: ${parseError instanceof Error ? parseError.message : "Unknown error"}`);
-        }
-
-        // Check if response was successful
-        if (!response.ok) {
-          console.error("[Auth] Sign in error from API (status: " + response.status + "):", responseData);
-          const errorMessage =
-            responseData?.error || `Sign in failed (${response.status})`;
-          throw new Error(errorMessage);
         }
 
         const { session, user } = responseData;
