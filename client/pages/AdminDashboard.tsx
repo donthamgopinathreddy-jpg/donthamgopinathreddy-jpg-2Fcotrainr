@@ -24,6 +24,12 @@ interface User {
   full_name: string;
   role: string;
   created_at: string;
+  gender?: string;
+  height_cm?: number;
+  weight_kg?: number;
+  phone_number?: string;
+  age?: number;
+  profile_picture_url?: string;
 }
 
 interface LoginLog {
