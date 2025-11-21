@@ -388,9 +388,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.warn("[Auth] No session returned from API");
         }
 
-        // Fetch profile with improved logging
+        // Fetch profile with improved logging (async, non-blocking)
         console.log("[Auth] Fetching user profile for:", user.id);
-        await fetchUserProfile(user.id);
+        fetchUserProfile(user.id);
       } catch (fetchError: any) {
         clearTimeout(timeoutId);
 
