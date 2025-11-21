@@ -94,9 +94,12 @@ router.get("/health", async (_req: Request, res: Response) => {
 // Auth endpoints
 router.post("/auth/signin", async (req: Request, res: Response) => {
   try {
+    console.log("[API] Sign in endpoint called");
+
     const { email, password } = req.body;
 
     if (!email || !password) {
+      console.log("[API] Missing email or password");
       return res.status(400).json({
         error: "Missing email or password",
       });
@@ -125,15 +128,29 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     }
 
     console.log("[API] Sign in successful for:", email);
+    console.log("[API] Returning user and session");
 
-    res.json({
+    // Ensure we're sending valid JSON
+    const responseObj = {
       session: data.session,
       user: data.user,
+    };
+
+    console.log("[API] Response object prepared:", {
+      hasSession: !!responseObj.session,
+      hasUser: !!responseObj.user,
+      userEmail: responseObj.user?.email,
     });
+
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).json(responseObj);
   } catch (error) {
     console.error("[API] Sign in error:", error);
     const message =
       error instanceof Error ? error.message : "Internal server error";
+    console.error("[API] Sending error response:", message);
+
+    res.setHeader("Content-Type", "application/json");
     res.status(500).json({
       error: message,
     });
