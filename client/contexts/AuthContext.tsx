@@ -366,26 +366,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         console.log("[Auth] Received response with status:", response.status);
 
+        // Read response body only once
         let responseData: any;
         try {
-          const responseText = await response.text();
-          console.log("[Auth] Raw response text:", responseText.substring(0, 200));
+          const contentType = response.headers.get("content-type") || "";
+          console.log("[Auth] Response content-type:", contentType);
 
-          if (!responseText) {
-            throw new Error("Empty response from server");
+          if (!contentType.includes("application/json")) {
+            const responseText = await response.text();
+            console.error("[Auth] Response is not JSON, got:", responseText.substring(0, 100));
+            throw new Error(`Expected JSON response, got ${contentType || "unknown content type"}`);
           }
 
-          responseData = JSON.parse(responseText);
+          responseData = await response.json();
+          console.log("[Auth] Successfully parsed JSON response");
         } catch (parseError) {
-          console.error("[Auth] Could not parse response as JSON:", parseError);
+          console.error("[Auth] Could not parse response as JSON:", parseError instanceof Error ? parseError.message : parseError);
           console.error("[Auth] Response status:", response.status);
-          console.error("[Auth] Response headers:", {
-            contentType: response.headers.get("content-type"),
-            contentLength: response.headers.get("content-length"),
-          });
+          const contentType = response.headers.get("content-type");
+          console.error("[Auth] Content-Type:", contentType);
           throw new Error(`Invalid response from server: ${parseError instanceof Error ? parseError.message : "Unknown parse error"}`);
         }
 
+        // Now check if response was successful
         if (!response.ok) {
           console.error("[Auth] Sign in error from API:", responseData);
           const errorMessage =
