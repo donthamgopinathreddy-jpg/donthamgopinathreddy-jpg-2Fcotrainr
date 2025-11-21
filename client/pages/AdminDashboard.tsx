@@ -376,19 +376,37 @@ export default function AdminDashboard() {
                 <table className="w-full">
                   <thead className="bg-gray-100 border-b border-gray-200">
                     <tr>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                        Email
-                      </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
                         Name
                       </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                        Email
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                        Username
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
                         Role
                       </th>
-                      <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                        Gender
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                        Height
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                        Weight
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                        Age
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                        Phone
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
                         Joined
                       </th>
-                      <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">
+                      <th className="px-4 py-3 text-right text-sm font-semibold text-gray-900">
                         Actions
                       </th>
                     </tr>
@@ -396,13 +414,27 @@ export default function AdminDashboard() {
                   <tbody className="divide-y divide-gray-200">
                     {users.map((user) => (
                       <tr key={user.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 text-sm text-gray-900">
+                        <td className="px-4 py-4 text-sm text-gray-900">
+                          <div className="flex items-center gap-2">
+                            {user.profile_picture_url && (
+                              <img
+                                src={user.profile_picture_url}
+                                alt={user.full_name}
+                                className="w-8 h-8 rounded-full object-cover"
+                              />
+                            )}
+                            <span className="font-medium">
+                              {user.full_name || "N/A"}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-600">
                           {user.email}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-900">
-                          {user.full_name || user.username}
+                        <td className="px-4 py-4 text-sm text-gray-900">
+                          {user.username || "N/A"}
                         </td>
-                        <td className="px-6 py-4 text-sm">
+                        <td className="px-4 py-4 text-sm">
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-medium ${
                               user.role === "admin"
@@ -415,10 +447,25 @@ export default function AdminDashboard() {
                             {user.role}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
+                        <td className="px-4 py-4 text-sm text-gray-900">
+                          {user.gender || "N/A"}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-900">
+                          {user.height_cm ? `${user.height_cm} cm` : "N/A"}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-900">
+                          {user.weight_kg ? `${user.weight_kg} kg` : "N/A"}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-900">
+                          {user.age || "N/A"}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-600">
+                          {user.phone_number || "N/A"}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-gray-600">
                           {new Date(user.created_at).toLocaleDateString()}
                         </td>
-                        <td className="px-6 py-4 text-right">
+                        <td className="px-4 py-4 text-right">
                           <button
                             onClick={() => handleDeleteUser(user.id)}
                             className="text-red-600 hover:text-red-900 font-medium text-sm flex items-center gap-1 ml-auto"
