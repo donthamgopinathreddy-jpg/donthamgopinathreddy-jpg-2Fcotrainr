@@ -16,8 +16,8 @@ export default function Logo({ size = "md", className }: LogoProps) {
 
   return (
     <img
-      src="https://cdn.builder.io/api/v1/image/assets%2Fc659d255956c4643b6576a691786eec0%2Fe823f4816a094df5bccc1efcb008e8ff?format=webp&width=800"
-      alt="CoTrainr Logo"
+      src="https://cdn.builder.io/api/v1/image/assets%2Fc659d255956c4643b6576a691786eec0%2F477b68f32d67409ebc159fcc7ac68d8c?format=webp&width=800"
+      alt="GoTrainr Logo"
       className={`${sizeClass} ${className}`}
     />
   );

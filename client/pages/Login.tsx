@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import Logo from "@/components/Logo";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -41,9 +42,7 @@ export default function Login() {
       <div className="w-full max-w-md relative z-10">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-black bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent mb-2">
-            CoTrainr
-          </h1>
+          <Logo size="lg" className="mx-auto mb-6" />
           <p className="text-slate-400">Welcome back to your fitness journey</p>
         </div>
 
