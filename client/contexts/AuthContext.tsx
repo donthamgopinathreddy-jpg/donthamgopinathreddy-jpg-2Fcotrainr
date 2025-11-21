@@ -159,19 +159,48 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const {
           data: { subscription: authSubscription },
-        } = supabase.auth.onAuthStateChange((event, session) => {
-          console.log("Auth state changed:", event, session?.user?.email);
-          if (isMounted) {
-            setUser(session?.user || null);
+        } = supabase.auth.onAuthStateChange(
+          async (event, session) => {
+            console.log("Auth state changed:", event, session?.user?.email);
 
-            if (session?.user) {
-              // Fetch profile without blocking
-              fetchUserProfile(session.user.id);
-            } else {
-              setUserProfile(null);
+            // Handle token refresh errors
+            if (event === "SIGNED_OUT" || !session) {
+              if (isMounted) {
+                setUser(null);
+                setUserProfile(null);
+              }
+              return;
             }
-          }
-        });
+
+            if (isMounted) {
+              setUser(session?.user || null);
+
+              if (session?.user) {
+                // Fetch profile without blocking
+                fetchUserProfile(session.user.id).catch((err) => {
+                  console.warn("Profile fetch failed:", err);
+                });
+              } else {
+                setUserProfile(null);
+              }
+            }
+          },
+          {
+            onError: (error) => {
+              console.error("Auth state change error:", error);
+              // Clear session on token errors
+              if (
+                error?.message?.includes("Refresh Token") ||
+                error?.message?.includes("Invalid token")
+              ) {
+                if (isMounted) {
+                  setUser(null);
+                  setUserProfile(null);
+                }
+              }
+            },
+          } as any,
+        );
 
         subscription = authSubscription;
       } catch (error) {
