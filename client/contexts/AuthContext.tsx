@@ -439,35 +439,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log("[Auth] Starting sign out process");
 
-      // Try to logout from Supabase, but don't fail if it errors
+      // Clear local auth state immediately (first priority)
+      console.log("[Auth] Clearing local auth state");
+      setUser(null);
+      setUserProfile(null);
+
+      // Clear any stored session
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.clear();
+          sessionStorage.clear();
+          console.log("[Auth] Cleared all localStorage and sessionStorage");
+        } catch (e) {
+          console.warn("Could not clear storage:", e);
+        }
+      }
+
+      // Try to logout from Supabase (this may fail if already logged out)
       try {
         await supabase.auth.signOut({ scope: "local" });
         console.log("[Auth] Supabase signOut completed");
       } catch (signoutError) {
         console.warn("Supabase signOut error (non-critical):", signoutError);
-        // Continue anyway - we'll still clear local state
-      }
-
-      // Clear local auth state immediately
-      console.log("[Auth] Clearing local auth state");
-      setUser(null);
-      setUserProfile(null);
-
-      // Also clear any stored session
-      if (typeof window !== "undefined") {
-        try {
-          localStorage.removeItem("supabase.auth.token");
-          localStorage.removeItem("sb-jnvfoyjhflheohculqbb-auth-token");
-          // Clear all supabase related keys
-          Object.keys(localStorage).forEach((key) => {
-            if (key.includes("supabase") || key.includes("sb-")) {
-              localStorage.removeItem(key);
-            }
-          });
-          console.log("[Auth] Cleared all auth tokens from localStorage");
-        } catch (e) {
-          console.warn("Could not clear localStorage:", e);
-        }
+        // Continue anyway - local state is already cleared
       }
 
       console.log("[Auth] Sign out completed successfully");
@@ -477,6 +471,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // Still clear state even if there's an error
       setUser(null);
       setUserProfile(null);
+
+      // Clear storage anyway
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.clear();
+          sessionStorage.clear();
+        } catch (e) {
+          console.warn("Could not clear storage on error:", e);
+        }
+      }
       throw error;
     }
   };
