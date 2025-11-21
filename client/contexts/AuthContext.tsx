@@ -183,6 +183,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         } = supabase.auth.onAuthStateChange((event, session) => {
           console.log("Auth state changed:", event, session?.user?.email);
 
+          if (event === "TOKEN_REFRESH_FAILED") {
+            console.error("[Auth] Token refresh failed during listener");
+            toast.error("Session expired. Please sign in again.");
+            if (isMounted) {
+              setUser(null);
+              setUserProfile(null);
+            }
+            return;
+          }
+
           // Handle token refresh errors and signed out
           if (event === "SIGNED_OUT" || !session) {
             if (isMounted) {
