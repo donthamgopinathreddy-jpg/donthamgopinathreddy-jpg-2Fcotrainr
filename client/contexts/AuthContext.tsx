@@ -154,6 +154,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             "Session check failed, continuing without initial session:",
             sessionError?.message,
           );
+          try {
+            await supabase.auth.signOut();
+          } catch (signOutError) {
+            console.warn("Failed to clear session after error:", signOutError);
+          }
           if (isMounted) {
             setUser(null);
             setUserProfile(null);
