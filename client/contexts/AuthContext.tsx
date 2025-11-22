@@ -379,6 +379,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { session, user } = responseData;
 
       if (user) {
+        // Validate session has required tokens
+        if (session) {
+          if (!session.refresh_token) {
+            console.error("[Auth] Signup: Session missing refresh_token");
+            throw new Error(
+              "Sign up failed: Server returned incomplete session (missing refresh token)",
+            );
+          }
+          if (!session.access_token) {
+            console.error("[Auth] Signup: Session missing access_token");
+            throw new Error(
+              "Sign up failed: Server returned incomplete session (missing access token)",
+            );
+          }
+        }
+
         setUser(user);
 
         // Set the session in Supabase client
