@@ -95,6 +95,53 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Manual token refresh with validation
+  const manualRefreshToken = async () => {
+    try {
+      console.log("[Auth] Attempting manual token refresh...");
+      const {
+        data: { session: currentSession },
+      } = await supabase.auth.getSession();
+
+      if (!currentSession?.refresh_token) {
+        console.error("[Auth] No refresh_token available - cannot refresh");
+        // Sign out the user since we can't refresh
+        await supabase.auth.signOut();
+        setUser(null);
+        setUserProfile(null);
+        toast.error("Session expired. Please sign in again.");
+        return;
+      }
+
+      // Manually refresh the token
+      const {
+        data: { session: refreshedSession },
+        error: refreshError,
+      } = await supabase.auth.refreshSession(currentSession);
+
+      if (refreshError) {
+        console.error("[Auth] Token refresh failed:", refreshError);
+        await supabase.auth.signOut();
+        setUser(null);
+        setUserProfile(null);
+        toast.error("Session expired. Please sign in again.");
+        return;
+      }
+
+      if (refreshedSession) {
+        console.log(
+          "[Auth] Token refreshed successfully, has refresh_token:",
+          !!refreshedSession.refresh_token,
+        );
+        setUser(refreshedSession.user);
+      }
+    } catch (error) {
+      console.error("[Auth] Manual token refresh error:", error);
+      setUser(null);
+      setUserProfile(null);
+    }
+  };
+
   // Check auth state on mount and listen for changes
   useEffect(() => {
     let isMounted = true;
@@ -138,6 +185,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
           if (isMounted) {
             if (session?.user) {
+              // Validate session has refresh_token
+              if (!session.refresh_token) {
+                console.warn(
+                  "[Auth] Session found but missing refresh_token, clearing it",
+                );
+                await supabase.auth.signOut();
+                setUser(null);
+                setUserProfile(null);
+                return;
+              }
+
               console.log("Session found:", session.user.email);
               setUser(session.user);
               // Fetch profile asynchronously without blocking initialization
