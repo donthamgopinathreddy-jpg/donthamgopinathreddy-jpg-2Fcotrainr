@@ -231,9 +231,9 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
         date_of_birth: options?.data?.date_of_birth || null,
       };
 
-      const { error: profileError } = await supabase.from("users").insert([
-        profileData,
-      ]);
+      const { error: profileError } = await supabase
+        .from("users")
+        .insert([profileData]);
 
       if (profileError) {
         console.error("[API] Profile creation error:", profileError);
