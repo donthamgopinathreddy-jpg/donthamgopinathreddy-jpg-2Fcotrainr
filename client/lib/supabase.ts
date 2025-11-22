@@ -143,7 +143,7 @@ console.log("[Supabase] Initializing client", {
 export const supabase = createClient(apiUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
-    autoRefreshToken: true,
+    autoRefreshToken: false,
     storage: storageImpl as any,
     detectSessionInUrl: true,
     flowType: "pkce",
