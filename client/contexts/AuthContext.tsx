@@ -540,7 +540,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         // Validate session has refresh token
         if (session && !session.refresh_token) {
-          console.error("[Auth] Session missing refresh_token - this will cause token refresh failures");
+          console.error(
+            "[Auth] Session missing refresh_token - this will cause token refresh failures",
+          );
           console.log("[Auth] Session object:", {
             hasAccessToken: !!session.access_token,
             hasRefreshToken: !!session.refresh_token,

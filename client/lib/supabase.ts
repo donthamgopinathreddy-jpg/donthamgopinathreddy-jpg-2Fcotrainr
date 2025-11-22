@@ -195,7 +195,10 @@ supabase.auth.onAuthStateChange((event, session) => {
     case "TOKEN_REFRESHED":
       console.log("[Supabase] Token refreshed successfully");
       if (session) {
-        console.log("[Supabase] Session refreshed, has refresh_token:", !!session.refresh_token);
+        console.log(
+          "[Supabase] Session refreshed, has refresh_token:",
+          !!session.refresh_token,
+        );
       }
       break;
     case "TOKEN_REFRESH_FAILED":
@@ -206,7 +209,10 @@ supabase.auth.onAuthStateChange((event, session) => {
       console.log("[Supabase] User signed out");
       break;
     case "SIGNED_IN":
-      console.log("[Supabase] User signed in, session has refresh_token:", !!session?.refresh_token);
+      console.log(
+        "[Supabase] User signed in, session has refresh_token:",
+        !!session?.refresh_token,
+      );
       break;
     default:
       break;
