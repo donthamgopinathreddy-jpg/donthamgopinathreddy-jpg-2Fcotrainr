@@ -296,6 +296,9 @@ const AppRoutes = () => {
       <Route path="/clear-session" element={<ClearSession />} />
       <Route path="/proxy-test" element={<ProxyTest />} />
       <Route path="/onboarding" element={<Onboarding />} />
+      <Route path="/demo-client" element={<ClientDashboardDemo />} />
+      <Route path="/demo-trainer" element={<TrainerDashboardDemo />} />
+      <Route path="/demo-admin" element={<AdminDashboardDemo />} />
       <Route
         path="/"
         element={
