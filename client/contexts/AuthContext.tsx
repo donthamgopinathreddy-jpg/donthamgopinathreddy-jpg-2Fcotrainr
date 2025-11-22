@@ -532,6 +532,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           });
         }
 
+        // Validate session before storing
+        if (session) {
+          if (!session.refresh_token) {
+            console.error(
+              "[Auth] CRITICAL: Session missing refresh_token from API",
+            );
+            console.error("[Auth] Session object:", {
+              hasAccessToken: !!session.access_token,
+              hasRefreshToken: !!session.refresh_token,
+              user_id: session.user?.id,
+            });
+            // Don't continue with a broken session
+            throw new Error(
+              "Sign in failed: Session incomplete (missing refresh token)",
+            );
+          }
+
+          if (!session.access_token) {
+            console.error("[Auth] Session missing access_token from API");
+            throw new Error(
+              "Sign in failed: Session incomplete (missing access token)",
+            );
+          }
+        }
+
         // Update user state immediately for responsive navigation
         setUser(user);
 
