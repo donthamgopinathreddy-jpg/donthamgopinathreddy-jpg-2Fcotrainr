@@ -15,28 +15,122 @@ const getApiUrl = () => {
   return supabaseUrl;
 };
 
-// For Capacitor native apps, we need to use Preferences instead of localStorage
-let storageImpl: any = localStorage;
+// Custom storage implementation that validates session data
+class SessionStorage {
+  private storage: Storage | any;
+  private isCapacitor: boolean;
 
-// Check if we're in a Capacitor environment
-if (typeof window !== "undefined" && (window as any).Capacitor) {
-  try {
-    const { Preferences } = (window as any).Capacitor.Plugins;
-    if (Preferences) {
-      storageImpl = {
-        getItem: (key: string) =>
-          Preferences.get({ key }).then((result: any) => result.value),
-        setItem: (key: string, value: string) =>
-          Preferences.set({ key, value }),
-        removeItem: (key: string) => Preferences.remove({ key }),
-      };
+  constructor() {
+    this.isCapacitor = false;
+
+    // Check if we're in a Capacitor environment
+    if (typeof window !== "undefined" && (window as any).Capacitor) {
+      try {
+        const { Preferences } = (window as any).Capacitor.Plugins;
+        if (Preferences) {
+          this.storage = Preferences;
+          this.isCapacitor = true;
+          console.log("[SessionStorage] Using Capacitor Preferences");
+          return;
+        }
+      } catch (error) {
+        console.warn(
+          "[SessionStorage] Could not initialize Capacitor storage, falling back to localStorage",
+        );
+      }
     }
-  } catch (error) {
-    console.warn(
-      "Could not initialize Capacitor storage, falling back to localStorage",
-    );
+
+    this.storage = localStorage;
+    console.log("[SessionStorage] Using localStorage");
+  }
+
+  async getItem(key: string): Promise<string | null> {
+    try {
+      let value: string | null = null;
+
+      if (this.isCapacitor) {
+        const result = await this.storage.get({ key });
+        value = result?.value || null;
+      } else {
+        value = this.storage.getItem(key);
+      }
+
+      if (!value) {
+        return null;
+      }
+
+      // Validate session data
+      if (key.includes("auth") || key.includes("session")) {
+        try {
+          const parsed = JSON.parse(value);
+          if (
+            parsed?.session &&
+            !parsed.session.refresh_token &&
+            parsed.session.access_token
+          ) {
+            console.warn(
+              "[SessionStorage] Detected corrupted session (missing refresh_token), clearing it",
+            );
+            await this.removeItem(key);
+            return null;
+          }
+        } catch (e) {
+          // If it's not JSON, just return it as is
+        }
+      }
+
+      return value;
+    } catch (error) {
+      console.error("[SessionStorage] Error reading from storage:", error);
+      return null;
+    }
+  }
+
+  async setItem(key: string, value: string): Promise<void> {
+    try {
+      // Validate session data before storing
+      if (key.includes("auth") || key.includes("session")) {
+        try {
+          const parsed = JSON.parse(value);
+          if (
+            parsed?.session &&
+            !parsed.session.refresh_token &&
+            parsed.session.access_token
+          ) {
+            console.warn(
+              "[SessionStorage] Prevented storing corrupted session without refresh_token",
+            );
+            return;
+          }
+        } catch (e) {
+          // If it's not JSON, just store it
+        }
+      }
+
+      if (this.isCapacitor) {
+        await this.storage.set({ key, value });
+      } else {
+        this.storage.setItem(key, value);
+      }
+    } catch (error) {
+      console.error("[SessionStorage] Error writing to storage:", error);
+    }
+  }
+
+  async removeItem(key: string): Promise<void> {
+    try {
+      if (this.isCapacitor) {
+        await this.storage.remove({ key });
+      } else {
+        this.storage.removeItem(key);
+      }
+    } catch (error) {
+      console.error("[SessionStorage] Error removing from storage:", error);
+    }
   }
 }
+
+const storageImpl = new SessionStorage();
 
 // Create client with proper configuration
 const apiUrl = getApiUrl();
@@ -50,7 +144,7 @@ export const supabase = createClient(apiUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    storage: storageImpl,
+    storage: storageImpl as any,
     detectSessionInUrl: true,
     flowType: "pkce",
   },
@@ -90,15 +184,19 @@ supabase.auth.onAuthStateChange((event, session) => {
   switch (event) {
     case "TOKEN_REFRESHED":
       console.log("[Supabase] Token refreshed successfully");
+      if (session) {
+        console.log("[Supabase] Session refreshed, has refresh_token:", !!session.refresh_token);
+      }
       break;
     case "TOKEN_REFRESH_FAILED":
+      console.error("[Supabase] TOKEN_REFRESH_FAILED event triggered");
       handleTokenRefreshFailure();
       break;
     case "SIGNED_OUT":
       console.log("[Supabase] User signed out");
       break;
     case "SIGNED_IN":
-      console.log("[Supabase] User signed in");
+      console.log("[Supabase] User signed in, session has refresh_token:", !!session?.refresh_token);
       break;
     default:
       break;
