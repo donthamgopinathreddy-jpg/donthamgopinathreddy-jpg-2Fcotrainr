@@ -399,66 +399,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         // Set the session in Supabase client
         if (session) {
+          console.log("[Auth] Setting session in Supabase client");
           await supabase.auth.setSession(session);
         }
 
-        // Create user profile in public.users table
-        console.log("[Auth] Creating user profile...");
-        try {
-          const { error: profileError } = await supabase.from("users").insert({
-            id: user.id,
-            email,
-            username: userData.username,
-            full_name: userData.full_name,
-            role: userData.role,
-            gender: userData.gender,
-            weight_kg: userData.weight_kg,
-            height_cm: userData.height_cm,
-            phone_number: userData.phone_number,
-            age: userData.age,
-            date_of_birth: userData.date_of_birth,
-          });
-
-          if (profileError) {
-            console.error("[Auth] Profile creation error:", profileError);
-            throw new Error(
-              "Failed to create profile: " + profileError.message,
-            );
-          }
-          console.log("[Auth] User profile created successfully");
-        } catch (profileErr: any) {
-          console.error("[Auth] Failed to create user profile:", profileErr);
-          throw profileErr;
-        }
-
-        // Create trainer profile if role is trainer
-        if (userData.role === "trainer") {
-          try {
-            console.log("[Auth] Creating trainer profile...");
-            const { error: trainerError } = await supabase
-              .from("trainers")
-              .insert({
-                id: user.id,
-                years_of_experience: 0,
-              });
-            if (trainerError) {
-              console.warn(
-                "[Auth] Trainer profile creation error:",
-                trainerError?.message,
-              );
-            }
-          } catch (err: any) {
-            console.warn(
-              "[Auth] Trainer profile creation error:",
-              err?.message,
-            );
-          }
-        }
-
+        // Profile is now created server-side, fetch it after a short delay
         // Wait for database replication
+        console.log("[Auth] Waiting for database replication...");
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Fetch the created profile (async, non-blocking)
+        console.log("[Auth] Fetching user profile...");
         fetchUserProfile(user.id);
       }
     } catch (error: any) {
