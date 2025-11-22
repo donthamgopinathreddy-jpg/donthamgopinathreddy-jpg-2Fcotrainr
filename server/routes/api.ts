@@ -214,6 +214,41 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
 
     console.log("[API] Sign up successful for:", email);
 
+    // Create user profile in database (server-side with full permissions)
+    try {
+      console.log("[API] Creating user profile in database...");
+      const profileData = {
+        id: userId,
+        email,
+        username: options?.data?.username || email.split("@")[0],
+        full_name: options?.data?.full_name || "",
+        role: options?.data?.role || "client",
+        gender: options?.data?.gender || null,
+        weight_kg: options?.data?.weight_kg || null,
+        height_cm: options?.data?.height_cm || null,
+        phone_number: options?.data?.phone_number || null,
+        age: options?.data?.age || null,
+        date_of_birth: options?.data?.date_of_birth || null,
+      };
+
+      const { error: profileError } = await supabase.from("users").insert([
+        profileData,
+      ]);
+
+      if (profileError) {
+        console.error("[API] Profile creation error:", profileError);
+        // Don't fail - user is already created in auth
+        console.warn(
+          "[API] Profile creation failed but auth was successful, continuing...",
+        );
+      } else {
+        console.log("[API] User profile created successfully");
+      }
+    } catch (profileErr: any) {
+      console.error("[API] Unexpected error creating profile:", profileErr);
+      // Don't fail - user is already created in auth
+    }
+
     res.json({
       session: data.session,
       user: data.user,
