@@ -460,8 +460,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("[Auth] Session received:", {
           hasSession: !!session,
           hasAccessToken: !!session?.access_token,
+          hasRefreshToken: !!session?.refresh_token,
           user_id: user.id,
         });
+
+        // Validate session has refresh token
+        if (session && !session.refresh_token) {
+          console.error("[Auth] Session missing refresh_token - this will cause token refresh failures");
+          console.log("[Auth] Session object:", {
+            hasAccessToken: !!session.access_token,
+            hasRefreshToken: !!session.refresh_token,
+            expiresIn: session.expires_in,
+          });
+        }
 
         // Update user state immediately for responsive navigation
         setUser(user);
@@ -475,6 +486,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               hasUser: !!result.data?.user,
               user_id: result.data?.user?.id,
               hasSession: !!result.data?.session,
+              hasRefreshToken: !!result.data?.session?.refresh_token,
             });
 
             // Verify session was set
@@ -484,6 +496,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             console.log("[Auth] Verified session after setSession:", {
               hasSession: !!verifySession,
               hasAccessToken: !!verifySession?.access_token,
+              hasRefreshToken: !!verifySession?.refresh_token,
             });
           } catch (sessionError: any) {
             console.error("[Auth] Error setting session:", {
