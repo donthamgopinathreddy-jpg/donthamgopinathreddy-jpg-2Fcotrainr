@@ -134,12 +134,14 @@ router.post("/auth/signin", async (req: Request, res: Response) => {
     const responseObj = {
       session: data.session,
       user: data.user,
+      token: data.session?.access_token || "",
     };
 
     console.log("[API] Response object prepared:", {
       hasSession: !!responseObj.session,
       hasUser: !!responseObj.user,
       userEmail: responseObj.user?.email,
+      hasToken: !!responseObj.token,
     });
 
     res.setHeader("Content-Type", "application/json");
