@@ -301,11 +301,11 @@ export default function MobileSignup() {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                placeholder="johndoe"
+                placeholder="john2024"
                 className="w-full px-5 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
               />
               <p className="text-xs text-slate-500 mt-2">
-                3+ characters, lowercase
+                3+ characters, must include at least one number
               </p>
             </div>
           </div>
