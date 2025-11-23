@@ -50,9 +50,9 @@ async function initStorage(): Promise<IStorage> {
 
   try {
     // Only import Preferences on native platforms
-    const PreferencesModule = await (
-      eval('import("@capacitor/preferences")') as Promise<any>
-    );
+    // Use dynamic module name to prevent Rollup analysis during build
+    const moduleName = ["@capacitor", "preferences"].join("/");
+    const PreferencesModule = await import(/* @vite-ignore */ moduleName);
     const Preferences = PreferencesModule.Preferences;
 
     storageInstance = {
