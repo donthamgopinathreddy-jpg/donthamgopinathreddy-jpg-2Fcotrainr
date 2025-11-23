@@ -95,34 +95,45 @@ export default function MobileSignup() {
   };
 
   const handleNext = () => {
+    console.log("[MobileSignup] handleNext called, step:", step);
     setError("");
     if (step === 1) {
+      console.log("[MobileSignup] Step 1 validation");
       if (!formData.email || !formData.password || !formData.confirmPassword) {
+        console.error("[MobileSignup] Step 1 FAILED: Missing fields");
         setError("Please fill in all fields");
         return;
       }
       const passwordError = validatePassword(formData.password);
       if (passwordError) {
+        console.error("[MobileSignup] Step 1 FAILED: Password error:", passwordError);
         setError(passwordError);
         return;
       }
       if (formData.password !== formData.confirmPassword) {
+        console.error("[MobileSignup] Step 1 FAILED: Passwords don't match");
         setError("Passwords do not match");
         return;
       }
+      console.log("[MobileSignup] Step 1 passed, moving to step 2");
       setStep(2);
     } else if (step === 2) {
+      console.log("[MobileSignup] Step 2 validation");
       if (!formData.full_name || !formData.username) {
+        console.error("[MobileSignup] Step 2 FAILED: Missing fields");
         setError("Please fill in all fields");
         return;
       }
       const usernameError = validateUsername(formData.username);
       if (usernameError) {
+        console.error("[MobileSignup] Step 2 FAILED: Username error:", usernameError);
         setError(usernameError);
         return;
       }
+      console.log("[MobileSignup] Step 2 passed, moving to step 3");
       setStep(3);
     } else if (step === 3) {
+      console.log("[MobileSignup] Step 3 validation");
       if (
         !formData.height_feet ||
         !formData.height_inches ||
@@ -130,9 +141,17 @@ export default function MobileSignup() {
         !formData.weight_pounds ||
         !formData.phone_number
       ) {
+        console.error("[MobileSignup] Step 3 FAILED: Missing fields:", {
+          height_feet: formData.height_feet,
+          height_inches: formData.height_inches,
+          weight_kg: formData.weight_kg,
+          weight_pounds: formData.weight_pounds,
+          phone_number: formData.phone_number,
+        });
         setError("Please fill in all fields");
         return;
       }
+      console.log("[MobileSignup] Step 3 passed, calling handleSignup");
       handleSignup();
     }
   };
