@@ -296,6 +296,24 @@ const PermissionRequester = () => {
   return null;
 };
 
+const AppWithSplash = () => {
+  const { loading } = useAuth();
+  const [appReady, setAppReady] = useState(false);
+
+  useEffect(() => {
+    // Show splash screen while auth is loading
+    if (!loading && !appReady) {
+      setAppReady(true);
+    }
+  }, [loading, appReady]);
+
+  if (loading) {
+    return <SplashScreen />;
+  }
+
+  return <AppRoutes />;
+};
+
 const AppRoutes = () => {
   return (
     <Routes>
