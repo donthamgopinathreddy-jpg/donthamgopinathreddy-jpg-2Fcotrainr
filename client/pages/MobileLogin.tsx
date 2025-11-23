@@ -138,6 +138,7 @@ export default function MobileLogin() {
           {/* Forgot Password Link */}
           <button
             type="button"
+            onClick={() => setShowResetModal(true)}
             className="text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors duration-200 w-full text-center"
           >
             Forgot Password?
