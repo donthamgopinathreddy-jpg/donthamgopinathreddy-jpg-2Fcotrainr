@@ -20,6 +20,7 @@ console.log('[API] Environment check:');
 console.log('[API] VITE_SUPABASE_URL:', process.env.VITE_SUPABASE_URL ? 'set' : 'not set');
 console.log('[API] SUPABASE_URL:', process.env.SUPABASE_URL ? 'set' : 'not set');
 console.log('[API] Final SUPABASE_URL:', SUPABASE_URL ? 'set' : 'not set');
+console.log('[API] **ACTUAL URL BEING USED**:', SUPABASE_URL);
 console.log(
   '[API] VITE_SUPABASE_ANON_KEY:',
   process.env.VITE_SUPABASE_ANON_KEY ? 'set' : 'not set'
