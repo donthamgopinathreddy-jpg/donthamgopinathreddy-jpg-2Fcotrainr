@@ -561,6 +561,41 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const resetPassword = async (email: string, method: "email" | "phone") => {
+    try {
+      console.log(`[Auth] Requesting password reset via ${method} for:`, email);
+
+      const response = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          method,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || `Password reset failed: ${response.statusText}`,
+        );
+      }
+
+      toast.success(
+        `Password reset link sent to your ${method === "email" ? "email" : "phone number"}!`,
+      );
+      console.log("[Auth] Password reset successful");
+    } catch (error: any) {
+      console.error("[Auth] Error resetting password:", error);
+      const errorMessage =
+        error?.message || "Failed to reset password. Please try again.";
+      toast.error(errorMessage);
+      throw new Error(errorMessage);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -572,6 +607,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         signOut,
         updateProfile,
         demoMode,
+        resetPassword,
       }}
     >
       {children}
