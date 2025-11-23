@@ -27,16 +27,25 @@ const netlifyHandler = serverless(app);
 // Wrap handler with error logging
 export const handler = async (event: any, context: any) => {
   try {
+    console.log("[Netlify] ========================================");
     console.log("[Netlify] Request received:", {
       method: event.httpMethod,
       path: event.path,
+      rawPath: event.rawPath,
+      rawUrl: event.rawUrl,
       headers: Object.keys(event.headers || {}),
     });
+    console.log("[Netlify] Full event path details:", {
+      path: event.path,
+      pathParameters: event.pathParameters,
+    });
+    console.log("[Netlify] ========================================");
 
     const response = await netlifyHandler(event, context);
 
     console.log("[Netlify] Response sent:", {
       statusCode: response.statusCode,
+      body: response.body ? response.body.substring(0, 200) : "empty",
     });
 
     return response;
