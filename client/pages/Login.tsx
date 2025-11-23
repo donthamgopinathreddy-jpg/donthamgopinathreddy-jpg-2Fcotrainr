@@ -230,6 +230,37 @@ export default function Login() {
                 </div>
               </div>
 
+              {/* Phone Number and Country Code */}
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-gray-900 mb-3">
+                  Phone Number
+                </label>
+                <div className="flex gap-2">
+                  <select
+                    className="w-24 px-3 py-4 bg-gray-50 border border-gray-300 rounded-2xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+                    defaultValue="+1"
+                  >
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+86">🇨🇳 +86</option>
+                    <option value="+81">🇯🇵 +81</option>
+                    <option value="+49">🇩🇪 +49</option>
+                    <option value="+33">🇫🇷 +33</option>
+                    <option value="+39">🇮🇹 +39</option>
+                    <option value="+34">🇪🇸 +34</option>
+                    <option value="+61">🇦🇺 +61</option>
+                    <option value="+55">🇧🇷 +55</option>
+                    <option value="+27">🇿🇦 +27</option>
+                  </select>
+                  <input
+                    type="tel"
+                    placeholder="9876543210"
+                    className="flex-1 px-4 py-4 bg-gray-50 border border-gray-300 rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
               {/* Method Selection */}
               <div className="mb-8">
                 <label className="block text-sm font-semibold text-gray-900 mb-4">
