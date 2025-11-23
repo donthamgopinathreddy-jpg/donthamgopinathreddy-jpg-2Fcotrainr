@@ -57,7 +57,7 @@ export const usePosts = () => {
 
       if (error) throw error;
 
-      if (data) {
+      if (Array.isArray(data)) {
         // Enrich with user details
         const userIds = [...new Set(data.map((p) => p.user_id))];
         const { data: users } = await supabase
@@ -65,7 +65,7 @@ export const usePosts = () => {
           .select("id, full_name, username, profile_picture_url, role")
           .in("id", userIds);
 
-        const userMap = new Map((users || []).map((u) => [u.id, u]));
+        const userMap = new Map((Array.isArray(users) ? users : []).map((u) => [u.id, u]));
 
         const enriched: Post[] = data.map((post) => {
           const author = userMap.get(post.user_id);
@@ -78,6 +78,8 @@ export const usePosts = () => {
         });
 
         setPosts(enriched);
+      } else {
+        setPosts([]);
       }
     } catch (error) {
       console.error("Error fetching posts:", error);

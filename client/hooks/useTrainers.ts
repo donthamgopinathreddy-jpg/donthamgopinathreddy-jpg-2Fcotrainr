@@ -102,7 +102,7 @@ export const useTrainers = () => {
       }
 
       // Enrich with trainer details
-      if (data) {
+      if (Array.isArray(data)) {
         const trainerIds = data.map((u) => u.id);
         const { data: trainerDetails, error: trainerError } = await supabase
           .from("trainers")
@@ -112,7 +112,7 @@ export const useTrainers = () => {
         if (trainerError) throw trainerError;
 
         const trainersMap = new Map(
-          (trainerDetails || []).map((t) => [t.id, t])
+          (Array.isArray(trainerDetails) ? trainerDetails : []).map((t) => [t.id, t])
         );
 
         const enriched = data.map((user) => ({
@@ -121,6 +121,8 @@ export const useTrainers = () => {
         })) as Trainer[];
 
         setTrainers(enriched);
+      } else {
+        setTrainers([]);
       }
     } catch (error) {
       console.error("Error fetching trainers:", error);
