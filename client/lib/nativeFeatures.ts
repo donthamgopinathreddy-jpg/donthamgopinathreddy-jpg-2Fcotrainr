@@ -1,12 +1,4 @@
 import { Capacitor } from "@capacitor/core";
-import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
-import { Geolocation } from "@capacitor/geolocation";
-import { LocalNotifications } from "@capacitor/local-notifications";
-import { Device } from "@capacitor/device";
-import { Preferences } from "@capacitor/preferences";
-import { Network } from "@capacitor/network";
-import { Keyboard } from "@capacitor/keyboard";
-import { StatusBar, Style } from "@capacitor/status-bar";
 
 /**
  * CAMERA FEATURES
@@ -19,12 +11,16 @@ export interface CameraOptions {
 }
 
 export async function takeCameraPhoto(
-  options: CameraOptions = {},
+  options: CameraOptions = {}
 ): Promise<string | null> {
   try {
     if (!Capacitor.isNativePlatform()) {
       return null;
     }
+
+    const { Camera, CameraResultType, CameraSource } = await import(
+      "@capacitor/camera"
+    );
 
     const result = await Camera.getPhoto({
       quality: options.quality || 90,
@@ -34,9 +30,7 @@ export async function takeCameraPhoto(
           ? CameraResultType.Base64
           : CameraResultType.Base64,
       source:
-        options.source === "gallery"
-          ? CameraSource.Photos
-          : CameraSource.Camera,
+        options.source === "gallery" ? CameraSource.Photos : CameraSource.Camera,
       width: options.maxWidth || 800,
       height: options.maxHeight || 800,
     });
@@ -49,7 +43,7 @@ export async function takeCameraPhoto(
 }
 
 export async function selectPhotoFromGallery(
-  options: CameraOptions = {},
+  options: CameraOptions = {}
 ): Promise<string | null> {
   return takeCameraPhoto({ ...options, source: "gallery" });
 }
@@ -67,9 +61,10 @@ export interface UserLocation {
 export async function getCurrentLocation(): Promise<UserLocation | null> {
   try {
     if (!Capacitor.isNativePlatform()) {
-      // Web fallback
       return getWebLocation();
     }
+
+    const { Geolocation } = await import("@capacitor/geolocation");
 
     const coordinates = await Geolocation.getCurrentPosition();
     return {
@@ -85,12 +80,14 @@ export async function getCurrentLocation(): Promise<UserLocation | null> {
 }
 
 export async function watchLocation(
-  callback: (location: UserLocation) => void,
+  callback: (location: UserLocation) => void
 ): Promise<string | null> {
   try {
     if (!Capacitor.isNativePlatform()) {
       return null;
     }
+
+    const { Geolocation } = await import("@capacitor/geolocation");
 
     const watchId = await Geolocation.watchPosition({}, (position) => {
       if (position?.coords) {
@@ -126,7 +123,7 @@ function getWebLocation(): Promise<UserLocation | null> {
           timestamp: Date.now(),
         });
       },
-      () => resolve(null),
+      () => resolve(null)
     );
   });
 }
@@ -146,16 +143,19 @@ export interface NotificationOptions {
 }
 
 export async function scheduleLocalNotification(
-  options: NotificationOptions,
+  options: NotificationOptions
 ): Promise<void> {
   try {
     if (!Capacitor.isNativePlatform()) {
-      // Web Notification API fallback
       if ("Notification" in window && Notification.permission === "granted") {
         new Notification(options.title, { body: options.body });
       }
       return;
     }
+
+    const { LocalNotifications } = await import(
+      "@capacitor/local-notifications"
+    );
 
     await LocalNotifications.schedule({
       notifications: [
@@ -184,6 +184,9 @@ export async function requestNotificationPermission(): Promise<boolean> {
       return "Notification" in window && Notification.permission === "granted";
     }
 
+    const { LocalNotifications } = await import(
+      "@capacitor/local-notifications"
+    );
     const permission = await LocalNotifications.requestPermissions();
     return permission.display === "granted";
   } catch (error) {
@@ -205,6 +208,7 @@ export interface DeviceInfo {
 
 export async function getDeviceInfo(): Promise<DeviceInfo> {
   try {
+    const { Device } = await import("@capacitor/device");
     const info = await Device.getInfo();
     return {
       platform: info.platform || "web",
@@ -230,9 +234,15 @@ export async function getDeviceInfo(): Promise<DeviceInfo> {
  */
 export async function savePreference(
   key: string,
-  value: string,
+  value: string
 ): Promise<void> {
   try {
+    if (!Capacitor.isNativePlatform()) {
+      localStorage.setItem(key, value);
+      return;
+    }
+
+    const { Preferences } = await import("@capacitor/preferences");
     await Preferences.set({ key, value });
   } catch (error) {
     console.error("Preference save error:", error);
@@ -241,6 +251,11 @@ export async function savePreference(
 
 export async function getPreference(key: string): Promise<string | null> {
   try {
+    if (!Capacitor.isNativePlatform()) {
+      return localStorage.getItem(key);
+    }
+
+    const { Preferences } = await import("@capacitor/preferences");
     const result = await Preferences.get({ key });
     return result.value;
   } catch (error) {
@@ -251,6 +266,12 @@ export async function getPreference(key: string): Promise<string | null> {
 
 export async function removePreference(key: string): Promise<void> {
   try {
+    if (!Capacitor.isNativePlatform()) {
+      localStorage.removeItem(key);
+      return;
+    }
+
+    const { Preferences } = await import("@capacitor/preferences");
     await Preferences.remove({ key });
   } catch (error) {
     console.error("Preference remove error:", error);
@@ -259,6 +280,12 @@ export async function removePreference(key: string): Promise<void> {
 
 export async function clearAllPreferences(): Promise<void> {
   try {
+    if (!Capacitor.isNativePlatform()) {
+      localStorage.clear();
+      return;
+    }
+
+    const { Preferences } = await import("@capacitor/preferences");
     await Preferences.clear();
   } catch (error) {
     console.error("Clear preferences error:", error);
@@ -275,6 +302,14 @@ export interface NetworkStatus {
 
 export async function getNetworkStatus(): Promise<NetworkStatus> {
   try {
+    if (!Capacitor.isNativePlatform()) {
+      return {
+        connected: navigator.onLine,
+        type: navigator.onLine ? "wifi" : "none",
+      };
+    }
+
+    const { Network } = await import("@capacitor/network");
     const status = await Network.getStatus();
     return {
       connected: status.connected,
@@ -287,13 +322,25 @@ export async function getNetworkStatus(): Promise<NetworkStatus> {
 }
 
 export function watchNetworkStatus(
-  callback: (status: NetworkStatus) => void,
+  callback: (status: NetworkStatus) => void
 ): void {
   try {
-    Network.addListener("networkStatusChange", (status) => {
-      callback({
-        connected: status.connected,
-        type: status.connectionType || "none",
+    if (!Capacitor.isNativePlatform()) {
+      window.addEventListener("online", () =>
+        callback({ connected: true, type: "wifi" })
+      );
+      window.addEventListener("offline", () =>
+        callback({ connected: false, type: "none" })
+      );
+      return;
+    }
+
+    import("@capacitor/network").then(({ Network }) => {
+      Network.addListener("networkStatusChange", (status) => {
+        callback({
+          connected: status.connected,
+          type: status.connectionType || "none",
+        });
       });
     });
   } catch (error) {
@@ -306,9 +353,12 @@ export function watchNetworkStatus(
  */
 export async function hideKeyboard(): Promise<void> {
   try {
-    if (Capacitor.isNativePlatform()) {
-      await Keyboard.hide();
+    if (!Capacitor.isNativePlatform()) {
+      return;
     }
+
+    const { Keyboard } = await import("@capacitor/keyboard");
+    await Keyboard.hide();
   } catch (error) {
     console.error("Keyboard hide error:", error);
   }
@@ -316,9 +366,12 @@ export async function hideKeyboard(): Promise<void> {
 
 export async function showKeyboard(): Promise<void> {
   try {
-    if (Capacitor.isNativePlatform()) {
-      await Keyboard.show();
+    if (!Capacitor.isNativePlatform()) {
+      return;
     }
+
+    const { Keyboard } = await import("@capacitor/keyboard");
+    await Keyboard.show();
   } catch (error) {
     console.error("Keyboard show error:", error);
   }
@@ -328,14 +381,17 @@ export async function showKeyboard(): Promise<void> {
  * STATUS BAR
  */
 export async function setStatusBarStyle(
-  isDark: boolean = false,
+  isDark: boolean = false
 ): Promise<void> {
   try {
-    if (Capacitor.isNativePlatform()) {
-      await StatusBar.setStyle({
-        style: isDark ? Style.Dark : Style.Light,
-      });
+    if (!Capacitor.isNativePlatform()) {
+      return;
     }
+
+    const { StatusBar, Style } = await import("@capacitor/status-bar");
+    await StatusBar.setStyle({
+      style: isDark ? Style.Dark : Style.Light,
+    });
   } catch (error) {
     console.error("Status bar error:", error);
   }
@@ -343,9 +399,12 @@ export async function setStatusBarStyle(
 
 export async function setStatusBarColor(color: string): Promise<void> {
   try {
-    if (Capacitor.isNativePlatform()) {
-      await StatusBar.setBackgroundColor({ color });
+    if (!Capacitor.isNativePlatform()) {
+      return;
     }
+
+    const { StatusBar } = await import("@capacitor/status-bar");
+    await StatusBar.setBackgroundColor({ color });
   } catch (error) {
     console.error("Status bar color error:", error);
   }
