@@ -1,19 +1,12 @@
 import "dotenv/config";
 import express from "express";
 import path from "path";
-import httpProxy from "http-proxy";
 import { handleDemo } from "./routes/demo";
 import apiRouter from "./routes/api";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Create a proxy to forward requests to NestJS backend
-const nestProxy = httpProxy.createProxyServer({
-  target: "http://localhost:3001",
-  changeOrigin: true,
-});
 
 export function createServer() {
   const app = express();
@@ -40,14 +33,42 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
 
   // Proxy auth routes to NestJS backend
-  app.post("/api/auth/signup", (req, res) => {
-    console.log("[Server] Proxying POST /api/auth/signup to NestJS");
-    nestProxy.web(req, res);
+  app.post("/api/auth/signup", async (req, res) => {
+    try {
+      console.log("[Server] Forwarding POST /api/auth/signup to NestJS backend");
+      const response = await fetch("http://localhost:3001/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req.body),
+      });
+
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (error) {
+      console.error("[Server] Error forwarding auth/signup:", error);
+      res.status(500).json({ error: "Failed to reach authentication service" });
+    }
   });
 
-  app.post("/api/auth/login", (req, res) => {
-    console.log("[Server] Proxying POST /api/auth/login to NestJS");
-    nestProxy.web(req, res);
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      console.log("[Server] Forwarding POST /api/auth/login to NestJS backend");
+      const response = await fetch("http://localhost:3001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(req.body),
+      });
+
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (error) {
+      console.error("[Server] Error forwarding auth/login:", error);
+      res.status(500).json({ error: "Failed to reach authentication service" });
+    }
   });
 
   // Supabase API wrapper - all auth and data operations go through here
