@@ -62,7 +62,7 @@ export default function Messages() {
             <div className="flex items-center justify-center py-12">
               <Loader className="w-6 h-6 animate-spin text-primary" />
             </div>
-          ) : displayConversations.length > 0 ? (
+          ) : Array.isArray(displayConversations) && displayConversations.length > 0 ? (
             displayConversations.map((conv) => (
               <button
                 key={conv.id}
