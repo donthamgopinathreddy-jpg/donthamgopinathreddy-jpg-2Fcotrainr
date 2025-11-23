@@ -39,7 +39,11 @@ export function createServer() {
   // Proxy auth routes to Supabase API routes (for backward compatibility with frontend)
   // These routes rewrite the request URL and pass it to the apiRouter
   app.post('/api/auth/signup', async (req, res, next) => {
-    console.log('[Server] Forwarding POST /api/auth/signup to supabase auth/signup');
+    console.log('[Server] ========================================');
+    console.log('[Server] Received POST /api/auth/signup');
+    console.log('[Server] Request body:', JSON.stringify(req.body, null, 2));
+    console.log('[Server] Forwarding to apiRouter at /auth/signup');
+    console.log('[Server] ========================================');
     req.url = '/auth/signup';
     apiRouter(req, res, next);
   });
