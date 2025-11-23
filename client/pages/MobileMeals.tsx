@@ -2,56 +2,54 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, ArrowLeft, Flame, Calendar } from "lucide-react";
 import { toast } from "sonner";
-import { mealsApi } from "@/lib/api";
+import { useMeals } from "@/hooks/useMeals";
 
 export default function MobileMeals() {
   const navigate = useNavigate();
-  const [meals, setMeals] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { meals, loading, addMeal, deleteMeal, fetchTodayMeals } = useMeals();
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0],
   );
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    meal_type: "breakfast",
+    meal_type: "breakfast" as "breakfast" | "lunch" | "dinner" | "snack",
+    food_name: "",
+    weight_g: "",
     calories: "",
-    notes: "",
+    protein_g: "",
+    carbs_g: "",
+    fat_g: "",
   });
 
   useEffect(() => {
-    loadMeals();
-  }, [selectedDate]);
+    fetchTodayMeals();
+  }, []);
 
-  const loadMeals = async () => {
-    try {
-      setLoading(true);
-      const data = await mealsApi.getMeals(selectedDate);
-      setMeals(data || []);
-    } catch (error) {
-      console.error("Error loading meals:", error);
-    } finally {
-      setLoading(false);
-    }
+  const handleFetchMeals = async () => {
+    await fetchTodayMeals();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.calories) {
-      toast.error("Please enter calories");
+    if (!formData.food_name || !formData.calories) {
+      toast.error("Please enter food name and calories");
       return;
     }
 
     try {
-      await mealsApi.logMeal({
-        date: selectedDate,
-        meal_type: formData.meal_type,
+      await addMeal({
+        food_name: formData.food_name,
+        weight_g: parseInt(formData.weight_g) || 100,
         calories: parseInt(formData.calories),
-        notes: formData.notes,
+        protein_g: parseInt(formData.protein_g) || 0,
+        carbs_g: parseInt(formData.carbs_g) || 0,
+        fat_g: parseInt(formData.fat_g) || 0,
+        meal_type: formData.meal_type,
       });
       toast.success("Meal logged successfully");
-      setFormData({ meal_type: "breakfast", calories: "", notes: "" });
+      setFormData({ meal_type: "breakfast", food_name: "", weight_g: "", calories: "", protein_g: "", carbs_g: "", fat_g: "" });
       setShowForm(false);
-      loadMeals();
+      await handleFetchMeals();
     } catch (error: any) {
       toast.error(error.message || "Failed to log meal");
     }
