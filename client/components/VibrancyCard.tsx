@@ -37,7 +37,9 @@ export default function VibrancyCard({
 }: VibrancyCardProps) {
   const gradientClass = `bg-gradient-to-br ${GRADIENTS[gradient]}`;
   const shadowClass = SHADOWS[shadow];
-  const hoverClass = clickable ? "hover:scale-105 hover:shadow-2xl cursor-pointer" : "";
+  const hoverClass = clickable
+    ? "hover:scale-105 hover:shadow-2xl cursor-pointer"
+    : "";
   const animationClass = animate
     ? "animate-fade-in transition-all duration-300"
     : "";

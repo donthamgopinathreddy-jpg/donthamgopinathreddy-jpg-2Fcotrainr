@@ -15,7 +15,10 @@ interface MealCardProps {
   onEdit?: () => void;
 }
 
-const MEAL_TYPE_COLORS: Record<string, "orange" | "purple" | "blue" | "green" | "pink"> = {
+const MEAL_TYPE_COLORS: Record<
+  string,
+  "orange" | "purple" | "blue" | "green" | "pink"
+> = {
   breakfast: "orange",
   lunch: "green",
   dinner: "purple",

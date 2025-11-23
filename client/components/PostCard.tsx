@@ -41,9 +41,7 @@ export default function PostCard({
   onComment,
   onShare,
 }: PostCardProps) {
-  const roleColor = authorRole
-    ? ROLE_COLORS[authorRole] || "blue"
-    : "blue";
+  const roleColor = authorRole ? ROLE_COLORS[authorRole] || "blue" : "blue";
 
   return (
     <VibrancyCard
@@ -57,16 +55,18 @@ export default function PostCard({
         <div className="flex items-center gap-3 flex-1">
           <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center overflow-hidden text-lg font-bold">
             {authorAvatar ? (
-              <img src={authorAvatar} alt={authorName} className="w-full h-full object-cover" />
+              <img
+                src={authorAvatar}
+                alt={authorName}
+                className="w-full h-full object-cover"
+              />
             ) : (
               authorName.charAt(0)
             )}
           </div>
           <div>
             <p className="font-semibold text-sm">{authorName}</p>
-            {timestamp && (
-              <p className="text-xs opacity-75">{timestamp}</p>
-            )}
+            {timestamp && <p className="text-xs opacity-75">{timestamp}</p>}
           </div>
         </div>
         <button className="text-white/60 hover:text-white p-2">
@@ -108,15 +108,10 @@ export default function PostCard({
           <button
             onClick={onLike}
             className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all ${
-              isLiked
-                ? "bg-white/30"
-                : "bg-white/10 hover:bg-white/20"
+              isLiked ? "bg-white/30" : "bg-white/10 hover:bg-white/20"
             }`}
           >
-            <Heart
-              size={16}
-              className={isLiked ? "fill-white" : ""}
-            />
+            <Heart size={16} className={isLiked ? "fill-white" : ""} />
             <span className="text-sm font-medium">Like</span>
           </button>
           <button

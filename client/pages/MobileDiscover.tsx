@@ -13,11 +13,14 @@ export default function MobileDiscover() {
 
   // Filter trainers by category and search
   const filteredTrainers = trainers.filter((trainer) => {
-    const matchesCategory = !category ||
-      (trainer.specialties && trainer.specialties.some(s =>
-        s.toLowerCase().includes(category.toLowerCase())
-      ));
-    const matchesSearch = !searchQuery ||
+    const matchesCategory =
+      !category ||
+      (trainer.specialties &&
+        trainer.specialties.some((s) =>
+          s.toLowerCase().includes(category.toLowerCase()),
+        ));
+    const matchesSearch =
+      !searchQuery ||
       trainer.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       trainer.bio?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;

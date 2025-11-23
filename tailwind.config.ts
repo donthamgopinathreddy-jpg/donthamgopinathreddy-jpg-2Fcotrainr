@@ -65,8 +65,10 @@ export default {
       },
       backgroundImage: {
         "gradient-primary": "linear-gradient(135deg, #ff9500 0%, #ffd700 100%)",
-        "gradient-primary-reverse": "linear-gradient(135deg, #ffd700 0%, #ff9500 100%)",
-        "gradient-glow": "radial-gradient(circle at center, rgba(255, 149, 0, 0.3) 0%, transparent 70%)",
+        "gradient-primary-reverse":
+          "linear-gradient(135deg, #ffd700 0%, #ff9500 100%)",
+        "gradient-glow":
+          "radial-gradient(circle at center, rgba(255, 149, 0, 0.3) 0%, transparent 70%)",
       },
       keyframes: {
         "accordion-down": {
@@ -85,7 +87,7 @@ export default {
             height: "0",
           },
         },
-        "shimmer": {
+        shimmer: {
           "0%": {
             backgroundPosition: "-1000px 0",
           },
@@ -131,7 +133,7 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "shimmer": "shimmer 3s infinite",
+        shimmer: "shimmer 3s infinite",
         "pulse-glow": "pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "scale-bounce": "scale-bounce 0.2s ease-out",
         "slide-up": "slide-up 0.3s ease-out",

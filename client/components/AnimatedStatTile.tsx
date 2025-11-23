@@ -23,10 +23,7 @@ export default function AnimatedStatTile({
   delay = 0,
 }: AnimatedStatTileProps) {
   return (
-    <div
-      className="animate-slide-up"
-      style={{ animationDelay: `${delay}ms` }}
-    >
+    <div className="animate-slide-up" style={{ animationDelay: `${delay}ms` }}>
       <VibrancyCard
         gradient={gradient}
         shadow="medium"
@@ -42,7 +39,7 @@ export default function AnimatedStatTile({
             {value}
             {unit && <span className="text-lg ml-1">{unit}</span>}
           </p>
-          
+
           {progress !== undefined && (
             <div className="w-full mt-2 h-2 bg-white/30 rounded-full overflow-hidden">
               <div

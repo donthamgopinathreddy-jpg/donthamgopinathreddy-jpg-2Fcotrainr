@@ -47,7 +47,15 @@ export default function MobileMeals() {
         meal_type: formData.meal_type,
       });
       toast.success("Meal logged successfully");
-      setFormData({ meal_type: "breakfast", food_name: "", weight_g: "", calories: "", protein_g: "", carbs_g: "", fat_g: "" });
+      setFormData({
+        meal_type: "breakfast",
+        food_name: "",
+        weight_g: "",
+        calories: "",
+        protein_g: "",
+        carbs_g: "",
+        fat_g: "",
+      });
       setShowForm(false);
       await handleFetchMeals();
     } catch (error: any) {

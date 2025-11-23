@@ -51,7 +51,11 @@ export default function TrainerCard({
           <div className="relative">
             <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center font-bold text-2xl overflow-hidden flex-shrink-0">
               {image ? (
-                <img src={image} alt={name} className="w-full h-full object-cover" />
+                <img
+                  src={image}
+                  alt={name}
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <span>{name.charAt(0)}</span>
               )}
