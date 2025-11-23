@@ -317,33 +317,60 @@ export default function MobileLogin() {
 
       <style>{`
         @keyframes fade-in {
-          from { 
-            opacity: 0; 
-            transform: translateY(-20px); 
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
           }
-          to { 
-            opacity: 1; 
-            transform: translateY(0); 
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
         }
-        
+
         @keyframes slide-down {
-          from { 
-            opacity: 0; 
-            transform: translateY(-10px); 
+          from {
+            opacity: 0;
+            transform: translateY(-15px);
           }
-          to { 
-            opacity: 1; 
-            transform: translateY(0); 
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
         }
-        
+
+        @keyframes pulse-scale {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.02);
+          }
+        }
+
+        @keyframes input-focus {
+          from {
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+          }
+          to {
+            box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.1);
+          }
+        }
+
         .animate-fade-in {
-          animation: fade-in 0.6s ease-out;
+          animation: fade-in 0.8s ease-out;
         }
-        
+
         .animate-slide-down {
-          animation: slide-down 0.3s ease-out;
+          animation: slide-down 0.4s ease-out;
+        }
+
+        .group input:focus ~ label,
+        input:focus {
+          animation: input-focus 0.3s ease-out;
+        }
+
+        button:active {
+          animation: pulse-scale 0.2s ease-out;
         }
       `}</style>
     </div>
