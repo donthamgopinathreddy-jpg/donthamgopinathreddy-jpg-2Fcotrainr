@@ -166,6 +166,8 @@ export default function MobileSignup() {
         role: formData.role as "client" | "trainer",
         height_cm: heightInCm,
         weight_kg: weightInKg,
+        phone_number: formData.country_code + formData.phone_number,
+        country_code: formData.country_code,
       });
 
       // Show success animation
