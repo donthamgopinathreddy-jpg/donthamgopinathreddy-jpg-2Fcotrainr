@@ -127,6 +127,7 @@ export default function Login() {
           <div className="text-right">
             <button
               type="button"
+              onClick={() => setShowResetModal(true)}
               className="text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors"
             >
               Forgot password?
