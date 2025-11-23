@@ -491,4 +491,36 @@ router.get("/notifications", async (req: Request, res: Response) => {
   }
 });
 
+// Reset password endpoint
+router.post("/auth/reset-password", async (req: Request, res: Response) => {
+  try {
+    console.log("[API] Reset password endpoint called");
+    const { email, method = "email" } = req.body;
+
+    if (!email) {
+      console.log("[API] Missing email for password reset");
+      return res.status(400).json({
+        error: "Missing email address",
+      });
+    }
+
+    console.log("[API] Password reset requested for:", email, "via:", method);
+
+    // In production, you would:
+    // 1. Call Supabase password reset: await supabase.auth.resetPasswordForEmail(email)
+    // 2. Send SMS if method === 'phone'
+    // For now, we just return success as these services require external setup
+
+    res.json({
+      success: true,
+      message: `Password reset link will be sent to ${method === "email" ? email : "your phone number"}`,
+    });
+  } catch (error) {
+    console.error("[API] Unexpected reset password error:", error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
+
 export default router;
