@@ -112,7 +112,7 @@ export default function Signup() {
       return;
     }
 
-    if (!formData.height || !formData.weight) {
+    if (!formData.height_feet || !formData.height_inches || !formData.weight_kg || !formData.weight_pounds) {
       toast.error("Please enter your height and weight");
       return;
     }
