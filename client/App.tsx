@@ -52,7 +52,6 @@ import TrainerDashboardDemo from "./pages/TrainerDashboardDemo";
 import AdminDashboardDemo from "./pages/AdminDashboardDemo";
 import MobileLogin from "./pages/MobileLogin";
 import MobileSignup from "./pages/MobileSignup";
-import MobileHome from "./pages/MobileHome";
 import MobileDiscover from "./pages/MobileDiscover";
 import MobileMeals from "./pages/MobileMeals";
 import MobileFeed from "./pages/MobileFeed";
