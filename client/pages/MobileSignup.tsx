@@ -384,11 +384,11 @@ export default function MobileSignup() {
               <button
                 onClick={handleNext}
                 disabled={loading}
-                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/75"
+                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/75"
               >
                 {loading ? (
                   <>
-                    <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                    <div className="w-4 h-4 rounded-full border-2 border-gray-800/30 border-t-gray-800 animate-spin" />
                     Creating...
                   </>
                 ) : (
@@ -412,7 +412,7 @@ export default function MobileSignup() {
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <div className="group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-orange-600 transition-colors">
+                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
                     Feet
                   </label>
                   <input
@@ -421,11 +421,11 @@ export default function MobileSignup() {
                     value={formData.height_feet}
                     onChange={handleInputChange}
                     placeholder="5"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                   />
                 </div>
                 <div className="group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-orange-600 transition-colors">
+                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
                     Inches
                   </label>
                   <input
@@ -434,7 +434,7 @@ export default function MobileSignup() {
                     value={formData.height_inches}
                     onChange={handleInputChange}
                     placeholder="10"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                   />
                 </div>
               </div>
@@ -452,7 +452,7 @@ export default function MobileSignup() {
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <div className="group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-orange-600 transition-colors">
+                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
                     Kilograms (kg)
                   </label>
                   <input
@@ -461,11 +461,11 @@ export default function MobileSignup() {
                     value={formData.weight_kg}
                     onChange={handleInputChange}
                     placeholder="75"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                   />
                 </div>
                 <div className="group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-orange-600 transition-colors">
+                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
                     Pounds (lbs)
                   </label>
                   <input
@@ -474,14 +474,14 @@ export default function MobileSignup() {
                     value={formData.weight_pounds}
                     onChange={handleInputChange}
                     placeholder="165"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                   />
                 </div>
               </div>
             </div>
 
             <div className="group">
-              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-yellow-600 transition-colors">
                 Account Type
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -491,7 +491,7 @@ export default function MobileSignup() {
                     onClick={() => setFormData((prev) => ({ ...prev, role }))}
                     className={`px-5 py-4 rounded-2xl border-2 font-semibold capitalize transition-all duration-300 transform hover:scale-105 ${
                       formData.role === role
-                        ? "bg-gradient-to-r from-orange-500 to-orange-600 border-orange-600 text-white shadow-xl shadow-orange-500/50"
+                        ? "bg-gradient-to-r from-yellow-400 to-yellow-500 border-yellow-500 text-gray-800 shadow-xl shadow-yellow-400/50"
                         : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
                     }`}
                   >
@@ -512,11 +512,11 @@ export default function MobileSignup() {
               <button
                 onClick={handleNext}
                 disabled={loading}
-                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-500/75"
+                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/75"
               >
                 {loading ? (
                   <>
-                    <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                    <div className="w-4 h-4 rounded-full border-2 border-gray-800/30 border-t-gray-800 animate-spin" />
                     Creating...
                   </>
                 ) : (
