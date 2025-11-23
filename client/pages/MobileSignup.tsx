@@ -23,8 +23,10 @@ export default function MobileSignup() {
     email: "",
     password: "",
     username: "",
-    height: "",
-    weight: "",
+    height_feet: "",
+    height_inches: "",
+    weight_kg: "",
+    weight_pounds: "",
     role: "client",
     full_name: "",
   });
