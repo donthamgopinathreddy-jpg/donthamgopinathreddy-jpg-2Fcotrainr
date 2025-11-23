@@ -385,8 +385,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error("Email and password are required");
       }
 
-      // Call NestJS backend using direct fetch
-      const response = await fetch("http://localhost:3001/auth/login", {
+      // Call NestJS backend using API proxy
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
