@@ -435,18 +435,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       const data = await response.json();
-      console.log("[Auth] Sign in successful for user:", data.user?.email);
+      console.log("[Auth] Response JSON parsed:", {
+        hasSession: !!data.session,
+        hasUser: !!data.user,
+        userEmail: data.user?.email,
+        hasToken: !!data.token,
+      });
+
+      if (!data.user) {
+        throw new Error("No user returned from login response");
+      }
+
+      console.log("[Auth] Sign in successful for user:", data.user.email);
 
       // Store session and user data
       if (data.session?.access_token) {
+        console.log("[Auth] Setting auth token from session");
         setAuthToken(data.session.access_token);
+      } else if (data.token) {
+        console.log("[Auth] Setting auth token from response");
+        setAuthToken(data.token);
       }
 
       // Update user state
+      console.log("[Auth] Updating user state with:", {
+        id: data.user.id,
+        email: data.user.email,
+      });
       setUser(data.user as any);
       setUserProfile(data.user);
 
-      console.log("[Auth] User state updated");
+      console.log("[Auth] User state updated successfully");
     } catch (error: any) {
       console.error("[Auth] Error signing in:", error);
       const errorMessage = error?.message || "Sign in failed";
