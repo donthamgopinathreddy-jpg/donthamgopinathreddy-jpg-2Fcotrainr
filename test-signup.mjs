@@ -3,9 +3,9 @@ const testSignup = async () => {
   console.log('='.repeat(50));
   
   const signupData = {
-    email: 'test@example.com',
-    password: 'test123',
-    username: 'testuser123',
+    email: 'testuser' + Date.now() + '@gmail.com',
+    password: 'Test123!@#',
+    username: 'testuser' + Date.now(),
     full_name: 'Test User',
     role: 'client',
     height: 180,
