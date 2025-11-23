@@ -317,7 +317,15 @@ const AppRoutes = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <MobileHome />
+            <HomeModern />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/community"
+        element={
+          <ProtectedRoute>
+            <Community />
           </ProtectedRoute>
         }
       />
