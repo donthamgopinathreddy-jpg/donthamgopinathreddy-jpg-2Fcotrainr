@@ -92,7 +92,7 @@ export default function MobileDiscover() {
         </div>
       ) : (
         <div className="px-4 py-4 space-y-3">
-          {trainers.map((trainer) => (
+          {filteredTrainers.map((trainer) => (
             <div
               key={trainer.id}
               className="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-all"
