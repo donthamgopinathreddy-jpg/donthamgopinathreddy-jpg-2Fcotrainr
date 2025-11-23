@@ -65,6 +65,17 @@ export default function MobileMeals() {
 
   const mealTypes = ["breakfast", "lunch", "snack", "dinner"];
 
+  if (loading && meals.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 pb-20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin h-8 w-8 rounded-full border-4 border-green-500 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading meals...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
