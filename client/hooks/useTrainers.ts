@@ -30,7 +30,8 @@ export const useTrainers = () => {
       full_name: "Alex Kumar",
       email: "alex@example.com",
       bio: "Certified fitness trainer with 5+ years experience",
-      profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
+      profile_picture_url:
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
       years_of_experience: 5,
       specialties: ["Gym", "CrossFit"],
       certifications: ["ACE", "NASM"],
@@ -46,7 +47,8 @@ export const useTrainers = () => {
       full_name: "Priya Singh",
       email: "priya@example.com",
       bio: "Yoga instructor and wellness coach",
-      profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=priya",
+      profile_picture_url:
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=priya",
       years_of_experience: 8,
       specialties: ["Yoga", "Meditation"],
       certifications: ["RYT-200"],
@@ -62,7 +64,8 @@ export const useTrainers = () => {
       full_name: "Raj Patel",
       email: "raj@example.com",
       bio: "Professional boxing coach",
-      profile_picture_url: "https://api.dicebear.com/7.x/avataaars/svg?seed=raj",
+      profile_picture_url:
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=raj",
       years_of_experience: 6,
       specialties: ["Boxing", "Cardio"],
       certifications: ["Pro Boxing Coach"],
@@ -78,10 +81,7 @@ export const useTrainers = () => {
   const fetchTrainers = async (specialty?: string) => {
     setLoading(true);
     try {
-      let query = supabase
-        .from("users")
-        .select("*")
-        .eq("role", "trainer");
+      let query = supabase.from("users").select("*").eq("role", "trainer");
 
       if (specialty) {
         query = query.contains("specialties", [specialty]);
@@ -94,7 +94,7 @@ export const useTrainers = () => {
         let demoTrainers = DEMO_TRAINERS;
         if (specialty) {
           demoTrainers = demoTrainers.filter((t) =>
-            t.specialties.includes(specialty)
+            t.specialties.includes(specialty),
           );
         }
         setTrainers(demoTrainers);
@@ -112,7 +112,10 @@ export const useTrainers = () => {
         if (trainerError) throw trainerError;
 
         const trainersMap = new Map(
-          (Array.isArray(trainerDetails) ? trainerDetails : []).map((t) => [t.id, t])
+          (Array.isArray(trainerDetails) ? trainerDetails : []).map((t) => [
+            t.id,
+            t,
+          ]),
         );
 
         const enriched = data.map((user) => ({
@@ -130,7 +133,7 @@ export const useTrainers = () => {
       let demoTrainers = DEMO_TRAINERS;
       if (specialty) {
         demoTrainers = demoTrainers.filter((t) =>
-          t.specialties.includes(specialty)
+          t.specialties.includes(specialty),
         );
       }
       setTrainers(demoTrainers);

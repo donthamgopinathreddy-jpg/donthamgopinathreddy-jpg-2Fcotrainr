@@ -65,7 +65,9 @@ export const usePosts = () => {
           .select("id, full_name, username, profile_picture_url, role")
           .in("id", userIds);
 
-        const userMap = new Map((Array.isArray(users) ? users : []).map((u) => [u.id, u]));
+        const userMap = new Map(
+          (Array.isArray(users) ? users : []).map((u) => [u.id, u]),
+        );
 
         const enriched: Post[] = data.map((post) => {
           const author = userMap.get(post.user_id);

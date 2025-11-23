@@ -61,7 +61,10 @@ export const useBookings = () => {
               .in("id", userIds);
 
             const userMap = new Map(
-              (Array.isArray(users) ? users : []).map((u) => [u.id, u.full_name])
+              (Array.isArray(users) ? users : []).map((u) => [
+                u.id,
+                u.full_name,
+              ]),
             );
 
             return {
@@ -69,7 +72,7 @@ export const useBookings = () => {
               client_name: userMap.get(booking.client_id),
               trainer_name: userMap.get(booking.trainer_id),
             };
-          })
+          }),
         );
 
         setBookings(bookingsWithNames);
@@ -88,7 +91,7 @@ export const useBookings = () => {
     trainerId: string,
     sessionDate: string,
     durationMinutes: number = 60,
-    notes?: string
+    notes?: string,
   ) => {
     if (!user) return;
 
@@ -114,7 +117,10 @@ export const useBookings = () => {
         const existingBookings = demoBookings ? JSON.parse(demoBookings) : [];
         const updatedBookings = [...existingBookings, newBooking];
 
-        localStorage.setItem(`bookings_demo_${user.id}`, JSON.stringify(updatedBookings));
+        localStorage.setItem(
+          `bookings_demo_${user.id}`,
+          JSON.stringify(updatedBookings),
+        );
         setBookings((prev) => [...prev, newBooking]);
         return newBooking;
       }
@@ -144,7 +150,7 @@ export const useBookings = () => {
   // Update booking status
   const updateBookingStatus = async (
     bookingId: string,
-    status: "pending" | "confirmed" | "completed" | "cancelled"
+    status: "pending" | "confirmed" | "completed" | "cancelled",
   ) => {
     if (!user) return;
 
@@ -158,9 +164,12 @@ export const useBookings = () => {
         if (demoBookings) {
           const existingBookings = JSON.parse(demoBookings);
           const updatedBookings = existingBookings.map((b: Booking) =>
-            b.id === bookingId ? { ...b, status, updated_at: updatedAt } : b
+            b.id === bookingId ? { ...b, status, updated_at: updatedAt } : b,
           );
-          localStorage.setItem(`bookings_demo_${user.id}`, JSON.stringify(updatedBookings));
+          localStorage.setItem(
+            `bookings_demo_${user.id}`,
+            JSON.stringify(updatedBookings),
+          );
           setBookings(updatedBookings);
 
           return existingBookings.find((b: Booking) => b.id === bookingId);
@@ -176,9 +185,7 @@ export const useBookings = () => {
         .single();
 
       if (error) throw error;
-      setBookings((prev) =>
-        prev.map((b) => (b.id === bookingId ? data : b))
-      );
+      setBookings((prev) => prev.map((b) => (b.id === bookingId ? data : b)));
       return data;
     } catch (error) {
       console.error("Error updating booking:", error);

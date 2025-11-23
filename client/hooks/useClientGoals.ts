@@ -52,7 +52,7 @@ export function useClientGoals(clientId?: string) {
             full_name,
             profile_picture_url
           )
-        `
+        `,
         )
         .eq("client_id", clientId)
         .eq("status", "active")
@@ -69,7 +69,7 @@ export function useClientGoals(clientId?: string) {
         const formattedGoals: ClientGoal[] = data.map((goal: any) => ({
           ...goal,
           progress_percentage: Math.round(
-            (goal.current_value / goal.target_value) * 100
+            (goal.current_value / goal.target_value) * 100,
           ),
           trainer: goal.users,
         }));
@@ -81,7 +81,7 @@ export function useClientGoals(clientId?: string) {
     } catch (err) {
       console.debug(
         "Fetch goals catch error:",
-        err instanceof Error ? err.message : "Unknown error"
+        err instanceof Error ? err.message : "Unknown error",
       );
       setError("Failed to fetch goals");
       setGoals([]);
