@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, Star, Heart, ArrowLeft } from 'lucide-react';
-import { trainersApi } from '@/lib/api';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Search, MapPin, Star, Heart, ArrowLeft } from "lucide-react";
+import { trainersApi } from "@/lib/api";
 
 export default function MobileDiscover() {
   const navigate = useNavigate();
   const [trainers, setTrainers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [category, setCategory] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const categories = ['gym', 'yoga', 'boxing', 'zumba', 'nutrition'];
+  const categories = ["gym", "yoga", "boxing", "zumba", "nutrition"];
 
   useEffect(() => {
     loadTrainers();
@@ -24,7 +24,7 @@ export default function MobileDiscover() {
       });
       setTrainers(data || []);
     } catch (error) {
-      console.error('Error loading trainers:', error);
+      console.error("Error loading trainers:", error);
     } finally {
       setLoading(false);
     }
@@ -35,7 +35,7 @@ export default function MobileDiscover() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-10">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           className="flex items-center gap-2 text-orange-600 font-semibold mb-4"
         >
           <ArrowLeft size={20} />
@@ -62,23 +62,23 @@ export default function MobileDiscover() {
       <div className="px-4 py-4 bg-white overflow-x-auto">
         <div className="flex gap-2 pb-2">
           <button
-            onClick={() => setCategory('')}
+            onClick={() => setCategory("")}
             className={`px-4 py-2 rounded-full font-semibold whitespace-nowrap transition-all ${
-              category === ''
-                ? 'bg-orange-500 text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              category === ""
+                ? "bg-orange-500 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
           >
             All
           </button>
-          {categories.map(cat => (
+          {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setCategory(cat)}
               className={`px-4 py-2 rounded-full font-semibold whitespace-nowrap capitalize transition-all ${
                 category === cat
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? "bg-orange-500 text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
               {cat}
@@ -99,7 +99,7 @@ export default function MobileDiscover() {
         </div>
       ) : (
         <div className="px-4 py-4 space-y-3">
-          {trainers.map(trainer => (
+          {trainers.map((trainer) => (
             <div
               key={trainer.id}
               className="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-all"
@@ -115,10 +115,10 @@ export default function MobileDiscover() {
                   <div className="flex justify-between items-start mb-2">
                     <div>
                       <h3 className="font-bold text-gray-900">
-                        {trainer.users?.username || 'Trainer'}
+                        {trainer.users?.username || "Trainer"}
                       </h3>
                       <p className="text-xs text-gray-500 capitalize">
-                        {trainer.categories?.join(', ') || 'Fitness'}
+                        {trainer.categories?.join(", ") || "Fitness"}
                       </p>
                     </div>
                     <button className="text-red-500 hover:text-red-600">
@@ -128,14 +128,20 @@ export default function MobileDiscover() {
 
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1">
-                      <Star size={16} className="text-yellow-500" fill="currentColor" />
+                      <Star
+                        size={16}
+                        className="text-yellow-500"
+                        fill="currentColor"
+                      />
                       <span className="text-sm font-semibold text-gray-900">
-                        {trainer.rating?.toFixed(1) || '4.5'}
+                        {trainer.rating?.toFixed(1) || "4.5"}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 text-gray-600">
                       <MapPin size={16} />
-                      <span className="text-sm">{trainer.years_experience || 5}y exp</span>
+                      <span className="text-sm">
+                        {trainer.years_experience || 5}y exp
+                      </span>
                     </div>
                   </div>
 

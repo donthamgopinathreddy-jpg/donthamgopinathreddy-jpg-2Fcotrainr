@@ -1,32 +1,32 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
-import { toast } from 'sonner';
-import { useAuth } from '@/contexts/AuthContext';
-import Logo from '@/components/Logo';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
+import Logo from "@/components/Logo";
 
 export default function MobileLogin() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      toast.error('Please fill in all fields');
+      toast.error("Please fill in all fields");
       return;
     }
 
     setLoading(true);
     try {
       await signIn(email, password);
-      toast.success('Logged in successfully!');
-      navigate('/');
+      toast.success("Logged in successfully!");
+      navigate("/");
     } catch (error: any) {
-      toast.error(error.message || 'Login failed');
+      toast.error(error.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ export default function MobileLogin() {
           </label>
           <div className="relative">
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
@@ -94,16 +94,16 @@ export default function MobileLogin() {
           disabled={loading}
           className="w-full px-4 py-3 mt-6 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? 'Signing in...' : 'Sign In'}
+          {loading ? "Signing in..." : "Sign In"}
         </button>
       </form>
 
       {/* Signup Link */}
       <div className="px-4 py-6 border-t border-gray-200">
         <p className="text-center text-gray-600 mb-4">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <button
-            onClick={() => navigate('/signup')}
+            onClick={() => navigate("/signup")}
             className="text-orange-600 hover:text-orange-700 font-semibold"
           >
             Create one
@@ -116,8 +116,8 @@ export default function MobileLogin() {
         <div className="px-4 pb-8">
           <button
             onClick={() => {
-              setEmail('demo@cotrainr.app');
-              setPassword('password123');
+              setEmail("demo@cotrainr.app");
+              setPassword("password123");
             }}
             className="w-full px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs transition-colors"
           >

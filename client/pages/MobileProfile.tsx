@@ -1,23 +1,31 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Edit2, LogOut, Heart, TrendingUp, Award, Share2 } from 'lucide-react';
-import { toast } from 'sonner';
-import { useAuth } from '@/contexts/AuthContext';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowLeft,
+  Edit2,
+  LogOut,
+  Heart,
+  TrendingUp,
+  Award,
+  Share2,
+} from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function MobileProfile() {
   const navigate = useNavigate();
   const { userProfile, signOut } = useAuth();
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
-    height_cm: userProfile?.height_cm || '',
-    weight_kg: userProfile?.weight_kg || '',
+    height_cm: userProfile?.height_cm || "",
+    weight_kg: userProfile?.weight_kg || "",
   });
 
   const handleLogout = async () => {
     try {
       await signOut();
-      navigate('/login');
-      toast.success('Logged out successfully');
+      navigate("/login");
+      toast.success("Logged out successfully");
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -28,7 +36,7 @@ export default function MobileProfile() {
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-6">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           className="flex items-center gap-2 font-semibold mb-4"
         >
           <ArrowLeft size={20} />
@@ -41,13 +49,17 @@ export default function MobileProfile() {
             👤
           </div>
           <h1 className="text-2xl font-bold mb-1">{userProfile?.username}</h1>
-          <p className="text-purple-100 text-sm mb-4 capitalize">{userProfile?.role}</p>
+          <p className="text-purple-100 text-sm mb-4 capitalize">
+            {userProfile?.role}
+          </p>
 
           <div className="bg-white/10 rounded-xl p-3 space-y-2 text-sm">
             <p>Email: {userProfile?.email}</p>
             <p>Height: {userProfile?.height_cm} cm</p>
             <p>Weight: {userProfile?.weight_kg} kg</p>
-            <p className="font-semibold">BMI: {userProfile?.bmi?.toFixed(1)} ({userProfile?.bmi_status})</p>
+            <p className="font-semibold">
+              BMI: {userProfile?.bmi?.toFixed(1)} ({userProfile?.bmi_status})
+            </p>
           </div>
         </div>
       </div>
@@ -88,7 +100,9 @@ export default function MobileProfile() {
 
         <button className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left">
           <p className="font-semibold text-gray-900">Notification Settings</p>
-          <p className="text-xs text-gray-500 mt-1">Manage your notifications</p>
+          <p className="text-xs text-gray-500 mt-1">
+            Manage your notifications
+          </p>
         </button>
 
         <button className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left">

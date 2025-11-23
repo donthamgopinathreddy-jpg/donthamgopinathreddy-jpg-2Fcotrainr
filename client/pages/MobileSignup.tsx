@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { toast } from 'sonner';
-import { useAuth } from '@/contexts/AuthContext';
-import Logo from '@/components/Logo';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
+import Logo from "@/components/Logo";
 
 export default function MobileSignup() {
   const navigate = useNavigate();
@@ -13,40 +13,42 @@ export default function MobileSignup() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    username: '',
-    height: '',
-    weight: '',
-    role: 'client',
-    full_name: '',
+    email: "",
+    password: "",
+    username: "",
+    height: "",
+    weight: "",
+    role: "client",
+    full_name: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleNext = () => {
     if (step === 1) {
       if (!formData.email || !formData.password) {
-        toast.error('Please fill in all fields');
+        toast.error("Please fill in all fields");
         return;
       }
       if (formData.password.length < 6) {
-        toast.error('Password must be at least 6 characters');
+        toast.error("Password must be at least 6 characters");
         return;
       }
       setStep(2);
     } else if (step === 2) {
       if (!formData.full_name || !formData.username) {
-        toast.error('Please fill in all fields');
+        toast.error("Please fill in all fields");
         return;
       }
       setStep(3);
     } else if (step === 3) {
       if (!formData.height || !formData.weight) {
-        toast.error('Please fill in all fields');
+        toast.error("Please fill in all fields");
         return;
       }
       handleSignup();
@@ -59,14 +61,14 @@ export default function MobileSignup() {
       await signUp(formData.email, formData.password, {
         username: formData.username,
         full_name: formData.full_name,
-        role: formData.role as 'client' | 'trainer',
+        role: formData.role as "client" | "trainer",
         height_cm: parseInt(formData.height),
         weight_kg: parseInt(formData.weight),
       });
-      toast.success('Account created successfully!');
-      navigate('/');
+      toast.success("Account created successfully!");
+      navigate("/");
     } catch (error: any) {
-      toast.error(error.message || 'Signup failed');
+      toast.error(error.message || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -77,17 +79,17 @@ export default function MobileSignup() {
       {/* Header */}
       <div className="sticky top-0 bg-white border-b border-gray-100 px-4 py-3">
         <button
-          onClick={() => step > 1 ? setStep(step - 1) : navigate('/login')}
+          onClick={() => (step > 1 ? setStep(step - 1) : navigate("/login"))}
           className="text-orange-600 font-semibold text-sm"
         >
-          ← {step > 1 ? 'Back' : 'Login'}
+          ← {step > 1 ? "Back" : "Login"}
         </button>
         <div className="flex gap-1 mt-3">
-          {[1, 2, 3].map(i => (
+          {[1, 2, 3].map((i) => (
             <div
               key={i}
               className={`h-1 flex-1 rounded-full transition-all ${
-                i <= step ? 'bg-orange-500' : 'bg-gray-200'
+                i <= step ? "bg-orange-500" : "bg-gray-200"
               }`}
             />
           ))}
@@ -99,7 +101,9 @@ export default function MobileSignup() {
         <div className="text-center mb-8">
           <Logo size="lg" className="mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
-          <p className="text-gray-600 text-sm mt-1">Join the fitness revolution</p>
+          <p className="text-gray-600 text-sm mt-1">
+            Join the fitness revolution
+          </p>
         </div>
 
         {/* Step 1: Email & Password */}
@@ -125,7 +129,7 @@ export default function MobileSignup() {
               </label>
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
@@ -140,7 +144,9 @@ export default function MobileSignup() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-1">At least 6 characters</p>
+              <p className="text-xs text-gray-500 mt-1">
+                At least 6 characters
+              </p>
             </div>
           </div>
         )}
@@ -174,7 +180,9 @@ export default function MobileSignup() {
                 placeholder="johndoe"
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
               />
-              <p className="text-xs text-gray-500 mt-1">Your unique identifier</p>
+              <p className="text-xs text-gray-500 mt-1">
+                Your unique identifier
+              </p>
             </div>
           </div>
         )}
@@ -217,17 +225,17 @@ export default function MobileSignup() {
                 Account Type
               </label>
               <div className="grid grid-cols-2 gap-3">
-                {(['client', 'trainer'] as const).map(role => (
+                {(["client", "trainer"] as const).map((role) => (
                   <button
                     key={role}
-                    onClick={() => setFormData(prev => ({ ...prev, role }))}
+                    onClick={() => setFormData((prev) => ({ ...prev, role }))}
                     className={`px-4 py-3 rounded-xl border-2 font-semibold capitalize transition-all ${
                       formData.role === role
-                        ? 'bg-orange-500 border-orange-500 text-white'
-                        : 'bg-white border-gray-300 text-gray-700 hover:border-orange-500'
+                        ? "bg-orange-500 border-orange-500 text-white"
+                        : "bg-white border-gray-300 text-gray-700 hover:border-orange-500"
                     }`}
                   >
-                    {role === 'client' ? '👤 Client' : '🏋️ Trainer'}
+                    {role === "client" ? "👤 Client" : "🏋️ Trainer"}
                   </button>
                 ))}
               </div>
@@ -250,16 +258,16 @@ export default function MobileSignup() {
             disabled={loading}
             className="flex-1 px-4 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
           >
-            {loading ? 'Creating...' : step === 3 ? 'Create Account' : 'Next'}
+            {loading ? "Creating..." : step === 3 ? "Create Account" : "Next"}
             {!loading && <ArrowRight size={18} />}
           </button>
         </div>
 
         {/* Login Link */}
         <p className="text-center text-sm text-gray-600 mt-6">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <button
-            onClick={() => navigate('/login')}
+            onClick={() => navigate("/login")}
             className="text-orange-600 font-semibold hover:text-orange-700"
           >
             Sign In

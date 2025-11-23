@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, Plus, Send } from 'lucide-react';
-import { messagingApi } from '@/lib/api';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Search, Plus, Send } from "lucide-react";
+import { messagingApi } from "@/lib/api";
 
 export default function MobileMessages() {
   const navigate = useNavigate();
   const [conversations, setConversations] = useState<any[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [messages, setMessages] = useState<any[]>([]);
-  const [messageText, setMessageText] = useState('');
+  const [messageText, setMessageText] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function MobileMessages() {
       const data = await messagingApi.getConversations();
       setConversations(data || []);
     } catch (error) {
-      console.error('Error loading conversations:', error);
+      console.error("Error loading conversations:", error);
     } finally {
       setLoading(false);
     }
@@ -32,7 +32,7 @@ export default function MobileMessages() {
       const data = await messagingApi.getMessages(conversationId);
       setMessages(data || []);
     } catch (error) {
-      console.error('Error loading messages:', error);
+      console.error("Error loading messages:", error);
     }
   };
 
@@ -47,10 +47,10 @@ export default function MobileMessages() {
 
     try {
       await messagingApi.sendMessage(selectedConversation.id, messageText);
-      setMessageText('');
+      setMessageText("");
       loadMessages(selectedConversation.id);
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
   };
 
@@ -67,7 +67,8 @@ export default function MobileMessages() {
           </button>
           <div>
             <h2 className="font-bold text-gray-900">
-              {selectedConversation.participant1?.username || selectedConversation.participant2?.username}
+              {selectedConversation.participant1?.username ||
+                selectedConversation.participant2?.username}
             </h2>
             <p className="text-xs text-gray-500">Active now</p>
           </div>
@@ -78,17 +79,19 @@ export default function MobileMessages() {
           {messages.map((message, idx) => (
             <div
               key={idx}
-              className={`flex ${message.sender_id === localStorage.getItem('userId') ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${message.sender_id === localStorage.getItem("userId") ? "justify-end" : "justify-start"}`}
             >
               <div
                 className={`max-w-xs px-4 py-2 rounded-2xl ${
-                  message.sender_id === localStorage.getItem('userId')
-                    ? 'bg-orange-500 text-white rounded-br-none'
-                    : 'bg-gray-200 text-gray-900 rounded-bl-none'
+                  message.sender_id === localStorage.getItem("userId")
+                    ? "bg-orange-500 text-white rounded-br-none"
+                    : "bg-gray-200 text-gray-900 rounded-bl-none"
                 }`}
               >
                 <p className="text-sm break-words">{message.text}</p>
-                <p className={`text-xs mt-1 ${message.sender_id === localStorage.getItem('userId') ? 'text-orange-100' : 'text-gray-500'}`}>
+                <p
+                  className={`text-xs mt-1 ${message.sender_id === localStorage.getItem("userId") ? "text-orange-100" : "text-gray-500"}`}
+                >
                   {new Date(message.created_at).toLocaleTimeString()}
                 </p>
               </div>
@@ -124,7 +127,7 @@ export default function MobileMessages() {
       {/* Header */}
       <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-3">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           className="flex items-center gap-2 text-orange-600 font-semibold mb-4"
         >
           <ArrowLeft size={20} />
@@ -153,11 +156,13 @@ export default function MobileMessages() {
       ) : conversations.length === 0 ? (
         <div className="px-4 py-12 text-center">
           <p className="text-gray-600 text-lg">No conversations yet</p>
-          <p className="text-gray-500 text-sm mt-2">Start chatting with trainers</p>
+          <p className="text-gray-500 text-sm mt-2">
+            Start chatting with trainers
+          </p>
         </div>
       ) : (
         <div className="space-y-1">
-          {conversations.map(conv => (
+          {conversations.map((conv) => (
             <button
               key={conv.id}
               onClick={() => handleSelectConversation(conv)}
