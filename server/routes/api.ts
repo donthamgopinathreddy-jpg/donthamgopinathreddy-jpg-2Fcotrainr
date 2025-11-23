@@ -137,6 +137,7 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
 
     res.setHeader('Content-Type', 'application/json');
     res.status(500).json({
+      message: message,
       error: message,
     });
   }
