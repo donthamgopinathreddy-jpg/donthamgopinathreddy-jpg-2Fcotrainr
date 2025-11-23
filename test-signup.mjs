@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 const testSignup = async () => {
   console.log('Testing signup endpoint...');
   console.log('='.repeat(50));
