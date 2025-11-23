@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import GlassyTile from "@/components/GlassyTile";
 import StreaksCard from "@/components/StreaksCard";
 import MoodTrackerDB from "@/components/MoodTrackerDB";
 import ProgressTracker from "@/components/ProgressTracker";
@@ -698,37 +697,41 @@ export default function Home() {
         </div>
 
         {/* Quick Action Tiles */}
-        <div className="space-y-3 l-shape-bg fitness-gradient-2 rounded-2xl p-4">
-          <h3 className="text-sm font-bold text-gray-600 px-1">Quick Access</h3>
+        <div className="space-y-3 rounded-2xl">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white px-2">Quick Access</h3>
           <div className="grid grid-cols-2 gap-3">
-            <GlassyTile
-              icon={<Dumbbell className="w-6 h-6 text-cyan-700" />}
-              title="Trainers"
+            <button
               onClick={() => navigate("/discover")}
-              variant="trainers"
-              className="text-center"
-            />
-            <GlassyTile
-              icon={<Apple className="w-6 h-6 text-purple-700" />}
-              title="Nutritionists"
+              className="bg-gradient-to-br from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
+            >
+              <Dumbbell className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform mx-auto" />
+              <p className="font-semibold text-sm">Trainers</p>
+              <p className="text-white/90 text-xs mt-1">Find trainers</p>
+            </button>
+            <button
               onClick={() => navigate("/discover")}
-              variant="nutritionists"
-              className="text-center"
-            />
-            <GlassyTile
-              icon={<Utensils className="w-6 h-6 text-green-700" />}
-              title="Meal Tracker"
+              className="bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
+            >
+              <Apple className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform mx-auto" />
+              <p className="font-semibold text-sm">Nutritionists</p>
+              <p className="text-white/90 text-xs mt-1">Find experts</p>
+            </button>
+            <button
               onClick={() => navigate("/meals")}
-              variant="meals"
-              className="text-center"
-            />
-            <GlassyTile
-              icon={<Newspaper className="w-6 h-6 text-amber-700" />}
-              title="Feed"
+              className="bg-gradient-to-br from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
+            >
+              <Utensils className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform mx-auto" />
+              <p className="font-semibold text-sm">Meal Tracker</p>
+              <p className="text-white/90 text-xs mt-1">Log nutrition</p>
+            </button>
+            <button
               onClick={() => navigate("/feed")}
-              variant="feed"
-              className="text-center"
-            />
+              className="bg-gradient-to-br from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
+            >
+              <Newspaper className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform mx-auto" />
+              <p className="font-semibold text-sm">Feed</p>
+              <p className="text-white/90 text-xs mt-1">Community posts</p>
+            </button>
           </div>
 
           {/* Join as Trainer CTA */}
