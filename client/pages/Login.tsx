@@ -196,6 +196,87 @@ export default function Login() {
           </div>
         </form>
 
+        {/* Password Reset Modal */}
+        {showResetModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <div className="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Reset Password</h2>
+                <button
+                  onClick={() => setShowResetModal(false)}
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Email Input */}
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-gray-900 mb-3">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
+                  <input
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-300 rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Method Selection */}
+              <div className="mb-8">
+                <label className="block text-sm font-semibold text-gray-900 mb-4">
+                  Send reset link via
+                </label>
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => setResetMethod("email")}
+                    className={`flex-1 px-4 py-4 rounded-xl font-semibold transition-all ${
+                      resetMethod === "email"
+                        ? "bg-yellow-400 text-gray-800"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    📧 Email
+                  </button>
+                  <button
+                    onClick={() => setResetMethod("phone")}
+                    className={`flex-1 px-4 py-4 rounded-xl font-semibold transition-all ${
+                      resetMethod === "phone"
+                        ? "bg-yellow-400 text-gray-800"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    📱 Phone
+                  </button>
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowResetModal(false)}
+                  className="flex-1 px-4 py-3 rounded-xl border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleResetPassword}
+                  disabled={resetLoading}
+                  className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-800 font-semibold transition-all disabled:opacity-50"
+                >
+                  {resetLoading ? "Sending..." : "Send Link"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Footer */}
         <p className="text-center text-gray-500 text-xs mt-8">
           By signing in, you agree to our Terms & Conditions
