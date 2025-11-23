@@ -209,7 +209,7 @@ export default function MobileSignup() {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  placeholder="••••••••"
+                  placeholder="���•••••••"
                   className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
                 />
                 <button
@@ -266,33 +266,73 @@ export default function MobileSignup() {
         {/* Step 3: Physical Info & Role */}
         {step === 3 && (
           <div className="space-y-5 animate-fade-in">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="group">
-                <label className="block text-sm font-semibold text-slate-300 mb-3 group-focus-within:text-orange-400 transition-colors">
-                  Height (cm)
-                </label>
-                <input
-                  type="number"
-                  name="height"
-                  value={formData.height}
-                  onChange={handleInputChange}
-                  placeholder="180"
-                  className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
-                />
+            {/* Height Fields */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-300 mb-3 transition-colors">
+                Height
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="group">
+                  <label className="block text-xs font-semibold text-slate-400 mb-2 group-focus-within:text-orange-400 transition-colors">
+                    Feet
+                  </label>
+                  <input
+                    type="text"
+                    name="height_feet"
+                    value={formData.height_feet}
+                    onChange={handleInputChange}
+                    placeholder="5"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                  />
+                </div>
+                <div className="group">
+                  <label className="block text-xs font-semibold text-slate-400 mb-2 group-focus-within:text-orange-400 transition-colors">
+                    Inches
+                  </label>
+                  <input
+                    type="text"
+                    name="height_inches"
+                    value={formData.height_inches}
+                    onChange={handleInputChange}
+                    placeholder="10"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                  />
+                </div>
               </div>
+            </div>
 
-              <div className="group">
-                <label className="block text-sm font-semibold text-slate-300 mb-3 group-focus-within:text-orange-400 transition-colors">
-                  Weight (kg)
-                </label>
-                <input
-                  type="number"
-                  name="weight"
-                  value={formData.weight}
-                  onChange={handleInputChange}
-                  placeholder="75"
-                  className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
-                />
+            {/* Weight Fields */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-300 mb-3 transition-colors">
+                Weight
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="group">
+                  <label className="block text-xs font-semibold text-slate-400 mb-2 group-focus-within:text-orange-400 transition-colors">
+                    Kilograms (kg)
+                  </label>
+                  <input
+                    type="text"
+                    name="weight_kg"
+                    value={formData.weight_kg}
+                    onChange={handleInputChange}
+                    placeholder="75"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                  />
+                </div>
+                <div className="group">
+                  <label className="block text-xs font-semibold text-slate-400 mb-2 group-focus-within:text-orange-400 transition-colors">
+                    Pounds (lbs)
+                  </label>
+                  <input
+                    type="text"
+                    name="weight_pounds"
+                    value={formData.weight_pounds}
+                    onChange={handleInputChange}
+                    placeholder="165"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                  />
+                </div>
               </div>
             </div>
 
