@@ -328,6 +328,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       weight_kg?: number;
       height_cm?: number;
       phone_number?: string;
+      country_code?: string;
       age?: number;
       date_of_birth?: string;
     },
@@ -345,8 +346,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           email,
           username: userData.username,
           password,
+          full_name: userData.full_name,
           height: userData.height_cm,
           weight: userData.weight_kg,
+          phone_number: userData.phone_number,
+          country_code: userData.country_code,
           role: userData.role,
         }),
       });
