@@ -11,8 +11,8 @@ import {
   Send,
   Users,
   User,
-  Follow,
-  Unfollow,
+  UserPlus,
+  UserMinus,
   Search,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
