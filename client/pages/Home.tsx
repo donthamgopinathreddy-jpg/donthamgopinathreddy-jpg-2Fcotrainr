@@ -55,6 +55,7 @@ export default function Home() {
   );
   const [showTargetsModal, setShowTargetsModal] = useState(false);
   const [stepsTarget, setStepsTarget] = useState(10000);
+  const [editStepsTarget, setEditStepsTarget] = useState(10000);
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [pendingMeetings, setPendingMeetings] = useState<any[]>([]);
   const [latestFeed, setLatestFeed] = useState<any[]>([]);
