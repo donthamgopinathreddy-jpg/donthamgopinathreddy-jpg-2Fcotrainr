@@ -364,7 +364,7 @@ export default function Signup() {
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="••••••••"
+                placeholder="••���•••••"
               />
               <button
                 type="button"
@@ -410,7 +410,7 @@ export default function Signup() {
             </div>
             {formData.height_feet && formData.height_inches && (
               <p className="text-xs text-gray-600 mt-2 font-medium">
-                ≈ {formData.height_cm} cm
+                {formData.height_feet}'{formData.height_inches}" or {formData.height_cm} cm
               </p>
             )}
           </div>
