@@ -255,8 +255,10 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('[API] Unexpected sign up error:', error);
+    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
     res.status(500).json({
-      error: error instanceof Error ? error.message : 'Unknown error',
+      message: errorMsg,
+      error: errorMsg,
     });
   }
 });
