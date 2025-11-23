@@ -238,6 +238,7 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
         id: userId,
         email,
         username: username || email.split("@")[0],
+        password_hash: "supabase_auth", // Placeholder - actual password is managed by Supabase auth
         full_name: full_name || "",
         role: role,
         gender: null,
