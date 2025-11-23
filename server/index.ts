@@ -81,6 +81,30 @@ export function createServer() {
     }
   });
 
+  app.post('/api/auth/reset-password', async (req, res) => {
+    try {
+      console.log('[Server] Forwarding POST /api/auth/reset-password to NestJS backend on port 3001');
+      const response = await fetch('http://localhost:3001/auth/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req.body),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return res.status(response.status).json(errorData);
+      }
+
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (error) {
+      console.error('[Server] Error forwarding auth/reset-password:', error);
+      res.status(500).json({ error: 'Failed to reset password' });
+    }
+  });
+
   // Supabase API wrapper - all auth and data operations go through here
   console.log('[Server] Registering /api/supabase/ routes');
   app.use('/api/supabase/', apiRouter);
