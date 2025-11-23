@@ -81,6 +81,9 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
   try {
     console.log('[API] ========================================');
     console.log('[API] Sign in endpoint called');
+    console.log('[API] Environment check:');
+    console.log('[API]   SUPABASE_URL:', SUPABASE_URL ? '✓' : '✗');
+    console.log('[API]   SUPABASE_ANON_KEY:', SUPABASE_ANON_KEY ? '✓' : '✗');
     console.log('[API] Request body:', {
       email: req.body?.email,
       password: req.body?.password ? '***' : 'missing',
