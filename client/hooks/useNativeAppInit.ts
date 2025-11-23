@@ -6,7 +6,6 @@ import {
   onAppResume,
   setStatusBarStyle,
   requestNotificationPermission,
-  initializeBiometricAuth,
   initializeOfflineStorage,
 } from "../lib/nativeFeatures";
 import { initializeBiometricAuth } from "../lib/capacitorBridge";
