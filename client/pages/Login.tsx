@@ -35,6 +35,24 @@ export default function Login() {
     }
   };
 
+  const handleResetPassword = async () => {
+    if (!resetEmail) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
+    setResetLoading(true);
+    try {
+      await resetPassword(resetEmail, resetMethod);
+      setShowResetModal(false);
+      setResetEmail("");
+    } catch (error: any) {
+      console.error("Reset password error:", error);
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       {/* Subtle Background Gradient */}
