@@ -51,7 +51,9 @@ export function createServer() {
   });
 
   app.post('/api/auth/reset-password', async (req, res, next) => {
-    console.log('[Server] Forwarding POST /api/auth/reset-password to supabase auth/reset-password');
+    console.log(
+      '[Server] Forwarding POST /api/auth/reset-password to supabase auth/reset-password'
+    );
     req.url = '/auth/reset-password';
     apiRouter(req, res, next);
   });
