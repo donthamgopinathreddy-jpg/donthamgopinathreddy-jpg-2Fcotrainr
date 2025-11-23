@@ -335,8 +335,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   ) => {
     try {
       console.log("[Auth] Starting signup for:", email);
+      console.log("[Auth] User data:", {
+        username: userData.username,
+        full_name: userData.full_name,
+        role: userData.role,
+        height_cm: userData.height_cm,
+        weight_kg: userData.weight_kg,
+      });
 
       // Call NestJS backend using API proxy
+      console.log("[Auth] Making POST request to /api/auth/signup");
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -355,10 +363,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }),
       });
 
+      console.log("[Auth] Response status:", response.status, response.statusText);
+
       if (!response.ok) {
+        console.error("[Auth] Signup failed with status:", response.status);
         const errorData = await response.json().catch(() => ({}));
+        console.error("[Auth] Error data:", errorData);
         throw new Error(
-          errorData.message || `Signup failed: ${response.statusText}`,
+          errorData.message || errorData.error || `Signup failed: ${response.statusText}`,
         );
       }
 

@@ -82,7 +82,9 @@ export default function Signup() {
         setUsernameStatus("available");
       }
     } catch (err) {
-      setUsernameStatus("taken");
+      console.error("Username check error:", err);
+      // On error, assume available (don't block signup)
+      setUsernameStatus("available");
     }
   };
 
@@ -183,9 +185,14 @@ export default function Signup() {
       return;
     }
 
-    if (usernameStatus !== "available") {
+    if (usernameStatus === "taken") {
       toast.error("Username is not available");
       return;
+    }
+
+    // Allow signup even if username check is still in progress or failed
+    if (!usernameStatus || usernameStatus === "checking") {
+      console.warn("Username availability check not complete, proceeding anyway");
     }
 
     if (formData.downloadReasons.length === 0) {
