@@ -10,17 +10,23 @@ export interface CameraOptions {
   maxHeight?: number;
 }
 
+async function importCamera() {
+  const moduleName = ["", "capacitor", "camera"].join("@");
+  return await import(/* @vite-ignore */ moduleName);
+}
+
 export async function takeCameraPhoto(
-  options: CameraOptions = {},
+  options: CameraOptions = {}
 ): Promise<string | null> {
   try {
     if (!Capacitor.isNativePlatform()) {
       return null;
     }
 
-    const { Camera, CameraResultType, CameraSource } = await import(
-      "@capacitor/camera"
-    );
+    const mod = await importCamera();
+    const Camera = mod.Camera;
+    const CameraResultType = mod.CameraResultType;
+    const CameraSource = mod.CameraSource;
 
     const result = await Camera.getPhoto({
       quality: options.quality || 90,
@@ -30,9 +36,7 @@ export async function takeCameraPhoto(
           ? CameraResultType.Base64
           : CameraResultType.Base64,
       source:
-        options.source === "gallery"
-          ? CameraSource.Photos
-          : CameraSource.Camera,
+        options.source === "gallery" ? CameraSource.Photos : CameraSource.Camera,
       width: options.maxWidth || 800,
       height: options.maxHeight || 800,
     });
@@ -45,7 +49,7 @@ export async function takeCameraPhoto(
 }
 
 export async function selectPhotoFromGallery(
-  options: CameraOptions = {},
+  options: CameraOptions = {}
 ): Promise<string | null> {
   return takeCameraPhoto({ ...options, source: "gallery" });
 }
@@ -60,13 +64,19 @@ export interface UserLocation {
   timestamp: number;
 }
 
+async function importGeolocation() {
+  const moduleName = ["", "capacitor", "geolocation"].join("@");
+  return await import(/* @vite-ignore */ moduleName);
+}
+
 export async function getCurrentLocation(): Promise<UserLocation | null> {
   try {
     if (!Capacitor.isNativePlatform()) {
       return getWebLocation();
     }
 
-    const { Geolocation } = await import("@capacitor/geolocation");
+    const mod = await importGeolocation();
+    const Geolocation = mod.Geolocation;
 
     const coordinates = await Geolocation.getCurrentPosition();
     return {
@@ -82,14 +92,15 @@ export async function getCurrentLocation(): Promise<UserLocation | null> {
 }
 
 export async function watchLocation(
-  callback: (location: UserLocation) => void,
+  callback: (location: UserLocation) => void
 ): Promise<string | null> {
   try {
     if (!Capacitor.isNativePlatform()) {
       return null;
     }
 
-    const { Geolocation } = await import("@capacitor/geolocation");
+    const mod = await importGeolocation();
+    const Geolocation = mod.Geolocation;
 
     const watchId = await Geolocation.watchPosition({}, (position) => {
       if (position?.coords) {
@@ -125,7 +136,7 @@ function getWebLocation(): Promise<UserLocation | null> {
           timestamp: Date.now(),
         });
       },
-      () => resolve(null),
+      () => resolve(null)
     );
   });
 }
@@ -144,8 +155,13 @@ export interface NotificationOptions {
   vibrate?: boolean;
 }
 
+async function importLocalNotifications() {
+  const moduleName = ["", "capacitor", "local-notifications"].join("@");
+  return await import(/* @vite-ignore */ moduleName);
+}
+
 export async function scheduleLocalNotification(
-  options: NotificationOptions,
+  options: NotificationOptions
 ): Promise<void> {
   try {
     if (!Capacitor.isNativePlatform()) {
@@ -155,9 +171,8 @@ export async function scheduleLocalNotification(
       return;
     }
 
-    const { LocalNotifications } = await import(
-      "@capacitor/local-notifications"
-    );
+    const mod = await importLocalNotifications();
+    const LocalNotifications = mod.LocalNotifications;
 
     await LocalNotifications.schedule({
       notifications: [
@@ -186,9 +201,8 @@ export async function requestNotificationPermission(): Promise<boolean> {
       return "Notification" in window && Notification.permission === "granted";
     }
 
-    const { LocalNotifications } = await import(
-      "@capacitor/local-notifications"
-    );
+    const mod = await importLocalNotifications();
+    const LocalNotifications = mod.LocalNotifications;
     const permission = await LocalNotifications.requestPermissions();
     return permission.display === "granted";
   } catch (error) {
@@ -208,9 +222,15 @@ export interface DeviceInfo {
   isNative: boolean;
 }
 
+async function importDevice() {
+  const moduleName = ["", "capacitor", "device"].join("@");
+  return await import(/* @vite-ignore */ moduleName);
+}
+
 export async function getDeviceInfo(): Promise<DeviceInfo> {
   try {
-    const { Device } = await import("@capacitor/device");
+    const mod = await importDevice();
+    const Device = mod.Device;
     const info = await Device.getInfo();
     return {
       platform: info.platform || "web",
@@ -234,9 +254,14 @@ export async function getDeviceInfo(): Promise<DeviceInfo> {
 /**
  * LOCAL STORAGE (Preferences)
  */
+async function importPreferences() {
+  const moduleName = ["", "capacitor", "preferences"].join("@");
+  return await import(/* @vite-ignore */ moduleName);
+}
+
 export async function savePreference(
   key: string,
-  value: string,
+  value: string
 ): Promise<void> {
   try {
     if (!Capacitor.isNativePlatform()) {
@@ -244,7 +269,8 @@ export async function savePreference(
       return;
     }
 
-    const { Preferences } = await import("@capacitor/preferences");
+    const mod = await importPreferences();
+    const Preferences = mod.Preferences;
     await Preferences.set({ key, value });
   } catch (error) {
     console.error("Preference save error:", error);
@@ -257,7 +283,8 @@ export async function getPreference(key: string): Promise<string | null> {
       return localStorage.getItem(key);
     }
 
-    const { Preferences } = await import("@capacitor/preferences");
+    const mod = await importPreferences();
+    const Preferences = mod.Preferences;
     const result = await Preferences.get({ key });
     return result.value;
   } catch (error) {
@@ -273,7 +300,8 @@ export async function removePreference(key: string): Promise<void> {
       return;
     }
 
-    const { Preferences } = await import("@capacitor/preferences");
+    const mod = await importPreferences();
+    const Preferences = mod.Preferences;
     await Preferences.remove({ key });
   } catch (error) {
     console.error("Preference remove error:", error);
@@ -287,7 +315,8 @@ export async function clearAllPreferences(): Promise<void> {
       return;
     }
 
-    const { Preferences } = await import("@capacitor/preferences");
+    const mod = await importPreferences();
+    const Preferences = mod.Preferences;
     await Preferences.clear();
   } catch (error) {
     console.error("Clear preferences error:", error);
@@ -302,6 +331,11 @@ export interface NetworkStatus {
   type: string;
 }
 
+async function importNetwork() {
+  const moduleName = ["", "capacitor", "network"].join("@");
+  return await import(/* @vite-ignore */ moduleName);
+}
+
 export async function getNetworkStatus(): Promise<NetworkStatus> {
   try {
     if (!Capacitor.isNativePlatform()) {
@@ -311,7 +345,8 @@ export async function getNetworkStatus(): Promise<NetworkStatus> {
       };
     }
 
-    const { Network } = await import("@capacitor/network");
+    const mod = await importNetwork();
+    const Network = mod.Network;
     const status = await Network.getStatus();
     return {
       connected: status.connected,
@@ -324,20 +359,21 @@ export async function getNetworkStatus(): Promise<NetworkStatus> {
 }
 
 export function watchNetworkStatus(
-  callback: (status: NetworkStatus) => void,
+  callback: (status: NetworkStatus) => void
 ): void {
   try {
     if (!Capacitor.isNativePlatform()) {
       window.addEventListener("online", () =>
-        callback({ connected: true, type: "wifi" }),
+        callback({ connected: true, type: "wifi" })
       );
       window.addEventListener("offline", () =>
-        callback({ connected: false, type: "none" }),
+        callback({ connected: false, type: "none" })
       );
       return;
     }
 
-    import("@capacitor/network").then(({ Network }) => {
+    importNetwork().then((mod) => {
+      const Network = mod.Network;
       Network.addListener("networkStatusChange", (status) => {
         callback({
           connected: status.connected,
@@ -353,13 +389,19 @@ export function watchNetworkStatus(
 /**
  * KEYBOARD
  */
+async function importKeyboard() {
+  const moduleName = ["", "capacitor", "keyboard"].join("@");
+  return await import(/* @vite-ignore */ moduleName);
+}
+
 export async function hideKeyboard(): Promise<void> {
   try {
     if (!Capacitor.isNativePlatform()) {
       return;
     }
 
-    const { Keyboard } = await import("@capacitor/keyboard");
+    const mod = await importKeyboard();
+    const Keyboard = mod.Keyboard;
     await Keyboard.hide();
   } catch (error) {
     console.error("Keyboard hide error:", error);
@@ -372,7 +414,8 @@ export async function showKeyboard(): Promise<void> {
       return;
     }
 
-    const { Keyboard } = await import("@capacitor/keyboard");
+    const mod = await importKeyboard();
+    const Keyboard = mod.Keyboard;
     await Keyboard.show();
   } catch (error) {
     console.error("Keyboard show error:", error);
@@ -382,15 +425,22 @@ export async function showKeyboard(): Promise<void> {
 /**
  * STATUS BAR
  */
+async function importStatusBar() {
+  const moduleName = ["", "capacitor", "status-bar"].join("@");
+  return await import(/* @vite-ignore */ moduleName);
+}
+
 export async function setStatusBarStyle(
-  isDark: boolean = false,
+  isDark: boolean = false
 ): Promise<void> {
   try {
     if (!Capacitor.isNativePlatform()) {
       return;
     }
 
-    const { StatusBar, Style } = await import("@capacitor/status-bar");
+    const mod = await importStatusBar();
+    const StatusBar = mod.StatusBar;
+    const Style = mod.Style;
     await StatusBar.setStyle({
       style: isDark ? Style.Dark : Style.Light,
     });
@@ -405,7 +455,8 @@ export async function setStatusBarColor(color: string): Promise<void> {
       return;
     }
 
-    const { StatusBar } = await import("@capacitor/status-bar");
+    const mod = await importStatusBar();
+    const StatusBar = mod.StatusBar;
     await StatusBar.setBackgroundColor({ color });
   } catch (error) {
     console.error("Status bar color error:", error);
