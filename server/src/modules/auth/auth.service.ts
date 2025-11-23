@@ -91,4 +91,52 @@ export class AuthService {
       token,
     };
   }
+
+  async resetPassword(email: string, method: 'email' | 'phone') {
+    const user = await this.supabaseService.getUserByEmail(email);
+    if (!user) {
+      // Don't reveal if user exists (security best practice)
+      return {
+        success: true,
+        message: 'If an account exists with this email, a password reset link will be sent.',
+      };
+    }
+
+    try {
+      // Generate a temporary reset token
+      const resetToken = this.jwtService.sign(
+        {
+          sub: user.id,
+          email: user.email,
+          type: 'password-reset',
+        },
+        { expiresIn: '1h' }
+      );
+
+      // In a real application, you would:
+      // 1. Send an email with a reset link containing the token
+      // 2. Send an SMS with a reset code (for phone method)
+      // 3. Store the token in a database with expiration
+
+      // For now, we'll just return success
+      console.log(`[Auth] Password reset requested for ${email} via ${method}`);
+      console.log(`[Auth] Reset token: ${resetToken.substring(0, 20)}...`);
+
+      if (method === 'email') {
+        // TODO: Send email with reset link
+        console.log(`[Auth] Would send reset email to: ${user.email}`);
+      } else if (method === 'phone') {
+        // TODO: Send SMS with reset code
+        console.log(`[Auth] Would send reset SMS to: ${user.phone_number}`);
+      }
+
+      return {
+        success: true,
+        message: `Password reset link will be sent to ${method === 'email' ? user.email : user.phone_number}`,
+      };
+    } catch (error) {
+      console.error('[Auth] Error in password reset:', error);
+      throw new BadRequestException('Failed to process password reset request');
+    }
+  }
 }
