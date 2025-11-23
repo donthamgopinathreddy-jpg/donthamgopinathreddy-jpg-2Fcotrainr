@@ -452,7 +452,7 @@ const HomeModern = () => {
           </h3>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {tiles.map((tile, idx) => {
+            {tiles && Array.isArray(tiles) && tiles.map((tile, idx) => {
               const Icon = tile.icon;
               return (
                 <button
