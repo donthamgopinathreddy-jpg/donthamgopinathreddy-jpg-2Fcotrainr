@@ -410,7 +410,8 @@ export default function Signup() {
             </div>
             {formData.height_feet && formData.height_inches && (
               <p className="text-xs text-gray-600 mt-2 font-medium">
-                {formData.height_feet}'{formData.height_inches}" or {formData.height_cm} cm
+                {formData.height_feet}'{formData.height_inches}" or{" "}
+                {formData.height_cm} cm
               </p>
             )}
           </div>
@@ -452,7 +453,8 @@ export default function Signup() {
                 Height Summary
               </label>
               <p className="text-lg font-bold text-gray-900">
-                {formData.height_feet}'{formData.height_inches}" or {formData.height_cm} cm
+                {formData.height_feet}'{formData.height_inches}" or{" "}
+                {formData.height_cm} cm
               </p>
             </div>
           )}

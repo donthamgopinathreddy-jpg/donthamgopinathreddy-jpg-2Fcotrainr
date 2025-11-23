@@ -492,7 +492,8 @@ export default function MobileSignup() {
                   Height Summary
                 </label>
                 <p className="text-lg font-bold text-gray-900">
-                  {formData.height_feet}'{formData.height_inches}" or {formData.height_cm} cm
+                  {formData.height_feet}'{formData.height_inches}" or{" "}
+                  {formData.height_cm} cm
                 </p>
               </div>
             )}
