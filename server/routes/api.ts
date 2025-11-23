@@ -14,7 +14,8 @@ router.get('/test', (_req: Request, res: Response) => {
 
 // Temporarily hardcode the correct values to bypass env var issues
 const SUPABASE_URL = 'https://nrzcsaofjeifegsiizjo.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yemNzYW9mamVpZmVnc2lpempvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MDI3OTMsImV4cCI6MjA3OTQ3ODc5M30.prhv_x7tWgFeb5Dt8aosOt2AC_xFFFZ0kGfYrhVOsIk';
+const SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yemNzYW9mamVpZmVnc2lpempvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MDI3OTMsImV4cCI6MjA3OTQ3ODc5M30.prhv_x7tWgFeb5Dt8aosOt2AC_xFFFZ0kGfYrhVOsIk';
 
 console.log('[API] Initializing Supabase API wrapper');
 console.log('[API] Environment check:');
