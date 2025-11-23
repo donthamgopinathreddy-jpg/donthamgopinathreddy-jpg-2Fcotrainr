@@ -299,8 +299,8 @@ const PermissionRequester = () => {
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<PremiumSignup />} />
+      <Route path="/login" element={<MobileLogin />} />
+      <Route path="/signup" element={<MobileSignup />} />
       <Route path="/clear-session" element={<ClearSession />} />
       <Route path="/proxy-test" element={<ProxyTest />} />
       <Route path="/onboarding" element={<Onboarding />} />
@@ -311,9 +311,7 @@ const AppRoutes = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <AppLayout>
-              <RoleBasedHome />
-            </AppLayout>
+            <MobileHome />
           </ProtectedRoute>
         }
       />
@@ -321,9 +319,7 @@ const AppRoutes = () => {
         path="/discover"
         element={
           <ProtectedRoute>
-            <AppLayout>
-              <Discover />
-            </AppLayout>
+            <MobileDiscover />
           </ProtectedRoute>
         }
       />
@@ -351,9 +347,7 @@ const AppRoutes = () => {
         path="/messages"
         element={
           <ProtectedRoute>
-            <AppLayout>
-              <Messages />
-            </AppLayout>
+            <MobileMessages />
           </ProtectedRoute>
         }
       />
