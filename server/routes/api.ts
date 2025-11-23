@@ -162,6 +162,7 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
     if (!email || !password) {
       console.log('[API] Missing email or password for signup');
       return res.status(400).json({
+        message: 'Missing email or password',
         error: 'Missing email or password',
       });
     }
