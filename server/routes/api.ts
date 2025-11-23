@@ -79,7 +79,13 @@ router.get('/health', async (_req: Request, res: Response) => {
 // Auth endpoints
 router.post('/auth/signin', async (req: Request, res: Response) => {
   try {
+    console.log('[API] ========================================');
     console.log('[API] Sign in endpoint called');
+    console.log('[API] Request body:', {
+      email: req.body?.email,
+      password: req.body?.password ? '***' : 'missing',
+    });
+    console.log('[API] ========================================');
 
     const { email, password } = req.body;
 
@@ -93,13 +99,17 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
     console.log('[API] Sign in attempt for:', email);
 
     // Call Supabase auth
+    console.log('[API] Calling supabase.auth.signInWithPassword');
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
-      console.error('[API] Sign in error:', error.message);
+      console.error('[API] Sign in error from Supabase:', {
+        message: error.message,
+        status: error.status,
+      });
       return res.status(401).json({
         message: error.message || 'Authentication failed',
         error: error.message || 'Authentication failed',
