@@ -12,22 +12,20 @@ export default function SplashScreen() {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center">
         {/* Logo with fade-in animation */}
-        <div className="animate-fade-in">
+        <div className="animate-splash-fade-in">
           <Logo size="2xl" className="drop-shadow-lg" />
         </div>
 
         {/* Loading spinner */}
-        <div className="mt-12 animate-pulse">
-          <div className="flex gap-1">
-            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>
-            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
-          </div>
+        <div className="mt-12 flex gap-1">
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
         </div>
       </div>
 
       <style>{`
-        @keyframes fade-in {
+        @keyframes splash-fade-in {
           from {
             opacity: 0;
             transform: scale(0.9);
@@ -38,8 +36,8 @@ export default function SplashScreen() {
           }
         }
 
-        .animate-fade-in {
-          animation: fade-in 0.8s ease-out;
+        .animate-splash-fade-in {
+          animation: splash-fade-in 0.8s ease-out;
         }
       `}</style>
     </div>
