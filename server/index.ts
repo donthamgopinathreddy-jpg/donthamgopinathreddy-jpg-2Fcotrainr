@@ -32,11 +32,11 @@ export function createServer() {
 
   app.get('/api/demo', handleDemo);
 
-  // Proxy auth routes to NestJS backend (running on port 3001)
+  // Proxy auth routes to Supabase API routes
   app.post('/api/auth/signup', async (req, res) => {
     try {
-      console.log('[Server] Forwarding POST /api/auth/signup to NestJS backend on port 3001');
-      const response = await fetch('http://localhost:3001/auth/signup', {
+      console.log('[Server] Forwarding POST /api/auth/signup to Supabase API wrapper');
+      const response = await fetch('http://localhost:3000/api/supabase/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,8 +59,8 @@ export function createServer() {
 
   app.post('/api/auth/login', async (req, res) => {
     try {
-      console.log('[Server] Forwarding POST /api/auth/login to NestJS backend on port 3001');
-      const response = await fetch('http://localhost:3001/auth/login', {
+      console.log('[Server] Forwarding POST /api/auth/login to Supabase API wrapper');
+      const response = await fetch('http://localhost:3000/api/supabase/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,9 +84,9 @@ export function createServer() {
   app.post('/api/auth/reset-password', async (req, res) => {
     try {
       console.log(
-        '[Server] Forwarding POST /api/auth/reset-password to NestJS backend on port 3001'
+        '[Server] Forwarding POST /api/auth/reset-password to Supabase API wrapper'
       );
-      const response = await fetch('http://localhost:3001/auth/reset-password', {
+      const response = await fetch('http://localhost:3000/api/supabase/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
