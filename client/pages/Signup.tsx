@@ -147,7 +147,12 @@ export default function Signup() {
       return;
     }
 
-    if (!formData.height_feet || !formData.height_inches || !formData.weight_kg || !formData.weight_pounds) {
+    if (
+      !formData.height_feet ||
+      !formData.height_inches ||
+      !formData.weight_kg ||
+      !formData.weight_pounds
+    ) {
       toast.error("Please enter your height and weight");
       return;
     }
@@ -165,7 +170,11 @@ export default function Signup() {
     setLoading(true);
     try {
       // Calculate height in cm from feet and inches
-      const heightInCm = Math.round((parseInt(formData.height_feet) * 12 + parseInt(formData.height_inches)) * 2.54);
+      const heightInCm = Math.round(
+        (parseInt(formData.height_feet) * 12 +
+          parseInt(formData.height_inches)) *
+          2.54,
+      );
       const weightInKg = parseInt(formData.weight_kg);
 
       // Sign up with auth

@@ -98,7 +98,12 @@ export default function MobileSignup() {
       }
       setStep(3);
     } else if (step === 3) {
-      if (!formData.height_feet || !formData.height_inches || !formData.weight_kg || !formData.weight_pounds) {
+      if (
+        !formData.height_feet ||
+        !formData.height_inches ||
+        !formData.weight_kg ||
+        !formData.weight_pounds
+      ) {
         setError("Please fill in all fields");
         return;
       }
@@ -110,7 +115,11 @@ export default function MobileSignup() {
     setLoading(true);
     setError("");
     try {
-      const heightInCm = Math.round((parseInt(formData.height_feet) * 12 + parseInt(formData.height_inches)) * 2.54);
+      const heightInCm = Math.round(
+        (parseInt(formData.height_feet) * 12 +
+          parseInt(formData.height_inches)) *
+          2.54,
+      );
       const weightInKg = parseInt(formData.weight_kg);
 
       await signUp(formData.email, formData.password, {
@@ -268,7 +277,11 @@ export default function MobileSignup() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-400 transition-colors"
                 >
-                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
                 </button>
               </div>
             </div>
