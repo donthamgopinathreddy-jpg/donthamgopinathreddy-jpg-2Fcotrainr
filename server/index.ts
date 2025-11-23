@@ -32,10 +32,10 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
-  // Proxy auth routes to NestJS backend
+  // Proxy auth routes to NestJS backend (running on port 3001)
   app.post("/api/auth/signup", async (req, res) => {
     try {
-      console.log("[Server] Forwarding POST /api/auth/signup to NestJS backend");
+      console.log("[Server] Forwarding POST /api/auth/signup to NestJS backend on port 3001");
       const response = await fetch("http://localhost:3001/auth/signup", {
         method: "POST",
         headers: {
@@ -43,6 +43,11 @@ export function createServer() {
         },
         body: JSON.stringify(req.body),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return res.status(response.status).json(errorData);
+      }
 
       const data = await response.json();
       res.status(response.status).json(data);
@@ -54,7 +59,7 @@ export function createServer() {
 
   app.post("/api/auth/login", async (req, res) => {
     try {
-      console.log("[Server] Forwarding POST /api/auth/login to NestJS backend");
+      console.log("[Server] Forwarding POST /api/auth/login to NestJS backend on port 3001");
       const response = await fetch("http://localhost:3001/auth/login", {
         method: "POST",
         headers: {
@@ -62,6 +67,11 @@ export function createServer() {
         },
         body: JSON.stringify(req.body),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        return res.status(response.status).json(errorData);
+      }
 
       const data = await response.json();
       res.status(response.status).json(data);
