@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
-import { authApi, setAuthToken, getAuthToken, usersApi } from "@/lib/api";
+import { authApi, setAuthToken, getAuthToken } from "@/lib/api";
 
 interface UserProfile {
   id: string;
@@ -332,26 +332,45 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     },
   ) => {
     try {
-      // Call NestJS backend
-      const response = await authApi.signup({
-        email,
-        username: userData.username,
-        password,
-        height: userData.height_cm,
-        weight: userData.weight_kg,
-        role: userData.role,
+      console.log("[Auth] Starting signup for:", email);
+
+      // Call NestJS backend using direct fetch
+      const response = await fetch("http://localhost:3001/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          username: userData.username,
+          password,
+          height: userData.height_cm,
+          weight: userData.weight_kg,
+          role: userData.role,
+        }),
       });
 
-      console.log("[Auth] Sign up successful for user:", response.user.email);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Signup failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("[Auth] Sign up successful for user:", data.user?.email);
+
+      // Store token
+      if (data.token) {
+        setAuthToken(data.token);
+      }
 
       // Update user state
-      setUser(response.user as any);
-      setUserProfile(response.user);
+      setUser(data.user as any);
+      setUserProfile(data.user);
 
       console.log("[Auth] User state updated");
     } catch (error: any) {
       console.error("Error signing up:", error);
-      const errorMessage = error?.message || String(error);
+      const errorMessage = error?.message || "Failed to create account";
       throw new Error(errorMessage);
     }
   };
@@ -364,14 +383,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error("Email and password are required");
       }
 
-      // Call NestJS backend
-      const response = await authApi.login(email, password);
+      // Call NestJS backend using direct fetch
+      const response = await fetch("http://localhost:3001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      console.log("[Auth] Sign in successful for user:", response.user.email);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Login failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("[Auth] Sign in successful for user:", data.user?.email);
+
+      // Store token
+      if (data.token) {
+        setAuthToken(data.token);
+      }
 
       // Update user state
-      setUser(response.user as any);
-      setUserProfile(response.user);
+      setUser(data.user as any);
+      setUserProfile(data.user);
 
       console.log("[Auth] User state updated");
     } catch (error: any) {
