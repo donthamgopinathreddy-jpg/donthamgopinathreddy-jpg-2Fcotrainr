@@ -146,6 +146,19 @@ export default function Signup() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("[Signup] ===== FORM SUBMITTED =====");
+    console.log("[Signup] Form data:", {
+      username: formData.username,
+      email: formData.email,
+      hasPassword: !!formData.password,
+      hasConfirmPassword: !!formData.confirmPassword,
+      height_feet: formData.height_feet,
+      height_inches: formData.height_inches,
+      weight_kg: formData.weight_kg,
+      weight_pounds: formData.weight_pounds,
+      downloadReasons: formData.downloadReasons,
+      usernameStatus,
+    });
 
     // Validation
     if (
@@ -154,6 +167,7 @@ export default function Signup() {
       !formData.password ||
       !formData.confirmPassword
     ) {
+      console.error("[Signup] FAILED: Missing required fields");
       toast.error("Please fill in all required fields");
       return;
     }
