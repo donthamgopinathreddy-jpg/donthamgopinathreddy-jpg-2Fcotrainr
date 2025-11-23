@@ -699,7 +699,9 @@ export default function Home() {
 
         {/* Quick Action Tiles */}
         <div className="space-y-3 rounded-2xl">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white px-2">Quick Access</h3>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white px-2">
+            Quick Access
+          </h3>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => navigate("/discover")}
