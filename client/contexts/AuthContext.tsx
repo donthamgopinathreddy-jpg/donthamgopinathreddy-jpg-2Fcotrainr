@@ -352,7 +352,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Signup failed: ${response.statusText}`);
+        throw new Error(
+          errorData.message || `Signup failed: ${response.statusText}`,
+        );
       }
 
       const data = await response.json();
@@ -394,7 +396,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Login failed: ${response.statusText}`);
+        throw new Error(
+          errorData.message || `Login failed: ${response.statusText}`,
+        );
       }
 
       const data = await response.json();

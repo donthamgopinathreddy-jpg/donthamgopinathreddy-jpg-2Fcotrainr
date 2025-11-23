@@ -56,7 +56,9 @@ export default function MobileLogin() {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-400 via-orange-300 to-pink-400 bg-clip-text text-transparent mb-3">
             Welcome Back
           </h1>
-          <p className="text-slate-400 text-base">Sign in to your fitness journey</p>
+          <p className="text-slate-400 text-base">
+            Sign in to your fitness journey
+          </p>
         </div>
 
         {/* Error Message */}

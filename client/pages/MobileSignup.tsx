@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  ArrowRight,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import Logo from "@/components/Logo";
@@ -72,7 +78,9 @@ export default function MobileSignup() {
       }).catch(() => null);
 
       if (!testResponse) {
-        throw new Error("Backend server is not running. Please start the backend: cd server && pnpm run start:dev");
+        throw new Error(
+          "Backend server is not running. Please start the backend: cd server && pnpm run start:dev",
+        );
       }
 
       await signUp(formData.email, formData.password, {
@@ -90,7 +98,8 @@ export default function MobileSignup() {
       }, 2000);
     } catch (error: any) {
       console.error("Signup error:", error);
-      const errorMsg = error.message || "Failed to create account. Please try again.";
+      const errorMsg =
+        error.message || "Failed to create account. Please try again.";
       setError(errorMsg);
       toast.error(errorMsg);
     } finally {
@@ -140,7 +149,9 @@ export default function MobileSignup() {
             <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-400 via-orange-300 to-pink-400 bg-clip-text text-transparent mb-2">
               Create Account
             </h1>
-            <p className="text-slate-400 text-sm">Step {step} of 3 • Join the fitness revolution</p>
+            <p className="text-slate-400 text-sm">
+              Step {step} of 3 • Join the fitness revolution
+            </p>
           </div>
         )}
 
@@ -204,7 +215,9 @@ export default function MobileSignup() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              <p className="text-xs text-slate-500 mt-2">At least 6 characters</p>
+              <p className="text-xs text-slate-500 mt-2">
+                At least 6 characters
+              </p>
             </div>
           </div>
         )}
@@ -238,7 +251,9 @@ export default function MobileSignup() {
                 placeholder="johndoe"
                 className="w-full px-5 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
               />
-              <p className="text-xs text-slate-500 mt-2">3+ characters, lowercase</p>
+              <p className="text-xs text-slate-500 mt-2">
+                3+ characters, lowercase
+              </p>
             </div>
           </div>
         )}
