@@ -16,7 +16,7 @@ async function importCamera() {
 }
 
 export async function takeCameraPhoto(
-  options: CameraOptions = {}
+  options: CameraOptions = {},
 ): Promise<string | null> {
   try {
     if (!Capacitor.isNativePlatform()) {
@@ -36,7 +36,9 @@ export async function takeCameraPhoto(
           ? CameraResultType.Base64
           : CameraResultType.Base64,
       source:
-        options.source === "gallery" ? CameraSource.Photos : CameraSource.Camera,
+        options.source === "gallery"
+          ? CameraSource.Photos
+          : CameraSource.Camera,
       width: options.maxWidth || 800,
       height: options.maxHeight || 800,
     });
@@ -49,7 +51,7 @@ export async function takeCameraPhoto(
 }
 
 export async function selectPhotoFromGallery(
-  options: CameraOptions = {}
+  options: CameraOptions = {},
 ): Promise<string | null> {
   return takeCameraPhoto({ ...options, source: "gallery" });
 }
@@ -92,7 +94,7 @@ export async function getCurrentLocation(): Promise<UserLocation | null> {
 }
 
 export async function watchLocation(
-  callback: (location: UserLocation) => void
+  callback: (location: UserLocation) => void,
 ): Promise<string | null> {
   try {
     if (!Capacitor.isNativePlatform()) {
@@ -136,7 +138,7 @@ function getWebLocation(): Promise<UserLocation | null> {
           timestamp: Date.now(),
         });
       },
-      () => resolve(null)
+      () => resolve(null),
     );
   });
 }
@@ -161,7 +163,7 @@ async function importLocalNotifications() {
 }
 
 export async function scheduleLocalNotification(
-  options: NotificationOptions
+  options: NotificationOptions,
 ): Promise<void> {
   try {
     if (!Capacitor.isNativePlatform()) {
@@ -261,7 +263,7 @@ async function importPreferences() {
 
 export async function savePreference(
   key: string,
-  value: string
+  value: string,
 ): Promise<void> {
   try {
     if (!Capacitor.isNativePlatform()) {
@@ -359,15 +361,15 @@ export async function getNetworkStatus(): Promise<NetworkStatus> {
 }
 
 export function watchNetworkStatus(
-  callback: (status: NetworkStatus) => void
+  callback: (status: NetworkStatus) => void,
 ): void {
   try {
     if (!Capacitor.isNativePlatform()) {
       window.addEventListener("online", () =>
-        callback({ connected: true, type: "wifi" })
+        callback({ connected: true, type: "wifi" }),
       );
       window.addEventListener("offline", () =>
-        callback({ connected: false, type: "none" })
+        callback({ connected: false, type: "none" }),
       );
       return;
     }
@@ -431,7 +433,7 @@ async function importStatusBar() {
 }
 
 export async function setStatusBarStyle(
-  isDark: boolean = false
+  isDark: boolean = false,
 ): Promise<void> {
   try {
     if (!Capacitor.isNativePlatform()) {
