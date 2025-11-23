@@ -276,9 +276,10 @@ ALTER TABLE conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
 
--- Users policies (allow read all, update own)
+-- Users policies (allow read all, update own, insert during signup)
 CREATE POLICY "Users can view all profiles" ON users FOR SELECT USING (true);
 CREATE POLICY "Users can update own profile" ON users FOR UPDATE USING (auth.uid()::text = id::text);
+CREATE POLICY "Users can insert own profile during signup" ON users FOR INSERT WITH CHECK (auth.uid()::text = id::text);
 
 -- Daily stats policies
 CREATE POLICY "Users can view own stats" ON daily_stats FOR SELECT USING (auth.uid()::text = user_id::text);
