@@ -485,7 +485,7 @@ const Community = () => {
               <div className="flex justify-center py-12">
                 <Loader className="w-8 h-8 animate-spin text-blue-500" />
               </div>
-            ) : posts.length > 0 ? (
+            ) : Array.isArray(posts) && posts.length > 0 ? (
               posts.map((post) => (
                 <div
                   key={post.id}
