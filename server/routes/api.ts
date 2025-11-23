@@ -208,6 +208,7 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
     if (!userId) {
       console.error('[API] No user ID in auth response');
       return res.status(400).json({
+        message: 'No user ID returned from auth',
         error: 'No user ID returned from auth',
       });
     }
