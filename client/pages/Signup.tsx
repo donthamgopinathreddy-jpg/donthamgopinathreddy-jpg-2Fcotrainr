@@ -135,8 +135,15 @@ export default function Signup() {
       return;
     }
 
-    if (formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+    const passwordError = validatePassword(formData.password);
+    if (passwordError) {
+      toast.error(passwordError);
+      return;
+    }
+
+    const usernameError = validateUsername(formData.username);
+    if (usernameError) {
+      toast.error(usernameError);
       return;
     }
 
