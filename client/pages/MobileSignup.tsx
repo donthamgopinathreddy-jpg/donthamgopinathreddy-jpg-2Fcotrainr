@@ -491,7 +491,9 @@ export default function MobileSignup() {
                 <label className="block text-xs font-semibold text-gray-700 mb-1">
                   Height (Centimeters)
                 </label>
-                <p className="text-lg font-bold text-gray-900">{formData.height_cm} cm</p>
+                <p className="text-lg font-bold text-gray-900">
+                  {formData.height_cm} cm
+                </p>
               </div>
             )}
 

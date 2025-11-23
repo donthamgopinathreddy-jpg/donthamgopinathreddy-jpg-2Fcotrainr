@@ -83,7 +83,9 @@ export function createServer() {
 
   app.post('/api/auth/reset-password', async (req, res) => {
     try {
-      console.log('[Server] Forwarding POST /api/auth/reset-password to NestJS backend on port 3001');
+      console.log(
+        '[Server] Forwarding POST /api/auth/reset-password to NestJS backend on port 3001'
+      );
       const response = await fetch('http://localhost:3001/auth/reset-password', {
         method: 'POST',
         headers: {

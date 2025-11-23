@@ -206,7 +206,9 @@ export default function MobileLogin() {
           <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-fade-in">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Reset Password</h2>
+              <h2 className="text-xl font-bold text-gray-900">
+                Reset Password
+              </h2>
               <button
                 onClick={() => setShowResetModal(false)}
                 className="text-gray-500 hover:text-gray-700 transition-colors"
