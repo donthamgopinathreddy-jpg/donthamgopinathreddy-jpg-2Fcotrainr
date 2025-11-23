@@ -26,21 +26,6 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode === "development",
     target: "es2015",
     minify: "esbuild",
-    rollupOptions: {
-      external: [
-        "@capacitor/core",
-        "@capacitor/camera",
-        "@capacitor/geolocation",
-        "@capacitor/local-notifications",
-        "@capacitor/device",
-        "@capacitor/preferences",
-        "@capacitor/network",
-        "@capacitor/keyboard",
-        "@capacitor/status-bar",
-        "@capacitor/app",
-        "@capacitor/android",
-      ],
-    },
   },
   plugins: [react(), expressPlugin()],
   resolve: {
