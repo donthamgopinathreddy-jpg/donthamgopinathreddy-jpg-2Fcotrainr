@@ -83,9 +83,7 @@ export function createServer() {
 
   app.post('/api/auth/reset-password', async (req, res) => {
     try {
-      console.log(
-        '[Server] Forwarding POST /api/auth/reset-password to Supabase API wrapper'
-      );
+      console.log('[Server] Forwarding POST /api/auth/reset-password to Supabase API wrapper');
       const response = await fetch('http://localhost:3000/api/supabase/auth/reset-password', {
         method: 'POST',
         headers: {
