@@ -250,22 +250,33 @@ export default function Signup() {
         country_code: formData.country_code,
       });
 
-      // Store survey data
-      const { data: authData } = await supabase.auth.getUser();
-      if (authData?.user?.id) {
-        await supabase.from("user_surveys").insert({
-          user_id: authData.user.id,
-          download_reasons: formData.downloadReasons,
-          other_reason:
-            formData.downloadReasons.includes("Other") && formData.otherReason
-              ? formData.otherReason
-              : null,
-        });
+      // Try to store survey data, but don't fail if session isn't available yet
+      try {
+        const { data: authData } = await supabase.auth.getUser();
+        if (authData?.user?.id) {
+          await supabase.from("user_surveys").insert({
+            user_id: authData.user.id,
+            download_reasons: formData.downloadReasons,
+            other_reason:
+              formData.downloadReasons.includes("Other") && formData.otherReason
+                ? formData.otherReason
+                : null,
+          });
+          console.log("[Signup] Survey data saved successfully");
+        } else {
+          console.warn("[Signup] No session yet - survey data will be saved on first login");
+        }
+      } catch (surveyError) {
+        // Don't fail signup if survey save fails
+        console.warn("[Signup] Could not save survey data (will retry on login):", surveyError);
       }
 
-      toast.success("Account created successfully!");
-      navigate("/");
+      toast.success("Account created successfully! You can now sign in.");
+
+      // Redirect to login page with success message
+      navigate("/login", { state: { message: "Account created! Please sign in." } });
     } catch (error: any) {
+      console.error("[Signup] Signup failed:", error);
       toast.error(error.message || "Signup failed");
     } finally {
       setLoading(false);
