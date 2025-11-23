@@ -1,12 +1,19 @@
 import "dotenv/config";
 import express from "express";
 import path from "path";
+import httpProxy from "http-proxy";
 import { handleDemo } from "./routes/demo";
 import apiRouter from "./routes/api";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Create a proxy to forward requests to NestJS backend
+const nestProxy = httpProxy.createProxyServer({
+  target: "http://localhost:3001",
+  changeOrigin: true,
+});
 
 export function createServer() {
   const app = express();
@@ -31,6 +38,17 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Proxy auth routes to NestJS backend
+  app.post("/api/auth/signup", (req, res) => {
+    console.log("[Server] Proxying POST /api/auth/signup to NestJS");
+    nestProxy.web(req, res);
+  });
+
+  app.post("/api/auth/login", (req, res) => {
+    console.log("[Server] Proxying POST /api/auth/login to NestJS");
+    nestProxy.web(req, res);
+  });
 
   // Supabase API wrapper - all auth and data operations go through here
   console.log("[Server] Registering /api/supabase/ routes");
