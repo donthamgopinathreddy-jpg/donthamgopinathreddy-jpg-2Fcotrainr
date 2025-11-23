@@ -321,11 +321,11 @@ export default function MobileSignup() {
               <button
                 onClick={handleNext}
                 disabled={loading}
-                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/75"
+                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/75"
               >
                 {loading ? (
                   <>
-                    <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                    <div className="w-4 h-4 rounded-full border-2 border-gray-800/30 border-t-gray-800 animate-spin" />
                     Creating...
                   </>
                 ) : (
