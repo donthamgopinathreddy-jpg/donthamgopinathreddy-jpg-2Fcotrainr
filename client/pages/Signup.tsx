@@ -443,6 +443,62 @@ export default function Signup() {
             </div>
           </div>
 
+          {/* Height in CM Display */}
+          {formData.height_cm && (
+            <div className="p-4 rounded-lg bg-yellow-50 border border-yellow-200">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Height (Centimeters)
+              </label>
+              <p className="text-lg font-bold text-gray-900">{formData.height_cm} cm</p>
+            </div>
+          )}
+
+          {/* Phone Number and Country Code */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Contact Information
+            </label>
+            <div className="flex gap-3">
+              <div className="w-32">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Country Code
+                </label>
+                <select
+                  name="country_code"
+                  value={formData.country_code}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                >
+                  <option value="+1">+1 (US)</option>
+                  <option value="+44">+44 (UK)</option>
+                  <option value="+91">+91 (IN)</option>
+                  <option value="+86">+86 (CN)</option>
+                  <option value="+81">+81 (JP)</option>
+                  <option value="+49">+49 (DE)</option>
+                  <option value="+33">+33 (FR)</option>
+                  <option value="+39">+39 (IT)</option>
+                  <option value="+34">+34 (ES)</option>
+                  <option value="+61">+61 (AU)</option>
+                  <option value="+55">+55 (BR)</option>
+                  <option value="+27">+27 (ZA)</option>
+                </select>
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  name="phone_number"
+                  value={formData.phone_number}
+                  onChange={handleInputChange}
+                  placeholder="9876543210"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Gender */}
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-2">
