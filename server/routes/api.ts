@@ -98,6 +98,7 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
     if (error) {
       console.error('[API] Sign in error:', error.message);
       return res.status(401).json({
+        message: error.message || 'Authentication failed',
         error: error.message || 'Authentication failed',
       });
     }
@@ -105,6 +106,7 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
     if (!data?.user) {
       console.error('[API] No user returned from auth');
       return res.status(401).json({
+        message: 'Authentication failed',
         error: 'Authentication failed',
       });
     }
