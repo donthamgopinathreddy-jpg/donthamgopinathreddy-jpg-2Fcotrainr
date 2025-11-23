@@ -157,6 +157,17 @@ export default function MobileSignup() {
   };
 
   const handleSignup = async () => {
+    console.log("[MobileSignup] ===== CALLING SIGNUP =====");
+    console.log("[MobileSignup] Form data:", {
+      email: formData.email,
+      username: formData.username,
+      full_name: formData.full_name,
+      height_feet: formData.height_feet,
+      height_inches: formData.height_inches,
+      weight_kg: formData.weight_kg,
+      phone_number: formData.phone_number,
+      country_code: formData.country_code,
+    });
     setLoading(true);
     setError("");
     try {
@@ -166,6 +177,9 @@ export default function MobileSignup() {
           2.54,
       );
       const weightInKg = parseInt(formData.weight_kg);
+
+      console.log("[MobileSignup] Calculated values:", { heightInCm, weightInKg });
+      console.log("[MobileSignup] Calling signUp from AuthContext...");
 
       await signUp(formData.email, formData.password, {
         username: formData.username,
