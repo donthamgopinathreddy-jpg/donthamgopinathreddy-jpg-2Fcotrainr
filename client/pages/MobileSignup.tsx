@@ -485,14 +485,14 @@ export default function MobileSignup() {
               </div>
             </div>
 
-            {/* Height in CM Display */}
-            {formData.height_cm && (
+            {/* Height Display in Both Formats */}
+            {formData.height_feet && formData.height_inches && (
               <div className="p-4 rounded-2xl bg-yellow-50 border border-yellow-200">
                 <label className="block text-xs font-semibold text-gray-700 mb-1">
-                  Height (Centimeters)
+                  Height Summary
                 </label>
                 <p className="text-lg font-bold text-gray-900">
-                  {formData.height_cm} cm
+                  {formData.height_feet}'{formData.height_inches}" or {formData.height_cm} cm
                 </p>
               </div>
             )}
