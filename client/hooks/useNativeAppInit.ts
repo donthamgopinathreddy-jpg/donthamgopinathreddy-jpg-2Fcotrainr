@@ -4,11 +4,12 @@ import {
   getDeviceInfo,
   onAppPause,
   onAppResume,
+  onAppDestroy,
   setStatusBarStyle,
   requestNotificationPermission,
-  initializeOfflineStorage,
 } from "../lib/nativeFeatures";
 import { initializeBiometricAuth } from "../lib/capacitorBridge";
+import { initializeOfflineStorage } from "../lib/offlineStorage";
 
 /**
  * Initialize native app features on app startup
