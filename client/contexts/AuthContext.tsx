@@ -334,8 +334,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log("[Auth] Starting signup for:", email);
 
-      // Call NestJS backend using direct fetch
-      const response = await fetch("http://localhost:3001/auth/signup", {
+      // Call NestJS backend using API proxy
+      const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
