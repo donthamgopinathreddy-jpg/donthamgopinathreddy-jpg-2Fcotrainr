@@ -67,6 +67,7 @@ import MobileProfile from "./pages/MobileProfile";
 import Navigation from "./components/Navigation";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { isUserAdmin } from "@/lib/adminAuth";
+import { useNativeAppInit } from "@/hooks/useNativeAppInit";
 
 const queryClient = new QueryClient();
 
