@@ -54,7 +54,7 @@ async function getPreferencesModule() {
 export async function storePendingOperation(
   type: "create" | "update" | "delete",
   endpoint: string,
-  data: unknown
+  data: unknown,
 ): Promise<string> {
   try {
     const Preferences = await getPreferencesModule();
@@ -100,7 +100,9 @@ export async function getPendingOperations(): Promise<StoredOperation[]> {
 /**
  * Remove a pending operation
  */
-export async function removePendingOperation(operationId: string): Promise<void> {
+export async function removePendingOperation(
+  operationId: string,
+): Promise<void> {
   try {
     const Preferences = await getPreferencesModule();
     const operations = await getPendingOperations();
@@ -119,7 +121,7 @@ export async function removePendingOperation(operationId: string): Promise<void>
  */
 export async function updateOperationRetry(
   operationId: string,
-  incrementRetries: boolean = true
+  incrementRetries: boolean = true,
 ): Promise<void> {
   try {
     const Preferences = await getPreferencesModule();
@@ -143,7 +145,7 @@ export async function updateOperationRetry(
 export async function cacheData(
   key: string,
   data: unknown,
-  ttlMs: number = 5 * 60 * 1000 // 5 minutes
+  ttlMs: number = 5 * 60 * 1000, // 5 minutes
 ): Promise<void> {
   try {
     const Preferences = await getPreferencesModule();
@@ -167,7 +169,9 @@ export async function cacheData(
 /**
  * Get cached data if not expired
  */
-export async function getCachedData<T = unknown>(key: string): Promise<T | null> {
+export async function getCachedData<T = unknown>(
+  key: string,
+): Promise<T | null> {
   try {
     const Preferences = await getPreferencesModule();
     const cacheKey = `${CACHE_PREFIX}${key}`;
@@ -206,7 +210,7 @@ export async function clearCache(): Promise<void> {
  * Initialize offline storage listener
  */
 export async function initializeOfflineStorage(
-  onPendingOperations?: (operations: StoredOperation[]) => void
+  onPendingOperations?: (operations: StoredOperation[]) => void,
 ): Promise<void> {
   try {
     const operations = await getPendingOperations();
