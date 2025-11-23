@@ -65,7 +65,7 @@ export function useClientGoals(clientId?: string) {
         return;
       }
 
-      if (data) {
+      if (Array.isArray(data)) {
         const formattedGoals: ClientGoal[] = data.map((goal: any) => ({
           ...goal,
           progress_percentage: Math.round(
@@ -75,6 +75,8 @@ export function useClientGoals(clientId?: string) {
         }));
         setGoals(formattedGoals);
         setError(null);
+      } else {
+        setGoals([]);
       }
     } catch (err) {
       console.debug(
