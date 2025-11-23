@@ -1,7 +1,6 @@
-// Use the Vite proxy or direct URL based on environment
-const API_BASE_URL = import.meta.env.DEV
-  ? ""
-  : import.meta.env.VITE_API_URL || "http://localhost:3001";
+// Use relative paths for API (proxy handles it)
+// This works for both dev (Vite proxy) and production (server proxy)
+const API_BASE_URL = "";
 
 let authToken: string | null = null;
 
