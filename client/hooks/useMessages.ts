@@ -120,6 +120,7 @@ export const useMessages = (recipientId?: string) => {
       setTotalUnreadMessages(totalUnreadMessages);
     } catch (error) {
       console.error("Error fetching conversations:", error);
+      setConversations([]); // Set empty array on error to prevent .map() errors
       setTotalUnreadMessages(0);
     } finally {
       setLoading(false);
@@ -156,7 +157,7 @@ export const useMessages = (recipientId?: string) => {
       setMessages(data || []);
 
       // Mark as read
-      if (data) {
+      if (data && Array.isArray(data)) {
         const unreadIds = data
           .filter((m) => !m.is_read && m.recipient_id === user.id)
           .map((m) => m.id);
@@ -170,6 +171,7 @@ export const useMessages = (recipientId?: string) => {
       }
     } catch (error) {
       console.error("Error fetching messages:", error);
+      setMessages([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
