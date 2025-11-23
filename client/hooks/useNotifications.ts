@@ -282,7 +282,7 @@ export function useNotifications(userId?: string) {
 
       if (!isMountedRef.current) return;
 
-      if (data.length === 0) {
+      if (!Array.isArray(data) || data.length === 0) {
         setNotifications([]);
         setUnreadCount(0);
       } else {

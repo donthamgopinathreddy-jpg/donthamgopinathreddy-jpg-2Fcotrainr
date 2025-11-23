@@ -51,7 +51,7 @@ export const useBookings = () => {
       if (error) throw error;
 
       // Enrich with user names
-      if (data) {
+      if (Array.isArray(data)) {
         const bookingsWithNames = await Promise.all(
           data.map(async (booking) => {
             const userIds = [booking.client_id, booking.trainer_id];
@@ -61,7 +61,7 @@ export const useBookings = () => {
               .in("id", userIds);
 
             const userMap = new Map(
-              (users || []).map((u) => [u.id, u.full_name])
+              (Array.isArray(users) ? users : []).map((u) => [u.id, u.full_name])
             );
 
             return {
@@ -73,6 +73,8 @@ export const useBookings = () => {
         );
 
         setBookings(bookingsWithNames);
+      } else {
+        setBookings([]);
       }
     } catch (error) {
       console.error("Error fetching bookings:", error);
