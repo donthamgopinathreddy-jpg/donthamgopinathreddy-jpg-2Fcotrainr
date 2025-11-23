@@ -106,7 +106,10 @@ export default function MobileSignup() {
       }
       const passwordError = validatePassword(formData.password);
       if (passwordError) {
-        console.error("[MobileSignup] Step 1 FAILED: Password error:", passwordError);
+        console.error(
+          "[MobileSignup] Step 1 FAILED: Password error:",
+          passwordError,
+        );
         setError(passwordError);
         return;
       }
@@ -126,7 +129,10 @@ export default function MobileSignup() {
       }
       const usernameError = validateUsername(formData.username);
       if (usernameError) {
-        console.error("[MobileSignup] Step 2 FAILED: Username error:", usernameError);
+        console.error(
+          "[MobileSignup] Step 2 FAILED: Username error:",
+          usernameError,
+        );
         setError(usernameError);
         return;
       }
@@ -178,7 +184,10 @@ export default function MobileSignup() {
       );
       const weightInKg = parseInt(formData.weight_kg);
 
-      console.log("[MobileSignup] Calculated values:", { heightInCm, weightInKg });
+      console.log("[MobileSignup] Calculated values:", {
+        heightInCm,
+        weightInKg,
+      });
       console.log("[MobileSignup] Calling signUp from AuthContext...");
 
       await signUp(formData.email, formData.password, {
