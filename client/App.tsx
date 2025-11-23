@@ -299,22 +299,18 @@ const PermissionRequester = () => {
 const AppWithSplash = () => {
   const { loading } = useAuth();
   const [showSplash, setShowSplash] = useState(true);
-  const [splashTimer, setSplashTimer] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Show splash for at least 2 seconds
     const timer = setTimeout(() => {
       setShowSplash(false);
     }, 2000);
-    setSplashTimer(timer);
 
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
-  // If still loading or splash is showing, display splash screen
-  if ((loading && showSplash) || showSplash) {
+  // Show splash screen for minimum 2 seconds or while auth is loading
+  if (showSplash || loading) {
     return <SplashScreen />;
   }
 
