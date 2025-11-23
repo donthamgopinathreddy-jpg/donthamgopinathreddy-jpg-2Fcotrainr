@@ -641,7 +641,7 @@ const App = () => {
                     <PermissionRequester />
                     <Toaster />
                     <Sonner />
-                    <AppRoutes />
+                    <AppWithSplash />
                   </AuthInitializer>
                 </ErrorBoundary>
               </AuthProvider>
