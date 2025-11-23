@@ -408,28 +408,28 @@ export default function ClientDashboardDemo() {
       >
         <div className="max-w-6xl mx-auto flex justify-around">
           <button
-            onClick={() => alert("Home selected")}
+            onClick={() => navigate("/")}
             className="flex flex-col items-center gap-2 p-3 rounded-xl text-blue-600 font-semibold hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors"
           >
             <Activity className="w-6 h-6" />
             <span className="text-xs">Home</span>
           </button>
           <button
-            onClick={() => alert("Discover selected")}
+            onClick={() => navigate("/discover")}
             className={`flex flex-col items-center gap-2 p-3 rounded-xl ${subtextClass} font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors`}
           >
             <TrendingUp className="w-6 h-6" />
             <span className="text-xs">Discover</span>
           </button>
           <button
-            onClick={() => alert("Messages selected")}
+            onClick={() => navigate("/messages")}
             className={`flex flex-col items-center gap-2 p-3 rounded-xl ${subtextClass} font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors`}
           >
             <MessageSquare className="w-6 h-6" />
             <span className="text-xs">Messages</span>
           </button>
           <button
-            onClick={() => alert("Profile selected")}
+            onClick={() => navigate("/profile")}
             className={`flex flex-col items-center gap-2 p-3 rounded-xl ${subtextClass} font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors`}
           >
             <Heart className="w-6 h-6" />
