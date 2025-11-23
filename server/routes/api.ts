@@ -234,21 +234,26 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
     // Create user profile in database (server-side with full permissions)
     try {
       console.log("[API] Creating user profile in database...");
-      const profileData = {
+      const profileData: Record<string, any> = {
         id: userId,
         email,
         username: username || email.split("@")[0],
         password_hash: "supabase_auth", // Placeholder - actual password is managed by Supabase auth
-        full_name: full_name || "",
         role: role,
-        gender: null,
         weight_kg: weight || null,
         height_cm: height || null,
-        phone_number: phone_number || null,
-        country_code: country_code || null,
-        age: null,
-        date_of_birth: null,
       };
+
+      // Add optional fields if table supports them
+      if (full_name) {
+        (profileData as any).full_name = full_name;
+      }
+      if (phone_number) {
+        (profileData as any).phone_number = phone_number;
+      }
+      if (country_code) {
+        (profileData as any).country_code = country_code;
+      }
 
       console.log("[API] Profile data to insert:", profileData);
 
