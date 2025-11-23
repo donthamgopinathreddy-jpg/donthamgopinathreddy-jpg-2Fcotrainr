@@ -533,7 +533,7 @@ export default function MobileSignup() {
             Already have an account?{" "}
             <button
               onClick={() => navigate("/login")}
-              className="text-orange-600 hover:text-orange-700 font-semibold transition-colors"
+              className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
             >
               Sign In
             </button>
