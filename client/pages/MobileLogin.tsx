@@ -148,7 +148,7 @@ export default function MobileLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-5 py-3.5 mt-6 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/75 flex items-center justify-center gap-2"
+            className="w-full px-5 py-3.5 mt-6 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
