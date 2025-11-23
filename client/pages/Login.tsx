@@ -111,13 +111,13 @@ export default function Login() {
             </button>
           </div>
 
-          {/* Login Button - Vibrant Blue */}
+          {/* Login Button - Gold/Yellow */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 text-white font-semibold rounded-2xl transition-all shadow-lg hover:shadow-blue-600/50 active:scale-95 transform hover:scale-105"
+            className="w-full px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 disabled:opacity-50 text-gray-800 font-semibold rounded-2xl transition-all shadow-lg hover:shadow-yellow-400/50 active:scale-95 transform hover:scale-105"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Signing in..." : "Get Started"}
           </button>
 
           {/* Divider */}
