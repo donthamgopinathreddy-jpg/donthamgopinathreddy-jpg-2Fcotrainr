@@ -408,8 +408,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error("Email and password are required");
       }
 
-      // Call NestJS backend using API proxy
-      const response = await fetch("/api/auth/login", {
+      // Call backend auth endpoint
+      const response = await fetch("/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -419,17 +419,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.message || `Login failed: ${response.statusText}`,
-        );
+        const errorMsg =
+          errorData?.error ||
+          errorData?.message ||
+          `Login failed: ${response.statusText}`;
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();
       console.log("[Auth] Sign in successful for user:", data.user?.email);
 
-      // Store token
-      if (data.token) {
-        setAuthToken(data.token);
+      // Store session and user data
+      if (data.session?.access_token) {
+        setAuthToken(data.session.access_token);
       }
 
       // Update user state
