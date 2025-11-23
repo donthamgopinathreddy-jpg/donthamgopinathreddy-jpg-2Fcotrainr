@@ -224,35 +224,37 @@ const HomeModern = () => {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {stats && Array.isArray(stats) && stats.map((stat, idx) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={idx}
-                  className={`rounded-lg p-3 backdrop-blur text-center transition-all duration-300 ${
-                    theme === "dark"
-                      ? "bg-gray-700/30 border border-gray-600/30"
-                      : "bg-white/30 border border-white/50"
-                  }`}
-                >
-                  <Icon className={`${stat.color} mx-auto mb-1`} size={20} />
+            {stats &&
+              Array.isArray(stats) &&
+              stats.map((stat, idx) => {
+                const Icon = stat.icon;
+                return (
                   <div
-                    className={`text-xs font-medium ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-600"
+                    key={idx}
+                    className={`rounded-lg p-3 backdrop-blur text-center transition-all duration-300 ${
+                      theme === "dark"
+                        ? "bg-gray-700/30 border border-gray-600/30"
+                        : "bg-white/30 border border-white/50"
                     }`}
                   >
-                    {stat.label}
+                    <Icon className={`${stat.color} mx-auto mb-1`} size={20} />
+                    <div
+                      className={`text-xs font-medium ${
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    >
+                      {stat.label}
+                    </div>
+                    <div
+                      className={`text-lg font-bold ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
+                      }`}
+                    >
+                      {stat.value}
+                    </div>
                   </div>
-                  <div
-                    className={`text-lg font-bold ${
-                      theme === "dark" ? "text-white" : "text-gray-900"
-                    }`}
-                  >
-                    {stat.value}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
 
@@ -452,59 +454,62 @@ const HomeModern = () => {
           </h3>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {tiles && Array.isArray(tiles) && tiles.map((tile, idx) => {
-              const Icon = tile.icon;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => navigate(tile.path)}
-                  className={`relative rounded-xl p-4 backdrop-blur-xl border overflow-hidden group transition-all duration-300 hover:shadow-lg hover:scale-105 ${
-                    theme === "dark"
-                      ? "bg-gradient-to-br from-gray-800/40 to-gray-800/20 border-gray-700/30 hover:border-gray-600/50"
-                      : "bg-gradient-to-br from-white/60 to-white/40 border-white/40 hover:border-white/60"
-                  }`}
-                >
-                  {/* Gradient Background */}
-                  <div
-                    className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 bg-gradient-to-br ${tile.color}`}
-                  ></div>
+            {tiles &&
+              Array.isArray(tiles) &&
+              tiles.map((tile, idx) => {
+                const Icon = tile.icon;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => navigate(tile.path)}
+                    className={`relative rounded-xl p-4 backdrop-blur-xl border overflow-hidden group transition-all duration-300 hover:shadow-lg hover:scale-105 ${
+                      theme === "dark"
+                        ? "bg-gradient-to-br from-gray-800/40 to-gray-800/20 border-gray-700/30 hover:border-gray-600/50"
+                        : "bg-gradient-to-br from-white/60 to-white/40 border-white/40 hover:border-white/60"
+                    }`}
+                  >
+                    {/* Gradient Background */}
+                    <div
+                      className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 bg-gradient-to-br ${tile.color}`}
+                    ></div>
 
-                  {/* Content */}
-                  <div className="relative z-10 text-center">
-                    <Icon
-                      size={32}
-                      className={`mx-auto mb-2 group-hover:scale-110 transition-transform duration-300 ${
-                        tile.color === "from-purple-500 to-pink-500"
-                          ? "text-purple-500"
-                          : tile.color === "from-green-500 to-emerald-500"
-                            ? "text-green-500"
-                            : tile.color === "from-blue-500 to-cyan-500"
-                              ? "text-blue-500"
-                              : tile.color === "from-orange-500 to-red-500"
-                                ? "text-orange-500"
-                                : tile.color === "from-yellow-500 to-amber-500"
-                                  ? "text-yellow-500"
-                                  : "text-indigo-500"
-                      }`}
-                    />
-                    <p
-                      className={`font-bold text-sm ${
-                        theme === "dark" ? "text-white" : "text-gray-900"
-                      }`}
-                    >
-                      {tile.label}
-                    </p>
-                    <p
-                      className={`text-xs mt-1 ${
-                        theme === "dark" ? "text-gray-400" : "text-gray-600"
-                      }`}
-                    >
-                      {tile.shortcut}
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
+                    {/* Content */}
+                    <div className="relative z-10 text-center">
+                      <Icon
+                        size={32}
+                        className={`mx-auto mb-2 group-hover:scale-110 transition-transform duration-300 ${
+                          tile.color === "from-purple-500 to-pink-500"
+                            ? "text-purple-500"
+                            : tile.color === "from-green-500 to-emerald-500"
+                              ? "text-green-500"
+                              : tile.color === "from-blue-500 to-cyan-500"
+                                ? "text-blue-500"
+                                : tile.color === "from-orange-500 to-red-500"
+                                  ? "text-orange-500"
+                                  : tile.color ===
+                                      "from-yellow-500 to-amber-500"
+                                    ? "text-yellow-500"
+                                    : "text-indigo-500"
+                        }`}
+                      />
+                      <p
+                        className={`font-bold text-sm ${
+                          theme === "dark" ? "text-white" : "text-gray-900"
+                        }`}
+                      >
+                        {tile.label}
+                      </p>
+                      <p
+                        className={`text-xs mt-1 ${
+                          theme === "dark" ? "text-gray-400" : "text-gray-600"
+                        }`}
+                      >
+                        {tile.shortcut}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
           </div>
         </div>
 

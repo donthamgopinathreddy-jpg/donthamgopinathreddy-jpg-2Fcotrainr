@@ -659,57 +659,58 @@ const Community = () => {
               </div>
             ) : Array.isArray(filteredUsers) && filteredUsers.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {filteredUsers && filteredUsers.map((user) => (
-                  <button
-                    key={user.id}
-                    onClick={() => navigate(`/profile/${user.id}`)}
-                    className={`rounded-xl p-4 backdrop-blur-xl border text-left transition-all duration-300 hover:shadow-lg hover:scale-105 ${
-                      theme === "dark"
-                        ? "bg-gradient-to-br from-gray-800/40 to-gray-800/20 border-gray-700/30"
-                        : "bg-gradient-to-br from-white/60 to-white/40 border-white/40"
-                    }`}
-                  >
-                    <div className="w-full aspect-square rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white font-bold text-2xl mb-3">
-                      {user.full_name?.charAt(0) || "U"}
-                    </div>
-
-                    <h3
-                      className={`font-bold text-sm mb-1 truncate ${
-                        theme === "dark" ? "text-white" : "text-gray-900"
+                {filteredUsers &&
+                  filteredUsers.map((user) => (
+                    <button
+                      key={user.id}
+                      onClick={() => navigate(`/profile/${user.id}`)}
+                      className={`rounded-xl p-4 backdrop-blur-xl border text-left transition-all duration-300 hover:shadow-lg hover:scale-105 ${
+                        theme === "dark"
+                          ? "bg-gradient-to-br from-gray-800/40 to-gray-800/20 border-gray-700/30"
+                          : "bg-gradient-to-br from-white/60 to-white/40 border-white/40"
                       }`}
                     >
-                      {user.full_name}
-                    </h3>
+                      <div className="w-full aspect-square rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white font-bold text-2xl mb-3">
+                        {user.full_name?.charAt(0) || "U"}
+                      </div>
 
-                    {user.bio && (
-                      <p
-                        className={`text-xs mb-3 line-clamp-2 ${
-                          theme === "dark" ? "text-gray-400" : "text-gray-600"
+                      <h3
+                        className={`font-bold text-sm mb-1 truncate ${
+                          theme === "dark" ? "text-white" : "text-gray-900"
                         }`}
                       >
-                        {user.bio}
-                      </p>
-                    )}
+                        {user.full_name}
+                      </h3>
 
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        user.is_following
-                          ? handleUnfollowUser(user.id)
-                          : handleFollowUser(user.id);
-                      }}
-                      className={`w-full py-2 rounded-lg text-sm font-bold transition-all duration-300 ${
-                        user.is_following
-                          ? theme === "dark"
-                            ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
-                            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                          : "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:shadow-lg"
-                      }`}
-                    >
-                      {user.is_following ? "Following" : "+ Follow"}
+                      {user.bio && (
+                        <p
+                          className={`text-xs mb-3 line-clamp-2 ${
+                            theme === "dark" ? "text-gray-400" : "text-gray-600"
+                          }`}
+                        >
+                          {user.bio}
+                        </p>
+                      )}
+
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          user.is_following
+                            ? handleUnfollowUser(user.id)
+                            : handleFollowUser(user.id);
+                        }}
+                        className={`w-full py-2 rounded-lg text-sm font-bold transition-all duration-300 ${
+                          user.is_following
+                            ? theme === "dark"
+                              ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
+                              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                            : "bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:shadow-lg"
+                        }`}
+                      >
+                        {user.is_following ? "Following" : "+ Follow"}
+                      </button>
                     </button>
-                  </button>
-                ))}
+                  ))}
               </div>
             ) : (
               <div
