@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// Use the Vite proxy or direct URL based on environment
+const API_BASE_URL = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_URL || 'http://localhost:3001');
 
 let authToken: string | null = null;
 
@@ -41,17 +42,33 @@ async function apiCall<T>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  // Build the full URL
+  const url = API_BASE_URL ? `${API_BASE_URL}${endpoint}` : endpoint;
+
+  const response = await fetch(url, {
     ...fetchOptions,
     headers,
   });
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
+    const contentType = response.headers.get('content-type');
+    let errorData: any = {};
+
+    if (contentType?.includes('application/json')) {
+      errorData = await response.json().catch(() => ({}));
+    } else {
+      errorData = { message: await response.text() };
+    }
+
     throw new Error(errorData.message || `API Error: ${response.statusText}`);
   }
 
-  return response.json();
+  const contentType = response.headers.get('content-type');
+  if (contentType?.includes('application/json')) {
+    return response.json();
+  }
+
+  return response.text() as any;
 }
 
 // Auth endpoints
