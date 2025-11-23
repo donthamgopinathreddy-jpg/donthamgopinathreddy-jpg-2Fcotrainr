@@ -301,15 +301,15 @@ const AppWithSplash = () => {
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    // Show splash for at least 2 seconds
+    // Show splash for at least 3.5 seconds
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2000);
+    }, 3500);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Show splash screen for minimum 2 seconds or while auth is loading
+  // Show splash screen for minimum 3.5 seconds or while auth is loading
   if (showSplash || loading) {
     return <SplashScreen />;
   }
