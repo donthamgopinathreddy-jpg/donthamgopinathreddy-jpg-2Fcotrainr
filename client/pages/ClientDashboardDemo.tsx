@@ -201,7 +201,7 @@ export default function ClientDashboardDemo() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <button
-              onClick={() => alert("Track your meals!")}
+              onClick={() => navigate("/meals")}
               className="bg-gradient-to-br from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
             >
               <Apple className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform" />
@@ -210,7 +210,7 @@ export default function ClientDashboardDemo() {
             </button>
 
             <button
-              onClick={() => alert("Find trainers now!")}
+              onClick={() => navigate("/discover")}
               className="bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
             >
               <TrendingUp className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform" />
@@ -219,7 +219,7 @@ export default function ClientDashboardDemo() {
             </button>
 
             <button
-              onClick={() => alert("Join the community!")}
+              onClick={() => navigate("/feed")}
               className="bg-gradient-to-br from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
             >
               <Heart className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform" />
@@ -228,7 +228,7 @@ export default function ClientDashboardDemo() {
             </button>
 
             <button
-              onClick={() => alert("View achievements!")}
+              onClick={() => navigate("/quests")}
               className="bg-gradient-to-br from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
             >
               <TrendingUp className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform" />
