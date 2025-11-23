@@ -12,7 +12,7 @@ export class UsersService {
   async updateUserProfile(userId: string, updateData: any) {
     const allowedFields = ['height_cm', 'weight_kg', 'bio', 'username'];
     const filtered = Object.keys(updateData)
-      .filter(key => allowedFields.includes(key))
+      .filter((key) => allowedFields.includes(key))
       .reduce((obj: any, key) => {
         obj[key] = updateData[key];
         return obj;

@@ -5,57 +5,68 @@ A comprehensive NestJS backend for the CoTrainr fitness application.
 ## Features
 
 ✅ **Authentication & Authorization**
+
 - Email/password signup and login
 - JWT-based authentication
 - Role-based access control (client, trainer, admin)
 
 ✅ **User Management**
+
 - Profile management with height, weight, BMI calculation
 - User roles and verification status
 - Subscription plans (free, basic, premium)
 
 ✅ **Daily Stats & Fitness Tracking**
+
 - Log and retrieve daily stats (steps, calories, water, distance)
 - Automatic reward calculation for achievements
 - Health sync integration ready
 
 ✅ **Meal Tracking**
+
 - Log meals by type (breakfast, lunch, snack, dinner)
 - Track calories per meal
 - Get meals by date
 
 ✅ **Trainer Discovery**
+
 - Search trainers by category (gym, yoga, boxing, zumba, etc.)
 - Location-based filtering with distance calculation
 - Trainer ratings and reviews
 
 ✅ **Meetings & Scheduling**
+
 - Create and manage training sessions
 - Automatic notification to clients when trainer schedules a meeting
 - Meeting link integration ready
 
 ✅ **Notifications**
+
 - Real-time notifications for meetings, achievements, etc.
 - Mark notifications as read
 - Notification history
 
 ✅ **Community Feed**
+
 - Create posts with text and images
 - Like and comment on posts
 - Follow/unfollow users
 - Feed algorithm that shows posts from followed users
 
 ✅ **Rewards & Achievements**
+
 - Earn coins for reaching fitness goals
 - Achievement system with progress tracking
 - Referral rewards
 
 ✅ **Messaging**
+
 - 1:1 conversations between trainers and clients
 - Real-time message support (WebSockets ready)
 - Message history
 
 ✅ **Razorpay Subscriptions**
+
 - Create subscription sessions
 - Handle Razorpay webhooks
 - Manage subscription status
@@ -110,34 +121,42 @@ pnpm run start:prod
 ## API Endpoints
 
 ### Authentication
+
 - `POST /auth/signup` - Register a new user
 - `POST /auth/login` - Login with email/password
 
 ### Users
+
 - `GET /users/profile` - Get current user profile
 - `PUT /users/profile` - Update user profile
 
 ### Stats
+
 - `POST /stats/daily` - Log daily stats
 - `GET /stats/daily` - Get stats for date range
 
 ### Meals
+
 - `POST /meals/log` - Log a meal
 - `GET /meals/logs` - Get meals by date
 
 ### Trainers
+
 - `GET /trainers` - Search trainers (supports category, lat, lng, radius filters)
 - `POST /trainers/profile` - Create trainer profile
 
 ### Meetings
+
 - `POST /meetings` - Create a meeting
 - `GET /meetings/my` - Get user's meetings
 
 ### Notifications
+
 - `GET /notifications` - Get user notifications
 - `PATCH /notifications/:id/read` - Mark as read
 
 ### Feed
+
 - `POST /posts` - Create a post
 - `GET /posts/feed` - Get feed
 - `POST /posts/:id/like` - Like a post
@@ -146,12 +165,14 @@ pnpm run start:prod
 - `POST /unfollow/:userId` - Unfollow a user
 
 ### Messaging
+
 - `GET /conversations` - Get conversations
 - `POST /conversations` - Create conversation
 - `POST /conversations/:id/messages` - Send message
 - `GET /conversations/:id/messages` - Get messages
 
 ### Subscriptions
+
 - `POST /subscriptions/create-session` - Create Razorpay session
 - `GET /subscriptions/status` - Get subscription status
 - `POST /subscriptions/webhook` - Razorpay webhook handler

@@ -1,20 +1,22 @@
 // Use the Vite proxy or direct URL based on environment
-const API_BASE_URL = import.meta.env.DEV ? '' : (import.meta.env.VITE_API_URL || 'http://localhost:3001');
+const API_BASE_URL = import.meta.env.DEV
+  ? ""
+  : import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 let authToken: string | null = null;
 
 export function setAuthToken(token: string | null) {
   authToken = token;
   if (token) {
-    localStorage.setItem('authToken', token);
+    localStorage.setItem("authToken", token);
   } else {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
   }
 }
 
 export function getAuthToken() {
   if (!authToken) {
-    authToken = localStorage.getItem('authToken');
+    authToken = localStorage.getItem("authToken");
   }
   return authToken;
 }
@@ -25,21 +27,21 @@ interface ApiOptions extends RequestInit {
 
 async function apiCall<T>(
   endpoint: string,
-  options: ApiOptions = {}
+  options: ApiOptions = {},
 ): Promise<T> {
   const { requiresAuth = false, ...fetchOptions } = options;
 
   const headers: HeadersInit = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
     ...fetchOptions.headers,
   };
 
   if (requiresAuth) {
     const token = getAuthToken();
     if (!token) {
-      throw new Error('Authentication required');
+      throw new Error("Authentication required");
     }
-    headers['Authorization'] = `Bearer ${token}`;
+    headers["Authorization"] = `Bearer ${token}`;
   }
 
   // Build the full URL
@@ -51,10 +53,10 @@ async function apiCall<T>(
   });
 
   if (!response.ok) {
-    const contentType = response.headers.get('content-type');
+    const contentType = response.headers.get("content-type");
     let errorData: any = {};
 
-    if (contentType?.includes('application/json')) {
+    if (contentType?.includes("application/json")) {
       errorData = await response.json().catch(() => ({}));
     } else {
       errorData = { message: await response.text() };
@@ -63,8 +65,8 @@ async function apiCall<T>(
     throw new Error(errorData.message || `API Error: ${response.statusText}`);
   }
 
-  const contentType = response.headers.get('content-type');
-  if (contentType?.includes('application/json')) {
+  const contentType = response.headers.get("content-type");
+  if (contentType?.includes("application/json")) {
     return response.json();
   }
 
@@ -81,19 +83,25 @@ export const authApi = {
     weight?: number;
     role?: string;
   }) => {
-    const response = await apiCall<{ user: any; token: string }>('/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    const response = await apiCall<{ user: any; token: string }>(
+      "/auth/signup",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+      },
+    );
     setAuthToken(response.token);
     return response;
   },
 
   login: async (email: string, password: string) => {
-    const response = await apiCall<{ user: any; token: string }>('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-    });
+    const response = await apiCall<{ user: any; token: string }>(
+      "/auth/login",
+      {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      },
+    );
     setAuthToken(response.token);
     return response;
   },
@@ -106,14 +114,14 @@ export const authApi = {
 // Users endpoints
 export const usersApi = {
   getProfile: async () => {
-    return apiCall('/users/profile', {
+    return apiCall("/users/profile", {
       requiresAuth: true,
     });
   },
 
   updateProfile: async (data: any) => {
-    return apiCall('/users/profile', {
-      method: 'PUT',
+    return apiCall("/users/profile", {
+      method: "PUT",
       body: JSON.stringify(data),
       requiresAuth: true,
     });
@@ -123,8 +131,8 @@ export const usersApi = {
 // Stats endpoints
 export const statsApi = {
   logDailyStats: async (data: any) => {
-    return apiCall('/stats/daily', {
-      method: 'POST',
+    return apiCall("/stats/daily", {
+      method: "POST",
       body: JSON.stringify(data),
       requiresAuth: true,
     });
@@ -140,8 +148,8 @@ export const statsApi = {
 // Meals endpoints
 export const mealsApi = {
   logMeal: async (data: any) => {
-    return apiCall('/meals/log', {
-      method: 'POST',
+    return apiCall("/meals/log", {
+      method: "POST",
       body: JSON.stringify(data),
       requiresAuth: true,
     });
@@ -163,17 +171,17 @@ export const trainersApi = {
     radius?: number;
   }) => {
     const params = new URLSearchParams();
-    if (filters?.category) params.append('category', filters.category);
-    if (filters?.lat) params.append('lat', filters.lat.toString());
-    if (filters?.lng) params.append('lng', filters.lng.toString());
-    if (filters?.radius) params.append('radius', filters.radius.toString());
+    if (filters?.category) params.append("category", filters.category);
+    if (filters?.lat) params.append("lat", filters.lat.toString());
+    if (filters?.lng) params.append("lng", filters.lng.toString());
+    if (filters?.radius) params.append("radius", filters.radius.toString());
 
     return apiCall(`/trainers?${params.toString()}`);
   },
 
   createProfile: async (data: any) => {
-    return apiCall('/trainers/profile', {
-      method: 'POST',
+    return apiCall("/trainers/profile", {
+      method: "POST",
       body: JSON.stringify(data),
       requiresAuth: true,
     });
@@ -183,15 +191,15 @@ export const trainersApi = {
 // Meetings endpoints
 export const meetingsApi = {
   createMeeting: async (data: any) => {
-    return apiCall('/meetings', {
-      method: 'POST',
+    return apiCall("/meetings", {
+      method: "POST",
       body: JSON.stringify(data),
       requiresAuth: true,
     });
   },
 
   getMyMeetings: async () => {
-    return apiCall('/meetings/my', {
+    return apiCall("/meetings/my", {
       requiresAuth: true,
     });
   },
@@ -200,14 +208,14 @@ export const meetingsApi = {
 // Notifications endpoints
 export const notificationsApi = {
   getNotifications: async () => {
-    return apiCall('/notifications', {
+    return apiCall("/notifications", {
       requiresAuth: true,
     });
   },
 
   markAsRead: async (notificationId: string) => {
     return apiCall(`/notifications/${notificationId}/read`, {
-      method: 'PATCH',
+      method: "PATCH",
       requiresAuth: true,
     });
   },
@@ -216,29 +224,29 @@ export const notificationsApi = {
 // Posts/Feed endpoints
 export const postsApi = {
   createPost: async (data: any) => {
-    return apiCall('/posts', {
-      method: 'POST',
+    return apiCall("/posts", {
+      method: "POST",
       body: JSON.stringify(data),
       requiresAuth: true,
     });
   },
 
   getFeed: async () => {
-    return apiCall('/posts/feed', {
+    return apiCall("/posts/feed", {
       requiresAuth: true,
     });
   },
 
   likePost: async (postId: string) => {
     return apiCall(`/posts/${postId}/like`, {
-      method: 'POST',
+      method: "POST",
       requiresAuth: true,
     });
   },
 
   commentOnPost: async (postId: string, text: string) => {
     return apiCall(`/posts/${postId}/comment`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ text }),
       requiresAuth: true,
     });
@@ -246,14 +254,14 @@ export const postsApi = {
 
   followUser: async (userId: string) => {
     return apiCall(`/follow/${userId}`, {
-      method: 'POST',
+      method: "POST",
       requiresAuth: true,
     });
   },
 
   unfollowUser: async (userId: string) => {
     return apiCall(`/follow/${userId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       requiresAuth: true,
     });
   },
@@ -262,14 +270,14 @@ export const postsApi = {
 // Messaging endpoints
 export const messagingApi = {
   getConversations: async () => {
-    return apiCall('/conversations', {
+    return apiCall("/conversations", {
       requiresAuth: true,
     });
   },
 
   createConversation: async (participantId: string) => {
-    return apiCall('/conversations', {
-      method: 'POST',
+    return apiCall("/conversations", {
+      method: "POST",
       body: JSON.stringify({ participant_id: participantId }),
       requiresAuth: true,
     });
@@ -277,7 +285,7 @@ export const messagingApi = {
 
   sendMessage: async (conversationId: string, text: string) => {
     return apiCall(`/conversations/${conversationId}/messages`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ text }),
       requiresAuth: true,
     });
@@ -292,16 +300,16 @@ export const messagingApi = {
 
 // Subscriptions endpoints
 export const subscriptionsApi = {
-  createSession: async (plan: 'basic' | 'premium') => {
-    return apiCall('/subscriptions/create-session', {
-      method: 'POST',
+  createSession: async (plan: "basic" | "premium") => {
+    return apiCall("/subscriptions/create-session", {
+      method: "POST",
       body: JSON.stringify({ plan }),
       requiresAuth: true,
     });
   },
 
   getStatus: async () => {
-    return apiCall('/subscriptions/status', {
+    return apiCall("/subscriptions/status", {
       requiresAuth: true,
     });
   },

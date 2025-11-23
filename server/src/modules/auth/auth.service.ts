@@ -8,7 +8,7 @@ import { SignupDto } from './dto/signup.dto';
 export class AuthService {
   constructor(
     private readonly supabaseService: SupabaseService,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
   async signup(signupDto: SignupDto) {

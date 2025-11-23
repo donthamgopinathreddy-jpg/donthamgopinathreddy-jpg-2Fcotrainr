@@ -21,7 +21,8 @@ export class SubscriptionsService {
     };
 
     const subscriptionData = {
-      plan_id: plan === 'basic' ? process.env.RAZORPAY_BASIC_PLAN : process.env.RAZORPAY_PREMIUM_PLAN,
+      plan_id:
+        plan === 'basic' ? process.env.RAZORPAY_BASIC_PLAN : process.env.RAZORPAY_PREMIUM_PLAN,
       customer_notify: 1,
       quantity: 1,
       total_count: 12, // 1 year subscription

@@ -16,7 +16,7 @@ export class StatsController {
   async getDailyStats(
     @Req() req: any,
     @Query('startDate') startDate: string,
-    @Query('endDate') endDate: string,
+    @Query('endDate') endDate: string
   ) {
     return this.statsService.getDailyStats(req.user.userId, startDate, endDate);
   }

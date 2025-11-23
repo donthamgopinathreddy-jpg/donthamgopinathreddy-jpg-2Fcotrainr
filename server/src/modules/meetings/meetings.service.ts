@@ -6,7 +6,7 @@ import { NotificationsService } from '../notifications/notifications.service';
 export class MeetingsService {
   constructor(
     private readonly supabaseService: SupabaseService,
-    private readonly notificationsService: NotificationsService,
+    private readonly notificationsService: NotificationsService
   ) {}
 
   async createMeeting(trainerId: string, meetingData: any) {
@@ -21,7 +21,7 @@ export class MeetingsService {
     // Create notification for client
     const startDate = new Date(meetingData.starts_at).toLocaleDateString();
     const startTime = new Date(meetingData.starts_at).toLocaleTimeString();
-    
+
     await this.notificationsService.createNotification(meetingData.client_id, {
       type: 'meeting_scheduled',
       title: 'New Training Session',

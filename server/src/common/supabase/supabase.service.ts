@@ -8,7 +8,7 @@ export class SupabaseService {
   constructor() {
     this.supabase = createClient(
       process.env.VITE_SUPABASE_URL || '',
-      process.env.VITE_SUPABASE_ANON_KEY || '',
+      process.env.VITE_SUPABASE_ANON_KEY || ''
     );
   }
 
@@ -25,11 +25,7 @@ export class SupabaseService {
     height_cm?: number;
     weight_kg?: number;
   }) {
-    const { data, error } = await this.supabase
-      .from('users')
-      .insert([userData])
-      .select()
-      .single();
+    const { data, error } = await this.supabase.from('users').insert([userData]).select().single();
 
     if (error) throw error;
     return data;
@@ -47,11 +43,7 @@ export class SupabaseService {
   }
 
   async getUserById(id: string) {
-    const { data, error } = await this.supabase
-      .from('users')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const { data, error } = await this.supabase.from('users').select('*').eq('id', id).single();
 
     if (error && error.code !== 'PGRST116') throw error;
     return data;
@@ -73,10 +65,7 @@ export class SupabaseService {
   async upsertDailyStat(userId: string, date: string, stats: any) {
     const { data, error } = await this.supabase
       .from('daily_stats')
-      .upsert(
-        { user_id: userId, date, ...stats },
-        { onConflict: 'user_id,date' },
-      )
+      .upsert({ user_id: userId, date, ...stats }, { onConflict: 'user_id,date' })
       .select()
       .single();
 
@@ -146,7 +135,7 @@ export class SupabaseService {
           filters.latitude!,
           filters.longitude!,
           trainer.location_lat,
-          trainer.location_lng,
+          trainer.location_lng
         );
         return distance <= filters.radius!;
       });
@@ -226,11 +215,7 @@ export class SupabaseService {
 
   // Feed operations
   async createPost(postData: any) {
-    const { data, error } = await this.supabase
-      .from('posts')
-      .insert([postData])
-      .select()
-      .single();
+    const { data, error } = await this.supabase.from('posts').insert([postData]).select().single();
 
     if (error) throw error;
     return data;
@@ -249,12 +234,14 @@ export class SupabaseService {
 
     const { data, error } = await this.supabase
       .from('posts')
-      .select(`
+      .select(
+        `
         *,
         users:user_id(id, username),
         post_likes(count),
         comments(count)
-      `)
+      `
+      )
       .in('user_id', followingIds)
       .order('created_at', { ascending: false })
       .limit(limit);
@@ -303,7 +290,7 @@ export class SupabaseService {
           achievement_id: achievementId,
           unlocked_at: new Date().toISOString(),
         },
-        { onConflict: 'user_id,achievement_id' },
+        { onConflict: 'user_id,achievement_id' }
       )
       .select()
       .single();
@@ -315,10 +302,12 @@ export class SupabaseService {
   async getUserAchievements(userId: string) {
     const { data, error } = await this.supabase
       .from('user_achievements')
-      .select(`
+      .select(
+        `
         *,
         achievements:achievement_id(*)
-      `)
+      `
+      )
       .eq('user_id', userId);
 
     if (error) throw error;
@@ -333,7 +322,7 @@ export class SupabaseService {
         { participant1_id: participant1, participant2_id: participant2 },
         {
           onConflict: 'participant1_id,participant2_id',
-        },
+        }
       )
       .select()
       .single();
@@ -356,11 +345,13 @@ export class SupabaseService {
   async getConversations(userId: string) {
     const { data, error } = await this.supabase
       .from('conversations')
-      .select(`
+      .select(
+        `
         *,
         participant1:participant1_id(id, username),
         participant2:participant2_id(id, username)
-      `)
+      `
+      )
       .or(`participant1_id.eq.${userId},participant2_id.eq.${userId}`);
 
     if (error) throw error;

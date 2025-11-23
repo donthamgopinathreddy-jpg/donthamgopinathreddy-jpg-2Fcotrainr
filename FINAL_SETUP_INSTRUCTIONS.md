@@ -11,7 +11,7 @@ You now have a **fully built** CoTrainr backend and frontend. Here's exactly wha
 ✅ **Supabase Pro Project** - Fresh database ready  
 ✅ **API Service Client** - Automatic request handling  
 ✅ **JWT Authentication** - Secure login/signup  
-✅ **Database Schema SQL** - Ready to apply  
+✅ **Database Schema SQL** - Ready to apply
 
 ---
 
@@ -30,6 +30,7 @@ You now have a **fully built** CoTrainr backend and frontend. Here's exactly wha
 7. Wait for completion (shows "Success")
 
 **What this does:**
+
 - Creates 10 database tables (users, stats, meals, trainers, etc.)
 - Sets up indexes for fast queries
 - Enables Row Level Security (RLS) for data protection
@@ -80,6 +81,7 @@ pnpm run start:dev
 ```
 
 You should see:
+
 ```
 🚀 CoTrainr Server running on http://localhost:3001
 ```
@@ -99,6 +101,7 @@ pnpm run dev
 ```
 
 You should see:
+
 ```
 ➜  Local:   http://localhost:8080
 ```
@@ -142,6 +145,7 @@ Your Database Tables
 ## 🔐 How It Works
 
 ### 1. **Signup Flow**
+
 ```
 1. User fills signup form
 2. Frontend calls: POST /auth/signup
@@ -152,6 +156,7 @@ Your Database Tables
 ```
 
 ### 2. **Authenticated Requests**
+
 ```
 All API calls after login include Authorization header:
 Authorization: Bearer <your-jwt-token>
@@ -160,6 +165,7 @@ Backend validates token → Processes request → Returns data
 ```
 
 ### 3. **Database Security**
+
 ```
 Row Level Security (RLS) policies ensure:
 - Users can only see/edit their own data
@@ -213,18 +219,21 @@ cotrainr/
 All these endpoints are **ready to use**:
 
 ### Authentication
+
 ```
 POST   /auth/signup          Sign up new user
 POST   /auth/login           Login with email/password
 ```
 
 ### Users
+
 ```
 GET    /users/profile        Get your profile
 PUT    /users/profile        Update profile (height, weight, etc.)
 ```
 
 ### Fitness Tracking
+
 ```
 POST   /stats/daily          Log steps, calories, water, distance
 GET    /stats/daily?range=7d Get stats for charts
@@ -233,6 +242,7 @@ GET    /meals/logs?date=     Get meals for a specific day
 ```
 
 ### Social Features
+
 ```
 POST   /posts                Create a post
 GET    /posts/feed           Get your feed
@@ -241,6 +251,7 @@ POST   /posts/:id/like       Like a post
 ```
 
 ### Trainer Features
+
 ```
 GET    /trainers?category=yoga&lat=&lng=&radius=  Search trainers
 POST   /trainers/profile     Create trainer profile
@@ -248,6 +259,7 @@ POST   /meetings             Schedule a training session
 ```
 
 ### More Features
+
 ```
 GET    /notifications        Get your notifications
 POST   /conversations        Start a conversation
@@ -262,12 +274,14 @@ POST   /subscriptions/create-session  Start Razorpay subscription
 Your app includes:
 
 ✅ **Modern UI**
+
 - Glass-morphism design
 - Orange/Blue color scheme
 - Smooth animations
 - Mobile responsive
 
 ✅ **Features**
+
 - User authentication
 - Profile management
 - Fitness tracking
@@ -282,6 +296,7 @@ Your app includes:
 ## 🧪 Test Features
 
 ### Test Signup/Login
+
 ```bash
 curl -X POST http://localhost:3001/auth/signup \
   -H "Content-Type: application/json" \
@@ -296,6 +311,7 @@ curl -X POST http://localhost:3001/auth/signup \
 ```
 
 ### Test with Token (Copy token from signup response)
+
 ```bash
 curl http://localhost:3001/users/profile \
   -H "Authorization: Bearer YOUR_TOKEN_HERE"
@@ -306,12 +322,14 @@ curl http://localhost:3001/users/profile \
 ## ⚙️ Common Tasks
 
 ### Restart Frontend
+
 ```bash
 # Press Ctrl+C in the terminal, then:
 pnpm run dev
 ```
 
 ### Restart Backend
+
 ```bash
 # Press Ctrl+C in the server terminal, then:
 cd server
@@ -319,7 +337,9 @@ pnpm run start:dev
 ```
 
 ### Check Backend Logs
+
 Look at the terminal where you ran `pnpm run start:dev`. You'll see all API requests:
+
 ```
 [Server] POST /auth/signup
 [Server] POST /auth/login
@@ -327,6 +347,7 @@ Look at the terminal where you ran `pnpm run start:dev`. You'll see all API requ
 ```
 
 ### Check Database
+
 1. Go to Supabase dashboard
 2. Click **Table Editor**
 3. View tables: users, daily_stats, meals_logs, etc.
@@ -337,27 +358,34 @@ Look at the terminal where you ran `pnpm run start:dev`. You'll see all API requ
 ## 🚨 If Something Goes Wrong
 
 ### Error: "Cannot find module '@/lib/api'"
+
 **Fix**: Restart Vite dev server
+
 ```bash
 # Press Ctrl+C, then:
 pnpm run dev
 ```
 
 ### Error: "ECONNREFUSED 127.0.0.1:3001"
+
 **Fix**: Backend not running. In a new terminal:
+
 ```bash
 cd server
 pnpm run start:dev
 ```
 
 ### Error: "Supabase connection failed"
+
 **Fix**: Check `.env` has correct credentials:
+
 ```
 VITE_SUPABASE_URL=https://nrzcsaofjeifegsiizjo.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 ### Error: "401 Unauthorized"
+
 **Fix**: Your JWT token expired. Log out and log back in.
 
 ---
@@ -367,6 +395,7 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 Once everything is working:
 
 ### 1. Build More Features
+
 - [ ] Admin dashboard
 - [ ] Video calling (Agora SDK)
 - [ ] File uploads (trainer verification docs)
@@ -374,18 +403,22 @@ Once everything is working:
 - [ ] Advanced search filters
 
 ### 2. Improve Design
+
 - [ ] Custom branding
 - [ ] Responsive mobile layout
 - [ ] Dark mode
 - [ ] Loading skeletons
 
 ### 3. Testing
+
 - [ ] Write unit tests
 - [ ] Integration tests
 - [ ] E2E tests
 
 ### 4. Deploy
+
 When ready to go live:
+
 - Deploy backend to: Railway, Render, or AWS
 - Deploy frontend to: Netlify or Vercel
 - Database: Already hosted on Supabase
@@ -419,6 +452,7 @@ Before you start developing:
 ## 🎉 You're Ready!
 
 Your CoTrainr app is **fully functional** with:
+
 - ✅ Complete backend API (NestJS)
 - ✅ Frontend connected to backend
 - ✅ Secure authentication (JWT)
@@ -432,6 +466,7 @@ Your CoTrainr app is **fully functional** with:
 ## 💬 Questions?
 
 If you get stuck:
+
 1. Check the error message carefully
 2. Look at server logs (the terminal where backend is running)
 3. Check browser console (F12 → Console)

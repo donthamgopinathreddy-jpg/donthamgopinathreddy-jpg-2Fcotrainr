@@ -11,7 +11,7 @@ export class TrainersController {
     @Query('category') category?: string,
     @Query('lat') latitude?: number,
     @Query('lng') longitude?: number,
-    @Query('radius') radius?: number,
+    @Query('radius') radius?: number
   ) {
     return this.trainersService.getTrainers({
       category,

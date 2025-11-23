@@ -6,7 +6,7 @@ import { RewardsService } from '../rewards/rewards.service';
 export class StatsService {
   constructor(
     private readonly supabaseService: SupabaseService,
-    private readonly rewardsService: RewardsService,
+    private readonly rewardsService: RewardsService
   ) {}
 
   async logDailyStats(userId: string, statsData: any) {
@@ -15,21 +15,11 @@ export class StatsService {
 
     // Check for achievements
     if (statsData.steps && statsData.steps >= 10000) {
-      await this.rewardsService.earnReward(
-        userId,
-        'steps_10k',
-        100,
-        'Reached 10,000 steps',
-      );
+      await this.rewardsService.earnReward(userId, 'steps_10k', 100, 'Reached 10,000 steps');
     }
 
     if (statsData.water_intake_ml && statsData.water_intake_ml >= 2000) {
-      await this.rewardsService.earnReward(
-        userId,
-        'water_goal',
-        50,
-        'Reached water goal',
-      );
+      await this.rewardsService.earnReward(userId, 'water_goal', 50, 'Reached water goal');
     }
 
     return stat;
