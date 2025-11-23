@@ -192,7 +192,9 @@ export default function Signup() {
 
     // Allow signup even if username check is still in progress or failed
     if (!usernameStatus || usernameStatus === "checking") {
-      console.warn("Username availability check not complete, proceeding anyway");
+      console.warn(
+        "Username availability check not complete, proceeding anyway",
+      );
     }
 
     if (formData.downloadReasons.length === 0) {
@@ -341,9 +343,7 @@ export default function Signup() {
                 )}
               </button>
             </div>
-            <p className="text-xs text-gray-600 mt-2">
-              Minimum 6 characters
-            </p>
+            <p className="text-xs text-gray-600 mt-2">Minimum 6 characters</p>
           </div>
 
           {/* Confirm Password */}

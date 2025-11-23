@@ -363,14 +363,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }),
       });
 
-      console.log("[Auth] Response status:", response.status, response.statusText);
+      console.log(
+        "[Auth] Response status:",
+        response.status,
+        response.statusText,
+      );
 
       if (!response.ok) {
         console.error("[Auth] Signup failed with status:", response.status);
         const errorData = await response.json().catch(() => ({}));
         console.error("[Auth] Error data:", errorData);
         throw new Error(
-          errorData.message || errorData.error || `Signup failed: ${response.statusText}`,
+          errorData.message ||
+            errorData.error ||
+            `Signup failed: ${response.statusText}`,
         );
       }
 
