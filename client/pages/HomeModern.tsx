@@ -28,7 +28,7 @@ const HomeModern = () => {
   const { steps } = useStepCounter();
 
   const [coverImage, setCoverImage] = useState(
-    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop"
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=300&fit=crop",
   );
   const [dailyStreak, setDailyStreak] = useState(7);
   const [bmi, setBmi] = useState(24.5);

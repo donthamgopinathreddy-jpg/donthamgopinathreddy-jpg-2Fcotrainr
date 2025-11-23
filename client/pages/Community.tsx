@@ -194,8 +194,8 @@ const Community = () => {
         posts.map((p) =>
           p.id === postId
             ? { ...p, likes_count: newLikesCount, is_liked: !p.is_liked }
-            : p
-        )
+            : p,
+        ),
       );
     } catch (error) {
       console.error("Error liking post:", error);
@@ -216,8 +216,8 @@ const Community = () => {
 
       setCommunityUsers(
         communityUsers.map((u) =>
-          u.id === userId ? { ...u, is_following: true } : u
-        )
+          u.id === userId ? { ...u, is_following: true } : u,
+        ),
       );
       toast.success("Following user! 👥");
     } catch (error) {
@@ -240,8 +240,8 @@ const Community = () => {
 
       setCommunityUsers(
         communityUsers.map((u) =>
-          u.id === userId ? { ...u, is_following: false } : u
-        )
+          u.id === userId ? { ...u, is_following: false } : u,
+        ),
       );
       toast.success("Unfollowed user");
     } catch (error) {
@@ -251,7 +251,7 @@ const Community = () => {
   };
 
   const filteredUsers = communityUsers.filter((u) =>
-    u.full_name.toLowerCase().includes(searchQuery.toLowerCase())
+    u.full_name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -421,11 +421,13 @@ const Community = () => {
                 {/* Action Buttons */}
                 <div className="flex gap-2 mb-4">
                   <label className="flex-1 cursor-pointer">
-                    <div className={`p-3 rounded-lg text-center transition-all duration-300 ${
-                      theme === "dark"
-                        ? "bg-blue-900/30 text-blue-300 hover:bg-blue-900/50"
-                        : "bg-blue-100 text-blue-600 hover:bg-blue-200"
-                    }`}>
+                    <div
+                      className={`p-3 rounded-lg text-center transition-all duration-300 ${
+                        theme === "dark"
+                          ? "bg-blue-900/30 text-blue-300 hover:bg-blue-900/50"
+                          : "bg-blue-100 text-blue-600 hover:bg-blue-200"
+                      }`}
+                    >
                       <ImageIcon size={18} className="mx-auto" />
                       <span className="text-xs font-semibold mt-1 block">
                         Add Image
@@ -560,7 +562,7 @@ const Community = () => {
                     <button
                       onClick={() =>
                         setShowComments(
-                          showComments === post.id ? null : post.id
+                          showComments === post.id ? null : post.id,
                         )
                       }
                       className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 ${
