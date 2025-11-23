@@ -55,6 +55,7 @@ export default function MobileSignup() {
     username: "",
     height_feet: "",
     height_inches: "",
+    height_cm: "",
     weight_kg: "",
     weight_pounds: "",
     role: "client",
@@ -65,7 +66,41 @@ export default function MobileSignup() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const newData = { ...formData, [name]: value };
+
+    // Auto-convert height feet to cm
+    if (name === "height_feet" && value) {
+      const feet = parseInt(value);
+      const inches = parseInt(formData.height_inches) || 0;
+      const totalInches = feet * 12 + inches;
+      const cm = Math.round(totalInches * 2.54);
+      newData.height_cm = cm.toString();
+    }
+
+    // Auto-convert height inches to cm
+    if (name === "height_inches" && value) {
+      const feet = parseInt(formData.height_feet) || 0;
+      const inches = parseInt(value);
+      const totalInches = feet * 12 + inches;
+      const cm = Math.round(totalInches * 2.54);
+      newData.height_cm = cm.toString();
+    }
+
+    // Auto-convert pounds to kg
+    if (name === "weight_pounds" && value) {
+      const pounds = parseInt(value);
+      const kg = Math.round(pounds / 2.205);
+      newData.weight_kg = kg.toString();
+    }
+
+    // Auto-convert kg to pounds (if user enters kg directly)
+    if (name === "weight_kg" && value) {
+      const kg = parseInt(value);
+      const pounds = Math.round(kg * 2.205);
+      newData.weight_pounds = pounds.toString();
+    }
+
+    setFormData(newData);
     setError("");
   };
 
@@ -98,12 +133,7 @@ export default function MobileSignup() {
       }
       setStep(3);
     } else if (step === 3) {
-      if (
-        !formData.height_feet ||
-        !formData.height_inches ||
-        !formData.weight_kg ||
-        !formData.weight_pounds
-      ) {
+      if (!formData.height_feet || !formData.height_inches || !formData.weight_kg || !formData.weight_pounds) {
         setError("Please fill in all fields");
         return;
       }
@@ -115,11 +145,7 @@ export default function MobileSignup() {
     setLoading(true);
     setError("");
     try {
-      const heightInCm = Math.round(
-        (parseInt(formData.height_feet) * 12 +
-          parseInt(formData.height_inches)) *
-          2.54,
-      );
+      const heightInCm = Math.round((parseInt(formData.height_feet) * 12 + parseInt(formData.height_inches)) * 2.54);
       const weightInKg = parseInt(formData.weight_kg);
 
       await signUp(formData.email, formData.password, {
@@ -147,19 +173,12 @@ export default function MobileSignup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 pt-safe pb-safe overflow-hidden">
-      {/* Animated Background Orbs */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/20 rounded-full blur-3xl animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
-      </div>
-
+    <div className="min-h-screen bg-white pt-safe pb-safe overflow-hidden flex flex-col">
       {/* Header */}
-      <div className="sticky top-0 z-40 backdrop-blur-xl bg-slate-900/50 border-b border-white/10 px-4 py-4">
+      <div className="sticky top-0 z-40 backdrop-blur-xl bg-white/95 border-b border-gray-200 px-4 py-4">
         <button
           onClick={() => (step > 1 ? setStep(step - 1) : navigate("/login"))}
-          className="text-orange-400 hover:text-orange-300 font-semibold text-sm transition-colors duration-200 flex items-center gap-2"
+          className="text-orange-600 hover:text-orange-700 font-semibold text-sm transition-colors duration-200 flex items-center gap-2"
         >
           ← {step > 1 ? "Back" : "Login"}
         </button>
@@ -169,8 +188,8 @@ export default function MobileSignup() {
               key={i}
               className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
                 i <= step
-                  ? "bg-gradient-to-r from-orange-400 to-orange-500 shadow-lg shadow-orange-500/50"
-                  : "bg-white/10"
+                  ? "bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30"
+                  : "bg-gray-300"
               }`}
             />
           ))}
@@ -178,17 +197,17 @@ export default function MobileSignup() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 px-6 py-8 pb-32">
+      <div className="relative z-10 px-6 py-8 flex-1 overflow-y-auto">
         {/* Logo */}
         {step !== 4 && (
           <div className="text-center mb-12 animate-fade-in">
             <div className="inline-block mb-6">
-              <Logo size="lg" className="drop-shadow-2xl" />
+              <Logo size="lg" className="drop-shadow-lg" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-400 via-orange-300 to-pink-400 bg-clip-text text-transparent mb-2">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Create Account
             </h1>
-            <p className="text-slate-400 text-sm">
+            <p className="text-gray-600 text-sm">
               Step {step} of 3 • Join the fitness revolution
             </p>
           </div>
@@ -200,17 +219,17 @@ export default function MobileSignup() {
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center mb-6 shadow-2xl shadow-green-500/50">
               <CheckCircle2 size={48} className="text-white animate-bounce" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2">Welcome! 🎉</h2>
-            <p className="text-slate-400 mb-8">Your account is ready to go</p>
-            <div className="w-1 h-16 bg-gradient-to-b from-orange-400 to-transparent rounded-full"></div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome! 🎉</h2>
+            <p className="text-gray-600 mb-8">Your account is ready to go</p>
+            <div className="w-1 h-16 bg-gradient-to-b from-orange-500 to-transparent rounded-full"></div>
           </div>
         )}
 
         {/* Error Message */}
         {error && step !== 4 && (
-          <div className="mb-6 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 backdrop-blur-sm flex items-gap-3 animate-slide-down">
-            <AlertCircle className="text-red-400 flex-shrink-0" size={20} />
-            <p className="text-red-300 text-sm font-medium">{error}</p>
+          <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-300 backdrop-blur-sm flex items-gap-3 animate-slide-down">
+            <AlertCircle className="text-red-600 flex-shrink-0" size={20} />
+            <p className="text-red-700 text-sm font-medium">{error}</p>
           </div>
         )}
 
@@ -218,7 +237,7 @@ export default function MobileSignup() {
         {step === 1 && (
           <div className="space-y-5 animate-fade-in">
             <div className="group">
-              <label className="block text-sm font-semibold text-slate-300 mb-3 group-focus-within:text-orange-400 transition-colors">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
                 Email Address
               </label>
               <div className="relative">
@@ -228,13 +247,13 @@ export default function MobileSignup() {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="your@email.com"
-                  className="w-full px-5 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                  className="w-full px-5 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                 />
               </div>
             </div>
 
             <div className="group">
-              <label className="block text-sm font-semibold text-slate-300 mb-3 group-focus-within:text-orange-400 transition-colors">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
                 Password
               </label>
               <div className="relative group">
@@ -243,24 +262,24 @@ export default function MobileSignup() {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  placeholder="���•••••••"
-                  className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                  placeholder="••••••••"
+                  className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-400 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              <p className="text-xs text-slate-500 mt-2">
+              <p className="text-xs text-gray-600 mt-2">
                 Min 8 chars, 1 uppercase, 1 number, 1 special character
               </p>
             </div>
 
             <div className="group">
-              <label className="block text-sm font-semibold text-slate-300 mb-3 group-focus-within:text-orange-400 transition-colors">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
                 Confirm Password
               </label>
               <div className="relative group">
@@ -270,20 +289,37 @@ export default function MobileSignup() {
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   placeholder="••••••••"
-                  className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                  className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-400 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex gap-3 mt-10 pt-6">
+              <button
+                onClick={handleNext}
+                disabled={loading}
+                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/75"
+              >
+                {loading ? (
+                  <>
+                    <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    Next
+                    <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
             </div>
           </div>
         )}
@@ -292,7 +328,7 @@ export default function MobileSignup() {
         {step === 2 && (
           <div className="space-y-5 animate-fade-in">
             <div className="group">
-              <label className="block text-sm font-semibold text-slate-300 mb-3 group-focus-within:text-orange-400 transition-colors">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
                 Full Name
               </label>
               <input
@@ -301,12 +337,12 @@ export default function MobileSignup() {
                 value={formData.full_name}
                 onChange={handleInputChange}
                 placeholder="John Doe"
-                className="w-full px-5 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                className="w-full px-5 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
               />
             </div>
 
             <div className="group">
-              <label className="block text-sm font-semibold text-slate-300 mb-3 group-focus-within:text-orange-400 transition-colors">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
                 Username
               </label>
               <input
@@ -315,11 +351,38 @@ export default function MobileSignup() {
                 value={formData.username}
                 onChange={handleInputChange}
                 placeholder="john2024"
-                className="w-full px-5 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                className="w-full px-5 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
               />
-              <p className="text-xs text-slate-500 mt-2">
+              <p className="text-xs text-gray-600 mt-2">
                 3+ characters, must include at least one number
               </p>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex gap-3 mt-10 pt-6">
+              <button
+                onClick={() => setStep(step - 1)}
+                className="flex-1 px-4 py-3.5 rounded-2xl border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 active:scale-95"
+              >
+                Back
+              </button>
+              <button
+                onClick={handleNext}
+                disabled={loading}
+                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/75"
+              >
+                {loading ? (
+                  <>
+                    <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    Next
+                    <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
             </div>
           </div>
         )}
@@ -329,12 +392,12 @@ export default function MobileSignup() {
           <div className="space-y-5 animate-fade-in">
             {/* Height Fields */}
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-3 transition-colors">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 transition-colors">
                 Height
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <div className="group">
-                  <label className="block text-xs font-semibold text-slate-400 mb-2 group-focus-within:text-orange-400 transition-colors">
+                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-orange-600 transition-colors">
                     Feet
                   </label>
                   <input
@@ -343,11 +406,11 @@ export default function MobileSignup() {
                     value={formData.height_feet}
                     onChange={handleInputChange}
                     placeholder="5"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                   />
                 </div>
                 <div className="group">
-                  <label className="block text-xs font-semibold text-slate-400 mb-2 group-focus-within:text-orange-400 transition-colors">
+                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-orange-600 transition-colors">
                     Inches
                   </label>
                   <input
@@ -356,20 +419,25 @@ export default function MobileSignup() {
                     value={formData.height_inches}
                     onChange={handleInputChange}
                     placeholder="10"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                   />
                 </div>
               </div>
+              {formData.height_feet && formData.height_inches && (
+                <p className="text-xs text-gray-600 mt-2 font-medium">
+                  ≈ {formData.height_cm} cm
+                </p>
+              )}
             </div>
 
             {/* Weight Fields */}
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-3 transition-colors">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 transition-colors">
                 Weight
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <div className="group">
-                  <label className="block text-xs font-semibold text-slate-400 mb-2 group-focus-within:text-orange-400 transition-colors">
+                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-orange-600 transition-colors">
                     Kilograms (kg)
                   </label>
                   <input
@@ -378,11 +446,11 @@ export default function MobileSignup() {
                     value={formData.weight_kg}
                     onChange={handleInputChange}
                     placeholder="75"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                   />
                 </div>
                 <div className="group">
-                  <label className="block text-xs font-semibold text-slate-400 mb-2 group-focus-within:text-orange-400 transition-colors">
+                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-orange-600 transition-colors">
                     Pounds (lbs)
                   </label>
                   <input
@@ -391,14 +459,14 @@ export default function MobileSignup() {
                     value={formData.weight_pounds}
                     onChange={handleInputChange}
                     placeholder="165"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
                   />
                 </div>
               </div>
             </div>
 
             <div className="group">
-              <label className="block text-sm font-semibold text-slate-300 mb-3 group-focus-within:text-orange-400 transition-colors">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
                 Account Type
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -408,8 +476,8 @@ export default function MobileSignup() {
                     onClick={() => setFormData((prev) => ({ ...prev, role }))}
                     className={`px-5 py-4 rounded-2xl border-2 font-semibold capitalize transition-all duration-300 transform hover:scale-105 ${
                       formData.role === role
-                        ? "bg-gradient-to-r from-orange-500 to-orange-600 border-orange-400 text-white shadow-xl shadow-orange-500/50"
-                        : "bg-white/5 border-white/20 text-slate-300 hover:bg-white/10 hover:border-white/30"
+                        ? "bg-gradient-to-r from-orange-500 to-orange-600 border-orange-600 text-white shadow-xl shadow-orange-500/50"
+                        : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
                     }`}
                   >
                     {role === "client" ? "👤 Client" : "🏋️ Trainer"}
@@ -417,49 +485,40 @@ export default function MobileSignup() {
                 ))}
               </div>
             </div>
-          </div>
-        )}
 
-        {/* Navigation Buttons */}
-        {step !== 4 && (
-          <div className="flex gap-3 mt-10 fixed bottom-0 left-0 right-0 px-6 py-6 bg-gradient-to-t from-slate-900 via-slate-900 to-transparent backdrop-blur-sm safe-area-inset-bottom">
-            {step > 1 && (
+            {/* Navigation Buttons */}
+            <div className="flex gap-3 mt-10 pt-6 pb-6">
               <button
                 onClick={() => setStep(step - 1)}
-                className="flex-1 px-4 py-3.5 rounded-2xl border border-white/20 font-semibold text-slate-300 hover:bg-white/10 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                className="flex-1 px-4 py-3.5 rounded-2xl border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 active:scale-95"
               >
                 Back
               </button>
-            )}
-            <button
-              onClick={handleNext}
-              disabled={loading}
-              className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/75"
-            >
-              {loading ? (
-                <>
-                  <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                  Creating...
-                </>
-              ) : step === 3 ? (
-                "Create Account"
-              ) : (
-                <>
-                  Next
-                  <ArrowRight size={18} />
-                </>
-              )}
-            </button>
+              <button
+                onClick={handleNext}
+                disabled={loading}
+                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/75"
+              >
+                {loading ? (
+                  <>
+                    <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  "Create Account"
+                )}
+              </button>
+            </div>
           </div>
         )}
 
         {/* Login Link */}
         {step !== 4 && (
-          <p className="text-center text-sm text-slate-400 mt-6 pt-20">
+          <p className="text-center text-sm text-gray-600 mt-8 pb-6">
             Already have an account?{" "}
             <button
               onClick={() => navigate("/login")}
-              className="text-orange-400 hover:text-orange-300 font-semibold transition-colors"
+              className="text-orange-600 hover:text-orange-700 font-semibold transition-colors"
             >
               Sign In
             </button>
