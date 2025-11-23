@@ -32,82 +32,29 @@ export function createServer() {
 
   app.get('/api/demo', handleDemo);
 
-  // Proxy auth routes to Supabase API routes
-  app.post('/api/auth/signup', async (req, res) => {
-    try {
-      console.log('[Server] Forwarding POST /api/auth/signup to Supabase API wrapper');
-      const response = await fetch('http://localhost:3000/api/supabase/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(req.body),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        return res.status(response.status).json(errorData);
-      }
-
-      const data = await response.json();
-      res.status(response.status).json(data);
-    } catch (error) {
-      console.error('[Server] Error forwarding auth/signup:', error);
-      res.status(500).json({ error: 'Failed to reach authentication service' });
-    }
-  });
-
-  app.post('/api/auth/login', async (req, res) => {
-    try {
-      console.log('[Server] Forwarding POST /api/auth/login to Supabase API wrapper');
-      const response = await fetch('http://localhost:3000/api/supabase/auth/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(req.body),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        return res.status(response.status).json(errorData);
-      }
-
-      const data = await response.json();
-      res.status(response.status).json(data);
-    } catch (error) {
-      console.error('[Server] Error forwarding auth/login:', error);
-      res.status(500).json({ error: 'Failed to reach authentication service' });
-    }
-  });
-
-  app.post('/api/auth/reset-password', async (req, res) => {
-    try {
-      console.log('[Server] Forwarding POST /api/auth/reset-password to Supabase API wrapper');
-      const response = await fetch('http://localhost:3000/api/supabase/auth/reset-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(req.body),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        return res.status(response.status).json(errorData);
-      }
-
-      const data = await response.json();
-      res.status(response.status).json(data);
-    } catch (error) {
-      console.error('[Server] Error forwarding auth/reset-password:', error);
-      res.status(500).json({ error: 'Failed to reset password' });
-    }
-  });
-
   // Supabase API wrapper - all auth and data operations go through here
   console.log('[Server] Registering /api/supabase/ routes');
   app.use('/api/supabase/', apiRouter);
+
+  // Proxy auth routes to Supabase API routes (for backward compatibility with frontend)
+  // These routes rewrite the request URL and pass it to the apiRouter
+  app.post('/api/auth/signup', async (req, res, next) => {
+    console.log('[Server] Forwarding POST /api/auth/signup to supabase auth/signup');
+    req.url = '/auth/signup';
+    apiRouter(req, res, next);
+  });
+
+  app.post('/api/auth/login', async (req, res, next) => {
+    console.log('[Server] Forwarding POST /api/auth/login to supabase auth/signin');
+    req.url = '/auth/signin';
+    apiRouter(req, res, next);
+  });
+
+  app.post('/api/auth/reset-password', async (req, res, next) => {
+    console.log('[Server] Forwarding POST /api/auth/reset-password to supabase auth/reset-password');
+    req.url = '/auth/reset-password';
+    apiRouter(req, res, next);
+  });
 
   // Serve static files from the dist/spa directory in production
   const staticDir = path.join(__dirname, '../dist/spa');
