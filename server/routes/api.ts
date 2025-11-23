@@ -190,6 +190,7 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
         details: (error as any).details,
       });
       return res.status(400).json({
+        message: error.message || 'Authentication failed',
         error: error.message || 'Authentication failed',
         status: error.status,
         details: (error as any).details,
