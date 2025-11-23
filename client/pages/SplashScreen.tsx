@@ -48,14 +48,15 @@ export default function SplashScreen() {
         @keyframes splash-fade-in-scale {
           0% {
             opacity: 0;
-            transform: scale(0.85) translateY(-20px);
+            transform: scale(0.75) translateY(-40px) rotate(-5deg);
           }
-          50% {
+          60% {
             opacity: 1;
+            transform: scale(1.05) translateY(0) rotate(0deg);
           }
           100% {
             opacity: 1;
-            transform: scale(1) translateY(0);
+            transform: scale(1) translateY(0) rotate(0deg);
           }
         }
 
@@ -68,12 +69,24 @@ export default function SplashScreen() {
           }
         }
 
+        @keyframes float-up {
+          0% {
+            transform: translateY(10px);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+
         .animate-splash-fade-in-scale {
-          animation: splash-fade-in-scale 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+          animation: splash-fade-in-scale 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .animate-fade-in {
-          animation: fade-in 1s ease-in;
+          animation: fade-in 1.2s ease-in 0.6s forwards;
+          opacity: 0;
         }
       `}</style>
     </div>
