@@ -62,6 +62,33 @@ const HomeModern = () => {
   const caloriesPercent = (calories / caloriesGoal) * 100;
   const waterPercent = (water / waterGoal) * 100;
 
+  const stats = [
+    {
+      label: "Streak",
+      value: `${dailyStreak}d`,
+      icon: Flame,
+      color: "text-orange-500",
+    },
+    {
+      label: "BMI",
+      value: bmi.toFixed(1),
+      icon: Heart,
+      color: "text-red-500",
+    },
+    {
+      label: "Steps",
+      value: steps.toLocaleString(),
+      icon: Footprints,
+      color: "text-blue-500",
+    },
+    {
+      label: "Level",
+      value: "Pro",
+      icon: TrendingUp,
+      color: "text-green-500",
+    },
+  ];
+
   const tiles = [
     {
       icon: Users,
