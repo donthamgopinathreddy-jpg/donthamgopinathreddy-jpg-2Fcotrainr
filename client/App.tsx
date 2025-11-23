@@ -365,9 +365,7 @@ const AppRoutes = () => {
         path="/meals"
         element={
           <ProtectedRoute>
-            <AppLayout>
-              <Meals />
-            </AppLayout>
+            <MobileMeals />
           </ProtectedRoute>
         }
       />
@@ -425,11 +423,7 @@ const AppRoutes = () => {
         path="/profile"
         element={
           <ProtectedRoute>
-            <AppLayout>
-              <ErrorBoundary>
-                <Profile />
-              </ErrorBoundary>
-            </AppLayout>
+            <MobileProfile />
           </ProtectedRoute>
         }
       />
@@ -479,9 +473,7 @@ const AppRoutes = () => {
         path="/feed"
         element={
           <ProtectedRoute>
-            <AppLayout>
-              <Feed />
-            </AppLayout>
+            <MobileFeed />
           </ProtectedRoute>
         }
       />
