@@ -409,6 +409,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       // Call backend auth endpoint (proxies to /auth/signin on server)
+      console.log("[Auth] Making fetch request to /api/auth/login");
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -417,8 +418,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         body: JSON.stringify({ email, password }),
       });
 
+      console.log("[Auth] Response received, status:", response.status);
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+        let errorData = {};
+        try {
+          errorData = await response.json();
+        } catch (e) {
+          console.error("[Auth] Failed to parse error response:", e);
+        }
         const errorMsg =
           errorData?.error ||
           errorData?.message ||
