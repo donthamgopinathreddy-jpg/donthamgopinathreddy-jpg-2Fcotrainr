@@ -1,7 +1,8 @@
-import { Preferences } from "@capacitor/preferences";
+import { Capacitor } from "@capacitor/core";
 
 /**
  * Offline storage for syncing data when connection is restored
+ * Uses Capacitor Preferences on native platforms, localStorage on web
  */
 
 interface StoredOperation {
@@ -17,15 +18,46 @@ const OPERATIONS_KEY = "pending_operations";
 const CACHE_PREFIX = "cache_";
 const CACHE_TTL_KEY = "cache_ttl_";
 
+// Lazy load Preferences only on native platforms
+let PreferencesModule: any = null;
+
+async function getPreferencesModule() {
+  if (PreferencesModule) return PreferencesModule;
+
+  if (!Capacitor.isNativePlatform()) {
+    // Return localStorage wrapper for web
+    return {
+      get: async (key: string) => ({
+        value: localStorage.getItem(key) || null,
+      }),
+      set: async (key: string, value: string) => {
+        localStorage.setItem(key, value);
+      },
+      remove: async (key: string) => {
+        localStorage.removeItem(key);
+      },
+      clear: async () => {
+        localStorage.clear();
+      },
+    };
+  }
+
+  // Dynamically import Preferences only on native
+  const { Preferences } = await import("@capacitor/preferences");
+  PreferencesModule = Preferences;
+  return Preferences;
+}
+
 /**
  * Store an operation for later sync
  */
 export async function storePendingOperation(
   type: "create" | "update" | "delete",
   endpoint: string,
-  data: unknown,
+  data: unknown
 ): Promise<string> {
   try {
+    const Preferences = await getPreferencesModule();
     const operationId = `${Date.now()}_${Math.random()}`;
     const operation: StoredOperation = {
       id: operationId,
@@ -56,6 +88,7 @@ export async function storePendingOperation(
  */
 export async function getPendingOperations(): Promise<StoredOperation[]> {
   try {
+    const Preferences = await getPreferencesModule();
     const result = await Preferences.get({ key: OPERATIONS_KEY });
     return result.value ? JSON.parse(result.value) : [];
   } catch (error) {
@@ -67,10 +100,9 @@ export async function getPendingOperations(): Promise<StoredOperation[]> {
 /**
  * Remove a pending operation
  */
-export async function removePendingOperation(
-  operationId: string,
-): Promise<void> {
+export async function removePendingOperation(operationId: string): Promise<void> {
   try {
+    const Preferences = await getPreferencesModule();
     const operations = await getPendingOperations();
     const filtered = operations.filter((op) => op.id !== operationId);
     await Preferences.set({
@@ -87,9 +119,10 @@ export async function removePendingOperation(
  */
 export async function updateOperationRetry(
   operationId: string,
-  incrementRetries: boolean = true,
+  incrementRetries: boolean = true
 ): Promise<void> {
   try {
+    const Preferences = await getPreferencesModule();
     const operations = await getPendingOperations();
     const operation = operations.find((op) => op.id === operationId);
     if (operation && incrementRetries) {
@@ -110,9 +143,10 @@ export async function updateOperationRetry(
 export async function cacheData(
   key: string,
   data: unknown,
-  ttlMs: number = 5 * 60 * 1000, // 5 minutes
+  ttlMs: number = 5 * 60 * 1000 // 5 minutes
 ): Promise<void> {
   try {
+    const Preferences = await getPreferencesModule();
     const cacheKey = `${CACHE_PREFIX}${key}`;
     const ttlKey = `${CACHE_TTL_KEY}${key}`;
 
@@ -133,10 +167,9 @@ export async function cacheData(
 /**
  * Get cached data if not expired
  */
-export async function getCachedData<T = unknown>(
-  key: string,
-): Promise<T | null> {
+export async function getCachedData<T = unknown>(key: string): Promise<T | null> {
   try {
+    const Preferences = await getPreferencesModule();
     const cacheKey = `${CACHE_PREFIX}${key}`;
     const ttlKey = `${CACHE_TTL_KEY}${key}`;
 
@@ -163,10 +196,6 @@ export async function getCachedData<T = unknown>(
  */
 export async function clearCache(): Promise<void> {
   try {
-    // Get all keys and filter cache keys
-    const result = await Preferences.get({ key: OPERATIONS_KEY });
-    // Note: Capacitor Preferences doesn't have a list all keys method
-    // So we'll store cache keys in a metadata key
     console.log("Cache clearing limited - Capacitor Preferences limitation");
   } catch (error) {
     console.error("Failed to clear cache:", error);
@@ -177,7 +206,7 @@ export async function clearCache(): Promise<void> {
  * Initialize offline storage listener
  */
 export async function initializeOfflineStorage(
-  onPendingOperations?: (operations: StoredOperation[]) => void,
+  onPendingOperations?: (operations: StoredOperation[]) => void
 ): Promise<void> {
   try {
     const operations = await getPendingOperations();
