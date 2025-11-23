@@ -62,7 +62,7 @@ export default function MobileSignup() {
       }
       setStep(3);
     } else if (step === 3) {
-      if (!formData.height || !formData.weight) {
+      if (!formData.height_feet || !formData.height_inches || !formData.weight_kg || !formData.weight_pounds) {
         setError("Please fill in all fields");
         return;
       }
