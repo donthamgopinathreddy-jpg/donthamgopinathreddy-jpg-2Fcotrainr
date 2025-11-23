@@ -53,6 +53,7 @@ npx cap init
 ### 3. Create Native Projects
 
 #### For Android:
+
 ```bash
 # Generate Android project
 npx cap add android
@@ -69,6 +70,7 @@ pnpm run cap:open
 ```
 
 #### For iOS:
+
 ```bash
 # Generate iOS project (Mac only)
 npx cap add ios
@@ -138,6 +140,7 @@ cd android
 #### 1. Configure App Signing
 
 In Xcode:
+
 - Select App project > Build Settings
 - Set Team ID to your Apple Developer account
 - Set Bundle Identifier to match provisioning profile
@@ -225,7 +228,10 @@ function WorkoutReminder() {
 ### Offline Support
 
 ```typescript
-import { storePendingOperation, getPendingOperations } from "@/lib/offlineStorage";
+import {
+  storePendingOperation,
+  getPendingOperations,
+} from "@/lib/offlineStorage";
 
 async function syncWhenOnline() {
   const operations = await getPendingOperations();
@@ -233,7 +239,12 @@ async function syncWhenOnline() {
   for (const op of operations) {
     try {
       const response = await fetch(op.endpoint, {
-        method: op.type === "delete" ? "DELETE" : op.type === "create" ? "POST" : "PUT",
+        method:
+          op.type === "delete"
+            ? "DELETE"
+            : op.type === "create"
+              ? "POST"
+              : "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(op.data),
       });
@@ -257,24 +268,24 @@ Add to `android/app/src/main/AndroidManifest.xml`:
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Camera -->
     <uses-permission android:name="android.permission.CAMERA" />
-    
+
     <!-- Location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    
+
     <!-- Notifications -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    
+
     <!-- Storage -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
+
     <!-- Health Data (for fitness tracking) -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    
+
     <!-- Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <!-- Network -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -297,19 +308,19 @@ Update `ios/App/Info.plist`:
     <!-- Camera -->
     <key>NSCameraUsageDescription</key>
     <string>We need camera access to upload your profile picture and meal photos</string>
-    
+
     <!-- Location -->
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>We need your location to find nearby trainers and track your workouts</string>
-    
+
     <!-- Photo Library -->
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to select profile pictures</string>
-    
+
     <!-- Health Data -->
     <key>NSHealthSharingUsageDescription</key>
     <string>We need access to your health data to track your fitness progress</string>
-    
+
     <!-- Notification -->
     <key>NSUserNotificationUsageDescription</key>
     <string>We send notifications for workout reminders and messages</string>
@@ -382,18 +393,21 @@ adb logcat | grep cotrainr
 ### Build Issues
 
 **Issue**: `android/gradlew: command not found`
+
 ```bash
 # Solution: Make executable
 chmod +x android/gradlew
 ```
 
 **Issue**: Capacitor bridge not loading
+
 ```bash
 # Solution: Sync with native projects
 npx cap sync
 ```
 
 **Issue**: Plugin initialization error
+
 ```bash
 # Solution: Clear and rebuild
 rm -rf android/app/build
@@ -403,16 +417,19 @@ npx cap build android
 ### Runtime Issues
 
 **Issue**: Camera permission denied
+
 - Ensure permissions are in AndroidManifest.xml
 - Request permission at runtime using Android 6.0+ API
 - Test on device with Android 6.0+
 
 **Issue**: Geolocation returning null
+
 - Ensure location permission is granted
 - Test on real device (not simulator)
 - Check if location services are enabled
 
 **Issue**: Offline sync not working
+
 - Check network status with `useNetworkStatus()`
 - Verify pending operations in storage
 - Implement retry logic with exponential backoff
@@ -449,11 +466,13 @@ pnpm run android:release  # APK for distribution
 ## Support
 
 For Capacitor-specific issues:
+
 - Check [Capacitor Issues](https://github.com/ionic-team/capacitor/issues)
 - Review [Community Forums](https://forum.ionicframework.com/)
 - Check individual plugin documentation
 
 For CoTrainr specific issues:
+
 - Review error logs in Chrome DevTools
 - Check network tab for API errors
 - Verify Supabase authentication and permissions

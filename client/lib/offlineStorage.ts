@@ -23,7 +23,7 @@ const CACHE_TTL_KEY = "cache_ttl_";
 export async function storePendingOperation(
   type: "create" | "update" | "delete",
   endpoint: string,
-  data: unknown
+  data: unknown,
 ): Promise<string> {
   try {
     const operationId = `${Date.now()}_${Math.random()}`;
@@ -67,7 +67,9 @@ export async function getPendingOperations(): Promise<StoredOperation[]> {
 /**
  * Remove a pending operation
  */
-export async function removePendingOperation(operationId: string): Promise<void> {
+export async function removePendingOperation(
+  operationId: string,
+): Promise<void> {
   try {
     const operations = await getPendingOperations();
     const filtered = operations.filter((op) => op.id !== operationId);
@@ -85,7 +87,7 @@ export async function removePendingOperation(operationId: string): Promise<void>
  */
 export async function updateOperationRetry(
   operationId: string,
-  incrementRetries: boolean = true
+  incrementRetries: boolean = true,
 ): Promise<void> {
   try {
     const operations = await getPendingOperations();
@@ -108,7 +110,7 @@ export async function updateOperationRetry(
 export async function cacheData(
   key: string,
   data: unknown,
-  ttlMs: number = 5 * 60 * 1000 // 5 minutes
+  ttlMs: number = 5 * 60 * 1000, // 5 minutes
 ): Promise<void> {
   try {
     const cacheKey = `${CACHE_PREFIX}${key}`;
@@ -131,7 +133,9 @@ export async function cacheData(
 /**
  * Get cached data if not expired
  */
-export async function getCachedData<T = unknown>(key: string): Promise<T | null> {
+export async function getCachedData<T = unknown>(
+  key: string,
+): Promise<T | null> {
   try {
     const cacheKey = `${CACHE_PREFIX}${key}`;
     const ttlKey = `${CACHE_TTL_KEY}${key}`;
@@ -173,7 +177,7 @@ export async function clearCache(): Promise<void> {
  * Initialize offline storage listener
  */
 export async function initializeOfflineStorage(
-  onPendingOperations?: (operations: StoredOperation[]) => void
+  onPendingOperations?: (operations: StoredOperation[]) => void,
 ): Promise<void> {
   try {
     const operations = await getPendingOperations();

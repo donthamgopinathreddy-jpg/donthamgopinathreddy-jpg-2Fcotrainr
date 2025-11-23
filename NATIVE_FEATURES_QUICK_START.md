@@ -280,10 +280,14 @@ async function syncPendingOperations() {
   for (const op of operations) {
     try {
       const response = await fetch(op.endpoint, {
-        method: op.type === "delete" ? "DELETE" : op.type === "create" ? "POST" : "PUT",
+        method:
+          op.type === "delete"
+            ? "DELETE"
+            : op.type === "create"
+              ? "POST"
+              : "PUT",
         headers: { "Content-Type": "application/json" },
-        body:
-          op.type === "delete" ? undefined : JSON.stringify(op.data),
+        body: op.type === "delete" ? undefined : JSON.stringify(op.data),
       });
 
       if (response.ok) {
@@ -375,6 +379,7 @@ open ios/App/App.xcworkspace
 ## Best Practices
 
 1. **Always check if native platform**:
+
    ```typescript
    import { Capacitor } from "@capacitor/core";
 
@@ -384,6 +389,7 @@ open ios/App/App.xcworkspace
    ```
 
 2. **Handle errors gracefully**:
+
    ```typescript
    try {
      const photo = await selectPhotoFromGallery();
@@ -394,6 +400,7 @@ open ios/App/App.xcworkspace
    ```
 
 3. **Request permissions early**:
+
    ```typescript
    useEffect(() => {
      // Request permissions on app startup
@@ -402,6 +409,7 @@ open ios/App/App.xcworkspace
    ```
 
 4. **Cache sensitive operations**:
+
    ```typescript
    import { cacheData, getCachedData } from "@/lib/offlineStorage";
 
@@ -415,21 +423,25 @@ open ios/App/App.xcworkspace
 ## Debugging Native Issues
 
 ### Camera not working
+
 - Ensure camera permission is granted
 - Check logcat/console for permission errors
 - Test on real device (not simulator)
 
 ### Location returning null
+
 - Ensure location permission is granted
 - Check if location services are enabled on device
 - Test on real device with GPS signal
 
 ### Notifications not appearing
+
 - Verify notification permission is granted
 - Check notification settings on device
 - Ensure app is not in background (system dependent)
 
 ### Offline sync not working
+
 - Check network status with `useNetworkStatus()`
 - Verify pending operations with `getPendingOperations()`
 - Check Supabase auth and permissions

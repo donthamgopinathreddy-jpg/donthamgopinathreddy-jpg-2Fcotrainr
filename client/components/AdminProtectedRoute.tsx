@@ -24,18 +24,21 @@ export const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({
   }
 
   // Check if user has required role
-  const hasAccess = userProfile?.role === requiredRole || userProfile?.role === "admin";
+  const hasAccess =
+    userProfile?.role === requiredRole || userProfile?.role === "admin";
 
   if (!hasAccess) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
           <Lock className="mx-auto mb-4 text-red-500" size={48} />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Access Denied
+          </h1>
           <p className="text-gray-600 mb-6">
             You don't have permission to access this page. Only{" "}
-            <span className="font-semibold capitalize">{requiredRole}s</span> can view
-            this content.
+            <span className="font-semibold capitalize">{requiredRole}s</span>{" "}
+            can view this content.
           </p>
           <button
             onClick={() => navigate("/")}

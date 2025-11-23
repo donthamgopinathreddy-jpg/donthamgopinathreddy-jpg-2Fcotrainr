@@ -7,6 +7,7 @@ CoTrainr is now fully configured as a native mobile application using Capacitor.
 ### 1. Capacitor Installation & Configuration
 
 ✅ **Installed Capacitor Plugins**:
+
 - `@capacitor/core` - Core Capacitor functionality
 - `@capacitor/android` - Android native bridge
 - `@capacitor/camera` - Camera/gallery access
@@ -19,12 +20,14 @@ CoTrainr is now fully configured as a native mobile application using Capacitor.
 - `@capacitor/status-bar` - Status bar styling
 
 ✅ **Updated `capacitor.config.json`**:
+
 - Proper Android and iOS configuration
 - Plugin settings for camera, notifications, and status bar
 - App ID: `com.cotrainr.app`
 - App Name: `CoTrainr`
 
 ✅ **Enhanced `index.html`**:
+
 - Mobile viewport settings for safe areas (notches, cutouts)
 - Apple mobile app meta tags
 - Format detection for phone/email
@@ -46,6 +49,7 @@ Complete TypeScript bridge for all native Capacitor plugins:
 - **App Lifecycle**: `onAppPause()`, `onAppResume()`, `onAppDestroy()`
 
 ✅ **Created `client/lib/capacitorBridge.ts`** (Previously Existing):
+
 - Biometric authentication bridge
 - Platform detection
 - Native plugin registration
@@ -65,6 +69,7 @@ Easy-to-use React hooks for all native features:
 
 ✅ **Created `client/hooks/useNativeAppInit.ts`**:
 App initialization hook that:
+
 - Initializes native features on startup
 - Sets up device listeners
 - Initializes biometric auth
@@ -86,6 +91,7 @@ Comprehensive offline data synchronization:
 ### 5. Safe Area Handling (Notches & Cutouts)
 
 ✅ **Created `client/lib/safeAreaHelper.ts`**:
+
 - `getSafeAreaInsets()` - Get notch/cutout distances
 - `getSafeAreaPadding()` - Get padding values
 - `hasNotch()` - Check if device has notch
@@ -96,6 +102,7 @@ React component for automatic safe area padding
 ### 6. App Integration
 
 ✅ **Updated `client/App.tsx`**:
+
 - Added `useNativeAppInit()` hook to PermissionRequester component
 - Native features initialize on app startup
 - Biometric auth setup on load
@@ -104,6 +111,7 @@ React component for automatic safe area padding
 ### 7. Documentation
 
 ✅ **Created `NATIVE_APP_BUILD_GUIDE.md`**:
+
 - Complete build instructions for Android and iOS
 - APK/AAB generation for Play Store
 - App signing and deployment
@@ -111,6 +119,7 @@ React component for automatic safe area padding
 - Troubleshooting guide
 
 ✅ **Created `NATIVE_FEATURES_QUICK_START.md`**:
+
 - Code examples for all features
 - Usage patterns and best practices
 - Testing instructions
@@ -177,11 +186,13 @@ npx cap run ios --live
 ### 5. Configure App Signing
 
 **Android:**
+
 1. Create keystore for production
 2. Update `android/app/build.gradle` with signing config
 3. Set environment variables for keystore password
 
 **iOS:**
+
 1. Configure Apple Developer account
 2. Set Team ID in Xcode
 3. Set Bundle Identifier
@@ -189,12 +200,14 @@ npx cap run ios --live
 ### 6. Deploy to App Stores
 
 **Google Play Store:**
+
 1. Build AAB (App Bundle)
 2. Go to [Google Play Console](https://play.google.com/console)
 3. Upload AAB
 4. Configure app details and submit
 
 **Apple App Store:**
+
 1. Archive app in Xcode
 2. Go to [App Store Connect](https://appstoreconnect.apple.com)
 3. Upload build using Transporter
@@ -225,35 +238,38 @@ CoTrainr/
 
 ## Feature Summary
 
-| Feature | Implementation | Status |
-|---------|-----------------|--------|
-| Camera | `useCamera()` hook | ✅ Ready |
-| Geolocation | `useGeolocation()` hook | ✅ Ready |
-| Notifications | `useLocalNotifications()` hook | ✅ Ready |
-| Device Info | `useDeviceInfo()` hook | ✅ Ready |
-| Offline Storage | `offlineStorage.ts` utilities | ✅ Ready |
-| Network Detection | `useNetworkStatus()` hook | ✅ Ready |
-| Safe Areas | `SafeAreaView` component | ✅ Ready |
-| Keyboard Control | `useKeyboard()` hook | ✅ Ready |
-| Status Bar | `nativeFeatures.ts` functions | ✅ Ready |
-| App Lifecycle | Event listeners in init | ✅ Ready |
-| Biometric Auth | `capacitorBridge.ts` | ✅ Ready |
+| Feature           | Implementation                 | Status   |
+| ----------------- | ------------------------------ | -------- |
+| Camera            | `useCamera()` hook             | ✅ Ready |
+| Geolocation       | `useGeolocation()` hook        | ✅ Ready |
+| Notifications     | `useLocalNotifications()` hook | ✅ Ready |
+| Device Info       | `useDeviceInfo()` hook         | ✅ Ready |
+| Offline Storage   | `offlineStorage.ts` utilities  | ✅ Ready |
+| Network Detection | `useNetworkStatus()` hook      | ✅ Ready |
+| Safe Areas        | `SafeAreaView` component       | ✅ Ready |
+| Keyboard Control  | `useKeyboard()` hook           | ✅ Ready |
+| Status Bar        | `nativeFeatures.ts` functions  | ✅ Ready |
+| App Lifecycle     | Event listeners in init        | ✅ Ready |
+| Biometric Auth    | `capacitorBridge.ts`           | ✅ Ready |
 
 ## Usage Examples
 
 ### Simple Camera Integration
+
 ```typescript
 const { selectFromGallery } = useCamera();
 const photo = await selectFromGallery();
 ```
 
 ### Location Tracking
+
 ```typescript
 const { location, getLocation } = useGeolocation();
 const loc = await getLocation();
 ```
 
 ### Offline Operations
+
 ```typescript
 const { connected } = useNetworkStatus();
 if (!connected) {
@@ -296,6 +312,7 @@ All native features work in three environments:
 ## Permissions Required
 
 ### Android (`AndroidManifest.xml`)
+
 - CAMERA
 - ACCESS_FINE_LOCATION
 - ACCESS_COARSE_LOCATION
@@ -307,6 +324,7 @@ All native features work in three environments:
 - ACCESS_NETWORK_STATE
 
 ### iOS (`Info.plist`)
+
 - NSCameraUsageDescription
 - NSLocationWhenInUseUsageDescription
 - NSPhotoLibraryUsageDescription
@@ -315,21 +333,25 @@ All native features work in three environments:
 ## Common Issues & Solutions
 
 ### APK not installing
+
 - Check device storage
 - Verify Android version compatibility (API 31+)
 - Try: `adb uninstall com.cotrainr.app && adb install app.apk`
 
 ### Features not working on web
+
 - Use `Capacitor.isNativePlatform()` to check
 - Provide web fallbacks for features
 - Test on actual device
 
 ### Build fails
+
 - Run `npx cap sync` to sync changes
 - Clear `android/app/build` directory
 - Check Android SDK installation
 
 ### Permission errors
+
 - Add to AndroidManifest.xml
 - Add to iOS Info.plist
 - Request runtime permissions for Android 6.0+

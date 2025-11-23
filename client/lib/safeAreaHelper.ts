@@ -18,15 +18,16 @@ export function getSafeAreaInsets(): SafeAreaInsets {
     if (typeof window === "undefined") return 0;
 
     const value = getComputedStyle(document.documentElement).getPropertyValue(
-      `--safe-area-${variable}`
+      `--safe-area-${variable}`,
     );
 
     if (!value) {
       // Fallback to iOS/Android standard values
       try {
         const envValue = (
-          getComputedStyle(document.documentElement)
-            .getPropertyValue(`safe-area-inset-${variable}`) || "0px"
+          getComputedStyle(document.documentElement).getPropertyValue(
+            `safe-area-inset-${variable}`,
+          ) || "0px"
         )
           .trim()
           .replace("px", "");

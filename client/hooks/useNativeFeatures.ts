@@ -103,7 +103,15 @@ export function useGeolocation() {
     setWatching(false);
   }, []);
 
-  return { location, getLocation, startWatching, stopWatching, loading, error, watching };
+  return {
+    location,
+    getLocation,
+    startWatching,
+    stopWatching,
+    loading,
+    error,
+    watching,
+  };
 }
 
 /**
@@ -150,7 +158,7 @@ export function useLocalNotifications() {
         return false;
       }
     },
-    [permissionGranted, requestPermission]
+    [permissionGranted, requestPermission],
   );
 
   useEffect(() => {
