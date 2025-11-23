@@ -223,6 +223,8 @@ export default function Signup() {
         height_cm: heightInCm,
         weight_kg: weightInKg,
         gender: formData.gender,
+        phone_number: formData.country_code + formData.phone_number,
+        country_code: formData.country_code,
       });
 
       // Store survey data
