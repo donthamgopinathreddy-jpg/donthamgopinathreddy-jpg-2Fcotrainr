@@ -657,9 +657,9 @@ const Community = () => {
               <div className="flex justify-center py-12">
                 <Loader className="w-8 h-8 animate-spin text-blue-500" />
               </div>
-            ) : filteredUsers.length > 0 ? (
+            ) : Array.isArray(filteredUsers) && filteredUsers.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {filteredUsers.map((user) => (
+                {filteredUsers && filteredUsers.map((user) => (
                   <button
                     key={user.id}
                     onClick={() => navigate(`/profile/${user.id}`)}
