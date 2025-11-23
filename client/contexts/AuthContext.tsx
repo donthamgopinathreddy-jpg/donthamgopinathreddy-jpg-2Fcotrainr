@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import { authApi, setAuthToken, getAuthToken, usersApi } from "@/lib/api";
 
 interface UserProfile {
   id: string;
@@ -331,87 +332,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     },
   ) => {
     try {
-      // Use our API wrapper for sign up
-      const response = await fetch("/api/supabase/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          options: {
-            data: {
-              username: userData.username,
-              full_name: userData.full_name,
-              role: userData.role,
-              gender: userData.gender,
-              weight_kg: userData.weight_kg,
-              height_cm: userData.height_cm,
-              phone_number: userData.phone_number,
-              age: userData.age,
-              date_of_birth: userData.date_of_birth,
-            },
-          },
-        }),
+      // Call NestJS backend
+      const response = await authApi.signup({
+        email,
+        username: userData.username,
+        password,
+        height: userData.height_cm,
+        weight: userData.weight_kg,
+        role: userData.role,
       });
 
-      let responseData: any = {};
+      console.log("[Auth] Sign up successful for user:", response.user.email);
 
-      try {
-        responseData = await response.json();
-      } catch (parseError) {
-        console.error("Sign up: Could not parse response as JSON:", parseError);
-        if (!response.ok) {
-          throw new Error(
-            `Server returned ${response.status}: Could not parse response`,
-          );
-        }
-        responseData = {};
-      }
+      // Update user state
+      setUser(response.user as any);
+      setUserProfile(response.user);
 
-      if (!response.ok) {
-        const errorMsg = responseData.error || "Sign up failed";
-        console.error("Sign up error:", errorMsg);
-        throw new Error(errorMsg);
-      }
-
-      const { session, user } = responseData;
-
-      if (user) {
-        // Validate session has required tokens
-        if (session) {
-          if (!session.refresh_token) {
-            console.error("[Auth] Signup: Session missing refresh_token");
-            throw new Error(
-              "Sign up failed: Server returned incomplete session (missing refresh token)",
-            );
-          }
-          if (!session.access_token) {
-            console.error("[Auth] Signup: Session missing access_token");
-            throw new Error(
-              "Sign up failed: Server returned incomplete session (missing access token)",
-            );
-          }
-        }
-
-        setUser(user);
-
-        // Set the session in Supabase client
-        if (session) {
-          console.log("[Auth] Setting session in Supabase client");
-          await supabase.auth.setSession(session);
-        }
-
-        // Profile is now created server-side, fetch it after a short delay
-        // Wait for database replication
-        console.log("[Auth] Waiting for database replication...");
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        // Fetch the created profile (async, non-blocking)
-        console.log("[Auth] Fetching user profile...");
-        fetchUserProfile(user.id);
-      }
+      console.log("[Auth] User state updated");
     } catch (error: any) {
       console.error("Error signing up:", error);
       const errorMessage = error?.message || String(error);
@@ -427,155 +364,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error("Email and password are required");
       }
 
-      // Use our API wrapper instead of calling Supabase directly
-      console.log("[Auth] Sending request to /api/supabase/auth/signin");
+      // Call NestJS backend
+      const response = await authApi.login(email, password);
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      console.log("[Auth] Sign in successful for user:", response.user.email);
 
-      try {
-        const response = await fetch("/api/supabase/auth/signin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-          signal: controller.signal,
-        });
+      // Update user state
+      setUser(response.user as any);
+      setUserProfile(response.user);
 
-        clearTimeout(timeoutId);
-
-        console.log("[Auth] Received response with status:", response.status);
-
-        // Parse the response directly - this reads the stream only once
-        let responseData: any = {};
-
-        try {
-          // Try to parse as JSON first
-          responseData = await response.json();
-          console.log("[Auth] Parsed JSON successfully");
-        } catch (parseError) {
-          console.error("[Auth] Could not parse response as JSON:", parseError);
-          // If JSON parsing fails and response is not ok, we'll throw below
-          if (!response.ok) {
-            throw new Error(
-              `Server returned ${response.status}: Could not parse response`,
-            );
-          }
-          responseData = {};
-        }
-
-        // Check if response was successful
-        if (!response.ok) {
-          const errorMessage =
-            responseData?.error || `Sign in failed (${response.status})`;
-          throw new Error(errorMessage);
-        }
-
-        const { session, user } = responseData;
-
-        if (!user) {
-          throw new Error("No user data returned from server");
-        }
-
-        console.log("[Auth] Sign in successful for user:", user.email);
-        console.log("[Auth] Session received:", {
-          hasSession: !!session,
-          hasAccessToken: !!session?.access_token,
-          hasRefreshToken: !!session?.refresh_token,
-          user_id: user.id,
-        });
-
-        // Validate session has refresh token
-        if (session && !session.refresh_token) {
-          console.error(
-            "[Auth] Session missing refresh_token - this will cause token refresh failures",
-          );
-          console.log("[Auth] Session object:", {
-            hasAccessToken: !!session.access_token,
-            hasRefreshToken: !!session.refresh_token,
-            expiresIn: session.expires_in,
-          });
-        }
-
-        // Validate session before storing
-        if (session) {
-          if (!session.refresh_token) {
-            console.error(
-              "[Auth] CRITICAL: Session missing refresh_token from API",
-            );
-            console.error("[Auth] Session object:", {
-              hasAccessToken: !!session.access_token,
-              hasRefreshToken: !!session.refresh_token,
-              user_id: session.user?.id,
-            });
-            // Don't continue with a broken session
-            throw new Error(
-              "Sign in failed: Session incomplete (missing refresh token)",
-            );
-          }
-
-          if (!session.access_token) {
-            console.error("[Auth] Session missing access_token from API");
-            throw new Error(
-              "Sign in failed: Session incomplete (missing access token)",
-            );
-          }
-        }
-
-        // Update user state immediately for responsive navigation
-        setUser(user);
-
-        if (session) {
-          // Store the session in Supabase client
-          try {
-            console.log("[Auth] Setting session in Supabase client...");
-            const result = await supabase.auth.setSession(session);
-            console.log("[Auth] Session set, result:", {
-              hasUser: !!result.data?.user,
-              user_id: result.data?.user?.id,
-              hasSession: !!result.data?.session,
-              hasRefreshToken: !!result.data?.session?.refresh_token,
-            });
-
-            // Verify session was set
-            const {
-              data: { session: verifySession },
-            } = await supabase.auth.getSession();
-            console.log("[Auth] Verified session after setSession:", {
-              hasSession: !!verifySession,
-              hasAccessToken: !!verifySession?.access_token,
-              hasRefreshToken: !!verifySession?.refresh_token,
-            });
-          } catch (sessionError: any) {
-            console.error("[Auth] Error setting session:", {
-              message: sessionError?.message,
-              cause: sessionError?.cause,
-            });
-            // Continue anyway - user state is still valid
-          }
-        } else {
-          console.warn("[Auth] No session returned from API");
-        }
-
-        // Fetch profile with improved logging (async, non-blocking)
-        console.log("[Auth] Fetching user profile for:", user.id);
-        fetchUserProfile(user.id);
-      } catch (fetchError: any) {
-        clearTimeout(timeoutId);
-
-        if (fetchError.name === "AbortError") {
-          throw new Error("Sign in request timed out - please try again");
-        }
-        throw fetchError;
-      }
+      console.log("[Auth] User state updated");
     } catch (error: any) {
       console.error("[Auth] Error signing in:", error);
-      console.error("[Auth] Error type:", error?.name);
-      console.error("[Auth] Error message:", error?.message);
       const errorMessage = error?.message || "Sign in failed";
       throw new Error(errorMessage);
     }
@@ -590,24 +390,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(null);
       setUserProfile(null);
 
+      // Clear auth token from API service
+      authApi.logout();
+
       // Clear any stored session
       if (typeof window !== "undefined") {
         try {
-          localStorage.clear();
+          localStorage.removeItem("authToken");
           sessionStorage.clear();
-          console.log("[Auth] Cleared all localStorage and sessionStorage");
+          console.log("[Auth] Cleared auth token");
         } catch (e) {
           console.warn("Could not clear storage:", e);
         }
-      }
-
-      // Try to logout from Supabase (this may fail if already logged out)
-      try {
-        await supabase.auth.signOut({ scope: "local" });
-        console.log("[Auth] Supabase signOut completed");
-      } catch (signoutError) {
-        console.warn("Supabase signOut error (non-critical):", signoutError);
-        // Continue anyway - local state is already cleared
       }
 
       console.log("[Auth] Sign out completed successfully");
@@ -617,11 +411,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // Still clear state even if there's an error
       setUser(null);
       setUserProfile(null);
+      authApi.logout();
 
       // Clear storage anyway
       if (typeof window !== "undefined") {
         try {
-          localStorage.clear();
+          localStorage.removeItem("authToken");
           sessionStorage.clear();
         } catch (e) {
           console.warn("Could not clear storage on error:", e);
