@@ -512,7 +512,7 @@ export default function MobileSignup() {
               <button
                 onClick={handleNext}
                 disabled={loading}
-                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/75"
+                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-500/75"
               >
                 {loading ? (
                   <>
