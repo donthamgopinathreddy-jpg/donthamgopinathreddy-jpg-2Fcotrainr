@@ -20,6 +20,18 @@ export class SignupDto {
   @IsOptional()
   weight?: number;
 
+  @IsString()
+  @IsOptional()
+  phone_number?: string;
+
+  @IsString()
+  @IsOptional()
+  country_code?: string;
+
+  @IsString()
+  @IsOptional()
+  full_name?: string;
+
   @IsIn(['client', 'trainer'])
   @IsOptional()
   role?: string;
