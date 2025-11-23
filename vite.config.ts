@@ -45,10 +45,10 @@ function expressPlugin(): Plugin {
     configureServer() {
       const app = createServer();
 
-      // Start Express on a separate port to avoid response stream issues with Vite middleware
+      // Start Express on port 3000 (NestJS backend uses 3001)
       expressServer = http.createServer(app);
-      expressServer.listen(3001, "localhost", () => {
-        console.log("[Express] Server running on http://localhost:3001");
+      expressServer.listen(3000, "localhost", () => {
+        console.log("[Express] Server running on http://localhost:3000");
       });
     },
   };
