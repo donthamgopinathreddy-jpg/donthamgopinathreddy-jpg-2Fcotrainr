@@ -54,6 +54,7 @@ export default function Signup() {
     confirmPassword: "",
     height_feet: "",
     height_inches: "",
+    height_cm: "",
     weight_kg: "",
     weight_pounds: "",
     gender: "male",
@@ -100,7 +101,41 @@ export default function Signup() {
     >,
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const newData = { ...formData, [name]: value };
+
+    // Auto-convert height feet to cm
+    if (name === "height_feet" && value) {
+      const feet = parseInt(value);
+      const inches = parseInt(formData.height_inches) || 0;
+      const totalInches = feet * 12 + inches;
+      const cm = Math.round(totalInches * 2.54);
+      newData.height_cm = cm.toString();
+    }
+
+    // Auto-convert height inches to cm
+    if (name === "height_inches" && value) {
+      const feet = parseInt(formData.height_feet) || 0;
+      const inches = parseInt(value);
+      const totalInches = feet * 12 + inches;
+      const cm = Math.round(totalInches * 2.54);
+      newData.height_cm = cm.toString();
+    }
+
+    // Auto-convert pounds to kg
+    if (name === "weight_pounds" && value) {
+      const pounds = parseInt(value);
+      const kg = Math.round(pounds / 2.205);
+      newData.weight_kg = kg.toString();
+    }
+
+    // Auto-convert kg to pounds
+    if (name === "weight_kg" && value) {
+      const kg = parseInt(value);
+      const pounds = Math.round(kg * 2.205);
+      newData.weight_pounds = pounds.toString();
+    }
+
+    setFormData(newData);
 
     if (name === "username") {
       checkUsername(value);
@@ -147,12 +182,7 @@ export default function Signup() {
       return;
     }
 
-    if (
-      !formData.height_feet ||
-      !formData.height_inches ||
-      !formData.weight_kg ||
-      !formData.weight_pounds
-    ) {
+    if (!formData.height_feet || !formData.height_inches || !formData.weight_kg || !formData.weight_pounds) {
       toast.error("Please enter your height and weight");
       return;
     }
@@ -170,11 +200,7 @@ export default function Signup() {
     setLoading(true);
     try {
       // Calculate height in cm from feet and inches
-      const heightInCm = Math.round(
-        (parseInt(formData.height_feet) * 12 +
-          parseInt(formData.height_inches)) *
-          2.54,
-      );
+      const heightInCm = Math.round((parseInt(formData.height_feet) * 12 + parseInt(formData.height_inches)) * 2.54);
       const weightInKg = parseInt(formData.weight_kg);
 
       // Sign up with auth
@@ -210,11 +236,11 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 flex flex-col items-center justify-center p-4 py-8">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4 py-8">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-orange-600 mb-2">CoTrainr</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">CoTrainr</h1>
           <p className="text-gray-600">Create your account</p>
         </div>
 
@@ -368,6 +394,11 @@ export default function Signup() {
                 />
               </div>
             </div>
+            {formData.height_feet && formData.height_inches && (
+              <p className="text-xs text-gray-600 mt-2 font-medium">
+                ≈ {formData.height_cm} cm
+              </p>
+            )}
           </div>
 
           {/* Weight */}
