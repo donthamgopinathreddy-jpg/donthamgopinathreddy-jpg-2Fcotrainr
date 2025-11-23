@@ -293,41 +293,60 @@ export default function Signup() {
           {/* Height */}
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-2">
-              Height (cm)
+              Height
             </label>
-            <div className="relative">
-              <Ruler className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-              <input
-                type="number"
-                name="height"
-                value={formData.height}
-                onChange={handleInputChange}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="170"
-                min="100"
-                max="250"
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="relative">
+                <Ruler className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  name="height_feet"
+                  value={formData.height_feet}
+                  onChange={handleInputChange}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="Feet (e.g., 5)"
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="height_inches"
+                  value={formData.height_inches}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="Inches (e.g., 10)"
+                />
+              </div>
             </div>
           </div>
 
           {/* Weight */}
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-2">
-              Weight (kg)
+              Weight
             </label>
-            <div className="relative">
-              <Weight className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
-              <input
-                type="number"
-                name="weight"
-                value={formData.weight}
-                onChange={handleInputChange}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="70"
-                min="30"
-                max="300"
-                step="0.1"
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="relative">
+                <Weight className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  name="weight_kg"
+                  value={formData.weight_kg}
+                  onChange={handleInputChange}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="Kilograms (e.g., 75)"
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="weight_pounds"
+                  value={formData.weight_pounds}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="Pounds (e.g., 165)"
+                />
+              </div>
             </div>
           </div>
 
