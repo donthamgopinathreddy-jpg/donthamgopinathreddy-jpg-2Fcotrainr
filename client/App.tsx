@@ -63,6 +63,7 @@ import Navigation from "./components/Navigation";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { isUserAdmin } from "@/lib/adminAuth";
 import { useNativeAppInit } from "@/hooks/useNativeAppInit";
+import SplashScreen from "./pages/SplashScreen";
 
 const queryClient = new QueryClient();
 
