@@ -264,17 +264,24 @@ export default function Signup() {
           });
           console.log("[Signup] Survey data saved successfully");
         } else {
-          console.warn("[Signup] No session yet - survey data will be saved on first login");
+          console.warn(
+            "[Signup] No session yet - survey data will be saved on first login",
+          );
         }
       } catch (surveyError) {
         // Don't fail signup if survey save fails
-        console.warn("[Signup] Could not save survey data (will retry on login):", surveyError);
+        console.warn(
+          "[Signup] Could not save survey data (will retry on login):",
+          surveyError,
+        );
       }
 
       toast.success("Account created successfully! You can now sign in.");
 
       // Redirect to login page with success message
-      navigate("/login", { state: { message: "Account created! Please sign in." } });
+      navigate("/login", {
+        state: { message: "Account created! Please sign in." },
+      });
     } catch (error: any) {
       console.error("[Signup] Signup failed:", error);
       toast.error(error.message || "Signup failed");

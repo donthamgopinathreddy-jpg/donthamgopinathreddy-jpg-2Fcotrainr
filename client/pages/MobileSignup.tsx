@@ -206,7 +206,9 @@ export default function MobileSignup() {
       setStep(4);
       toast.success("Account created! Please sign in.");
       setTimeout(() => {
-        navigate("/login", { state: { message: "Account created! Please sign in." } });
+        navigate("/login", {
+          state: { message: "Account created! Please sign in." },
+        });
       }, 2000);
     } catch (error: any) {
       console.error("Signup error:", error);
