@@ -118,6 +118,34 @@ export default function Login() {
               </button>
             </p>
           </div>
+
+          {/* Demo Dashboards */}
+          <div className="pt-6 border-t border-slate-700/50">
+            <p className="text-slate-400 text-xs text-center mb-4">View Demo Dashboards</p>
+            <div className="grid grid-cols-3 gap-3">
+              <button
+                type="button"
+                onClick={() => navigate("/demo-client")}
+                className="px-3 py-3 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 hover:text-blue-200 font-semibold rounded-lg transition-all text-sm"
+              >
+                👤 Client
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/demo-trainer")}
+                className="px-3 py-3 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 hover:text-purple-200 font-semibold rounded-lg transition-all text-sm"
+              >
+                💪 Trainer
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/demo-admin")}
+                className="px-3 py-3 bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 font-semibold rounded-lg transition-all text-sm"
+              >
+                🔐 Admin
+              </button>
+            </div>
+          </div>
         </form>
 
         {/* Footer */}
