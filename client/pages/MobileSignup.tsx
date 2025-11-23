@@ -200,10 +200,13 @@ export default function MobileSignup() {
         country_code: formData.country_code,
       });
 
+      console.log("[MobileSignup] ✅ Signup successful!");
+
       // Show success animation
       setStep(4);
+      toast.success("Account created! Please sign in.");
       setTimeout(() => {
-        navigate("/");
+        navigate("/login", { state: { message: "Account created! Please sign in." } });
       }, 2000);
     } catch (error: any) {
       console.error("Signup error:", error);
