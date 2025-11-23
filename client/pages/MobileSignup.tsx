@@ -133,7 +133,12 @@ export default function MobileSignup() {
       }
       setStep(3);
     } else if (step === 3) {
-      if (!formData.height_feet || !formData.height_inches || !formData.weight_kg || !formData.weight_pounds) {
+      if (
+        !formData.height_feet ||
+        !formData.height_inches ||
+        !formData.weight_kg ||
+        !formData.weight_pounds
+      ) {
         setError("Please fill in all fields");
         return;
       }
@@ -145,7 +150,11 @@ export default function MobileSignup() {
     setLoading(true);
     setError("");
     try {
-      const heightInCm = Math.round((parseInt(formData.height_feet) * 12 + parseInt(formData.height_inches)) * 2.54);
+      const heightInCm = Math.round(
+        (parseInt(formData.height_feet) * 12 +
+          parseInt(formData.height_inches)) *
+          2.54,
+      );
       const weightInKg = parseInt(formData.weight_kg);
 
       await signUp(formData.email, formData.password, {
@@ -219,7 +228,9 @@ export default function MobileSignup() {
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center mb-6 shadow-2xl shadow-green-500/50">
               <CheckCircle2 size={48} className="text-white animate-bounce" />
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome! 🎉</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              Welcome! 🎉
+            </h2>
             <p className="text-gray-600 mb-8">Your account is ready to go</p>
             <div className="w-1 h-16 bg-gradient-to-b from-orange-500 to-transparent rounded-full"></div>
           </div>
@@ -296,7 +307,11 @@ export default function MobileSignup() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
                 >
-                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
                 </button>
               </div>
             </div>
