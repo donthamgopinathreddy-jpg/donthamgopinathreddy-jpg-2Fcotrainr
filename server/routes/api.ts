@@ -272,6 +272,7 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
     res.json({
       session: data.session,
       user: data.user,
+      token: data.session?.access_token || "",
       message: "Sign up successful",
     });
   } catch (error) {
