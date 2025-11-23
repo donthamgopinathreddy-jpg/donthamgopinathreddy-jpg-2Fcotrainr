@@ -28,19 +28,35 @@ export default function SplashScreen() {
       </div>
 
       <style>{`
-        @keyframes splash-fade-in {
-          from {
+        @keyframes splash-fade-in-scale {
+          0% {
             opacity: 0;
-            transform: scale(0.9);
+            transform: scale(0.85) translateY(-20px);
           }
-          to {
+          50% {
             opacity: 1;
-            transform: scale(1);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
           }
         }
 
-        .animate-splash-fade-in {
-          animation: splash-fade-in 0.8s ease-out;
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        .animate-splash-fade-in-scale {
+          animation: splash-fade-in-scale 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .animate-fade-in {
+          animation: fade-in 1s ease-in;
         }
       `}</style>
     </div>
