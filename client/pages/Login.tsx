@@ -121,7 +121,9 @@ export default function Login() {
 
           {/* Demo Dashboards */}
           <div className="pt-6 border-t border-slate-700/50">
-            <p className="text-slate-400 text-xs text-center mb-4">View Demo Dashboards</p>
+            <p className="text-slate-400 text-xs text-center mb-4">
+              View Demo Dashboards
+            </p>
             <div className="grid grid-cols-3 gap-3">
               <button
                 type="button"
