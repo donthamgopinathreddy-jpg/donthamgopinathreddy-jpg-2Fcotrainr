@@ -85,12 +85,15 @@ export default function MobileSignup() {
         );
       }
 
+      const heightInCm = Math.round((parseInt(formData.height_feet) * 12 + parseInt(formData.height_inches)) * 2.54);
+      const weightInKg = parseInt(formData.weight_kg);
+
       await signUp(formData.email, formData.password, {
         username: formData.username,
         full_name: formData.full_name,
         role: formData.role as "client" | "trainer",
-        height_cm: parseInt(formData.height),
-        weight_kg: parseInt(formData.weight),
+        height_cm: heightInCm,
+        weight_kg: weightInKg,
       });
 
       // Show success animation
