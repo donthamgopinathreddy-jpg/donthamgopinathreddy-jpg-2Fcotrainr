@@ -17,11 +17,41 @@ export default function MobileSignup() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
+
+  // Password validation function
+  const validatePassword = (password: string): string | null => {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters";
+    }
+    if (!/[A-Z]/.test(password)) {
+      return "Password must contain at least one uppercase letter";
+    }
+    if (!/[0-9]/.test(password)) {
+      return "Password must contain at least one number";
+    }
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+      return "Password must contain at least one special character";
+    }
+    return null;
+  };
+
+  // Username validation function
+  const validateUsername = (username: string): string | null => {
+    if (username.length < 3) {
+      return "Username must be at least 3 characters";
+    }
+    if (!/[0-9]/.test(username)) {
+      return "Username must include at least one number";
+    }
+    return null;
+  };
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    confirmPassword: "",
     username: "",
     height_feet: "",
     height_inches: "",
@@ -42,12 +72,17 @@ export default function MobileSignup() {
   const handleNext = () => {
     setError("");
     if (step === 1) {
-      if (!formData.email || !formData.password) {
+      if (!formData.email || !formData.password || !formData.confirmPassword) {
         setError("Please fill in all fields");
         return;
       }
-      if (formData.password.length < 6) {
-        setError("Password must be at least 6 characters");
+      const passwordError = validatePassword(formData.password);
+      if (passwordError) {
+        setError(passwordError);
+        return;
+      }
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
         return;
       }
       setStep(2);
@@ -56,8 +91,9 @@ export default function MobileSignup() {
         setError("Please fill in all fields");
         return;
       }
-      if (formData.username.length < 3) {
-        setError("Username must be at least 3 characters");
+      const usernameError = validateUsername(formData.username);
+      if (usernameError) {
+        setError(usernameError);
         return;
       }
       setStep(3);
@@ -74,17 +110,6 @@ export default function MobileSignup() {
     setLoading(true);
     setError("");
     try {
-      // Check if backend is available
-      const testResponse = await fetch("http://localhost:3001/api/ping", {
-        method: "GET",
-      }).catch(() => null);
-
-      if (!testResponse) {
-        throw new Error(
-          "Backend server is not running. Please start the backend: cd server && pnpm run start:dev",
-        );
-      }
-
       const heightInCm = Math.round((parseInt(formData.height_feet) * 12 + parseInt(formData.height_inches)) * 2.54);
       const weightInKg = parseInt(formData.weight_kg);
 
