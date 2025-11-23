@@ -1,53 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, Plus, Send } from "lucide-react";
-import { messagingApi } from "@/lib/api";
+import { useMessages } from "@/hooks/useMessages";
+import { toast } from "sonner";
 
 export default function MobileMessages() {
   const navigate = useNavigate();
-  const [conversations, setConversations] = useState<any[]>([]);
+  const { conversations, messages, loading, sendMessage } = useMessages();
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
-  const [messages, setMessages] = useState<any[]>([]);
   const [messageText, setMessageText] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadConversations();
-  }, []);
-
-  const loadConversations = async () => {
-    try {
-      setLoading(true);
-      const data = await messagingApi.getConversations();
-      setConversations(data || []);
-    } catch (error) {
-      console.error("Error loading conversations:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadMessages = async (conversationId: string) => {
-    try {
-      const data = await messagingApi.getMessages(conversationId);
-      setMessages(data || []);
-    } catch (error) {
-      console.error("Error loading messages:", error);
-    }
-  };
 
   const handleSelectConversation = (conversation: any) => {
     setSelectedConversation(conversation);
-    loadMessages(conversation.id);
   };
+
+  const selectedMessages = selectedConversation
+    ? messages.filter((m: any) => m.conversation_id === selectedConversation.id)
+    : [];
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!messageText.trim()) return;
+    if (!messageText.trim() || !selectedConversation) return;
 
     try {
-      await messagingApi.sendMessage(selectedConversation.id, messageText);
+      await sendMessage(selectedConversation.id, messageText);
       setMessageText("");
+      toast.success("Message sent");
       loadMessages(selectedConversation.id);
     } catch (error) {
       console.error("Error sending message:", error);
