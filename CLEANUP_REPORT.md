@@ -1,6 +1,7 @@
 # 🧹 CoTrainr Repository Cleanup Report
 
 ## Summary
+
 This report identifies duplicate, old, and unused code in the repository that can be removed to clean up the codebase.
 
 ---
@@ -8,6 +9,7 @@ This report identifies duplicate, old, and unused code in the repository that ca
 ## 🔴 CRITICAL: Duplicate Page Files (Can Be Deleted)
 
 ### Home Pages (5 files - only HomeModern is used)
+
 - ❌ `client/pages/Home.tsx` - **OLD** (replaced by HomeModern)
 - ❌ `client/pages/MobileHome.tsx` - **OLD** (replaced by HomeModern)
 - ❌ `client/pages/ClientHome.tsx` - **UNUSED** (not in any route)
@@ -15,14 +17,17 @@ This report identifies duplicate, old, and unused code in the repository that ca
 - ✅ `client/pages/HomeModern.tsx` - **KEEP** (currently used at "/" route)
 
 ### Discover Pages (2 files - only MobileDiscover is used)
+
 - ❌ `client/pages/Discover.tsx` - **OLD** (replaced by MobileDiscover)
 - ✅ `client/pages/MobileDiscover.tsx` - **KEEP** (used at "/discover" route)
 
 ### Meals Pages (2 files - only MobileMeals is used)
+
 - ❌ `client/pages/Meals.tsx` - **OLD** (replaced by MobileMeals)
 - ✅ `client/pages/MobileMeals.tsx` - **KEEP** (used at "/meals" route)
 
 ### Messages Pages
+
 - ✅ `client/pages/Messages.tsx` - **KEEP** (might be used)
 - ✅ `client/pages/MobileMessages.tsx` - **KEEP** (used at "/messages" route)
 
@@ -31,18 +36,21 @@ This report identifies duplicate, old, and unused code in the repository that ca
 ## 🟡 MEDIUM: Old Documentation Files (Can Be Deleted)
 
 ### Setup & Configuration (Old)
+
 - ❌ `SETUP_INSTRUCTIONS.md` - **OLD**
 - ❌ `FINAL_SETUP_INSTRUCTIONS.md` - **OLD**
 - ❌ `QUICK_START.md` - **OLD** (covered by NATIVE_APP_SETUP_SUMMARY.md)
 - ❌ `COTRAINR_SETUP_GUIDE.md` - **OLD**
 
 ### Signup & Auth (Old/Deprecated)
+
 - ❌ `FIX_SIGNUP_INSTRUCTIONS.md` - **DEPRECATED**
 - ❌ `FINAL_SIGNUP_FIX.md` - **DEPRECATED**
 - ❌ `SIGNUP_FIX_SUMMARY.md` - **DEPRECATED**
 - ❌ `SIGNUP_DIAGNOSIS.md` - **DEPRECATED**
 
 ### Mobile & Capacitor (Old - Replaced by NATIVE_APP_BUILD_GUIDE.md)
+
 - ❌ `MOBILE_FIXES.md` - **OLD**
 - ❌ `MOBILE_APP_GUIDE.md` - **OLD**
 - ❌ `MOBILE_SUPABASE_SETUP_CHECKLIST.md` - **OLD**
@@ -51,6 +59,7 @@ This report identifies duplicate, old, and unused code in the repository that ca
 - ❌ `BUILD_ANDROID.md` - **OLD**
 
 ### Biometric & Features (Old)
+
 - ❌ `BIOMETRIC_AUTH_SETUP.md` - **OLD**
 - ❌ `BIOMETRIC_IMPLEMENTATION_SUMMARY.md` - **OLD**
 - ❌ `NOTIFICATION_PREFERENCES_SETUP.md` - **OLD**
@@ -58,6 +67,7 @@ This report identifies duplicate, old, and unused code in the repository that ca
 - ❌ `SAMSUNG_APPLE_DESIGN_UPDATE.md` - **OLD**
 
 ### Other Features (Old)
+
 - ❌ `TRAINING_HUB_GUIDE.md` - **OLD**
 - ❌ `TRAINING_HUB_SETUP.md` - **OLD**
 - ❌ `WORKOUT_PLANNER_GUIDE.md` - **OLD**
@@ -66,6 +76,7 @@ This report identifies duplicate, old, and unused code in the repository that ca
 - ❌ `CLEANUP_SUMMARY.md` - **OLD**
 
 ### Database & Supabase (Old)
+
 - ❌ `SUPABASE_SETUP_INSTRUCTIONS.md` - **OLD**
 - ❌ `SUPABASE_SCHEMA.sql` - **OLD**
 - ❌ `SUPABASE_INSERT_POLICY_FIX.sql` - **DEPRECATED**
@@ -91,7 +102,9 @@ This report identifies duplicate, old, and unused code in the repository that ca
 ## 🔵 CHANGES MADE
 
 ### In `client/App.tsx`:
+
 ✅ Removed unused imports:
+
 - Removed `ClientHome`
 - Removed `TrainerHome`
 - Removed `Home` (old home page)
@@ -101,6 +114,7 @@ This report identifies duplicate, old, and unused code in the repository that ca
 - Removed `MobileHome` (old mobile home)
 
 ✅ Imports now only reference:
+
 - `HomeModern` - Main home page
 - `MobileDiscover` - Discover page
 - `MobileMeals` - Meals page
@@ -113,12 +127,12 @@ This report identifies duplicate, old, and unused code in the repository that ca
 
 ## 📊 Cleanup Statistics
 
-| Category | Count |
-|----------|-------|
-| Old Page Files to Delete | 6 |
-| Old Documentation Files to Delete | 30+ |
-| Active/Current Files | 10+ |
-| **Total Cleanup Impact** | **36+ files** |
+| Category                          | Count         |
+| --------------------------------- | ------------- |
+| Old Page Files to Delete          | 6             |
+| Old Documentation Files to Delete | 30+           |
+| Active/Current Files              | 10+           |
+| **Total Cleanup Impact**          | **36+ files** |
 
 ---
 
