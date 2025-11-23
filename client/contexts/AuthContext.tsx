@@ -41,6 +41,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
   demoMode: () => Promise<void>;
+  resetPassword: (email: string, method: "email" | "phone") => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
