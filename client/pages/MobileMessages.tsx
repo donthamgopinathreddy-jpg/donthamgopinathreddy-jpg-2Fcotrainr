@@ -26,9 +26,8 @@ export default function MobileMessages() {
       await sendMessage(selectedConversation.id, messageText);
       setMessageText("");
       toast.success("Message sent");
-      loadMessages(selectedConversation.id);
-    } catch (error) {
-      console.error("Error sending message:", error);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send message");
     }
   };
 
