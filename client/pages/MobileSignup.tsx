@@ -58,6 +58,8 @@ export default function MobileSignup() {
     height_cm: "",
     weight_kg: "",
     weight_pounds: "",
+    phone_number: "",
+    country_code: "+1",
     role: "client",
     full_name: "",
   });
