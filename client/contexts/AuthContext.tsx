@@ -343,9 +343,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         weight_kg: userData.weight_kg,
       });
 
-      // Call NestJS backend using API proxy
-      console.log("[Auth] Making POST request to /api/auth/signup");
-      const response = await fetch("/api/auth/signup", {
+      // Call backend auth endpoint
+      console.log("[Auth] Making POST request to /auth/signup");
+      const response = await fetch("/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -383,9 +383,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const data = await response.json();
       console.log("[Auth] Sign up successful for user:", data.user?.email);
 
-      // Store token
-      if (data.token) {
-        setAuthToken(data.token);
+      // Store session and user data
+      if (data.session?.access_token) {
+        setAuthToken(data.session.access_token);
       }
 
       // Update user state
