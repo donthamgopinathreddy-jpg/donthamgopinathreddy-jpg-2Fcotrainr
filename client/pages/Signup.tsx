@@ -129,13 +129,17 @@ export default function Signup() {
 
     setLoading(true);
     try {
+      // Calculate height in cm from feet and inches
+      const heightInCm = Math.round((parseInt(formData.height_feet) * 12 + parseInt(formData.height_inches)) * 2.54);
+      const weightInKg = parseInt(formData.weight_kg);
+
       // Sign up with auth
       await signUp(formData.email, formData.password, {
         username: formData.username.toLowerCase(),
         full_name: formData.username,
         role: formData.role,
-        height_cm: parseInt(formData.height),
-        weight_kg: parseInt(formData.weight),
+        height_cm: heightInCm,
+        weight_kg: weightInKg,
         gender: formData.gender,
       });
 
