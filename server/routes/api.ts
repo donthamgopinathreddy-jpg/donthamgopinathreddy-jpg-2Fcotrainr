@@ -163,7 +163,18 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
     console.log("[API] Sign up endpoint called");
     console.log("[API] Request body:", JSON.stringify(req.body, null, 2));
 
-    const { email, password, options, role = "client" } = req.body;
+    const {
+      email,
+      password,
+      username,
+      full_name,
+      role = "client",
+      height,
+      weight,
+      phone_number,
+      country_code,
+      options,
+    } = req.body;
 
     if (!email || !password) {
       console.log("[API] Missing email or password for signup");
@@ -179,7 +190,11 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
       email,
       password,
       options: {
-        data: options?.data || {},
+        data: {
+          username: username || email.split("@")[0],
+          full_name: full_name || "",
+          ...options?.data,
+        },
         emailRedirectTo: undefined,
       },
     });
@@ -220,16 +235,19 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
       const profileData = {
         id: userId,
         email,
-        username: options?.data?.username || email.split("@")[0],
-        full_name: options?.data?.full_name || "",
-        role: options?.data?.role || "client",
-        gender: options?.data?.gender || null,
-        weight_kg: options?.data?.weight_kg || null,
-        height_cm: options?.data?.height_cm || null,
-        phone_number: options?.data?.phone_number || null,
-        age: options?.data?.age || null,
-        date_of_birth: options?.data?.date_of_birth || null,
+        username: username || email.split("@")[0],
+        full_name: full_name || "",
+        role: role,
+        gender: null,
+        weight_kg: weight || null,
+        height_cm: height || null,
+        phone_number: phone_number || null,
+        country_code: country_code || null,
+        age: null,
+        date_of_birth: null,
       };
+
+      console.log("[API] Profile data to insert:", profileData);
 
       const { error: profileError } = await supabase
         .from("users")
@@ -252,6 +270,7 @@ router.post("/auth/signup", async (req: Request, res: Response) => {
     res.json({
       session: data.session,
       user: data.user,
+      message: "Sign up successful",
     });
   } catch (error) {
     console.error("[API] Unexpected sign up error:", error);
