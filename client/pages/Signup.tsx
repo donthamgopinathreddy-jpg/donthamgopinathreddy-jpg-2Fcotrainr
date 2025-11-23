@@ -227,12 +227,15 @@ export default function Signup() {
                 value={formData.username}
                 onChange={handleInputChange}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="your_username"
+                placeholder="john2024"
               />
             </div>
+            <p className="text-xs text-gray-600 mt-1">
+              3+ characters, must include at least one number
+            </p>
             {usernameStatus && (
               <p
-                className={`text-sm mt-1 ${
+                className={`text-sm mt-2 ${
                   usernameStatus === "available"
                     ? "text-green-600"
                     : usernameStatus === "checking"
