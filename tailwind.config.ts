@@ -119,6 +119,14 @@ export default {
             transform: "translateY(0)",
           },
         },
+        "fade-in": {
+          from: {
+            opacity: "0",
+          },
+          to: {
+            opacity: "1",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -127,6 +135,7 @@ export default {
         "pulse-glow": "pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "scale-bounce": "scale-bounce 0.2s ease-out",
         "slide-up": "slide-up 0.3s ease-out",
+        "fade-in": "fade-in 0.5s ease-out",
       },
     },
   },
