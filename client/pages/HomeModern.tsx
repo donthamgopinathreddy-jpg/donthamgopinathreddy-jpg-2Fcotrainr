@@ -197,7 +197,7 @@ const HomeModern = () => {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {Array.isArray([
+            {[
               {
                 label: "Streak",
                 value: `${dailyStreak}d`,
@@ -222,32 +222,7 @@ const HomeModern = () => {
                 icon: TrendingUp,
                 color: "text-green-500",
               },
-            ]) && [
-              {
-                label: "Streak",
-                value: `${dailyStreak}d`,
-                icon: Flame,
-                color: "text-orange-500",
-              },
-              {
-                label: "BMI",
-                value: bmi.toFixed(1),
-                icon: Heart,
-                color: "text-red-500",
-              },
-              {
-                label: "Steps",
-                value: steps.toLocaleString(),
-                icon: Footprints,
-                color: "text-blue-500",
-              },
-              {
-                label: "Level",
-                value: "Pro",
-                icon: TrendingUp,
-                color: "text-green-500",
-              },
-            ].map((stat, idx) => {
+            ]?.map?.((stat, idx) => {
               const Icon = stat.icon;
               return (
                 <div
