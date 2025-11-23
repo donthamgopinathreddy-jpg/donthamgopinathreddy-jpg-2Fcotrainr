@@ -278,7 +278,7 @@ export default function MobileSignup() {
                 </button>
               </div>
               <p className="text-xs text-gray-600 mt-2">
-                Min 8 chars, 1 uppercase, 1 number, 1 special character
+                Minimum 6 characters
               </p>
             </div>
 
