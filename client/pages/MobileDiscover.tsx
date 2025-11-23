@@ -1,34 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, MapPin, Star, Heart, ArrowLeft } from "lucide-react";
-import { trainersApi } from "@/lib/api";
+import { useTrainers } from "@/hooks/useTrainers";
 
 export default function MobileDiscover() {
   const navigate = useNavigate();
-  const [trainers, setTrainers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { trainers, loading } = useTrainers();
   const [category, setCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const categories = ["gym", "yoga", "boxing", "zumba", "nutrition"];
+  const categories = ["Gym", "Yoga", "Boxing", "Zumba", "Nutrition"];
 
-  useEffect(() => {
-    loadTrainers();
-  }, [category]);
-
-  const loadTrainers = async () => {
-    try {
-      setLoading(true);
-      const data = await trainersApi.searchTrainers({
-        category: category || undefined,
-      });
-      setTrainers(data || []);
-    } catch (error) {
-      console.error("Error loading trainers:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Filter trainers by category and search
+  const filteredTrainers = trainers.filter((trainer) => {
+    const matchesCategory = !category ||
+      (trainer.specialties && trainer.specialties.some(s =>
+        s.toLowerCase().includes(category.toLowerCase())
+      ));
+    const matchesSearch = !searchQuery ||
+      trainer.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      trainer.bio?.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
@@ -92,7 +85,7 @@ export default function MobileDiscover() {
         <div className="flex justify-center items-center h-40">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-500"></div>
         </div>
-      ) : trainers.length === 0 ? (
+      ) : filteredTrainers.length === 0 ? (
         <div className="px-4 py-12 text-center">
           <p className="text-gray-600 text-lg">No trainers found</p>
           <p className="text-gray-500 text-sm mt-2">Try a different category</p>
