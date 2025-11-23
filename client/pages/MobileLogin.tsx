@@ -200,6 +200,84 @@ export default function MobileLogin() {
         )}
       </div>
 
+      {/* Password Reset Modal */}
+      {showResetModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-fade-in">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-gray-900">Reset Password</h2>
+              <button
+                onClick={() => setShowResetModal(false)}
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Email Input */}
+            <div className="mb-4">
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+              />
+            </div>
+
+            {/* Method Selection */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
+                Send reset link via
+              </label>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setResetMethod("email")}
+                  className={`flex-1 px-4 py-3 rounded-xl font-semibold transition-all ${
+                    resetMethod === "email"
+                      ? "bg-yellow-400 text-gray-800"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  📧 Email
+                </button>
+                <button
+                  onClick={() => setResetMethod("phone")}
+                  className={`flex-1 px-4 py-3 rounded-xl font-semibold transition-all ${
+                    resetMethod === "phone"
+                      ? "bg-yellow-400 text-gray-800"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  📱 Phone
+                </button>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowResetModal(false)}
+                className="flex-1 px-4 py-3 rounded-xl border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleResetPassword}
+                disabled={resetLoading}
+                className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-800 font-semibold transition-all disabled:opacity-50"
+              >
+                {resetLoading ? "Sending..." : "Send Link"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Bottom Gradient */}
       <div className="relative z-5 h-32 bg-gradient-to-t from-white via-white/50 to-transparent pointer-events-none"></div>
 
