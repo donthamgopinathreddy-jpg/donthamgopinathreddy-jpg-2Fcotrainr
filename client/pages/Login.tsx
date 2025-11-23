@@ -136,7 +136,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => navigate("/signup")}
-              className="w-full px-6 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold rounded-2xl transition-all shadow-lg hover:shadow-emerald-500/50 active:scale-95 transform hover:scale-105"
+              className="w-full px-6 py-4 border-2 border-yellow-500 bg-white hover:bg-yellow-50 text-yellow-600 font-semibold rounded-2xl transition-all active:scale-95 transform hover:scale-105"
             >
               Create Account
             </button>
