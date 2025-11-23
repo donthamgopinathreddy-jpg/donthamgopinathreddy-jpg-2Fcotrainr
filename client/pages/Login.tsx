@@ -138,7 +138,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 disabled:opacity-50 text-gray-800 font-semibold rounded-2xl transition-all shadow-lg hover:shadow-yellow-400/50 active:scale-95 transform hover:scale-105"
+            className="w-full px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 disabled:opacity-50 text-gray-800 font-semibold rounded-2xl transition-all active:scale-95 transform hover:scale-105"
           >
             {loading ? "Signing in..." : "Get Started"}
           </button>
