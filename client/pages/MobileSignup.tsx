@@ -277,9 +277,7 @@ export default function MobileSignup() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              <p className="text-xs text-gray-600 mt-2">
-                Minimum 6 characters
-              </p>
+              <p className="text-xs text-gray-600 mt-2">Minimum 6 characters</p>
             </div>
 
             <div className="group">
