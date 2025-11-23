@@ -139,7 +139,8 @@ export default function MobileSignup() {
         !formData.height_feet ||
         !formData.height_inches ||
         !formData.weight_kg ||
-        !formData.weight_pounds
+        !formData.weight_pounds ||
+        !formData.phone_number
       ) {
         setError("Please fill in all fields");
         return;
