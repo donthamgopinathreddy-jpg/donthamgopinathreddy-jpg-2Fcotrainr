@@ -121,19 +121,19 @@ export default function MobileLogin() {
             Forgot Password?
           </button>
 
-          {/* Login Button - Vibrant Blue */}
+          {/* Login Button - Gold/Yellow */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-5 py-3.5 mt-6 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:scale-95 text-white font-semibold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-blue-600/50 hover:shadow-2xl hover:shadow-blue-600/75 flex items-center justify-center gap-2"
+            className="w-full px-5 py-3.5 mt-6 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-yellow-400/50 hover:shadow-2xl hover:shadow-yellow-400/75 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
-                <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                <div className="w-4 h-4 rounded-full border-2 border-gray-800/30 border-t-gray-800 animate-spin" />
                 Signing in...
               </>
             ) : (
-              "Sign In"
+              "Get Started"
             )}
           </button>
 
