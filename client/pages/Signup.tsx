@@ -173,18 +173,21 @@ export default function Signup() {
     }
 
     if (formData.password !== formData.confirmPassword) {
+      console.error("[Signup] FAILED: Passwords do not match");
       toast.error("Passwords do not match");
       return;
     }
 
     const passwordError = validatePassword(formData.password);
     if (passwordError) {
+      console.error("[Signup] FAILED: Password validation:", passwordError);
       toast.error(passwordError);
       return;
     }
 
     const usernameError = validateUsername(formData.username);
     if (usernameError) {
+      console.error("[Signup] FAILED: Username validation:", usernameError);
       toast.error(usernameError);
       return;
     }
@@ -195,11 +198,18 @@ export default function Signup() {
       !formData.weight_kg ||
       !formData.weight_pounds
     ) {
+      console.error("[Signup] FAILED: Missing height/weight:", {
+        height_feet: formData.height_feet,
+        height_inches: formData.height_inches,
+        weight_kg: formData.weight_kg,
+        weight_pounds: formData.weight_pounds,
+      });
       toast.error("Please enter your height and weight");
       return;
     }
 
     if (usernameStatus === "taken") {
+      console.error("[Signup] FAILED: Username is taken");
       toast.error("Username is not available");
       return;
     }
@@ -212,10 +222,12 @@ export default function Signup() {
     }
 
     if (formData.downloadReasons.length === 0) {
+      console.error("[Signup] FAILED: No download reasons selected");
       toast.error("Please select at least one reason");
       return;
     }
 
+    console.log("[Signup] ✅ All validations passed! Calling signUp...");
     setLoading(true);
     try {
       // Calculate height in cm from feet and inches
