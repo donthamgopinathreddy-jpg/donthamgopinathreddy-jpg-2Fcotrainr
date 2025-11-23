@@ -57,10 +57,13 @@ export default function Signup() {
     height_cm: "",
     weight_kg: "",
     weight_pounds: "",
+    phone_number: "",
+    country_code: "+1",
     gender: "male",
     role: "client" as "client" | "trainer" | "admin",
     downloadReasons: [] as string[],
     otherReason: "",
+    full_name: "",
   });
 
   const [usernameStatus, setUsernameStatus] = useState<
