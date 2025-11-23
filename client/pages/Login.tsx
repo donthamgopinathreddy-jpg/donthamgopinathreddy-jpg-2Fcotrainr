@@ -43,8 +43,12 @@ export default function Login() {
         {/* Header */}
         <div className="text-center mb-12">
           <Logo size="lg" className="mx-auto mb-6" />
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to continue your fitness journey</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-gray-600">
+            Sign in to continue your fitness journey
+          </p>
         </div>
 
         {/* Login Form */}
@@ -128,9 +132,7 @@ export default function Login() {
 
           {/* Signup Link */}
           <div className="text-center space-y-3">
-            <p className="text-gray-700 text-sm">
-              Don't have an account?
-            </p>
+            <p className="text-gray-700 text-sm">Don't have an account?</p>
             <button
               type="button"
               onClick={() => navigate("/signup")}
