@@ -246,8 +246,31 @@ export default function MobileSignup() {
                 </button>
               </div>
               <p className="text-xs text-slate-500 mt-2">
-                At least 6 characters
+                Min 8 chars, 1 uppercase, 1 number, 1 special character
               </p>
+            </div>
+
+            <div className="group">
+              <label className="block text-sm font-semibold text-slate-300 mb-3 group-focus-within:text-orange-400 transition-colors">
+                Confirm Password
+              </label>
+              <div className="relative group">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  placeholder="••••••••"
+                  className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all duration-300 hover:bg-white/15"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-orange-400 transition-colors"
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
           </div>
         )}
