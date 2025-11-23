@@ -1,4 +1,18 @@
-import { Activity, Droplet, Flame, Apple, TrendingUp, Calendar, Heart, Bell, Settings, MoreVertical, MessageSquare, Share2, ThumbsUp } from "lucide-react";
+import {
+  Activity,
+  Droplet,
+  Flame,
+  Apple,
+  TrendingUp,
+  Calendar,
+  Heart,
+  Bell,
+  Settings,
+  MoreVertical,
+  MessageSquare,
+  Share2,
+  ThumbsUp,
+} from "lucide-react";
 import { useState } from "react";
 
 export default function ClientDashboardDemo() {
@@ -25,19 +39,33 @@ export default function ClientDashboardDemo() {
           {/* Notification Dropdown */}
           {notificationOpen && (
             <div className="absolute top-16 left-0 w-80 bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 p-4 space-y-3 animate-in fade-in slide-in-from-top-2">
-              <p className="text-slate-300 font-semibold text-sm">Notifications</p>
+              <p className="text-slate-300 font-semibold text-sm">
+                Notifications
+              </p>
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 <div className="p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors">
-                  <p className="text-white text-sm font-semibold">Coach Sarah approved your booking</p>
-                  <p className="text-slate-400 text-xs">Session tomorrow at 10 AM</p>
+                  <p className="text-white text-sm font-semibold">
+                    Coach Sarah approved your booking
+                  </p>
+                  <p className="text-slate-400 text-xs">
+                    Session tomorrow at 10 AM
+                  </p>
                 </div>
                 <div className="p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors">
-                  <p className="text-white text-sm font-semibold">You unlocked an achievement!</p>
-                  <p className="text-slate-400 text-xs">Week Warrior - 7 day streak</p>
+                  <p className="text-white text-sm font-semibold">
+                    You unlocked an achievement!
+                  </p>
+                  <p className="text-slate-400 text-xs">
+                    Week Warrior - 7 day streak
+                  </p>
                 </div>
                 <div className="p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors">
-                  <p className="text-white text-sm font-semibold">New message from Coach</p>
-                  <p className="text-slate-400 text-xs">Great workout session today!</p>
+                  <p className="text-white text-sm font-semibold">
+                    New message from Coach
+                  </p>
+                  <p className="text-slate-400 text-xs">
+                    Great workout session today!
+                  </p>
                 </div>
               </div>
             </div>
@@ -103,7 +131,9 @@ export default function ClientDashboardDemo() {
           <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 border border-orange-500/30 hover:border-orange-500/50 rounded-2xl p-6 hover:shadow-lg hover:shadow-orange-500/20 transition-all group cursor-pointer">
             <div className="flex items-center justify-between mb-3">
               <Activity className="w-8 h-8 text-orange-400 group-hover:scale-110 transition-transform" />
-              <span className="text-green-400 text-sm font-semibold">↑ 12%</span>
+              <span className="text-green-400 text-sm font-semibold">
+                ↑ 12%
+              </span>
             </div>
             <p className="text-slate-400 text-sm font-medium">Today's Steps</p>
             <p className="text-3xl font-bold text-white mt-2">8,542</p>
@@ -115,7 +145,9 @@ export default function ClientDashboardDemo() {
               <Flame className="w-8 h-8 text-red-400 group-hover:scale-110 transition-transform" />
               <span className="text-green-400 text-sm font-semibold">↑ 8%</span>
             </div>
-            <p className="text-slate-400 text-sm font-medium">Calories Burned</p>
+            <p className="text-slate-400 text-sm font-medium">
+              Calories Burned
+            </p>
             <p className="text-3xl font-bold text-white mt-2">542 kcal</p>
             <p className="text-red-400 text-xs mt-2">Goal: 600 kcal</p>
           </div>
@@ -169,27 +201,35 @@ export default function ClientDashboardDemo() {
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6 shadow-xl mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-white">Your Progress</h2>
-            <span className="text-orange-400 text-sm font-semibold">🔥 Keep it up!</span>
+            <span className="text-orange-400 text-sm font-semibold">
+              🔥 Keep it up!
+            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Current Streak */}
             <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 border border-orange-500/30 rounded-xl p-4">
-              <p className="text-slate-400 text-sm font-medium">Current Streak</p>
+              <p className="text-slate-400 text-sm font-medium">
+                Current Streak
+              </p>
               <p className="text-4xl font-bold text-orange-400 mt-2">12</p>
               <p className="text-slate-400 text-xs mt-2">Days in a row</p>
             </div>
 
             {/* Longest Streak */}
             <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-xl p-4">
-              <p className="text-slate-400 text-sm font-medium">Longest Streak</p>
+              <p className="text-slate-400 text-sm font-medium">
+                Longest Streak
+              </p>
               <p className="text-4xl font-bold text-purple-400 mt-2">45</p>
               <p className="text-slate-400 text-xs mt-2">Personal best</p>
             </div>
 
             {/* This Week */}
             <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 border border-cyan-500/30 rounded-xl p-4">
-              <p className="text-slate-400 text-sm font-medium">Workouts This Week</p>
+              <p className="text-slate-400 text-sm font-medium">
+                Workouts This Week
+              </p>
               <p className="text-4xl font-bold text-cyan-400 mt-2">4/7</p>
               <p className="text-slate-400 text-xs mt-2">3 more to go</p>
             </div>
@@ -200,18 +240,25 @@ export default function ClientDashboardDemo() {
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6 shadow-xl mb-8">
           <h2 className="text-xl font-bold text-white mb-6">Weekly Activity</h2>
           <div className="space-y-4">
-            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, idx) => (
-              <div key={day} className="flex items-center justify-between group">
-                <span className="text-slate-400 font-medium w-12">{day}</span>
-                <div className="flex-1 mx-4 bg-slate-700/30 rounded-full h-3 overflow-hidden group-hover:bg-slate-700/50 transition-colors">
-                  <div
-                    className="bg-gradient-to-r from-cyan-500 to-blue-500 h-full rounded-full group-hover:shadow-lg group-hover:shadow-cyan-500/50 transition-all"
-                    style={{ width: `${Math.random() * 100 + 50}%` }}
-                  />
+            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
+              (day, idx) => (
+                <div
+                  key={day}
+                  className="flex items-center justify-between group"
+                >
+                  <span className="text-slate-400 font-medium w-12">{day}</span>
+                  <div className="flex-1 mx-4 bg-slate-700/30 rounded-full h-3 overflow-hidden group-hover:bg-slate-700/50 transition-colors">
+                    <div
+                      className="bg-gradient-to-r from-cyan-500 to-blue-500 h-full rounded-full group-hover:shadow-lg group-hover:shadow-cyan-500/50 transition-all"
+                      style={{ width: `${Math.random() * 100 + 50}%` }}
+                    />
+                  </div>
+                  <span className="text-slate-300 font-bold text-sm w-16 text-right">
+                    {(Math.random() * 10 + 5) | 0}k steps
+                  </span>
                 </div>
-                <span className="text-slate-300 font-bold text-sm w-16 text-right">{Math.random() * 10 + 5 | 0}k steps</span>
-              </div>
-            ))}
+              ),
+            )}
           </div>
         </div>
 
@@ -219,7 +266,9 @@ export default function ClientDashboardDemo() {
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6 shadow-xl">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-white">Community Feed</h2>
-            <button className="text-orange-400 hover:text-orange-300 text-sm font-semibold transition-colors">View All →</button>
+            <button className="text-orange-400 hover:text-orange-300 text-sm font-semibold transition-colors">
+              View All →
+            </button>
           </div>
 
           <div className="space-y-6">
@@ -227,7 +276,8 @@ export default function ClientDashboardDemo() {
               {
                 author: "Sarah Coach",
                 time: "2 hours ago",
-                content: "New transformation! Check out my 12-week journey. Consistency is key! 💪",
+                content:
+                  "New transformation! Check out my 12-week journey. Consistency is key! 💪",
                 image: true,
                 likes: 124,
                 comments: 27,
@@ -235,20 +285,26 @@ export default function ClientDashboardDemo() {
               {
                 author: "Mike fitness",
                 time: "4 hours ago",
-                content: "Just completed my 50k steps challenge this week! Anyone else pushing their limits?",
+                content:
+                  "Just completed my 50k steps challenge this week! Anyone else pushing their limits?",
                 image: false,
                 likes: 89,
                 comments: 15,
               },
             ].map((post, idx) => (
-              <div key={idx} className="p-4 rounded-xl bg-slate-700/20 hover:bg-slate-700/30 transition-colors border border-slate-600/30 group">
+              <div
+                key={idx}
+                className="p-4 rounded-xl bg-slate-700/20 hover:bg-slate-700/30 transition-colors border border-slate-600/30 group"
+              >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-bold">
                       {post.author[0]}
                     </div>
                     <div>
-                      <p className="font-semibold text-white group-hover:text-orange-400 transition-colors">{post.author}</p>
+                      <p className="font-semibold text-white group-hover:text-orange-400 transition-colors">
+                        {post.author}
+                      </p>
                       <p className="text-slate-400 text-xs">{post.time}</p>
                     </div>
                   </div>

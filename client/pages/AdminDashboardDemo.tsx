@@ -1,4 +1,14 @@
-import { Users, UserCheck, AlertCircle, TrendingUp, BarChart3, Shield, Settings, Search, Filter } from "lucide-react";
+import {
+  Users,
+  UserCheck,
+  AlertCircle,
+  TrendingUp,
+  BarChart3,
+  Shield,
+  Settings,
+  Search,
+  Filter,
+} from "lucide-react";
 
 export default function AdminDashboardDemo() {
   return (
@@ -34,7 +44,9 @@ export default function AdminDashboardDemo() {
               <div className="p-3 rounded-lg bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors">
                 <Users className="w-6 h-6 text-blue-400" />
               </div>
-              <span className="text-green-400 text-sm font-semibold">↑ 12%</span>
+              <span className="text-green-400 text-sm font-semibold">
+                ↑ 12%
+              </span>
             </div>
             <p className="text-slate-400 text-sm font-medium">Total Users</p>
             <p className="text-3xl font-bold text-white mt-2">1,243</p>
@@ -46,11 +58,17 @@ export default function AdminDashboardDemo() {
               <div className="p-3 rounded-lg bg-green-500/20 group-hover:bg-green-500/30 transition-colors">
                 <UserCheck className="w-6 h-6 text-green-400" />
               </div>
-              <span className="text-orange-400 text-sm font-semibold">⚠ 23</span>
+              <span className="text-orange-400 text-sm font-semibold">
+                ⚠ 23
+              </span>
             </div>
-            <p className="text-slate-400 text-sm font-medium">Active Trainers</p>
+            <p className="text-slate-400 text-sm font-medium">
+              Active Trainers
+            </p>
             <p className="text-3xl font-bold text-white mt-2">87</p>
-            <p className="text-slate-500 text-xs mt-2">23 pending verification</p>
+            <p className="text-slate-500 text-xs mt-2">
+              23 pending verification
+            </p>
           </div>
 
           <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 hover:border-orange-500/50 transition-all group cursor-pointer">
@@ -60,7 +78,9 @@ export default function AdminDashboardDemo() {
               </div>
               <span className="text-green-400 text-sm font-semibold">↑ 8%</span>
             </div>
-            <p className="text-slate-400 text-sm font-medium">Platform Revenue</p>
+            <p className="text-slate-400 text-sm font-medium">
+              Platform Revenue
+            </p>
             <p className="text-3xl font-bold text-white mt-2">$28.4K</p>
             <p className="text-slate-500 text-xs mt-2">+$2.2K this week</p>
           </div>
@@ -70,9 +90,13 @@ export default function AdminDashboardDemo() {
               <div className="p-3 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 transition-colors">
                 <AlertCircle className="w-6 h-6 text-red-400" />
               </div>
-              <span className="text-red-400 text-sm font-semibold">Critical</span>
+              <span className="text-red-400 text-sm font-semibold">
+                Critical
+              </span>
             </div>
-            <p className="text-slate-400 text-sm font-medium">Issues Reported</p>
+            <p className="text-slate-400 text-sm font-medium">
+              Issues Reported
+            </p>
             <p className="text-3xl font-bold text-white mt-2">3</p>
             <p className="text-slate-500 text-xs mt-2">2 high priority</p>
           </div>
@@ -83,7 +107,9 @@ export default function AdminDashboardDemo() {
           {/* Users Table */}
           <div className="lg:col-span-2 bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 shadow-xl">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-white">Recent User Activity</h2>
+              <h2 className="text-xl font-bold text-white">
+                Recent User Activity
+              </h2>
               <button className="p-2 rounded-lg hover:bg-slate-700 transition-colors">
                 <Filter className="w-5 h-5 text-slate-400" />
               </button>
@@ -93,29 +119,66 @@ export default function AdminDashboardDemo() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-700">
-                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">User</th>
-                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">Role</th>
-                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">Status</th>
-                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">Joined</th>
-                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">Action</th>
+                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">
+                      User
+                    </th>
+                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">
+                      Role
+                    </th>
+                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">
+                      Status
+                    </th>
+                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">
+                      Joined
+                    </th>
+                    <th className="text-left py-4 px-0 text-slate-400 font-semibold text-sm">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-700/50">
                   {[
-                    { email: "john@example.com", role: "Client", status: "Active", joined: "2 days ago" },
-                    { email: "coach@example.com", role: "Trainer", status: "Verified", joined: "1 week ago" },
-                    { email: "jane@example.com", role: "Client", status: "Active", joined: "3 days ago" },
-                    { email: "trainer2@example.com", role: "Trainer", status: "Pending", joined: "5 hours ago" },
+                    {
+                      email: "john@example.com",
+                      role: "Client",
+                      status: "Active",
+                      joined: "2 days ago",
+                    },
+                    {
+                      email: "coach@example.com",
+                      role: "Trainer",
+                      status: "Verified",
+                      joined: "1 week ago",
+                    },
+                    {
+                      email: "jane@example.com",
+                      role: "Client",
+                      status: "Active",
+                      joined: "3 days ago",
+                    },
+                    {
+                      email: "trainer2@example.com",
+                      role: "Trainer",
+                      status: "Pending",
+                      joined: "5 hours ago",
+                    },
                   ].map((user, idx) => (
-                    <tr key={idx} className="hover:bg-slate-700/20 transition-colors">
+                    <tr
+                      key={idx}
+                      className="hover:bg-slate-700/20 transition-colors"
+                    >
                       <td className="py-4 px-0">
                         <div>
-                          <p className="text-white font-medium">{user.email.split("@")[0]}</p>
+                          <p className="text-white font-medium">
+                            {user.email.split("@")[0]}
+                          </p>
                           <p className="text-slate-400 text-xs">{user.email}</p>
                         </div>
                       </td>
                       <td className="py-4 px-0">
-                        <span className="text-slate-300 text-sm">{user.role}</span>
+                        <span className="text-slate-300 text-sm">
+                          {user.role}
+                        </span>
                       </td>
                       <td className="py-4 px-0">
                         <span
@@ -177,7 +240,9 @@ export default function AdminDashboardDemo() {
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
               <div>
                 <p className="text-slate-400 text-sm">Server Status</p>
-                <p className="text-white font-semibold">All Systems Operational</p>
+                <p className="text-white font-semibold">
+                  All Systems Operational
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-700/20 hover:bg-slate-700/30 transition-colors">

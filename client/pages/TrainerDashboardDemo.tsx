@@ -1,4 +1,13 @@
-import { Users, Calendar, MessageSquare, TrendingUp, Bell, Settings, MoreVertical, Star } from "lucide-react";
+import {
+  Users,
+  Calendar,
+  MessageSquare,
+  TrendingUp,
+  Bell,
+  Settings,
+  MoreVertical,
+  Star,
+} from "lucide-react";
 import { useState } from "react";
 
 export default function TrainerDashboardDemo() {
@@ -25,19 +34,33 @@ export default function TrainerDashboardDemo() {
           {/* Notification Dropdown */}
           {notificationOpen && (
             <div className="absolute top-16 left-0 w-80 bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 p-4 space-y-3 animate-in fade-in slide-in-from-top-2">
-              <p className="text-slate-300 font-semibold text-sm">Notifications</p>
+              <p className="text-slate-300 font-semibold text-sm">
+                Notifications
+              </p>
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 <div className="p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors">
-                  <p className="text-white text-sm font-semibold">New Client Request</p>
-                  <p className="text-slate-400 text-xs">John wants to book a session</p>
+                  <p className="text-white text-sm font-semibold">
+                    New Client Request
+                  </p>
+                  <p className="text-slate-400 text-xs">
+                    John wants to book a session
+                  </p>
                 </div>
                 <div className="p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors">
-                  <p className="text-white text-sm font-semibold">Session Reminder</p>
-                  <p className="text-slate-400 text-xs">Meeting with Jane in 1 hour</p>
+                  <p className="text-white text-sm font-semibold">
+                    Session Reminder
+                  </p>
+                  <p className="text-slate-400 text-xs">
+                    Meeting with Jane in 1 hour
+                  </p>
                 </div>
                 <div className="p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors">
-                  <p className="text-white text-sm font-semibold">New Message</p>
-                  <p className="text-slate-400 text-xs">From Mike: Thanks for the workout!</p>
+                  <p className="text-white text-sm font-semibold">
+                    New Message
+                  </p>
+                  <p className="text-slate-400 text-xs">
+                    From Mike: Thanks for the workout!
+                  </p>
                 </div>
               </div>
             </div>
@@ -72,7 +95,9 @@ export default function TrainerDashboardDemo() {
               {/* Profile Info */}
               <div className="flex-1 pt-2">
                 <h1 className="text-2xl font-bold text-white">Coach Sarah</h1>
-                <p className="text-slate-400 text-sm">Certified Personal Trainer</p>
+                <p className="text-slate-400 text-sm">
+                  Certified Personal Trainer
+                </p>
                 <div className="flex gap-4 mt-3">
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
@@ -145,23 +170,44 @@ export default function TrainerDashboardDemo() {
 
         {/* Upcoming Sessions */}
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6 shadow-xl mb-8">
-          <h2 className="text-xl font-bold text-white mb-6">Upcoming Sessions</h2>
+          <h2 className="text-xl font-bold text-white mb-6">
+            Upcoming Sessions
+          </h2>
           <div className="space-y-3">
             {[
-              { client: "John Doe", time: "Today - 3:00 PM", duration: "1 hour", status: "confirmed" },
-              { client: "Jane Smith", time: "Today - 5:00 PM", duration: "1 hour", status: "confirmed" },
-              { client: "Mike Johnson", time: "Tomorrow - 10:00 AM", duration: "1.5 hours", status: "pending" },
+              {
+                client: "John Doe",
+                time: "Today - 3:00 PM",
+                duration: "1 hour",
+                status: "confirmed",
+              },
+              {
+                client: "Jane Smith",
+                time: "Today - 5:00 PM",
+                duration: "1 hour",
+                status: "confirmed",
+              },
+              {
+                client: "Mike Johnson",
+                time: "Tomorrow - 10:00 AM",
+                duration: "1.5 hours",
+                status: "pending",
+              },
             ].map((session, idx) => (
               <div
                 key={idx}
                 className="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors border border-slate-600/30 group cursor-pointer"
               >
                 <div className="flex-1">
-                  <p className="font-semibold text-white group-hover:text-orange-400 transition-colors">{session.client}</p>
+                  <p className="font-semibold text-white group-hover:text-orange-400 transition-colors">
+                    {session.client}
+                  </p>
                   <p className="text-slate-400 text-sm">{session.time}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-slate-300 text-sm font-medium">{session.duration}</p>
+                  <p className="text-slate-300 text-sm font-medium">
+                    {session.duration}
+                  </p>
                   <span
                     className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mt-1 ${
                       session.status === "confirmed"
@@ -179,17 +225,26 @@ export default function TrainerDashboardDemo() {
 
         {/* Top Clients */}
         <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-6 shadow-xl">
-          <h2 className="text-xl font-bold text-white mb-6">Top Performing Clients</h2>
+          <h2 className="text-xl font-bold text-white mb-6">
+            Top Performing Clients
+          </h2>
           <div className="space-y-3">
             {[
               { name: "Alex Turner", progress: 85, goal: "Weight Loss" },
               { name: "Emma Wilson", progress: 72, goal: "Muscle Gain" },
               { name: "Chris Lee", progress: 65, goal: "Endurance" },
             ].map((client, idx) => (
-              <div key={idx} className="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors group cursor-pointer">
+              <div
+                key={idx}
+                className="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors group cursor-pointer"
+              >
                 <div className="flex items-center justify-between mb-2">
-                  <p className="font-semibold text-white group-hover:text-orange-400 transition-colors">{client.name}</p>
-                  <p className="text-orange-400 font-bold">{client.progress}%</p>
+                  <p className="font-semibold text-white group-hover:text-orange-400 transition-colors">
+                    {client.name}
+                  </p>
+                  <p className="text-orange-400 font-bold">
+                    {client.progress}%
+                  </p>
                 </div>
                 <p className="text-slate-400 text-sm mb-2">{client.goal}</p>
                 <div className="w-full bg-slate-600 rounded-full h-2 overflow-hidden">
