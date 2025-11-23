@@ -17,6 +17,7 @@ import {
 import { useState } from "react";
 
 export default function ClientDashboardDemo() {
+  const navigate = useNavigate();
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
