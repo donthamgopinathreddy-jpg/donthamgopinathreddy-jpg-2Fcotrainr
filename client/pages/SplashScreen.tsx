@@ -1,37 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import Logo from "@/components/Logo";
 
 export default function SplashScreen() {
-  const navigate = useNavigate();
-  const { user, loading } = useAuth();
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    // Show splash screen for 2 seconds minimum
-    const splashTimer = setTimeout(() => {
-      setShowSplash(false);
-    }, 2000);
-
-    return () => clearTimeout(splashTimer);
-  }, []);
-
-  // Once splash animation is done and auth is loaded, redirect
-  useEffect(() => {
-    if (!showSplash && !loading) {
-      if (user) {
-        navigate("/", { replace: true });
-      } else {
-        navigate("/login", { replace: true });
-      }
-    }
-  }, [showSplash, loading, user, navigate]);
-
-  if (!showSplash && !loading) {
-    return null;
-  }
-
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white overflow-hidden">
       {/* Background Gradient */}
