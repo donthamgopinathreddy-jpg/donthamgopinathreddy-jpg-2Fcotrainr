@@ -155,7 +155,7 @@ export default function MobileLogin() {
             <button
               type="button"
               onClick={() => navigate("/signup")}
-              className="w-full px-5 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 active:scale-95 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-500/75"
+              className="w-full px-5 py-3.5 rounded-2xl border-2 border-yellow-500 bg-white hover:bg-yellow-50 active:scale-95 text-yellow-600 font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Create Account
             </button>
