@@ -24,6 +24,9 @@ export class SupabaseService {
     role: string;
     height_cm?: number;
     weight_kg?: number;
+    phone_number?: string;
+    country_code?: string;
+    full_name?: string;
   }) {
     const { data, error } = await this.supabase.from('users').insert([userData]).select().single();
 
