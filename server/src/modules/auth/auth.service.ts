@@ -29,6 +29,9 @@ export class AuthService {
       role: signupDto.role || 'client',
       height_cm: signupDto.height,
       weight_kg: signupDto.weight,
+      phone_number: signupDto.phone_number,
+      country_code: signupDto.country_code,
+      full_name: signupDto.full_name,
     });
 
     // Generate JWT token
@@ -43,9 +46,12 @@ export class AuthService {
         id: user.id,
         email: user.email,
         username: user.username,
+        full_name: user.full_name,
         role: user.role,
         height: user.height_cm,
         weight: user.weight_kg,
+        phone_number: user.phone_number,
+        country_code: user.country_code,
         bmi: user.bmi,
       },
       token,
