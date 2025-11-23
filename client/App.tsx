@@ -266,6 +266,9 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
 const PermissionRequester = () => {
   const context = useContext(AuthContext);
 
+  // Initialize native app features
+  useNativeAppInit();
+
   // If context is not available yet, don't try to use useAuth
   if (!context) {
     return null;
