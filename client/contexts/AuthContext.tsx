@@ -343,9 +343,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         weight_kg: userData.weight_kg,
       });
 
-      // Call backend auth endpoint
-      console.log("[Auth] Making POST request to /auth/signup");
-      const response = await fetch("/auth/signup", {
+      // Call backend auth endpoint (proxies to /auth/signup on server)
+      console.log("[Auth] Making POST request to /api/auth/signup");
+      const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -408,8 +408,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error("Email and password are required");
       }
 
-      // Call backend auth endpoint
-      const response = await fetch("/auth/signin", {
+      // Call backend auth endpoint (proxies to /auth/signin on server)
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
