@@ -67,33 +67,47 @@ export default function Feed() {
   const fetchUserPosts = async (userId: string) => {
     setLoadingUserPosts(true);
     try {
-      const { data, error } = await supabase
-        .from("posts")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from("posts")
+          .select("*")
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false });
 
-      if (error) throw error;
+        if (error) {
+          console.warn("Error fetching user posts:", error?.message);
+          setUserPosts([]);
+          return;
+        }
 
-      if (data) {
-        // Enrich with user details
-        const { data: userData } = await supabase
-          .from("users")
-          .select("id, full_name, username, profile_picture_url, role")
-          .eq("id", userId)
-          .single();
+        if (data) {
+          // Enrich with user details
+          try {
+            const { data: userData } = await supabase
+              .from("users")
+              .select("id, full_name, username, profile_picture_url, role")
+              .eq("id", userId)
+              .single();
 
-        const enriched: Post[] = data.map((post) => ({
-          ...post,
-          author_name: userData?.full_name || userData?.username || "Unknown",
-          author_avatar: userData?.profile_picture_url,
-          author_role: userData?.role as "trainer" | "client" | undefined,
-        }));
+            const enriched: Post[] = data.map((post) => ({
+              ...post,
+              author_name: userData?.full_name || userData?.username || "Unknown",
+              author_avatar: userData?.profile_picture_url,
+              author_role: userData?.role as "trainer" | "client" | undefined,
+            }));
 
-        setUserPosts(enriched);
+            setUserPosts(enriched);
+          } catch (userError) {
+            console.warn("Error fetching user details:", userError instanceof Error ? userError.message : "Unknown");
+            setUserPosts(data as Post[]);
+          }
+        }
+      } catch (postsError) {
+        console.warn("Posts fetch error:", postsError instanceof Error ? postsError.message : "Unknown");
+        setUserPosts([]);
       }
     } catch (error) {
-      console.error("Error fetching user posts:", error);
+      console.warn("Outer error fetching user posts:", error instanceof Error ? error.message : "Unknown");
       setUserPosts([]);
     } finally {
       setLoadingUserPosts(false);
