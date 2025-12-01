@@ -50,15 +50,17 @@ function expressPlugin(): Plugin {
       expressServer = http.createServer(app);
       expressServer.listen(3000, "0.0.0.0", () => {
         console.log("[Express] Server running on http://0.0.0.0:3000");
-        console.log("[Express] Proxy should forward requests to http://localhost:3000");
+        console.log(
+          "[Express] Proxy should forward requests to http://localhost:3000",
+        );
       });
 
       // Handle server errors
-      expressServer.on('error', (err: any) => {
-        if (err.code === 'EADDRINUSE') {
-          console.error('[Express] Port 3000 is already in use');
+      expressServer.on("error", (err: any) => {
+        if (err.code === "EADDRINUSE") {
+          console.error("[Express] Port 3000 is already in use");
         } else {
-          console.error('[Express] Server error:', err);
+          console.error("[Express] Server error:", err);
         }
       });
     },

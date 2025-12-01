@@ -20,7 +20,9 @@ export function createServer() {
 
   // Add detailed logging middleware to see all requests
   app.use((req, res, next) => {
-    console.log(`[Server] ${req.method} ${req.path} (url: ${req.url}, originalUrl: ${req.originalUrl})`);
+    console.log(
+      `[Server] ${req.method} ${req.path} (url: ${req.url}, originalUrl: ${req.originalUrl})`
+    );
     next();
   });
 
@@ -54,7 +56,9 @@ export function createServer() {
       res.sendFile(path.join(staticDir, 'index.html'));
     });
   } else {
-    console.log('[Server] Static directory does not exist (development mode - Vite should be serving frontend)');
+    console.log(
+      '[Server] Static directory does not exist (development mode - Vite should be serving frontend)'
+    );
 
     // In development mode, return 404 for non-API requests
     // (Vite will serve the frontend)
