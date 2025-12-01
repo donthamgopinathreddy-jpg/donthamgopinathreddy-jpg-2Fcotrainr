@@ -3,14 +3,6 @@ import { createClient } from '@supabase/supabase-js';
 
 const router = express.Router();
 
-// Simple test endpoint to verify the API is working
-router.get('/test', (_req: Request, res: Response) => {
-  console.log('[API] Test endpoint called');
-  res.json({
-    message: 'API is working!',
-    timestamp: new Date().toISOString(),
-  });
-});
 
 // Use environment variables for Supabase credentials
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hnxdlgdkyboctsvfktwe.supabase.co';
