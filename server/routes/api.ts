@@ -250,6 +250,27 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
     console.log('[API] ✅ Validation passed');
     console.log('[API] Calling Supabase auth.signUp...');
 
+    // Determine the redirect URL based on environment
+    let emailRedirectTo: string | undefined = undefined;
+
+    // On Netlify, use the DEPLOY_PRIME_URL or DEPLOY_URL
+    if (process.env.DEPLOY_PRIME_URL) {
+      emailRedirectTo = `${process.env.DEPLOY_PRIME_URL}/login`;
+      console.log('[API] Using Netlify preview URL:', emailRedirectTo);
+    } else if (process.env.URL) {
+      // On Netlify production, URL is set
+      emailRedirectTo = `${process.env.URL}/login`;
+      console.log('[API] Using Netlify production URL:', emailRedirectTo);
+    } else if (process.env.VERCEL_URL) {
+      // If using Vercel
+      emailRedirectTo = `https://${process.env.VERCEL_URL}/login`;
+      console.log('[API] Using Vercel URL:', emailRedirectTo);
+    } else {
+      // Default to localhost for development
+      emailRedirectTo = 'http://localhost:8080/login';
+      console.log('[API] Using localhost for development');
+    }
+
     const signUpPayload = {
       email,
       password,
@@ -263,7 +284,7 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
           role: role || 'client',
           ...options?.data,
         },
-        emailRedirectTo: undefined,
+        emailRedirectTo,
       },
     };
 
