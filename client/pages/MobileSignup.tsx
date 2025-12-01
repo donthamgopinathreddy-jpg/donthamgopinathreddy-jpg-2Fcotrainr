@@ -344,7 +344,9 @@ export default function MobileSignup() {
                 disabled={isLoading}
                 className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
               />
-              <p className="text-xs text-gray-500 mt-1">Lowercase letters, numbers, _ and . allowed</p>
+              <p className="text-xs text-gray-500 mt-1">
+                Lowercase letters, numbers, _ and . allowed
+              </p>
             </div>
 
             <div className="space-y-2">
