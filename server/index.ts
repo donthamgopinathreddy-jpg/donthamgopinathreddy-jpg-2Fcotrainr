@@ -59,21 +59,40 @@ export function createServer() {
   console.log('[Server] Registering /api routes');
   app.use('/api', apiRouter);
 
-  // Check if we're in production mode
-  const isProduction = process.env.NODE_ENV === 'production';
+  // Check if we're in production mode or if static files exist (for containerized deployments)
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
   const staticDir = path.join(__dirname, '../dist/spa');
+  const hasStaticFiles = fs.existsSync(staticDir) && fs.existsSync(path.join(staticDir, 'index.html'));
+
   console.log('[Server] Node environment:', process.env.NODE_ENV || 'development');
   console.log('[Server] Static directory:', staticDir);
+  console.log('[Server] Static files exist:', hasStaticFiles);
 
-  if (isProduction && fs.existsSync(staticDir)) {
-    console.log('[Server] ✅ Production mode: Serving static files from dist/spa');
-    app.use(express.static(staticDir));
+  if (hasStaticFiles) {
+    console.log('[Server] ✅ Serving static files from dist/spa');
+    app.use(express.static(staticDir, {
+      maxAge: '1d',
+      etag: false,
+    }));
 
     // Catch-all handler: serve index.html for all non-API routes
     // This allows React Router to handle client-side routing
     app.use((_req, res) => {
-      console.log('[Server] Serving index.html for route:', _req.path);
-      res.sendFile(path.join(staticDir, 'index.html'));
+      const indexPath = path.join(staticDir, 'index.html');
+      if (fs.existsSync(indexPath)) {
+        console.log('[Server] Serving index.html for route:', _req.path);
+        res.sendFile(indexPath);
+      } else {
+        console.error('[Server] ❌ index.html not found at:', indexPath);
+        res.status(404).json({ error: 'Frontend not built' });
+      }
+    });
+  } else if (isProduction) {
+    console.error('[Server] ❌ ERROR: Production mode but dist/spa not found!');
+    console.error('[Server] Please run: npm run build');
+    // Still start the server but only handle API routes
+    app.use((_req, res) => {
+      res.status(404).json({ error: 'Frontend not built. Run npm run build.' });
     });
   } else {
     console.log('[Server] 📝 Development mode: NOT serving static files (Vite handles frontend)');
