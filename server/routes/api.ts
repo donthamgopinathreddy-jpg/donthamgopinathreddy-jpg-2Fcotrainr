@@ -170,6 +170,7 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
       password,
       username,
       full_name,
+      gender,
       role = 'client',
       height,
       weight,
@@ -196,6 +197,9 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
         data: {
           username: username || email.split('@')[0],
           full_name: full_name || '',
+          gender: gender || '',
+          phone_number: phone_number || '',
+          country_code: country_code || '',
           ...options?.data,
         },
         emailRedirectTo: undefined,
@@ -241,10 +245,14 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
         id: userId,
         email,
         username: username || email.split('@')[0],
+        full_name: full_name || '',
+        gender: gender || '',
         password_hash: 'supabase_auth', // Placeholder - actual password is managed by Supabase auth
         role: role,
         weight_kg: weight || null,
         height_cm: height || null,
+        phone_number: phone_number || '',
+        country_code: country_code || '',
       };
 
       console.log('[API] Profile data to insert:', profileData);
