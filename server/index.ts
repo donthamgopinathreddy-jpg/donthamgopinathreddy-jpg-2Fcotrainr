@@ -33,23 +33,8 @@ export function createServer() {
   app.get('/api/demo', handleDemo);
 
   // Supabase API wrapper - all auth and data operations go through here
-  console.log('[Server] Registering /api/supabase/ routes');
-  app.use('/api/supabase/', apiRouter);
-
-  // Proxy auth routes to Supabase API routes (for backward compatibility with frontend)
-  app.use('/api/auth', (req, res, next) => {
-    console.log('[Server] ========================================');
-    console.log('[Server] Received', req.method, req.path);
-    console.log('[Server] Request body:', JSON.stringify(req.body, null, 2));
-    console.log('[Server] Forwarding to apiRouter');
-    console.log('[Server] ========================================');
-    next();
-  }, apiRouter);
-
-  app.use('/api/users', (req, res, next) => {
-    console.log('[Server] Forwarding', req.method, req.path, 'to apiRouter');
-    next();
-  }, apiRouter);
+  console.log('[Server] Registering /api routes');
+  app.use('/api', apiRouter);
 
   // Serve static files from the dist/spa directory in production
   const staticDir = path.join(__dirname, '../dist/spa');
