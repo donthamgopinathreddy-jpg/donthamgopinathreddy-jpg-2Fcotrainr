@@ -110,13 +110,17 @@ export default function ClientHome() {
           .from("notifications")
           .select("id")
           .eq("user_id", userProfile.id)
-          .eq("read", false);
+          .eq("read", false)
+          .catch((err) => {
+            console.warn("Failed to fetch notifications:", err?.message);
+            return { data: null, error: err };
+          });
 
         if (data) {
           setUnreadCount(data.length);
         }
       } catch (err) {
-        console.log("Could not fetch notifications");
+        console.warn("Notification fetch error:", err instanceof Error ? err.message : "Unknown error");
       }
     };
 
