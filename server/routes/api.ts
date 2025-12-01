@@ -200,6 +200,7 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
           gender: gender || '',
           phone_number: phone_number || '',
           country_code: country_code || '',
+          role: role || 'client',
           ...options?.data,
         },
         emailRedirectTo: undefined,
