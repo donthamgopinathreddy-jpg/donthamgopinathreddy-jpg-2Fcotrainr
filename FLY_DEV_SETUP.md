@@ -1,6 +1,7 @@
 # Fly.dev Deployment Setup Instructions
 
 ## What's Fixed:
+
 1. ✅ User signup data now automatically saved to `public.users` table (trigger fixed)
 2. ✅ Email confirmation links now use Fly.dev URL correctly
 3. ✅ Existing user profile created in database
@@ -18,12 +19,13 @@ flyctl secrets set \
 ```
 
 **Or manually via Fly.dev Dashboard:**
+
 1. Go to your app on Fly.dev dashboard
 2. Click **Secrets**
 3. Add two secrets:
    - Key: `VITE_SUPABASE_URL`
    - Value: `https://hnxdlgdkyboctsvfktwe.supabase.co`
-   
+
    And:
    - Key: `VITE_SUPABASE_ANON_KEY`
    - Value: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhueGRsZ2RreWJvY3RzdmZrdHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2MDM0NTQsImV4cCI6MjA4MDE3OTQ1NH0.DZPvC7diiNoANXgDxnb7T-ynYg6JUW4cfEILoJfABSI`
@@ -47,12 +49,14 @@ Or redeploy via the dashboard.
 
 ## Why This Works
 
-**Before**: 
+**Before**:
+
 - Fly.dev didn't have Supabase credentials
 - Frontend couldn't connect to Supabase
 - App wouldn't load
 
 **After**:
+
 - Environment variables available to build and runtime
 - Frontend can connect to Supabase
 - API can create user profiles
@@ -62,16 +66,19 @@ Or redeploy via the dashboard.
 ## Troubleshooting
 
 ### App Still Not Loading
+
 1. Check Fly.dev logs: `flyctl logs`
 2. Look for errors like "Missing Supabase URL"
 3. Verify secrets are set: `flyctl secrets list`
 
 ### Login Still Failing
+
 1. Check browser DevTools console for errors
 2. Check Fly.dev logs for API errors
 3. Ensure Supabase credentials are correct
 
 ### User Data Not Appearing in Table After Signup
+
 1. The trigger now uses correct column (`raw_user_meta_data`)
 2. Manually created the existing auth user in the table
 3. New signups should automatically create user records

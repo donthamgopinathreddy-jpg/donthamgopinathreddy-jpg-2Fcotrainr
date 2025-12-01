@@ -128,7 +128,7 @@ export const useMessages = (recipientId?: string) => {
       // If it contains '-', assume it's a UUID (conversation ID)
       let conversationId = conversationIdOrUserId;
 
-      if (!conversationIdOrUserId.includes('-')) {
+      if (!conversationIdOrUserId.includes("-")) {
         // This might be a user ID, need to find the conversation
         const { data: convData, error: convError } = await supabase
           .from("conversations")
@@ -139,7 +139,10 @@ export const useMessages = (recipientId?: string) => {
           .single();
 
         if (convError || !convData) {
-          console.warn("No conversation found with user:", conversationIdOrUserId);
+          console.warn(
+            "No conversation found with user:",
+            conversationIdOrUserId,
+          );
           setMessages([]);
           return;
         }
@@ -178,7 +181,10 @@ export const useMessages = (recipientId?: string) => {
   };
 
   // Send a message
-  const sendMessage = async (conversationIdOrRecipientId: string, content: string) => {
+  const sendMessage = async (
+    conversationIdOrRecipientId: string,
+    content: string,
+  ) => {
     if (!user) return;
 
     try {
@@ -234,7 +240,7 @@ export const useMessages = (recipientId?: string) => {
       // Get or create conversation if needed
       let conversationId = conversationIdOrRecipientId;
 
-      if (!conversationIdOrRecipientId.includes('-')) {
+      if (!conversationIdOrRecipientId.includes("-")) {
         // This is a user ID, find or create conversation
         const { data: existingConv } = await supabase
           .from("conversations")

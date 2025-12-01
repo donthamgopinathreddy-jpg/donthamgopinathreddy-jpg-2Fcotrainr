@@ -745,10 +745,7 @@ router.get('/trainers', async (req: Request, res: Response) => {
     }
 
     const trainersMap = new Map(
-      (Array.isArray(trainerDetails) ? trainerDetails : []).map((t) => [
-        t.user_id,
-        t,
-      ]),
+      (Array.isArray(trainerDetails) ? trainerDetails : []).map((t) => [t.user_id, t])
     );
 
     const enriched = users.map((user) => {
@@ -767,8 +764,8 @@ router.get('/trainers', async (req: Request, res: Response) => {
     // Filter by specialty if provided
     let result = enriched;
     if (specialty) {
-      result = enriched.filter((t) =>
-        Array.isArray(t.specialties) && t.specialties.includes(specialty)
+      result = enriched.filter(
+        (t) => Array.isArray(t.specialties) && t.specialties.includes(specialty)
       );
     }
 
@@ -803,7 +800,10 @@ router.get('/follows', async (req: Request, res: Response) => {
     });
 
     // Get authenticated user
-    const { data: { user }, error: authError } = await userClient.auth.getUser();
+    const {
+      data: { user },
+      error: authError,
+    } = await userClient.auth.getUser();
 
     if (authError || !user) {
       return res.status(401).json({
@@ -857,7 +857,10 @@ router.get('/conversations', async (req: Request, res: Response) => {
     });
 
     // Get authenticated user
-    const { data: { user }, error: authError } = await userClient.auth.getUser();
+    const {
+      data: { user },
+      error: authError,
+    } = await userClient.auth.getUser();
 
     if (authError || !user) {
       return res.status(401).json({
