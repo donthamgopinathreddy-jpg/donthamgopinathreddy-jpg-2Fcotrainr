@@ -162,6 +162,7 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
 // Sign up endpoint
 router.post('/auth/signup', async (req: Request, res: Response) => {
   try {
+    console.log('[API] ========================================');
     console.log('[API] Sign up endpoint called');
     console.log('[API] Request body:', JSON.stringify(req.body, null, 2));
 
@@ -179,18 +180,32 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
       options,
     } = req.body;
 
+    console.log('[API] Extracted fields:');
+    console.log('[API]   email:', email);
+    console.log('[API]   password:', password ? '***' : 'missing');
+    console.log('[API]   username:', username);
+    console.log('[API]   full_name:', full_name);
+    console.log('[API]   gender:', gender);
+    console.log('[API]   height:', height);
+    console.log('[API]   weight:', weight);
+    console.log('[API]   phone_number:', phone_number);
+    console.log('[API]   country_code:', country_code);
+    console.log('[API]   role:', role);
+
     if (!email || !password) {
-      console.log('[API] Missing email or password for signup');
+      console.error('[API] ❌ Missing email or password');
+      console.log('[API] email present:', !!email);
+      console.log('[API] password present:', !!password);
       return res.status(400).json({
         message: 'Missing email or password',
         error: 'Missing email or password',
       });
     }
 
-    console.log('[API] Sign up attempt for:', email, 'with role:', role);
-
+    console.log('[API] ✅ Validation passed');
     console.log('[API] Calling Supabase auth.signUp...');
-    const { data, error } = await supabase.auth.signUp({
+
+    const signUpPayload = {
       email,
       password,
       options: {
@@ -205,15 +220,18 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
         },
         emailRedirectTo: undefined,
       },
-    });
+    };
+
+    console.log('[API] SignUp payload:', JSON.stringify(signUpPayload, null, 2));
+
+    const { data, error } = await supabase.auth.signUp(signUpPayload);
 
     if (error) {
-      console.error('[API] Supabase auth signup error:', {
-        message: error.message,
-        status: error.status,
-        code: (error as any).code,
-        details: (error as any).details,
-      });
+      console.error('[API] ❌ Supabase auth signup error:');
+      console.error('[API]   message:', error.message);
+      console.error('[API]   status:', error.status);
+      console.error('[API]   code:', (error as any).code);
+      console.error('[API]   details:', (error as any).details);
       return res.status(400).json({
         message: error.message || 'Authentication failed',
         error: error.message || 'Authentication failed',
@@ -221,6 +239,8 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
         details: (error as any).details,
       });
     }
+
+    console.log('[API] ✅ Supabase auth.signUp succeeded');
 
     console.log('[API] Supabase auth response:', {
       userId: data.user?.id,
