@@ -153,29 +153,37 @@ export const useStepCounter = () => {
         today.setHours(0, 0, 0, 0);
         const dateStr = today.toISOString().split("T")[0];
 
-        // Update or insert today's steps
-        const { error } = await supabase
-          .from("health_sync_data")
-          .update({
-            steps: stepCount,
-            last_synced: new Date().toISOString(),
-          })
-          .eq("user_id", userProfile.id)
-          .eq("sync_date", dateStr);
+        try {
+          // Update or insert today's steps
+          const { error } = await supabase
+            .from("health_sync_data")
+            .update({
+              steps: stepCount,
+              last_synced: new Date().toISOString(),
+            })
+            .eq("user_id", userProfile.id)
+            .eq("sync_date", dateStr);
 
-        if (error?.code === "PGRST116") {
-          // Record doesn't exist, insert it
-          await supabase.from("health_sync_data").insert({
-            user_id: userProfile.id,
-            steps: stepCount,
-            sync_date: dateStr,
-            source: "sensor",
-          });
+          if (error?.code === "PGRST116") {
+            try {
+              // Record doesn't exist, insert it
+              await supabase.from("health_sync_data").insert({
+                user_id: userProfile.id,
+                steps: stepCount,
+                sync_date: dateStr,
+                source: "sensor",
+              });
+            } catch (insertError) {
+              console.warn("Could not insert steps:", insertError);
+            }
+          }
+
+          setTotalStepsToday(stepCount);
+        } catch (updateError) {
+          console.warn("Could not update steps:", updateError);
         }
-
-        setTotalStepsToday(stepCount);
       } catch (error) {
-        console.debug("Error saving steps:", error);
+        console.warn("Error in saveSteps:", error instanceof Error ? error.message : "Unknown error");
       }
     },
     [userProfile?.id],
