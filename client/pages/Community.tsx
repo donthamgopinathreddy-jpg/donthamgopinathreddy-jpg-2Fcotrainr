@@ -5,6 +5,7 @@ import {
   MessageCircle,
   Share2,
   ImageIcon,
+  Video,
   Loader,
   X,
   Send,
@@ -13,6 +14,7 @@ import {
   ArrowRight,
   Search,
   TrendingUp,
+  ArrowLeft,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
