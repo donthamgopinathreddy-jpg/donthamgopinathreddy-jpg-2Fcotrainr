@@ -357,6 +357,22 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/trainers"
+        element={
+          <ProtectedRoute>
+            <Trainers />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/nutritionists"
+        element={
+          <ProtectedRoute>
+            <Nutritionists />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/trainer/:id"
         element={
           <ProtectedRoute>
