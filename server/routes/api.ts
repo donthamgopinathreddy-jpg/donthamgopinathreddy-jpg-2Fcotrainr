@@ -695,4 +695,236 @@ router.get('/community/users', async (req: Request, res: Response) => {
   }
 });
 
+// Get trainers endpoint
+router.get('/trainers', async (req: Request, res: Response) => {
+  try {
+    console.log('[API] Fetching trainers');
+
+    const specialty = req.query.specialty as string | undefined;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let query = supabase
+      .from('users')
+      .select('id, username, full_name, email, bio, profile_picture_url, role')
+      .eq('role', 'trainer');
+
+    const { data: users, error: usersError } = await query;
+
+    if (usersError) {
+      console.error('[API] Error fetching trainer users:', usersError);
+      return res.status(400).json({
+        error: 'Failed to fetch trainers',
+      });
+    }
+
+    if (!Array.isArray(users) || users.length === 0) {
+      return res.json({ data: [] });
+    }
+
+    // Get trainer details
+    const trainerIds = users.map((u) => u.id);
+    const { data: trainerDetails, error: trainerError } = await supabase
+      .from('trainers')
+      .select('*')
+      .in('user_id', trainerIds);
+
+    if (trainerError) {
+      console.error('[API] Error fetching trainer details:', trainerError);
+      // Continue anyway, just return user data without trainer details
+    }
+
+    const trainersMap = new Map(
+      (Array.isArray(trainerDetails) ? trainerDetails : []).map((t) => [
+        t.user_id,
+        t,
+      ]),
+    );
+
+    const enriched = users.map((user) => {
+      const trainerDetail = trainersMap.get(user.id) || {};
+      return {
+        ...user,
+        ...trainerDetail,
+        specialties: trainerDetail.specialties || [],
+        certifications: trainerDetail.certificates || [],
+        verified: trainerDetail.is_verified || false,
+        rating: trainerDetail.rating || 0,
+        reviews_count: 0,
+      };
+    });
+
+    // Filter by specialty if provided
+    let result = enriched;
+    if (specialty) {
+      result = enriched.filter((t) =>
+        Array.isArray(t.specialties) && t.specialties.includes(specialty)
+      );
+    }
+
+    console.log('[API] Trainers fetched successfully:', result.length);
+    res.json({ data: result });
+  } catch (error) {
+    console.error('[API] Unexpected error fetching trainers:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+    });
+  }
+});
+
+// Get follows endpoint
+router.get('/follows', async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return res.status(401).json({
+        error: 'Missing authorization header',
+      });
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    });
+
+    // Get authenticated user
+    const { data: { user }, error: authError } = await userClient.auth.getUser();
+
+    if (authError || !user) {
+      return res.status(401).json({
+        error: 'Not authenticated',
+      });
+    }
+
+    console.log('[API] Fetching follows for user:', user.id);
+
+    const { data, error } = await userClient
+      .from('follows')
+      .select('following_id')
+      .eq('follower_id', user.id);
+
+    if (error) {
+      console.error('[API] Error fetching follows:', error);
+      return res.status(400).json({
+        error: 'Failed to fetch follows',
+      });
+    }
+
+    const followedUserIds = (data || []).map((item) => item.following_id);
+    console.log('[API] Follows fetched successfully:', followedUserIds.length);
+    res.json({ data: followedUserIds });
+  } catch (error) {
+    console.error('[API] Unexpected error fetching follows:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+    });
+  }
+});
+
+// Get conversations endpoint
+router.get('/conversations', async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return res.status(401).json({
+        error: 'Missing authorization header',
+      });
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    });
+
+    // Get authenticated user
+    const { data: { user }, error: authError } = await userClient.auth.getUser();
+
+    if (authError || !user) {
+      return res.status(401).json({
+        error: 'Not authenticated',
+      });
+    }
+
+    console.log('[API] Fetching conversations for user:', user.id);
+
+    // Fetch conversations where user is a participant
+    const { data: conversationData, error: conversationError } = await userClient
+      .from('conversations')
+      .select('*')
+      .or(`participant1_id.eq.${user.id},participant2_id.eq.${user.id}`)
+      .order('last_message_at', { ascending: false });
+
+    if (conversationError) {
+      console.error('[API] Error fetching conversations:', conversationError);
+      return res.status(400).json({
+        error: 'Failed to fetch conversations',
+      });
+    }
+
+    if (!conversationData || conversationData.length === 0) {
+      return res.json({ data: [] });
+    }
+
+    // Build conversation list with user details
+    const conversationList = [];
+
+    for (const conv of conversationData) {
+      const otherUserId =
+        conv.participant1_id === user.id ? conv.participant2_id : conv.participant1_id;
+
+      // Get last message
+      const { data: messages } = await userClient
+        .from('messages')
+        .select('*')
+        .eq('conversation_id', conv.id)
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      // Get unread count
+      const { data: unreadData } = await userClient
+        .from('messages')
+        .select('id')
+        .eq('conversation_id', conv.id)
+        .eq('is_read', false)
+        .neq('sender_id', user.id);
+
+      // Get other user details
+      const { data: userData } = await userClient
+        .from('users')
+        .select('username, full_name, profile_picture_url')
+        .eq('id', otherUserId)
+        .single();
+
+      const lastMsg = messages && messages.length > 0 ? messages[0] : null;
+
+      conversationList.push({
+        id: conv.id,
+        other_user_id: otherUserId,
+        other_user_name: userData?.full_name || userData?.username || 'Unknown User',
+        other_user_avatar: userData?.profile_picture_url,
+        last_message: lastMsg?.content,
+        last_message_time: lastMsg?.created_at || conv.last_message_at,
+        unread_count: unreadData?.length || 0,
+      });
+    }
+
+    console.log('[API] Conversations fetched successfully:', conversationList.length);
+    res.json({ data: conversationList });
+  } catch (error) {
+    console.error('[API] Unexpected error fetching conversations:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+    });
+  }
+});
+
 export default router;
