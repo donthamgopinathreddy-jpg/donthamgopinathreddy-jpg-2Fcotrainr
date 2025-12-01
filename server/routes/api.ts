@@ -130,6 +130,74 @@ router.get('/debug/supabase', (_req: Request, res: Response) => {
   }
 });
 
+// Test endpoint - verify Supabase auth connectivity
+router.post('/debug/test-auth', async (req: Request, res: Response) => {
+  try {
+    console.log('[API] ========================================');
+    console.log('[API] Test auth endpoint called');
+    console.log('[API] Testing basic Supabase auth functionality');
+
+    // First check if we can reach Supabase at all
+    console.log('[API] Checking Supabase connectivity...');
+    const connectivityTest = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+      headers: { apikey: SUPABASE_ANON_KEY },
+    });
+
+    console.log('[API] Connectivity test status:', connectivityTest.status);
+
+    if (!connectivityTest.ok) {
+      console.error('[API] Cannot reach Supabase!');
+      return res.status(503).json({
+        status: 'error',
+        message: 'Cannot reach Supabase',
+        details: {
+          supabaseUrl: SUPABASE_URL,
+          responseStatus: connectivityTest.status,
+        },
+      });
+    }
+
+    // Test with dummy credentials to see what error Supabase returns
+    console.log('[API] Testing with dummy credentials...');
+    const { email, password } = req.body || {
+      email: 'test@example.com',
+      password: 'test123',
+    };
+
+    const result = await supabase.auth.signInWithPassword({ email, password });
+
+    console.log('[API] Test auth result:', {
+      hasError: !!result.error,
+      hasData: !!result.data,
+      errorMessage: result.error?.message,
+      errorStatus: result.error?.status,
+    });
+
+    res.json({
+      status: 'ok',
+      message: 'Auth test completed',
+      details: {
+        supabaseReachable: true,
+        testAttempted: true,
+        error: result.error ? {
+          message: result.error.message,
+          status: result.error.status,
+          code: (result.error as any).code,
+        } : null,
+        userFound: !!result.data?.user,
+      },
+    });
+  } catch (error: any) {
+    console.error('[API] Test auth error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Test auth error',
+      error: error?.message,
+      errorType: error?.constructor?.name,
+    });
+  }
+});
+
 // Auth endpoints
 router.post('/auth/signin', async (req: Request, res: Response) => {
   try {
