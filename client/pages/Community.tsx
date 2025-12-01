@@ -281,9 +281,19 @@ const Community = () => {
         } backdrop-blur-xl`}
       >
         <div className="max-w-2xl mx-auto">
-          {/* Title Section */}
+          {/* Title Section with Back Button */}
           <div className="px-4 py-6">
             <div className="flex items-center gap-3 mb-4">
+              <button
+                onClick={() => navigate(-1)}
+                className={`p-2 rounded-lg transition-colors ${
+                  theme === "dark"
+                    ? "hover:bg-gray-800 text-gray-300"
+                    : "hover:bg-gray-200 text-gray-700"
+                }`}
+              >
+                <ArrowLeft size={20} />
+              </button>
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
                 <Users size={20} className="text-white" />
               </div>
