@@ -554,6 +554,21 @@ export default function Profile() {
       className={`min-h-screen pb-24 ${theme === "dark" ? "bg-gray-950" : "bg-gray-50"}`}
     >
       <div className="w-full max-w-2xl mx-auto px-4 py-6 space-y-6">
+        {/* Back Button */}
+        <div className="flex items-center gap-2 mb-2">
+          <button
+            onClick={() => navigate(-1)}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+              theme === "dark"
+                ? "hover:bg-gray-800 text-gray-300"
+                : "hover:bg-gray-200 text-gray-700"
+            }`}
+          >
+            <ArrowLeft size={20} />
+            <span>Back</span>
+          </button>
+        </div>
+
         {/* HEADER SECTION */}
         <div
           className={`rounded-3xl overflow-hidden shadow-md transition-all hover:shadow-lg ${
