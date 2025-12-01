@@ -140,24 +140,26 @@ export default function MobileLogin() {
           <button
             type="button"
             onClick={() => setShowResetModal(true)}
-            className="text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors duration-200 w-full text-center"
+            className="text-sm font-semibold text-purple-600 hover:text-purple-700 transition-all duration-300 w-full text-center py-2 hover:bg-purple-50 rounded-xl animate-fade-in-up"
+            style={{ animationDelay: "0.3s", animationDuration: "0.7s" }}
           >
             Forgot Password?
           </button>
 
-          {/* Login Button - Gold/Yellow */}
+          {/* Login Button - Blue Gradient */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-5 py-3.5 mt-6 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full px-5 py-4 mt-6 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:scale-95 text-white font-bold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl animate-fade-in-up"
+            style={{ animationDelay: "0.4s", animationDuration: "0.7s" }}
           >
             {loading ? (
               <>
-                <div className="w-4 h-4 rounded-full border-2 border-gray-800/30 border-t-gray-800 animate-spin" />
+                <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                 Signing in...
               </>
             ) : (
-              "Get Started"
+              "Sign In"
             )}
           </button>
 
