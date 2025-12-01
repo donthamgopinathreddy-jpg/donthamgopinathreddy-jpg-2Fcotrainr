@@ -506,7 +506,7 @@ const Community = () => {
                   </button>
                   <button
                     onClick={handleCreatePost}
-                    disabled={!postContent.trim() && !postImage}
+                    disabled={!postContent.trim() && !postImage && !postVideo}
                     className="flex-1 py-2 px-4 rounded-lg bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium hover:from-orange-600 hover:to-pink-600 disabled:opacity-50 transition-all"
                   >
                     Post
