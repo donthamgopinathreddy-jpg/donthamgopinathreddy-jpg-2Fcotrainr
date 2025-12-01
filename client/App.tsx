@@ -58,6 +58,7 @@ import MobileFeed from "./pages/MobileFeed";
 import MobileMessages from "./pages/MobileMessages";
 import MobileProfile from "./pages/MobileProfile";
 import HomeModern from "./pages/HomeModern";
+import ClientHome from "./pages/ClientHome";
 import Community from "./pages/Community";
 import Navigation from "./components/Navigation";
 import { ErrorBoundary } from "./components/ErrorBoundary";
