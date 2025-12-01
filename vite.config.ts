@@ -45,13 +45,12 @@ function expressPlugin(): Plugin {
     configureServer() {
       const app = createServer();
 
-      // Start Express on port 3000
-      // Listen on all interfaces (0.0.0.0) to ensure it's accessible from the proxy
+      // Start Express on port 3000, listening on localhost
       expressServer = http.createServer(app);
-      expressServer.listen(3000, "0.0.0.0", () => {
-        console.log("[Express] Server running on http://0.0.0.0:3000");
+      expressServer.listen(3000, "127.0.0.1", () => {
+        console.log("[Express] Server running on http://localhost:3000");
         console.log(
-          "[Express] Proxy should forward requests to http://localhost:3000",
+          "[Express] Vite proxy will forward /api requests to this server",
         );
       });
 
@@ -59,6 +58,7 @@ function expressPlugin(): Plugin {
       expressServer.on("error", (err: any) => {
         if (err.code === "EADDRINUSE") {
           console.error("[Express] Port 3000 is already in use");
+          console.error("[Express] Try: lsof -ti:3000 | xargs kill -9");
         } else {
           console.error("[Express] Server error:", err);
         }
