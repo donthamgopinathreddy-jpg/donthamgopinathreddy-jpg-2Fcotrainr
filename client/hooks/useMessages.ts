@@ -217,7 +217,7 @@ export const useMessages = (recipientId?: string) => {
   };
 
   // Send a message
-  const sendMessage = async (recipientId: string, content: string) => {
+  const sendMessage = async (conversationIdOrRecipientId: string, content: string) => {
     if (!user) return;
 
     try {
@@ -229,13 +229,13 @@ export const useMessages = (recipientId?: string) => {
         const newMessage: Message = {
           id: `local-${Date.now()}`,
           sender_id: user.id,
-          recipient_id: recipientId,
+          recipient_id: conversationIdOrRecipientId,
           content,
           is_read: false,
           created_at: createdAt,
         };
 
-        const key = `messages_demo_${user.id}_${recipientId}`;
+        const key = `messages_demo_${user.id}_${conversationIdOrRecipientId}`;
         const demoMessages = localStorage.getItem(key);
         const existingMessages = demoMessages ? JSON.parse(demoMessages) : [];
         const updatedMessages = [...existingMessages, newMessage];
@@ -251,7 +251,7 @@ export const useMessages = (recipientId?: string) => {
           : [];
 
         const conversationIndex = existingConversations.findIndex(
-          (c: Conversation) => c.other_user_id === recipientId,
+          (c: Conversation) => c.other_user_id === conversationIdOrRecipientId,
         );
 
         if (conversationIndex >= 0) {
@@ -270,19 +270,60 @@ export const useMessages = (recipientId?: string) => {
         return newMessage;
       }
 
+      // Get or create conversation if needed
+      let conversationId = conversationIdOrRecipientId;
+
+      if (!conversationIdOrRecipientId.includes('-')) {
+        // This is a user ID, find or create conversation
+        const { data: existingConv } = await supabase
+          .from("conversations")
+          .select("id")
+          .or(
+            `and(participant1_id.eq.${user.id},participant2_id.eq.${conversationIdOrRecipientId}),and(participant1_id.eq.${conversationIdOrRecipientId},participant2_id.eq.${user.id})`,
+          )
+          .single();
+
+        if (existingConv) {
+          conversationId = existingConv.id;
+        } else {
+          // Create new conversation
+          const { data: newConv, error: convError } = await supabase
+            .from("conversations")
+            .insert({
+              participant1_id: user.id,
+              participant2_id: conversationIdOrRecipientId,
+            })
+            .select()
+            .single();
+
+          if (convError || !newConv) {
+            throw new Error("Failed to create conversation");
+          }
+          conversationId = newConv.id;
+        }
+      }
+
+      // Insert the message
       const { data, error } = await supabase
         .from("messages")
         .insert({
+          conversation_id: conversationId,
           sender_id: user.id,
-          recipient_id: recipientId,
           content,
         })
         .select()
         .single();
 
       if (error) throw error;
-      setMessages((prev) => [...prev, data]);
-      return data;
+
+      // Add recipient_id field for compatibility with Message interface
+      const messageWithRecipient = {
+        ...data,
+        recipient_id: conversationIdOrRecipientId,
+      };
+
+      setMessages((prev) => [...prev, messageWithRecipient]);
+      return messageWithRecipient;
     } catch (error) {
       console.error("Error sending message:", error);
       throw error;
