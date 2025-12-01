@@ -18,26 +18,34 @@ export const useFollowerCounts = (userId?: string) => {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("users")
-        .select("followers_count, following_count")
-        .eq("id", id)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from("users")
+          .select("followers_count, following_count")
+          .eq("id", id)
+          .single();
 
-      if (error) {
-        console.debug("Follower counts fetch error:", error?.code);
+        if (error) {
+          console.warn("Follower counts fetch error:", error?.message || error?.code);
+          setCounts({ followers_count: 0, following_count: 0 });
+          return;
+        }
+
+        setCounts({
+          followers_count: data?.followers_count || 0,
+          following_count: data?.following_count || 0,
+        });
+      } catch (supabaseError) {
+        console.warn(
+          "Follower counts supabase error:",
+          supabaseError instanceof Error ? supabaseError.message : "unknown",
+        );
         setCounts({ followers_count: 0, following_count: 0 });
-        return;
       }
-
-      setCounts({
-        followers_count: data?.followers_count || 0,
-        following_count: data?.following_count || 0,
-      });
     } catch (error) {
-      console.debug(
-        "Follower counts catch error:",
-        error instanceof Error ? error.code : "unknown",
+      console.warn(
+        "Follower counts outer error:",
+        error instanceof Error ? error.message : "unknown",
       );
       setCounts({ followers_count: 0, following_count: 0 });
     } finally {
