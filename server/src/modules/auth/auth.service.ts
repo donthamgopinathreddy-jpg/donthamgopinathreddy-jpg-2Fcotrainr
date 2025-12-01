@@ -32,6 +32,7 @@ export class AuthService {
       phone_number: signupDto.phone_number,
       country_code: signupDto.country_code,
       full_name: signupDto.full_name,
+      gender: signupDto.gender,
     });
 
     // Generate JWT token
