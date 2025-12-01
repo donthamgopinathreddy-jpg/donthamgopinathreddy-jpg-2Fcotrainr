@@ -425,6 +425,25 @@ const Community = () => {
                   </div>
                 )}
 
+                {postVideoPreview && (
+                  <div className="relative mb-4 rounded-lg overflow-hidden">
+                    <video
+                      src={postVideoPreview}
+                      controls
+                      className="w-full max-h-64 object-cover"
+                    />
+                    <button
+                      onClick={() => {
+                        setPostVideo(null);
+                        setPostVideoPreview("");
+                      }}
+                      className="absolute top-2 right-2 p-1 bg-black/50 rounded-full hover:bg-black/70"
+                    >
+                      <X size={16} className="text-white" />
+                    </button>
+                  </div>
+                )}
+
                 <div className="flex gap-2 mb-4">
                   <label className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100/10 hover:bg-gray-100/20 cursor-pointer transition-all">
                     <ImageIcon size={18} />
@@ -432,6 +451,15 @@ const Community = () => {
                       type="file"
                       accept="image/*"
                       onChange={handlePostImageSelect}
+                      className="hidden"
+                    />
+                  </label>
+                  <label className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100/10 hover:bg-gray-100/20 cursor-pointer transition-all">
+                    <Video size={18} />
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={handlePostVideoSelect}
                       className="hidden"
                     />
                   </label>
