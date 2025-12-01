@@ -516,10 +516,10 @@ export default function MobileSignup() {
                     type="button"
                     onClick={() => handleInputChange("gender", g.toLowerCase())}
                     disabled={isLoading}
-                    className={`flex-1 py-2 px-4 rounded-full font-medium transition-all disabled:opacity-50 ${
+                    className={`flex-1 py-2 px-4 rounded-full font-medium transition-all disabled:opacity-50 border-2 ${
                       data.gender === g.toLowerCase()
-                        ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
-                        : "bg-gradient-to-r from-orange-400/50 to-yellow-400/50 text-gray-700 border border-orange-200/50 hover:from-orange-400/60 hover:to-yellow-400/60"
+                        ? "border-orange-400 text-orange-500 bg-transparent"
+                        : "border-gray-300 text-gray-600 bg-transparent hover:border-orange-400 hover:text-orange-500"
                     }`}
                   >
                     {g}
@@ -641,10 +641,10 @@ export default function MobileSignup() {
                     type="button"
                     onClick={() => handleInputChange("role", r)}
                     disabled={isLoading}
-                    className={`flex-1 py-2 px-4 rounded-full font-medium transition-all disabled:opacity-50 capitalize ${
+                    className={`flex-1 py-2 px-4 rounded-full font-medium transition-all disabled:opacity-50 capitalize border-2 ${
                       data.role === r
-                        ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
-                        : "bg-gradient-to-r from-orange-400/50 to-yellow-400/50 text-gray-700 border border-orange-200/50 hover:from-orange-400/60 hover:to-yellow-400/60"
+                        ? "border-orange-400 text-orange-500 bg-transparent"
+                        : "border-gray-300 text-gray-600 bg-transparent hover:border-orange-400 hover:text-orange-500"
                     }`}
                   >
                     {r}
@@ -683,10 +683,10 @@ export default function MobileSignup() {
                       type="button"
                       onClick={() => toggleCategory(cat)}
                       disabled={isLoading}
-                      className={`py-2 px-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 ${
+                      className={`py-2 px-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 border-2 ${
                         data.focus_categories.includes(cat)
-                          ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
-                          : "bg-gradient-to-r from-orange-400/50 to-yellow-400/50 text-gray-700 border border-orange-200/50 hover:from-orange-400/60 hover:to-yellow-400/60"
+                          ? "border-orange-400 text-orange-500 bg-transparent"
+                          : "border-gray-300 text-gray-600 bg-transparent hover:border-orange-400 hover:text-orange-500"
                       }`}
                     >
                       {cat}
@@ -708,10 +708,10 @@ export default function MobileSignup() {
                       type="button"
                       onClick={() => toggleCategory(cat)}
                       disabled={isLoading}
-                      className={`py-2 px-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 ${
+                      className={`py-2 px-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 border-2 ${
                         data.focus_categories.includes(cat)
-                          ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
-                          : "bg-gradient-to-r from-orange-400/50 to-yellow-400/50 text-gray-700 border border-orange-200/50 hover:from-orange-400/60 hover:to-yellow-400/60"
+                          ? "border-orange-400 text-orange-500 bg-transparent"
+                          : "border-gray-300 text-gray-600 bg-transparent hover:border-orange-400 hover:text-orange-500"
                       }`}
                     >
                       {cat}
