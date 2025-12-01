@@ -177,7 +177,11 @@ export default function MobileSignup() {
       }
       setStep(3);
     } else if (step === 3) {
-      if (!formData.height_feet || !formData.height_inches || !formData.weight_kg) {
+      if (
+        !formData.height_feet ||
+        !formData.height_inches ||
+        !formData.weight_kg
+      ) {
         setError("Please fill in all fields");
         return;
       }
@@ -361,7 +365,11 @@ export default function MobileSignup() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
                 >
-                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
                 </button>
               </div>
             </div>
@@ -402,17 +410,27 @@ export default function MobileSignup() {
                   className="w-full px-5 py-3.5 pr-12 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 {usernameStatus === "available" && (
-                  <Check size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500" />
+                  <Check
+                    size={20}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500"
+                  />
                 )}
                 {usernameStatus === "taken" && (
-                  <X size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500" />
+                  <X
+                    size={20}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500"
+                  />
                 )}
               </div>
               {usernameStatus === "available" && (
-                <p className="text-xs text-green-600 mt-2">✓ Username available</p>
+                <p className="text-xs text-green-600 mt-2">
+                  ✓ Username available
+                </p>
               )}
               {usernameStatus === "taken" && (
-                <p className="text-xs text-red-600 mt-2">✗ Username already taken</p>
+                <p className="text-xs text-red-600 mt-2">
+                  ✗ Username already taken
+                </p>
               )}
             </div>
           </div>
@@ -525,9 +543,7 @@ export default function MobileSignup() {
                 {["Male", "Female", "Other"].map((gender) => (
                   <button
                     key={gender}
-                    onClick={() =>
-                      setFormData({ ...formData, gender })
-                    }
+                    onClick={() => setFormData({ ...formData, gender })}
                     className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
                       formData.gender === gender
                         ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
