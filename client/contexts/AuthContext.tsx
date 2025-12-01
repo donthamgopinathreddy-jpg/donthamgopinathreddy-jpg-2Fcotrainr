@@ -334,68 +334,115 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     },
   ) => {
     try {
-      console.log("[Auth] Starting signup for:", email);
-      console.log("[Auth] User data:", {
-        username: userData.username,
-        full_name: userData.full_name,
-        role: userData.role,
-        height_cm: userData.height_cm,
-        weight_kg: userData.weight_kg,
-      });
+      console.log("[Auth] ========== SIGNUP START ==========");
+      console.log("[Auth] Email:", email);
+      console.log("[Auth] Username:", userData.username);
+      console.log("[Auth] Full Name:", userData.full_name);
+      console.log("[Auth] Role:", userData.role);
+      console.log("[Auth] Gender:", userData.gender);
+      console.log("[Auth] Phone:", userData.phone_number);
+      console.log("[Auth] Height (cm):", userData.height_cm);
+      console.log("[Auth] Weight (kg):", userData.weight_kg);
 
-      // Call backend auth endpoint (proxies to /auth/signup on server)
+      const requestPayload = {
+        email,
+        username: userData.username,
+        password,
+        full_name: userData.full_name,
+        gender: userData.gender,
+        height: userData.height_cm,
+        weight: userData.weight_kg,
+        phone_number: userData.phone_number,
+        country_code: userData.country_code,
+        role: userData.role,
+      };
+
+      console.log("[Auth] Request payload:", JSON.stringify(requestPayload, null, 2));
       console.log("[Auth] Making POST request to /api/auth/signup");
+
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          username: userData.username,
-          password,
-          full_name: userData.full_name,
-          gender: userData.gender,
-          height: userData.height_cm,
-          weight: userData.weight_kg,
-          phone_number: userData.phone_number,
-          country_code: userData.country_code,
-          role: userData.role,
-        }),
+        body: JSON.stringify(requestPayload),
       });
 
-      console.log(
-        "[Auth] Response status:",
-        response.status,
-        response.statusText,
-      );
+      console.log("[Auth] Response status:", response.status);
+      console.log("[Auth] Response status text:", response.statusText);
+      console.log("[Auth] Response headers:", {
+        contentType: response.headers.get("content-type"),
+      });
 
-      if (!response.ok) {
-        console.error("[Auth] Signup failed with status:", response.status);
-        const errorData = await response.json().catch(() => ({}));
-        console.error("[Auth] Error data:", errorData);
-        throw new Error(
-          errorData.message ||
-            errorData.error ||
-            `Signup failed: ${response.statusText}`,
-        );
+      let errorData: any = {};
+      let data: any = null;
+
+      try {
+        const responseText = await response.text();
+        console.log("[Auth] Raw response text:", responseText);
+
+        if (responseText) {
+          data = JSON.parse(responseText);
+        }
+      } catch (parseError) {
+        console.error("[Auth] Failed to parse response:", parseError);
+        errorData = { message: "Invalid response from server" };
       }
 
-      const data = await response.json();
-      console.log("[Auth] Sign up successful for user:", data.user?.email);
+      if (!response.ok) {
+        console.error("[Auth] ❌ Signup failed");
+        console.error("[Auth] Status code:", response.status);
+        console.error("[Auth] Error data:", data || errorData);
+
+        const errorMessage =
+          data?.message ||
+          data?.error ||
+          errorData.message ||
+          `Signup failed: ${response.statusText}`;
+
+        console.error("[Auth] Error message:", errorMessage);
+        throw new Error(errorMessage);
+      }
+
+      console.log("[Auth] ✅ Signup response received");
+      console.log("[Auth] Response data:", {
+        hasUser: !!data?.user,
+        userEmail: data?.user?.email,
+        hasSession: !!data?.session,
+        hasToken: !!data?.token,
+      });
+
+      if (!data?.user) {
+        console.error("[Auth] ❌ No user in response");
+        throw new Error("No user data returned from signup");
+      }
+
+      console.log("[Auth] Sign up successful for user:", data.user.email);
 
       // Store session and user data
       if (data.session?.access_token) {
+        console.log("[Auth] Setting auth token from session");
         setAuthToken(data.session.access_token);
+      } else if (data.token) {
+        console.log("[Auth] Setting auth token from response");
+        setAuthToken(data.token);
+      } else {
+        console.warn("[Auth] ⚠️ No token in response");
       }
 
       // Update user state
+      console.log("[Auth] Updating user state");
       setUser(data.user as any);
       setUserProfile(data.user);
 
-      console.log("[Auth] User state updated");
+      console.log("[Auth] ========== SIGNUP SUCCESS ==========");
     } catch (error: any) {
-      console.error("Error signing up:", error);
+      console.error("[Auth] ========== SIGNUP ERROR ==========");
+      console.error("[Auth] Error type:", error?.name);
+      console.error("[Auth] Error message:", error?.message);
+      console.error("[Auth] Error stack:", error?.stack);
+      console.error("[Auth] ========== END ERROR ==========");
+
       const errorMessage = error?.message || "Failed to create account";
       throw new Error(errorMessage);
     }
