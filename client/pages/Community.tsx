@@ -128,9 +128,25 @@ const Community = () => {
     const file = e.target.files?.[0];
     if (file) {
       setPostImage(file);
+      setPostVideo(null);
+      setPostVideoPreview("");
       const reader = new FileReader();
       reader.onload = (event) => {
         setPostImagePreview(event.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePostVideoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPostVideo(file);
+      setPostImage(null);
+      setPostImagePreview("");
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setPostVideoPreview(event.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
