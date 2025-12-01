@@ -471,21 +471,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       console.log("[Auth] Response received, status:", response.status);
 
+      // Read response body only once
+      let data: any = {};
+      try {
+        data = await response.json();
+      } catch (e) {
+        console.error("[Auth] Failed to parse response:", e);
+        throw new Error("Invalid response from server");
+      }
+
       if (!response.ok) {
-        let errorData = {};
-        try {
-          errorData = await response.json();
-        } catch (e) {
-          console.error("[Auth] Failed to parse error response:", e);
-        }
         const errorMsg =
-          errorData?.error ||
-          errorData?.message ||
+          data?.error ||
+          data?.message ||
           `Login failed: ${response.statusText}`;
         throw new Error(errorMsg);
       }
-
-      const data = await response.json();
       console.log("[Auth] Response JSON parsed:", {
         hasSession: !!data.session,
         hasUser: !!data.user,
