@@ -44,7 +44,7 @@ export function createServer() {
 
   // Try to serve static files if they exist
   try {
-    if (require('fs').existsSync(staticDir)) {
+    if (fs.existsSync(staticDir)) {
       app.use(express.static(staticDir));
 
       // Catch-all handler: serve index.html for all non-API routes
