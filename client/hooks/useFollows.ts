@@ -12,7 +12,7 @@ export const useFollows = () => {
     return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
   };
 
-  // Fetch current user's following list
+  // Fetch current user's following list using backend API
   const fetchFollowing = async () => {
     if (!user) return;
 
@@ -30,18 +30,31 @@ export const useFollows = () => {
         return;
       }
 
-      const { data, error } = await supabase
-        .from("follows")
-        .select("following_id")
-        .eq("follower_id", user.id);
-
-      if (error) {
-        console.error("Error fetching follows:", error);
+      // Get auth token from storage
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        console.warn("No auth token available for fetching follows");
         setFollowedUsers(new Set());
         return;
       }
 
-      const following = new Set((data || []).map((item) => item.following_id));
+      // Use backend API endpoint instead of direct Supabase query
+      const response = await fetch("/api/follows", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Error response from API:", response.status);
+        setFollowedUsers(new Set());
+        return;
+      }
+
+      const result = await response.json();
+      const following = new Set(result.data || []);
       setFollowedUsers(following);
     } catch (error) {
       console.error("Error in fetchFollowing:", error);
