@@ -641,4 +641,40 @@ router.get('/posts', async (req: Request, res: Response) => {
   }
 });
 
+// Get community users endpoint
+router.get('/community/users', async (req: Request, res: Response) => {
+  try {
+    console.log('[API] Fetching community users');
+
+    const userId = req.query.exclude_user_id as string;
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let query = supabase
+      .from('users')
+      .select('id, full_name, profile_picture_url, bio')
+      .limit(30);
+
+    if (userId) {
+      query = query.neq('id', userId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('[API] Error fetching community users:', error);
+      return res.status(400).json({
+        error: 'Failed to fetch community users',
+      });
+    }
+
+    console.log('[API] Community users fetched successfully:', data?.length || 0);
+    res.json({ data });
+  } catch (error) {
+    console.error('[API] Unexpected error fetching community users:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+    });
+  }
+});
+
 export default router;
