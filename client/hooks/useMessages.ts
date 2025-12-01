@@ -33,7 +33,7 @@ export const useMessages = (recipientId?: string) => {
     return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
   };
 
-  // Fetch conversations for current user
+  // Fetch conversations for current user using backend API
   const fetchConversations = async () => {
     if (!user) return;
 
@@ -61,81 +61,42 @@ export const useMessages = (recipientId?: string) => {
         return;
       }
 
-      // Fetch conversations where user is a participant
-      const { data: conversationData, error: conversationError } = await supabase
-        .from("conversations")
-        .select("*")
-        .or(`participant1_id.eq.${user.id},participant2_id.eq.${user.id}`)
-        .order("last_message_at", { ascending: false });
-
-      if (conversationError) throw conversationError;
-
-      if (!conversationData || conversationData.length === 0) {
+      // Get auth token from storage
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        console.warn("No auth token available for fetching conversations");
         setConversations([]);
         setTotalUnreadMessages(0);
         return;
       }
 
-      // For each conversation, get messages and user details
-      const conversationList: Conversation[] = [];
-      let totalUnreadMessages = 0;
+      // Use backend API endpoint instead of direct Supabase query
+      const response = await fetch("/api/conversations", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
-      for (const conv of conversationData) {
-        // Determine the other participant
-        const otherUserId =
-          conv.participant1_id === user.id ? conv.participant2_id : conv.participant1_id;
-
-        // Fetch messages for this conversation
-        const { data: messages, error: messagesError } = await supabase
-          .from("messages")
-          .select("*")
-          .eq("conversation_id", conv.id)
-          .order("created_at", { ascending: false })
-          .limit(1);
-
-        if (messagesError) {
-          console.error("Error fetching messages for conversation:", messagesError);
-          continue;
-        }
-
-        // Fetch other user's details
-        const { data: userData, error: userError } = await supabase
-          .from("users")
-          .select("username, full_name, profile_picture_url")
-          .eq("id", otherUserId)
-          .single();
-
-        if (userError || !userData) {
-          console.error("Error fetching user details:", userError);
-          continue;
-        }
-
-        // Count unread messages in this conversation
-        const { data: unreadData, error: unreadError } = await supabase
-          .from("messages")
-          .select("id")
-          .eq("conversation_id", conv.id)
-          .eq("is_read", false)
-          .neq("sender_id", user.id);
-
-        const unreadCount = unreadError ? 0 : (unreadData?.length || 0);
-        totalUnreadMessages += unreadCount;
-
-        const lastMsg = messages && messages.length > 0 ? messages[0] : null;
-
-        conversationList.push({
-          id: conv.id,
-          other_user_id: otherUserId,
-          other_user_name: userData.full_name || userData.username,
-          other_user_avatar: userData.profile_picture_url,
-          last_message: lastMsg?.content,
-          last_message_time: lastMsg?.created_at || conv.last_message_at,
-          unread_count: unreadCount,
-        });
+      if (!response.ok) {
+        console.error("Error response from API:", response.status);
+        setConversations([]);
+        setTotalUnreadMessages(0);
+        return;
       }
 
+      const result = await response.json();
+      const conversationList = result.data || [];
+
+      // Calculate total unread
+      const totalUnread = conversationList.reduce(
+        (sum: number, conv: Conversation) => sum + (conv.unread_count || 0),
+        0,
+      );
+
       setConversations(conversationList);
-      setTotalUnreadMessages(totalUnreadMessages);
+      setTotalUnreadMessages(totalUnread);
     } catch (error) {
       console.error("Error fetching conversations:", error);
       setConversations([]);
