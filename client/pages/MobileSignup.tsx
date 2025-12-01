@@ -114,6 +114,10 @@ export default function MobileSignup() {
   const navigate = useNavigate();
 
   const handleInputChange = (field: keyof SignupData, value: any) => {
+    // Force lowercase for username and allow only lowercase, numbers, _, .
+    if (field === "username") {
+      value = value.toLowerCase().replace(/[^a-z0-9_.\-]/g, "");
+    }
     setData({ ...data, [field]: value });
   };
 
