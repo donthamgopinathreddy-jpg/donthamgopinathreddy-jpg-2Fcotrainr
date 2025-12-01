@@ -196,7 +196,7 @@ export default function MobileLogin() {
               setPassword("password123");
               setError("");
             }}
-            className="w-full max-w-sm mt-8 px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 hover:text-gray-900 font-semibold text-xs transition-all duration-200 transform hover:scale-105 active:scale-95"
+            className="w-full max-w-sm mt-8 px-4 py-2 rounded-2xl bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 border border-gray-300 text-gray-700 hover:text-gray-900 font-semibold text-xs transition-all duration-200 transform hover:scale-105 active:scale-95"
           >
             Load Demo Credentials (Dev)
           </button>
