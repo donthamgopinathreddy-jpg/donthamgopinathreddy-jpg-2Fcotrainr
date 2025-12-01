@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import React, { useState } from "react";
+import { ChevronLeft, ChevronRight, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const FOCUS_CATEGORIES = [
-  'Fat loss',
-  'Muscle gain',
-  'Strength',
-  'Boxing',
-  'MMA',
-  'Yoga',
-  'Mobility',
-  'Physio/Rehab',
-  'Endurance',
-  'General fitness'
+  "Fat loss",
+  "Muscle gain",
+  "Strength",
+  "Boxing",
+  "MMA",
+  "Yoga",
+  "Mobility",
+  "Physio/Rehab",
+  "Endurance",
+  "General fitness",
 ];
 
 interface SignupData {
@@ -27,14 +27,14 @@ interface SignupData {
   country_code: string;
   date_of_birth: string;
   gender: string;
-  height_cm: number | '';
-  height_feet: number | '';
-  height_inches: number | '';
-  weight_kg: number | '';
-  weight_lbs: number | '';
-  role: 'client' | 'trainer';
+  height_cm: number | "";
+  height_feet: number | "";
+  height_inches: number | "";
+  weight_kg: number | "";
+  weight_lbs: number | "";
+  role: "client" | "trainer";
   focus_categories: string[];
-  years_of_experience: number | '';
+  years_of_experience: number | "";
 }
 
 export default function MobileSignup() {
@@ -46,23 +46,23 @@ export default function MobileSignup() {
   const [useLbs, setUseLbs] = useState(false);
 
   const [data, setData] = useState<SignupData>({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    username: '',
-    full_name: '',
-    phone_number: '',
-    country_code: '+1',
-    date_of_birth: '',
-    gender: '',
-    height_cm: '',
-    height_feet: '',
-    height_inches: '',
-    weight_kg: '',
-    weight_lbs: '',
-    role: 'client',
+    email: "",
+    password: "",
+    confirmPassword: "",
+    username: "",
+    full_name: "",
+    phone_number: "",
+    country_code: "+1",
+    date_of_birth: "",
+    gender: "",
+    height_cm: "",
+    height_feet: "",
+    height_inches: "",
+    weight_kg: "",
+    weight_lbs: "",
+    role: "client",
     focus_categories: [],
-    years_of_experience: '',
+    years_of_experience: "",
   });
 
   const { signUp } = useAuth();
@@ -73,75 +73,78 @@ export default function MobileSignup() {
   };
 
   const toggleCategory = (category: string) => {
-    setData(prev => ({
+    setData((prev) => ({
       ...prev,
       focus_categories: prev.focus_categories.includes(category)
-        ? prev.focus_categories.filter(c => c !== category)
-        : [...prev.focus_categories, category]
+        ? prev.focus_categories.filter((c) => c !== category)
+        : [...prev.focus_categories, category],
     }));
   };
 
   const calculateAge = (dob: string) => {
-    if (!dob) return '';
+    if (!dob) return "";
     const today = new Date();
     const birthDate = new Date(dob);
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
     return age;
   };
 
   const validateStep = () => {
-    switch(step) {
+    switch (step) {
       case 0:
         if (!data.email || !data.password || !data.confirmPassword) {
-          toast.error('Please fill in all fields');
+          toast.error("Please fill in all fields");
           return false;
         }
         if (data.password.length < 8) {
-          toast.error('Password must be at least 8 characters');
+          toast.error("Password must be at least 8 characters");
           return false;
         }
         if (data.password !== data.confirmPassword) {
-          toast.error('Passwords do not match');
+          toast.error("Passwords do not match");
           return false;
         }
         return true;
       case 1:
         if (!data.username || !data.full_name || !data.phone_number) {
-          toast.error('Please fill in all fields');
+          toast.error("Please fill in all fields");
           return false;
         }
         return true;
       case 2:
         if (!data.date_of_birth || !data.gender) {
-          toast.error('Please fill in all fields');
+          toast.error("Please fill in all fields");
           return false;
         }
         return true;
       case 3:
         if (!data.height_cm && !useFeetInches) {
-          toast.error('Please enter your height');
+          toast.error("Please enter your height");
           return false;
         }
         if (useFeetInches && (!data.height_feet || !data.height_inches)) {
-          toast.error('Please enter your height');
+          toast.error("Please enter your height");
           return false;
         }
         return true;
       case 4:
         if (!data.weight_kg && !useLbs) {
-          toast.error('Please enter your weight');
+          toast.error("Please enter your weight");
           return false;
         }
         if (!data.role) {
-          toast.error('Please select your role');
+          toast.error("Please select your role");
           return false;
         }
-        if (data.role === 'trainer' && !data.years_of_experience) {
-          toast.error('Please enter years of experience');
+        if (data.role === "trainer" && !data.years_of_experience) {
+          toast.error("Please enter years of experience");
           return false;
         }
         return true;
@@ -166,7 +169,8 @@ export default function MobileSignup() {
       // Convert height to cm if using feet/inches
       let heightCm = data.height_cm;
       if (useFeetInches && data.height_feet && data.height_inches) {
-        heightCm = (Number(data.height_feet) * 12 + Number(data.height_inches)) * 2.54;
+        heightCm =
+          (Number(data.height_feet) * 12 + Number(data.height_inches)) * 2.54;
       }
 
       // Convert weight to kg if using lbs
@@ -188,10 +192,10 @@ export default function MobileSignup() {
         date_of_birth: data.date_of_birth,
       });
 
-      toast.success('Account created successfully!');
-      navigate('/');
+      toast.success("Account created successfully!");
+      navigate("/");
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Signup failed';
+      const errorMsg = error instanceof Error ? error.message : "Signup failed";
       toast.error(errorMsg);
     } finally {
       setIsLoading(false);
@@ -199,30 +203,36 @@ export default function MobileSignup() {
   };
 
   const renderStep = () => {
-    switch(step) {
+    switch (step) {
       case 0:
         return (
           <div className="space-y-5">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
               <input
                 type="email"
                 placeholder="your@email.com"
                 value={data.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
+                onChange={(e) => handleInputChange("email", e.target.value)}
                 disabled={isLoading}
                 className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={data.password}
-                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50 pr-12"
                 />
@@ -240,13 +250,17 @@ export default function MobileSignup() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Confirm Password
+              </label>
               <div className="relative">
                 <input
-                  type={showConfirmPassword ? 'text' : 'password'}
+                  type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={data.confirmPassword}
-                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("confirmPassword", e.target.value)
+                  }
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50 pr-12"
                 />
@@ -255,7 +269,11 @@ export default function MobileSignup() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
                 >
-                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
                 </button>
               </div>
             </div>
@@ -266,12 +284,14 @@ export default function MobileSignup() {
         return (
           <div className="space-y-5">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Username</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Username
+              </label>
               <input
                 type="text"
                 placeholder="your_username"
                 value={data.username}
-                onChange={(e) => handleInputChange('username', e.target.value)}
+                onChange={(e) => handleInputChange("username", e.target.value)}
                 disabled={isLoading}
                 className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
               />
@@ -279,23 +299,29 @@ export default function MobileSignup() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
               <input
                 type="text"
                 placeholder="John Doe"
                 value={data.full_name}
-                onChange={(e) => handleInputChange('full_name', e.target.value)}
+                onChange={(e) => handleInputChange("full_name", e.target.value)}
                 disabled={isLoading}
                 className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Phone Number
+              </label>
               <div className="flex gap-2">
                 <select
                   value={data.country_code}
-                  onChange={(e) => handleInputChange('country_code', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("country_code", e.target.value)
+                  }
                   disabled={isLoading}
                   className="w-20 px-2 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 disabled:opacity-50"
                 >
@@ -308,7 +334,9 @@ export default function MobileSignup() {
                   type="tel"
                   placeholder="9876543210"
                   value={data.phone_number}
-                  onChange={(e) => handleInputChange('phone_number', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("phone_number", e.target.value)
+                  }
                   disabled={isLoading}
                   className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
                 />
@@ -321,32 +349,40 @@ export default function MobileSignup() {
         return (
           <div className="space-y-5">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Date of Birth
+              </label>
               <input
                 type="date"
                 value={data.date_of_birth}
-                onChange={(e) => handleInputChange('date_of_birth', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("date_of_birth", e.target.value)
+                }
                 disabled={isLoading}
                 className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 disabled:opacity-50"
               />
               {data.date_of_birth && (
-                <p className="text-xs text-gray-500">Age: {calculateAge(data.date_of_birth)} years</p>
+                <p className="text-xs text-gray-500">
+                  Age: {calculateAge(data.date_of_birth)} years
+                </p>
               )}
             </div>
 
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700">Gender</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Gender
+              </label>
               <div className="flex gap-2">
-                {['Male', 'Female', 'Other'].map((g) => (
+                {["Male", "Female", "Other"].map((g) => (
                   <button
                     key={g}
                     type="button"
-                    onClick={() => handleInputChange('gender', g.toLowerCase())}
+                    onClick={() => handleInputChange("gender", g.toLowerCase())}
                     disabled={isLoading}
                     className={`flex-1 py-2 px-4 rounded-full font-medium transition-all disabled:opacity-50 ${
                       data.gender === g.toLowerCase()
-                        ? 'bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900'
-                        : 'bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300'
+                        ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
+                        : "bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300"
                     }`}
                   >
                     {g}
@@ -361,14 +397,18 @@ export default function MobileSignup() {
         return (
           <div className="space-y-5">
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700">Height</label>
-              
+              <label className="block text-sm font-medium text-gray-700">
+                Height
+              </label>
+
               {!useFeetInches ? (
                 <input
                   type="number"
                   placeholder="170"
                   value={data.height_cm}
-                  onChange={(e) => handleInputChange('height_cm', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("height_cm", e.target.value)
+                  }
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
                 />
@@ -378,7 +418,9 @@ export default function MobileSignup() {
                     type="number"
                     placeholder="5"
                     value={data.height_feet}
-                    onChange={(e) => handleInputChange('height_feet', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("height_feet", e.target.value)
+                    }
                     disabled={isLoading}
                     className="w-16 px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
                   />
@@ -387,7 +429,9 @@ export default function MobileSignup() {
                     type="number"
                     placeholder="10"
                     value={data.height_inches}
-                    onChange={(e) => handleInputChange('height_inches', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("height_inches", e.target.value)
+                    }
                     disabled={isLoading}
                     className="w-16 px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
                   />
@@ -401,7 +445,7 @@ export default function MobileSignup() {
                 disabled={isLoading}
                 className="text-sm text-orange-500 hover:text-orange-600 font-medium disabled:opacity-50"
               >
-                {useFeetInches ? 'Use cm' : 'Use feet/inches'}
+                {useFeetInches ? "Use cm" : "Use feet/inches"}
               </button>
             </div>
           </div>
@@ -411,14 +455,18 @@ export default function MobileSignup() {
         return (
           <div className="space-y-5">
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700">Weight</label>
-              
+              <label className="block text-sm font-medium text-gray-700">
+                Weight
+              </label>
+
               {!useLbs ? (
                 <input
                   type="number"
                   placeholder="70"
                   value={data.weight_kg}
-                  onChange={(e) => handleInputChange('weight_kg', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("weight_kg", e.target.value)
+                  }
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
                 />
@@ -427,7 +475,9 @@ export default function MobileSignup() {
                   type="number"
                   placeholder="154"
                   value={data.weight_lbs}
-                  onChange={(e) => handleInputChange('weight_lbs', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("weight_lbs", e.target.value)
+                  }
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
                 />
@@ -439,23 +489,25 @@ export default function MobileSignup() {
                 disabled={isLoading}
                 className="text-sm text-orange-500 hover:text-orange-600 font-medium disabled:opacity-50"
               >
-                {useLbs ? 'Use kg' : 'Use lbs'}
+                {useLbs ? "Use kg" : "Use lbs"}
               </button>
             </div>
 
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-gray-700">Role</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Role
+              </label>
               <div className="flex gap-2">
-                {['client', 'trainer'].map((r) => (
+                {["client", "trainer"].map((r) => (
                   <button
                     key={r}
                     type="button"
-                    onClick={() => handleInputChange('role', r)}
+                    onClick={() => handleInputChange("role", r)}
                     disabled={isLoading}
                     className={`flex-1 py-2 px-4 rounded-full font-medium transition-all disabled:opacity-50 capitalize ${
                       data.role === r
-                        ? 'bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900'
-                        : 'bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300'
+                        ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
+                        : "bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300"
                     }`}
                   >
                     {r}
@@ -464,23 +516,29 @@ export default function MobileSignup() {
               </div>
             </div>
 
-            {data.role === 'trainer' && (
+            {data.role === "trainer" && (
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Years of Experience
+                </label>
                 <input
                   type="number"
                   placeholder="5"
                   value={data.years_of_experience}
-                  onChange={(e) => handleInputChange('years_of_experience', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("years_of_experience", e.target.value)
+                  }
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
                 />
               </div>
             )}
 
-            {data.role === 'client' && (
+            {data.role === "client" && (
               <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700">Focus Categories</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Focus Categories
+                </label>
                 <div className="grid grid-cols-2 gap-2">
                   {FOCUS_CATEGORIES.map((cat) => (
                     <button
@@ -490,8 +548,8 @@ export default function MobileSignup() {
                       disabled={isLoading}
                       className={`py-2 px-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 ${
                         data.focus_categories.includes(cat)
-                          ? 'bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900'
-                          : 'bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300'
+                          ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
+                          : "bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300"
                       }`}
                     >
                       {cat}
@@ -501,9 +559,11 @@ export default function MobileSignup() {
               </div>
             )}
 
-            {data.role === 'trainer' && (
+            {data.role === "trainer" && (
               <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700">Specialties</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Specialties
+                </label>
                 <div className="grid grid-cols-2 gap-2">
                   {FOCUS_CATEGORIES.map((cat) => (
                     <button
@@ -513,8 +573,8 @@ export default function MobileSignup() {
                       disabled={isLoading}
                       className={`py-2 px-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 ${
                         data.focus_categories.includes(cat)
-                          ? 'bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900'
-                          : 'bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300'
+                          ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
+                          : "bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300"
                       }`}
                     >
                       {cat}
@@ -546,11 +606,11 @@ export default function MobileSignup() {
               {step + 1}
             </div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {step === 0 && 'Create account'}
-              {step === 1 && 'Profile basics'}
-              {step === 2 && 'Personal details'}
-              {step === 3 && 'Height'}
-              {step === 4 && 'Weight and role'}
+              {step === 0 && "Create account"}
+              {step === 1 && "Profile basics"}
+              {step === 2 && "Personal details"}
+              {step === 3 && "Height"}
+              {step === 4 && "Weight and role"}
             </h1>
             <p className="text-gray-600 text-sm">Step {step + 1} of 5</p>
           </div>
@@ -577,11 +637,15 @@ export default function MobileSignup() {
               disabled={isLoading}
               className={`flex-1 py-3 px-4 rounded-full font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 ${
                 step === 4
-                  ? 'bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-gray-900 shadow-lg hover:shadow-xl'
-                  : 'bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-gray-900 shadow-lg hover:shadow-xl'
+                  ? "bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-gray-900 shadow-lg hover:shadow-xl"
+                  : "bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-gray-900 shadow-lg hover:shadow-xl"
               }`}
             >
-              {isLoading ? 'Processing...' : step === 4 ? 'Create Account' : 'Next'}
+              {isLoading
+                ? "Processing..."
+                : step === 4
+                  ? "Create Account"
+                  : "Next"}
               {step < 4 && <ChevronRight size={20} />}
             </button>
           </div>
@@ -589,10 +653,10 @@ export default function MobileSignup() {
           {/* Login link */}
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{' '}
+              Already have an account?{" "}
               <button
                 type="button"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate("/login")}
                 disabled={isLoading}
                 className="text-orange-500 hover:text-orange-600 font-medium disabled:opacity-50"
               >

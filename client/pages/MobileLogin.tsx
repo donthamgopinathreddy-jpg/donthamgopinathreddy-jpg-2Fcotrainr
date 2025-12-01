@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function MobileLogin() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -16,19 +16,20 @@ export default function MobileLogin() {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
-      toast.error('Please fill in all fields');
+      toast.error("Please fill in all fields");
       return;
     }
 
     setIsLoading(true);
     try {
       await signIn(email, password);
-      toast.success('Welcome back!');
-      navigate('/');
+      toast.success("Welcome back!");
+      navigate("/");
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Sign in failed';
+      const errorMsg =
+        error instanceof Error ? error.message : "Sign in failed";
       toast.error(errorMsg);
     } finally {
       setIsLoading(false);
@@ -45,7 +46,8 @@ export default function MobileLogin() {
         {/* Header with logo */}
         <div className="text-center mb-8">
           <div className="text-4xl font-bold text-gray-900 mb-2">
-            <span className="text-orange-500">Co</span><span className="text-gray-900">Trainr.</span>
+            <span className="text-orange-500">Co</span>
+            <span className="text-gray-900">Trainr.</span>
           </div>
         </div>
 
@@ -53,14 +55,21 @@ export default function MobileLogin() {
         <div className="backdrop-blur-2xl bg-white/90 border border-white/20 rounded-3xl shadow-2xl p-8 space-y-6">
           {/* Title section */}
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold text-gray-900">Sign in to your account</h1>
-            <p className="text-gray-600 text-sm">Welcome back to your fitness journey</p>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Sign in to your account
+            </h1>
+            <p className="text-gray-600 text-sm">
+              Welcome back to your fitness journey
+            </p>
           </div>
 
           <form onSubmit={handleSignIn} className="space-y-5">
             {/* Email field */}
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email Address
               </label>
               <input
@@ -76,13 +85,16 @@ export default function MobileLogin() {
 
             {/* Password field */}
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="relative">
                 <input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -95,11 +107,7 @@ export default function MobileLogin() {
                   disabled={isLoading}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 disabled:opacity-50"
                 >
-                  {showPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
             </div>
@@ -118,7 +126,7 @@ export default function MobileLogin() {
               </label>
               <button
                 type="button"
-                onClick={() => navigate('/forgot-password')}
+                onClick={() => navigate("/forgot-password")}
                 disabled={isLoading}
                 className="text-sm text-orange-500 hover:text-orange-600 font-medium disabled:opacity-50"
               >
@@ -132,7 +140,7 @@ export default function MobileLogin() {
               disabled={isLoading}
               className="w-full py-3 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-gray-900 font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? "Signing in..." : "Sign in"}
             </button>
           </form>
 
@@ -151,7 +159,7 @@ export default function MobileLogin() {
             <p className="text-gray-600 text-sm">Don't have an account?</p>
             <button
               type="button"
-              onClick={() => navigate('/signup')}
+              onClick={() => navigate("/signup")}
               disabled={isLoading}
               className="w-full py-3 rounded-full border-2 border-orange-400 hover:border-orange-500 text-orange-500 hover:text-orange-600 font-semibold transition-all disabled:opacity-50"
             >
@@ -163,7 +171,7 @@ export default function MobileLogin() {
           {import.meta.env.DEV && (
             <button
               type="button"
-              onClick={() => navigate('/signup')}
+              onClick={() => navigate("/signup")}
               disabled={isLoading}
               className="w-full py-2 rounded-full text-gray-600 hover:text-gray-700 text-xs font-medium border border-gray-200 hover:border-gray-300 transition-all disabled:opacity-50"
             >
