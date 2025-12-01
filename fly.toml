@@ -1,0 +1,34 @@
+# fly.toml file generated for cotrainr-new app
+
+app = "cotrainr-new"
+primary_region = "del"
+
+[build]
+  builder = "paketobuildpacks"
+
+[build.buildpacks]
+  builder = "heroku/buildpacks:20"
+
+[env]
+  NODE_ENV = "production"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 8080
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+[checks]
+  [checks.alive]
+    type = "http"
+    uri = "/api/ping"
+    interval = 10000
+    timeout = 5000
