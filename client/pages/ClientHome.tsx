@@ -18,7 +18,6 @@ import {
   MessageCircle,
   User,
 } from "lucide-react";
-import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useStepCounter } from "@/hooks/useStepCounter";
