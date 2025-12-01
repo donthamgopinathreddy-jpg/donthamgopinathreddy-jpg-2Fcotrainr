@@ -166,50 +166,68 @@ const Community = () => {
         const formData = new FormData();
         formData.append("file", postImage);
 
-        const uploadResponse = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
+        try {
+          const uploadResponse = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          }).catch((err) => {
+            console.warn("Image upload failed:", err);
+            return { ok: false } as Response;
+          });
 
-        if (!uploadResponse.ok) {
-          throw new Error("Failed to upload image");
+          if (uploadResponse.ok) {
+            const { url } = await uploadResponse.json();
+            imageUrl = url;
+          }
+        } catch (err) {
+          console.warn("Image upload error:", err);
         }
-
-        const { url } = await uploadResponse.json();
-        imageUrl = url;
       }
 
       if (postVideo) {
         const formData = new FormData();
         formData.append("file", postVideo);
 
-        const uploadResponse = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
+        try {
+          const uploadResponse = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          }).catch((err) => {
+            console.warn("Video upload failed:", err);
+            return { ok: false } as Response;
+          });
 
-        if (!uploadResponse.ok) {
-          throw new Error("Failed to upload video");
+          if (uploadResponse.ok) {
+            const { url } = await uploadResponse.json();
+            videoUrl = url;
+          }
+        } catch (err) {
+          console.warn("Video upload error:", err);
         }
-
-        const { url } = await uploadResponse.json();
-        videoUrl = url;
       }
 
-      const response = await fetch("/api/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: postContent,
-          image_url: imageUrl,
-          video_url: videoUrl,
-        }),
-      });
+      try {
+        const response = await fetch("/api/posts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: postContent,
+            image_url: imageUrl,
+            video_url: videoUrl,
+          }),
+        }).catch((err) => {
+          console.warn("Post creation failed:", err);
+          return { ok: false } as Response;
+        });
 
-      if (!response.ok) {
-        throw new Error("Failed to create post");
+        if (!response.ok) {
+          throw new Error("Failed to create post");
+        }
+      } catch (err) {
+        console.warn("Post creation error:", err);
+        throw err;
       }
 
       toast.success("Post created!");
