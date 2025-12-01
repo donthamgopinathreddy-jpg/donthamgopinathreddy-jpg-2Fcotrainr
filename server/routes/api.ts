@@ -77,6 +77,59 @@ router.get('/health', async (_req: Request, res: Response) => {
   }
 });
 
+// Debug endpoint - check Supabase configuration
+router.get('/debug/supabase', (_req: Request, res: Response) => {
+  console.log('[API] Debug endpoint called');
+
+  try {
+    // Check environment variables
+    const envCheck = {
+      SUPABASE_URL: {
+        set: !!process.env.SUPABASE_URL,
+        value: process.env.SUPABASE_URL ? '***' : 'not set',
+      },
+      SUPABASE_ANON_KEY: {
+        set: !!process.env.SUPABASE_ANON_KEY,
+        value: process.env.SUPABASE_ANON_KEY ? 'set (hidden)' : 'not set',
+      },
+      VITE_SUPABASE_URL: {
+        set: !!process.env.VITE_SUPABASE_URL,
+        value: process.env.VITE_SUPABASE_URL ? '***' : 'not set',
+      },
+      VITE_SUPABASE_ANON_KEY: {
+        set: !!process.env.VITE_SUPABASE_ANON_KEY,
+        value: process.env.VITE_SUPABASE_ANON_KEY ? 'set (hidden)' : 'not set',
+      },
+      NODE_ENV: process.env.NODE_ENV,
+    };
+
+    // Check Supabase client
+    const supabaseCheck = {
+      isInitialized: !!supabase,
+      hasAuth: !!supabase?.auth,
+      hasFrom: !!supabase?.from,
+      url: SUPABASE_URL,
+      keyLength: SUPABASE_ANON_KEY?.length || 0,
+    };
+
+    res.json({
+      status: 'ok',
+      message: 'Supabase configuration debug info',
+      environment: envCheck,
+      supabase: supabaseCheck,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error: any) {
+    console.error('[API] Debug endpoint error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Debug endpoint error',
+      error: error?.message,
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
+
 // Auth endpoints
 router.post('/auth/signin', async (req: Request, res: Response) => {
   try {
