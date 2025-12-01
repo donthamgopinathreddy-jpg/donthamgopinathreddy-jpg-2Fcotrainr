@@ -253,8 +253,14 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
     // Determine the redirect URL based on environment
     let emailRedirectTo: string | undefined = undefined;
 
-    // On Netlify, use the DEPLOY_PRIME_URL or DEPLOY_URL
-    if (process.env.DEPLOY_PRIME_URL) {
+    // Check for Fly.dev deployment
+    if (process.env.FLY_APP_NAME) {
+      // On Fly.dev - construct the URL from the app name and organization
+      const appName = process.env.FLY_APP_NAME;
+      emailRedirectTo = `https://${appName}.fly.dev/login`;
+      console.log('[API] Using Fly.dev URL:', emailRedirectTo);
+    } else if (process.env.DEPLOY_PRIME_URL) {
+      // On Netlify preview
       emailRedirectTo = `${process.env.DEPLOY_PRIME_URL}/login`;
       console.log('[API] Using Netlify preview URL:', emailRedirectTo);
     } else if (process.env.URL) {
@@ -265,6 +271,11 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
       // If using Vercel
       emailRedirectTo = `https://${process.env.VERCEL_URL}/login`;
       console.log('[API] Using Vercel URL:', emailRedirectTo);
+    } else if (req.get('host')) {
+      // Fall back to request host
+      const protocol = req.secure ? 'https' : 'http';
+      emailRedirectTo = `${protocol}://${req.get('host')}/login`;
+      console.log('[API] Using request host URL:', emailRedirectTo);
     } else {
       // Default to localhost for development
       emailRedirectTo = 'http://localhost:8080/login';
