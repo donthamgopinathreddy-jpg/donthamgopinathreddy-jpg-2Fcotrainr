@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Eye,
@@ -6,9 +6,12 @@ import {
   ArrowRight,
   CheckCircle2,
   AlertCircle,
+  Check,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 import Logo from "@/components/Logo";
 
 export default function MobileSignup() {
@@ -19,6 +22,10 @@ export default function MobileSignup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
+  const [usernameStatus, setUsernameStatus] = useState<
+    "checking" | "available" | "taken" | null
+  >(null);
+  const [usernameChecking, setUsernameChecking] = useState(false);
 
   const validatePassword = (password: string): string | null => {
     if (password.length < 6) {
@@ -31,7 +38,45 @@ export default function MobileSignup() {
     if (username.length < 3) {
       return "Username must be at least 3 characters";
     }
+    if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+      return "Username can only contain letters, numbers, underscore, and dash";
+    }
     return null;
+  };
+
+  const checkUsernameAvailability = async (username: string) => {
+    if (!username || username.length < 3) {
+      setUsernameStatus(null);
+      return;
+    }
+
+    const validationError = validateUsername(username);
+    if (validationError) {
+      setUsernameStatus(null);
+      return;
+    }
+
+    setUsernameChecking(true);
+    setUsernameStatus("checking");
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .select("id")
+        .eq("username", username)
+        .single();
+
+      if (error?.code === "PGRST116") {
+        // PGRST116 means no rows found - username is available
+        setUsernameStatus("available");
+      } else if (data) {
+        setUsernameStatus("taken");
+      }
+    } catch (err) {
+      console.error("Error checking username:", err);
+      setUsernameStatus(null);
+    } finally {
+      setUsernameChecking(false);
+    }
   };
 
   const [formData, setFormData] = useState({
@@ -48,7 +93,7 @@ export default function MobileSignup() {
     weight_pounds: "",
     phone_number: "",
     country_code: "+1",
-    role: "client",
+    role: "",
   });
 
   const handleInputChange = (
@@ -57,7 +102,6 @@ export default function MobileSignup() {
     const { name, value } = e.target;
     const newData = { ...formData, [name]: value };
 
-    // Auto-convert height feet to cm
     if (name === "height_feet" && value) {
       const feet = parseInt(value);
       const inches = parseInt(formData.height_inches) || 0;
@@ -66,7 +110,6 @@ export default function MobileSignup() {
       newData.height_cm = cm.toString();
     }
 
-    // Auto-convert height inches to cm
     if (name === "height_inches" && value) {
       const feet = parseInt(formData.height_feet) || 0;
       const inches = parseInt(value);
@@ -75,18 +118,21 @@ export default function MobileSignup() {
       newData.height_cm = cm.toString();
     }
 
-    // Auto-convert pounds to kg
     if (name === "weight_pounds" && value) {
       const pounds = parseInt(value);
       const kg = Math.round(pounds / 2.205);
       newData.weight_kg = kg.toString();
     }
 
-    // Auto-convert kg to pounds
     if (name === "weight_kg" && value) {
       const kg = parseInt(value);
       const pounds = Math.round(kg * 2.205);
       newData.weight_pounds = pounds.toString();
+    }
+
+    if (name === "username") {
+      // Debounced username check
+      checkUsernameAvailability(value);
     }
 
     setFormData(newData);
@@ -116,6 +162,14 @@ export default function MobileSignup() {
         setError("Please fill in all fields");
         return;
       }
+      if (usernameStatus === "taken") {
+        setError("Username is already taken");
+        return;
+      }
+      if (usernameStatus !== "available") {
+        setError("Please check username availability");
+        return;
+      }
       const usernameError = validateUsername(formData.username);
       if (usernameError) {
         setError(usernameError);
@@ -123,24 +177,20 @@ export default function MobileSignup() {
       }
       setStep(3);
     } else if (step === 3) {
-      if (!formData.gender || !formData.role) {
-        setError("Please select gender and account type");
+      if (!formData.height_feet || !formData.height_inches || !formData.weight_kg) {
+        setError("Please fill in all fields");
         return;
       }
       setStep(4);
     } else if (step === 4) {
-      if (
-        !formData.height_feet ||
-        !formData.height_inches ||
-        !formData.weight_kg
-      ) {
-        setError("Please fill in all fields");
+      if (!formData.phone_number) {
+        setError("Please enter your phone number");
         return;
       }
       setStep(5);
     } else if (step === 5) {
-      if (!formData.phone_number) {
-        setError("Please enter your phone number");
+      if (!formData.gender || !formData.role) {
+        setError("Please select gender and account type");
         return;
       }
       handleSignup();
@@ -158,6 +208,16 @@ export default function MobileSignup() {
       );
       const weightInKg = parseInt(formData.weight_kg);
 
+      console.log("Attempting signup with data:", {
+        email: formData.email,
+        username: formData.username,
+        full_name: formData.full_name,
+        gender: formData.gender,
+        role: formData.role,
+        height_cm: heightInCm,
+        weight_kg: weightInKg,
+      });
+
       await signUp(formData.email, formData.password, {
         username: formData.username,
         full_name: formData.full_name,
@@ -170,7 +230,7 @@ export default function MobileSignup() {
       });
 
       setStep(6);
-      toast.success("Account created! Please sign in.");
+      toast.success("Account created successfully!");
       setTimeout(() => {
         navigate("/login", {
           state: { message: "Account created! Please sign in." },
@@ -178,8 +238,7 @@ export default function MobileSignup() {
       }, 2000);
     } catch (error: any) {
       console.error("Signup error:", error);
-      const errorMsg =
-        error.message || "Failed to create account. Please try again.";
+      const errorMsg = error?.message || "Failed to create account";
       setError(errorMsg);
       toast.error(errorMsg);
     } finally {
@@ -190,9 +249,9 @@ export default function MobileSignup() {
   const stepTitles = [
     "Create Account",
     "Personal Info",
-    "About You",
     "Your Stats",
     "Contact Info",
+    "Finish Setup",
     "All Set!",
   ];
 
@@ -302,11 +361,7 @@ export default function MobileSignup() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
             </div>
@@ -331,75 +386,40 @@ export default function MobileSignup() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
+              <label className="block text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
                 Username
+                {usernameStatus === "checking" && (
+                  <span className="text-xs text-gray-500">checking...</span>
+                )}
               </label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                placeholder="johndoe"
-                className="w-full px-5 py-3.5 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  placeholder="johndoe"
+                  className="w-full px-5 py-3.5 pr-12 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
+                {usernameStatus === "available" && (
+                  <Check size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500" />
+                )}
+                {usernameStatus === "taken" && (
+                  <X size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500" />
+                )}
+              </div>
+              {usernameStatus === "available" && (
+                <p className="text-xs text-green-600 mt-2">✓ Username available</p>
+              )}
+              {usernameStatus === "taken" && (
+                <p className="text-xs text-red-600 mt-2">✗ Username already taken</p>
+              )}
             </div>
           </div>
         )}
 
-        {/* Step 3: Gender and Account Type */}
+        {/* Step 3: Height and Weight */}
         {step === 3 && (
-          <div className="space-y-6 max-w-md mx-auto animate-fade-in-up">
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-4">
-                Gender
-              </label>
-              <div className="flex gap-3">
-                {["Male", "Female", "Other"].map((gender) => (
-                  <button
-                    key={gender}
-                    onClick={() => setFormData({ ...formData, gender })}
-                    className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
-                      formData.gender === gender
-                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {gender}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-4">
-                Account Type
-              </label>
-              <div className="flex gap-3">
-                {[
-                  { value: "client", label: "Client" },
-                  { value: "trainer", label: "Trainer" },
-                ].map((type) => (
-                  <button
-                    key={type.value}
-                    onClick={() =>
-                      setFormData({ ...formData, role: type.value as any })
-                    }
-                    className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
-                      formData.role === type.value
-                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {type.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Step 4: Height and Weight */}
-        {step === 4 && (
           <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-3">
@@ -454,8 +474,8 @@ export default function MobileSignup() {
           </div>
         )}
 
-        {/* Step 5: Phone Number */}
-        {step === 5 && (
+        {/* Step 4: Phone Number */}
+        {step === 4 && (
           <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-3">
@@ -494,6 +514,60 @@ export default function MobileSignup() {
           </div>
         )}
 
+        {/* Step 5: Gender and Account Type */}
+        {step === 5 && (
+          <div className="space-y-6 max-w-md mx-auto animate-fade-in-up">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-4">
+                Gender
+              </label>
+              <div className="flex gap-3">
+                {["Male", "Female", "Other"].map((gender) => (
+                  <button
+                    key={gender}
+                    onClick={() =>
+                      setFormData({ ...formData, gender })
+                    }
+                    className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
+                      formData.gender === gender
+                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {gender}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-4">
+                Account Type
+              </label>
+              <div className="flex gap-3">
+                {[
+                  { value: "client", label: "Client" },
+                  { value: "trainer", label: "Trainer" },
+                ].map((type) => (
+                  <button
+                    key={type.value}
+                    onClick={() =>
+                      setFormData({ ...formData, role: type.value as any })
+                    }
+                    className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
+                      formData.role === type.value
+                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {type.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Step 6: Success */}
         {step === 6 && (
           <div className="flex flex-col items-center justify-center text-center space-y-6 max-w-md mx-auto animate-fade-in">
@@ -523,7 +597,7 @@ export default function MobileSignup() {
           </button>
           <button
             onClick={handleNext}
-            disabled={loading}
+            disabled={loading || (step === 2 && usernameStatus !== "available")}
             className="flex-1 px-5 py-3 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900 font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
