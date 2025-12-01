@@ -71,14 +71,14 @@ export default function MobileLogin() {
       {/* Content */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-8">
         {/* Header Section */}
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-block mb-8 transform hover:scale-110 transition-transform duration-300">
+        <div className="text-center mb-12 animate-fade-in" style={{ animationDuration: "0.8s" }}>
+          <div className="inline-block mb-8 transform hover:scale-110 transition-transform duration-300 p-4 rounded-3xl bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200">
             <Logo size="xl" className="drop-shadow-lg" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">
+          <h1 className="text-4xl font-bold text-gray-900 mb-3 tracking-tight">
             Welcome Back
           </h1>
-          <p className="text-gray-600 text-base">
+          <p className="text-gray-600 text-base font-medium">
             Sign in to your fitness journey
           </p>
         </div>
