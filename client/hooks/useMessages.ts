@@ -145,8 +145,8 @@ export const useMessages = (recipientId?: string) => {
     }
   };
 
-  // Fetch messages for a specific conversation
-  const fetchMessages = async (otherUserId: string) => {
+  // Fetch messages for a specific conversation (otherUserId is actually conversationId)
+  const fetchMessages = async (conversationIdOrUserId: string) => {
     if (!user) return;
 
     setLoading(true);
@@ -156,28 +156,49 @@ export const useMessages = (recipientId?: string) => {
       if (isDemo) {
         // Load from localStorage in demo mode
         const demoMessages = localStorage.getItem(
-          `messages_demo_${user.id}_${otherUserId}`,
+          `messages_demo_${user.id}_${conversationIdOrUserId}`,
         );
         setMessages(demoMessages ? JSON.parse(demoMessages) : []);
         setLoading(false);
         return;
       }
 
+      // First, check if this is a conversation ID or user ID
+      // If it contains '-', assume it's a UUID (conversation ID)
+      let conversationId = conversationIdOrUserId;
+
+      if (!conversationIdOrUserId.includes('-')) {
+        // This might be a user ID, need to find the conversation
+        const { data: convData, error: convError } = await supabase
+          .from("conversations")
+          .select("id")
+          .or(
+            `and(participant1_id.eq.${user.id},participant2_id.eq.${conversationIdOrUserId}),and(participant1_id.eq.${conversationIdOrUserId},participant2_id.eq.${user.id})`,
+          )
+          .single();
+
+        if (convError || !convData) {
+          console.warn("No conversation found with user:", conversationIdOrUserId);
+          setMessages([]);
+          return;
+        }
+        conversationId = convData.id;
+      }
+
+      // Fetch all messages in the conversation
       const { data, error } = await supabase
         .from("messages")
         .select("*")
-        .or(
-          `and(sender_id.eq.${user.id},recipient_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},recipient_id.eq.${user.id})`,
-        )
+        .eq("conversation_id", conversationId)
         .order("created_at", { ascending: true });
 
       if (error) throw error;
       setMessages(data || []);
 
-      // Mark as read
+      // Mark unread messages as read
       if (data && Array.isArray(data)) {
         const unreadIds = data
-          .filter((m) => !m.is_read && m.recipient_id === user.id)
+          .filter((m) => !m.is_read && m.sender_id !== user.id)
           .map((m) => m.id);
 
         if (unreadIds.length > 0) {
@@ -189,7 +210,7 @@ export const useMessages = (recipientId?: string) => {
       }
     } catch (error) {
       console.error("Error fetching messages:", error);
-      setMessages([]); // Set empty array on error
+      setMessages([]);
     } finally {
       setLoading(false);
     }
