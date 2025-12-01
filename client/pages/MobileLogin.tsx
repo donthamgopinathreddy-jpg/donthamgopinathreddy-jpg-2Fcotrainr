@@ -94,7 +94,7 @@ export default function MobileLogin() {
         {/* Login Form */}
         <form onSubmit={handleLogin} className="w-full max-w-sm space-y-5">
           {/* Email Input */}
-          <div className="group">
+          <div className="group animate-fade-in-up" style={{ animationDelay: "0.1s", animationDuration: "0.7s" }}>
             <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-blue-600 transition-colors">
               Email Address
             </label>
@@ -106,12 +106,12 @@ export default function MobileLogin() {
                 setError("");
               }}
               placeholder="your@email.com"
-              className="w-full px-5 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+              className="w-full px-5 py-3.5 rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:border-gray-400 focus:from-blue-50 focus:to-gray-50"
             />
           </div>
 
           {/* Password Input */}
-          <div className="group">
+          <div className="group animate-fade-in-up" style={{ animationDelay: "0.2s", animationDuration: "0.7s" }}>
             <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-blue-600 transition-colors">
               Password
             </label>
@@ -124,12 +124,12 @@ export default function MobileLogin() {
                   setError("");
                 }}
                 placeholder="••••••••"
-                className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+                className="w-full px-5 py-3.5 pr-12 rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:border-gray-400 focus:from-blue-50 focus:to-gray-50"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600 transition-colors duration-200"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600 transition-colors duration-200 transform hover:scale-125 active:scale-95"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
