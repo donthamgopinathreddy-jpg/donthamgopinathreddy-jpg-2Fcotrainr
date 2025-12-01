@@ -68,6 +68,12 @@ export function createServer() {
     apiRouter(req, res, next);
   });
 
+  app.get('/api/users/profile', async (req, res, next) => {
+    console.log('[Server] Forwarding GET /api/users/profile to apiRouter');
+    req.url = '/users/profile';
+    apiRouter(req, res, next);
+  });
+
   // Serve static files from the dist/spa directory in production
   const staticDir = path.join(__dirname, '../dist/spa');
   console.log('[Server] Static directory:', staticDir);
