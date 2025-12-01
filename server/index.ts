@@ -15,14 +15,33 @@ export function createServer() {
   console.log('[Server] Creating Express server');
 
   // Add JSON middleware globally for proper request parsing
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+  // Add CORS headers for development
+  app.use((req, res, next) => {
+    // Allow requests from the Vite dev server
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    res.header('Access-Control-Max-Age', '3600');
+
+    // Handle OPTIONS requests
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+
+    next();
+  });
 
   // Add detailed logging middleware to see all requests
   app.use((req, res, next) => {
     console.log(
       `[Server] ${req.method} ${req.path} (url: ${req.url}, originalUrl: ${req.originalUrl})`
     );
+    if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
+      console.log(`[Server] Request body:`, req.body);
+    }
     next();
   });
 
