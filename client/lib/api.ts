@@ -83,7 +83,7 @@ export const authApi = {
     role?: string;
   }) => {
     const response = await apiCall<{ user: any; token: string }>(
-      "/auth/signup",
+      "/api/auth/signup",
       {
         method: "POST",
         body: JSON.stringify(data),
@@ -95,7 +95,7 @@ export const authApi = {
 
   login: async (email: string, password: string) => {
     const response = await apiCall<{ user: any; token: string }>(
-      "/auth/login",
+      "/api/auth/signin",
       {
         method: "POST",
         body: JSON.stringify({ email, password }),
