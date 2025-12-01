@@ -355,6 +355,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           username: userData.username,
           password,
           full_name: userData.full_name,
+          gender: userData.gender,
           height: userData.height_cm,
           weight: userData.weight_kg,
           phone_number: userData.phone_number,
