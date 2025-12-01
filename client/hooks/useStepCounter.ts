@@ -132,14 +132,18 @@ export const useStepCounter = () => {
             source: "sensor",
           })
           .select()
-          .single();
+          .single()
+          .catch((err) => {
+            console.warn("Supabase insert failed, using default:", err?.message);
+            return { data: null, error: err };
+          });
 
         if (newEntry) {
           setTotalStepsToday(0);
           return 0;
         }
       } catch (insertError) {
-        console.warn("Could not create steps entry:", insertError);
+        console.warn("Could not create steps entry:", insertError instanceof Error ? insertError.message : "Unknown error");
         return 0;
       }
     } catch (error) {
