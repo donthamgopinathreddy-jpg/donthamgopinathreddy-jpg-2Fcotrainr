@@ -3,7 +3,6 @@ import { createClient } from '@supabase/supabase-js';
 
 const router = express.Router();
 
-
 // Use environment variables for Supabase credentials
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hnxdlgdkyboctsvfktwe.supabase.co';
 const SUPABASE_ANON_KEY =
@@ -68,7 +67,6 @@ router.get('/health', async (_req: Request, res: Response) => {
     });
   }
 });
-
 
 // Auth endpoints
 router.post('/auth/signin', async (req: Request, res: Response) => {

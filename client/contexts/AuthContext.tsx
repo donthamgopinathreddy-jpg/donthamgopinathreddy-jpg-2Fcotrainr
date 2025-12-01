@@ -106,7 +106,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } = await supabase.auth.getSession();
 
       if (!currentSession?.refresh_token) {
-        console.warn("[Auth] No refresh_token available - cannot auto-refresh, will sign out on next API call");
+        console.warn(
+          "[Auth] No refresh_token available - cannot auto-refresh, will sign out on next API call",
+        );
         return;
       }
 
@@ -126,9 +128,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       if (refreshedSession) {
-        console.log(
-          "[Auth] Token refreshed successfully",
-        );
+        console.log("[Auth] Token refreshed successfully");
         setUser(refreshedSession.user);
       }
     } catch (error) {
