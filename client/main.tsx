@@ -15,13 +15,29 @@ if (typeof window !== "undefined") {
 
   // Handle unhandled promise rejections
   window.addEventListener("unhandledrejection", (event) => {
+    const reason = event.reason;
+    const message = reason?.message || String(reason);
+
+    // Handle token refresh errors
     if (
-      event.reason?.message?.includes("Refresh Token") ||
-      event.reason?.message?.includes("Invalid Refresh Token") ||
-      event.reason?.message?.includes("AuthApiError")
+      message?.includes("Refresh Token") ||
+      message?.includes("Invalid Refresh Token") ||
+      message?.includes("AuthApiError")
     ) {
-      console.error("[App] Unhandled token refresh error:", event.reason);
+      console.error("[App] Unhandled token refresh error:", reason);
       event.preventDefault();
+      return;
+    }
+
+    // Handle fetch/network errors from Supabase (silently ignore)
+    if (
+      message?.includes("Failed to fetch") ||
+      message?.includes("NetworkError") ||
+      message?.includes("ERR_FAILED")
+    ) {
+      console.warn("[App] Network error (silently caught):", message);
+      event.preventDefault();
+      return;
     }
   });
 }
