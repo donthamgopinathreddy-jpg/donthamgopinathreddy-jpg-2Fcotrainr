@@ -311,17 +311,31 @@ export default function ClientHome() {
             </button>
           </header>
 
-          {/* 2. Banner Card - Enhanced Cover Image Selection */}
+          {/* 2. Banner Card - Cover Image with Upload */}
           <div className="mx-5 mb-6 rounded-3xl overflow-hidden relative h-56 group">
             {/* Background Image */}
             <img
-              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=300&fit=crop"
-              alt="Banner"
+              src={
+                coverImage ||
+                "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=300&fit=crop"
+              }
+              alt="Cover"
               className="absolute inset-0 w-full h-full object-cover"
             />
 
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/30 to-black/50"></div>
+
+            {/* Upload Button */}
+            <label className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full cursor-pointer transition-all shadow-lg group-hover:scale-110">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleCoverImageUpload}
+                className="hidden"
+              />
+              <Zap size={20} className="text-gray-800" />
+            </label>
 
             {/* Top Content */}
             <div className="absolute top-0 left-0 right-0 p-5 text-white">
