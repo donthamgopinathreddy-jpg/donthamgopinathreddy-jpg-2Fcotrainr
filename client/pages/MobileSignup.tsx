@@ -95,7 +95,7 @@ export default function MobileSignup() {
 
   const handleNext = () => {
     setError("");
-    
+
     if (step === 1) {
       if (!formData.email || !formData.password || !formData.confirmPassword) {
         setError("Please fill in all fields");
@@ -129,7 +129,11 @@ export default function MobileSignup() {
       }
       setStep(4);
     } else if (step === 4) {
-      if (!formData.height_feet || !formData.height_inches || !formData.weight_kg) {
+      if (
+        !formData.height_feet ||
+        !formData.height_inches ||
+        !formData.weight_kg
+      ) {
         setError("Please fill in all fields");
         return;
       }
@@ -298,7 +302,11 @@ export default function MobileSignup() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
                 >
-                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
                 </button>
               </div>
             </div>
@@ -349,9 +357,7 @@ export default function MobileSignup() {
                 {["Male", "Female", "Other"].map((gender) => (
                   <button
                     key={gender}
-                    onClick={() =>
-                      setFormData({ ...formData, gender })
-                    }
+                    onClick={() => setFormData({ ...formData, gender })}
                     className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
                       formData.gender === gender
                         ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
