@@ -97,38 +97,79 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
       console.log('[API] Missing email or password');
       return res.status(400).json({
         error: 'Missing email or password',
+        message: 'Email and password are required',
       });
     }
 
     console.log('[API] Sign in attempt for:', email);
 
+    // Verify Supabase client is properly initialized
+    console.log('[API] Supabase client check:');
+    console.log('[API]   auth:', !!supabase.auth ? '✓' : '✗');
+    console.log('[API]   auth.signInWithPassword:', typeof supabase.auth.signInWithPassword);
+
     // Call Supabase auth
     console.log('[API] Calling supabase.auth.signInWithPassword');
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    let data: any;
+    let error: any;
+
+    try {
+      const result = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      data = result.data;
+      error = result.error;
+    } catch (catchError: any) {
+      console.error('[API] Exception thrown by signInWithPassword:', {
+        name: catchError?.name,
+        message: catchError?.message,
+        code: catchError?.code,
+        stack: catchError?.stack?.split('\n').slice(0, 5).join('\n'),
+      });
+      throw catchError;
+    }
+
+    console.log('[API] Sign in response received:', {
+      hasError: !!error,
+      hasData: !!data,
+      errorMessage: error?.message,
+      errorStatus: error?.status,
     });
 
     if (error) {
       console.error('[API] Sign in error from Supabase:', {
         message: error.message,
         status: error.status,
+        code: (error as any).code,
+        name: error.name,
       });
       return res.status(401).json({
         message: error.message || 'Authentication failed',
         error: error.message || 'Authentication failed',
+        code: (error as any).code,
       });
     }
 
     if (!data?.user) {
       console.error('[API] No user returned from auth');
+      console.log('[API] Data received:', {
+        hasSession: !!data?.session,
+        sessionType: typeof data?.session,
+        keys: data ? Object.keys(data) : 'null',
+      });
       return res.status(401).json({
-        message: 'Authentication failed',
+        message: 'No user data returned from authentication',
         error: 'Authentication failed',
       });
     }
 
     console.log('[API] Sign in successful for:', email);
+    console.log('[API] User data:', {
+      id: data.user.id,
+      email: data.user.email,
+      role: data.user.user_metadata?.role,
+    });
     console.log('[API] Returning user and session');
 
     // Ensure we're sending valid JSON
@@ -147,8 +188,22 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
 
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json(responseObj);
-  } catch (error) {
-    console.error('[API] Sign in error:', error);
+  } catch (error: any) {
+    console.error('[API] ========================================');
+    console.error('[API] Sign in error caught:');
+    console.error('[API]   Type:', error?.constructor?.name);
+    console.error('[API]   Message:', error?.message);
+    console.error('[API]   Code:', error?.code);
+    console.error('[API]   Name:', error?.name);
+    console.error('[API]   Status:', error?.status);
+    if (error?.stack) {
+      console.error('[API]   Stack (first 10 lines):');
+      error.stack.split('\n').slice(0, 10).forEach((line: string) => {
+        console.error('[API]    ', line);
+      });
+    }
+    console.error('[API] ========================================');
+
     const message = error instanceof Error ? error.message : 'Internal server error';
     console.error('[API] Sending error response:', message);
 
@@ -156,6 +211,8 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
     res.status(500).json({
       message: message,
       error: message,
+      errorType: error?.constructor?.name || 'Unknown',
+      code: error?.code,
     });
   }
 });
