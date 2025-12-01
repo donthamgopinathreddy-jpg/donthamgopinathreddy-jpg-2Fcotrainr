@@ -77,56 +77,24 @@ export const useTrainers = () => {
     },
   ];
 
-  // Fetch all trainers
+  // Fetch all trainers using backend API
   const fetchTrainers = async (specialty?: string) => {
     setLoading(true);
     try {
-      let query = supabase.from("users").select("*").eq("role", "trainer");
-
+      // Use backend API endpoint instead of direct Supabase query
+      const url = new URL("/api/trainers", window.location.origin);
       if (specialty) {
-        query = query.contains("specialties", [specialty]);
+        url.searchParams.append("specialty", specialty);
       }
 
-      const { data, error } = await query;
+      const response = await fetch(url.toString());
 
-      if (error) {
-        // Fall back to demo trainers
-        let demoTrainers = DEMO_TRAINERS;
-        if (specialty) {
-          demoTrainers = demoTrainers.filter((t) =>
-            t.specialties.includes(specialty),
-          );
-        }
-        setTrainers(demoTrainers);
-        return;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      // Enrich with trainer details
-      if (Array.isArray(data)) {
-        const trainerIds = data.map((u) => u.id);
-        const { data: trainerDetails, error: trainerError } = await supabase
-          .from("trainers")
-          .select("*")
-          .in("id", trainerIds);
-
-        if (trainerError) throw trainerError;
-
-        const trainersMap = new Map(
-          (Array.isArray(trainerDetails) ? trainerDetails : []).map((t) => [
-            t.id,
-            t,
-          ]),
-        );
-
-        const enriched = data.map((user) => ({
-          ...user,
-          ...(trainersMap.get(user.id) || {}),
-        })) as Trainer[];
-
-        setTrainers(enriched);
-      } else {
-        setTrainers([]);
-      }
+      const result = await response.json();
+      setTrainers(result.data || []);
     } catch (error) {
       console.error("Error fetching trainers:", error);
       // Fall back to demo trainers
