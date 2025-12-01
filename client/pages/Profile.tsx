@@ -249,6 +249,51 @@ export default function Profile() {
     }
   };
 
+  const handleCoverImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (!e.target.files?.[0] || !userProfile?.id) return;
+
+    const file = e.target.files[0];
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size must be less than 10MB");
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const dataUrl = event.target?.result as string;
+
+        try {
+          await authUpdateProfile({
+            cover_image_url: dataUrl,
+          });
+
+          setCoverImage(dataUrl);
+          toast.success("🖼️ Cover image updated!");
+        } catch (error: any) {
+          console.error("Error saving cover image:", error);
+          const errorMsg =
+            error?.message || String(error) || "Failed to save cover image";
+          toast.error(errorMsg);
+        } finally {
+          setIsSaving(false);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (error: any) {
+      console.error("Error processing cover image:", error);
+      const errorMsg =
+        error?.message || String(error) || "Failed to process cover image";
+      toast.error(errorMsg);
+      setIsSaving(false);
+    }
+  };
+
   const handleSaveEdit = async () => {
     try {
       setIsSaving(true);
