@@ -410,8 +410,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       // Call backend auth endpoint (proxies to /auth/signin on server)
-      console.log("[Auth] Making fetch request to /api/auth/login");
-      const response = await fetch("/api/auth/login", {
+      console.log("[Auth] Making fetch request to /api/auth/signin");
+      const response = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
