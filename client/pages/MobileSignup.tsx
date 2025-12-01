@@ -1,682 +1,607 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Eye,
-  EyeOff,
-  ArrowRight,
-  CheckCircle2,
-  AlertCircle,
-  Check,
-  X,
-} from "lucide-react";
-import { toast } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/lib/supabase";
-import Logo from "@/components/Logo";
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+
+const FOCUS_CATEGORIES = [
+  'Fat loss',
+  'Muscle gain',
+  'Strength',
+  'Boxing',
+  'MMA',
+  'Yoga',
+  'Mobility',
+  'Physio/Rehab',
+  'Endurance',
+  'General fitness'
+];
+
+interface SignupData {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  username: string;
+  full_name: string;
+  phone_number: string;
+  country_code: string;
+  date_of_birth: string;
+  gender: string;
+  height_cm: number | '';
+  height_feet: number | '';
+  height_inches: number | '';
+  weight_kg: number | '';
+  weight_lbs: number | '';
+  role: 'client' | 'trainer';
+  focus_categories: string[];
+  years_of_experience: number | '';
+}
 
 export default function MobileSignup() {
-  const navigate = useNavigate();
-  const { signUp } = useAuth();
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [usernameStatus, setUsernameStatus] = useState<
-    "checking" | "available" | "taken" | null
-  >(null);
-  const [usernameChecking, setUsernameChecking] = useState(false);
+  const [useFeetInches, setUseFeetInches] = useState(false);
+  const [useLbs, setUseLbs] = useState(false);
 
-  const validatePassword = (password: string): string | null => {
-    if (password.length < 6) {
-      return "Password must be at least 6 characters";
-    }
-    return null;
-  };
-
-  const validateUsername = (username: string): string | null => {
-    if (username.length < 3) {
-      return "Username must be at least 3 characters";
-    }
-    if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
-      return "Username can only contain letters, numbers, underscore, and dash";
-    }
-    return null;
-  };
-
-  const checkUsernameAvailability = async (username: string) => {
-    if (!username || username.length < 3) {
-      setUsernameStatus(null);
-      return;
-    }
-
-    const validationError = validateUsername(username);
-    if (validationError) {
-      setUsernameStatus(null);
-      return;
-    }
-
-    setUsernameChecking(true);
-    setUsernameStatus("checking");
-    try {
-      const { data, error } = await supabase
-        .from("users")
-        .select("id")
-        .eq("username", username)
-        .single();
-
-      if (error?.code === "PGRST116") {
-        // PGRST116 means no rows found - username is available
-        setUsernameStatus("available");
-      } else if (data) {
-        setUsernameStatus("taken");
-      }
-    } catch (err) {
-      console.error("Error checking username:", err);
-      setUsernameStatus(null);
-    } finally {
-      setUsernameChecking(false);
-    }
-  };
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    username: "",
-    full_name: "",
-    gender: "",
-    height_feet: "",
-    height_inches: "",
-    height_cm: "",
-    weight_kg: "",
-    weight_pounds: "",
-    phone_number: "",
-    country_code: "+1",
-    role: "",
+  const [data, setData] = useState<SignupData>({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    username: '',
+    full_name: '',
+    phone_number: '',
+    country_code: '+1',
+    date_of_birth: '',
+    gender: '',
+    height_cm: '',
+    height_feet: '',
+    height_inches: '',
+    weight_kg: '',
+    weight_lbs: '',
+    role: 'client',
+    focus_categories: [],
+    years_of_experience: '',
   });
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    const newData = { ...formData, [name]: value };
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
 
-    if (name === "height_feet" && value) {
-      const feet = parseInt(value);
-      const inches = parseInt(formData.height_inches) || 0;
-      const totalInches = feet * 12 + inches;
-      const cm = Math.round(totalInches * 2.54);
-      newData.height_cm = cm.toString();
+  const handleInputChange = (field: keyof SignupData, value: any) => {
+    setData({ ...data, [field]: value });
+  };
+
+  const toggleCategory = (category: string) => {
+    setData(prev => ({
+      ...prev,
+      focus_categories: prev.focus_categories.includes(category)
+        ? prev.focus_categories.filter(c => c !== category)
+        : [...prev.focus_categories, category]
+    }));
+  };
+
+  const calculateAge = (dob: string) => {
+    if (!dob) return '';
+    const today = new Date();
+    const birthDate = new Date(dob);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
     }
+    return age;
+  };
 
-    if (name === "height_inches" && value) {
-      const feet = parseInt(formData.height_feet) || 0;
-      const inches = parseInt(value);
-      const totalInches = feet * 12 + inches;
-      const cm = Math.round(totalInches * 2.54);
-      newData.height_cm = cm.toString();
+  const validateStep = () => {
+    switch(step) {
+      case 0:
+        if (!data.email || !data.password || !data.confirmPassword) {
+          toast.error('Please fill in all fields');
+          return false;
+        }
+        if (data.password.length < 8) {
+          toast.error('Password must be at least 8 characters');
+          return false;
+        }
+        if (data.password !== data.confirmPassword) {
+          toast.error('Passwords do not match');
+          return false;
+        }
+        return true;
+      case 1:
+        if (!data.username || !data.full_name || !data.phone_number) {
+          toast.error('Please fill in all fields');
+          return false;
+        }
+        return true;
+      case 2:
+        if (!data.date_of_birth || !data.gender) {
+          toast.error('Please fill in all fields');
+          return false;
+        }
+        return true;
+      case 3:
+        if (!data.height_cm && !useFeetInches) {
+          toast.error('Please enter your height');
+          return false;
+        }
+        if (useFeetInches && (!data.height_feet || !data.height_inches)) {
+          toast.error('Please enter your height');
+          return false;
+        }
+        return true;
+      case 4:
+        if (!data.weight_kg && !useLbs) {
+          toast.error('Please enter your weight');
+          return false;
+        }
+        if (!data.role) {
+          toast.error('Please select your role');
+          return false;
+        }
+        if (data.role === 'trainer' && !data.years_of_experience) {
+          toast.error('Please enter years of experience');
+          return false;
+        }
+        return true;
+      default:
+        return true;
     }
-
-    if (name === "weight_pounds" && value) {
-      const pounds = parseInt(value);
-      const kg = Math.round(pounds / 2.205);
-      newData.weight_kg = kg.toString();
-    }
-
-    if (name === "weight_kg" && value) {
-      const kg = parseInt(value);
-      const pounds = Math.round(kg * 2.205);
-      newData.weight_pounds = pounds.toString();
-    }
-
-    if (name === "username") {
-      // Debounced username check
-      checkUsernameAvailability(value);
-    }
-
-    setFormData(newData);
-    setError("");
   };
 
   const handleNext = () => {
-    setError("");
-
-    if (step === 1) {
-      if (!formData.email || !formData.password || !formData.confirmPassword) {
-        setError("Please fill in all fields");
-        return;
+    if (validateStep()) {
+      if (step < 4) {
+        setStep(step + 1);
       }
-      const passwordError = validatePassword(formData.password);
-      if (passwordError) {
-        setError(passwordError);
-        return;
-      }
-      if (formData.password !== formData.confirmPassword) {
-        setError("Passwords do not match");
-        return;
-      }
-      setStep(2);
-    } else if (step === 2) {
-      if (!formData.full_name || !formData.username) {
-        setError("Please fill in all fields");
-        return;
-      }
-      if (usernameStatus === "taken") {
-        setError("Username is already taken");
-        return;
-      }
-      if (usernameStatus !== "available") {
-        setError("Please check username availability");
-        return;
-      }
-      const usernameError = validateUsername(formData.username);
-      if (usernameError) {
-        setError(usernameError);
-        return;
-      }
-      setStep(3);
-    } else if (step === 3) {
-      if (
-        !formData.height_feet ||
-        !formData.height_inches ||
-        !formData.weight_kg
-      ) {
-        setError("Please fill in all fields");
-        return;
-      }
-      setStep(4);
-    } else if (step === 4) {
-      if (!formData.phone_number) {
-        setError("Please enter your phone number");
-        return;
-      }
-      setStep(5);
-    } else if (step === 5) {
-      if (!formData.gender || !formData.role) {
-        setError("Please select gender and account type");
-        return;
-      }
-      handleSignup();
     }
   };
 
-  const handleSignup = async () => {
-    setLoading(true);
-    setError("");
+  const handleFinish = async () => {
+    if (!validateStep()) return;
+
+    setIsLoading(true);
     try {
-      const heightInCm = Math.round(
-        (parseInt(formData.height_feet) * 12 +
-          parseInt(formData.height_inches)) *
-          2.54,
-      );
-      const weightInKg = parseInt(formData.weight_kg);
+      // Convert height to cm if using feet/inches
+      let heightCm = data.height_cm;
+      if (useFeetInches && data.height_feet && data.height_inches) {
+        heightCm = (Number(data.height_feet) * 12 + Number(data.height_inches)) * 2.54;
+      }
 
-      console.log("Attempting signup with data:", {
-        email: formData.email,
-        username: formData.username,
-        full_name: formData.full_name,
-        gender: formData.gender,
-        role: formData.role,
-        height_cm: heightInCm,
-        weight_kg: weightInKg,
+      // Convert weight to kg if using lbs
+      let weightKg = data.weight_kg;
+      if (useLbs && data.weight_lbs) {
+        weightKg = Number(data.weight_lbs) / 2.205;
+      }
+
+      await signUp(data.email, data.password, {
+        username: data.username,
+        full_name: data.full_name,
+        role: data.role,
+        gender: data.gender,
+        height_cm: heightCm ? Number(heightCm) : undefined,
+        weight_kg: weightKg ? Number(weightKg) : undefined,
+        phone_number: data.phone_number,
+        country_code: data.country_code,
+        age: Number(calculateAge(data.date_of_birth)),
+        date_of_birth: data.date_of_birth,
       });
 
-      await signUp(formData.email, formData.password, {
-        username: formData.username,
-        full_name: formData.full_name,
-        gender: formData.gender,
-        role: formData.role as "client" | "trainer",
-        height_cm: heightInCm,
-        weight_kg: weightInKg,
-        phone_number: formData.country_code + formData.phone_number,
-        country_code: formData.country_code,
-      });
-
-      setStep(6);
-      toast.success("Account created successfully!");
-      setTimeout(() => {
-        navigate("/login", {
-          state: { message: "Account created! Please sign in." },
-        });
-      }, 2000);
-    } catch (error: any) {
-      console.error("Signup error:", error);
-      const errorMsg = error?.message || "Failed to create account";
-      setError(errorMsg);
+      toast.success('Account created successfully!');
+      navigate('/');
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Signup failed';
       toast.error(errorMsg);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const stepTitles = [
-    "Create Account",
-    "Personal Info",
-    "Your Stats",
-    "Contact Info",
-    "Finish Setup",
-    "All Set!",
-  ];
-
-  const totalSteps = 5;
-
-  return (
-    <div className="min-h-screen bg-white pt-safe pb-safe overflow-hidden flex flex-col">
-      {/* Header */}
-      <div className="sticky top-0 z-40 backdrop-blur-xl bg-white/95 border-b border-gray-200 px-4 py-4">
-        <button
-          onClick={() => (step > 1 ? setStep(step - 1) : navigate("/login"))}
-          className="text-orange-600 hover:text-orange-700 font-semibold text-sm transition-colors duration-200 flex items-center gap-2"
-        >
-          ← {step > 1 ? "Back" : "Login"}
-        </button>
-        <div className="flex gap-1.5 mt-4">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div
-              key={i}
-              className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
-                i <= step
-                  ? "bg-gradient-to-r from-yellow-500 to-orange-500"
-                  : "bg-gray-300"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 px-6 py-8 flex-1 overflow-y-auto">
-        {/* Logo and Title */}
-        {step !== 6 && (
-          <div className="text-center mb-8 animate-fade-in">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {stepTitles[step - 1]}
-            </h1>
-            <p className="text-gray-600 text-sm">
-              Step {step} of {totalSteps}
-            </p>
-          </div>
-        )}
-
-        {/* Error Message */}
-        {error && (
-          <div className="w-full mb-6 p-4 rounded-2xl bg-red-50 border border-red-300 flex items-center gap-3 animate-slide-down">
-            <AlertCircle className="text-red-600 flex-shrink-0" size={20} />
-            <p className="text-red-700 text-sm font-medium">{error}</p>
-          </div>
-        )}
-
-        {/* Step 1: Email and Password */}
-        {step === 1 && (
-          <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
-                Email Address
-              </label>
+  const renderStep = () => {
+    switch(step) {
+      case 0:
+        return (
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Email</label>
               <input
                 type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
                 placeholder="your@email.com"
-                className="w-full px-5 py-3.5 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                value={data.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                disabled={isLoading}
+                className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
-                Password
-              </label>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Password</label>
               <div className="relative">
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
-                  className="w-full px-5 py-3.5 pr-12 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  value={data.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50 pr-12"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
+              <p className="text-xs text-gray-500 mt-2">
+                Min 8 characters, 1 uppercase, 1 number, 1 special character
+              </p>
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
-                Confirm Password
-              </label>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
               <div className="relative">
                 <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
+                  type={showConfirmPassword ? 'text' : 'password'}
                   placeholder="••••••••"
-                  className="w-full px-5 py-3.5 pr-12 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  value={data.confirmPassword}
+                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50 pr-12"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
             </div>
           </div>
-        )}
+        );
 
-        {/* Step 2: Full Name and Username */}
-        {step === 2 && (
-          <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
-                Full Name
-              </label>
+      case 1:
+        return (
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Username</label>
               <input
                 type="text"
-                name="full_name"
-                value={formData.full_name}
-                onChange={handleInputChange}
+                placeholder="your_username"
+                value={data.username}
+                onChange={(e) => handleInputChange('username', e.target.value)}
+                disabled={isLoading}
+                className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
+              />
+              <p className="text-xs text-gray-500 mt-1">Checking username…</p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Full Name</label>
+              <input
+                type="text"
                 placeholder="John Doe"
-                className="w-full px-5 py-3.5 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                value={data.full_name}
+                onChange={(e) => handleInputChange('full_name', e.target.value)}
+                disabled={isLoading}
+                className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                Username
-                {usernameStatus === "checking" && (
-                  <span className="text-xs text-gray-500">checking...</span>
-                )}
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  placeholder="johndoe"
-                  className="w-full px-5 py-3.5 pr-12 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                />
-                {usernameStatus === "available" && (
-                  <Check
-                    size={20}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500"
-                  />
-                )}
-                {usernameStatus === "taken" && (
-                  <X
-                    size={20}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500"
-                  />
-                )}
-              </div>
-              {usernameStatus === "available" && (
-                <p className="text-xs text-green-600 mt-2">
-                  ✓ Username available
-                </p>
-              )}
-              {usernameStatus === "taken" && (
-                <p className="text-xs text-red-600 mt-2">
-                  ✗ Username already taken
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Step 3: Height and Weight */}
-        {step === 3 && (
-          <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
-                Height
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  type="number"
-                  name="height_feet"
-                  value={formData.height_feet}
-                  onChange={handleInputChange}
-                  placeholder="Feet"
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                />
-                <input
-                  type="number"
-                  name="height_inches"
-                  value={formData.height_inches}
-                  onChange={handleInputChange}
-                  placeholder="Inches"
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                />
-              </div>
-              <p className="text-xs text-gray-500 mt-2">
-                {formData.height_cm ? `${formData.height_cm} cm` : ""}
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
-                Weight
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  type="number"
-                  name="weight_kg"
-                  value={formData.weight_kg}
-                  onChange={handleInputChange}
-                  placeholder="Kilograms"
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                />
-                <input
-                  type="number"
-                  name="weight_pounds"
-                  value={formData.weight_pounds}
-                  onChange={handleInputChange}
-                  placeholder="Pounds"
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Step 4: Phone Number */}
-        {step === 4 && (
-          <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3">
-                Phone Number
-              </label>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Phone Number</label>
               <div className="flex gap-2">
                 <select
-                  name="country_code"
-                  value={formData.country_code}
-                  onChange={handleInputChange}
-                  className="w-20 px-3 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  value={data.country_code}
+                  onChange={(e) => handleInputChange('country_code', e.target.value)}
+                  disabled={isLoading}
+                  className="w-20 px-2 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 disabled:opacity-50"
                 >
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                  <option value="+91">🇮🇳 +91</option>
-                  <option value="+86">🇨🇳 +86</option>
-                  <option value="+81">🇯🇵 +81</option>
-                  <option value="+49">🇩🇪 +49</option>
-                  <option value="+33">🇫🇷 +33</option>
-                  <option value="+39">🇮🇹 +39</option>
-                  <option value="+34">🇪🇸 +34</option>
-                  <option value="+61">🇦🇺 +61</option>
-                  <option value="+55">🇧🇷 +55</option>
-                  <option value="+27">🇿🇦 +27</option>
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                  <option value="+91">+91</option>
+                  <option value="+86">+86</option>
                 </select>
                 <input
                   type="tel"
-                  name="phone_number"
-                  value={formData.phone_number}
-                  onChange={handleInputChange}
                   placeholder="9876543210"
-                  className="flex-1 px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  value={data.phone_number}
+                  onChange={(e) => handleInputChange('phone_number', e.target.value)}
+                  disabled={isLoading}
+                  className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
                 />
               </div>
             </div>
           </div>
-        )}
+        );
 
-        {/* Step 5: Gender and Account Type */}
-        {step === 5 && (
-          <div className="space-y-6 max-w-md mx-auto animate-fade-in-up">
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-4">
-                Gender
-              </label>
-              <div className="flex gap-3">
-                {["Male", "Female", "Other"].map((gender) => (
-                  <button
-                    key={gender}
-                    onClick={() => setFormData({ ...formData, gender })}
-                    className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
-                      formData.gender === gender
-                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {gender}
-                  </button>
-                ))}
-              </div>
+      case 2:
+        return (
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+              <input
+                type="date"
+                value={data.date_of_birth}
+                onChange={(e) => handleInputChange('date_of_birth', e.target.value)}
+                disabled={isLoading}
+                className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 disabled:opacity-50"
+              />
+              {data.date_of_birth && (
+                <p className="text-xs text-gray-500">Age: {calculateAge(data.date_of_birth)} years</p>
+              )}
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-4">
-                Account Type
-              </label>
-              <div className="flex gap-3">
-                {[
-                  { value: "client", label: "Client" },
-                  { value: "trainer", label: "Trainer" },
-                ].map((type) => (
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700">Gender</label>
+              <div className="flex gap-2">
+                {['Male', 'Female', 'Other'].map((g) => (
                   <button
-                    key={type.value}
-                    onClick={() =>
-                      setFormData({ ...formData, role: type.value as any })
-                    }
-                    className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
-                      formData.role === type.value
-                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    key={g}
+                    type="button"
+                    onClick={() => handleInputChange('gender', g.toLowerCase())}
+                    disabled={isLoading}
+                    className={`flex-1 py-2 px-4 rounded-full font-medium transition-all disabled:opacity-50 ${
+                      data.gender === g.toLowerCase()
+                        ? 'bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900'
+                        : 'bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300'
                     }`}
                   >
-                    {type.label}
+                    {g}
                   </button>
                 ))}
               </div>
             </div>
           </div>
-        )}
+        );
 
-        {/* Step 6: Success */}
-        {step === 6 && (
-          <div className="flex flex-col items-center justify-center text-center space-y-6 max-w-md mx-auto animate-fade-in">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
-              <CheckCircle2 size={48} className="text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Account Created!
-              </h2>
-              <p className="text-gray-600">
-                Your account is all set. Redirecting to login...
-              </p>
+      case 3:
+        return (
+          <div className="space-y-5">
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700">Height</label>
+              
+              {!useFeetInches ? (
+                <input
+                  type="number"
+                  placeholder="170"
+                  value={data.height_cm}
+                  onChange={(e) => handleInputChange('height_cm', e.target.value)}
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
+                />
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    placeholder="5"
+                    value={data.height_feet}
+                    onChange={(e) => handleInputChange('height_feet', e.target.value)}
+                    disabled={isLoading}
+                    className="w-16 px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
+                  />
+                  <span className="flex items-center text-gray-600">ft</span>
+                  <input
+                    type="number"
+                    placeholder="10"
+                    value={data.height_inches}
+                    onChange={(e) => handleInputChange('height_inches', e.target.value)}
+                    disabled={isLoading}
+                    className="w-16 px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
+                  />
+                  <span className="flex items-center text-gray-600">in</span>
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setUseFeetInches(!useFeetInches)}
+                disabled={isLoading}
+                className="text-sm text-orange-500 hover:text-orange-600 font-medium disabled:opacity-50"
+              >
+                {useFeetInches ? 'Use cm' : 'Use feet/inches'}
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        );
 
-      {/* Action Buttons */}
-      {step !== 6 && (
-        <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex gap-3">
-          <button
-            onClick={() => (step > 1 ? setStep(step - 1) : navigate("/login"))}
-            className="flex-1 px-5 py-3 rounded-2xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-all"
-          >
-            {step === 1 ? "Login" : "Back"}
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={loading || (step === 2 && usernameStatus !== "available")}
-            className="flex-1 px-5 py-3 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900 font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <div className="w-4 h-4 rounded-full border-2 border-gray-900/30 border-t-gray-900 animate-spin" />
-                Creating...
-              </>
-            ) : (
-              <>
-                {step === 5 ? "Create Account" : "Next"}
-                <ArrowRight size={18} />
-              </>
+      case 4:
+        return (
+          <div className="space-y-5">
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700">Weight</label>
+              
+              {!useLbs ? (
+                <input
+                  type="number"
+                  placeholder="70"
+                  value={data.weight_kg}
+                  onChange={(e) => handleInputChange('weight_kg', e.target.value)}
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
+                />
+              ) : (
+                <input
+                  type="number"
+                  placeholder="154"
+                  value={data.weight_lbs}
+                  onChange={(e) => handleInputChange('weight_lbs', e.target.value)}
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
+                />
+              )}
+
+              <button
+                type="button"
+                onClick={() => setUseLbs(!useLbs)}
+                disabled={isLoading}
+                className="text-sm text-orange-500 hover:text-orange-600 font-medium disabled:opacity-50"
+              >
+                {useLbs ? 'Use kg' : 'Use lbs'}
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700">Role</label>
+              <div className="flex gap-2">
+                {['client', 'trainer'].map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => handleInputChange('role', r)}
+                    disabled={isLoading}
+                    className={`flex-1 py-2 px-4 rounded-full font-medium transition-all disabled:opacity-50 capitalize ${
+                      data.role === r
+                        ? 'bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900'
+                        : 'bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300'
+                    }`}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {data.role === 'trainer' && (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
+                <input
+                  type="number"
+                  placeholder="5"
+                  value={data.years_of_experience}
+                  onChange={(e) => handleInputChange('years_of_experience', e.target.value)}
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
+                />
+              </div>
             )}
-          </button>
+
+            {data.role === 'client' && (
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">Focus Categories</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {FOCUS_CATEGORIES.map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => toggleCategory(cat)}
+                      disabled={isLoading}
+                      className={`py-2 px-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 ${
+                        data.focus_categories.includes(cat)
+                          ? 'bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900'
+                          : 'bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {data.role === 'trainer' && (
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">Specialties</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {FOCUS_CATEGORIES.map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => toggleCategory(cat)}
+                      disabled={isLoading}
+                      className={`py-2 px-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 ${
+                        data.focus_categories.includes(cat)
+                          ? 'bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900'
+                          : 'bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Decorative gradient blobs */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-x-1/2 translate-y-1/2"></div>
+
+      <div className="w-full max-w-sm relative z-10">
+        {/* Main glassmorphism card */}
+        <div className="backdrop-blur-2xl bg-white/90 border border-white/20 rounded-3xl shadow-2xl p-8 space-y-6">
+          {/* Title section */}
+          <div className="text-center space-y-1">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900 font-bold text-sm">
+              {step + 1}
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {step === 0 && 'Create account'}
+              {step === 1 && 'Profile basics'}
+              {step === 2 && 'Personal details'}
+              {step === 3 && 'Height'}
+              {step === 4 && 'Weight and role'}
+            </h1>
+            <p className="text-gray-600 text-sm">Step {step + 1} of 5</p>
+          </div>
+
+          {/* Form content */}
+          {renderStep()}
+
+          {/* Navigation buttons */}
+          <div className="flex gap-3 pt-6">
+            {step > 0 && (
+              <button
+                type="button"
+                onClick={() => setStep(step - 1)}
+                disabled={isLoading}
+                className="flex-1 py-3 px-4 rounded-full border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                <ChevronLeft size={20} />
+                Back
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={step === 4 ? handleFinish : handleNext}
+              disabled={isLoading}
+              className={`flex-1 py-3 px-4 rounded-full font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 ${
+                step === 4
+                  ? 'bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-gray-900 shadow-lg hover:shadow-xl'
+                  : 'bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-gray-900 shadow-lg hover:shadow-xl'
+              }`}
+            >
+              {isLoading ? 'Processing...' : step === 4 ? 'Create Account' : 'Next'}
+              {step < 4 && <ChevronRight size={20} />}
+            </button>
+          </div>
+
+          {/* Login link */}
+          <div className="text-center">
+            <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                disabled={isLoading}
+                className="text-orange-500 hover:text-orange-600 font-medium disabled:opacity-50"
+              >
+                Sign in
+              </button>
+            </p>
+          </div>
         </div>
-      )}
-
-      <style>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes slide-down {
-          from {
-            opacity: 0;
-            transform: translateY(-15px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in {
-          animation: fade-in 0.5s ease-out;
-        }
-
-        .animate-fade-in-up {
-          animation: fade-in-up 0.5s ease-out;
-        }
-
-        .animate-slide-down {
-          animation: slide-down 0.3s ease-out;
-        }
-      `}</style>
+      </div>
     </div>
   );
 }
