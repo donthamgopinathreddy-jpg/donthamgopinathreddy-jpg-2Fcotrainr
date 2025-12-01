@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       // Fetch user profile from API
-      const response = await fetch("/api/supabase/users/profile", {
+      const response = await fetch("/api/users/profile", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
