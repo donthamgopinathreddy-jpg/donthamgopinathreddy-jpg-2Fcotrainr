@@ -118,6 +118,13 @@ export default function ClientHome() {
     fetchUnreadCount();
   }, [userProfile?.id]);
 
+  // Fetch cover image from profile
+  useEffect(() => {
+    if (userProfile?.cover_image_url) {
+      setCoverImage(userProfile.cover_image_url);
+    }
+  }, [userProfile?.cover_image_url]);
+
   const handleAddWater = async (amount: number) => {
     if (!userProfile?.id) return;
 
