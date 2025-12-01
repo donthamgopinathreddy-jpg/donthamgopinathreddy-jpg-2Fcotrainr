@@ -611,4 +611,34 @@ router.post('/auth/reset-password', async (req: Request, res: Response) => {
   }
 });
 
+// Get community posts endpoint
+router.get('/posts', async (req: Request, res: Response) => {
+  try {
+    console.log('[API] Fetching community posts');
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*, users(id, full_name, profile_picture_url)')
+      .order('created_at', { ascending: false })
+      .limit(20);
+
+    if (error) {
+      console.error('[API] Error fetching posts:', error);
+      return res.status(400).json({
+        error: 'Failed to fetch posts',
+      });
+    }
+
+    console.log('[API] Posts fetched successfully:', data?.length || 0);
+    res.json({ data });
+  } catch (error) {
+    console.error('[API] Unexpected error fetching posts:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+    });
+  }
+});
+
 export default router;
