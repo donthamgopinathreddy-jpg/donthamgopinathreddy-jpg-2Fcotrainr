@@ -135,22 +135,26 @@ export default function MobileSignup() {
     setUsernameStatus("checking");
 
     try {
-      const { data: existingUser, error } = await supabase
-        .from("users")
-        .select("id")
-        .eq("username", username)
-        .single();
+      const response = await fetch("/api/auth/check-username", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username }),
+      });
 
-      if (error && error.code !== "PGRST116") {
-        console.error("Error checking username:", error);
+      if (!response.ok) {
+        console.error("Error checking username:", response.statusText);
         setUsernameStatus(null);
         return;
       }
 
-      if (existingUser) {
-        setUsernameStatus("unavailable");
-      } else {
+      const data = await response.json();
+
+      if (data.available) {
         setUsernameStatus("available");
+      } else {
+        setUsernameStatus("unavailable");
       }
     } catch (error) {
       console.error("Error checking username availability:", error);
