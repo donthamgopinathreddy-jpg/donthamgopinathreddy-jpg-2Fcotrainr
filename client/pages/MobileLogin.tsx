@@ -164,24 +164,24 @@ export default function MobileLogin() {
           </button>
 
           {/* Divider */}
-          <div className="relative my-6">
+          <div className="relative my-8 animate-fade-in-up" style={{ animationDelay: "0.5s", animationDuration: "0.7s" }}>
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-600">or</span>
+              <span className="px-3 bg-white text-gray-600 font-medium">or</span>
             </div>
           </div>
 
           {/* Signup Link */}
-          <div className="space-y-3">
-            <p className="text-center text-gray-700 text-sm">
+          <div className="space-y-3 animate-fade-in-up" style={{ animationDelay: "0.6s", animationDuration: "0.7s" }}>
+            <p className="text-center text-gray-700 text-sm font-medium">
               Don't have an account?
             </p>
             <button
               type="button"
               onClick={() => navigate("/signup")}
-              className="w-full px-5 py-3.5 rounded-2xl border-2 border-yellow-500 bg-white hover:bg-yellow-50 active:scale-95 text-yellow-600 font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-5 py-4 rounded-3xl border-2 border-blue-600 bg-white hover:bg-blue-50 active:scale-95 text-blue-600 font-bold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
             >
               Create Account
             </button>
