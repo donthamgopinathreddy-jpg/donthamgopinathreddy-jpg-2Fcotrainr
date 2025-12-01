@@ -670,7 +670,7 @@ export default function MobileSignup() {
                       s === step
                         ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900 shadow-md"
                         : s < step
-                          ? "bg-orange-300 text-white"
+                          ? "bg-green-500 text-white"
                           : "bg-gray-200 text-gray-500"
                     }`}
                   >
