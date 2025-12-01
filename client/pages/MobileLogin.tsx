@@ -45,10 +45,11 @@ export default function MobileLogin() {
       <div className="w-full max-w-sm relative z-10">
         {/* Header with logo */}
         <div className="text-center mb-8">
-          <div className="text-4xl font-bold text-gray-900 mb-2">
-            <span className="text-orange-500">Co</span>
-            <span className="text-gray-900">Trainr.</span>
-          </div>
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2Fc659d255956c4643b6576a691786eec0%2Fa3b8ec7e06b34a03ac01ccc4e2c195b0?format=webp&width=800"
+            alt="CoTrainr Logo"
+            className="h-16 mx-auto mb-4"
+          />
         </div>
 
         {/* Main glassmorphism card */}
