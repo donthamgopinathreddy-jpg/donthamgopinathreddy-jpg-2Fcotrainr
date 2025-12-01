@@ -92,24 +92,23 @@ class SessionStorage {
       if (key.includes("auth") || key.includes("session")) {
         try {
           const parsed = JSON.parse(value);
-          // Don't store incomplete sessions
+          // Only require access_token, refresh_token is optional
           if (parsed?.session) {
+            if (!parsed.session.access_token) {
+              console.warn(
+                "[SessionStorage] Prevented storing session without access_token",
+              );
+              return;
+            }
             if (!parsed.session.refresh_token) {
               console.warn(
-                "[SessionStorage] Prevented storing session without refresh_token, only access_token:",
+                "[SessionStorage] Storing session without refresh_token (may need to re-login on page reload):",
                 {
                   hasAccessToken: !!parsed.session.access_token,
                   hasRefreshToken: !!parsed.session.refresh_token,
                   expiresIn: parsed.session.expires_in,
                 },
               );
-              return;
-            }
-            if (!parsed.session.access_token) {
-              console.warn(
-                "[SessionStorage] Prevented storing session without access_token",
-              );
-              return;
             }
           }
         } catch (e) {
