@@ -333,7 +333,7 @@ const AppRoutes = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <HomeModern />
+            <ClientHome />
           </ProtectedRoute>
         }
       />
