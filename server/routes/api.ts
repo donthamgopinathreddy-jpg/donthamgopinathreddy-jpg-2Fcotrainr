@@ -14,7 +14,8 @@ router.get('/test', (_req: Request, res: Response) => {
 
 // Use environment variables for Supabase credentials
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hnxdlgdkyboctsvfktwe.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY ||
+const SUPABASE_ANON_KEY =
+  process.env.SUPABASE_ANON_KEY ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhueGRsZ2RreWJvY3RzdmZrdHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2MDM0NTQsImV4cCI6MjA4MDE3OTQ1NH0.DZPvC7diiNoANXgDxnb7T-ynYg6JUW4cfEILoJfABSI';
 
 console.log('[API] Initializing Supabase API wrapper');
