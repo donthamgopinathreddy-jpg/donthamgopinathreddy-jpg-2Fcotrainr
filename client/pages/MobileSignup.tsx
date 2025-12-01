@@ -600,7 +600,7 @@ export default function MobileSignup() {
                       className={`py-2 px-3 rounded-full text-sm font-medium transition-all disabled:opacity-50 ${
                         data.focus_categories.includes(cat)
                           ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
-                          : "bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300"
+                          : "bg-gradient-to-r from-orange-400/50 to-yellow-400/50 text-gray-700 border border-orange-200/50 hover:from-orange-400/60 hover:to-yellow-400/60"
                       }`}
                     >
                       {cat}
