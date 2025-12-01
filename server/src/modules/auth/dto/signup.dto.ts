@@ -32,6 +32,10 @@ export class SignupDto {
   @IsOptional()
   full_name?: string;
 
+  @IsString()
+  @IsOptional()
+  gender?: string;
+
   @IsIn(['client', 'trainer'])
   @IsOptional()
   role?: string;
