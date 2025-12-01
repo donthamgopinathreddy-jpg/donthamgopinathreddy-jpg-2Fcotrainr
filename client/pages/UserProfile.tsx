@@ -106,48 +106,52 @@ export default function UserProfile() {
             identifier,
           );
 
-        if (isUUID) {
-          // Search by ID
-          console.log("Searching for user by UUID:", identifier);
-          const { data, error } = await supabase
-            .from("users")
-            .select("id, username, full_name, profile_picture_url, bio, role")
-            .eq("id", identifier);
+        try {
+          if (isUUID) {
+            // Search by ID
+            console.log("Searching for user by UUID:", identifier);
+            const { data, error } = await supabase
+              .from("users")
+              .select("id, username, full_name, profile_picture_url, bio, role")
+              .eq("id", identifier);
 
-          console.log("Supabase response - data:", data, "error:", error);
-          if (!error && data && data.length > 0) {
-            userData = data[0];
-            console.log("User found:", userData);
-          } else if (error) {
-            console.error("Error fetching user by ID:", error);
+            console.log("Supabase response - data:", data, "error:", error);
+            if (!error && data && data.length > 0) {
+              userData = data[0];
+              console.log("User found:", userData);
+            } else if (error) {
+              console.warn("Error fetching user by ID:", error?.message);
+            } else {
+              console.warn("No user found with ID:", identifier);
+            }
           } else {
-            console.warn("No user found with ID:", identifier);
-          }
-        } else {
-          // Search by username
-          const { data, error } = await supabase
-            .from("users")
-            .select("id, username, full_name, profile_picture_url, bio, role")
-            .eq("username", identifier.toLowerCase());
+            // Search by username
+            const { data, error } = await supabase
+              .from("users")
+              .select("id, username, full_name, profile_picture_url, bio, role")
+              .eq("username", identifier.toLowerCase());
 
-          if (!error && data && data.length > 0) {
-            userData = data[0];
-          } else if (error) {
-            console.error("Error fetching user by username:", error);
+            if (!error && data && data.length > 0) {
+              userData = data[0];
+            } else if (error) {
+              console.warn("Error fetching user by username:", error?.message);
+            }
           }
-        }
 
-        // If still not found, try searching by partial username
-        if (!userData && !isUUID) {
-          const { data, error } = await supabase
-            .from("users")
-            .select("id, username, full_name, profile_picture_url, bio, role")
-            .ilike("username", `%${identifier}%`)
-            .limit(1);
+          // If still not found, try searching by partial username
+          if (!userData && !isUUID) {
+            const { data, error } = await supabase
+              .from("users")
+              .select("id, username, full_name, profile_picture_url, bio, role")
+              .ilike("username", `%${identifier}%`)
+              .limit(1);
 
-          if (!error && data && data.length > 0) {
-            userData = data[0];
+            if (!error && data && data.length > 0) {
+              userData = data[0];
+            }
           }
+        } catch (fetchError) {
+          console.warn("User fetch error:", fetchError instanceof Error ? fetchError.message : "Unknown error");
         }
 
         // Determine which ID to use for fetching posts
