@@ -179,11 +179,13 @@ router.post('/debug/test-auth', async (req: Request, res: Response) => {
       details: {
         supabaseReachable: true,
         testAttempted: true,
-        error: result.error ? {
-          message: result.error.message,
-          status: result.error.status,
-          code: (result.error as any).code,
-        } : null,
+        error: result.error
+          ? {
+              message: result.error.message,
+              status: result.error.status,
+              code: (result.error as any).code,
+            }
+          : null,
         userFound: !!result.data?.user,
       },
     });
@@ -319,9 +321,12 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
     console.error('[API]   Status:', error?.status);
     if (error?.stack) {
       console.error('[API]   Stack (first 10 lines):');
-      error.stack.split('\n').slice(0, 10).forEach((line: string) => {
-        console.error('[API]    ', line);
-      });
+      error.stack
+        .split('\n')
+        .slice(0, 10)
+        .forEach((line: string) => {
+          console.error('[API]    ', line);
+        });
     }
     console.error('[API] ========================================');
 
