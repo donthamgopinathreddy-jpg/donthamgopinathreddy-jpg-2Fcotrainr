@@ -61,6 +61,8 @@ import HomeModern from "./pages/HomeModern";
 import ClientHome from "./pages/ClientHome";
 import TrainerHome from "./pages/TrainerHome";
 import Community from "./pages/Community";
+import Trainers from "./pages/Trainers";
+import Nutritionists from "./pages/Nutritionists";
 import Navigation from "./components/Navigation";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { isUserAdmin } from "@/lib/adminAuth";
