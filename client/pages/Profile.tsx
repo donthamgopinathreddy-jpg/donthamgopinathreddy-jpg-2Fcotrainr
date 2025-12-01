@@ -26,6 +26,7 @@ import {
   Moon,
   Flame,
   ArrowRight,
+  ArrowLeft,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
