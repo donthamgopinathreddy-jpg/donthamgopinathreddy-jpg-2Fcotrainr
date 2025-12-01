@@ -271,7 +271,9 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
 
         console.log('[API] Profile data to insert:', profileData);
 
-        const { error: profileError } = await authenticatedSupabase.from('users').insert([profileData]);
+        const { error: profileError } = await authenticatedSupabase
+          .from('users')
+          .insert([profileData]);
 
         if (profileError) {
           console.error('[API] Profile creation error:', {
