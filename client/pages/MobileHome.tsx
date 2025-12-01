@@ -87,11 +87,17 @@ export default function MobileHome() {
       {/* Animated Background Circles */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-b from-blue-100 to-transparent rounded-full blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-t from-purple-100 to-transparent rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: "1.5s" }}></div>
+        <div
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-t from-purple-100 to-transparent rounded-full blur-3xl opacity-20 animate-pulse"
+          style={{ animationDelay: "1.5s" }}
+        ></div>
       </div>
 
       {/* Header */}
-      <div className="relative bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 text-white px-4 py-8 shadow-lg animate-slide-down" style={{ animationDuration: "0.6s" }}>
+      <div
+        className="relative bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 text-white px-4 py-8 shadow-lg animate-slide-down"
+        style={{ animationDuration: "0.6s" }}
+      >
         <div className="flex justify-between items-start mb-6">
           <div className="space-y-1">
             <p className="text-blue-100 text-sm font-medium">Welcome back</p>
@@ -109,7 +115,10 @@ export default function MobileHome() {
 
         {/* BMI Card */}
         {userProfile?.bmi && (
-          <div className="bg-white/20 backdrop-blur-md rounded-3xl p-5 text-white border border-white/30 shadow-lg animate-fade-in-up" style={{ animationDelay: "0.2s", animationDuration: "0.8s" }}>
+          <div
+            className="bg-white/20 backdrop-blur-md rounded-3xl p-5 text-white border border-white/30 shadow-lg animate-fade-in-up"
+            style={{ animationDelay: "0.2s", animationDuration: "0.8s" }}
+          >
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-blue-100 text-sm font-medium">Your BMI</p>
@@ -122,8 +131,12 @@ export default function MobileHome() {
               </div>
               <div className="text-right bg-white/20 rounded-2xl px-4 py-3">
                 <p className="text-xs text-blue-100 mb-1">Height/Weight</p>
-                <p className="text-sm font-semibold">{userProfile.height_cm}cm</p>
-                <p className="text-sm font-semibold">{userProfile.weight_kg}kg</p>
+                <p className="text-sm font-semibold">
+                  {userProfile.height_cm}cm
+                </p>
+                <p className="text-sm font-semibold">
+                  {userProfile.weight_kg}kg
+                </p>
               </div>
             </div>
           </div>
@@ -136,7 +149,10 @@ export default function MobileHome() {
 
         <div className="grid grid-cols-2 gap-4">
           {/* Steps */}
-          <div className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-4px] animate-fade-in-up" style={{ animationDelay: "0.1s", animationDuration: "0.7s" }}>
+          <div
+            className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-4px] animate-fade-in-up"
+            style={{ animationDelay: "0.1s", animationDuration: "0.7s" }}
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 rounded-2xl bg-blue-100 group-hover:bg-blue-200 transition-colors">
                 <Footprints className="text-blue-600" size={20} />
@@ -158,7 +174,10 @@ export default function MobileHome() {
           </div>
 
           {/* Calories */}
-          <div className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-4px] animate-fade-in-up" style={{ animationDelay: "0.15s", animationDuration: "0.7s" }}>
+          <div
+            className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-4px] animate-fade-in-up"
+            style={{ animationDelay: "0.15s", animationDuration: "0.7s" }}
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 rounded-2xl bg-red-100 group-hover:bg-red-200 transition-colors">
                 <Flame className="text-red-600" size={20} />
@@ -180,7 +199,10 @@ export default function MobileHome() {
           </div>
 
           {/* Water */}
-          <div className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-4px] animate-fade-in-up" style={{ animationDelay: "0.2s", animationDuration: "0.7s" }}>
+          <div
+            className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-4px] animate-fade-in-up"
+            style={{ animationDelay: "0.2s", animationDuration: "0.7s" }}
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 rounded-2xl bg-cyan-100 group-hover:bg-cyan-200 transition-colors">
                 <Droplet className="text-cyan-600" size={20} />
@@ -202,12 +224,17 @@ export default function MobileHome() {
           </div>
 
           {/* Distance */}
-          <div className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-4px] animate-fade-in-up" style={{ animationDelay: "0.25s", animationDuration: "0.7s" }}>
+          <div
+            className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-4px] animate-fade-in-up"
+            style={{ animationDelay: "0.25s", animationDuration: "0.7s" }}
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 rounded-2xl bg-green-100 group-hover:bg-green-200 transition-colors">
                 <TrendingUp className="text-green-600" size={20} />
               </div>
-              <span className="text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full">Today</span>
+              <span className="text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full">
+                Today
+              </span>
             </div>
             <p className="text-xs text-gray-500 font-medium mb-2">Distance</p>
             <p className="text-2xl font-bold text-gray-900">

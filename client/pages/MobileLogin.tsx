@@ -71,7 +71,10 @@ export default function MobileLogin() {
       {/* Content */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-8">
         {/* Header Section */}
-        <div className="text-center mb-12 animate-fade-in" style={{ animationDuration: "0.8s" }}>
+        <div
+          className="text-center mb-12 animate-fade-in"
+          style={{ animationDuration: "0.8s" }}
+        >
           <div className="inline-block mb-8 transform hover:scale-110 transition-transform duration-300 p-4 rounded-3xl bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200">
             <Logo size="xl" className="drop-shadow-lg" />
           </div>
@@ -94,7 +97,10 @@ export default function MobileLogin() {
         {/* Login Form */}
         <form onSubmit={handleLogin} className="w-full max-w-sm space-y-5">
           {/* Email Input */}
-          <div className="group animate-fade-in-up" style={{ animationDelay: "0.1s", animationDuration: "0.7s" }}>
+          <div
+            className="group animate-fade-in-up"
+            style={{ animationDelay: "0.1s", animationDuration: "0.7s" }}
+          >
             <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-blue-600 transition-colors">
               Email Address
             </label>
@@ -111,7 +117,10 @@ export default function MobileLogin() {
           </div>
 
           {/* Password Input */}
-          <div className="group animate-fade-in-up" style={{ animationDelay: "0.2s", animationDuration: "0.7s" }}>
+          <div
+            className="group animate-fade-in-up"
+            style={{ animationDelay: "0.2s", animationDuration: "0.7s" }}
+          >
             <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-blue-600 transition-colors">
               Password
             </label>
@@ -164,17 +173,25 @@ export default function MobileLogin() {
           </button>
 
           {/* Divider */}
-          <div className="relative my-8 animate-fade-in-up" style={{ animationDelay: "0.5s", animationDuration: "0.7s" }}>
+          <div
+            className="relative my-8 animate-fade-in-up"
+            style={{ animationDelay: "0.5s", animationDuration: "0.7s" }}
+          >
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-white text-gray-600 font-medium">or</span>
+              <span className="px-3 bg-white text-gray-600 font-medium">
+                or
+              </span>
             </div>
           </div>
 
           {/* Signup Link */}
-          <div className="space-y-3 animate-fade-in-up" style={{ animationDelay: "0.6s", animationDuration: "0.7s" }}>
+          <div
+            className="space-y-3 animate-fade-in-up"
+            style={{ animationDelay: "0.6s", animationDuration: "0.7s" }}
+          >
             <p className="text-center text-gray-700 text-sm font-medium">
               Don't have an account?
             </p>
@@ -205,8 +222,14 @@ export default function MobileLogin() {
 
       {/* Password Reset Modal */}
       {showResetModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md p-4 animate-fade-in" style={{ animationDuration: "0.3s" }}>
-          <div className="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl animate-scale-up" style={{ animationDuration: "0.4s" }}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md p-4 animate-fade-in"
+          style={{ animationDuration: "0.3s" }}
+        >
+          <div
+            className="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl animate-scale-up"
+            style={{ animationDuration: "0.4s" }}
+          >
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-gray-900">
