@@ -105,14 +105,18 @@ export const useStepCounter = () => {
           .select("steps")
           .eq("user_id", userProfile.id)
           .eq("sync_date", today.toISOString().split("T")[0])
-          .single();
+          .single()
+          .catch((err) => {
+            console.warn("Supabase fetch failed, using default:", err?.message);
+            return { data: null, error: err };
+          });
 
         if (!error && data) {
           setTotalStepsToday(data.steps || 0);
           return data.steps || 0;
         }
       } catch (fetchError) {
-        console.warn("Could not fetch steps from database:", fetchError);
+        console.warn("Could not fetch steps from database:", fetchError instanceof Error ? fetchError.message : "Unknown error");
         setTotalStepsToday(0);
         return 0;
       }
