@@ -55,6 +55,8 @@ const Community = () => {
   const [postContent, setPostContent] = useState("");
   const [postImage, setPostImage] = useState<File | null>(null);
   const [postImagePreview, setPostImagePreview] = useState<string>("");
+  const [postVideo, setPostVideo] = useState<File | null>(null);
+  const [postVideoPreview, setPostVideoPreview] = useState<string>("");
   const [showPostForm, setShowPostForm] = useState(false);
   const [activeTab, setActiveTab] = useState<"feed" | "users">("feed");
   const [communityUsers, setCommunityUsers] = useState<CommunityUser[]>([]);
