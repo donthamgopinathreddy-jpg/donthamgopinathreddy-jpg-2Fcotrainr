@@ -226,8 +226,8 @@ export default function ClientHome() {
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
         </div>
 
-        {/* Main Content with bottom padding for nav */}
-        <div className="relative z-10 flex-1 overflow-y-auto pb-24">
+        {/* Main Content - Navigation will overlap */}
+        <div className="relative z-10 flex-1 overflow-y-auto pb-28">
           {/* 1. Header Bar */}
           <header className="px-5 py-4 flex items-center justify-between sticky top-0 bg-gradient-to-b from-white/50 to-transparent backdrop-blur-sm z-20">
             {/* Avatar */}
