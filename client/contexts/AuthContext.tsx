@@ -187,18 +187,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
           if (isMounted) {
             if (session?.user) {
-              // Validate session has refresh_token
+              console.log("Session found:", session.user.email);
               if (!session.refresh_token) {
                 console.warn(
-                  "[Auth] Session found but missing refresh_token, clearing it",
+                  "[Auth] Session found but missing refresh_token - user may need to re-login on page reload",
                 );
-                await supabase.auth.signOut();
-                setUser(null);
-                setUserProfile(null);
-                return;
               }
-
-              console.log("Session found:", session.user.email);
               setUser(session.user);
               // Fetch profile asynchronously without blocking initialization
               fetchUserProfile(session.user.id).catch((err) =>
