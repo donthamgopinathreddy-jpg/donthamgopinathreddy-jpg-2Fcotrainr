@@ -63,13 +63,9 @@ class SessionStorage {
       if (key.includes("auth") || key.includes("session")) {
         try {
           const parsed = JSON.parse(value);
-          if (
-            parsed?.session &&
-            !parsed.session.refresh_token &&
-            parsed.session.access_token
-          ) {
+          if (parsed?.session && !parsed.session.access_token) {
             console.warn(
-              "[SessionStorage] Detected corrupted session (missing refresh_token), clearing it",
+              "[SessionStorage] Detected corrupted session (missing access_token), clearing it",
             );
             await this.removeItem(key);
             return null;
