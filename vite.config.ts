@@ -45,10 +45,10 @@ function expressPlugin(): Plugin {
     configureServer() {
       const app = createServer();
 
-      // Start Express on port 3000, listening on localhost
+      // Start Express on port 3000, listening on all interfaces
       expressServer = http.createServer(app);
-      expressServer.listen(3000, "127.0.0.1", () => {
-        console.log("[Express] Server running on http://localhost:3000");
+      expressServer.listen(3000, "::", () => {
+        console.log("[Express] Server running on http://[::]:3000");
         console.log(
           "[Express] Vite proxy will forward /api requests to this server",
         );
