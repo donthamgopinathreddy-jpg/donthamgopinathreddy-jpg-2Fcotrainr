@@ -27,6 +27,7 @@ export class SupabaseService {
     phone_number?: string;
     country_code?: string;
     full_name?: string;
+    gender?: string;
   }) {
     const { data, error } = await this.supabase.from('users').insert([userData]).select().single();
 
