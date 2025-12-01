@@ -249,20 +249,38 @@ export default function ClientHome() {
             </button>
           </header>
 
-          {/* 2. Banner Card */}
-          <div className="mx-5 mb-6 rounded-3xl overflow-hidden backdrop-blur-md bg-white/90 shadow-lg border border-white/20 h-40 flex flex-col justify-end relative">
+          {/* 2. Banner Card - Enhanced Cover Image Selection */}
+          <div className="mx-5 mb-6 rounded-3xl overflow-hidden relative h-56 group">
+            {/* Background Image */}
             <img
-              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=200&fit=crop"
+              src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=300&fit=crop"
               alt="Banner"
               className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
 
-            <div className="relative p-5 text-white">
-              <h2 className="text-lg font-bold">Focus Fitness</h2>
-              <p className="text-sm text-gray-100">Today's target</p>
-              <div className="mt-2 inline-block px-3 py-1 rounded-full bg-orange-400/80 text-xs font-medium">
-                Fat Loss
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/30 to-black/50"></div>
+
+            {/* Top Content */}
+            <div className="absolute top-0 left-0 right-0 p-5 text-white">
+              <h2 className="text-xl font-bold leading-tight mb-1">Progress over perfect! 😊</h2>
+            </div>
+
+            {/* Bottom CTA Card */}
+            <div className="absolute bottom-5 left-5 right-5">
+              <div className="backdrop-blur-xl bg-white/95 rounded-2xl p-4 shadow-xl border border-white/30">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl">🏋️</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-gray-900">Ready to train?</p>
+                    <p className="text-xs text-gray-600">Start your workout now</p>
+                  </div>
+                  <button className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center hover:shadow-lg transition-all active:scale-95">
+                    <ArrowRight size={18} className="text-white" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
