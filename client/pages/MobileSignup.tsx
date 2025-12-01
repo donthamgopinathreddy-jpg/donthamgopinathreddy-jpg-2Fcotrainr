@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, Eye, EyeOff } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, EyeOff, Check, AlertCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 const FOCUS_CATEGORIES = [
   "Fat loss",
@@ -89,6 +90,8 @@ export default function MobileSignup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [useFeetInches, setUseFeetInches] = useState(false);
   const [useLbs, setUseLbs] = useState(false);
+  const [usernameStatus, setUsernameStatus] = useState<"checking" | "available" | "unavailable" | null>(null);
+  const [checkUsernameTimeout, setCheckUsernameTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const [data, setData] = useState<SignupData>({
     email: "",
@@ -113,10 +116,56 @@ export default function MobileSignup() {
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
+  const checkUsernameAvailability = async (username: string) => {
+    if (!username || username.length < 3) {
+      setUsernameStatus(null);
+      return;
+    }
+
+    setUsernameStatus("checking");
+
+    try {
+      const { data: existingUser, error } = await supabase
+        .from("users")
+        .select("id")
+        .eq("username", username)
+        .single();
+
+      if (error && error.code !== "PGRST116") {
+        console.error("Error checking username:", error);
+        setUsernameStatus(null);
+        return;
+      }
+
+      if (existingUser) {
+        setUsernameStatus("unavailable");
+      } else {
+        setUsernameStatus("available");
+      }
+    } catch (error) {
+      console.error("Error checking username availability:", error);
+      setUsernameStatus(null);
+    }
+  };
+
   const handleInputChange = (field: keyof SignupData, value: any) => {
     // Force lowercase for username and allow only lowercase, numbers, _, .
     if (field === "username") {
       value = value.toLowerCase().replace(/[^a-z0-9_.\-]/g, "");
+
+      // Check username availability with debounce
+      if (checkUsernameTimeout) {
+        clearTimeout(checkUsernameTimeout);
+      }
+
+      if (value) {
+        const timeout = setTimeout(() => {
+          checkUsernameAvailability(value);
+        }, 500);
+        setCheckUsernameTimeout(timeout);
+      } else {
+        setUsernameStatus(null);
+      }
     }
     setData({ ...data, [field]: value });
   };
@@ -164,6 +213,10 @@ export default function MobileSignup() {
       case 1:
         if (!data.username || !data.full_name || !data.phone_number) {
           toast.error("Please fill in all fields");
+          return false;
+        }
+        if (usernameStatus === "unavailable") {
+          toast.error("Username already taken");
           return false;
         }
         return true;
@@ -336,17 +389,48 @@ export default function MobileSignup() {
               <label className="block text-sm font-medium text-gray-700">
                 Username
               </label>
-              <input
-                type="text"
-                placeholder="your_username"
-                value={data.username}
-                onChange={(e) => handleInputChange("username", e.target.value)}
-                disabled={isLoading}
-                className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="your_username"
+                  value={data.username}
+                  onChange={(e) => handleInputChange("username", e.target.value)}
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 rounded-2xl border-2 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50 pr-10"
+                  style={{
+                    borderColor:
+                      usernameStatus === "available"
+                        ? "#10b981"
+                        : usernameStatus === "unavailable"
+                          ? "#ef4444"
+                          : "#d1d5db",
+                  }}
+                />
+                {usernameStatus === "checking" && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <div className="animate-spin w-5 h-5 border-2 border-gray-300 border-t-orange-400 rounded-full"></div>
+                  </div>
+                )}
+                {usernameStatus === "available" && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500">
+                    <Check size={20} />
+                  </div>
+                )}
+                {usernameStatus === "unavailable" && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
+                    <AlertCircle size={20} />
+                  </div>
+                )}
+              </div>
               <p className="text-xs text-gray-500 mt-1">
                 Lowercase letters, numbers, _ and . allowed
               </p>
+              {usernameStatus === "unavailable" && (
+                <p className="text-xs text-red-500">Username already taken</p>
+              )}
+              {usernameStatus === "available" && (
+                <p className="text-xs text-green-500">Username available!</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -668,15 +752,15 @@ export default function MobileSignup() {
               {[0, 1, 2, 3, 4].map((s) => (
                 <div key={s} className="flex flex-col items-center flex-1">
                   <div
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold transition-all ${
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold transition-all border-2 ${
                       s === step
-                        ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900 shadow-md"
+                        ? "border-orange-400 text-orange-400 bg-transparent"
                         : s < step
-                          ? "bg-green-500 text-white"
-                          : "bg-gray-200 text-gray-500"
+                          ? "border-green-500 bg-green-500 text-white"
+                          : "border-gray-300 text-gray-400 bg-transparent"
                     }`}
                   >
-                    {s + 1}
+                    {s < step ? <Check size={16} /> : s + 1}
                   </div>
                 </div>
               ))}
@@ -711,7 +795,7 @@ export default function MobileSignup() {
                 type="button"
                 onClick={() => setStep(step - 1)}
                 disabled={isLoading}
-                className="flex-1 py-3 px-4 rounded-full border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex-1 py-3 px-4 rounded-full border-2 border-orange-400 hover:border-orange-500 text-orange-500 hover:text-orange-600 font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 bg-transparent"
               >
                 <ChevronLeft size={20} />
                 Back
@@ -721,10 +805,10 @@ export default function MobileSignup() {
               type="button"
               onClick={step === 4 ? handleFinish : handleNext}
               disabled={isLoading}
-              className={`flex-1 py-3 px-4 rounded-full font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 ${
+              className={`flex-1 py-3 px-4 rounded-full font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 border-2 ${
                 step === 4
-                  ? "bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-gray-900 shadow-lg hover:shadow-xl"
-                  : "bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-gray-900 shadow-lg hover:shadow-xl"
+                  ? "border-orange-400 hover:border-orange-500 text-orange-500 hover:text-orange-600 bg-transparent"
+                  : "border-orange-400 hover:border-orange-500 text-orange-500 hover:text-orange-600 bg-transparent"
               }`}
             >
               {isLoading
