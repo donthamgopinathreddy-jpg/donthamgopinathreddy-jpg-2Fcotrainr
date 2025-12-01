@@ -60,7 +60,7 @@ export default function Nutritionists() {
         const { data, error } = await supabase
           .from("profiles")
           .select(
-            "id, full_name, specialties, verified, hourly_rate, rating, reviews_count, years_of_experience"
+            "id, full_name, specialties, verified, hourly_rate, rating, reviews_count, years_of_experience",
           )
           .eq("role", "nutritionist");
 

@@ -413,7 +413,9 @@ const Community = () => {
                   </div>
                   <ArrowRight
                     size={20}
-                    className={theme === "dark" ? "text-gray-500" : "text-orange-400"}
+                    className={
+                      theme === "dark" ? "text-gray-500" : "text-orange-400"
+                    }
                   />
                 </div>
               </button>
@@ -585,7 +587,9 @@ const Community = () => {
                           </p>
                           <p
                             className={`text-xs ${
-                              theme === "dark" ? "text-gray-500" : "text-gray-600"
+                              theme === "dark"
+                                ? "text-gray-500"
+                                : "text-gray-600"
                             }`}
                           >
                             {timeAgo(post.created_at)}
@@ -649,13 +653,11 @@ const Community = () => {
                       <button
                         onClick={() =>
                           setShowComments(
-                            showComments === post.id ? null : post.id
+                            showComments === post.id ? null : post.id,
                           )
                         }
                         className={`flex-1 py-2 px-3 rounded-lg flex items-center justify-center gap-2 font-medium transition-all hover:bg-blue-500 hover:bg-opacity-20 ${
-                          theme === "dark"
-                            ? "text-gray-400"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
                         <MessageCircle size={18} />
@@ -663,9 +665,7 @@ const Community = () => {
                       </button>
                       <button
                         className={`flex-1 py-2 px-3 rounded-lg flex items-center justify-center gap-2 font-medium transition-all hover:bg-green-500 hover:bg-opacity-20 ${
-                          theme === "dark"
-                            ? "text-gray-400"
-                            : "text-gray-600"
+                          theme === "dark" ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
                         <Share2 size={18} />
@@ -687,7 +687,9 @@ const Community = () => {
                 >
                   <Flame
                     size={40}
-                    className={theme === "dark" ? "text-gray-600" : "text-orange-400"}
+                    className={
+                      theme === "dark" ? "text-gray-600" : "text-orange-400"
+                    }
                   />
                 </div>
                 <h3
@@ -815,7 +817,9 @@ const Community = () => {
                 >
                   <Users
                     size={40}
-                    className={theme === "dark" ? "text-gray-600" : "text-purple-400"}
+                    className={
+                      theme === "dark" ? "text-gray-600" : "text-purple-400"
+                    }
                   />
                 </div>
                 <h3

@@ -151,7 +151,10 @@ export default function UserProfile() {
             }
           }
         } catch (fetchError) {
-          console.warn("User fetch error:", fetchError instanceof Error ? fetchError.message : "Unknown error");
+          console.warn(
+            "User fetch error:",
+            fetchError instanceof Error ? fetchError.message : "Unknown error",
+          );
         }
 
         // Determine which ID to use for fetching posts
@@ -206,16 +209,25 @@ export default function UserProfile() {
                   }
                 }
               } catch (likesError) {
-                console.warn("Error fetching likes:", likesError instanceof Error ? likesError.message : "Unknown");
+                console.warn(
+                  "Error fetching likes:",
+                  likesError instanceof Error ? likesError.message : "Unknown",
+                );
               }
             }
           }
         } catch (postsError) {
-          console.warn("Posts fetch error:", postsError instanceof Error ? postsError.message : "Unknown");
+          console.warn(
+            "Posts fetch error:",
+            postsError instanceof Error ? postsError.message : "Unknown",
+          );
           setPosts([]);
         }
       } catch (error) {
-        console.warn("Error fetching profile:", error instanceof Error ? error.message : "Unknown");
+        console.warn(
+          "Error fetching profile:",
+          error instanceof Error ? error.message : "Unknown",
+        );
         setLoading(false);
       } finally {
         setLoading(false);

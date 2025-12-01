@@ -26,7 +26,10 @@ export const useFollowerCounts = (userId?: string) => {
           .single();
 
         if (error) {
-          console.warn("Follower counts fetch error:", error?.message || error?.code);
+          console.warn(
+            "Follower counts fetch error:",
+            error?.message || error?.code,
+          );
           setCounts({ followers_count: 0, following_count: 0 });
           return;
         }

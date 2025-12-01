@@ -98,7 +98,7 @@ export default function Profile() {
   });
   const [isSavingBiometrics, setIsSavingBiometrics] = useState(false);
   const [coverImage, setCoverImage] = useState<string | null>(
-    userProfile?.cover_image_url || null
+    userProfile?.cover_image_url || null,
   );
 
   const [passwordForm, setPasswordForm] = useState({
@@ -802,18 +802,24 @@ export default function Profile() {
         >
           <div className="flex items-center gap-2 mb-4">
             <Shield className="w-6 h-6 text-orange-500" />
-            <h2 className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <h2
+              className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               Security & Login
             </h2>
           </div>
 
           <div className="space-y-3">
-            <div className={`flex items-center justify-between p-4 rounded-xl transition-all ${
-              theme === "dark"
-                ? "bg-gray-700/50 hover:bg-gray-600/50"
-                : "bg-white hover:bg-gray-50 border border-gray-200"
-            }`}>
-              <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+            <div
+              className={`flex items-center justify-between p-4 rounded-xl transition-all ${
+                theme === "dark"
+                  ? "bg-gray-700/50 hover:bg-gray-600/50"
+                  : "bg-white hover:bg-gray-50 border border-gray-200"
+              }`}
+            >
+              <span
+                className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+              >
                 Device PIN / Password
               </span>
               <button
@@ -835,14 +841,18 @@ export default function Profile() {
               </button>
             </div>
 
-            <div className={`flex items-center justify-between p-4 rounded-xl transition-all ${
-              theme === "dark"
-                ? "bg-gray-700/50 hover:bg-gray-600/50"
-                : "bg-white hover:bg-gray-50 border border-gray-200"
-            }`}>
+            <div
+              className={`flex items-center justify-between p-4 rounded-xl transition-all ${
+                theme === "dark"
+                  ? "bg-gray-700/50 hover:bg-gray-600/50"
+                  : "bg-white hover:bg-gray-50 border border-gray-200"
+              }`}
+            >
               <div className="flex items-center gap-3">
                 <Fingerprint className="w-5 h-5 text-orange-500" />
-                <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                <span
+                  className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                >
                   Fingerprint
                 </span>
               </div>
@@ -861,14 +871,18 @@ export default function Profile() {
               </button>
             </div>
 
-            <div className={`flex items-center justify-between p-4 rounded-xl transition-all ${
-              theme === "dark"
-                ? "bg-gray-700/50 hover:bg-gray-600/50"
-                : "bg-white hover:bg-gray-50 border border-gray-200"
-            }`}>
+            <div
+              className={`flex items-center justify-between p-4 rounded-xl transition-all ${
+                theme === "dark"
+                  ? "bg-gray-700/50 hover:bg-gray-600/50"
+                  : "bg-white hover:bg-gray-50 border border-gray-200"
+              }`}
+            >
               <div className="flex items-center gap-3">
                 <Smile className="w-5 h-5 text-orange-500" />
-                <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}>
+                <span
+                  className={`text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-900"}`}
+                >
                   Face Recognition
                 </span>
               </div>
@@ -876,7 +890,9 @@ export default function Profile() {
                 onClick={() => handleBiometricToggle("faceRecognition")}
                 disabled={isSavingBiometrics}
                 className={`relative w-12 h-6 rounded-full transition-colors disabled:opacity-50 ${
-                  securitySettings.faceRecognition ? "bg-orange-500" : "bg-gray-400"
+                  securitySettings.faceRecognition
+                    ? "bg-orange-500"
+                    : "bg-gray-400"
                 }`}
               >
                 <div
@@ -1067,7 +1083,9 @@ export default function Profile() {
         >
           <div className="flex items-center gap-2">
             <TrendingUp className="w-6 h-6 text-orange-500" />
-            <h2 className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <h2
+              className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               💰 Referral Coins
             </h2>
           </div>
@@ -1082,7 +1100,9 @@ export default function Profile() {
                   10% Discount Unlocked
                 </div>
               )}
-              <p className="text-sm font-medium opacity-90 mb-2">Current Balance</p>
+              <p className="text-sm font-medium opacity-90 mb-2">
+                Current Balance
+              </p>
               <h3 className="text-5xl font-bold mb-2">{referralCoins}</h3>
               <p className="text-orange-100">Coins available</p>
             </div>
@@ -1091,16 +1111,26 @@ export default function Profile() {
           <div className="space-y-3">
             <div>
               <div className="flex items-center justify-between mb-2">
-                <p className={`text-xs font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-                  {hasDiscount ? "🎉 Discount Unlocked!" : `Unlock 10% Discount`}
+                <p
+                  className={`text-xs font-semibold ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
+                >
+                  {hasDiscount
+                    ? "🎉 Discount Unlocked!"
+                    : `Unlock 10% Discount`}
                 </p>
-                <p className={`text-xs font-bold ${hasDiscount ? "text-green-500" : "text-orange-600"}`}>
-                  {hasDiscount ? "Complete" : `${Math.round((referralCoins / discountThreshold) * 100)}%`}
+                <p
+                  className={`text-xs font-bold ${hasDiscount ? "text-green-500" : "text-orange-600"}`}
+                >
+                  {hasDiscount
+                    ? "Complete"
+                    : `${Math.round((referralCoins / discountThreshold) * 100)}%`}
                 </p>
               </div>
-              <div className={`w-full h-2.5 rounded-full overflow-hidden ${
-                theme === "dark" ? "bg-gray-700" : "bg-gray-300"
-              }`}>
+              <div
+                className={`w-full h-2.5 rounded-full overflow-hidden ${
+                  theme === "dark" ? "bg-gray-700" : "bg-gray-300"
+                }`}
+              >
                 <div
                   className={`h-full transition-all duration-500 rounded-full ${
                     hasDiscount
@@ -1115,43 +1145,69 @@ export default function Profile() {
             </div>
 
             <div className="pt-2">
-              <h3 className={`text-sm font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              <h3
+                className={`text-sm font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
                 Earning Opportunities
               </h3>
               <div className="space-y-2">
-                <div className={`p-3 rounded-lg flex items-center justify-between text-sm ${
-                  theme === "dark"
-                    ? "bg-gray-700/50 hover:bg-gray-600/50"
-                    : "bg-orange-100 hover:bg-orange-200"
-                } transition-all`}>
-                  <span className={theme === "dark" ? "text-gray-200" : "text-orange-900"}>
+                <div
+                  className={`p-3 rounded-lg flex items-center justify-between text-sm ${
+                    theme === "dark"
+                      ? "bg-gray-700/50 hover:bg-gray-600/50"
+                      : "bg-orange-100 hover:bg-orange-200"
+                  } transition-all`}
+                >
+                  <span
+                    className={
+                      theme === "dark" ? "text-gray-200" : "text-orange-900"
+                    }
+                  >
                     Invite a friend who joins
                   </span>
-                  <span className={`font-bold ${theme === "dark" ? "text-orange-300" : "text-orange-600"}`}>
+                  <span
+                    className={`font-bold ${theme === "dark" ? "text-orange-300" : "text-orange-600"}`}
+                  >
                     +100
                   </span>
                 </div>
-                <div className={`p-3 rounded-lg flex items-center justify-between text-sm ${
-                  theme === "dark"
-                    ? "bg-gray-700/50 hover:bg-gray-600/50"
-                    : "bg-amber-100 hover:bg-amber-200"
-                } transition-all`}>
-                  <span className={theme === "dark" ? "text-gray-200" : "text-amber-900"}>
+                <div
+                  className={`p-3 rounded-lg flex items-center justify-between text-sm ${
+                    theme === "dark"
+                      ? "bg-gray-700/50 hover:bg-gray-600/50"
+                      : "bg-amber-100 hover:bg-amber-200"
+                  } transition-all`}
+                >
+                  <span
+                    className={
+                      theme === "dark" ? "text-gray-200" : "text-amber-900"
+                    }
+                  >
                     Complete 5 workouts weekly
                   </span>
-                  <span className={`font-bold ${theme === "dark" ? "text-amber-300" : "text-amber-600"}`}>
+                  <span
+                    className={`font-bold ${theme === "dark" ? "text-amber-300" : "text-amber-600"}`}
+                  >
                     +50
                   </span>
                 </div>
-                <div className={`p-3 rounded-lg flex items-center justify-between text-sm ${
-                  theme === "dark"
-                    ? "bg-gray-700/50 hover:bg-gray-600/50"
-                    : "bg-red-100 hover:bg-red-200"
-                } transition-all`}>
-                  <span className={theme === "dark" ? "text-gray-200" : "text-red-900"}>
+                <div
+                  className={`p-3 rounded-lg flex items-center justify-between text-sm ${
+                    theme === "dark"
+                      ? "bg-gray-700/50 hover:bg-gray-600/50"
+                      : "bg-red-100 hover:bg-red-200"
+                  } transition-all`}
+                >
+                  <span
+                    className={
+                      theme === "dark" ? "text-gray-200" : "text-red-900"
+                    }
+                  >
                     Maintain a 7-day streak
                   </span>
-                  <span className={`font-bold ${theme === "dark" ? "text-red-300" : "text-red-600"}`}>
+                  <span
+                    className={`font-bold ${theme === "dark" ? "text-red-300" : "text-red-600"}`}
+                  >
                     +75
                   </span>
                 </div>
@@ -1167,31 +1223,43 @@ export default function Profile() {
           />
 
           <div className="border-t pt-6 border-gray-200 dark:border-gray-700">
-            <h3 className={`text-sm font-bold mb-4 flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <h3
+              className={`text-sm font-bold mb-4 flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               <Users className="w-5 h-5" />
               Invite Friends
             </h3>
 
             <div className="space-y-3">
-              <div className={`rounded-xl p-4 ${
-                theme === "dark"
-                  ? "bg-green-900/30 border border-green-800"
-                  : "bg-green-50 border border-green-200"
-              }`}>
-                <p className={`text-xs font-semibold ${theme === "dark" ? "text-green-300" : "text-green-700"}`}>
+              <div
+                className={`rounded-xl p-4 ${
+                  theme === "dark"
+                    ? "bg-green-900/30 border border-green-800"
+                    : "bg-green-50 border border-green-200"
+                }`}
+              >
+                <p
+                  className={`text-xs font-semibold ${theme === "dark" ? "text-green-300" : "text-green-700"}`}
+                >
                   Your Referral Code
                 </p>
-                <p className={`text-2xl font-bold mt-2 font-mono tracking-wider ${theme === "dark" ? "text-green-400" : "text-green-600"}`}>
+                <p
+                  className={`text-2xl font-bold mt-2 font-mono tracking-wider ${theme === "dark" ? "text-green-400" : "text-green-600"}`}
+                >
                   {referralCodeDisplay}
                 </p>
               </div>
 
-              <div className={`rounded-xl p-4 space-y-3 ${
-                theme === "dark"
-                  ? "bg-blue-900/30 border border-blue-800"
-                  : "bg-blue-50 border border-blue-200"
-              }`}>
-                <p className={`text-xs font-semibold ${theme === "dark" ? "text-blue-300" : "text-blue-700"}`}>
+              <div
+                className={`rounded-xl p-4 space-y-3 ${
+                  theme === "dark"
+                    ? "bg-blue-900/30 border border-blue-800"
+                    : "bg-blue-50 border border-blue-200"
+                }`}
+              >
+                <p
+                  className={`text-xs font-semibold ${theme === "dark" ? "text-blue-300" : "text-blue-700"}`}
+                >
                   Referral Link
                 </p>
                 <div className="flex items-center gap-2">
@@ -1269,7 +1337,9 @@ export default function Profile() {
           >
             <div className="flex items-center gap-2">
               <Award className="w-6 h-6 text-yellow-500" />
-              <h2 className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              <h2
+                className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
                 🏆 Achievements
               </h2>
             </div>
@@ -1310,26 +1380,32 @@ export default function Profile() {
                     : "bg-gradient-to-br from-yellow-100 to-amber-100 border-yellow-300"
                 }`}
               >
-                <div className="text-6xl mb-4">
-                  {featuredAchievement.icon}
-                </div>
-                <h3 className={`text-xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                <div className="text-6xl mb-4">{featuredAchievement.icon}</div>
+                <h3
+                  className={`text-xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                >
                   {featuredAchievement.title}
                 </h3>
-                <p className={`text-sm mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                <p
+                  className={`text-sm mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
+                >
                   Keep up the great work!
                 </p>
 
                 <div className="flex gap-2 mt-4">
                   <button
-                    onClick={() => toast.success("Instagram share coming soon!")}
+                    onClick={() =>
+                      toast.success("Instagram share coming soon!")
+                    }
                     className="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
                   >
                     <Instagram className="w-4 h-4" />
                     Share
                   </button>
                   <button
-                    onClick={() => toast.success("Download feature coming soon!")}
+                    onClick={() =>
+                      toast.success("Download feature coming soon!")
+                    }
                     className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2.5 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2"
                   >
                     <Download className="w-4 h-4" />
@@ -1352,7 +1428,9 @@ export default function Profile() {
           >
             <div className="flex items-center gap-2">
               <Flame className="w-6 h-6 text-orange-500" />
-              <h2 className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              <h2
+                className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
                 Shared Diet Plans
               </h2>
             </div>
@@ -1370,42 +1448,56 @@ export default function Profile() {
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
-                      <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                      <p
+                        className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                      >
                         {plan.name}
                       </p>
-                      <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                      <p
+                        className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                      >
                         By {plan.users?.full_name || "Your Trainer"}
                       </p>
                     </div>
-                    <ArrowRight className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`} />
+                    <ArrowRight
+                      className={`w-5 h-5 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+                    />
                   </div>
 
                   {plan.description && (
-                    <p className={`text-sm mb-3 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    <p
+                      className={`text-sm mb-3 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                    >
                       {plan.description}
                     </p>
                   )}
 
                   <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div className={`p-2 rounded font-medium ${
-                      theme === "dark"
-                        ? "bg-gray-600/50 text-gray-300"
-                        : "bg-orange-100 text-orange-700"
-                    }`}>
+                    <div
+                      className={`p-2 rounded font-medium ${
+                        theme === "dark"
+                          ? "bg-gray-600/50 text-gray-300"
+                          : "bg-orange-100 text-orange-700"
+                      }`}
+                    >
                       {plan.duration_days} days
                     </div>
-                    <div className={`p-2 rounded font-medium ${
-                      theme === "dark"
-                        ? "bg-gray-600/50 text-gray-300"
-                        : "bg-orange-100 text-orange-700"
-                    }`}>
+                    <div
+                      className={`p-2 rounded font-medium ${
+                        theme === "dark"
+                          ? "bg-gray-600/50 text-gray-300"
+                          : "bg-orange-100 text-orange-700"
+                      }`}
+                    >
                       {plan.target_calories} cal
                     </div>
-                    <div className={`p-2 rounded font-medium ${
-                      theme === "dark"
-                        ? "bg-gray-600/50 text-gray-300"
-                        : "bg-orange-100 text-orange-700"
-                    }`}>
+                    <div
+                      className={`p-2 rounded font-medium ${
+                        theme === "dark"
+                          ? "bg-gray-600/50 text-gray-300"
+                          : "bg-orange-100 text-orange-700"
+                      }`}
+                    >
                       {plan.meals_per_day} meals
                     </div>
                   </div>

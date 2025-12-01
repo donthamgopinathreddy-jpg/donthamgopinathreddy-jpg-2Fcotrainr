@@ -91,23 +91,33 @@ export default function Feed() {
 
             const enriched: Post[] = data.map((post) => ({
               ...post,
-              author_name: userData?.full_name || userData?.username || "Unknown",
+              author_name:
+                userData?.full_name || userData?.username || "Unknown",
               author_avatar: userData?.profile_picture_url,
               author_role: userData?.role as "trainer" | "client" | undefined,
             }));
 
             setUserPosts(enriched);
           } catch (userError) {
-            console.warn("Error fetching user details:", userError instanceof Error ? userError.message : "Unknown");
+            console.warn(
+              "Error fetching user details:",
+              userError instanceof Error ? userError.message : "Unknown",
+            );
             setUserPosts(data as Post[]);
           }
         }
       } catch (postsError) {
-        console.warn("Posts fetch error:", postsError instanceof Error ? postsError.message : "Unknown");
+        console.warn(
+          "Posts fetch error:",
+          postsError instanceof Error ? postsError.message : "Unknown",
+        );
         setUserPosts([]);
       }
     } catch (error) {
-      console.warn("Outer error fetching user posts:", error instanceof Error ? error.message : "Unknown");
+      console.warn(
+        "Outer error fetching user posts:",
+        error instanceof Error ? error.message : "Unknown",
+      );
       setUserPosts([]);
     } finally {
       setLoadingUserPosts(false);

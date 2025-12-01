@@ -116,7 +116,10 @@ export const useStepCounter = () => {
           return data.steps || 0;
         }
       } catch (fetchError) {
-        console.warn("Could not fetch steps from database:", fetchError instanceof Error ? fetchError.message : "Unknown error");
+        console.warn(
+          "Could not fetch steps from database:",
+          fetchError instanceof Error ? fetchError.message : "Unknown error",
+        );
         setTotalStepsToday(0);
         return 0;
       }
@@ -134,7 +137,10 @@ export const useStepCounter = () => {
           .select()
           .single()
           .catch((err) => {
-            console.warn("Supabase insert failed, using default:", err?.message);
+            console.warn(
+              "Supabase insert failed, using default:",
+              err?.message,
+            );
             return { data: null, error: err };
           });
 
@@ -143,11 +149,17 @@ export const useStepCounter = () => {
           return 0;
         }
       } catch (insertError) {
-        console.warn("Could not create steps entry:", insertError instanceof Error ? insertError.message : "Unknown error");
+        console.warn(
+          "Could not create steps entry:",
+          insertError instanceof Error ? insertError.message : "Unknown error",
+        );
         return 0;
       }
     } catch (error) {
-      console.warn("Error in fetchTodaySteps:", error instanceof Error ? error.message : "Unknown error");
+      console.warn(
+        "Error in fetchTodaySteps:",
+        error instanceof Error ? error.message : "Unknown error",
+      );
     }
   }, [userProfile?.id]);
 
@@ -191,7 +203,10 @@ export const useStepCounter = () => {
           console.warn("Could not update steps:", updateError);
         }
       } catch (error) {
-        console.warn("Error in saveSteps:", error instanceof Error ? error.message : "Unknown error");
+        console.warn(
+          "Error in saveSteps:",
+          error instanceof Error ? error.message : "Unknown error",
+        );
       }
     },
     [userProfile?.id],

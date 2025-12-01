@@ -399,8 +399,7 @@ export default function Trainers() {
 
                       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                         <span className="font-medium">
-                          {trainer.specialties &&
-                          trainer.specialties.length > 0
+                          {trainer.specialties && trainer.specialties.length > 0
                             ? trainer.specialties[0]
                             : "Fitness"}
                         </span>

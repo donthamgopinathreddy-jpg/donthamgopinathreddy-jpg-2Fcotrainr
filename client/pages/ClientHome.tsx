@@ -49,7 +49,7 @@ export default function ClientHome() {
 
   const bmiValue =
     userProfile?.weight_kg && userProfile?.height_cm
-      ? (userProfile.weight_kg / ((userProfile.height_cm / 100) ** 2)).toFixed(1)
+      ? (userProfile.weight_kg / (userProfile.height_cm / 100) ** 2).toFixed(1)
       : null;
   const bmiStatus = bmiValue
     ? parseFloat(bmiValue) < 18.5
@@ -80,7 +80,10 @@ export default function ClientHome() {
           .eq("date", today)
           .single()
           .catch((err) => {
-            console.warn("Supabase call failed, using fallback data:", err?.message);
+            console.warn(
+              "Supabase call failed, using fallback data:",
+              err?.message,
+            );
             return { data: null, error: err };
           });
 
@@ -91,7 +94,10 @@ export default function ClientHome() {
           }
         }
       } catch (err) {
-        console.warn("Stats fetch error:", err instanceof Error ? err.message : "Unknown error");
+        console.warn(
+          "Stats fetch error:",
+          err instanceof Error ? err.message : "Unknown error",
+        );
       } finally {
         setLoading(false);
       }
@@ -120,7 +126,10 @@ export default function ClientHome() {
           setUnreadCount(data.length);
         }
       } catch (err) {
-        console.warn("Notification fetch error:", err instanceof Error ? err.message : "Unknown error");
+        console.warn(
+          "Notification fetch error:",
+          err instanceof Error ? err.message : "Unknown error",
+        );
       }
     };
 
@@ -150,23 +159,23 @@ export default function ClientHome() {
           .eq("user_id", userProfile.id)
           .eq("date", today);
       } else {
-        await supabase
-          .from("daily_stats")
-          .insert([
-            {
-              user_id: userProfile.id,
-              date: today,
-              water_consumed: newTotal,
-              steps: stepsToday,
-            },
-          ]);
+        await supabase.from("daily_stats").insert([
+          {
+            user_id: userProfile.id,
+            date: today,
+            water_consumed: newTotal,
+            steps: stepsToday,
+          },
+        ]);
       }
     } catch (err) {
       console.log("Could not update water");
     }
   };
 
-  const handleCoverImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoverImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file || !userProfile?.id) return;
 
@@ -346,7 +355,9 @@ export default function ClientHome() {
 
             {/* Top Content */}
             <div className="absolute top-0 left-0 right-0 p-5 text-white">
-              <h2 className="text-xl font-bold leading-tight mb-1">Progress over perfect! 😊</h2>
+              <h2 className="text-xl font-bold leading-tight mb-1">
+                Progress over perfect! 😊
+              </h2>
             </div>
 
             {/* Bottom CTA Card */}
@@ -357,8 +368,12 @@ export default function ClientHome() {
                     <span className="text-xl">🏋️</span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-gray-900">Ready to train?</p>
-                    <p className="text-xs text-gray-600">Start your workout now</p>
+                    <p className="text-sm font-bold text-gray-900">
+                      Ready to train?
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      Start your workout now
+                    </p>
                   </div>
                   <button className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center hover:shadow-lg transition-all active:scale-95">
                     <ArrowRight size={18} className="text-white" />
@@ -374,8 +389,18 @@ export default function ClientHome() {
             <div className="flex flex-col items-center mb-8">
               <div className="relative w-32 h-32 mb-4">
                 {/* Circular progress background */}
-                <svg className="absolute inset-0 transform -rotate-90" viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(0,0,0,0.1)" strokeWidth="8" />
+                <svg
+                  className="absolute inset-0 transform -rotate-90"
+                  viewBox="0 0 100 100"
+                >
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    fill="none"
+                    stroke="rgba(0,0,0,0.1)"
+                    strokeWidth="8"
+                  />
                   <circle
                     cx="50"
                     cy="50"
@@ -387,7 +412,13 @@ export default function ClientHome() {
                     strokeLinecap="round"
                   />
                   <defs>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient
+                      id="gradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="100%"
+                    >
                       <stop offset="0%" stopColor="#fb923c" />
                       <stop offset="100%" stopColor="#fbbf24" />
                     </linearGradient>
@@ -396,7 +427,9 @@ export default function ClientHome() {
 
                 {/* Center content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <p className="text-3xl font-bold text-gray-900">{stepsToday}</p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {stepsToday}
+                  </p>
                   <p className="text-xs text-gray-600 mt-1">Today's steps</p>
                 </div>
               </div>
@@ -409,7 +442,9 @@ export default function ClientHome() {
                   <Flame size={20} className="text-orange-500" />
                 </div>
                 <p className="text-xs text-gray-600">Calories</p>
-                <p className="text-sm font-bold text-gray-900">{caloriesBurned}</p>
+                <p className="text-sm font-bold text-gray-900">
+                  {caloriesBurned}
+                </p>
                 <p className="text-xs text-gray-500">/{caloriesTarget}</p>
               </div>
 
@@ -418,7 +453,9 @@ export default function ClientHome() {
                   <Droplets size={20} className="text-blue-500" />
                 </div>
                 <p className="text-xs text-gray-600">Water</p>
-                <p className="text-sm font-bold text-gray-900">{waterConsumed}</p>
+                <p className="text-sm font-bold text-gray-900">
+                  {waterConsumed}
+                </p>
                 <p className="text-xs text-gray-500">ml</p>
               </div>
 
@@ -459,7 +496,9 @@ export default function ClientHome() {
           <div className="mx-5 mb-6 backdrop-blur-md bg-white/90 rounded-3xl p-5 shadow-lg border border-white/20 flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 mb-1">BMI</p>
-              <p className="text-2xl font-bold text-gray-900">{bmiValue || "—"}</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {bmiValue || "—"}
+              </p>
               <p className="text-xs text-gray-600 mt-1">{bmiStatus}</p>
             </div>
             <div className="text-right text-xs text-gray-600">
@@ -482,8 +521,12 @@ export default function ClientHome() {
               <Flame size={24} className="text-orange-500" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900">Current streak</p>
-              <p className="text-lg font-bold text-gray-900">{currentStreak} days</p>
+              <p className="text-sm font-medium text-gray-900">
+                Current streak
+              </p>
+              <p className="text-lg font-bold text-gray-900">
+                {currentStreak} days
+              </p>
             </div>
             <div className="flex gap-1">
               {[0, 1, 2, 3, 4, 5, 6].map((day) => (
@@ -499,7 +542,9 @@ export default function ClientHome() {
 
           {/* 7. Quick Access Grid */}
           <div className="mx-5 mb-8">
-            <h3 className="text-sm font-bold text-gray-900 mb-4">Quick access</h3>
+            <h3 className="text-sm font-bold text-gray-900 mb-4">
+              Quick access
+            </h3>
             <div className="grid grid-cols-2 gap-4">
               {quickAccessTiles.map((tile) => {
                 const Icon = tile.icon;
@@ -544,7 +589,9 @@ export default function ClientHome() {
                     <p className="text-sm font-medium text-gray-900 mb-1">
                       {suggestion.title}
                     </p>
-                    <p className="text-xs text-gray-700">{suggestion.description}</p>
+                    <p className="text-xs text-gray-700">
+                      {suggestion.description}
+                    </p>
                   </div>
                 );
               })}
