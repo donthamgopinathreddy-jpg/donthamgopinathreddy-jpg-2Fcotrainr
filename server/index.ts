@@ -59,13 +59,14 @@ export function createServer() {
   console.log('[Server] Registering /api routes');
   app.use('/api', apiRouter);
 
-  // Serve static files from the dist/spa directory in production
+  // Check if we're in production mode
+  const isProduction = process.env.NODE_ENV === 'production';
   const staticDir = path.join(__dirname, '../dist/spa');
+  console.log('[Server] Node environment:', process.env.NODE_ENV || 'development');
   console.log('[Server] Static directory:', staticDir);
 
-  // Serve static files if they exist, otherwise skip
-  if (fs.existsSync(staticDir)) {
-    console.log('[Server] Serving static files from dist/spa');
+  if (isProduction && fs.existsSync(staticDir)) {
+    console.log('[Server] ✅ Production mode: Serving static files from dist/spa');
     app.use(express.static(staticDir));
 
     // Catch-all handler: serve index.html for all non-API routes
@@ -75,16 +76,8 @@ export function createServer() {
       res.sendFile(path.join(staticDir, 'index.html'));
     });
   } else {
-    console.log(
-      '[Server] Static directory does not exist (development mode - Vite should be serving frontend)'
-    );
-
-    // In development mode, return 404 for non-API requests
-    // (Vite will serve the frontend)
-    app.use((_req, res) => {
-      console.log('[Server] Request to non-API endpoint in dev mode:', _req.path);
-      res.status(404).json({ error: 'Not found. Frontend should be served by Vite dev server.' });
-    });
+    console.log('[Server] 📝 Development mode: NOT serving static files (Vite handles frontend)');
+    console.log('[Server] Only API routes will be handled here, frontend requests will 404');
   }
 
   return app;
