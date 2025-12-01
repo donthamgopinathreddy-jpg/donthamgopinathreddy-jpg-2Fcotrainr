@@ -61,66 +61,84 @@ export const useMessages = (recipientId?: string) => {
         return;
       }
 
-      const { data, error } = await supabase
-        .from("messages")
+      // Fetch conversations where user is a participant
+      const { data: conversationData, error: conversationError } = await supabase
+        .from("conversations")
         .select("*")
-        .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
-        .order("created_at", { ascending: false });
+        .or(`participant1_id.eq.${user.id},participant2_id.eq.${user.id}`)
+        .order("last_message_at", { ascending: false });
 
-      if (error) throw error;
+      if (conversationError) throw conversationError;
 
-      // Group messages by conversation
-      const conversationMap = new Map<string, Message[]>();
-      data?.forEach((msg) => {
-        const otherUserId =
-          msg.sender_id === user.id ? msg.recipient_id : msg.sender_id;
-        if (!conversationMap.has(otherUserId)) {
-          conversationMap.set(otherUserId, []);
-        }
-        conversationMap.get(otherUserId)!.push(msg);
-      });
+      if (!conversationData || conversationData.length === 0) {
+        setConversations([]);
+        setTotalUnreadMessages(0);
+        return;
+      }
 
-      // Fetch user details for each conversation
+      // For each conversation, get messages and user details
       const conversationList: Conversation[] = [];
       let totalUnreadMessages = 0;
 
-      for (const [otherUserId, msgs] of conversationMap.entries()) {
+      for (const conv of conversationData) {
+        // Determine the other participant
+        const otherUserId =
+          conv.participant1_id === user.id ? conv.participant2_id : conv.participant1_id;
+
+        // Fetch messages for this conversation
+        const { data: messages, error: messagesError } = await supabase
+          .from("messages")
+          .select("*")
+          .eq("conversation_id", conv.id)
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (messagesError) {
+          console.error("Error fetching messages for conversation:", messagesError);
+          continue;
+        }
+
+        // Fetch other user's details
         const { data: userData, error: userError } = await supabase
           .from("users")
           .select("username, full_name, profile_picture_url")
           .eq("id", otherUserId)
           .single();
 
-        if (!userError && userData) {
-          const lastMsg = msgs[0];
-          const unreadCount = msgs.filter(
-            (m) => !m.is_read && m.recipient_id === user.id,
-          ).length;
-          totalUnreadMessages += unreadCount;
-
-          conversationList.push({
-            id: otherUserId,
-            other_user_id: otherUserId,
-            other_user_name: userData.full_name || userData.username,
-            other_user_avatar: userData.profile_picture_url,
-            last_message: lastMsg.content,
-            last_message_time: lastMsg.created_at,
-            unread_count,
-          });
+        if (userError || !userData) {
+          console.error("Error fetching user details:", userError);
+          continue;
         }
+
+        // Count unread messages in this conversation
+        const { data: unreadData, error: unreadError } = await supabase
+          .from("messages")
+          .select("id")
+          .eq("conversation_id", conv.id)
+          .eq("is_read", false)
+          .neq("sender_id", user.id);
+
+        const unreadCount = unreadError ? 0 : (unreadData?.length || 0);
+        totalUnreadMessages += unreadCount;
+
+        const lastMsg = messages && messages.length > 0 ? messages[0] : null;
+
+        conversationList.push({
+          id: conv.id,
+          other_user_id: otherUserId,
+          other_user_name: userData.full_name || userData.username,
+          other_user_avatar: userData.profile_picture_url,
+          last_message: lastMsg?.content,
+          last_message_time: lastMsg?.created_at || conv.last_message_at,
+          unread_count: unreadCount,
+        });
       }
 
-      setConversations(
-        conversationList.sort(
-          (a, b) =>
-            new Date(b.last_message_time || 0).getTime() -
-            new Date(a.last_message_time || 0).getTime(),
-        ),
-      );
+      setConversations(conversationList);
       setTotalUnreadMessages(totalUnreadMessages);
     } catch (error) {
       console.error("Error fetching conversations:", error);
-      setConversations([]); // Set empty array on error to prevent .map() errors
+      setConversations([]);
       setTotalUnreadMessages(0);
     } finally {
       setLoading(false);
