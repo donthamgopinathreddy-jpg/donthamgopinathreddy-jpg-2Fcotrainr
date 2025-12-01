@@ -357,7 +357,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         role: userData.role,
       };
 
-      console.log("[Auth] Request payload:", JSON.stringify(requestPayload, null, 2));
+      console.log(
+        "[Auth] Request payload:",
+        JSON.stringify(requestPayload, null, 2),
+      );
       console.log("[Auth] Making POST request to /api/auth/signup");
 
       const response = await fetch("/api/auth/signup", {
