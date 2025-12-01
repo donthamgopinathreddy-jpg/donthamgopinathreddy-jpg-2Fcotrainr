@@ -45,10 +45,21 @@ function expressPlugin(): Plugin {
     configureServer() {
       const app = createServer();
 
-      // Start Express on port 3000 (NestJS backend uses 3001)
+      // Start Express on port 3000
+      // Listen on all interfaces (0.0.0.0) to ensure it's accessible from the proxy
       expressServer = http.createServer(app);
-      expressServer.listen(3000, "localhost", () => {
-        console.log("[Express] Server running on http://localhost:3000");
+      expressServer.listen(3000, "0.0.0.0", () => {
+        console.log("[Express] Server running on http://0.0.0.0:3000");
+        console.log("[Express] Proxy should forward requests to http://localhost:3000");
+      });
+
+      // Handle server errors
+      expressServer.on('error', (err: any) => {
+        if (err.code === 'EADDRINUSE') {
+          console.error('[Express] Port 3000 is already in use');
+        } else {
+          console.error('[Express] Server error:', err);
+        }
       });
     },
   };
