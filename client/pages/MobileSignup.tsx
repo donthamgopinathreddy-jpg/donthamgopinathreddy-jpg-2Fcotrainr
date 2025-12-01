@@ -598,13 +598,46 @@ export default function MobileSignup() {
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-x-1/2 translate-y-1/2"></div>
 
       <div className="w-full max-w-sm relative z-10">
+        {/* Header with logo */}
+        <div className="text-center mb-8">
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2Fc659d255956c4643b6576a691786eec0%2Fa3b8ec7e06b34a03ac01ccc4e2c195b0?format=webp&width=800"
+            alt="CoTrainr Logo"
+            className="h-16 mx-auto"
+          />
+        </div>
+
         {/* Main glassmorphism card */}
         <div className="backdrop-blur-2xl bg-white/90 border border-white/20 rounded-3xl shadow-2xl p-8 space-y-6">
+          {/* Progress indicator */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between gap-2">
+              {[0, 1, 2, 3, 4].map((s) => (
+                <div key={s} className="flex flex-col items-center flex-1">
+                  <div
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold transition-all ${
+                      s === step
+                        ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900 shadow-md"
+                        : s < step
+                          ? "bg-orange-300 text-white"
+                          : "bg-gray-200 text-gray-500"
+                    }`}
+                  >
+                    {s + 1}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-1 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-orange-400 to-yellow-400 transition-all duration-300"
+                style={{ width: `${((step + 1) / 5) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+
           {/* Title section */}
           <div className="text-center space-y-1">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900 font-bold text-sm">
-              {step + 1}
-            </div>
             <h1 className="text-2xl font-bold text-gray-900">
               {step === 0 && "Create account"}
               {step === 1 && "Profile basics"}
