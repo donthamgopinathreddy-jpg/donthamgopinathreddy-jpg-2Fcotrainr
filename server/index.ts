@@ -37,42 +37,19 @@ export function createServer() {
   app.use('/api/supabase/', apiRouter);
 
   // Proxy auth routes to Supabase API routes (for backward compatibility with frontend)
-  // These routes rewrite the request URL and pass it to the apiRouter
-  app.post('/api/auth/signup', async (req, res, next) => {
+  app.use('/api/auth', (req, res, next) => {
     console.log('[Server] ========================================');
-    console.log('[Server] Received POST /api/auth/signup');
+    console.log('[Server] Received', req.method, req.path);
     console.log('[Server] Request body:', JSON.stringify(req.body, null, 2));
-    console.log('[Server] Forwarding to apiRouter at /auth/signup');
+    console.log('[Server] Forwarding to apiRouter');
     console.log('[Server] ========================================');
-    req.url = '/auth/signup';
-    apiRouter(req, res, next);
-  });
+    next();
+  }, apiRouter);
 
-  app.post('/api/auth/login', async (req, res, next) => {
-    console.log('[Server] Forwarding POST /api/auth/login to supabase auth/signin');
-    req.url = '/auth/signin';
-    apiRouter(req, res, next);
-  });
-
-  app.post('/api/auth/signin', async (req, res, next) => {
-    console.log('[Server] Forwarding POST /api/auth/signin to apiRouter');
-    req.url = '/auth/signin';
-    apiRouter(req, res, next);
-  });
-
-  app.post('/api/auth/reset-password', async (req, res, next) => {
-    console.log(
-      '[Server] Forwarding POST /api/auth/reset-password to supabase auth/reset-password'
-    );
-    req.url = '/auth/reset-password';
-    apiRouter(req, res, next);
-  });
-
-  app.get('/api/users/profile', async (req, res, next) => {
-    console.log('[Server] Forwarding GET /api/users/profile to apiRouter');
-    req.url = '/users/profile';
-    apiRouter(req, res, next);
-  });
+  app.use('/api/users', (req, res, next) => {
+    console.log('[Server] Forwarding', req.method, req.path, 'to apiRouter');
+    next();
+  }, apiRouter);
 
   // Serve static files from the dist/spa directory in production
   const staticDir = path.join(__dirname, '../dist/spa');
