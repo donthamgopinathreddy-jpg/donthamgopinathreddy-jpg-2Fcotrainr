@@ -153,13 +153,14 @@ const Community = () => {
   };
 
   const handleCreatePost = async () => {
-    if (!postContent.trim() && !postImage) {
-      toast.error("Please add content or an image");
+    if (!postContent.trim() && !postImage && !postVideo) {
+      toast.error("Please add content or a photo/video");
       return;
     }
 
     try {
       let imageUrl: string | null = null;
+      let videoUrl: string | null = null;
 
       if (postImage) {
         const formData = new FormData();
@@ -178,6 +179,23 @@ const Community = () => {
         imageUrl = url;
       }
 
+      if (postVideo) {
+        const formData = new FormData();
+        formData.append("file", postVideo);
+
+        const uploadResponse = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error("Failed to upload video");
+        }
+
+        const { url } = await uploadResponse.json();
+        videoUrl = url;
+      }
+
       const response = await fetch("/api/posts", {
         method: "POST",
         headers: {
@@ -186,6 +204,7 @@ const Community = () => {
         body: JSON.stringify({
           content: postContent,
           image_url: imageUrl,
+          video_url: videoUrl,
         }),
       });
 
@@ -197,6 +216,8 @@ const Community = () => {
       setPostContent("");
       setPostImage(null);
       setPostImagePreview("");
+      setPostVideo(null);
+      setPostVideoPreview("");
       setShowPostForm(false);
       fetchPosts();
     } catch (error) {
