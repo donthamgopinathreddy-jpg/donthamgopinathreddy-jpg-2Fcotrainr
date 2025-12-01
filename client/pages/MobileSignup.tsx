@@ -558,7 +558,7 @@ export default function MobileSignup() {
                     className={`flex-1 py-2 px-4 rounded-full font-medium transition-all disabled:opacity-50 capitalize ${
                       data.role === r
                         ? "bg-gradient-to-r from-orange-400 to-yellow-400 text-gray-900"
-                        : "bg-white/50 border border-gray-200 text-gray-700 hover:border-orange-300"
+                        : "bg-gradient-to-r from-orange-400/50 to-yellow-400/50 text-gray-700 border border-orange-200/50 hover:from-orange-400/60 hover:to-yellow-400/60"
                     }`}
                   >
                     {r}
