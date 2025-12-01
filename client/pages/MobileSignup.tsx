@@ -10,7 +10,6 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
 
 const FOCUS_CATEGORIES = [
   "Fat loss",
