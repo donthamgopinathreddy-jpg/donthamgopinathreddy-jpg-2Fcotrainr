@@ -205,8 +205,8 @@ export default function MobileLogin() {
 
       {/* Password Reset Modal */}
       {showResetModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md p-4 animate-fade-in" style={{ animationDuration: "0.3s" }}>
+          <div className="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl animate-scale-up" style={{ animationDuration: "0.4s" }}>
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-gray-900">
