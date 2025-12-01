@@ -493,6 +493,8 @@ const Community = () => {
                       setPostContent("");
                       setPostImage(null);
                       setPostImagePreview("");
+                      setPostVideo(null);
+                      setPostVideoPreview("");
                     }}
                     className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
                       theme === "dark"
