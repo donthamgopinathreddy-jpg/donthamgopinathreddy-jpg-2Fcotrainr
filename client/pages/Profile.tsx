@@ -91,6 +91,9 @@ export default function Profile() {
     faceRecognition: false,
   });
   const [isSavingBiometrics, setIsSavingBiometrics] = useState(false);
+  const [coverImage, setCoverImage] = useState<string | null>(
+    userProfile?.cover_image_url || null
+  );
 
   const [passwordForm, setPasswordForm] = useState({
     current: "",
