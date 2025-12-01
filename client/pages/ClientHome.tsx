@@ -159,6 +159,42 @@ export default function ClientHome() {
     }
   };
 
+  const handleCoverImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !userProfile?.id) return;
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const dataUrl = event.target?.result as string;
+        setCoverImage(dataUrl);
+
+        // Upload to Supabase
+        const { data: updateData, error } = await supabase
+          .from("profiles")
+          .update({ cover_image_url: dataUrl })
+          .eq("id", userProfile.id);
+
+        if (error) throw error;
+        toast.success("Cover image updated!");
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      console.log("Could not update cover image:", err);
+      toast.error("Failed to update cover image");
+    }
+  };
+
+  const getInitials = (name?: string) => {
+    if (!name) return "?";
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   const quickAccessTiles = [
     {
       label: "Trainers",
