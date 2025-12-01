@@ -238,33 +238,50 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
 
     console.log('[API] Sign up successful for:', email);
 
-    // Create user profile in database (server-side with full permissions)
+    // Create user profile in database using the authenticated session
     try {
       console.log('[API] Creating user profile in database...');
-      const profileData = {
-        id: userId,
-        email,
-        username: username || email.split('@')[0],
-        full_name: full_name || '',
-        gender: gender || '',
-        password_hash: 'supabase_auth', // Placeholder - actual password is managed by Supabase auth
-        role: role,
-        weight_kg: weight || null,
-        height_cm: height || null,
-        phone_number: phone_number || '',
-        country_code: country_code || '',
-      };
 
-      console.log('[API] Profile data to insert:', profileData);
-
-      const { error: profileError } = await supabase.from('users').insert([profileData]);
-
-      if (profileError) {
-        console.error('[API] Profile creation error:', profileError);
-        // Don't fail - user is already created in auth
-        console.warn('[API] Profile creation failed but auth was successful, continuing...');
+      // Use the newly created session's access token to create an authenticated client
+      if (!data.session?.access_token) {
+        console.warn('[API] No access token in session, skipping profile creation');
       } else {
-        console.log('[API] User profile created successfully');
+        const authenticatedSupabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+          global: {
+            headers: {
+              Authorization: `Bearer ${data.session.access_token}`,
+            },
+          },
+        });
+
+        const profileData = {
+          id: userId,
+          email,
+          username: username || email.split('@')[0],
+          full_name: full_name || '',
+          gender: gender || '',
+          password_hash: 'supabase_auth', // Placeholder - actual password is managed by Supabase auth
+          role: role,
+          weight_kg: weight || null,
+          height_cm: height || null,
+          phone_number: phone_number || '',
+          country_code: country_code || '',
+        };
+
+        console.log('[API] Profile data to insert:', profileData);
+
+        const { error: profileError } = await authenticatedSupabase.from('users').insert([profileData]);
+
+        if (profileError) {
+          console.error('[API] Profile creation error:', {
+            message: profileError.message,
+            code: (profileError as any).code,
+            details: (profileError as any).details,
+          });
+          console.warn('[API] Profile creation failed but auth was successful, continuing...');
+        } else {
+          console.log('[API] User profile created successfully');
+        }
       }
     } catch (profileErr: any) {
       console.error('[API] Unexpected error creating profile:', profileErr);
