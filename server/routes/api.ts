@@ -261,12 +261,13 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
 
     // Create user profile in database using the authenticated session
     try {
-      console.log('[API] Creating user profile in database...');
+      console.log('[API] Starting profile creation...');
 
       // Use the newly created session's access token to create an authenticated client
       if (!data.session?.access_token) {
-        console.warn('[API] No access token in session, skipping profile creation');
+        console.warn('[API] ⚠️ No access token in session, skipping profile creation');
       } else {
+        console.log('[API] Creating authenticated client with access token');
         const authenticatedSupabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
           global: {
             headers: {
@@ -281,7 +282,7 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
           username: username || email.split('@')[0],
           full_name: full_name || '',
           gender: gender || '',
-          password_hash: 'supabase_auth', // Placeholder - actual password is managed by Supabase auth
+          password_hash: 'supabase_auth',
           role: role,
           weight_kg: weight || null,
           height_cm: height || null,
@@ -289,36 +290,44 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
           country_code: country_code || '',
         };
 
-        console.log('[API] Profile data to insert:', profileData);
+        console.log('[API] Profile data to insert:', JSON.stringify(profileData, null, 2));
 
-        const { error: profileError } = await authenticatedSupabase
+        const { error: profileError, data: profileResult } = await authenticatedSupabase
           .from('users')
           .insert([profileData]);
 
         if (profileError) {
-          console.error('[API] Profile creation error:', {
-            message: profileError.message,
-            code: (profileError as any).code,
-            details: (profileError as any).details,
-          });
+          console.error('[API] ❌ Profile creation error:');
+          console.error('[API]   message:', profileError.message);
+          console.error('[API]   code:', (profileError as any).code);
+          console.error('[API]   details:', (profileError as any).details);
           console.warn('[API] Profile creation failed but auth was successful, continuing...');
         } else {
-          console.log('[API] User profile created successfully');
+          console.log('[API] ✅ User profile created successfully');
+          console.log('[API] Profile result:', profileResult);
         }
       }
     } catch (profileErr: any) {
-      console.error('[API] Unexpected error creating profile:', profileErr);
-      // Don't fail - user is already created in auth
+      console.error('[API] ❌ Unexpected error creating profile:');
+      console.error('[API]   message:', profileErr?.message);
+      console.error('[API]   stack:', profileErr?.stack);
+      console.warn('[API] User auth was successful, continuing despite profile error');
     }
 
-    res.json({
+    const responseObject = {
       session: data.session,
       user: data.user,
       token: data.session?.access_token || '',
       message: 'Sign up successful',
-    });
+    };
+
+    console.log('[API] ✅ Sending success response');
+    console.log('[API] ========================================');
+
+    res.json(responseObject);
   } catch (error) {
-    console.error('[API] Unexpected sign up error:', error);
+    console.error('[API] ========================================');
+    console.error('[API] ❌ Sign up error:', error);
     const errorMsg = error instanceof Error ? error.message : 'Unknown error';
     res.status(500).json({
       message: errorMsg,
