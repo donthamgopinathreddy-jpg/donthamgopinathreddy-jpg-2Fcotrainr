@@ -1,14 +1,18 @@
 # Fix Login Errors on Fly.dev
 
 ## The Problem
+
 When you access your Fly.dev app, you see the login page but:
+
 - API calls fail with "Failed to fetch"
 - Console shows errors like "400 Bad Gateway"
 - Login doesn't work
 
 ## Root Cause
+
 The Express server on Fly.dev isn't properly configured to:
-1. Serve the frontend (React app) 
+
+1. Serve the frontend (React app)
 2. Handle API requests (`/api/*`)
 3. Have correct environment variables
 
@@ -26,6 +30,7 @@ flyctl secrets set \
 ```
 
 **Or via Fly.dev Dashboard**:
+
 1. Go to your app dashboard
 2. **Secrets** section
 3. Add:
@@ -44,15 +49,18 @@ Or use Fly.dev Dashboard → **Deploy** button.
 ### Solution 3: Verify the Build
 
 The build process must create both:
+
 - `dist/spa/` (frontend React app)
 - `dist/server/` (Express backend)
 
 Fly.dev should automatically run:
+
 ```bash
 npm run build
 ```
 
 Which runs:
+
 ```bash
 npm run build:client && npm run build:server
 ```
@@ -60,11 +68,13 @@ npm run build:client && npm run build:server
 ### Solution 4: Check Fly.dev Logs
 
 After deployment, check logs:
+
 ```bash
 flyctl logs
 ```
 
 You should see:
+
 ```
 [Server] ✅ Production mode: Serving static files from dist/spa
 [Server] Registering /api routes
@@ -76,6 +86,7 @@ If you see "NOT serving static files", it means `NODE_ENV` is not 'production'.
 ## How It Works
 
 ### Before (Broken)
+
 ```
 Browser
     ↓ tries to load app
@@ -84,6 +95,7 @@ Browser
 ```
 
 ### After (Working)
+
 ```
 Browser
     ↓ GET /login
@@ -112,17 +124,20 @@ Browser
 ## Troubleshooting
 
 ### Still seeing blank page
+
 1. Check Fly.dev logs: `flyctl logs`
 2. Look for errors about missing dist/spa
 3. Verify build is running: check "Build" section in dashboard
 
 ### Login still fails with errors
+
 1. Check browser console (DevTools)
 2. Check Fly.dev logs: `flyctl logs`
 3. Verify Supabase credentials are correct
 4. Make sure the API endpoint is being called (should be `/api/auth/signin`)
 
 ### "Static directory not found"
+
 1. The build process failed
 2. Check Fly.dev build logs
 3. Run locally: `npm run build` to test build process
@@ -152,9 +167,11 @@ curl https://your-app.fly.dev/login
 ## Still Having Issues?
 
 1. **Verify environment variables are set**:
+
    ```bash
    flyctl secrets list
    ```
+
    Should show:
    - NODE_ENV=production
    - VITE_SUPABASE_URL=...

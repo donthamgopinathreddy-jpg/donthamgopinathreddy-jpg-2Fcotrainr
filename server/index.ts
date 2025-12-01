@@ -62,7 +62,8 @@ export function createServer() {
   // Check if we're in production mode or if static files exist (for containerized deployments)
   const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
   const staticDir = path.join(__dirname, '../dist/spa');
-  const hasStaticFiles = fs.existsSync(staticDir) && fs.existsSync(path.join(staticDir, 'index.html'));
+  const hasStaticFiles =
+    fs.existsSync(staticDir) && fs.existsSync(path.join(staticDir, 'index.html'));
 
   console.log('[Server] Node environment:', process.env.NODE_ENV || 'development');
   console.log('[Server] Static directory:', staticDir);
@@ -70,10 +71,12 @@ export function createServer() {
 
   if (hasStaticFiles) {
     console.log('[Server] ✅ Serving static files from dist/spa');
-    app.use(express.static(staticDir, {
-      maxAge: '1d',
-      etag: false,
-    }));
+    app.use(
+      express.static(staticDir, {
+        maxAge: '1d',
+        etag: false,
+      })
+    );
 
     // Catch-all handler: serve index.html for all non-API routes
     // This allows React Router to handle client-side routing
