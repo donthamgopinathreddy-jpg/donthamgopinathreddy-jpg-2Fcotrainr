@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { handleDemo } from './routes/demo';
 import apiRouter from './routes/api';
 import { fileURLToPath } from 'url';
