@@ -159,6 +159,51 @@ router.post('/auth/signin', async (req: Request, res: Response) => {
   }
 });
 
+// Check username availability endpoint
+router.post('/auth/check-username', async (req: Request, res: Response) => {
+  try {
+    const { username } = req.body;
+
+    if (!username) {
+      return res.status(400).json({
+        error: 'Username is required',
+      });
+    }
+
+    console.log('[API] Checking username availability:', username);
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const { data, error } = await supabase
+      .from('users')
+      .select('id')
+      .eq('username', username)
+      .single();
+
+    // PGRST116 means "no rows returned" which is what we want (username is available)
+    if (error && error.code === 'PGRST116') {
+      console.log('[API] Username available:', username);
+      return res.json({ available: true });
+    }
+
+    if (error) {
+      console.error('[API] Error checking username:', error);
+      return res.status(400).json({
+        error: 'Failed to check username',
+      });
+    }
+
+    // If we get here, the username exists
+    console.log('[API] Username already taken:', username);
+    res.json({ available: false });
+  } catch (error) {
+    console.error('[API] Unexpected error checking username:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+    });
+  }
+});
+
 // Sign up endpoint
 router.post('/auth/signup', async (req: Request, res: Response) => {
   try {
