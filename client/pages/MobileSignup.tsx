@@ -20,7 +20,6 @@ export default function MobileSignup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
 
-  // Password validation function
   const validatePassword = (password: string): string | null => {
     if (password.length < 6) {
       return "Password must be at least 6 characters";
@@ -28,7 +27,6 @@ export default function MobileSignup() {
     return null;
   };
 
-  // Username validation function
   const validateUsername = (username: string): string | null => {
     if (username.length < 3) {
       return "Username must be at least 3 characters";
@@ -41,6 +39,8 @@ export default function MobileSignup() {
     password: "",
     confirmPassword: "",
     username: "",
+    full_name: "",
+    gender: "",
     height_feet: "",
     height_inches: "",
     height_cm: "",
@@ -49,7 +49,6 @@ export default function MobileSignup() {
     phone_number: "",
     country_code: "+1",
     role: "client",
-    full_name: "",
   });
 
   const handleInputChange = (
@@ -83,7 +82,7 @@ export default function MobileSignup() {
       newData.weight_kg = kg.toString();
     }
 
-    // Auto-convert kg to pounds (if user enters kg directly)
+    // Auto-convert kg to pounds
     if (name === "weight_kg" && value) {
       const kg = parseInt(value);
       const pounds = Math.round(kg * 2.205);
@@ -95,85 +94,56 @@ export default function MobileSignup() {
   };
 
   const handleNext = () => {
-    console.log("[MobileSignup] handleNext called, step:", step);
     setError("");
+    
     if (step === 1) {
-      console.log("[MobileSignup] Step 1 validation");
       if (!formData.email || !formData.password || !formData.confirmPassword) {
-        console.error("[MobileSignup] Step 1 FAILED: Missing fields");
         setError("Please fill in all fields");
         return;
       }
       const passwordError = validatePassword(formData.password);
       if (passwordError) {
-        console.error(
-          "[MobileSignup] Step 1 FAILED: Password error:",
-          passwordError,
-        );
         setError(passwordError);
         return;
       }
       if (formData.password !== formData.confirmPassword) {
-        console.error("[MobileSignup] Step 1 FAILED: Passwords don't match");
         setError("Passwords do not match");
         return;
       }
-      console.log("[MobileSignup] Step 1 passed, moving to step 2");
       setStep(2);
     } else if (step === 2) {
-      console.log("[MobileSignup] Step 2 validation");
       if (!formData.full_name || !formData.username) {
-        console.error("[MobileSignup] Step 2 FAILED: Missing fields");
         setError("Please fill in all fields");
         return;
       }
       const usernameError = validateUsername(formData.username);
       if (usernameError) {
-        console.error(
-          "[MobileSignup] Step 2 FAILED: Username error:",
-          usernameError,
-        );
         setError(usernameError);
         return;
       }
-      console.log("[MobileSignup] Step 2 passed, moving to step 3");
       setStep(3);
     } else if (step === 3) {
-      console.log("[MobileSignup] Step 3 validation");
-      if (
-        !formData.height_feet ||
-        !formData.height_inches ||
-        !formData.weight_kg ||
-        !formData.weight_pounds ||
-        !formData.phone_number
-      ) {
-        console.error("[MobileSignup] Step 3 FAILED: Missing fields:", {
-          height_feet: formData.height_feet,
-          height_inches: formData.height_inches,
-          weight_kg: formData.weight_kg,
-          weight_pounds: formData.weight_pounds,
-          phone_number: formData.phone_number,
-        });
+      if (!formData.gender || !formData.role) {
+        setError("Please select gender and account type");
+        return;
+      }
+      setStep(4);
+    } else if (step === 4) {
+      if (!formData.height_feet || !formData.height_inches || !formData.weight_kg) {
         setError("Please fill in all fields");
         return;
       }
-      console.log("[MobileSignup] Step 3 passed, calling handleSignup");
+      setStep(5);
+    } else if (step === 5) {
+      if (!formData.phone_number) {
+        setError("Please enter your phone number");
+        return;
+      }
       handleSignup();
     }
   };
 
   const handleSignup = async () => {
-    console.log("[MobileSignup] ===== CALLING SIGNUP =====");
-    console.log("[MobileSignup] Form data:", {
-      email: formData.email,
-      username: formData.username,
-      full_name: formData.full_name,
-      height_feet: formData.height_feet,
-      height_inches: formData.height_inches,
-      weight_kg: formData.weight_kg,
-      phone_number: formData.phone_number,
-      country_code: formData.country_code,
-    });
     setLoading(true);
     setError("");
     try {
@@ -184,15 +154,10 @@ export default function MobileSignup() {
       );
       const weightInKg = parseInt(formData.weight_kg);
 
-      console.log("[MobileSignup] Calculated values:", {
-        heightInCm,
-        weightInKg,
-      });
-      console.log("[MobileSignup] Calling signUp from AuthContext...");
-
       await signUp(formData.email, formData.password, {
         username: formData.username,
         full_name: formData.full_name,
+        gender: formData.gender,
         role: formData.role as "client" | "trainer",
         height_cm: heightInCm,
         weight_kg: weightInKg,
@@ -200,10 +165,7 @@ export default function MobileSignup() {
         country_code: formData.country_code,
       });
 
-      console.log("[MobileSignup] ✅ Signup successful!");
-
-      // Show success animation
-      setStep(4);
+      setStep(6);
       toast.success("Account created! Please sign in.");
       setTimeout(() => {
         navigate("/login", {
@@ -221,6 +183,17 @@ export default function MobileSignup() {
     }
   };
 
+  const stepTitles = [
+    "Create Account",
+    "Personal Info",
+    "About You",
+    "Your Stats",
+    "Contact Info",
+    "All Set!",
+  ];
+
+  const totalSteps = 5;
+
   return (
     <div className="min-h-screen bg-white pt-safe pb-safe overflow-hidden flex flex-col">
       {/* Header */}
@@ -232,12 +205,12 @@ export default function MobileSignup() {
           ← {step > 1 ? "Back" : "Login"}
         </button>
         <div className="flex gap-1.5 mt-4">
-          {[1, 2, 3].map((i) => (
+          {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
               className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
                 i <= step
-                  ? "bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30"
+                  ? "bg-gradient-to-r from-yellow-500 to-orange-500"
                   : "bg-gray-300"
               }`}
             />
@@ -247,74 +220,55 @@ export default function MobileSignup() {
 
       {/* Content */}
       <div className="relative z-10 px-6 py-8 flex-1 overflow-y-auto">
-        {/* Logo */}
-        {step !== 4 && (
-          <div className="text-center mb-12 animate-fade-in">
-            <div className="inline-block mb-6">
-              <Logo size="lg" className="drop-shadow-lg" />
-            </div>
+        {/* Logo and Title */}
+        {step !== 6 && (
+          <div className="text-center mb-8 animate-fade-in">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Create Account
+              {stepTitles[step - 1]}
             </h1>
             <p className="text-gray-600 text-sm">
-              Step {step} of 3 • Join the fitness revolution
+              Step {step} of {totalSteps}
             </p>
           </div>
         )}
 
-        {/* Success State */}
-        {step === 4 && (
-          <div className="flex flex-col items-center justify-center min-h-96 text-center animate-scale-in">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center mb-6 shadow-2xl shadow-green-500/50">
-              <CheckCircle2 size={48} className="text-white animate-bounce" />
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              Welcome! 🎉
-            </h2>
-            <p className="text-gray-600 mb-8">Your account is ready to go</p>
-            <div className="w-1 h-16 bg-gradient-to-b from-orange-500 to-transparent rounded-full"></div>
-          </div>
-        )}
-
         {/* Error Message */}
-        {error && step !== 4 && (
-          <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-300 backdrop-blur-sm flex items-gap-3 animate-slide-down">
+        {error && (
+          <div className="w-full mb-6 p-4 rounded-2xl bg-red-50 border border-red-300 flex items-center gap-3 animate-slide-down">
             <AlertCircle className="text-red-600 flex-shrink-0" size={20} />
             <p className="text-red-700 text-sm font-medium">{error}</p>
           </div>
         )}
 
-        {/* Step 1: Email & Password */}
+        {/* Step 1: Email and Password */}
         {step === 1 && (
-          <div className="space-y-5 animate-fade-in">
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
+          <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
                 Email Address
               </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="your@email.com"
-                  className="w-full px-5 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
-                />
-              </div>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="your@email.com"
+                className="w-full px-5 py-3.5 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+              />
             </div>
 
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
                 Password
               </label>
-              <div className="relative group">
+              <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="••••••••"
-                  className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+                  className="w-full px-5 py-3.5 pr-12 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 <button
                   type="button"
@@ -324,64 +278,38 @@ export default function MobileSignup() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              <p className="text-xs text-gray-600 mt-2">Minimum 6 characters</p>
             </div>
 
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
                 Confirm Password
               </label>
-              <div className="relative group">
+              <div className="relative">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   placeholder="••••••••"
-                  className="w-full px-5 py-3.5 pr-12 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+                  className="w-full px-5 py-3.5 pr-12 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600 transition-colors"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-            </div>
-
-            {/* Navigation Buttons */}
-            <div className="flex gap-3 mt-10 pt-6">
-              <button
-                onClick={handleNext}
-                disabled={loading}
-                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 rounded-full border-2 border-gray-800/30 border-t-gray-800 animate-spin" />
-                    Creating...
-                  </>
-                ) : (
-                  <>
-                    Next
-                    <ArrowRight size={18} />
-                  </>
-                )}
-              </button>
             </div>
           </div>
         )}
 
-        {/* Step 2: Name & Username */}
+        {/* Step 2: Full Name and Username */}
         {step === 2 && (
-          <div className="space-y-5 animate-fade-in">
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
+          <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
                 Full Name
               </label>
               <input
@@ -390,12 +318,12 @@ export default function MobileSignup() {
                 value={formData.full_name}
                 onChange={handleInputChange}
                 placeholder="John Doe"
-                className="w-full px-5 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+                className="w-full px-5 py-3.5 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
               />
             </div>
 
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-orange-600 transition-colors">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
                 Username
               </label>
               <input
@@ -403,297 +331,254 @@ export default function MobileSignup() {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                placeholder="john2024"
-                className="w-full px-5 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
+                placeholder="johndoe"
+                className="w-full px-5 py-3.5 rounded-3xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
               />
-              <p className="text-xs text-gray-600 mt-2">
-                3+ characters, must include at least one number
-              </p>
-            </div>
-
-            {/* Navigation Buttons */}
-            <div className="flex gap-3 mt-10 pt-6">
-              <button
-                onClick={() => setStep(step - 1)}
-                className="flex-1 px-4 py-3.5 rounded-2xl border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 active:scale-95"
-              >
-                Back
-              </button>
-              <button
-                onClick={handleNext}
-                disabled={loading}
-                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 rounded-full border-2 border-gray-800/30 border-t-gray-800 animate-spin" />
-                    Creating...
-                  </>
-                ) : (
-                  <>
-                    Next
-                    <ArrowRight size={18} />
-                  </>
-                )}
-              </button>
             </div>
           </div>
         )}
 
-        {/* Step 3: Physical Info & Role */}
+        {/* Step 3: Gender and Account Type */}
         {step === 3 && (
-          <div className="space-y-5 animate-fade-in">
-            {/* Height Fields */}
+          <div className="space-y-6 max-w-md mx-auto animate-fade-in-up">
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3 transition-colors">
-                Height
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
-                    Feet
-                  </label>
-                  <input
-                    type="text"
-                    name="height_feet"
-                    value={formData.height_feet}
-                    onChange={handleInputChange}
-                    placeholder="5"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
-                  />
-                </div>
-                <div className="group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
-                    Inches
-                  </label>
-                  <input
-                    type="text"
-                    name="height_inches"
-                    value={formData.height_inches}
-                    onChange={handleInputChange}
-                    placeholder="10"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
-                  />
-                </div>
-              </div>
-              {formData.height_feet && formData.height_inches && (
-                <p className="text-xs text-gray-600 mt-2 font-medium">
-                  ≈ {formData.height_cm} cm
-                </p>
-              )}
-            </div>
-
-            {/* Weight Fields */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3 transition-colors">
-                Weight
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
-                    Kilograms (kg)
-                  </label>
-                  <input
-                    type="text"
-                    name="weight_kg"
-                    value={formData.weight_kg}
-                    onChange={handleInputChange}
-                    placeholder="75"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
-                  />
-                </div>
-                <div className="group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
-                    Pounds (lbs)
-                  </label>
-                  <input
-                    type="text"
-                    name="weight_pounds"
-                    value={formData.weight_pounds}
-                    onChange={handleInputChange}
-                    placeholder="165"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Height Display in Both Formats */}
-            {formData.height_feet && formData.height_inches && (
-              <div className="p-4 rounded-2xl bg-yellow-50 border border-yellow-200">
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
-                  Height Summary
-                </label>
-                <p className="text-lg font-bold text-gray-900">
-                  {formData.height_feet}'{formData.height_inches}" or{" "}
-                  {formData.height_cm} cm
-                </p>
-              </div>
-            )}
-
-            {/* Phone Number and Country Code */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-3 transition-colors">
-                Contact Information
+              <label className="block text-sm font-semibold text-gray-900 mb-4">
+                Gender
               </label>
               <div className="flex gap-3">
-                <div className="w-20 group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
-                    Code
-                  </label>
-                  <select
-                    name="country_code"
-                    value={formData.country_code}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
-                  >
-                    <option value="+1">+1 (US)</option>
-                    <option value="+44">+44 (UK)</option>
-                    <option value="+91">+91 (IN)</option>
-                    <option value="+86">+86 (CN)</option>
-                    <option value="+81">+81 (JP)</option>
-                    <option value="+49">+49 (DE)</option>
-                    <option value="+33">+33 (FR)</option>
-                    <option value="+39">+39 (IT)</option>
-                    <option value="+34">+34 (ES)</option>
-                    <option value="+61">+61 (AU)</option>
-                    <option value="+55">+55 (BR)</option>
-                    <option value="+27">+27 (ZA)</option>
-                  </select>
-                </div>
-                <div className="flex-1 group">
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 group-focus-within:text-yellow-600 transition-colors">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone_number"
-                    value={formData.phone_number}
-                    onChange={handleInputChange}
-                    placeholder="9876543210"
-                    className="w-full px-4 py-3.5 rounded-2xl bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 hover:bg-gray-100"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="group">
-              <label className="block text-sm font-semibold text-gray-900 mb-3 group-focus-within:text-yellow-600 transition-colors">
-                Account Type
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                {(["client", "trainer"] as const).map((role) => (
+                {["Male", "Female", "Other"].map((gender) => (
                   <button
-                    key={role}
-                    onClick={() => setFormData((prev) => ({ ...prev, role }))}
-                    className={`px-5 py-4 rounded-2xl border-2 font-semibold capitalize transition-all duration-300 transform hover:scale-105 ${
-                      formData.role === role
-                        ? "bg-gradient-to-r from-yellow-400 to-yellow-500 border-yellow-500 text-gray-800 shadow-xl shadow-yellow-400/50"
-                        : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                    key={gender}
+                    onClick={() =>
+                      setFormData({ ...formData, gender })
+                    }
+                    className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
+                      formData.gender === gender
+                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
                   >
-                    {role === "client" ? "👤 Client" : "🏋️ Trainer"}
+                    {gender}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Navigation Buttons */}
-            <div className="flex gap-3 mt-10 pt-6 pb-6">
-              <button
-                onClick={() => setStep(step - 1)}
-                className="flex-1 px-4 py-3.5 rounded-2xl border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 active:scale-95"
-              >
-                Back
-              </button>
-              <button
-                onClick={handleNext}
-                disabled={loading}
-                className="flex-1 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 active:scale-95 text-gray-800 font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 rounded-full border-2 border-gray-800/30 border-t-gray-800 animate-spin" />
-                    Creating...
-                  </>
-                ) : (
-                  "Create Account"
-                )}
-              </button>
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-4">
+                Account Type
+              </label>
+              <div className="flex gap-3">
+                {[
+                  { value: "client", label: "Client" },
+                  { value: "trainer", label: "Trainer" },
+                ].map((type) => (
+                  <button
+                    key={type.value}
+                    onClick={() =>
+                      setFormData({ ...formData, role: type.value as any })
+                    }
+                    className={`flex-1 py-3 rounded-2xl font-semibold transition-all ${
+                      formData.role === type.value
+                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {type.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
 
-        {/* Login Link */}
-        {step !== 4 && (
-          <p className="text-center text-sm text-gray-600 mt-8 pb-6">
-            Already have an account?{" "}
-            <button
-              onClick={() => navigate("/login")}
-              className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-            >
-              Sign In
-            </button>
-          </p>
+        {/* Step 4: Height and Weight */}
+        {step === 4 && (
+          <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
+                Height
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="number"
+                  name="height_feet"
+                  value={formData.height_feet}
+                  onChange={handleInputChange}
+                  placeholder="Feet"
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
+                <input
+                  type="number"
+                  name="height_inches"
+                  value={formData.height_inches}
+                  onChange={handleInputChange}
+                  placeholder="Inches"
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                {formData.height_cm ? `${formData.height_cm} cm` : ""}
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
+                Weight
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="number"
+                  name="weight_kg"
+                  value={formData.weight_kg}
+                  onChange={handleInputChange}
+                  placeholder="Kilograms"
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
+                <input
+                  type="number"
+                  name="weight_pounds"
+                  value={formData.weight_pounds}
+                  onChange={handleInputChange}
+                  placeholder="Pounds"
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Step 5: Phone Number */}
+        {step === 5 && (
+          <div className="space-y-5 max-w-md mx-auto animate-fade-in-up">
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
+                Phone Number
+              </label>
+              <div className="flex gap-2">
+                <select
+                  name="country_code"
+                  value={formData.country_code}
+                  onChange={handleInputChange}
+                  className="w-20 px-3 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                >
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+91">🇮🇳 +91</option>
+                  <option value="+86">🇨🇳 +86</option>
+                  <option value="+81">🇯🇵 +81</option>
+                  <option value="+49">🇩🇪 +49</option>
+                  <option value="+33">🇫🇷 +33</option>
+                  <option value="+39">🇮🇹 +39</option>
+                  <option value="+34">🇪🇸 +34</option>
+                  <option value="+61">🇦🇺 +61</option>
+                  <option value="+55">🇧🇷 +55</option>
+                  <option value="+27">🇿🇦 +27</option>
+                </select>
+                <input
+                  type="tel"
+                  name="phone_number"
+                  value={formData.phone_number}
+                  onChange={handleInputChange}
+                  placeholder="9876543210"
+                  className="flex-1 px-4 py-3 rounded-2xl bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Step 6: Success */}
+        {step === 6 && (
+          <div className="flex flex-col items-center justify-center text-center space-y-6 max-w-md mx-auto animate-fade-in">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
+              <CheckCircle2 size={48} className="text-white" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Account Created!
+              </h2>
+              <p className="text-gray-600">
+                Your account is all set. Redirecting to login...
+              </p>
+            </div>
+          </div>
         )}
       </div>
 
+      {/* Action Buttons */}
+      {step !== 6 && (
+        <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex gap-3">
+          <button
+            onClick={() => (step > 1 ? setStep(step - 1) : navigate("/login"))}
+            className="flex-1 px-5 py-3 rounded-2xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-all"
+          >
+            {step === 1 ? "Login" : "Back"}
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={loading}
+            className="flex-1 px-5 py-3 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-gray-900 font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <div className="w-4 h-4 rounded-full border-2 border-gray-900/30 border-t-gray-900 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              <>
+                {step === 5 ? "Create Account" : "Next"}
+                <ArrowRight size={18} />
+              </>
+            )}
+          </button>
+        </div>
+      )}
+
       <style>{`
-        @keyframes blob {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-        
         @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
-        
+
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
         @keyframes slide-down {
-          from { 
-            opacity: 0; 
-            transform: translateY(-10px); 
+          from {
+            opacity: 0;
+            transform: translateY(-15px);
           }
-          to { 
-            opacity: 1; 
-            transform: translateY(0); 
-          }
-        }
-        
-        @keyframes scale-in {
-          from { 
-            opacity: 0; 
-            transform: scale(0.8); 
-          }
-          to { 
-            opacity: 1; 
-            transform: scale(1); 
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
         }
-        
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-        
+
         .animate-fade-in {
           animation: fade-in 0.5s ease-out;
         }
-        
+
+        .animate-fade-in-up {
+          animation: fade-in-up 0.5s ease-out;
+        }
+
         .animate-slide-down {
           animation: slide-down 0.3s ease-out;
-        }
-        
-        .animate-scale-in {
-          animation: scale-in 0.5s ease-out;
         }
       `}</style>
     </div>
