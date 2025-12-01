@@ -99,36 +99,47 @@ export const useStepCounter = () => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      const { data, error } = await supabase
-        .from("health_sync_data")
-        .select("steps")
-        .eq("user_id", userProfile.id)
-        .eq("sync_date", today.toISOString().split("T")[0])
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from("health_sync_data")
+          .select("steps")
+          .eq("user_id", userProfile.id)
+          .eq("sync_date", today.toISOString().split("T")[0])
+          .single();
 
-      if (!error && data) {
-        setTotalStepsToday(data.steps || 0);
-        return data.steps || 0;
-      }
-
-      // Create entry for today if doesn't exist
-      const { data: newEntry } = await supabase
-        .from("health_sync_data")
-        .insert({
-          user_id: userProfile.id,
-          steps: 0,
-          sync_date: today.toISOString().split("T")[0],
-          source: "sensor",
-        })
-        .select()
-        .single();
-
-      if (newEntry) {
+        if (!error && data) {
+          setTotalStepsToday(data.steps || 0);
+          return data.steps || 0;
+        }
+      } catch (fetchError) {
+        console.warn("Could not fetch steps from database:", fetchError);
         setTotalStepsToday(0);
         return 0;
       }
+
+      // Create entry for today if doesn't exist
+      try {
+        const { data: newEntry } = await supabase
+          .from("health_sync_data")
+          .insert({
+            user_id: userProfile.id,
+            steps: 0,
+            sync_date: today.toISOString().split("T")[0],
+            source: "sensor",
+          })
+          .select()
+          .single();
+
+        if (newEntry) {
+          setTotalStepsToday(0);
+          return 0;
+        }
+      } catch (insertError) {
+        console.warn("Could not create steps entry:", insertError);
+        return 0;
+      }
     } catch (error) {
-      console.debug("Error fetching today's steps:", error);
+      console.warn("Error in fetchTodaySteps:", error instanceof Error ? error.message : "Unknown error");
     }
   }, [userProfile?.id]);
 
