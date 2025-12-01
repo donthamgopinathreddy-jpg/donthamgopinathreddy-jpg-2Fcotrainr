@@ -242,22 +242,22 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
 
     console.log('[API] ✅ Supabase auth.signUp succeeded');
 
-    console.log('[API] Supabase auth response:', {
-      userId: data.user?.id,
-      userEmail: data.user?.email,
-      sessionExists: !!data.session,
-    });
+    console.log('[API] Supabase auth response:');
+    console.log('[API]   userId:', data.user?.id);
+    console.log('[API]   userEmail:', data.user?.email);
+    console.log('[API]   sessionExists:', !!data.session);
+    console.log('[API]   hasAccessToken:', !!data.session?.access_token);
 
     const userId = data.user?.id;
     if (!userId) {
-      console.error('[API] No user ID in auth response');
+      console.error('[API] ❌ No user ID in auth response');
       return res.status(400).json({
         message: 'No user ID returned from auth',
         error: 'No user ID returned from auth',
       });
     }
 
-    console.log('[API] Sign up successful for:', email);
+    console.log('[API] ✅ Auth user created with ID:', userId);
 
     // Create user profile in database using the authenticated session
     try {
