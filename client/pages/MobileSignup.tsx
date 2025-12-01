@@ -372,12 +372,14 @@ export default function MobileSignup() {
                     handleInputChange("country_code", e.target.value)
                   }
                   disabled={isLoading}
-                  className="w-20 px-2 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 disabled:opacity-50"
+                  className="px-2 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 disabled:opacity-50 text-sm"
+                  style={{ minWidth: "140px" }}
                 >
-                  <option value="+1">+1</option>
-                  <option value="+44">+44</option>
-                  <option value="+91">+91</option>
-                  <option value="+86">+86</option>
+                  {COUNTRY_CODES.map((c) => (
+                    <option key={c.code + c.country} value={c.code}>
+                      {c.code} {c.country}
+                    </option>
+                  ))}
                 </select>
                 <input
                   type="tel"
@@ -387,7 +389,7 @@ export default function MobileSignup() {
                     handleInputChange("phone_number", e.target.value)
                   }
                   disabled={isLoading}
-                  className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50"
+                  className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:border-orange-400 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50 min-w-0"
                 />
               </div>
             </div>
