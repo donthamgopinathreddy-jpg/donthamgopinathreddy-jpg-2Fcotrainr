@@ -73,11 +73,14 @@ const Community = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("posts")
-        .select("*, users(id, full_name, profile_picture_url)")
-        .order("created_at", { ascending: false })
-        .limit(20);
+      const response = await fetch("/api/posts");
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+
+      const { data } = await response.json();
+      const error = null;
 
       if (error) throw error;
       setPosts(data || []);
