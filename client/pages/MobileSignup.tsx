@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, Eye, EyeOff, Check, AlertCircle } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  EyeOff,
+  Check,
+  AlertCircle,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -90,8 +97,11 @@ export default function MobileSignup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [useFeetInches, setUseFeetInches] = useState(false);
   const [useLbs, setUseLbs] = useState(false);
-  const [usernameStatus, setUsernameStatus] = useState<"checking" | "available" | "unavailable" | null>(null);
-  const [checkUsernameTimeout, setCheckUsernameTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [usernameStatus, setUsernameStatus] = useState<
+    "checking" | "available" | "unavailable" | null
+  >(null);
+  const [checkUsernameTimeout, setCheckUsernameTimeout] =
+    useState<NodeJS.Timeout | null>(null);
 
   const [data, setData] = useState<SignupData>({
     email: "",
@@ -394,7 +404,9 @@ export default function MobileSignup() {
                   type="text"
                   placeholder="your_username"
                   value={data.username}
-                  onChange={(e) => handleInputChange("username", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("username", e.target.value)
+                  }
                   disabled={isLoading}
                   className="w-full px-4 py-3 rounded-2xl border-2 focus:outline-none bg-white/50 backdrop-blur-sm transition-all text-gray-900 placeholder-gray-400 disabled:opacity-50 pr-10"
                   style={{
