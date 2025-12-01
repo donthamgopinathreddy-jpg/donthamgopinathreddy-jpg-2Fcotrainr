@@ -17,9 +17,9 @@ export function createServer() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // Add logging middleware to see all requests
+  // Add detailed logging middleware to see all requests
   app.use((req, res, next) => {
-    console.log(`[Server] ${req.method} ${req.path}`);
+    console.log(`[Server] ${req.method} ${req.path} (url: ${req.url}, originalUrl: ${req.originalUrl})`);
     next();
   });
 
