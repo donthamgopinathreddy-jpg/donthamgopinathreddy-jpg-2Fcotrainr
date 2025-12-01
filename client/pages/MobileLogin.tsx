@@ -329,6 +329,17 @@ export default function MobileLogin() {
           }
         }
 
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
         @keyframes slide-down {
           from {
             opacity: 0;
@@ -337,6 +348,17 @@ export default function MobileLogin() {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+
+        @keyframes scale-up {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
           }
         }
 
@@ -362,8 +384,16 @@ export default function MobileLogin() {
           animation: fade-in 0.8s ease-out;
         }
 
+        .animate-fade-in-up {
+          animation: fade-in-up 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
         .animate-slide-down {
           animation: slide-down 0.4s ease-out;
+        }
+
+        .animate-scale-up {
+          animation: scale-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .group input:focus ~ label,
