@@ -42,22 +42,26 @@ export function createServer() {
   const staticDir = path.join(__dirname, '../dist/spa');
   console.log('[Server] Static directory:', staticDir);
 
-  // Try to serve static files if they exist
-  try {
-    if (fs.existsSync(staticDir)) {
-      app.use(express.static(staticDir));
+  // Serve static files if they exist, otherwise skip
+  if (fs.existsSync(staticDir)) {
+    console.log('[Server] Serving static files from dist/spa');
+    app.use(express.static(staticDir));
 
-      // Catch-all handler: serve index.html for all non-API routes
-      // This allows React Router to handle client-side routing
-      app.use((_req, res) => {
-        console.log('[Server] Serving index.html for route:', _req.path);
-        res.sendFile(path.join(staticDir, 'index.html'));
-      });
-    } else {
-      console.log('[Server] Static directory does not exist yet (development mode)');
-    }
-  } catch (error) {
-    console.log('[Server] Error checking static directory:', error);
+    // Catch-all handler: serve index.html for all non-API routes
+    // This allows React Router to handle client-side routing
+    app.use((_req, res) => {
+      console.log('[Server] Serving index.html for route:', _req.path);
+      res.sendFile(path.join(staticDir, 'index.html'));
+    });
+  } else {
+    console.log('[Server] Static directory does not exist (development mode - Vite should be serving frontend)');
+
+    // In development mode, return 404 for non-API requests
+    // (Vite will serve the frontend)
+    app.use((_req, res) => {
+      console.log('[Server] Request to non-API endpoint in dev mode:', _req.path);
+      res.status(404).json({ error: 'Not found. Frontend should be served by Vite dev server.' });
+    });
   }
 
   return app;
