@@ -3,10 +3,7 @@ import { createServer } from "../../server";
 
 console.log("[Netlify] Initializing API function");
 console.log("[Netlify] NODE_ENV:", process.env.NODE_ENV);
-console.log(
-  "[Netlify] SUPABASE_URL:",
-  process.env.SUPABASE_URL ? "✓" : "✗",
-);
+console.log("[Netlify] SUPABASE_URL:", process.env.SUPABASE_URL ? "✓" : "✗");
 console.log(
   "[Netlify] SUPABASE_ANON_KEY:",
   process.env.SUPABASE_ANON_KEY ? "✓" : "✗",
