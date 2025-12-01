@@ -13,34 +13,135 @@ import {
   Briefcase,
   ArrowRight,
   Heart,
+  Home as HomeIcon,
+  MapPin,
+  MessageCircle,
+  User,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useStepCounter } from "@/hooks/useStepCounter";
+import { supabase } from "@/lib/supabase";
 
 export default function ClientHome() {
   const { userProfile } = useAuth();
   const navigate = useNavigate();
-  const [unreadCount, setUnreadCount] = useState(0);
+  const location = useLocation();
+  const { steps } = useStepCounter();
 
-  // Demo data - replace with real data from API
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [dailyStats, setDailyStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [waterConsumed, setWaterConsumed] = useState(0);
+
+  // User greeting
   const userGreeting = userProfile?.full_name?.split(" ")[0] || "User";
-  const stepsToday = 0;
+
+  // Real data from hooks and profile
+  const stepsToday = steps || 0;
   const stepsTarget = 10000;
   const caloriesTarget = 2000;
-  const caloriesBurned = 0;
+  const caloriesBurned = dailyStats?.calories_burned || 0;
   const waterTarget = 2500;
-  const waterConsumed = 0;
-  const distanceKm = 0;
-  const bmiValue = userProfile?.weight_kg && userProfile?.height_cm 
+  const distanceKm = dailyStats?.distance_km || 0;
+
+  const bmiValue = userProfile?.weight_kg && userProfile?.height_cm
     ? (userProfile.weight_kg / ((userProfile.height_cm / 100) ** 2)).toFixed(1)
     : null;
-  const bmiStatus = bmiValue 
+  const bmiStatus = bmiValue
     ? parseFloat(bmiValue) < 18.5 ? "Underweight"
       : parseFloat(bmiValue) < 25 ? "Normal"
       : parseFloat(bmiValue) < 30 ? "Overweight"
       : "Obese"
     : "Not set";
-  const currentStreak = 0;
+  const currentStreak = dailyStats?.streak_days || 0;
+
+  // Fetch daily stats from database
+  useEffect(() => {
+    const fetchDailyStats = async () => {
+      if (!userProfile?.id) return;
+
+      try {
+        setLoading(true);
+        // Get today's date
+        const today = new Date().toISOString().split('T')[0];
+
+        // Fetch daily stats
+        const { data, error } = await supabase
+          .from('daily_stats')
+          .select('*')
+          .eq('user_id', userProfile.id)
+          .eq('date', today)
+          .single();
+
+        if (data) {
+          setDailyStats(data);
+          if (data.water_consumed) {
+            setWaterConsumed(data.water_consumed);
+          }
+        }
+      } catch (err) {
+        console.log('Stats not available yet (expected on first login)');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDailyStats();
+  }, [userProfile?.id]);
+
+  // Fetch unread notifications
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      if (!userProfile?.id) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('notifications')
+          .select('id')
+          .eq('user_id', userProfile.id)
+          .eq('read', false);
+
+        if (data) {
+          setUnreadCount(data.length);
+        }
+      } catch (err) {
+        console.log('Could not fetch notifications');
+      }
+    };
+
+    fetchUnreadCount();
+  }, [userProfile?.id]);
+
+  const handleAddWater = async (amount: number) => {
+    if (!userProfile?.id) return;
+
+    const newTotal = waterConsumed + amount;
+    setWaterConsumed(newTotal);
+
+    try {
+      const today = new Date().toISOString().split('T')[0];
+
+      if (dailyStats) {
+        await supabase
+          .from('daily_stats')
+          .update({ water_consumed: newTotal })
+          .eq('user_id', userProfile.id)
+          .eq('date', today);
+      } else {
+        await supabase
+          .from('daily_stats')
+          .insert([{
+            user_id: userProfile.id,
+            date: today,
+            water_consumed: newTotal,
+            steps: stepsToday,
+          }]);
+      }
+    } catch (err) {
+      console.log('Could not update water');
+    }
+  };
 
   const quickAccessTiles = [
     { label: "Trainers", icon: Users, color: "from-orange-400 to-orange-500", onClick: () => navigate("/trainers") },
