@@ -555,14 +555,33 @@ export default function Profile() {
       <div className="w-full max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* HEADER SECTION */}
         <div
-          className={`rounded-3xl p-6 text-center shadow-md transition-all hover:shadow-lg ${
+          className={`rounded-3xl overflow-hidden shadow-md transition-all hover:shadow-lg ${
             theme === "dark"
               ? "bg-gradient-to-br from-gray-800 via-orange-900/20 to-gray-900"
               : "bg-gradient-to-br from-orange-100 via-orange-50 to-amber-100"
           }`}
         >
-          {/* Theme Toggle Button */}
-          <div className="flex justify-end mb-2">
+          {/* Cover Image Section */}
+          <div className="relative h-40 group overflow-hidden">
+            <img
+              src={
+                coverImage ||
+                "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=200&fit=crop"
+              }
+              alt="Cover"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/0 to-black/30"></div>
+            <label className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full cursor-pointer transition-all shadow-lg opacity-0 group-hover:opacity-100">
+              <input type="file" accept="image/*" onChange={handleCoverImageUpload} className="hidden" />
+              <Camera className="w-4 h-4 text-gray-800" />
+            </label>
+          </div>
+
+          {/* Profile Content */}
+          <div className="px-6 pt-4 pb-6 text-center">
+            {/* Theme Toggle Button */}
+            <div className="flex justify-end mb-2">
             <button
               onClick={toggleTheme}
               className={`p-2 rounded-full transition-colors ${
@@ -674,6 +693,7 @@ export default function Profile() {
             <Edit2 className="w-4 h-4" />
             Edit Profile
           </button>
+            </div>
         </div>
 
         {/* ACCOUNT SECTION */}
