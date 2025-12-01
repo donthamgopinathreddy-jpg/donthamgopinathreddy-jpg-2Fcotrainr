@@ -96,13 +96,18 @@ const Community = () => {
   const fetchCommunityUsers = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("users")
-        .select("id, full_name, profile_picture_url, bio")
-        .neq("id", userProfile?.id)
-        .limit(30);
+      const url = new URL("/api/community/users", window.location.origin);
+      if (userProfile?.id) {
+        url.searchParams.set("exclude_user_id", userProfile.id);
+      }
 
-      if (error) throw error;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch community users");
+      }
+
+      const { data } = await response.json();
       setCommunityUsers(data || []);
     } catch (error) {
       console.error("Error fetching users:", error);
