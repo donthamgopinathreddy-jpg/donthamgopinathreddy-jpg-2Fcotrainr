@@ -670,10 +670,7 @@ router.get('/community/users', async (req: Request, res: Response) => {
     const userId = req.query.exclude_user_id as string;
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let query = supabase
-      .from('users')
-      .select('id, full_name, profile_picture_url, bio')
-      .limit(30);
+    let query = supabase.from('users').select('id, full_name, profile_picture_url, bio').limit(30);
 
     if (userId) {
       query = query.neq('id', userId);
