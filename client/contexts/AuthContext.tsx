@@ -481,10 +481,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       if (!response.ok) {
+        console.error("[Auth] API Error Details:", {
+          status: response.status,
+          statusText: response.statusText,
+          data: data,
+        });
         const errorMsg =
           data?.error ||
           data?.message ||
-          `Login failed: ${response.statusText}`;
+          `Login failed (${response.status}): ${response.statusText}`;
         throw new Error(errorMsg);
       }
       console.log("[Auth] Response JSON parsed:", {
