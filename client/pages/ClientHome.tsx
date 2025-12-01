@@ -18,10 +18,12 @@ import {
   MessageCircle,
   User,
 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useStepCounter } from "@/hooks/useStepCounter";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 export default function ClientHome() {
   const { userProfile } = useAuth();
