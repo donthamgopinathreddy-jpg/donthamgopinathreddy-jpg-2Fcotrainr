@@ -33,20 +33,31 @@ export function createServer() {
   app.get('/api/demo', handleDemo);
 
   // Supabase API wrapper - all auth and data operations go through here
+  // IMPORTANT: This MUST come before static file serving
   console.log('[Server] Registering /api routes');
   app.use('/api', apiRouter);
 
   // Serve static files from the dist/spa directory in production
   const staticDir = path.join(__dirname, '../dist/spa');
   console.log('[Server] Static directory:', staticDir);
-  app.use(express.static(staticDir));
 
-  // Catch-all handler: serve index.html for all non-API routes
-  // This allows React Router to handle client-side routing
-  app.use((_req, res) => {
-    console.log('[Server] Serving index.html for route:', _req.path);
-    res.sendFile(path.join(staticDir, 'index.html'));
-  });
+  // Try to serve static files if they exist
+  try {
+    if (require('fs').existsSync(staticDir)) {
+      app.use(express.static(staticDir));
+
+      // Catch-all handler: serve index.html for all non-API routes
+      // This allows React Router to handle client-side routing
+      app.use((_req, res) => {
+        console.log('[Server] Serving index.html for route:', _req.path);
+        res.sendFile(path.join(staticDir, 'index.html'));
+      });
+    } else {
+      console.log('[Server] Static directory does not exist yet (development mode)');
+    }
+  } catch (error) {
+    console.log('[Server] Error checking static directory:', error);
+  }
 
   return app;
 }
