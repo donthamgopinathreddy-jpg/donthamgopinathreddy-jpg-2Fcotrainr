@@ -78,7 +78,11 @@ export default function ClientHome() {
           .select("*")
           .eq("user_id", userProfile.id)
           .eq("date", today)
-          .single();
+          .single()
+          .catch((err) => {
+            console.warn("Supabase call failed, using fallback data:", err?.message);
+            return { data: null, error: err };
+          });
 
         if (data) {
           setDailyStats(data);
@@ -87,7 +91,7 @@ export default function ClientHome() {
           }
         }
       } catch (err) {
-        console.log("Stats not available yet (expected on first login)");
+        console.warn("Stats fetch error:", err instanceof Error ? err.message : "Unknown error");
       } finally {
         setLoading(false);
       }
