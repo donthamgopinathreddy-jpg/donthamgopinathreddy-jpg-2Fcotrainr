@@ -494,27 +494,33 @@ export default function ClientHome() {
           </div>
         </div>
 
-        {/* Bottom Navigation Bar - Mobile Native */}
-        <div className="fixed bottom-0 left-0 right-0 max-w-[430px] mx-auto bg-white/95 backdrop-blur-md border-t border-white/20 shadow-2xl">
-          <nav className="flex items-center justify-around px-4 py-3">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.path);
-              return (
-                <button
-                  key={item.path}
-                  onClick={() => navigate(item.path)}
-                  className={`flex flex-col items-center gap-1 py-2 px-3 rounded-xl transition-all ${
-                    active
-                      ? "bg-orange-100 text-orange-600"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  <Icon size={24} />
-                  <span className="text-xs font-medium">{item.label}</span>
-                </button>
-              );
-            })}
+        {/* Bottom Navigation Bar - Fixed & Overlapping */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 max-w-[430px] mx-auto">
+          {/* Fade effect above nav */}
+          <div className="h-6 bg-gradient-to-t from-white/95 via-white/50 to-transparent pointer-events-none"></div>
+
+          {/* Navigation */}
+          <nav className="bg-white/95 backdrop-blur-xl border-t border-white/40 shadow-2xl">
+            <div className="flex items-center justify-around px-2 py-3">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item.path);
+                return (
+                  <button
+                    key={item.path}
+                    onClick={() => navigate(item.path)}
+                    className={`flex flex-col items-center gap-1.5 py-2 px-3 rounded-2xl transition-all duration-200 ${
+                      active
+                        ? "bg-gradient-to-br from-orange-100 to-yellow-100 text-orange-600 shadow-md"
+                        : "text-gray-500 hover:text-gray-700 hover:bg-gray-100/50"
+                    }`}
+                  >
+                    <Icon size={24} />
+                    <span className="text-xs font-semibold">{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </nav>
         </div>
       </div>
