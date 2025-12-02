@@ -12,6 +12,67 @@ interface DailyStats {
   dayName: string;
 }
 
+const CircularProgress = ({
+  value,
+  max,
+  color,
+  label,
+  unit,
+}: {
+  value: number;
+  max: number;
+  color: string;
+  label: string;
+  unit: string;
+}) => {
+  const percentage = Math.min((value / max) * 100, 100);
+  const circumference = 2 * Math.PI * 45;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <div className="relative w-32 h-32 mb-4">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke="#e5e7eb"
+            strokeWidth="8"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke={color}
+            strokeWidth="8"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            className="transition-all duration-700"
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <p className="text-2xl font-bold text-gray-900">
+            {percentage.toFixed(0)}%
+          </p>
+          <p className="text-xs text-gray-500">{Math.min(value, max).toLocaleString()}</p>
+        </div>
+      </div>
+      <p className="text-center">
+        <span className="block text-xs font-semibold text-gray-600 mb-1">
+          {label}
+        </span>
+        <span className="block text-xs text-gray-500">
+          Goal: {max.toLocaleString()} {unit}
+        </span>
+      </p>
+    </div>
+  );
+};
+
 export default function InsightsCalories() {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
@@ -133,80 +194,50 @@ export default function InsightsCalories() {
           </div>
         )}
 
-        {/* Analytical Tiles - Bar Style */}
-        <div className="space-y-3">
-          <h2 className="text-sm font-bold text-gray-900 px-1">Weekly Analytics</h2>
+        {/* Apple/Samsung Style - Circular Progress Rings */}
+        <div className="bg-white rounded-3xl p-8 shadow-md border border-red-100">
+          <h2 className="text-lg font-bold text-gray-900 mb-8 text-center">
+            Weekly Summary
+          </h2>
 
-          <div className="bg-white rounded-2xl p-4 shadow-md border border-red-100">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-gray-600">Total Burned</p>
-              <p className="text-xl font-bold text-red-600">
-                {totalCalories.toLocaleString()}
-              </p>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-red-500 to-red-400 transition-all duration-700"
-                style={{ width: `${Math.min((totalCalories / 14000) * 100, 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">14,000 kcal weekly target</p>
+          <div className="grid grid-cols-2 gap-8">
+            <CircularProgress
+              value={totalCalories}
+              max={14000}
+              color="#dc2626"
+              label="Total Burned"
+              unit="kcal"
+            />
+            <CircularProgress
+              value={avgCalories}
+              max={2000}
+              color="#f97316"
+              label="Daily Avg"
+              unit="kcal"
+            />
           </div>
 
-          <div className="bg-white rounded-2xl p-4 shadow-md border border-pink-100">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-gray-600">Avg per Day</p>
-              <p className="text-xl font-bold text-pink-600">
-                {avgCalories.toLocaleString()}
-              </p>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-pink-500 to-pink-400 transition-all duration-700"
-                style={{ width: `${Math.min((avgCalories / 2000) * 100, 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">2,000 kcal daily goal</p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-4 shadow-md border border-orange-100">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-gray-600">Best Day</p>
-              <p className="text-xl font-bold text-orange-600">
+          <div className="mt-8 pt-6 border-t border-gray-200 flex gap-4">
+            <div className="flex-1 text-center">
+              <p className="text-2xl font-bold text-red-600">
                 {bestDay.calories.toLocaleString()}
               </p>
+              <p className="text-xs text-gray-600 mt-1">Best Day</p>
+              <p className="text-xs text-gray-500">{bestDay.dayName}</p>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-orange-500 to-orange-400 transition-all duration-700"
-                style={{ width: `${Math.min((bestDay.calories / maxCalories) * 100, 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">
-              {bestDay.day !== "N/A" ? `${bestDay.dayName}` : "No data"}
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-4 shadow-md border border-green-100">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-gray-600">Today</p>
-              <p className="text-xl font-bold text-green-600">
+            <div className="flex-1 text-center border-l border-gray-200">
+              <p className="text-2xl font-bold text-orange-600">
                 {todayCalories.toLocaleString()}
               </p>
+              <p className="text-xs text-gray-600 mt-1">Today</p>
+              <p className="text-xs text-gray-500">kcal</p>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-green-500 to-green-400 transition-all duration-700"
-                style={{ width: `${Math.min((todayCalories / 2000) * 100, 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">kcal burned today</p>
           </div>
         </div>
 
-        {/* Daily Breakdown Chart */}
+        {/* Weekly Bar Chart - Samsung Health Style */}
         <div className="bg-white rounded-3xl p-6 shadow-md border border-red-100">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Breakdown</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Activity</h2>
 
           {loading ? (
             <div className="h-64 flex items-center justify-center">
@@ -217,36 +248,53 @@ export default function InsightsCalories() {
               <p className="text-gray-500">No data available</p>
             </div>
           ) : (
-            <div className="space-y-5">
-              {weeklyData.map((day, idx) => (
-                <div key={day.date} className="animate-fadeIn" style={{ animationDelay: `${idx * 50}ms` }}>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-900">{day.dayName}</p>
-                      <p className="text-xs text-gray-500">{formatDateFull(day.date)}</p>
-                    </div>
-                    <div className="text-right">
+            <div className="space-y-6">
+              {weeklyData.map((day, idx) => {
+                const percentage = (day.calories / maxCalories) * 100;
+                const achieved = day.calories >= 200;
+
+                return (
+                  <div
+                    key={day.date}
+                    className="animate-fadeIn"
+                    style={{ animationDelay: `${idx * 50}ms` }}
+                  >
+                    <div className="flex items-end justify-between mb-2">
+                      <div>
+                        <p className="font-semibold text-gray-900">{day.day}</p>
+                        <p className="text-xs text-gray-500">{formatDateFull(day.date)}</p>
+                      </div>
                       <p className="text-sm font-bold text-red-600">
                         {day.calories.toLocaleString()} kcal
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {day.calories >= 200 ? "✓ Goal" : `${200 - day.calories} to go`}
-                      </p>
+                    </div>
+
+                    {/* Vertical Bar */}
+                    <div className="flex items-end gap-2 h-24">
+                      <div className="flex-1 bg-gray-100 rounded-t-lg overflow-hidden">
+                        <div
+                          className={`w-full rounded-t-lg transition-all duration-700 ${
+                            achieved
+                              ? "bg-gradient-to-t from-green-500 to-green-400"
+                              : "bg-gradient-to-t from-red-500 to-orange-400"
+                          }`}
+                          style={{ height: `${Math.max(percentage, 5)}%` }}
+                        />
+                      </div>
+                      <div className="text-right text-xs">
+                        <p className="font-semibold text-gray-700">
+                          {percentage.toFixed(0)}%
+                        </p>
+                        {achieved && (
+                          <p className="text-green-600 text-xs font-semibold mt-1">
+                            ✓
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-
-                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-700 ${
-                        day.calories >= 200
-                          ? "bg-gradient-to-r from-green-500 to-green-400"
-                          : "bg-gradient-to-r from-red-500 to-orange-400"
-                      }`}
-                      style={{ width: `${(day.calories / maxCalories) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
