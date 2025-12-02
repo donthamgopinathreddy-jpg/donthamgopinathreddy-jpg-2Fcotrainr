@@ -100,12 +100,20 @@ const netlifyHandler = serverless(app);
 export const handler = async (event: any, context: any) => {
   try {
     console.log("[Netlify] ========================================");
-    console.log("[Netlify] Request received:", {
+    console.log("[Netlify] Event details:", {
       method: event.httpMethod,
       path: event.path,
       rawPath: event.rawPath,
+      rawUrl: event.rawUrl,
       headers: Object.keys(event.headers || {}),
     });
+
+    // Ensure path starts with / for serverless-http
+    if (event.path && !event.path.startsWith("/")) {
+      event.path = "/" + event.path;
+      console.log("[Netlify] Normalized path to:", event.path);
+    }
+
     console.log("[Netlify] ========================================");
 
     const response = await netlifyHandler(event, context);
