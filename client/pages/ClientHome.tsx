@@ -628,7 +628,7 @@ export default function ClientHome() {
                     }}
                   >
                     <div
-                      className={`w-10 h-10 rounded-full bg-gradient-to-br ${tile.color} flex items-center justify-center group-hover:scale-110 transition-transform`}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform`}
                     >
                       <Icon size={20} className="text-white" />
                     </div>
