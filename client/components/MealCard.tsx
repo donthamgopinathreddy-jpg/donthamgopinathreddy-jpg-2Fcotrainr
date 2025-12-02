@@ -78,7 +78,7 @@ export default function MealCard({
               <p className="opacity-75">Cal</p>
             </div>
             <div className="bg-white/20 rounded-lg p-2 text-center">
-              <Protein size={14} className="mx-auto mb-1" />
+              <Zap size={14} className="mx-auto mb-1" />
               <p className="font-bold">{protein}g</p>
               <p className="opacity-75">Protein</p>
             </div>
