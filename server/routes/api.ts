@@ -79,14 +79,21 @@ router.post('/auth/login', async (req: Request, res: Response) => {
   try {
     console.log('[API] ========================================');
     console.log('[API] Sign in endpoint called');
-    console.log('[API] Environment check:');
-    console.log('[API]   SUPABASE_URL:', SUPABASE_URL ? '✓' : '✗');
-    console.log('[API]   SUPABASE_ANON_KEY:', SUPABASE_ANON_KEY ? '✓' : '✗');
+    console.log('[API] Supabase client initialized:', !!supabase ? '✓' : '✗');
     console.log('[API] Request body:', {
       email: req.body?.email,
       password: req.body?.password ? '***' : 'missing',
     });
     console.log('[API] ========================================');
+
+    // Check if Supabase client is available
+    if (!supabase || !supabase.auth) {
+      console.error('[API] Supabase client is not initialized');
+      return res.status(503).json({
+        error: 'Service unavailable',
+        message: 'Authentication service is not available',
+      });
+    }
 
     const { email, password } = req.body;
 
@@ -99,11 +106,6 @@ router.post('/auth/login', async (req: Request, res: Response) => {
     }
 
     console.log('[API] Sign in attempt for:', email);
-
-    // Verify Supabase client is properly initialized
-    console.log('[API] Supabase client check:');
-    console.log('[API]   auth:', !!supabase.auth ? '✓' : '✗');
-    console.log('[API]   auth.signInWithPassword:', typeof supabase.auth.signInWithPassword);
 
     // Call Supabase auth
     console.log('[API] Calling supabase.auth.signInWithPassword');
