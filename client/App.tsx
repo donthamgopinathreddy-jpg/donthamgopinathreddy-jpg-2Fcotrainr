@@ -301,8 +301,9 @@ const PermissionRequester = () => {
 };
 
 const AppWithSplash = () => {
-  const { loading } = useAuth();
   const [showSplash, setShowSplash] = useState(true);
+  const context = useContext(AuthContext);
+  const loading = context?.loading ?? true;
 
   useEffect(() => {
     // Show splash for at least 3.5 seconds
