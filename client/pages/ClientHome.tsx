@@ -412,7 +412,7 @@ export default function ClientHome() {
                     expandedMetric === "steps" ? null : "steps",
                   )
                 }
-                className="w-full backdrop-blur-md bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-3xl p-6 shadow-lg border border-orange-200/50 text-left hover:shadow-xl transition-all active:scale-95"
+                className="w-full backdrop-blur-md bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-3xl p-6 shadow-md border border-orange-200/50 text-left hover:shadow-lg transition-all active:scale-95"
               >
                 <div className="flex items-start justify-between">
                   <div>
@@ -428,8 +428,20 @@ export default function ClientHome() {
                         : "Goal reached! 🎉"}
                     </p>
                   </div>
-                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
-                    <Footprints size={28} className="text-white" />
+                  <div className="flex gap-2">
+                    <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
+                      <Footprints size={28} className="text-white" />
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowStepsModal(true);
+                      }}
+                      className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-all"
+                      title="Edit steps goal"
+                    >
+                      <Award size={20} className="text-white" />
+                    </button>
                   </div>
                 </div>
 
