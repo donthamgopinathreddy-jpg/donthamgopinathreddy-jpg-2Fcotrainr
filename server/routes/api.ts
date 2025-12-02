@@ -69,7 +69,7 @@ router.get('/health', async (_req: Request, res: Response) => {
 });
 
 // Auth endpoints
-router.post('/auth/signin', async (req: Request, res: Response) => {
+router.post('/auth/login', async (req: Request, res: Response) => {
   try {
     console.log('[API] ========================================');
     console.log('[API] Sign in endpoint called');
