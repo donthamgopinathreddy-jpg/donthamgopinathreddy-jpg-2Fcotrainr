@@ -310,15 +310,15 @@ export default function ClientHome() {
 
         {/* Main Content - Navigation will overlap */}
         <div className="relative z-10 flex-1 overflow-y-auto pb-28">
-          {/* 1. Top Right Notification Bell */}
+          {/* 1. Top Right Notification Bell - Filled Circle Style */}
           <div className="absolute top-4 right-5 z-50">
             <button
               onClick={() => navigate("/notifications")}
-              className="relative p-3 hover:bg-white/40 rounded-full transition-all active:scale-95"
+              className="relative w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full transition-all active:scale-95 flex items-center justify-center backdrop-blur-sm border border-white/40"
             >
-              <Bell size={24} className="text-white drop-shadow-lg" />
+              <Bell size={24} className="text-white drop-shadow-lg fill-current" />
               {unreadCount > 0 && (
-                <div className="absolute top-2 right-2 px-2 py-1 bg-red-500 text-white text-xs font-bold rounded-full shadow-lg">
+                <div className="absolute -top-1 -right-1 px-2 py-1 bg-red-500 text-white text-xs font-bold rounded-full shadow-lg min-w-fit">
                   {unreadCount}
                 </div>
               )}
