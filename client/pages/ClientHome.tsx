@@ -401,7 +401,7 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 3. 2x2 Metric Tiles Grid */}
+          {/* 4. 2x2 Metric Tiles Grid */}
           <div className="mx-5 mb-6">
             <div className="grid grid-cols-2 gap-4">
               {/* Steps Tile */}
