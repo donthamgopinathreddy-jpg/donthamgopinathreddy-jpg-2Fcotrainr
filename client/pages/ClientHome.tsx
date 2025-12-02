@@ -221,6 +221,15 @@ export default function ClientHome() {
       .slice(0, 2);
   };
 
+  const handleSaveStepsGoal = () => {
+    if (editStepsTarget > 0) {
+      setShowStepsModal(false);
+      toast.success(`Steps goal updated to ${editStepsTarget}`);
+    } else {
+      toast.error("Please enter a valid steps goal");
+    }
+  };
+
   const quickAccessTiles = [
     {
       label: "Trainers",
