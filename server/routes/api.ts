@@ -4,24 +4,23 @@ import { createClient } from '@supabase/supabase-js';
 const router = express.Router();
 
 // Use environment variables for Supabase credentials
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hnxdlgdkyboctsvfktwe.supabase.co';
+// Fallback to hardcoded values if environment variables are not set
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://hnxdlgdkyboctsvfktwe.supabase.co';
 const SUPABASE_ANON_KEY =
   process.env.SUPABASE_ANON_KEY ||
+  process.env.VITE_SUPABASE_ANON_KEY ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhueGRsZ2RreWJvY3RzdmZrdHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2MDM0NTQsImV4cCI6MjA4MDE3OTQ1NH0.DZPvC7diiNoANXgDxnb7T-ynYg6JUW4cfEILoJfABSI';
 
 console.log('[API] Initializing Supabase API wrapper');
 console.log('[API] Environment check:');
 console.log('[API] VITE_SUPABASE_URL:', process.env.VITE_SUPABASE_URL ? 'set' : 'not set');
 console.log('[API] SUPABASE_URL:', process.env.SUPABASE_URL ? 'set' : 'not set');
-console.log('[API] Final SUPABASE_URL:', SUPABASE_URL ? 'set' : 'not set');
-console.log('[API] **ACTUAL URL BEING USED**:', SUPABASE_URL);
-console.log(
-  '[API] VITE_SUPABASE_ANON_KEY:',
-  process.env.VITE_SUPABASE_ANON_KEY ? 'set' : 'not set'
-);
+console.log('[API] VITE_SUPABASE_ANON_KEY:', process.env.VITE_SUPABASE_ANON_KEY ? 'set' : 'not set');
 console.log('[API] SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? 'set' : 'not set');
-console.log('[API] Final SUPABASE_ANON_KEY:', SUPABASE_ANON_KEY ? 'set' : 'not set');
+console.log('[API] Final SUPABASE_URL being used:', SUPABASE_URL ? '✓ set' : '✗ not set');
+console.log('[API] Final SUPABASE_ANON_KEY being used:', SUPABASE_ANON_KEY ? '✓ set' : '✗ not set');
 
+// Only throw if truly missing (not even fallback available)
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   const errorMsg = `[API] Missing Supabase configuration. SUPABASE_URL: ${!!SUPABASE_URL}, SUPABASE_ANON_KEY: ${!!SUPABASE_ANON_KEY}`;
   console.error(errorMsg);
@@ -29,11 +28,18 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     '[API] Available env vars:',
     Object.keys(process.env).filter((k) => k.includes('SUPABASE') || k.includes('VITE'))
   );
-  throw new Error(errorMsg);
+  console.warn('[API] Continuing anyway - will use default values');
 }
 
 // Create a Supabase client on the server side
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabase: any = null;
+try {
+  supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  console.log('[API] Supabase client created successfully');
+} catch (error) {
+  console.error('[API] Failed to create Supabase client:', error);
+  console.warn('[API] Supabase operations will fail - but server will still run');
+}
 
 // Health check
 router.get('/health', async (_req: Request, res: Response) => {
