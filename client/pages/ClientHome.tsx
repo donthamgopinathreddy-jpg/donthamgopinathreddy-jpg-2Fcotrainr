@@ -822,6 +822,70 @@ export default function ClientHome() {
           </nav>
         </div>
       </div>
+
+      {/* Steps Goal Modal */}
+      {showStepsModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
+            <h2 className="text-lg font-bold text-gray-900">Set Daily Goals</h2>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-sm text-blue-900">
+                📊 Steps are automatically counted from your device sensors
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Daily Steps Goal
+                </label>
+                <input
+                  type="number"
+                  value={editStepsTarget}
+                  onChange={(e) =>
+                    setEditStepsTarget(parseInt(e.target.value) || 0)
+                  }
+                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="e.g., 10000"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Calories burned = steps × 0.05 cal
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Water Goal (ml)
+                </label>
+                <input
+                  type="number"
+                  value={autoWaterTarget}
+                  disabled
+                  className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-gray-600 focus:outline-none cursor-not-allowed"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Auto-calculated based on your weight ({userProfile?.weight_kg}kg × 30ml)
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => setShowStepsModal(false)}
+                className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveStepsGoal}
+                className="flex-1 bg-gradient-to-br from-orange-500 to-orange-600 text-white font-medium py-2 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-colors"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
