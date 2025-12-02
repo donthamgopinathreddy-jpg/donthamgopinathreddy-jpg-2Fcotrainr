@@ -52,7 +52,25 @@ app.use((req, res, next) => {
 });
 
 // Mount API routes at root / (Netlify redirect strips /api prefix)
+console.log("[Netlify] Mounting API routes");
 app.use("/", apiRouter);
+
+// Catch-all 404 handler (for debugging)
+app.use((req: any, res: any) => {
+  console.error("[Netlify] 404 Not Found:", {
+    method: req.method,
+    path: req.path,
+    url: req.url,
+  });
+
+  res.setHeader("Content-Type", "application/json");
+  res.status(404).json({
+    error: "Not found",
+    message: `Route ${req.method} ${req.path} not found`,
+    path: req.path,
+    url: req.url,
+  });
+});
 
 // Error handler
 app.use((err: any, req: any, res: any, next: any) => {
