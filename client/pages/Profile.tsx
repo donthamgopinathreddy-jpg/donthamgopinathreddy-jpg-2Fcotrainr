@@ -31,6 +31,7 @@ import {
   Award,
   Users,
   TrendingUp,
+  Bell,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
