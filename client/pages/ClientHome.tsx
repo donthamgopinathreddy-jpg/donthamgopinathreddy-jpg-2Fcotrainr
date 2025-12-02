@@ -406,55 +406,50 @@ export default function ClientHome() {
           <div className="mx-5 mb-6 space-y-4">
             {/* 3a. Steps Tile */}
             <div className="group">
-              <button
-                onClick={() =>
-                  setExpandedMetric(
-                    expandedMetric === "steps" ? null : "steps",
-                  )
-                }
-                className="w-full backdrop-blur-md bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-3xl p-6 shadow-md border border-orange-200/50 text-left hover:shadow-lg transition-all active:scale-95"
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-white/80 text-sm font-medium mb-2">
-                      Steps Today
-                    </p>
-                    <p className="text-4xl font-bold text-white">
-                      {stepsToday}
-                    </p>
-                    <p className="text-white/70 text-xs mt-2">
-                      {stepsTarget - stepsToday > 0
-                        ? `${stepsTarget - stepsToday} more to go`
-                        : "Goal reached! 🎉"}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
-                      <Footprints size={28} className="text-white" />
+              <div className="flex items-start gap-2">
+                <button
+                  onClick={() =>
+                    setExpandedMetric(
+                      expandedMetric === "steps" ? null : "steps",
+                    )
+                  }
+                  className="flex-1 backdrop-blur-md bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-3xl p-5 shadow-md border border-orange-200/50 text-left hover:shadow-lg transition-all active:scale-95"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="text-white/80 text-xs font-medium mb-1">
+                        Steps Today
+                      </p>
+                      <p className="text-3xl font-bold text-white">
+                        {stepsToday.toLocaleString()}
+                      </p>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowStepsModal(true);
-                      }}
-                      className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-all"
-                      title="Edit steps goal"
-                    >
-                      <Award size={20} className="text-white" />
-                    </button>
+                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                      <Footprints size={24} className="text-white" />
+                    </div>
                   </div>
-                </div>
 
-                {/* Progress bar */}
-                <div className="mt-4 w-full bg-white/20 rounded-full h-2">
-                  <div
-                    className="bg-white h-2 rounded-full transition-all duration-500"
-                    style={{
-                      width: `${Math.min((stepsToday / stepsTarget) * 100, 100)}%`,
-                    }}
-                  />
-                </div>
-              </button>
+                  {/* Progress bar */}
+                  <div className="w-full bg-white/20 rounded-full h-2">
+                    <div
+                      className="bg-white h-2 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min((stepsToday / stepsTarget) * 100, 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-white/70 text-xs mt-2">
+                    {stepsTarget.toLocaleString()} goal • {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}%
+                  </p>
+                </button>
+                <button
+                  onClick={() => setShowStepsModal(true)}
+                  className="h-full mt-1 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-2xl text-white font-bold transition-all flex items-center justify-center"
+                  title="Edit steps goal"
+                >
+                  <span className="text-2xl">+</span>
+                </button>
+              </div>
 
               {/* Expandable Weekly Insights */}
               {expandedMetric === "steps" && (
@@ -474,41 +469,49 @@ export default function ClientHome() {
 
             {/* 3b. Calories Tile */}
             <div className="group">
-              <button
-                onClick={() =>
-                  setExpandedMetric(
-                    expandedMetric === "calories" ? null : "calories",
-                  )
-                }
-                className="w-full backdrop-blur-md bg-gradient-to-br from-red-400 via-red-300 to-pink-300 rounded-3xl p-6 shadow-lg border border-red-200/50 text-left hover:shadow-xl transition-all active:scale-95"
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-white/80 text-sm font-medium mb-2">
-                      Calories Burned
-                    </p>
-                    <p className="text-4xl font-bold text-white">
-                      {caloriesBurned}
-                    </p>
-                    <p className="text-white/70 text-xs mt-2">
-                      Goal: {caloriesTarget} kcal
-                    </p>
+              <div className="flex items-start gap-2">
+                <button
+                  onClick={() =>
+                    setExpandedMetric(
+                      expandedMetric === "calories" ? null : "calories",
+                    )
+                  }
+                  className="flex-1 backdrop-blur-md bg-gradient-to-br from-red-400 via-red-300 to-pink-300 rounded-3xl p-5 shadow-lg border border-red-200/50 text-left hover:shadow-xl transition-all active:scale-95"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="text-white/80 text-xs font-medium mb-1">
+                        Calories Burned
+                      </p>
+                      <p className="text-3xl font-bold text-white">
+                        {caloriesBurned}
+                      </p>
+                    </div>
+                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                      <Flame size={24} className="text-white" />
+                    </div>
                   </div>
-                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
-                    <Flame size={28} className="text-white" />
-                  </div>
-                </div>
 
-                {/* Progress bar */}
-                <div className="mt-4 w-full bg-white/20 rounded-full h-2">
-                  <div
-                    className="bg-white h-2 rounded-full transition-all duration-500"
-                    style={{
-                      width: `${Math.min((caloriesBurned / caloriesTarget) * 100, 100)}%`,
-                    }}
-                  />
-                </div>
-              </button>
+                  {/* Progress bar */}
+                  <div className="w-full bg-white/20 rounded-full h-2">
+                    <div
+                      className="bg-white h-2 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min((caloriesBurned / caloriesTarget) * 100, 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-white/70 text-xs mt-2">
+                    {caloriesTarget} goal • {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}%
+                  </p>
+                </button>
+                <button
+                  onClick={() => setShowStepsModal(true)}
+                  className="h-full mt-1 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-2xl text-white font-bold transition-all flex items-center justify-center"
+                >
+                  <span className="text-2xl">+</span>
+                </button>
+              </div>
 
               {/* Expandable Weekly Insights */}
               {expandedMetric === "calories" && (
@@ -528,41 +531,49 @@ export default function ClientHome() {
 
             {/* 3c. Water Tile */}
             <div className="group">
-              <button
-                onClick={() =>
-                  setExpandedMetric(
-                    expandedMetric === "water" ? null : "water",
-                  )
-                }
-                className="w-full backdrop-blur-md bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-300 rounded-3xl p-6 shadow-md border border-blue-200/50 text-left hover:shadow-lg transition-all active:scale-95"
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-white/80 text-sm font-medium mb-2">
-                      Water Intake
-                    </p>
-                    <p className="text-4xl font-bold text-white">
-                      {waterConsumed}
-                    </p>
-                    <p className="text-white/70 text-xs mt-2">
-                      ml • Goal: {autoWaterTarget} ml
-                    </p>
+              <div className="flex items-start gap-2">
+                <button
+                  onClick={() =>
+                    setExpandedMetric(
+                      expandedMetric === "water" ? null : "water",
+                    )
+                  }
+                  className="flex-1 backdrop-blur-md bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-300 rounded-3xl p-5 shadow-md border border-blue-200/50 text-left hover:shadow-lg transition-all active:scale-95"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="text-white/80 text-xs font-medium mb-1">
+                        Water Intake
+                      </p>
+                      <p className="text-3xl font-bold text-white">
+                        {(waterConsumed / 1000).toFixed(1)}L
+                      </p>
+                    </div>
+                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                      <Droplets size={24} className="text-white" />
+                    </div>
                   </div>
-                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
-                    <Droplets size={28} className="text-white" />
-                  </div>
-                </div>
 
-                {/* Progress bar */}
-                <div className="mt-4 w-full bg-white/20 rounded-full h-2">
-                  <div
-                    className="bg-white h-2 rounded-full transition-all duration-500"
-                    style={{
-                      width: `${Math.min((waterConsumed / autoWaterTarget) * 100, 100)}%`,
-                    }}
-                  />
-                </div>
-              </button>
+                  {/* Progress bar */}
+                  <div className="w-full bg-white/20 rounded-full h-2">
+                    <div
+                      className="bg-white h-2 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min((waterConsumed / autoWaterTarget) * 100, 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-white/70 text-xs mt-2">
+                    {autoWaterTarget}ml goal • {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}%
+                  </p>
+                </button>
+                <button
+                  onClick={() => setShowStepsModal(true)}
+                  className="h-full mt-1 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-2xl text-white font-bold transition-all flex items-center justify-center"
+                >
+                  <span className="text-2xl">+</span>
+                </button>
+              </div>
 
               {/* Expandable Weekly Insights */}
               {expandedMetric === "water" && (
@@ -575,7 +586,7 @@ export default function ClientHome() {
                       <p>💧 Average: 2,350 ml/day</p>
                       <p>✅ Days goal met: 5/7</p>
                       <p>📈 Consistency: Good hydration</p>
-                      <p className="text-blue-600 font-medium">Goal: {autoWaterTarget} ml (auto-calculated)</p>
+                      <p className="text-blue-600 font-medium">Goal: {autoWaterTarget} ml</p>
                     </div>
                   </div>
 
@@ -713,21 +724,28 @@ export default function ClientHome() {
             <h3 className="text-sm font-bold text-gray-900 mb-4">
               Quick access
             </h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               {quickAccessTiles.map((tile) => {
                 const Icon = tile.icon;
                 return (
                   <button
                     key={tile.label}
                     onClick={tile.onClick}
-                    className="backdrop-blur-md bg-white/90 rounded-2xl p-4 shadow-lg border border-white/20 hover:shadow-xl transition-all flex flex-col items-center gap-3 group active:scale-95"
+                    className="backdrop-blur-xl rounded-2xl p-3 shadow-lg hover:shadow-xl transition-all flex flex-col items-center gap-2 group active:scale-95 border border-white/30 hover:border-white/50"
+                    style={{
+                      background: tile.label === "Trainers" ? "linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(34, 197, 94, 0.5))" :
+                               tile.label === "Nutritionists" ? "linear-gradient(135deg, rgba(168, 85, 247, 0.5), rgba(236, 72, 153, 0.5))" :
+                               tile.label === "Meal Tracker" ? "linear-gradient(135deg, rgba(34, 197, 94, 0.5), rgba(16, 185, 129, 0.5))" :
+                               tile.label === "CoCircle" ? "linear-gradient(135deg, rgba(249, 115, 22, 0.5), rgba(234, 179, 8, 0.5))" :
+                               "linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(168, 85, 247, 0.5))"
+                    }}
                   >
                     <div
-                      className={`w-12 h-12 rounded-full bg-gradient-to-br ${tile.color} flex items-center justify-center group-hover:scale-110 transition-transform`}
+                      className={`w-10 h-10 rounded-full bg-gradient-to-br ${tile.color} flex items-center justify-center group-hover:scale-110 transition-transform`}
                     >
-                      <Icon size={24} className="text-white" />
+                      <Icon size={20} className="text-white" />
                     </div>
-                    <p className="text-xs font-medium text-gray-900 text-center">
+                    <p className="text-xs font-medium text-white text-center">
                       {tile.label}
                     </p>
                   </button>
