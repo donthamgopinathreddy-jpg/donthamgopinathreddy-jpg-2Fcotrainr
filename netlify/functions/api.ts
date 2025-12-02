@@ -1,5 +1,6 @@
 import serverless from "serverless-http";
-import { createServer } from "../../server";
+import express from "express";
+import apiRouter from "../../server/routes/api";
 
 console.log("[Netlify] Initializing API function");
 console.log("[Netlify] NODE_ENV:", process.env.NODE_ENV);
@@ -17,15 +18,51 @@ console.log(
   process.env.VITE_SUPABASE_ANON_KEY ? "✓" : "✗",
 );
 
-let app: any = null;
+// Create a minimal Express app for serverless
+const app = express();
 
-try {
-  app = createServer();
-  console.log("[Netlify] Express app created successfully");
-} catch (error) {
-  console.error("[Netlify] Failed to create Express app:", error);
-  throw error;
-}
+// Add JSON middleware
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+// Add CORS headers
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+  res.header("Access-Control-Max-Age", "3600");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
+// Add request logging
+app.use((req, res, next) => {
+  console.log("[Netlify] Request:", req.method, req.path);
+  next();
+});
+
+// Mount API routes
+app.use("/", apiRouter);
+
+// Error handler
+app.use((err: any, req: any, res: any, next: any) => {
+  console.error("[Netlify] Error handler caught:", {
+    message: err?.message,
+    status: err?.status || 500,
+  });
+
+  res.setHeader("Content-Type", "application/json");
+  res.status(err?.status || 500).json({
+    error: err?.message || "Internal server error",
+    message: err?.message || "An unexpected error occurred",
+  });
+});
+
+console.log("[Netlify] Express app created successfully");
 
 const netlifyHandler = serverless(app);
 
@@ -37,12 +74,7 @@ export const handler = async (event: any, context: any) => {
       method: event.httpMethod,
       path: event.path,
       rawPath: event.rawPath,
-      rawUrl: event.rawUrl,
       headers: Object.keys(event.headers || {}),
-    });
-    console.log("[Netlify] Full event path details:", {
-      path: event.path,
-      pathParameters: event.pathParameters,
     });
     console.log("[Netlify] ========================================");
 
@@ -63,8 +95,10 @@ export const handler = async (event: any, context: any) => {
 
     return {
       statusCode: 502,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         error: error instanceof Error ? error.message : "Internal server error",
+        message: "Failed to process request",
       }),
     };
   }
