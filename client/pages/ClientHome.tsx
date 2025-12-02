@@ -613,22 +613,22 @@ export default function ClientHome() {
                   <button
                     key={tile.label}
                     onClick={tile.onClick}
-                    className="backdrop-blur-2xl rounded-3xl p-4 shadow-2xl hover:shadow-2xl transition-all duration-300 flex flex-col items-center gap-2 group active:scale-95 border border-white/40 hover:border-white/80 hover:scale-105"
+                    className="backdrop-blur-2xl rounded-3xl p-4 transition-all duration-300 flex flex-col items-center gap-2 group active:scale-95 border border-white/40 hover:border-white/80 hover:scale-105"
                     style={{
                       background:
                         tile.label === "Trainers"
-                          ? "linear-gradient(135deg, rgba(251, 146, 60, 0.6), rgba(249, 115, 22, 0.8))"
+                          ? "linear-gradient(135deg, rgba(251, 146, 60, 0.7), rgba(249, 115, 22, 0.9))"
                           : tile.label === "Nutritionists"
-                            ? "linear-gradient(135deg, rgba(96, 165, 250, 0.6), rgba(59, 130, 246, 0.8))"
+                            ? "linear-gradient(135deg, rgba(96, 165, 250, 0.7), rgba(59, 130, 246, 0.9))"
                             : tile.label === "Meal Tracker"
-                              ? "linear-gradient(135deg, rgba(74, 222, 128, 0.6), rgba(34, 197, 94, 0.8))"
+                              ? "linear-gradient(135deg, rgba(74, 222, 128, 0.7), rgba(34, 197, 94, 0.9))"
                               : tile.label === "CoCircle"
-                                ? "linear-gradient(135deg, rgba(251, 146, 60, 0.6), rgba(249, 115, 22, 0.8))"
+                                ? "linear-gradient(135deg, rgba(168, 85, 247, 0.7), rgba(139, 92, 246, 0.9))"
                                 : tile.label === "Quests"
-                                  ? "linear-gradient(135deg, rgba(253, 224, 71, 0.6), rgba(234, 179, 8, 0.8))"
-                                  : "linear-gradient(135deg, rgba(239, 68, 68, 0.6), rgba(220, 38, 38, 0.8))",
+                                  ? "linear-gradient(135deg, rgba(253, 224, 71, 0.7), rgba(234, 179, 8, 0.9))"
+                                  : "linear-gradient(135deg, rgba(239, 68, 68, 0.7), rgba(220, 38, 38, 0.9))",
                       backdropFilter: "blur(20px)",
-                      boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.15), inset 0 1px 2px 0 rgba(255, 255, 255, 0.3)",
+                      boxShadow: "0 12px 40px 0 rgba(0, 0, 0, 0.35), 0 4px 12px 0 rgba(0, 0, 0, 0.25), inset 0 1px 2px 0 rgba(255, 255, 255, 0.4)",
                     }}
                   >
                     <div
