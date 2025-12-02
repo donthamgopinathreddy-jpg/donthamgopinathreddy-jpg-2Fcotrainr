@@ -574,7 +574,7 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 6. Streak Card */}
+          {/* 5. Streak Card */}
           <div className="mx-5 mb-6 backdrop-blur-md bg-white/90 rounded-3xl px-5 py-4 shadow-lg border border-white/20 flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
               <Flame size={24} className="text-orange-500" />
@@ -599,7 +599,7 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 7. Quick Access Grid */}
+          {/* 6. Quick Access Grid */}
           <div className="mx-5 mb-8">
             <h3 className="text-sm font-bold text-gray-900 mb-4">
               Quick access
@@ -644,7 +644,7 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 8. Smart Suggestions */}
+          {/* 7. Smart Suggestions */}
           <div className="mb-8">
             <div className="px-5 mb-4">
               <h3 className="text-sm font-bold text-gray-900">
