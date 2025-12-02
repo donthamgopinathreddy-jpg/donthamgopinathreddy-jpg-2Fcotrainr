@@ -218,7 +218,7 @@ export default function ClientHome() {
   };
 
   const handleProfileImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeChange<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
     if (!file || !userProfile?.id) return;
@@ -230,13 +230,16 @@ export default function ClientHome() {
 
         // Update database with base64 image data
         const { error: updateError } = await supabase
-          .from("profiles")
+          .from("users")
           .update({ profile_picture_url: dataUrl })
           .eq("id", userProfile.id);
 
-        if (updateError) throw updateError;
+        if (updateError) {
+          console.log("Update error:", updateError);
+          throw updateError;
+        }
 
-        toast.success("Profile picture updated successfully!");
+        toast.success("Profile picture updated!");
       };
       reader.readAsDataURL(file);
     } catch (err) {
