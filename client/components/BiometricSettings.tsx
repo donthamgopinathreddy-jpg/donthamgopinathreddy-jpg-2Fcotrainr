@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useBiometricAuth } from "@/hooks/useBiometricAuth";
-import { Fingerprint, Toggle2, AlertCircle } from "lucide-react";
+import { Fingerprint, ToggleRight, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface BiometricSettingsProps {
