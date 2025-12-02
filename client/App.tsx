@@ -346,6 +346,38 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/insights/steps"
+        element={
+          <ProtectedRoute>
+            <InsightsSteps />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/insights/calories"
+        element={
+          <ProtectedRoute>
+            <InsightsCalories />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/insights/water"
+        element={
+          <ProtectedRoute>
+            <InsightsWater />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/insights/distance"
+        element={
+          <ProtectedRoute>
+            <InsightsDistance />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/community"
         element={
           <ProtectedRoute>
