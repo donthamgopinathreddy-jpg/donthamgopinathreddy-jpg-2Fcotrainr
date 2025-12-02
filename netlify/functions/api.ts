@@ -53,21 +53,7 @@ app.use((req, res, next) => {
 
 // Mount API routes at root / (Netlify redirect strips /api prefix)
 console.log("[Netlify] Mounting API routes");
-try {
-  const apiRouter = require("../../server/routes/api").default;
-  app.use("/", apiRouter);
-  console.log("[Netlify] API routes mounted successfully");
-} catch (error) {
-  console.error("[Netlify] Failed to load API routes:", error);
-  // Add a fallback error handler if routes fail to load
-  app.use("/", (req, res) => {
-    res.setHeader("Content-Type", "application/json");
-    res.status(500).json({
-      error: "API failed to initialize",
-      message: error instanceof Error ? error.message : String(error),
-    });
-  });
-}
+app.use("/", apiRouter);
 
 // Catch-all 404 handler (for debugging)
 app.use((req: any, res: any) => {
