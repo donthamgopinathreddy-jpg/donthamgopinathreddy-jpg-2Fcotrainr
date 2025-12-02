@@ -380,8 +380,8 @@ export default function ClientHome() {
             {/* Gradient Overlay (darker at bottom for text contrast) */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60"></div>
 
-            {/* Cover Image Upload Button - Camera Icon - Top Right */}
-            <label className="absolute top-4 right-5 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all flex items-center justify-center backdrop-blur-sm border border-white/40 active:scale-95">
+            {/* Cover Image Upload Button - Camera Icon - Outline Style - Top Right */}
+            <label className="absolute top-4 right-5 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full cursor-pointer transition-all flex items-center justify-center backdrop-blur-sm border border-white/30 active:scale-95">
               <input
                 type="file"
                 accept="image/*"
