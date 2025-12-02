@@ -554,15 +554,39 @@ export default function ClientHome() {
 
               {/* Expandable Weekly Insights */}
               {expandedMetric === "water" && (
-                <div className="mt-2 backdrop-blur-md bg-white/90 rounded-3xl p-4 shadow-lg border border-blue-200/30 text-sm">
-                  <p className="font-semibold text-gray-900 mb-3">
-                    Weekly Insights
-                  </p>
-                  <div className="space-y-2 text-gray-700">
-                    <p>💧 Average: 2,350 ml/day</p>
-                    <p>✅ Days goal met: 5/7</p>
-                    <p>📈 Consistency: Good hydration</p>
-                    <p>🎯 Recommendation: Increase slightly</p>
+                <div className="mt-3 backdrop-blur-md bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-5 shadow-md border border-blue-100 space-y-4">
+                  <div>
+                    <p className="font-semibold text-gray-900 mb-3">
+                      Weekly Insights & Quick Add
+                    </p>
+                    <div className="space-y-2 text-gray-700 text-sm mb-4">
+                      <p>💧 Average: 2,350 ml/day</p>
+                      <p>✅ Days goal met: 5/7</p>
+                      <p>📈 Consistency: Good hydration</p>
+                      <p className="text-blue-600 font-medium">Goal: {autoWaterTarget} ml (auto-calculated)</p>
+                    </div>
+                  </div>
+
+                  {/* Water buttons inside expanded view */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleAddWater(200)}
+                      className="flex-1 py-2 px-3 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 shadow-md transition-all active:scale-95"
+                    >
+                      +200ml
+                    </button>
+                    <button
+                      onClick={() => handleAddWater(500)}
+                      className="flex-1 py-2 px-3 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 shadow-md transition-all active:scale-95"
+                    >
+                      +500ml
+                    </button>
+                    <button
+                      onClick={() => handleAddWater(1000)}
+                      className="flex-1 py-2 px-3 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 shadow-md transition-all active:scale-95"
+                    >
+                      +1L
+                    </button>
                   </div>
                 </div>
               )}
