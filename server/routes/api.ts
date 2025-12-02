@@ -41,33 +41,43 @@ try {
   console.warn('[API] Supabase operations will fail - but server will still run');
 }
 
-// Health check
+// Health check - simple endpoint that doesn't depend on Supabase
 router.get('/health', async (_req: Request, res: Response) => {
   try {
     console.log('[API] Health check requested');
 
-    // Test if we can reach Supabase
-    console.log('[API] Testing Supabase connectivity...');
-
-    const testResponse = await fetch(`${SUPABASE_URL}/rest/v1/`, {
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-      },
-    });
-
-    console.log('[API] Supabase connectivity test status:', testResponse.status);
-
-    res.json({
+    const response: any = {
       status: 'ok',
-      message: 'Supabase API wrapper is running',
-      supabase_reachable: testResponse.ok,
+      message: 'API server is running',
       timestamp: new Date().toISOString(),
-    });
+      supabase_client_initialized: !!supabase,
+      supabase_auth_available: !!supabase?.auth,
+    };
+
+    // Try to test Supabase connectivity, but don't fail if it doesn't work
+    try {
+      console.log('[API] Testing Supabase connectivity...');
+      const testResponse = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+        },
+      });
+      response.supabase_reachable = testResponse.ok;
+      console.log('[API] Supabase connectivity test status:', testResponse.status);
+    } catch (supabaseError) {
+      console.warn('[API] Supabase connectivity test failed:', supabaseError instanceof Error ? supabaseError.message : 'Unknown');
+      response.supabase_reachable = false;
+      response.supabase_error = supabaseError instanceof Error ? supabaseError.message : 'Unknown error';
+    }
+
+    res.setHeader('Content-Type', 'application/json');
+    res.json(response);
   } catch (error) {
     console.error('[API] Health check error:', error);
+    res.setHeader('Content-Type', 'application/json');
     res.status(500).json({
       status: 'error',
-      message: 'Supabase API wrapper health check failed',
+      message: 'Health check failed',
       error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString(),
     });
