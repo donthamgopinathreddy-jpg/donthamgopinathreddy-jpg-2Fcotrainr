@@ -384,90 +384,222 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 3. Today's Stats Card */}
-          <div className="mx-5 mb-6 backdrop-blur-md bg-white/90 rounded-3xl p-6 shadow-lg border border-white/20">
-            {/* 3a. Main Steps Ring */}
-            <div className="flex flex-col items-center mb-8">
-              <div className="relative w-32 h-32 mb-4">
-                {/* Circular progress background */}
-                <svg
-                  className="absolute inset-0 transform -rotate-90"
-                  viewBox="0 0 100 100"
-                >
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    fill="none"
-                    stroke="rgba(0,0,0,0.1)"
-                    strokeWidth="8"
-                  />
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    fill="none"
-                    stroke="url(#gradient)"
-                    strokeWidth="8"
-                    strokeDasharray={`${(stepsToday / stepsTarget) * 283} 283`}
-                    strokeLinecap="round"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="gradient"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                    >
-                      <stop offset="0%" stopColor="#fb923c" />
-                      <stop offset="100%" stopColor="#fbbf24" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-
-                {/* Center content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <p className="text-3xl font-bold text-gray-900">
-                    {stepsToday}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1">Today's steps</p>
+          {/* 3. Vibrant Gradient Metric Tiles */}
+          <div className="mx-5 mb-6 space-y-4">
+            {/* 3a. Steps Tile */}
+            <div className="group">
+              <button
+                onClick={() =>
+                  setExpandedMetric(
+                    expandedMetric === "steps" ? null : "steps",
+                  )
+                }
+                className="w-full backdrop-blur-md bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-3xl p-6 shadow-lg border border-orange-200/50 text-left hover:shadow-xl transition-all active:scale-95"
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-white/80 text-sm font-medium mb-2">
+                      Steps Today
+                    </p>
+                    <p className="text-4xl font-bold text-white">
+                      {stepsToday}
+                    </p>
+                    <p className="text-white/70 text-xs mt-2">
+                      {stepsTarget - stepsToday > 0
+                        ? `${stepsTarget - stepsToday} more to go`
+                        : "Goal reached! 🎉"}
+                    </p>
+                  </div>
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
+                    <Footprints size={28} className="text-white" />
+                  </div>
                 </div>
-              </div>
+
+                {/* Progress bar */}
+                <div className="mt-4 w-full bg-white/20 rounded-full h-2">
+                  <div
+                    className="bg-white h-2 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min((stepsToday / stepsTarget) * 100, 100)}%`,
+                    }}
+                  />
+                </div>
+              </button>
+
+              {/* Expandable Weekly Insights */}
+              {expandedMetric === "steps" && (
+                <div className="mt-2 backdrop-blur-md bg-white/90 rounded-3xl p-4 shadow-lg border border-orange-200/30 text-sm">
+                  <p className="font-semibold text-gray-900 mb-3">
+                    Weekly Insights
+                  </p>
+                  <div className="space-y-2 text-gray-700">
+                    <p>📊 Average: 8,245 steps/day</p>
+                    <p>📈 Best day: Monday (12,500 steps)</p>
+                    <p>🔥 Streak: {currentStreak} days active</p>
+                    <p>⚡ Total week: 57,715 steps</p>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* 3b. Mini Stats Row */}
-            <div className="grid grid-cols-3 gap-4">
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center mb-2">
-                  <Flame size={20} className="text-orange-500" />
+            {/* 3b. Calories Tile */}
+            <div className="group">
+              <button
+                onClick={() =>
+                  setExpandedMetric(
+                    expandedMetric === "calories" ? null : "calories",
+                  )
+                }
+                className="w-full backdrop-blur-md bg-gradient-to-br from-red-400 via-red-300 to-pink-300 rounded-3xl p-6 shadow-lg border border-red-200/50 text-left hover:shadow-xl transition-all active:scale-95"
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-white/80 text-sm font-medium mb-2">
+                      Calories Burned
+                    </p>
+                    <p className="text-4xl font-bold text-white">
+                      {caloriesBurned}
+                    </p>
+                    <p className="text-white/70 text-xs mt-2">
+                      Goal: {caloriesTarget} kcal
+                    </p>
+                  </div>
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
+                    <Flame size={28} className="text-white" />
+                  </div>
                 </div>
-                <p className="text-xs text-gray-600">Calories</p>
-                <p className="text-sm font-bold text-gray-900">
-                  {caloriesBurned}
-                </p>
-                <p className="text-xs text-gray-500">/{caloriesTarget}</p>
-              </div>
 
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-2">
-                  <Droplets size={20} className="text-blue-500" />
+                {/* Progress bar */}
+                <div className="mt-4 w-full bg-white/20 rounded-full h-2">
+                  <div
+                    className="bg-white h-2 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min((caloriesBurned / caloriesTarget) * 100, 100)}%`,
+                    }}
+                  />
                 </div>
-                <p className="text-xs text-gray-600">Water</p>
-                <p className="text-sm font-bold text-gray-900">
-                  {waterConsumed}
-                </p>
-                <p className="text-xs text-gray-500">ml</p>
-              </div>
+              </button>
 
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mb-2">
-                  <Footprints size={20} className="text-green-500" />
+              {/* Expandable Weekly Insights */}
+              {expandedMetric === "calories" && (
+                <div className="mt-2 backdrop-blur-md bg-white/90 rounded-3xl p-4 shadow-lg border border-red-200/30 text-sm">
+                  <p className="font-semibold text-gray-900 mb-3">
+                    Weekly Insights
+                  </p>
+                  <div className="space-y-2 text-gray-700">
+                    <p>📊 Average: 1,850 kcal/day</p>
+                    <p>🏃 Most active: Saturday (2,100 kcal)</p>
+                    <p>📈 Total week: 12,950 kcal</p>
+                    <p>💪 Trend: Improving</p>
+                  </div>
                 </div>
-                <p className="text-xs text-gray-600">Distance</p>
-                <p className="text-sm font-bold text-gray-900">{distanceKm}</p>
-                <p className="text-xs text-gray-500">km</p>
-              </div>
+              )}
+            </div>
+
+            {/* 3c. Water Tile */}
+            <div className="group">
+              <button
+                onClick={() =>
+                  setExpandedMetric(
+                    expandedMetric === "water" ? null : "water",
+                  )
+                }
+                className="w-full backdrop-blur-md bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-300 rounded-3xl p-6 shadow-lg border border-blue-200/50 text-left hover:shadow-xl transition-all active:scale-95"
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-white/80 text-sm font-medium mb-2">
+                      Water Intake
+                    </p>
+                    <p className="text-4xl font-bold text-white">
+                      {waterConsumed}
+                    </p>
+                    <p className="text-white/70 text-xs mt-2">
+                      ml • Goal: 2,500 ml
+                    </p>
+                  </div>
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
+                    <Droplets size={28} className="text-white" />
+                  </div>
+                </div>
+
+                {/* Progress bar */}
+                <div className="mt-4 w-full bg-white/20 rounded-full h-2">
+                  <div
+                    className="bg-white h-2 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min((waterConsumed / 2500) * 100, 100)}%`,
+                    }}
+                  />
+                </div>
+              </button>
+
+              {/* Expandable Weekly Insights */}
+              {expandedMetric === "water" && (
+                <div className="mt-2 backdrop-blur-md bg-white/90 rounded-3xl p-4 shadow-lg border border-blue-200/30 text-sm">
+                  <p className="font-semibold text-gray-900 mb-3">
+                    Weekly Insights
+                  </p>
+                  <div className="space-y-2 text-gray-700">
+                    <p>💧 Average: 2,350 ml/day</p>
+                    <p>✅ Days goal met: 5/7</p>
+                    <p>📈 Consistency: Good hydration</p>
+                    <p>🎯 Recommendation: Increase slightly</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 3d. Distance Tile */}
+            <div className="group">
+              <button
+                onClick={() =>
+                  setExpandedMetric(
+                    expandedMetric === "distance" ? null : "distance",
+                  )
+                }
+                className="w-full backdrop-blur-md bg-gradient-to-br from-green-400 via-green-300 to-emerald-300 rounded-3xl p-6 shadow-lg border border-green-200/50 text-left hover:shadow-xl transition-all active:scale-95"
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-white/80 text-sm font-medium mb-2">
+                      Distance
+                    </p>
+                    <p className="text-4xl font-bold text-white">
+                      {distanceKm.toFixed(2)}
+                    </p>
+                    <p className="text-white/70 text-xs mt-2">km traveled</p>
+                  </div>
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
+                    <MapPin size={28} className="text-white" />
+                  </div>
+                </div>
+
+                {/* Progress bar */}
+                <div className="mt-4 w-full bg-white/20 rounded-full h-2">
+                  <div
+                    className="bg-white h-2 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min((distanceKm / 10) * 100, 100)}%`,
+                    }}
+                  />
+                </div>
+              </button>
+
+              {/* Expandable Weekly Insights */}
+              {expandedMetric === "distance" && (
+                <div className="mt-2 backdrop-blur-md bg-white/90 rounded-3xl p-4 shadow-lg border border-green-200/30 text-sm">
+                  <p className="font-semibold text-gray-900 mb-3">
+                    Weekly Insights
+                  </p>
+                  <div className="space-y-2 text-gray-700">
+                    <p>🚶 Average: 5.8 km/day</p>
+                    <p>🏆 Longest walk: 8.2 km (Saturday)</p>
+                    <p>📊 Total week: 40.6 km</p>
+                    <p>⚡ Pace improving</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
