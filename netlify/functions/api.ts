@@ -47,7 +47,13 @@ app.use((req, res, next) => {
 
 // Add request logging
 app.use((req, res, next) => {
-  console.log("[Netlify] Request:", req.method, req.path);
+  console.log("[Netlify] Express Request:", {
+    method: req.method,
+    path: req.path,
+    originalUrl: req.originalUrl,
+    url: req.url,
+    baseUrl: req.baseUrl,
+  });
   next();
 });
 
