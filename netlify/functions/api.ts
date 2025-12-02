@@ -4,18 +4,24 @@ import { createClient } from "@supabase/supabase-js";
 
 console.log("[Netlify] Initializing API function");
 console.log("[Netlify] NODE_ENV:", process.env.NODE_ENV);
-console.log("[Netlify] VITE_SUPABASE_URL:", process.env.VITE_SUPABASE_URL ? "✓" : "✗");
-console.log("[Netlify] VITE_SUPABASE_ANON_KEY:", process.env.VITE_SUPABASE_ANON_KEY ? "✓" : "✗");
+console.log(
+  "[Netlify] VITE_SUPABASE_URL:",
+  process.env.VITE_SUPABASE_URL ? "✓" : "✗",
+);
+console.log(
+  "[Netlify] VITE_SUPABASE_ANON_KEY:",
+  process.env.VITE_SUPABASE_ANON_KEY ? "✓" : "✗",
+);
 
 // Get Supabase credentials
 const SUPABASE_URL =
   process.env.SUPABASE_URL ||
   process.env.VITE_SUPABASE_URL ||
-  'https://hnxdlgdkyboctsvfktwe.supabase.co';
+  "https://hnxdlgdkyboctsvfktwe.supabase.co";
 const SUPABASE_ANON_KEY =
   process.env.SUPABASE_ANON_KEY ||
   process.env.VITE_SUPABASE_ANON_KEY ||
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhueGRsZ2RreWJvY3RzdmZrdHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2MDM0NTQsImV4cCI6MjA4MDE3OTQ1NH0.DZPvC7diiNoANXgDxnb7T-ynYg6JUW4cfEILoJfABSI';
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhueGRsZ2RreWJvY3RzdmZrdHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2MDM0NTQsImV4cCI6MjA4MDE3OTQ1NH0.DZPvC7diiNoANXgDxnb7T-ynYg6JUW4cfEILoJfABSI";
 
 console.log("[Netlify] SUPABASE_URL:", SUPABASE_URL ? "✓" : "✗");
 console.log("[Netlify] SUPABASE_ANON_KEY:", SUPABASE_ANON_KEY ? "✓" : "✗");
@@ -39,9 +45,15 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 // CORS
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
-  
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, X-Requested-With",
+  );
+
   if (req.method === "OPTIONS") {
     return res.sendStatus(200);
   }
@@ -67,7 +79,7 @@ app.get("/health", (req, res) => {
 app.post("/auth/login", async (req, res) => {
   try {
     console.log("[Netlify] Login request");
-    
+
     if (!supabase) {
       console.error("[Netlify] Supabase not initialized");
       return res.status(503).json({
@@ -246,7 +258,10 @@ export const handler = async (event: any, context: any) => {
     return response;
   } catch (error: any) {
     console.error("[Netlify] Handler error:", error.message);
-    console.error("[Netlify] Stack:", error.stack?.split("\n").slice(0, 5).join("\n"));
+    console.error(
+      "[Netlify] Stack:",
+      error.stack?.split("\n").slice(0, 5).join("\n"),
+    );
 
     return {
       statusCode: 502,
