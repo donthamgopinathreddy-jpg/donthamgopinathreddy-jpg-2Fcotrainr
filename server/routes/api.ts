@@ -1001,4 +1001,33 @@ router.get('/conversations', async (req: Request, res: Response) => {
   }
 });
 
+// 404 handler for any undefined routes - must return JSON
+router.use((req: Request, res: Response) => {
+  console.log('[API] 404 - Route not found:', req.method, req.path);
+  res.status(404).json({
+    error: 'Not found',
+    message: `Route ${req.method} ${req.path} not found`,
+    path: req.path,
+    method: req.method,
+  });
+});
+
+// Global error handler - catch all errors and return JSON
+router.use((err: any, req: Request, res: Response, next: any) => {
+  console.error('[API] Error handler caught:', {
+    message: err?.message,
+    status: err?.status || res.statusCode,
+    path: req.path,
+    method: req.method,
+  });
+
+  // Ensure we always return JSON, never HTML
+  res.setHeader('Content-Type', 'application/json');
+  res.status(err?.status || 500).json({
+    error: err?.message || 'Internal server error',
+    message: err?.message || 'An unexpected error occurred',
+    status: err?.status || 500,
+  });
+});
+
 export default router;
