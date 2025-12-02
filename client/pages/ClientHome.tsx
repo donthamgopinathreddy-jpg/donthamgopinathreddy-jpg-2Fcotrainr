@@ -340,7 +340,7 @@ export default function ClientHome() {
             {/* Gradient Overlay (darker at bottom for text contrast) */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60"></div>
 
-            {/* Cover Image Upload Button - Top Right */}
+            {/* Cover Image Upload Button - Camera Icon - Top Right */}
             <label className="absolute top-4 right-4 p-3 bg-white/90 hover:bg-white rounded-full cursor-pointer transition-all shadow-xl group-hover:scale-110 active:scale-95">
               <input
                 type="file"
@@ -348,15 +348,33 @@ export default function ClientHome() {
                 onChange={handleCoverImageUpload}
                 className="hidden"
               />
-              <Zap size={20} className="text-orange-600" />
+              <svg
+                className="w-5 h-5 text-gray-800"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
             </label>
 
             {/* Bottom section with profile picture and welcome text */}
             <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 flex items-end gap-4">
-              {/* Profile Picture - Large Circular Avatar */}
+              {/* Profile Picture - Large Square Avatar */}
               <button
                 onClick={() => navigate("/profile")}
-                className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-3xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white hover:shadow-2xl transition-all active:scale-95"
+                className="w-24 h-24 rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-3xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white hover:shadow-2xl transition-all active:scale-95"
               >
                 {userProfile?.profile_picture_url ? (
                   <img
@@ -369,11 +387,11 @@ export default function ClientHome() {
                 )}
               </button>
 
-              {/* Welcome Text */}
+              {/* Welcome Text - Using actual user full name from database */}
               <div className="flex-1 pb-2">
                 <p className="text-white/80 text-sm font-medium">Welcome back,</p>
                 <h1 className="text-white text-2xl font-bold leading-tight">
-                  {userGreeting}
+                  {userProfile?.full_name || "User"}
                 </h1>
               </div>
             </div>
