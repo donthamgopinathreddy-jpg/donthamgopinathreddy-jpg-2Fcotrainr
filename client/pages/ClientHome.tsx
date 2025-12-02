@@ -197,17 +197,8 @@ export default function ClientHome() {
       reader.onload = async (event) => {
         const dataUrl = event.target?.result as string;
 
-        // Update database with base64 image data
-        const { error: updateError } = await supabase
-          .from("users")
-          .update({ cover_image_url: dataUrl })
-          .eq("id", userProfile.id);
-
-        if (updateError) {
-          console.log("Update error:", updateError);
-          throw updateError;
-        }
-
+        // Update profile through auth context
+        await updateProfile({ cover_image_url: dataUrl });
         setCoverImage(dataUrl);
         toast.success("Cover image updated!");
       };
