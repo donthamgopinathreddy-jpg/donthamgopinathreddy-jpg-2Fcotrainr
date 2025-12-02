@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, TrendingUp } from "lucide-react";
+import { ArrowLeft, TrendingUp, Flame } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
@@ -9,6 +9,7 @@ interface DailyStats {
   water: number;
   liters: number;
   day: string;
+  dayName: string;
 }
 
 export default function InsightsWater() {
@@ -16,6 +17,7 @@ export default function InsightsWater() {
   const { userProfile } = useAuth();
   const [weeklyData, setWeeklyData] = useState<DailyStats[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentStreak, setCurrentStreak] = useState(0);
 
   const waterGoal = userProfile?.weight_kg
     ? Math.round(userProfile.weight_kg * 30)
@@ -40,17 +42,29 @@ export default function InsightsWater() {
           .order("date", { ascending: true });
 
         if (data) {
-          const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+          const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
           const formattedData = (data || []).map((item: any) => {
+            const date = new Date(item.date);
             const water = item.water_intake_ml || 0;
             return {
               date: item.date,
               water,
               liters: (water / 1000).toFixed(1),
-              day: days[new Date(item.date).getDay()],
+              day: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()],
+              dayName: dayNames[date.getDay()],
             };
           });
           setWeeklyData(formattedData);
+
+          let streak = 0;
+          for (let i = formattedData.length - 1; i >= 0; i--) {
+            if (formattedData[i].water >= waterGoal) {
+              streak++;
+            } else {
+              break;
+            }
+          }
+          setCurrentStreak(streak);
         }
       } catch (error) {
         console.error("Error fetching weekly data:", error);
@@ -60,7 +74,7 @@ export default function InsightsWater() {
     };
 
     fetchWeeklyData();
-  }, [userProfile?.id]);
+  }, [userProfile?.id, waterGoal]);
 
   const maxWater = Math.max(...weeklyData.map((d) => d.water), waterGoal);
   const avgWater =
@@ -71,6 +85,13 @@ export default function InsightsWater() {
       : 0;
   const totalWater = weeklyData.reduce((sum, d) => sum + d.water, 0);
   const daysGoalMet = weeklyData.filter((d) => d.water >= waterGoal).length;
+
+  const formatDateFull = (dateStr: string) => {
+    const date = new Date(dateStr + "T00:00:00");
+    const month = date.toLocaleDateString("en-US", { month: "short" });
+    const day = date.getDate();
+    return `${month} ${day}`;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 pb-24">
@@ -88,46 +109,100 @@ export default function InsightsWater() {
       </div>
 
       <div className="max-w-[430px] mx-auto px-4 pt-6 space-y-6">
-        {/* Summary Cards */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white rounded-3xl p-4 shadow-md border border-blue-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Total</p>
-            <p className="text-2xl font-bold text-blue-600">
-              {(totalWater / 1000).toFixed(1)}L
-            </p>
-            <p className="text-xs text-gray-500 mt-1">This week</p>
+        {/* Animated Streak Counter */}
+        {currentStreak > 0 && (
+          <div className="animate-pulse">
+            <div className="bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-3xl p-6 shadow-lg border border-blue-200">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="animate-bounce">
+                  <Flame size={28} className="text-white drop-shadow-lg" />
+                </div>
+                <div>
+                  <p className="text-white text-xs font-semibold opacity-90">Current Streak</p>
+                  <p className="text-white text-3xl font-bold">{currentStreak}</p>
+                </div>
+              </div>
+              <p className="text-white text-sm opacity-90">
+                {currentStreak === 1
+                  ? "Keep it going! 🎯"
+                  : `Amazing! ${currentStreak} days in a row! 🔥`}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Analytical Tiles - Bar Style */}
+        <div className="space-y-3">
+          <h2 className="text-sm font-bold text-gray-900 px-1">Weekly Analytics</h2>
+
+          <div className="bg-white rounded-2xl p-4 shadow-md border border-blue-100">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-600">Total</p>
+              <p className="text-xl font-bold text-blue-600">
+                {(totalWater / 1000).toFixed(1)}L
+              </p>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-700"
+                style={{ width: `${Math.min((totalWater / (waterGoal * 7)) * 100, 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">{(waterGoal * 7 / 1000).toFixed(1)}L weekly target</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-4 shadow-md border border-blue-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">
-              Average/Day
-            </p>
-            <p className="text-2xl font-bold text-blue-600">
-              {(avgWater / 1000).toFixed(1)}L
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Per day</p>
+          <div className="bg-white rounded-2xl p-4 shadow-md border border-cyan-100">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-600">Avg per Day</p>
+              <p className="text-xl font-bold text-cyan-600">
+                {(avgWater / 1000).toFixed(1)}L
+              </p>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400 transition-all duration-700"
+                style={{ width: `${Math.min((avgWater / waterGoal) * 100, 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">{(waterGoal / 1000).toFixed(1)}L daily goal</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-4 shadow-md border border-blue-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Goal Met</p>
-            <p className="text-2xl font-bold text-blue-600">{daysGoalMet}/7</p>
-            <p className="text-xs text-gray-500 mt-1">Days</p>
+          <div className="bg-white rounded-2xl p-4 shadow-md border border-teal-100">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-600">Goal Met</p>
+              <p className="text-xl font-bold text-teal-600">
+                {daysGoalMet}/7
+              </p>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-teal-500 to-teal-400 transition-all duration-700"
+                style={{ width: `${(daysGoalMet / 7) * 100}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">Days meeting daily goal</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-4 shadow-md border border-blue-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Daily Goal</p>
-            <p className="text-2xl font-bold text-blue-600">
-              {(waterGoal / 1000).toFixed(1)}L
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Based on weight</p>
+          <div className="bg-white rounded-2xl p-4 shadow-md border border-indigo-100">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-600">Daily Goal</p>
+              <p className="text-xl font-bold text-indigo-600">
+                {(waterGoal / 1000).toFixed(1)}L
+              </p>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-indigo-500 to-indigo-400 transition-all duration-700"
+                style={{ width: `100%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">Based on your weight</p>
           </div>
         </div>
 
-        {/* Bar Chart */}
+        {/* Daily Breakdown Chart */}
         <div className="bg-white rounded-3xl p-6 shadow-md border border-blue-100">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">
-            Daily Breakdown
-          </h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Breakdown</h2>
 
           {loading ? (
             <div className="h-64 flex items-center justify-center">
@@ -138,23 +213,31 @@ export default function InsightsWater() {
               <p className="text-gray-500">No data available</p>
             </div>
           ) : (
-            <div className="space-y-4">
-              {weeklyData.map((day) => (
-                <div key={day.date} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-gray-900">{day.day}</p>
-                      <p className="text-xs text-gray-500">{day.date}</p>
+            <div className="space-y-5">
+              {weeklyData.map((day, idx) => (
+                <div key={day.date} className="animate-fadeIn" style={{ animationDelay: `${idx * 50}ms` }}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-900">{day.dayName}</p>
+                      <p className="text-xs text-gray-500">{formatDateFull(day.date)}</p>
                     </div>
-                    <p className="text-sm font-bold text-blue-600">
-                      {day.liters}L
-                    </p>
+                    <div className="text-right">
+                      <p className="text-sm font-bold text-blue-600">
+                        {day.liters}L
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {day.water >= waterGoal ? "✓ Goal" : `${((waterGoal - day.water) / 1000).toFixed(1)}L to go`}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Bar */}
                   <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-cyan-500 to-blue-400 rounded-full transition-all duration-500"
+                      className={`h-full rounded-full transition-all duration-700 ${
+                        day.water >= waterGoal
+                          ? "bg-gradient-to-r from-green-500 to-green-400"
+                          : "bg-gradient-to-r from-cyan-500 to-blue-400"
+                      }`}
                       style={{ width: `${(day.water / maxWater) * 100}%` }}
                     />
                   </div>
@@ -183,6 +266,22 @@ export default function InsightsWater() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 }
