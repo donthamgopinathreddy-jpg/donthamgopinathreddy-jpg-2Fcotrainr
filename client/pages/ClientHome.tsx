@@ -411,8 +411,8 @@ export default function ClientHome() {
             </label>
 
             {/* Bottom section with profile picture and welcome text */}
-            <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 flex items-end gap-4">
-              {/* Profile Picture - Large Square Avatar with Upload */}
+            <div className="absolute bottom-5 left-0 right-0 px-5 flex items-end gap-3">
+              {/* Profile Picture - Square Avatar with Upload */}
               <div>
                 <input
                   ref={profileImageInputRef}
@@ -423,7 +423,7 @@ export default function ClientHome() {
                 />
                 <button
                   onClick={() => profileImageInputRef.current?.click()}
-                  className="w-24 h-24 rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-3xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white hover:shadow-2xl transition-all active:scale-95 relative group"
+                  className="w-20 h-20 rounded-xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-2xl overflow-hidden flex-shrink-0 shadow-lg border-3 border-white hover:shadow-xl transition-all active:scale-95 relative group ml-2"
                 >
                   {userProfile?.profile_picture_url ? (
                     <img
