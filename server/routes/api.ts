@@ -5,7 +5,10 @@ const router = express.Router();
 
 // Use environment variables for Supabase credentials
 // Fallback to hardcoded values if environment variables are not set
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://hnxdlgdkyboctsvfktwe.supabase.co';
+const SUPABASE_URL =
+  process.env.SUPABASE_URL ||
+  process.env.VITE_SUPABASE_URL ||
+  'https://hnxdlgdkyboctsvfktwe.supabase.co';
 const SUPABASE_ANON_KEY =
   process.env.SUPABASE_ANON_KEY ||
   process.env.VITE_SUPABASE_ANON_KEY ||
@@ -15,7 +18,10 @@ console.log('[API] Initializing Supabase API wrapper');
 console.log('[API] Environment check:');
 console.log('[API] VITE_SUPABASE_URL:', process.env.VITE_SUPABASE_URL ? 'set' : 'not set');
 console.log('[API] SUPABASE_URL:', process.env.SUPABASE_URL ? 'set' : 'not set');
-console.log('[API] VITE_SUPABASE_ANON_KEY:', process.env.VITE_SUPABASE_ANON_KEY ? 'set' : 'not set');
+console.log(
+  '[API] VITE_SUPABASE_ANON_KEY:',
+  process.env.VITE_SUPABASE_ANON_KEY ? 'set' : 'not set'
+);
 console.log('[API] SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? 'set' : 'not set');
 console.log('[API] Final SUPABASE_URL being used:', SUPABASE_URL ? '✓ set' : '✗ not set');
 console.log('[API] Final SUPABASE_ANON_KEY being used:', SUPABASE_ANON_KEY ? '✓ set' : '✗ not set');
@@ -65,9 +71,13 @@ router.get('/health', async (_req: Request, res: Response) => {
       response.supabase_reachable = testResponse.ok;
       console.log('[API] Supabase connectivity test status:', testResponse.status);
     } catch (supabaseError) {
-      console.warn('[API] Supabase connectivity test failed:', supabaseError instanceof Error ? supabaseError.message : 'Unknown');
+      console.warn(
+        '[API] Supabase connectivity test failed:',
+        supabaseError instanceof Error ? supabaseError.message : 'Unknown'
+      );
       response.supabase_reachable = false;
-      response.supabase_error = supabaseError instanceof Error ? supabaseError.message : 'Unknown error';
+      response.supabase_error =
+        supabaseError instanceof Error ? supabaseError.message : 'Unknown error';
     }
 
     res.setHeader('Content-Type', 'application/json');
