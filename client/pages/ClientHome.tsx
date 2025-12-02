@@ -617,16 +617,16 @@ export default function ClientHome() {
                     style={{
                       background:
                         tile.label === "Trainers"
-                          ? "linear-gradient(135deg, rgba(96, 165, 250, 0.6), rgba(59, 130, 246, 0.8))"
+                          ? "linear-gradient(135deg, rgba(251, 146, 60, 0.6), rgba(249, 115, 22, 0.8))"
                           : tile.label === "Nutritionists"
-                            ? "linear-gradient(135deg, rgba(196, 181, 253, 0.6), rgba(168, 85, 247, 0.8))"
+                            ? "linear-gradient(135deg, rgba(96, 165, 250, 0.6), rgba(59, 130, 246, 0.8))"
                             : tile.label === "Meal Tracker"
                               ? "linear-gradient(135deg, rgba(74, 222, 128, 0.6), rgba(34, 197, 94, 0.8))"
                               : tile.label === "CoCircle"
                                 ? "linear-gradient(135deg, rgba(251, 146, 60, 0.6), rgba(249, 115, 22, 0.8))"
                                 : tile.label === "Quests"
                                   ? "linear-gradient(135deg, rgba(253, 224, 71, 0.6), rgba(234, 179, 8, 0.8))"
-                                  : "linear-gradient(135deg, rgba(244, 114, 182, 0.6), rgba(236, 72, 153, 0.8))",
+                                  : "linear-gradient(135deg, rgba(239, 68, 68, 0.6), rgba(220, 38, 38, 0.8))",
                       backdropFilter: "blur(20px)",
                       boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.15), inset 0 1px 2px 0 rgba(255, 255, 255, 0.3)",
                     }}
