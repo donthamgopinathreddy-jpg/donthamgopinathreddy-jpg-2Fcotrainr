@@ -5,6 +5,7 @@ This guide provides step-by-step instructions to build and deploy the CoTrainr a
 ## Prerequisites
 
 ### Required Software
+
 - **Node.js** v18+ and npm or pnpm
 - **Android Studio** (for Android builds)
 - **Xcode** (for iOS builds - macOS only)
@@ -15,6 +16,7 @@ This guide provides step-by-step instructions to build and deploy the CoTrainr a
 ### Environment Setup
 
 #### For Android:
+
 ```bash
 # Install Android Studio from https://developer.android.com/studio
 
@@ -28,6 +30,7 @@ export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$PATH
 ```
 
 #### For iOS (macOS only):
+
 ```bash
 # Xcode is available in Mac App Store or https://developer.apple.com/download/
 
@@ -38,12 +41,14 @@ sudo gem install cocoapods
 ## Step-by-Step Build Instructions
 
 ### 1. Install Dependencies
+
 ```bash
 cd /path/to/cotrainr
 pnpm install
 ```
 
 ### 2. Build Web Assets
+
 ```bash
 pnpm run build:client
 ```
@@ -53,6 +58,7 @@ This generates the production web app in `dist/spa/`.
 ### 3. Sync with Capacitor
 
 #### Initialize/Create Native Projects
+
 ```bash
 # Initialize Capacitor (if not already done)
 npx cap init CoTrainr com.cotrainr.app --web-dir dist/spa
@@ -65,6 +71,7 @@ npx cap add ios
 ```
 
 #### Sync Changes
+
 ```bash
 # Sync latest web build to native platforms
 pnpm run cap:build
@@ -77,6 +84,7 @@ npx cap sync ios  # macOS only
 ### 4. Build for Android
 
 #### Debug Build:
+
 ```bash
 pnpm run android:debug
 ```
@@ -84,6 +92,7 @@ pnpm run android:debug
 This generates `android/app/build/outputs/apk/debug/app-debug.apk`
 
 #### Release Build:
+
 ```bash
 # Generate release APK
 pnpm run android:release
@@ -98,6 +107,7 @@ The release APK is at: `android/app/build/outputs/apk/release/app-release.apk`
 The AAB is at: `android/app/build/outputs/bundle/release/app-release.aab`
 
 #### Run on Emulator/Device:
+
 ```bash
 # List connected devices
 adb devices
@@ -114,6 +124,7 @@ pnpm run cap:open
 ### 5. Build for iOS (macOS only)
 
 #### Debug Build:
+
 ```bash
 # Open in Xcode
 pnpm run cap:open
@@ -125,6 +136,7 @@ pnpm run cap:open
 ```
 
 #### Release Build:
+
 ```bash
 cd ios/App
 
@@ -140,6 +152,7 @@ xcodebuild -workspace App.xcworkspace -scheme App -configuration Release build
 ### 6. Configuration Files
 
 #### Capacitor Config (`capacitor.config.json`)
+
 - **appId**: `com.cotrainr.app` (matches Android package name)
 - **webDir**: `dist/spa` (location of web assets)
 - **server.cleartext**: `true` (allows http for localhost debugging)
@@ -147,12 +160,13 @@ xcodebuild -workspace App.xcworkspace -scheme App -configuration Release build
 - **iOS settings**: Limits navigation to app domains
 
 #### Android Config (`android/app/build.gradle`)
+
 ```gradle
 android {
     compileSdkVersion = 34
     minSdkVersion = 24
     targetSdkVersion = 34
-    
+
     versionCode = 1
     versionName = "1.0"
 }
@@ -161,7 +175,9 @@ android {
 Update version codes/names before each release.
 
 #### iOS Config (`ios/App/App/Info.plist`)
+
 Key settings:
+
 - `NSLocalNetworkUsageDescription`: Needed for local network access
 - `NSBonjourServices`: List Bonjour services used
 - `NSAppTransportSecurity`: Defines HTTPS/HTTP rules
@@ -169,6 +185,7 @@ Key settings:
 ### 7. Running the App
 
 #### Android:
+
 ```bash
 # On emulator
 adb shell am start -n com.cotrainr.app/.MainActivity
@@ -178,6 +195,7 @@ adb logcat | grep "CoTrainr"
 ```
 
 #### iOS:
+
 ```bash
 # Through Xcode or:
 xcrun simctl launch booted com.cotrainr.app
@@ -206,6 +224,7 @@ cotrainr/
 ### Android Issues
 
 #### Gradle Build Fails
+
 ```bash
 # Clear gradle cache
 cd android
@@ -215,6 +234,7 @@ cd ..
 ```
 
 #### Emulator Not Starting
+
 ```bash
 # List available AVDs
 emulator -list-avds
@@ -224,6 +244,7 @@ emulator -avd Pixel_5_API_30 &
 ```
 
 #### App Crashes on Startup
+
 - Check `adb logcat` for errors
 - Ensure `dist/spa/index.html` exists
 - Verify `ANDROID_HOME` is set correctly
@@ -231,6 +252,7 @@ emulator -avd Pixel_5_API_30 &
 ### iOS Issues
 
 #### Pod Installation Fails
+
 ```bash
 cd ios/App
 rm -rf Pods Podfile.lock
@@ -239,6 +261,7 @@ cd ../../
 ```
 
 #### Build Fails in Xcode
+
 - Product > Clean Build Folder (Shift + Cmd + K)
 - Verify Xcode version: `xcode-select -p`
 - Check deployment target matches Podfile
@@ -246,12 +269,14 @@ cd ../../
 ### Both Platforms
 
 #### App Loads Blank Screen
+
 - Build web assets: `pnpm run build:client`
 - Sync: `npx cap sync`
 - Clear app data and reinstall
 - Check browser console via Chrome DevTools (Android)
 
 #### API Calls Fail
+
 - Ensure Netlify backend is deployed: https://cotrainr.netlify.app/api/health
 - On physical devices, use actual domain (not localhost)
 - Check CORS headers in Netlify function
@@ -259,6 +284,7 @@ cd ../../
 ## Development Workflow
 
 ### Hot Reload (Web Development)
+
 ```bash
 # Terminal 1: Start dev server
 pnpm run dev
@@ -268,6 +294,7 @@ pnpm run dev
 ```
 
 ### Live Reload on Device
+
 ```bash
 # After setting up native project, use:
 npx cap serve
@@ -279,6 +306,7 @@ npx cap serve
 ### Code Signing (Required for Release)
 
 #### Android:
+
 ```bash
 # Create keystore
 keytool -genkey -v -keystore release.keystore -keyalg RSA \
@@ -289,6 +317,7 @@ keytool -genkey -v -keystore release.keystore -keyalg RSA \
 ```
 
 #### iOS:
+
 - Use Xcode's automatic signing or manage certificates manually
 - Requires Apple Developer account ($99/year)
 - Guide: https://developer.apple.com/help/xcode/signing-your-app-for-distribution/

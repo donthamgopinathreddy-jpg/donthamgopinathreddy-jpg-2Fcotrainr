@@ -5,20 +5,23 @@
 ### Completed Tasks
 
 #### 1. ✅ Login API Fixed
+
 - **Issue**: Netlify function had duplicate handler declaration
 - **Fix**: Renamed `serverless(app)` to `serverlessHandler` to avoid conflicts
 - **Status**: Latest code deployed to https://cotrainr.netlify.app
 - **Test**: Try logging in with your credentials
 
 #### 2. ✅ TypeScript Errors Fixed
+
 - **Issue**: Missing lucide-react icons (Toggle2, Protein)
-- **Fix**: 
+- **Fix**:
   - `Toggle2` → `ToggleRight` (BiometricSettings.tsx)
   - `Protein` → `Zap` (MealCard.tsx)
 - **Status**: Build completes without errors
 - **Build Output**: All modules transformed successfully
 
 #### 3. ✅ Capacitor Config Verified
+
 - **Status**: Capacitor v5.0.8 properly configured
 - **Config Location**: `capacitor.config.json`
 - **Web Dir**: `dist/spa` (correctly points to built web assets)
@@ -26,8 +29,9 @@
 - **Features**: Android & iOS support enabled
 
 #### 4. ✅ Native Build Documentation
+
 - **File**: `NATIVE_BUILD_SETUP.md`
-- **Covers**: 
+- **Covers**:
   - Complete setup instructions for Android and iOS
   - Environment configuration
   - Build commands with examples
@@ -37,6 +41,7 @@
 ## Quick Start Commands
 
 ### Development
+
 ```bash
 # Start web dev server
 pnpm run dev
@@ -45,6 +50,7 @@ pnpm run dev
 ```
 
 ### Build Web + Native Sync
+
 ```bash
 # Build web assets and sync to native projects
 pnpm run cap:build
@@ -55,6 +61,7 @@ pnpm run build           # Web + server
 ```
 
 ### Android Development
+
 ```bash
 # Open in Android Studio
 pnpm run cap:open
@@ -67,6 +74,7 @@ pnpm run android:release
 ```
 
 ### iOS Development
+
 ```bash
 # Open in Xcode (macOS only)
 pnpm run cap:open
@@ -100,33 +108,40 @@ cotrainr/
 ## Environment Variables
 
 ### Web (set in `.env`)
+
 ```
 VITE_SUPABASE_URL=https://hnxdlgdkyboctsvfktwe.supabase.co
 VITE_SUPABASE_ANON_KEY=<your-key>
 ```
 
 ### Native
+
 Environment variables are baked into the web app during build. No additional configuration needed.
 
 ### Backend (Netlify)
+
 Environment variables set in Netlify dashboard:
+
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
 
 ## Testing the App
 
 ### Web
+
 1. Go to https://cotrainr.netlify.app
 2. Login with your Supabase credentials
 3. Should see the home page with targets, metrics, etc.
 
 ### Android
+
 1. Build: `pnpm run android:debug`
 2. Install on device/emulator
 3. App should load with same experience as web
 4. Login should work using Netlify API
 
 ### iOS
+
 1. Open in Xcode: `pnpm run cap:open`
 2. Run on simulator or device
 3. App should work identically to web version
@@ -158,16 +173,19 @@ Environment variables set in Netlify dashboard:
 ## Deployment
 
 ### Web
+
 - Automatic deployment to Netlify on git push to main
 - Preview: https://cotrainr.netlify.app
 - Admin dashboard: https://app.netlify.com/sites/cotrainr
 
 ### Android
+
 - Build release: `pnpm run android:release`
 - Sign APK: Follow Play Store signing guide
 - Submit to: Google Play Store
 
 ### iOS
+
 - Build release: Use Xcode Archive feature
 - Sign with developer certificate
 - Submit to: App Store via Xcode or App Store Connect
