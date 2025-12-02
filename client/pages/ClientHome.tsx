@@ -192,36 +192,22 @@ export default function ClientHome() {
     if (!file || !userProfile?.id) return;
 
     try {
-      // Generate unique filename
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${userProfile.id}/cover-${Date.now()}.${fileExt}`;
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const dataUrl = event.target?.result as string;
 
-      // Upload to Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("user_images")
-        .upload(fileName, file, {
-          upsert: true,
-        });
+        // Update database with base64 image data
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({ cover_image_url: dataUrl })
+          .eq("id", userProfile.id);
 
-      if (uploadError) throw uploadError;
+        if (updateError) throw updateError;
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from("user_images")
-        .getPublicUrl(fileName);
-
-      const coverImageUrl = urlData.publicUrl;
-
-      // Update database with image URL
-      const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ cover_image_url: coverImageUrl })
-        .eq("id", userProfile.id);
-
-      if (updateError) throw updateError;
-
-      setCoverImage(coverImageUrl);
-      toast.success("Cover image updated successfully!");
+        setCoverImage(dataUrl);
+        toast.success("Cover image updated successfully!");
+      };
+      reader.readAsDataURL(file);
     } catch (err) {
       console.log("Could not update cover image:", err);
       toast.error("Failed to update cover image");
