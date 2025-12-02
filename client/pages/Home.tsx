@@ -542,31 +542,39 @@ export default function Home() {
             </div>
           </div>
           {/* Steps Progress */}
-          <button
-            onClick={() => navigate("/activity/steps")}
-            className="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors">
+            <button
+              onClick={() => navigate("/activity/steps")}
+              className="flex-1 text-left"
+            >
+              <div className="flex items-center gap-2 mb-2">
                 <Footprints className="w-5 h-5 text-orange-600" />
                 <span className="font-semibold text-gray-900 dark:text-white">
                   Steps
                 </span>
               </div>
-              <span className="text-sm font-bold text-orange-600">
-                {steps.toLocaleString()} / {stepsGoal.toLocaleString()}
-              </span>
-            </div>
-            <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-orange-600 to-amber-500 transition-all duration-500 shadow-lg shadow-orange-600/50"
-                style={{ width: `${Math.min(stepsPercent, 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-              {stepsPercent}% of daily goal
-            </p>
-          </button>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-bold text-orange-600">
+                  {steps.toLocaleString()}
+                </span>
+                <span className="text-xs text-gray-600 dark:text-gray-400">
+                  {stepsPercent}%
+                </span>
+              </div>
+              <div className="w-full h-2 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-orange-600 to-amber-500 transition-all duration-500 shadow-lg shadow-orange-600/50"
+                  style={{ width: `${Math.min(stepsPercent, 100)}%` }}
+                />
+              </div>
+            </button>
+            <button
+              onClick={() => setShowTargetsModal(true)}
+              className="ml-3 px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 font-semibold rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors text-xs flex items-center gap-1"
+            >
+              +
+            </button>
+          </div>
 
           {/* Achievement Notification */}
           {newAchievement && (
@@ -584,60 +592,76 @@ export default function Home() {
           )}
 
           {/* Calories Burned */}
-          <button
-            onClick={() => navigate("/activity/steps")}
-            className="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors">
+            <button
+              onClick={() => navigate("/activity/steps")}
+              className="flex-1 text-left"
+            >
+              <div className="flex items-center gap-2 mb-2">
                 <Flame className="w-5 h-5 text-red-600" />
                 <span className="font-semibold text-gray-900 dark:text-white">
                   Calories
                 </span>
               </div>
-              <span className="text-sm font-bold text-red-600">
-                {Math.round(steps * 0.05)} cal
-              </span>
-            </div>
-            <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-red-600 to-orange-600 transition-all duration-500 shadow-lg shadow-red-600/50"
-                style={{
-                  width: `${Math.min(Math.round((steps * 0.05) / 20), 100)}%`,
-                }}
-              />
-            </div>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-              Burned from steps
-            </p>
-          </button>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-bold text-red-600">
+                  {Math.round(steps * 0.05)} cal
+                </span>
+                <span className="text-xs text-gray-600 dark:text-gray-400">
+                  {Math.min(Math.round((steps * 0.05) / 20), 100)}%
+                </span>
+              </div>
+              <div className="w-full h-2 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-red-600 to-orange-600 transition-all duration-500 shadow-lg shadow-red-600/50"
+                  style={{
+                    width: `${Math.min(Math.round((steps * 0.05) / 20), 100)}%`,
+                  }}
+                />
+              </div>
+            </button>
+            <button
+              onClick={() => setShowTargetsModal(true)}
+              className="ml-3 px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 font-semibold rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors text-xs flex items-center gap-1"
+            >
+              +
+            </button>
+          </div>
 
           {/* Water Intake Progress */}
-          <button
-            onClick={() => navigate("/activity/water")}
-            className="w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 -mx-2 transition-colors">
+            <button
+              onClick={() => navigate("/activity/water")}
+              className="flex-1 text-left"
+            >
+              <div className="flex items-center gap-2 mb-2">
                 <Droplets className="w-5 h-5 text-cyan-600" />
                 <span className="font-semibold text-gray-900 dark:text-white">
                   Water
                 </span>
               </div>
-              <span className="text-sm font-bold text-cyan-600">
-                {waterConsumed}L / {waterGoal}L
-              </span>
-            </div>
-            <div className="w-full h-3 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-cyan-600 to-blue-600 transition-all duration-500 shadow-lg shadow-cyan-600/50"
-                style={{ width: `${Math.min(waterPercent, 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-              {waterPercent}% of daily goal
-            </p>
-          </button>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-bold text-cyan-600">
+                  {waterConsumed}L ({Math.round(waterConsumed * 1000)}ml)
+                </span>
+                <span className="text-xs text-gray-600 dark:text-gray-400">
+                  {waterPercent}%
+                </span>
+              </div>
+              <div className="w-full h-2 bg-gray-300 dark:bg-gray-600 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-cyan-600 to-blue-600 transition-all duration-500 shadow-lg shadow-cyan-600/50"
+                  style={{ width: `${Math.min(waterPercent, 100)}%` }}
+                />
+              </div>
+            </button>
+            <button
+              onClick={() => setShowTargetsModal(true)}
+              className="ml-3 px-3 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400 font-semibold rounded-lg hover:bg-cyan-200 dark:hover:bg-cyan-900/50 transition-colors text-xs flex items-center gap-1"
+            >
+              +
+            </button>
+          </div>
 
           {/* Quick Add Water Buttons */}
           <div className="flex gap-2 pt-2">
@@ -705,35 +729,35 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => navigate("/discover")}
-              className="bg-gradient-to-br from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
+              className="backdrop-blur-md bg-gradient-to-br from-blue-400/40 to-cyan-400/40 hover:from-blue-400/60 hover:to-cyan-400/60 border border-blue-300/30 hover:border-blue-300/50 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
             >
-              <Dumbbell className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform mx-auto" />
+              <Dumbbell className="w-8 h-8 mb-2 group-hover:scale-110 transition-transform mx-auto" />
               <p className="font-semibold text-sm">Trainers</p>
-              <p className="text-white/90 text-xs mt-1">Find trainers</p>
+              <p className="text-white/80 text-xs mt-0.5">Find trainers</p>
             </button>
             <button
               onClick={() => navigate("/discover")}
-              className="bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
+              className="backdrop-blur-md bg-gradient-to-br from-purple-400/40 to-pink-400/40 hover:from-purple-400/60 hover:to-pink-400/60 border border-purple-300/30 hover:border-purple-300/50 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
             >
-              <Apple className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform mx-auto" />
+              <Apple className="w-8 h-8 mb-2 group-hover:scale-110 transition-transform mx-auto" />
               <p className="font-semibold text-sm">Nutritionists</p>
-              <p className="text-white/90 text-xs mt-1">Find experts</p>
+              <p className="text-white/80 text-xs mt-0.5">Find experts</p>
             </button>
             <button
               onClick={() => navigate("/meals")}
-              className="bg-gradient-to-br from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
+              className="backdrop-blur-md bg-gradient-to-br from-green-400/40 to-emerald-400/40 hover:from-green-400/60 hover:to-emerald-400/60 border border-green-300/30 hover:border-green-300/50 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
             >
-              <Utensils className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform mx-auto" />
+              <Utensils className="w-8 h-8 mb-2 group-hover:scale-110 transition-transform mx-auto" />
               <p className="font-semibold text-sm">Meal Tracker</p>
-              <p className="text-white/90 text-xs mt-1">Log nutrition</p>
+              <p className="text-white/80 text-xs mt-0.5">Log nutrition</p>
             </button>
             <button
               onClick={() => navigate("/feed")}
-              className="bg-gradient-to-br from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
+              className="backdrop-blur-md bg-gradient-to-br from-orange-400/40 to-yellow-400/40 hover:from-orange-400/60 hover:to-yellow-400/60 border border-orange-300/30 hover:border-orange-300/50 rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 text-white group"
             >
-              <Newspaper className="w-8 h-8 mb-3 group-hover:scale-110 transition-transform mx-auto" />
+              <Newspaper className="w-8 h-8 mb-2 group-hover:scale-110 transition-transform mx-auto" />
               <p className="font-semibold text-sm">Feed</p>
-              <p className="text-white/90 text-xs mt-1">Community posts</p>
+              <p className="text-white/80 text-xs mt-0.5">Community posts</p>
             </button>
           </div>
 
