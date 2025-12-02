@@ -657,27 +657,6 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 4. Quick Water Buttons */}
-          <div className="mx-5 mb-6 flex gap-3 justify-center">
-            <button
-              onClick={() => handleAddWater(200)}
-              className="flex-1 py-3 px-4 rounded-full backdrop-blur-md bg-gradient-to-r from-blue-400/20 to-blue-500/20 border border-blue-400/30 text-sm font-medium text-blue-700 hover:from-blue-400/30 hover:to-blue-500/30 transition-all active:scale-95"
-            >
-              +200ml
-            </button>
-            <button
-              onClick={() => handleAddWater(500)}
-              className="flex-1 py-3 px-4 rounded-full backdrop-blur-md bg-gradient-to-r from-blue-400/20 to-blue-500/20 border border-blue-400/30 text-sm font-medium text-blue-700 hover:from-blue-400/30 hover:to-blue-500/30 transition-all active:scale-95"
-            >
-              +500ml
-            </button>
-            <button
-              onClick={() => handleAddWater(1000)}
-              className="flex-1 py-3 px-4 rounded-full backdrop-blur-md bg-gradient-to-r from-blue-400/20 to-blue-500/20 border border-blue-400/30 text-sm font-medium text-blue-700 hover:from-blue-400/30 hover:to-blue-500/30 transition-all active:scale-95"
-            >
-              +1L
-            </button>
-          </div>
 
           {/* 5. BMI Card */}
           <div className="mx-5 mb-6 backdrop-blur-md bg-white/90 rounded-3xl p-5 shadow-lg border border-white/20 flex items-center justify-between">
