@@ -218,7 +218,7 @@ export default function ClientHome() {
   };
 
   const handleProfileImageUpload = async (
-    e: React.ChangeChange<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
     if (!file || !userProfile?.id) return;
