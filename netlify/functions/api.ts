@@ -218,8 +218,8 @@ console.log("[Netlify] Express app created successfully");
 
 const handler = serverless(app);
 
-// Export handler
-export const apiHandler = async (event: any, context: any) => {
+// Export handler (Netlify expects 'handler' export)
+export const handler = async (event: any, context: any) => {
   try {
     console.log("[Netlify] ========================================");
     console.log("[Netlify] Request:", {
