@@ -460,11 +460,11 @@ export default function ClientHome() {
               </div>
 
               {/* Welcome Text - Using actual user full name from database */}
-              <div className="flex-1 pb-2">
-                <p className="text-white/80 text-sm font-medium">
+              <div className="flex-1">
+                <p className="text-white/70 text-xs font-medium">
                   Welcome back,
                 </p>
-                <h1 className="text-white text-2xl font-bold leading-tight">
+                <h1 className="text-white text-lg font-bold leading-tight">
                   {userProfile?.full_name || "User"}
                 </h1>
               </div>
