@@ -341,7 +341,7 @@ export default function ClientHome() {
         {/* Main Content - Navigation will overlap */}
         <div className="relative z-10 flex-1 overflow-y-auto pb-28">
           {/* 1. Top Right Notification Bell - Filled Circle Style */}
-          <div className="absolute top-4 right-5 z-50">
+          <div className="absolute top-4 right-20 z-50">
             <button
               onClick={() => navigate("/notifications")}
               className="relative w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full transition-all active:scale-95 flex items-center justify-center backdrop-blur-sm border border-white/40"
@@ -359,7 +359,7 @@ export default function ClientHome() {
           </div>
 
           {/* 2. Full-Width Cover Image with Profile Overlay */}
-          <div className="relative -mx-5 mb-8 h-64 group overflow-hidden">
+          <div className="relative -mx-5 mb-20 h-40 group overflow-hidden">
             {/* Background Cover Image */}
             <img
               src={
