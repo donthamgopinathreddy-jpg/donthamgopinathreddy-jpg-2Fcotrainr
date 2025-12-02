@@ -229,6 +229,48 @@ export default function ClientHome() {
     }
   };
 
+  const handleProfileImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file || !userProfile?.id) return;
+
+    try {
+      // Generate unique filename
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${userProfile.id}/profile-${Date.now()}.${fileExt}`;
+
+      // Upload to Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("user_images")
+        .upload(fileName, file, {
+          upsert: true,
+        });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from("user_images")
+        .getPublicUrl(fileName);
+
+      const profileImageUrl = urlData.publicUrl;
+
+      // Update database with image URL
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ profile_picture_url: profileImageUrl })
+        .eq("id", userProfile.id);
+
+      if (updateError) throw updateError;
+
+      toast.success("Profile picture updated successfully!");
+    } catch (err) {
+      console.log("Could not update profile picture:", err);
+      toast.error("Failed to update profile picture");
+    }
+  };
+
   const getInitials = (name?: string) => {
     if (!name) return "?";
     return name
