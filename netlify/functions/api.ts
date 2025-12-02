@@ -228,7 +228,7 @@ app.use((err: any, req: any, res: any, next: any) => {
 
 console.log("[Netlify] Express app created successfully");
 
-const handler = serverless(app);
+const serverlessHandler = serverless(app);
 
 // Export handler (Netlify expects 'handler' export)
 export const handler = async (event: any, context: any) => {
@@ -248,7 +248,7 @@ export const handler = async (event: any, context: any) => {
     console.log("[Netlify] Normalized path:", event.path);
     console.log("[Netlify] ========================================");
 
-    const response = await handler(event, context);
+    const response = await serverlessHandler(event, context);
 
     console.log("[Netlify] Response:", {
       statusCode: response.statusCode,
