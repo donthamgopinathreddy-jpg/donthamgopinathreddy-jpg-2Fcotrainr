@@ -198,14 +198,17 @@ export default function ClientHome() {
 
         // Update database with base64 image data
         const { error: updateError } = await supabase
-          .from("profiles")
+          .from("users")
           .update({ cover_image_url: dataUrl })
           .eq("id", userProfile.id);
 
-        if (updateError) throw updateError;
+        if (updateError) {
+          console.log("Update error:", updateError);
+          throw updateError;
+        }
 
         setCoverImage(dataUrl);
-        toast.success("Cover image updated successfully!");
+        toast.success("Cover image updated!");
       };
       reader.readAsDataURL(file);
     } catch (err) {
