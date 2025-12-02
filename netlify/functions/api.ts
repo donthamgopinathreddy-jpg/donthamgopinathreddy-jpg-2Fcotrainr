@@ -1,6 +1,6 @@
 import serverless from "serverless-http";
 import express from "express";
-import apiRouter from "../../server/routes/api.js";
+import apiRouter from "../../server/routes/api";
 
 console.log("[Netlify] Initializing API function");
 console.log("[Netlify] NODE_ENV:", process.env.NODE_ENV);
