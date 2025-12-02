@@ -31,7 +31,10 @@ const CircularProgress = ({
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="relative w-32 h-32 mb-4">
-        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+        <svg
+          className="w-full h-full transform -rotate-90"
+          viewBox="0 0 100 100"
+        >
           <circle
             cx="50"
             cy="50"
@@ -57,7 +60,9 @@ const CircularProgress = ({
           <p className="text-2xl font-bold text-gray-900">
             {percentage.toFixed(0)}%
           </p>
-          <p className="text-xs text-gray-500">{Math.min(value, max).toFixed(2)}km</p>
+          <p className="text-xs text-gray-500">
+            {Math.min(value, max).toFixed(2)}km
+          </p>
         </div>
       </div>
       <p className="text-center">
@@ -98,13 +103,23 @@ export default function InsightsDistance() {
           .order("date", { ascending: true });
 
         if (data) {
-          const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+          const dayNames = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ];
           const formattedData = (data || []).map((item: any) => {
             const date = new Date(item.date);
             return {
               date: item.date,
               distance: item.distance_km || 0,
-              day: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()],
+              day: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][
+                date.getDay()
+              ],
               dayName: dayNames[date.getDay()],
             };
           });
@@ -133,14 +148,11 @@ export default function InsightsDistance() {
   const maxDistance = Math.max(...weeklyData.map((d) => d.distance), 10);
   const avgDistance =
     weeklyData.length > 0
-      ? (
-          weeklyData.reduce((sum, d) => sum + d.distance, 0) / weeklyData.length
-        )
+      ? weeklyData.reduce((sum, d) => sum + d.distance, 0) / weeklyData.length
       : 0;
   const totalDistance = weeklyData.reduce((sum, d) => sum + d.distance, 0);
   const bestDay = weeklyData.reduce(
-    (best, current) =>
-      current.distance > best.distance ? current : best,
+    (best, current) => (current.distance > best.distance ? current : best),
     { distance: 0, day: "N/A", date: "", dayName: "N/A" },
   );
 
@@ -176,8 +188,12 @@ export default function InsightsDistance() {
                   <Flame size={28} className="text-white drop-shadow-lg" />
                 </div>
                 <div>
-                  <p className="text-white text-xs font-semibold opacity-90">Current Streak</p>
-                  <p className="text-white text-3xl font-bold">{currentStreak}</p>
+                  <p className="text-white text-xs font-semibold opacity-90">
+                    Current Streak
+                  </p>
+                  <p className="text-white text-3xl font-bold">
+                    {currentStreak}
+                  </p>
                 </div>
               </div>
               <p className="text-white text-sm opacity-90">
@@ -230,7 +246,9 @@ export default function InsightsDistance() {
 
         {/* Weekly Bar Chart - Samsung Health Style */}
         <div className="bg-white rounded-3xl p-6 shadow-md border border-green-100">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Activity</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-6">
+            Daily Activity
+          </h2>
 
           {loading ? (
             <div className="h-64 flex items-center justify-center">
@@ -255,7 +273,9 @@ export default function InsightsDistance() {
                     <div className="flex items-end justify-between mb-2">
                       <div>
                         <p className="font-semibold text-gray-900">{day.day}</p>
-                        <p className="text-xs text-gray-500">{formatDateFull(day.date)}</p>
+                        <p className="text-xs text-gray-500">
+                          {formatDateFull(day.date)}
+                        </p>
                       </div>
                       <p className="text-sm font-bold text-green-600">
                         {day.distance.toFixed(2)}km

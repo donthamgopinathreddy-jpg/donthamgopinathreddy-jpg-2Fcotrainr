@@ -374,7 +374,10 @@ export default function ClientHome() {
               onClick={() => navigate("/notifications")}
               className="relative w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full transition-all active:scale-95 flex items-center justify-center backdrop-blur-sm border border-white/40"
             >
-              <Bell size={24} className="text-white drop-shadow-lg fill-current" />
+              <Bell
+                size={24}
+                className="text-white drop-shadow-lg fill-current"
+              />
               {unreadCount > 0 && (
                 <div className="absolute -top-1 -right-1 px-2 py-1 bg-red-500 text-white text-xs font-bold rounded-full shadow-lg min-w-fit">
                   {unreadCount}
@@ -478,7 +481,9 @@ export default function ClientHome() {
 
               {/* Welcome Text - Using actual user full name from database */}
               <div className="flex-1 pb-2">
-                <p className="text-white/80 text-sm font-medium">Welcome back,</p>
+                <p className="text-white/80 text-sm font-medium">
+                  Welcome back,
+                </p>
                 <h1 className="text-white text-2xl font-bold leading-tight">
                   {userProfile?.full_name || "User"}
                 </h1>
@@ -734,7 +739,8 @@ export default function ClientHome() {
                                   : "linear-gradient(135deg, rgba(239, 68, 68, 0.65), rgba(220, 38, 38, 0.85))",
                       backdropFilter: "blur(25px)",
                       WebkitBackdropFilter: "blur(25px)",
-                      boxShadow: "0 4px 16px 0 rgba(0, 0, 0, 0.1), inset 0 1px 3px 0 rgba(255, 255, 255, 0.5)",
+                      boxShadow:
+                        "0 4px 16px 0 rgba(0, 0, 0, 0.1), inset 0 1px 3px 0 rgba(255, 255, 255, 0.5)",
                     }}
                   >
                     <div
