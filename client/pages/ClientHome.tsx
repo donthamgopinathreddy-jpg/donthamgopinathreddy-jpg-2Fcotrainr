@@ -522,7 +522,7 @@ export default function ClientHome() {
                     expandedMetric === "water" ? null : "water",
                   )
                 }
-                className="w-full backdrop-blur-md bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-300 rounded-3xl p-6 shadow-lg border border-blue-200/50 text-left hover:shadow-xl transition-all active:scale-95"
+                className="w-full backdrop-blur-md bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-300 rounded-3xl p-6 shadow-md border border-blue-200/50 text-left hover:shadow-lg transition-all active:scale-95"
               >
                 <div className="flex items-start justify-between">
                   <div>
@@ -533,7 +533,7 @@ export default function ClientHome() {
                       {waterConsumed}
                     </p>
                     <p className="text-white/70 text-xs mt-2">
-                      ml • Goal: 2,500 ml
+                      ml • Goal: {autoWaterTarget} ml
                     </p>
                   </div>
                   <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
@@ -546,7 +546,7 @@ export default function ClientHome() {
                   <div
                     className="bg-white h-2 rounded-full transition-all duration-500"
                     style={{
-                      width: `${Math.min((waterConsumed / 2500) * 100, 100)}%`,
+                      width: `${Math.min((waterConsumed / autoWaterTarget) * 100, 100)}%`,
                     }}
                   />
                 </div>
