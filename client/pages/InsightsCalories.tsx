@@ -64,9 +64,11 @@ export default function InsightsCalories() {
         )
       : 0;
   const totalCalories = weeklyData.reduce((sum, d) => sum + d.calories, 0);
-  const bestDay = weeklyData.reduce((best, current) =>
-    current.calories > best.calories ? current : best,
-  ) || { calories: 0, day: "N/A", date: "" };
+  const bestDay = weeklyData.reduce(
+    (best, current) =>
+      current.calories > best.calories ? current : best,
+    { calories: 0, day: "N/A", date: "" },
+  );
 
   const todayCalories = Math.round(steps * 0.05);
 

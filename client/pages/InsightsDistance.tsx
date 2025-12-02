@@ -63,9 +63,11 @@ export default function InsightsDistance() {
   const totalDistance = weeklyData
     .reduce((sum, d) => sum + d.distance, 0)
     .toFixed(1);
-  const bestDay = weeklyData.reduce((best, current) =>
-    current.distance > best.distance ? current : best,
-  ) || { distance: 0, day: "N/A", date: "" };
+  const bestDay = weeklyData.reduce(
+    (best, current) =>
+      current.distance > best.distance ? current : best,
+    { distance: 0, day: "N/A", date: "" },
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 pb-24">
