@@ -220,29 +220,8 @@ export default function ClientHome() {
       reader.onload = async (event) => {
         const dataUrl = event.target?.result as string;
 
-        // Update database with base64 image data
-        const { error: updateError } = await supabase
-          .from("users")
-          .update({ profile_picture_url: dataUrl })
-          .eq("id", userProfile.id);
-
-        if (updateError) {
-          console.log("Update error:", updateError);
-          throw updateError;
-        }
-
-        // Refresh user profile from database to show the updated picture
-        const { data: updatedUser, error: fetchError } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", userProfile.id)
-          .single();
-
-        if (!fetchError && updatedUser) {
-          // Update the auth context with the new profile
-          window.location.reload();
-        }
-
+        // Update profile through auth context
+        await updateProfile({ profile_picture_url: dataUrl });
         toast.success("Profile picture updated!");
       };
       reader.readAsDataURL(file);
