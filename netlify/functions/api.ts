@@ -50,26 +50,23 @@ app.use((req, res, next) => {
   next();
 });
 
-// Lazy load API routes to avoid initialization errors
-let apiRouter: any = null;
-app.use("/", (req, res, next) => {
-  try {
-    if (!apiRouter) {
-      console.log("[Netlify] Lazy loading API routes");
-      const module = require("../../server/routes/api");
-      apiRouter = module.default;
-      console.log("[Netlify] API routes loaded successfully");
-    }
-    apiRouter(req, res, next);
-  } catch (error) {
-    console.error("[Netlify] Failed to load API routes:", error);
+// Mount API routes at root / (Netlify redirect strips /api prefix)
+console.log("[Netlify] Mounting API routes");
+try {
+  const apiRouter = require("../../server/routes/api").default;
+  app.use("/", apiRouter);
+  console.log("[Netlify] API routes mounted successfully");
+} catch (error) {
+  console.error("[Netlify] Failed to load API routes:", error);
+  // Add a fallback error handler if routes fail to load
+  app.use("/", (req, res) => {
     res.setHeader("Content-Type", "application/json");
     res.status(500).json({
-      error: "Failed to initialize API",
+      error: "API failed to initialize",
       message: error instanceof Error ? error.message : String(error),
     });
-  }
-});
+  });
+}
 
 // Catch-all 404 handler (for debugging)
 app.use((req: any, res: any) => {
