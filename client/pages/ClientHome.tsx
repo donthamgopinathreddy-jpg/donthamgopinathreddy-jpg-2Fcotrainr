@@ -674,7 +674,7 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 9. Latest from CoCircle */}
+          {/* 8. Latest from CoCircle */}
           <div className="mx-5">
             <h3 className="text-sm font-bold text-gray-900 mb-4">
               Latest from CoCircle
