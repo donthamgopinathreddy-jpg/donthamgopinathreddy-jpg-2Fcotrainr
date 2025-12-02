@@ -588,14 +588,14 @@ export default function Profile() {
 
         {/* PROFILE HERO SECTION */}
         <div
-          className={`relative rounded-2xl overflow-hidden shadow-lg transition-all ${
+          className={`relative rounded-2xl overflow-visible shadow-lg transition-all ${
             theme === "dark"
-              ? "bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700"
-              : "bg-white border border-gray-200"
+              ? "bg-gradient-to-br from-gray-800 to-gray-900"
+              : "bg-white"
           }`}
         >
-          {/* Cover Image */}
-          <div className="relative h-48 group overflow-hidden">
+          {/* Cover Image with Bell Icon */}
+          <div className="relative h-56 group overflow-hidden rounded-t-2xl">
             <img
               src={
                 coverImage ||
@@ -605,26 +605,49 @@ export default function Profile() {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"></div>
-            <label className="absolute top-3 right-3 p-2.5 bg-white/90 hover:bg-white rounded-full cursor-pointer transition-all shadow-lg opacity-0 group-hover:opacity-100 hover:scale-110">
+
+            {/* Bell Notification - Top Left */}
+            <button
+              className={`absolute top-4 left-4 p-3 rounded-full shadow-lg transition-all hover:scale-110 z-20 ${
+                theme === "dark"
+                  ? "bg-white/20 hover:bg-white/30 text-white"
+                  : "bg-white/30 hover:bg-white/50 text-white"
+              }`}
+              title="Notifications"
+              onClick={() => toast.info("Notifications coming soon!")}
+            >
+              <Bell className="w-6 h-6" />
+            </button>
+
+            {/* Cover Image Edit Button - Top Right */}
+            <label className={`absolute top-4 right-4 p-3 rounded-full cursor-pointer transition-all shadow-lg hover:scale-110 z-20 ${
+              theme === "dark"
+                ? "bg-white/20 hover:bg-white/30 text-white opacity-0 group-hover:opacity-100"
+                : "bg-white/30 hover:bg-white/50 text-white opacity-0 group-hover:opacity-100"
+            }`}>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleCoverImageUpload}
                 className="hidden"
               />
-              <Camera className="w-4 h-4 text-gray-800" />
+              <Camera className="w-5 h-5" />
             </label>
           </div>
 
-          {/* Profile Card */}
-          <div className="px-6 pb-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 -mt-12 mb-4 relative z-10">
-              {/* Profile Picture */}
-              <div className="relative group">
+          {/* Profile Info Section */}
+          <div className={`relative px-6 pt-6 pb-8 ${
+            theme === "dark"
+              ? "bg-gray-800"
+              : "bg-white border-t border-gray-200"
+          }`}>
+            <div className="flex gap-6">
+              {/* Profile Picture - Bottom Left Overlapping */}
+              <div className="relative -mt-20 flex-shrink-0">
                 <div
-                  className={`w-32 h-32 rounded-2xl flex items-center justify-center overflow-hidden border-4 flex-shrink-0 shadow-xl ${
+                  className={`w-32 h-32 rounded-2xl flex items-center justify-center overflow-hidden border-4 shadow-xl transition-all hover:shadow-2xl ${
                     theme === "dark"
-                      ? "bg-gray-700 border-gray-900"
+                      ? "bg-gray-700 border-gray-800"
                       : "bg-orange-50 border-white"
                   }`}
                 >
@@ -640,7 +663,7 @@ export default function Profile() {
                     />
                   )}
                 </div>
-                <label className="absolute bottom-2 right-2 bg-orange-500 hover:bg-orange-600 text-white p-2.5 rounded-full cursor-pointer shadow-lg transition-all hover:scale-110">
+                <label className="absolute bottom-0 right-0 bg-orange-500 hover:bg-orange-600 text-white p-2.5 rounded-full cursor-pointer shadow-lg transition-all hover:scale-110">
                   <Camera className="w-4 h-4" />
                   <input
                     type="file"
@@ -651,16 +674,21 @@ export default function Profile() {
                 </label>
               </div>
 
-              {/* Profile Info */}
-              <div className="flex-1 pt-2">
+              {/* Welcome Text Section */}
+              <div className="flex-1 pt-4">
+                <p
+                  className={`text-sm font-medium mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Welcome
+                </p>
                 <h1
-                  className={`text-2xl sm:text-3xl font-bold mb-1 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                  className={`text-2xl sm:text-3xl font-bold mb-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
                 >
                   {user.name}
                 </h1>
                 {user.username && (
                   <p
-                    className={`text-sm font-medium mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+                    className={`text-sm font-medium mb-3 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
                   >
                     @{user.username}
                   </p>
@@ -684,7 +712,7 @@ export default function Profile() {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-3 gap-3 mb-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="grid grid-cols-3 gap-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
               <button
                 onClick={() => navigate("/followers-following")}
                 className={`p-3 rounded-xl text-center transition-all hover:scale-105 ${
@@ -747,7 +775,7 @@ export default function Profile() {
             {/* Edit Button */}
             <button
               onClick={() => setShowEditModal(true)}
-              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+              className="w-full mt-6 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
             >
               <Edit2 className="w-4 h-4" />
               Edit Profile
