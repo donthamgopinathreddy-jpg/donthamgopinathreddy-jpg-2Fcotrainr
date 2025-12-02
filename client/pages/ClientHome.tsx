@@ -403,8 +403,8 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 3. Vibrant Gradient Metric Tiles */}
-          <div className="mx-5 mb-6 space-y-4">
+          {/* 3. 2x2 Metric Tiles Grid */}
+          <div className="mx-5 mb-6">
             {/* 3a. Steps Tile */}
             <div className="group">
               <div className="flex items-start gap-2">
