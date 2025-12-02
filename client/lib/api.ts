@@ -95,7 +95,7 @@ export const authApi = {
 
   login: async (email: string, password: string) => {
     const response = await apiCall<{ user: any; token: string }>(
-      "/api/auth/signin",
+      "/api/auth/login",
       {
         method: "POST",
         body: JSON.stringify({ email, password }),
