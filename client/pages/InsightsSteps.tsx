@@ -61,9 +61,10 @@ export default function InsightsSteps() {
         )
       : 0;
   const totalSteps = weeklyData.reduce((sum, d) => sum + d.steps, 0);
-  const bestDay = weeklyData.reduce((best, current) =>
-    current.steps > best.steps ? current : best,
-  ) || { steps: 0, day: "N/A", date: "" };
+  const bestDay = weeklyData.reduce(
+    (best, current) => (current.steps > best.steps ? current : best),
+    { steps: 0, day: "N/A", date: "" },
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 pb-24">
