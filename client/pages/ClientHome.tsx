@@ -246,7 +246,7 @@ export default function ClientHome() {
       label: "Become a Trainer",
       icon: Award,
       color: "from-pink-400 to-pink-500",
-      onClick: () => navigate("/become-trainer"),
+      onClick: () => navigate("/trainer-signup"),
     },
   ];
 
