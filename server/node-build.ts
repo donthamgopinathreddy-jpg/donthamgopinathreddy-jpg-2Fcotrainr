@@ -1,6 +1,7 @@
 import path from "path";
 import express from "express";
 import { createServer } from "./index";
+import { existsSync } from "fs";
 
 console.log('[node-build] Starting server initialization...');
 
@@ -22,8 +23,7 @@ const __dirname = import.meta.dirname;
 const distPath = path.join(__dirname, "../spa");
 
 console.log('[node-build] Checking for static files at:', distPath);
-const fs = await import('fs').then(m => m.promises);
-const hasStaticFiles = await fs.access(distPath).then(() => true).catch(() => false);
+const hasStaticFiles = existsSync(distPath) && existsSync(path.join(distPath, "index.html"));
 console.log('[node-build] Static files available:', hasStaticFiles);
 
 if (hasStaticFiles) {
