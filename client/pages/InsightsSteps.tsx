@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, TrendingUp, Zap } from "lucide-react";
+import { ArrowLeft, TrendingUp, Flame } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
@@ -8,6 +8,7 @@ interface DailyStats {
   date: string;
   steps: number;
   day: string;
+  dayName: string;
 }
 
 export default function InsightsSteps() {
@@ -15,6 +16,7 @@ export default function InsightsSteps() {
   const { userProfile } = useAuth();
   const [weeklyData, setWeeklyData] = useState<DailyStats[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentStreak, setCurrentStreak] = useState(0);
 
   useEffect(() => {
     const fetchWeeklyData = async () => {
@@ -35,13 +37,28 @@ export default function InsightsSteps() {
           .order("date", { ascending: true });
 
         if (data) {
-          const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-          const formattedData = (data || []).map((item: any) => ({
-            date: item.date,
-            steps: item.steps || 0,
-            day: days[new Date(item.date).getDay()],
-          }));
+          const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+          const formattedData = (data || []).map((item: any) => {
+            const date = new Date(item.date);
+            return {
+              date: item.date,
+              steps: item.steps || 0,
+              day: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()],
+              dayName: dayNames[date.getDay()],
+            };
+          });
           setWeeklyData(formattedData);
+
+          // Calculate streak from most recent date backwards
+          let streak = 0;
+          for (let i = formattedData.length - 1; i >= 0; i--) {
+            if (formattedData[i].steps >= 10000) {
+              streak++;
+            } else {
+              break;
+            }
+          }
+          setCurrentStreak(streak);
         }
       } catch (error) {
         console.error("Error fetching weekly data:", error);
@@ -63,8 +80,15 @@ export default function InsightsSteps() {
   const totalSteps = weeklyData.reduce((sum, d) => sum + d.steps, 0);
   const bestDay = weeklyData.reduce(
     (best, current) => (current.steps > best.steps ? current : best),
-    { steps: 0, day: "N/A", date: "" },
+    { steps: 0, day: "N/A", date: "", dayName: "N/A" },
   );
+
+  const formatDateFull = (dateStr: string) => {
+    const date = new Date(dateStr + "T00:00:00");
+    const month = date.toLocaleDateString("en-US", { month: "short" });
+    const day = date.getDate();
+    return `${month} ${day}`;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 pb-24">
@@ -82,48 +106,108 @@ export default function InsightsSteps() {
       </div>
 
       <div className="max-w-[430px] mx-auto px-4 pt-6 space-y-6">
-        {/* Summary Cards */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white rounded-3xl p-4 shadow-md border border-orange-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">
-              Total Steps
-            </p>
-            <p className="text-2xl font-bold text-orange-600">
-              {totalSteps.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">This week</p>
+        {/* Animated Streak Counter */}
+        {currentStreak > 0 && (
+          <div className="animate-pulse">
+            <div className="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 rounded-3xl p-6 shadow-lg border border-orange-200">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="animate-bounce">
+                  <Flame size={28} className="text-white drop-shadow-lg" />
+                </div>
+                <div>
+                  <p className="text-white text-xs font-semibold opacity-90">Current Streak</p>
+                  <p className="text-white text-3xl font-bold">{currentStreak}</p>
+                </div>
+              </div>
+              <p className="text-white text-sm opacity-90">
+                {currentStreak === 1
+                  ? "Keep it going! 🎯"
+                  : `Amazing! ${currentStreak} days in a row! 🔥`}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Analytical Tiles - Bar Style */}
+        <div className="space-y-3">
+          <h2 className="text-sm font-bold text-gray-900 px-1">Weekly Analytics</h2>
+
+          {/* Total Steps Tile */}
+          <div className="bg-white rounded-2xl p-4 shadow-md border border-orange-100">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-600">Total Steps</p>
+              <p className="text-xl font-bold text-orange-600">
+                {totalSteps.toLocaleString()}
+              </p>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-orange-500 to-orange-400 transition-all duration-700"
+                style={{ width: `${Math.min((totalSteps / 70000) * 100, 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">70,000 steps weekly target</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-4 shadow-md border border-orange-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">
-              Average/Day
-            </p>
-            <p className="text-2xl font-bold text-orange-600">
-              {avgSteps.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Per day</p>
+          {/* Average Steps Tile */}
+          <div className="bg-white rounded-2xl p-4 shadow-md border border-yellow-100">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-600">Avg per Day</p>
+              <p className="text-xl font-bold text-yellow-600">
+                {avgSteps.toLocaleString()}
+              </p>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-yellow-500 to-yellow-400 transition-all duration-700"
+                style={{ width: `${Math.min((avgSteps / 10000) * 100, 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">10,000 daily goal</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-4 shadow-md border border-orange-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Best Day</p>
-            <p className="text-2xl font-bold text-orange-600">
-              {bestDay.steps.toLocaleString()}
+          {/* Best Day Tile */}
+          <div className="bg-white rounded-2xl p-4 shadow-md border border-red-100">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-600">Best Day</p>
+              <p className="text-xl font-bold text-red-600">
+                {bestDay.steps.toLocaleString()}
+              </p>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-red-500 to-red-400 transition-all duration-700"
+                style={{ width: `${Math.min((bestDay.steps / maxSteps) * 100, 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              {bestDay.day !== "N/A" ? `${bestDay.dayName}` : "No data"}
             </p>
-            <p className="text-xs text-gray-500 mt-1">{bestDay.day}</p>
           </div>
 
-          <div className="bg-white rounded-3xl p-4 shadow-md border border-orange-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Goal</p>
-            <p className="text-2xl font-bold text-orange-600">10,000</p>
-            <p className="text-xs text-gray-500 mt-1">Daily target</p>
+          {/* Goal Progress Tile */}
+          <div className="bg-white rounded-2xl p-4 shadow-md border border-green-100">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-600">Goal Progress</p>
+              <p className="text-xl font-bold text-green-600">
+                {totalSteps >= 70000 ? "100" : Math.round((totalSteps / 70000) * 100)}%
+              </p>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-green-500 to-green-400 transition-all duration-700"
+                style={{ width: `${Math.min((totalSteps / 70000) * 100, 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              {Math.max(0, 70000 - totalSteps).toLocaleString()} steps to goal
+            </p>
           </div>
         </div>
 
-        {/* Bar Chart */}
+        {/* Daily Breakdown Chart */}
         <div className="bg-white rounded-3xl p-6 shadow-md border border-orange-100">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">
-            Daily Breakdown
-          </h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Breakdown</h2>
 
           {loading ? (
             <div className="h-64 flex items-center justify-center">
@@ -134,23 +218,32 @@ export default function InsightsSteps() {
               <p className="text-gray-500">No data available</p>
             </div>
           ) : (
-            <div className="space-y-4">
-              {weeklyData.map((day) => (
-                <div key={day.date} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-gray-900">{day.day}</p>
-                      <p className="text-xs text-gray-500">{day.date}</p>
+            <div className="space-y-5">
+              {weeklyData.map((day, idx) => (
+                <div key={day.date} className="animate-fadeIn" style={{ animationDelay: `${idx * 50}ms` }}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-900">{day.dayName}</p>
+                      <p className="text-xs text-gray-500">{formatDateFull(day.date)}</p>
                     </div>
-                    <p className="text-sm font-bold text-orange-600">
-                      {day.steps.toLocaleString()}
-                    </p>
+                    <div className="text-right">
+                      <p className="text-sm font-bold text-orange-600">
+                        {day.steps.toLocaleString()}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {day.steps >= 10000 ? "✓ Goal" : `${10000 - day.steps} to go`}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* Bar */}
+                  {/* Animated Bar */}
                   <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-orange-500 to-yellow-400 rounded-full transition-all duration-500"
+                      className={`h-full rounded-full transition-all duration-700 ${
+                        day.steps >= 10000
+                          ? "bg-gradient-to-r from-green-500 to-green-400"
+                          : "bg-gradient-to-r from-orange-500 to-yellow-400"
+                      }`}
                       style={{ width: `${(day.steps / maxSteps) * 100}%` }}
                     />
                   </div>
@@ -179,6 +272,22 @@ export default function InsightsSteps() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 }
