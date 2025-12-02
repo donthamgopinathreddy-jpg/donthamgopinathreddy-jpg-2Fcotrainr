@@ -59,6 +59,24 @@ export function createServer() {
   console.log('[Server] Registering /api routes');
   app.use('/api', apiRouter);
 
+  // Global error handler for /api routes - MUST come right after apiRouter
+  app.use('/api', (err: any, req: any, res: any, next: any) => {
+    console.error('[Server] API Error Handler caught:', {
+      message: err?.message,
+      status: err?.status || err?.statusCode,
+      path: req.path,
+      method: req.method,
+      stack: err?.stack?.split('\n').slice(0, 3).join('\n'),
+    });
+
+    res.setHeader('Content-Type', 'application/json');
+    res.status(err?.status || err?.statusCode || 500).json({
+      error: err?.message || 'Internal server error',
+      message: err?.message || 'An unexpected error occurred',
+      status: err?.status || err?.statusCode || 500,
+    });
+  });
+
   // Check if we're in production mode or if static files exist (for containerized deployments)
   const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
   const staticDir = path.join(__dirname, '../dist/spa');
