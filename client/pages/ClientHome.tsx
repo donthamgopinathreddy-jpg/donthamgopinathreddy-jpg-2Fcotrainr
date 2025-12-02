@@ -239,6 +239,18 @@ export default function ClientHome() {
           throw updateError;
         }
 
+        // Refresh user profile from database to show the updated picture
+        const { data: updatedUser, error: fetchError } = await supabase
+          .from("users")
+          .select("*")
+          .eq("id", userProfile.id)
+          .single();
+
+        if (!fetchError && updatedUser) {
+          // Update the auth context with the new profile
+          window.location.reload();
+        }
+
         toast.success("Profile picture updated!");
       };
       reader.readAsDataURL(file);
