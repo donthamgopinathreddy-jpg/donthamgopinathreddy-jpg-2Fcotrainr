@@ -620,11 +620,13 @@ export default function Profile() {
             </button>
 
             {/* Cover Image Edit Button - Top Right */}
-            <label className={`absolute top-4 right-4 p-3 rounded-full cursor-pointer transition-all shadow-lg hover:scale-110 z-20 ${
-              theme === "dark"
-                ? "bg-white/20 hover:bg-white/30 text-white opacity-0 group-hover:opacity-100"
-                : "bg-white/30 hover:bg-white/50 text-white opacity-0 group-hover:opacity-100"
-            }`}>
+            <label
+              className={`absolute top-4 right-4 p-3 rounded-full cursor-pointer transition-all shadow-lg hover:scale-110 z-20 ${
+                theme === "dark"
+                  ? "bg-white/20 hover:bg-white/30 text-white opacity-0 group-hover:opacity-100"
+                  : "bg-white/30 hover:bg-white/50 text-white opacity-0 group-hover:opacity-100"
+              }`}
+            >
               <input
                 type="file"
                 accept="image/*"
@@ -636,11 +638,13 @@ export default function Profile() {
           </div>
 
           {/* Profile Info Section */}
-          <div className={`relative px-6 pt-6 pb-8 ${
-            theme === "dark"
-              ? "bg-gray-800"
-              : "bg-white border-t border-gray-200"
-          }`}>
+          <div
+            className={`relative px-6 pt-6 pb-8 ${
+              theme === "dark"
+                ? "bg-gray-800"
+                : "bg-white border-t border-gray-200"
+            }`}
+          >
             <div className="flex gap-6">
               {/* Profile Picture - Bottom Left Overlapping */}
               <div className="relative -mt-20 flex-shrink-0">
