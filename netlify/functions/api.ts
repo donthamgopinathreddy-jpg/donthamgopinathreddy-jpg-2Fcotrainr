@@ -51,8 +51,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Mount API routes at /api (because Netlify redirects /api/* to this function)
-app.use("/api", apiRouter);
+// Mount API routes at root / (Netlify redirect strips /api prefix)
+app.use("/", apiRouter);
 
 // Error handler
 app.use((err: any, req: any, res: any, next: any) => {
