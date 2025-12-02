@@ -36,6 +36,8 @@ export default function ClientHome() {
   const [waterConsumed, setWaterConsumed] = useState(0);
   const [coverImage, setCoverImage] = useState<string | null>(null);
   const [expandedMetric, setExpandedMetric] = useState<string | null>(null);
+  const [showStepsModal, setShowStepsModal] = useState(false);
+  const [editStepsTarget, setEditStepsTarget] = useState(10000);
 
   // User greeting
   const userGreeting = userProfile?.full_name?.split(" ")[0] || "User";
