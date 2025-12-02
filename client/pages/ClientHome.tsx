@@ -659,25 +659,27 @@ export default function ClientHome() {
 
 
           {/* 5. BMI Card */}
-          <div className="mx-5 mb-6 backdrop-blur-md bg-white/90 rounded-3xl p-5 shadow-lg border border-white/20 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">BMI</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {bmiValue || "—"}
-              </p>
-              <p className="text-xs text-gray-600 mt-1">{bmiStatus}</p>
-            </div>
-            <div className="text-right text-xs text-gray-600">
-              <p>
-                Height
-                <br />
-                {userProfile?.height_cm || "—"} cm
-              </p>
-              <p className="mt-2">
-                Weight
-                <br />
-                {userProfile?.weight_kg || "—"} kg
-              </p>
+          <div className="mx-5 mb-6 backdrop-blur-md bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-6 shadow-md border border-purple-100 hover:shadow-lg transition-all">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-2">BMI Index</p>
+                <p className="text-4xl font-bold text-gray-900">
+                  {bmiValue || "—"}
+                </p>
+                <div className="mt-3 inline-block px-3 py-1 rounded-full bg-purple-100 text-xs font-medium text-purple-700">
+                  {bmiStatus}
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="mb-3">
+                  <p className="text-xs font-medium text-gray-600 mb-1">Height</p>
+                  <p className="text-lg font-bold text-gray-900">{userProfile?.height_cm || "—"} cm</p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-gray-600 mb-1">Weight</p>
+                  <p className="text-lg font-bold text-gray-900">{userProfile?.weight_kg || "—"} kg</p>
+                </div>
+              </div>
             </div>
           </div>
 
