@@ -522,7 +522,7 @@ export default function ClientHome() {
                 </p>
               </button>
             </div>
-            {/* 3a. Steps Tile - REMOVED*/}
+            {/* Old vertical tiles removed - now using 2x2 grid above */}
             <div className="group">
               <div className="flex items-start gap-2">
                 <div
