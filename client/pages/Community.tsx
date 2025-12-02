@@ -388,34 +388,50 @@ const Community = () => {
             {!showPostForm ? (
               <button
                 onClick={() => setShowPostForm(true)}
-                className={`w-full mb-6 p-4 rounded-2xl border-2 border-dashed transition-all hover:border-opacity-100 ${
+                className={`w-full mb-6 p-5 rounded-2xl border-2 border-dashed transition-all hover:shadow-lg ${
                   theme === "dark"
-                    ? "border-gray-700 bg-gray-900/50 hover:bg-gray-900"
-                    : "border-orange-200 bg-orange-50/50 hover:bg-orange-50"
+                    ? "border-orange-700/50 bg-gradient-to-br from-gray-900 to-orange-900/20 hover:border-orange-600"
+                    : "border-orange-300 bg-gradient-to-br from-white to-orange-50 hover:border-orange-400"
                 }`}
               >
-                <div className="flex items-center gap-3 text-center">
+                <div className="flex items-center gap-4">
                   <div className="flex-1 text-left">
                     <p
-                      className={`font-semibold ${
-                        theme === "dark" ? "text-gray-300" : "text-gray-700"
+                      className={`font-bold text-lg ${
+                        theme === "dark" ? "text-white" : "text-gray-900"
                       }`}
                     >
                       What's on your mind?
                     </p>
                     <p
-                      className={`text-sm ${
-                        theme === "dark" ? "text-gray-500" : "text-gray-600"
+                      className={`text-sm mt-1 ${
+                        theme === "dark" ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
-                      Share your fitness journey with the community
+                      Share your fitness journey
                     </p>
+                    <div className="flex gap-2 mt-2">
+                      <span className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${
+                        theme === "dark"
+                          ? "bg-orange-900/30 text-orange-300"
+                          : "bg-orange-100 text-orange-700"
+                      }`}>
+                        <ImageIcon size={14} /> Photo
+                      </span>
+                      <span className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${
+                        theme === "dark"
+                          ? "bg-pink-900/30 text-pink-300"
+                          : "bg-pink-100 text-pink-700"
+                      }`}>
+                        <Video size={14} /> Video
+                      </span>
+                    </div>
                   </div>
                   <ArrowRight
-                    size={20}
-                    className={
-                      theme === "dark" ? "text-gray-500" : "text-orange-400"
-                    }
+                    size={24}
+                    className={`flex-shrink-0 ${
+                      theme === "dark" ? "text-orange-500" : "text-orange-500"
+                    }`}
                   />
                 </div>
               </button>
