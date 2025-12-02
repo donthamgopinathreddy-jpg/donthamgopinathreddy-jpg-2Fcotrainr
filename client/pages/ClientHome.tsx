@@ -38,6 +38,7 @@ export default function ClientHome() {
   const [expandedMetric, setExpandedMetric] = useState<string | null>(null);
   const [showStepsModal, setShowStepsModal] = useState(false);
   const [editStepsTarget, setEditStepsTarget] = useState(10000);
+  const profileImageInputRef = useRef<HTMLInputElement>(null);
 
   // User greeting
   const userGreeting = userProfile?.full_name?.split(" ")[0] || "User";
