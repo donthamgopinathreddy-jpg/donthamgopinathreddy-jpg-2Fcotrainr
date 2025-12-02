@@ -12,6 +12,67 @@ interface DailyStats {
   dayName: string;
 }
 
+const CircularProgress = ({
+  value,
+  max,
+  color,
+  label,
+  unit,
+}: {
+  value: number;
+  max: number;
+  color: string;
+  label: string;
+  unit: string;
+}) => {
+  const percentage = Math.min((value / max) * 100, 100);
+  const circumference = 2 * Math.PI * 45;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <div className="relative w-32 h-32 mb-4">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke="#e5e7eb"
+            strokeWidth="8"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke={color}
+            strokeWidth="8"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            className="transition-all duration-700"
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <p className="text-2xl font-bold text-gray-900">
+            {percentage.toFixed(0)}%
+          </p>
+          <p className="text-xs text-gray-500">{(Math.min(value, max) / 1000).toFixed(1)}L</p>
+        </div>
+      </div>
+      <p className="text-center">
+        <span className="block text-xs font-semibold text-gray-600 mb-1">
+          {label}
+        </span>
+        <span className="block text-xs text-gray-500">
+          Goal: {(max / 1000).toFixed(1)} {unit}
+        </span>
+      </p>
+    </div>
+  );
+};
+
 export default function InsightsWater() {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
@@ -131,78 +192,50 @@ export default function InsightsWater() {
           </div>
         )}
 
-        {/* Analytical Tiles - Bar Style */}
-        <div className="space-y-3">
-          <h2 className="text-sm font-bold text-gray-900 px-1">Weekly Analytics</h2>
+        {/* Apple/Samsung Style - Circular Progress Rings */}
+        <div className="bg-white rounded-3xl p-8 shadow-md border border-blue-100">
+          <h2 className="text-lg font-bold text-gray-900 mb-8 text-center">
+            Weekly Summary
+          </h2>
 
-          <div className="bg-white rounded-2xl p-4 shadow-md border border-blue-100">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-gray-600">Total</p>
-              <p className="text-xl font-bold text-blue-600">
-                {(totalWater / 1000).toFixed(1)}L
-              </p>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-700"
-                style={{ width: `${Math.min((totalWater / (waterGoal * 7)) * 100, 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">{(waterGoal * 7 / 1000).toFixed(1)}L weekly target</p>
+          <div className="grid grid-cols-2 gap-8">
+            <CircularProgress
+              value={totalWater}
+              max={waterGoal * 7}
+              color="#0284c7"
+              label="Total Intake"
+              unit="L"
+            />
+            <CircularProgress
+              value={avgWater}
+              max={waterGoal}
+              color="#06b6d4"
+              label="Daily Avg"
+              unit="L"
+            />
           </div>
 
-          <div className="bg-white rounded-2xl p-4 shadow-md border border-cyan-100">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-gray-600">Avg per Day</p>
-              <p className="text-xl font-bold text-cyan-600">
-                {(avgWater / 1000).toFixed(1)}L
-              </p>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400 transition-all duration-700"
-                style={{ width: `${Math.min((avgWater / waterGoal) * 100, 100)}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">{(waterGoal / 1000).toFixed(1)}L daily goal</p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-4 shadow-md border border-teal-100">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-gray-600">Goal Met</p>
-              <p className="text-xl font-bold text-teal-600">
+          <div className="mt-8 pt-6 border-t border-gray-200 flex gap-4">
+            <div className="flex-1 text-center">
+              <p className="text-2xl font-bold text-blue-600">
                 {daysGoalMet}/7
               </p>
+              <p className="text-xs text-gray-600 mt-1">Days Goal Met</p>
+              <p className="text-xs text-gray-500">This week</p>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-teal-500 to-teal-400 transition-all duration-700"
-                style={{ width: `${(daysGoalMet / 7) * 100}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">Days meeting daily goal</p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-4 shadow-md border border-indigo-100">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-gray-600">Daily Goal</p>
-              <p className="text-xl font-bold text-indigo-600">
+            <div className="flex-1 text-center border-l border-gray-200">
+              <p className="text-2xl font-bold text-cyan-600">
                 {(waterGoal / 1000).toFixed(1)}L
               </p>
+              <p className="text-xs text-gray-600 mt-1">Daily Goal</p>
+              <p className="text-xs text-gray-500">Based on weight</p>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-indigo-500 to-indigo-400 transition-all duration-700"
-                style={{ width: `100%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-2">Based on your weight</p>
           </div>
         </div>
 
-        {/* Daily Breakdown Chart */}
+        {/* Weekly Bar Chart - Samsung Health Style */}
         <div className="bg-white rounded-3xl p-6 shadow-md border border-blue-100">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Breakdown</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Activity</h2>
 
           {loading ? (
             <div className="h-64 flex items-center justify-center">
@@ -213,36 +246,53 @@ export default function InsightsWater() {
               <p className="text-gray-500">No data available</p>
             </div>
           ) : (
-            <div className="space-y-5">
-              {weeklyData.map((day, idx) => (
-                <div key={day.date} className="animate-fadeIn" style={{ animationDelay: `${idx * 50}ms` }}>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-900">{day.dayName}</p>
-                      <p className="text-xs text-gray-500">{formatDateFull(day.date)}</p>
-                    </div>
-                    <div className="text-right">
+            <div className="space-y-6">
+              {weeklyData.map((day, idx) => {
+                const percentage = (day.water / maxWater) * 100;
+                const achieved = day.water >= waterGoal;
+
+                return (
+                  <div
+                    key={day.date}
+                    className="animate-fadeIn"
+                    style={{ animationDelay: `${idx * 50}ms` }}
+                  >
+                    <div className="flex items-end justify-between mb-2">
+                      <div>
+                        <p className="font-semibold text-gray-900">{day.day}</p>
+                        <p className="text-xs text-gray-500">{formatDateFull(day.date)}</p>
+                      </div>
                       <p className="text-sm font-bold text-blue-600">
                         {day.liters}L
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {day.water >= waterGoal ? "✓ Goal" : `${((waterGoal - day.water) / 1000).toFixed(1)}L to go`}
-                      </p>
+                    </div>
+
+                    {/* Vertical Bar */}
+                    <div className="flex items-end gap-2 h-24">
+                      <div className="flex-1 bg-gray-100 rounded-t-lg overflow-hidden">
+                        <div
+                          className={`w-full rounded-t-lg transition-all duration-700 ${
+                            achieved
+                              ? "bg-gradient-to-t from-green-500 to-green-400"
+                              : "bg-gradient-to-t from-cyan-500 to-blue-400"
+                          }`}
+                          style={{ height: `${Math.max(percentage, 5)}%` }}
+                        />
+                      </div>
+                      <div className="text-right text-xs">
+                        <p className="font-semibold text-gray-700">
+                          {percentage.toFixed(0)}%
+                        </p>
+                        {achieved && (
+                          <p className="text-green-600 text-xs font-semibold mt-1">
+                            ✓
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-
-                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-700 ${
-                        day.water >= waterGoal
-                          ? "bg-gradient-to-r from-green-500 to-green-400"
-                          : "bg-gradient-to-r from-cyan-500 to-blue-400"
-                      }`}
-                      style={{ width: `${(day.water / maxWater) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
