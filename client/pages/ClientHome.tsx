@@ -407,13 +407,13 @@ export default function ClientHome() {
             {/* 3a. Steps Tile */}
             <div className="group">
               <div className="flex items-start gap-2">
-                <button
+                <div
                   onClick={() =>
                     setExpandedMetric(
                       expandedMetric === "steps" ? null : "steps",
                     )
                   }
-                  className="flex-1 backdrop-blur-md bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-3xl p-5 shadow-md border border-orange-200/50 text-left hover:shadow-lg transition-all active:scale-95"
+                  className="flex-1 cursor-pointer backdrop-blur-md bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-3xl p-5 shadow-md border border-orange-200/50 text-left hover:shadow-lg transition-all active:scale-95"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div>
@@ -441,7 +441,7 @@ export default function ClientHome() {
                   <p className="text-white/70 text-xs mt-2">
                     {stepsTarget.toLocaleString()} goal • {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}%
                   </p>
-                </button>
+                </div>
                 <button
                   onClick={() => setShowStepsModal(true)}
                   className="h-full mt-1 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-2xl text-white font-bold transition-all flex items-center justify-center"
@@ -470,13 +470,13 @@ export default function ClientHome() {
             {/* 3b. Calories Tile */}
             <div className="group">
               <div className="flex items-start gap-2">
-                <button
+                <div
                   onClick={() =>
                     setExpandedMetric(
                       expandedMetric === "calories" ? null : "calories",
                     )
                   }
-                  className="flex-1 backdrop-blur-md bg-gradient-to-br from-red-400 via-red-300 to-pink-300 rounded-3xl p-5 shadow-lg border border-red-200/50 text-left hover:shadow-xl transition-all active:scale-95"
+                  className="flex-1 cursor-pointer backdrop-blur-md bg-gradient-to-br from-red-400 via-red-300 to-pink-300 rounded-3xl p-5 shadow-lg border border-red-200/50 text-left hover:shadow-xl transition-all active:scale-95"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div>
@@ -504,7 +504,7 @@ export default function ClientHome() {
                   <p className="text-white/70 text-xs mt-2">
                     {caloriesTarget} goal • {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}%
                   </p>
-                </button>
+                </div>
                 <button
                   onClick={() => setShowStepsModal(true)}
                   className="h-full mt-1 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-2xl text-white font-bold transition-all flex items-center justify-center"
@@ -532,13 +532,13 @@ export default function ClientHome() {
             {/* 3c. Water Tile */}
             <div className="group">
               <div className="flex items-start gap-2">
-                <button
+                <div
                   onClick={() =>
                     setExpandedMetric(
                       expandedMetric === "water" ? null : "water",
                     )
                   }
-                  className="flex-1 backdrop-blur-md bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-300 rounded-3xl p-5 shadow-md border border-blue-200/50 text-left hover:shadow-lg transition-all active:scale-95"
+                  className="flex-1 cursor-pointer backdrop-blur-md bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-300 rounded-3xl p-5 shadow-md border border-blue-200/50 text-left hover:shadow-lg transition-all active:scale-95"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div>
@@ -566,7 +566,7 @@ export default function ClientHome() {
                   <p className="text-white/70 text-xs mt-2">
                     {autoWaterTarget}ml goal • {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}%
                   </p>
-                </button>
+                </div>
                 <button
                   onClick={() => setShowStepsModal(true)}
                   className="h-full mt-1 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-2xl text-white font-bold transition-all flex items-center justify-center"
