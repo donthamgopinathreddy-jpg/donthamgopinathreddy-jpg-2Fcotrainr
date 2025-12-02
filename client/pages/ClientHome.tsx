@@ -405,7 +405,124 @@ export default function ClientHome() {
 
           {/* 3. 2x2 Metric Tiles Grid */}
           <div className="mx-5 mb-6">
-            {/* 3a. Steps Tile */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Steps Tile */}
+              <button
+                onClick={() => navigate("/insights/steps")}
+                className="group backdrop-blur-md bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-3xl p-5 shadow-md border border-orange-200/50 text-left hover:shadow-xl hover:scale-105 transition-all active:scale-95"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <p className="text-white/80 text-xs font-medium mb-1">Steps</p>
+                    <p className="text-2xl font-bold text-white">
+                      {stepsToday.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Footprints size={20} className="text-white" />
+                  </div>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                  <div
+                    className="h-full bg-white transition-all duration-500"
+                    style={{
+                      width: `${Math.min((stepsToday / stepsTarget) * 100, 100)}%`,
+                    }}
+                  />
+                </div>
+                <p className="text-white/70 text-xs mt-2">
+                  {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}% of {stepsTarget.toLocaleString()}
+                </p>
+              </button>
+
+              {/* Calories Tile */}
+              <button
+                onClick={() => navigate("/insights/calories")}
+                className="group backdrop-blur-md bg-gradient-to-br from-red-400 via-red-300 to-pink-300 rounded-3xl p-5 shadow-md border border-red-200/50 text-left hover:shadow-xl hover:scale-105 transition-all active:scale-95"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <p className="text-white/80 text-xs font-medium mb-1">Calories</p>
+                    <p className="text-2xl font-bold text-white">
+                      {caloriesBurned}
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Flame size={20} className="text-white" />
+                  </div>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                  <div
+                    className="h-full bg-white transition-all duration-500"
+                    style={{
+                      width: `${Math.min((caloriesBurned / caloriesTarget) * 100, 100)}%`,
+                    }}
+                  />
+                </div>
+                <p className="text-white/70 text-xs mt-2">
+                  {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}% of {caloriesTarget}
+                </p>
+              </button>
+
+              {/* Water Tile */}
+              <button
+                onClick={() => navigate("/insights/water")}
+                className="group backdrop-blur-md bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-300 rounded-3xl p-5 shadow-md border border-blue-200/50 text-left hover:shadow-xl hover:scale-105 transition-all active:scale-95"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <p className="text-white/80 text-xs font-medium mb-1">Water</p>
+                    <p className="text-2xl font-bold text-white">
+                      {(waterConsumed / 1000).toFixed(1)}L
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Droplets size={20} className="text-white" />
+                  </div>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                  <div
+                    className="h-full bg-white transition-all duration-500"
+                    style={{
+                      width: `${Math.min((waterConsumed / autoWaterTarget) * 100, 100)}%`,
+                    }}
+                  />
+                </div>
+                <p className="text-white/70 text-xs mt-2">
+                  {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}% of {(autoWaterTarget / 1000).toFixed(1)}L
+                </p>
+              </button>
+
+              {/* Distance Tile */}
+              <button
+                onClick={() => navigate("/insights/distance")}
+                className="group backdrop-blur-md bg-gradient-to-br from-green-400 via-green-300 to-emerald-300 rounded-3xl p-5 shadow-md border border-green-200/50 text-left hover:shadow-xl hover:scale-105 transition-all active:scale-95"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <p className="text-white/80 text-xs font-medium mb-1">Distance</p>
+                    <p className="text-2xl font-bold text-white">
+                      {distanceKm.toFixed(1)}km
+                    </p>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <MapPin size={20} className="text-white" />
+                  </div>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                  <div
+                    className="h-full bg-white transition-all duration-500"
+                    style={{
+                      width: `${Math.min((distanceKm / 10) * 100, 100)}%`,
+                    }}
+                  />
+                </div>
+                <p className="text-white/70 text-xs mt-2">
+                  {Math.min((distanceKm / 10) * 100, 100).toFixed(0)}% of 10km
+                </p>
+              </button>
+            </div>
+            {/* 3a. Steps Tile - REMOVED*/}
             <div className="group">
               <div className="flex items-start gap-2">
                 <div
