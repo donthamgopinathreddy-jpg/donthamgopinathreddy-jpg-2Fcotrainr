@@ -44,10 +44,17 @@ export default function ClientHome() {
 
   // Real data from hooks and profile
   const stepsToday = steps || 0;
-  const stepsTarget = 10000;
+  const stepsTarget = editStepsTarget;
+
+  // Auto-calculate calories from steps (approx 0.05 cal per step)
+  const caloriesBurned = Math.round(stepsToday * 0.05) || dailyStats?.calories_burned || 0;
   const caloriesTarget = 2000;
-  const caloriesBurned = dailyStats?.calories_burned || 0;
-  const waterTarget = 2500;
+
+  // Auto-calculate water intake based on weight (30ml per kg of body weight)
+  const autoWaterTarget = userProfile?.weight_kg
+    ? Math.round(userProfile.weight_kg * 30)
+    : 2500;
+
   const distanceKm = dailyStats?.distance_km || 0;
 
   const bmiValue =
