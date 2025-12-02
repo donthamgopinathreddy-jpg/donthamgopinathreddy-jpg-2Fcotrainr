@@ -22,7 +22,9 @@ export default function InsightsDistance() {
 
       try {
         const today = new Date();
-        const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const sevenDaysAgo = new Date(
+          today.getTime() - 7 * 24 * 60 * 60 * 1000,
+        );
 
         const { data, error } = await supabase
           .from("daily_stats")
@@ -54,13 +56,15 @@ export default function InsightsDistance() {
   const maxDistance = Math.max(...weeklyData.map((d) => d.distance), 10);
   const avgDistance =
     weeklyData.length > 0
-      ? (weeklyData.reduce((sum, d) => sum + d.distance, 0) / weeklyData.length).toFixed(1)
+      ? (
+          weeklyData.reduce((sum, d) => sum + d.distance, 0) / weeklyData.length
+        ).toFixed(1)
       : "0";
   const totalDistance = weeklyData
     .reduce((sum, d) => sum + d.distance, 0)
     .toFixed(1);
   const bestDay = weeklyData.reduce((best, current) =>
-    current.distance > best.distance ? current : best
+    current.distance > best.distance ? current : best,
   ) || { distance: 0, day: "N/A", date: "" };
 
   return (
@@ -83,12 +87,16 @@ export default function InsightsDistance() {
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white rounded-3xl p-4 shadow-md border border-green-100">
             <p className="text-xs text-gray-600 font-medium mb-1">Total</p>
-            <p className="text-2xl font-bold text-green-600">{totalDistance}km</p>
+            <p className="text-2xl font-bold text-green-600">
+              {totalDistance}km
+            </p>
             <p className="text-xs text-gray-500 mt-1">This week</p>
           </div>
 
           <div className="bg-white rounded-3xl p-4 shadow-md border border-green-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Average/Day</p>
+            <p className="text-xs text-gray-600 font-medium mb-1">
+              Average/Day
+            </p>
             <p className="text-2xl font-bold text-green-600">{avgDistance}km</p>
             <p className="text-xs text-gray-500 mt-1">Per day</p>
           </div>
@@ -110,7 +118,9 @@ export default function InsightsDistance() {
 
         {/* Bar Chart */}
         <div className="bg-white rounded-3xl p-6 shadow-md border border-green-100">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Breakdown</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-6">
+            Daily Breakdown
+          </h2>
 
           {loading ? (
             <div className="h-64 flex items-center justify-center">
@@ -138,7 +148,9 @@ export default function InsightsDistance() {
                   <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full transition-all duration-500"
-                      style={{ width: `${(day.distance / maxDistance) * 100}%` }}
+                      style={{
+                        width: `${(day.distance / maxDistance) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>

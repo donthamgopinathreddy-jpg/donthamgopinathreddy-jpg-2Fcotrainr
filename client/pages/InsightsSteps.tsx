@@ -22,7 +22,9 @@ export default function InsightsSteps() {
 
       try {
         const today = new Date();
-        const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const sevenDaysAgo = new Date(
+          today.getTime() - 7 * 24 * 60 * 60 * 1000,
+        );
 
         const { data, error } = await supabase
           .from("daily_stats")
@@ -54,11 +56,13 @@ export default function InsightsSteps() {
   const maxSteps = Math.max(...weeklyData.map((d) => d.steps), 10000);
   const avgSteps =
     weeklyData.length > 0
-      ? Math.round(weeklyData.reduce((sum, d) => sum + d.steps, 0) / weeklyData.length)
+      ? Math.round(
+          weeklyData.reduce((sum, d) => sum + d.steps, 0) / weeklyData.length,
+        )
       : 0;
   const totalSteps = weeklyData.reduce((sum, d) => sum + d.steps, 0);
   const bestDay = weeklyData.reduce((best, current) =>
-    current.steps > best.steps ? current : best
+    current.steps > best.steps ? current : best,
   ) || { steps: 0, day: "N/A", date: "" };
 
   return (
@@ -80,7 +84,9 @@ export default function InsightsSteps() {
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white rounded-3xl p-4 shadow-md border border-orange-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Total Steps</p>
+            <p className="text-xs text-gray-600 font-medium mb-1">
+              Total Steps
+            </p>
             <p className="text-2xl font-bold text-orange-600">
               {totalSteps.toLocaleString()}
             </p>
@@ -88,7 +94,9 @@ export default function InsightsSteps() {
           </div>
 
           <div className="bg-white rounded-3xl p-4 shadow-md border border-orange-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Average/Day</p>
+            <p className="text-xs text-gray-600 font-medium mb-1">
+              Average/Day
+            </p>
             <p className="text-2xl font-bold text-orange-600">
               {avgSteps.toLocaleString()}
             </p>
@@ -112,7 +120,9 @@ export default function InsightsSteps() {
 
         {/* Bar Chart */}
         <div className="bg-white rounded-3xl p-6 shadow-md border border-orange-100">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Breakdown</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-6">
+            Daily Breakdown
+          </h2>
 
           {loading ? (
             <div className="h-64 flex items-center justify-center">

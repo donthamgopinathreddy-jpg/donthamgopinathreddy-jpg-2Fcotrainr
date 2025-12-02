@@ -413,7 +413,9 @@ export default function ClientHome() {
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <p className="text-white/80 text-xs font-medium mb-1">Steps</p>
+                    <p className="text-white/80 text-xs font-medium mb-1">
+                      Steps
+                    </p>
                     <p className="text-2xl font-bold text-white">
                       {stepsToday.toLocaleString()}
                     </p>
@@ -431,7 +433,8 @@ export default function ClientHome() {
                   />
                 </div>
                 <p className="text-white/70 text-xs mt-2">
-                  {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}% of {stepsTarget.toLocaleString()}
+                  {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}%
+                  of {stepsTarget.toLocaleString()}
                 </p>
               </button>
 
@@ -442,7 +445,9 @@ export default function ClientHome() {
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <p className="text-white/80 text-xs font-medium mb-1">Calories</p>
+                    <p className="text-white/80 text-xs font-medium mb-1">
+                      Calories
+                    </p>
                     <p className="text-2xl font-bold text-white">
                       {caloriesBurned}
                     </p>
@@ -460,7 +465,11 @@ export default function ClientHome() {
                   />
                 </div>
                 <p className="text-white/70 text-xs mt-2">
-                  {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}% of {caloriesTarget}
+                  {Math.min(
+                    (caloriesBurned / caloriesTarget) * 100,
+                    100,
+                  ).toFixed(0)}
+                  % of {caloriesTarget}
                 </p>
               </button>
 
@@ -471,7 +480,9 @@ export default function ClientHome() {
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <p className="text-white/80 text-xs font-medium mb-1">Water</p>
+                    <p className="text-white/80 text-xs font-medium mb-1">
+                      Water
+                    </p>
                     <p className="text-2xl font-bold text-white">
                       {(waterConsumed / 1000).toFixed(1)}L
                     </p>
@@ -489,7 +500,11 @@ export default function ClientHome() {
                   />
                 </div>
                 <p className="text-white/70 text-xs mt-2">
-                  {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}% of {(autoWaterTarget / 1000).toFixed(1)}L
+                  {Math.min(
+                    (waterConsumed / autoWaterTarget) * 100,
+                    100,
+                  ).toFixed(0)}
+                  % of {(autoWaterTarget / 1000).toFixed(1)}L
                 </p>
               </button>
 
@@ -500,7 +515,9 @@ export default function ClientHome() {
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <p className="text-white/80 text-xs font-medium mb-1">Distance</p>
+                    <p className="text-white/80 text-xs font-medium mb-1">
+                      Distance
+                    </p>
                     <p className="text-2xl font-bold text-white">
                       {distanceKm.toFixed(1)}km
                     </p>

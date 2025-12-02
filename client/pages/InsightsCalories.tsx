@@ -24,7 +24,9 @@ export default function InsightsCalories() {
 
       try {
         const today = new Date();
-        const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const sevenDaysAgo = new Date(
+          today.getTime() - 7 * 24 * 60 * 60 * 1000,
+        );
 
         const { data, error } = await supabase
           .from("daily_stats")
@@ -56,11 +58,14 @@ export default function InsightsCalories() {
   const maxCalories = Math.max(...weeklyData.map((d) => d.calories), 2000);
   const avgCalories =
     weeklyData.length > 0
-      ? Math.round(weeklyData.reduce((sum, d) => sum + d.calories, 0) / weeklyData.length)
+      ? Math.round(
+          weeklyData.reduce((sum, d) => sum + d.calories, 0) /
+            weeklyData.length,
+        )
       : 0;
   const totalCalories = weeklyData.reduce((sum, d) => sum + d.calories, 0);
   const bestDay = weeklyData.reduce((best, current) =>
-    current.calories > best.calories ? current : best
+    current.calories > best.calories ? current : best,
   ) || { calories: 0, day: "N/A", date: "" };
 
   const todayCalories = Math.round(steps * 0.05);
@@ -84,7 +89,9 @@ export default function InsightsCalories() {
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white rounded-3xl p-4 shadow-md border border-red-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Total Burned</p>
+            <p className="text-xs text-gray-600 font-medium mb-1">
+              Total Burned
+            </p>
             <p className="text-2xl font-bold text-red-600">
               {totalCalories.toLocaleString()}
             </p>
@@ -92,7 +99,9 @@ export default function InsightsCalories() {
           </div>
 
           <div className="bg-white rounded-3xl p-4 shadow-md border border-red-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Average/Day</p>
+            <p className="text-xs text-gray-600 font-medium mb-1">
+              Average/Day
+            </p>
             <p className="text-2xl font-bold text-red-600">
               {avgCalories.toLocaleString()}
             </p>
@@ -116,7 +125,9 @@ export default function InsightsCalories() {
 
         {/* Bar Chart */}
         <div className="bg-white rounded-3xl p-6 shadow-md border border-red-100">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Breakdown</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-6">
+            Daily Breakdown
+          </h2>
 
           {loading ? (
             <div className="h-64 flex items-center justify-center">
@@ -144,7 +155,9 @@ export default function InsightsCalories() {
                   <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-red-500 to-orange-400 rounded-full transition-all duration-500"
-                      style={{ width: `${(day.calories / maxCalories) * 100}%` }}
+                      style={{
+                        width: `${(day.calories / maxCalories) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>

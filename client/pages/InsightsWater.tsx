@@ -27,7 +27,9 @@ export default function InsightsWater() {
 
       try {
         const today = new Date();
-        const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const sevenDaysAgo = new Date(
+          today.getTime() - 7 * 24 * 60 * 60 * 1000,
+        );
 
         const { data, error } = await supabase
           .from("daily_stats")
@@ -63,7 +65,9 @@ export default function InsightsWater() {
   const maxWater = Math.max(...weeklyData.map((d) => d.water), waterGoal);
   const avgWater =
     weeklyData.length > 0
-      ? Math.round(weeklyData.reduce((sum, d) => sum + d.water, 0) / weeklyData.length)
+      ? Math.round(
+          weeklyData.reduce((sum, d) => sum + d.water, 0) / weeklyData.length,
+        )
       : 0;
   const totalWater = weeklyData.reduce((sum, d) => sum + d.water, 0);
   const daysGoalMet = weeklyData.filter((d) => d.water >= waterGoal).length;
@@ -95,7 +99,9 @@ export default function InsightsWater() {
           </div>
 
           <div className="bg-white rounded-3xl p-4 shadow-md border border-blue-100">
-            <p className="text-xs text-gray-600 font-medium mb-1">Average/Day</p>
+            <p className="text-xs text-gray-600 font-medium mb-1">
+              Average/Day
+            </p>
             <p className="text-2xl font-bold text-blue-600">
               {(avgWater / 1000).toFixed(1)}L
             </p>
@@ -119,7 +125,9 @@ export default function InsightsWater() {
 
         {/* Bar Chart */}
         <div className="bg-white rounded-3xl p-6 shadow-md border border-blue-100">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">Daily Breakdown</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-6">
+            Daily Breakdown
+          </h2>
 
           {loading ? (
             <div className="h-64 flex items-center justify-center">
