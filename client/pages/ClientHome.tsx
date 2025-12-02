@@ -310,42 +310,20 @@ export default function ClientHome() {
 
         {/* Main Content - Navigation will overlap */}
         <div className="relative z-10 flex-1 overflow-y-auto pb-28">
-          {/* 1. Header Bar */}
-          <header className="px-5 py-4 flex items-center justify-between sticky top-0 bg-gradient-to-b from-white/50 to-transparent backdrop-blur-sm z-20">
-            {/* Avatar with Profile Picture */}
-            <button
-              onClick={() => navigate("/profile")}
-              className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-yellow-400 flex items-center justify-center text-white font-bold text-lg overflow-hidden flex-shrink-0 hover:shadow-lg transition-all"
-            >
-              {userProfile?.profile_picture_url ? (
-                <img
-                  src={userProfile.profile_picture_url}
-                  alt={userProfile.full_name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <span>{getInitials(userGreeting)}</span>
-              )}
-            </button>
-
-            {/* Center greeting */}
-            <div className="flex-1 ml-4">
-              <p className="text-sm text-gray-600">Hi {userGreeting}</p>
-            </div>
-
-            {/* Notification bell */}
+          {/* 1. Top Right Notification Bell */}
+          <div className="absolute top-4 right-5 z-50">
             <button
               onClick={() => navigate("/notifications")}
-              className="relative p-2 hover:bg-white/30 rounded-full transition-colors"
+              className="relative p-3 hover:bg-white/40 rounded-full transition-all active:scale-95"
             >
-              <Bell size={24} className="text-gray-700" />
+              <Bell size={24} className="text-white drop-shadow-lg" />
               {unreadCount > 0 && (
-                <div className="absolute top-1 right-1 px-1.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded-full">
+                <div className="absolute top-2 right-2 px-2 py-1 bg-red-500 text-white text-xs font-bold rounded-full shadow-lg">
                   {unreadCount}
                 </div>
               )}
             </button>
-          </header>
+          </div>
 
           {/* 2. Banner Card - Cover Image with Upload */}
           <div className="mx-5 mb-6 rounded-3xl overflow-hidden relative h-56 group">
