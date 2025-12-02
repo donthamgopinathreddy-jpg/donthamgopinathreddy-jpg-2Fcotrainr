@@ -411,18 +411,22 @@ const Community = () => {
                       Share your fitness journey
                     </p>
                     <div className="flex gap-2 mt-2">
-                      <span className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${
-                        theme === "dark"
-                          ? "bg-orange-900/30 text-orange-300"
-                          : "bg-orange-100 text-orange-700"
-                      }`}>
+                      <span
+                        className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${
+                          theme === "dark"
+                            ? "bg-orange-900/30 text-orange-300"
+                            : "bg-orange-100 text-orange-700"
+                        }`}
+                      >
                         <ImageIcon size={14} /> Photo
                       </span>
-                      <span className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${
-                        theme === "dark"
-                          ? "bg-pink-900/30 text-pink-300"
-                          : "bg-pink-100 text-pink-700"
-                      }`}>
+                      <span
+                        className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${
+                          theme === "dark"
+                            ? "bg-pink-900/30 text-pink-300"
+                            : "bg-pink-100 text-pink-700"
+                        }`}
+                      >
                         <Video size={14} /> Video
                       </span>
                     </div>
@@ -512,15 +516,17 @@ const Community = () => {
                 )}
 
                 <div className="flex gap-3 mb-4">
-                  <label className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium cursor-pointer transition-all border-2 ${
-                    postImage
-                      ? theme === "dark"
-                        ? "bg-orange-900/30 border-orange-700 text-orange-400"
-                        : "bg-orange-100 border-orange-400 text-orange-700"
-                      : theme === "dark"
-                        ? "bg-gray-800 border-gray-700 hover:border-orange-600 text-gray-300 hover:text-orange-400"
-                        : "bg-orange-50 border-orange-200 hover:border-orange-400 text-orange-600 hover:text-orange-700"
-                  }`}>
+                  <label
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium cursor-pointer transition-all border-2 ${
+                      postImage
+                        ? theme === "dark"
+                          ? "bg-orange-900/30 border-orange-700 text-orange-400"
+                          : "bg-orange-100 border-orange-400 text-orange-700"
+                        : theme === "dark"
+                          ? "bg-gray-800 border-gray-700 hover:border-orange-600 text-gray-300 hover:text-orange-400"
+                          : "bg-orange-50 border-orange-200 hover:border-orange-400 text-orange-600 hover:text-orange-700"
+                    }`}
+                  >
                     <ImageIcon size={20} />
                     <span className="hidden sm:inline">Photo</span>
                     <input
@@ -530,15 +536,17 @@ const Community = () => {
                       className="hidden"
                     />
                   </label>
-                  <label className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium cursor-pointer transition-all border-2 ${
-                    postVideo
-                      ? theme === "dark"
-                        ? "bg-pink-900/30 border-pink-700 text-pink-400"
-                        : "bg-pink-100 border-pink-400 text-pink-700"
-                      : theme === "dark"
-                        ? "bg-gray-800 border-gray-700 hover:border-pink-600 text-gray-300 hover:text-pink-400"
-                        : "bg-pink-50 border-pink-200 hover:border-pink-400 text-pink-600 hover:text-pink-700"
-                  }`}>
+                  <label
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-medium cursor-pointer transition-all border-2 ${
+                      postVideo
+                        ? theme === "dark"
+                          ? "bg-pink-900/30 border-pink-700 text-pink-400"
+                          : "bg-pink-100 border-pink-400 text-pink-700"
+                        : theme === "dark"
+                          ? "bg-gray-800 border-gray-700 hover:border-pink-600 text-gray-300 hover:text-pink-400"
+                          : "bg-pink-50 border-pink-200 hover:border-pink-400 text-pink-600 hover:text-pink-700"
+                    }`}
+                  >
                     <Video size={20} />
                     <span className="hidden sm:inline">Video</span>
                     <input
