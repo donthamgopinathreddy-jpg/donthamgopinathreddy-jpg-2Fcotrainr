@@ -221,35 +221,21 @@ export default function ClientHome() {
     if (!file || !userProfile?.id) return;
 
     try {
-      // Generate unique filename
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${userProfile.id}/profile-${Date.now()}.${fileExt}`;
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const dataUrl = event.target?.result as string;
 
-      // Upload to Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("user_images")
-        .upload(fileName, file, {
-          upsert: true,
-        });
+        // Update database with base64 image data
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({ profile_picture_url: dataUrl })
+          .eq("id", userProfile.id);
 
-      if (uploadError) throw uploadError;
+        if (updateError) throw updateError;
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from("user_images")
-        .getPublicUrl(fileName);
-
-      const profileImageUrl = urlData.publicUrl;
-
-      // Update database with image URL
-      const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ profile_picture_url: profileImageUrl })
-        .eq("id", userProfile.id);
-
-      if (updateError) throw updateError;
-
-      toast.success("Profile picture updated successfully!");
+        toast.success("Profile picture updated successfully!");
+      };
+      reader.readAsDataURL(file);
     } catch (err) {
       console.log("Could not update profile picture:", err);
       toast.error("Failed to update profile picture");
