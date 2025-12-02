@@ -2,8 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 // Supabase config
 const SUPABASE_URL =
-  process.env.VITE_SUPABASE_URL ||
-  "https://hnxdlgdkyboctsvfktwe.supabase.co";
+  process.env.VITE_SUPABASE_URL || "https://hnxdlgdkyboctsvfktwe.supabase.co";
 const SUPABASE_ANON_KEY =
   process.env.VITE_SUPABASE_ANON_KEY ||
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhueGRsZ2RreWJvY3RzdmZrdHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2MDM0NTQsImV4cCI6MjA4MDE3OTQ1NH0.DZPvC7diiNoANXgDxnb7T-ynYg6JUW4cfEILoJfABSI";
@@ -47,7 +46,8 @@ function sendResponse(statusCode: number, body: any) {
 // Main handler
 export const handler = async (event: any) => {
   const path = event.path || event.rawPath || "/";
-  const method = event.httpMethod || event.requestContext?.http?.method || "GET";
+  const method =
+    event.httpMethod || event.requestContext?.http?.method || "GET";
 
   console.log(`[API] ${method} ${path}`);
 
@@ -73,7 +73,10 @@ export const handler = async (event: any) => {
   }
 
   // Login
-  if ((path === "/auth/login" || path === "/api/auth/login") && method === "POST") {
+  if (
+    (path === "/auth/login" || path === "/api/auth/login") &&
+    method === "POST"
+  ) {
     try {
       const body = await parseBody(event);
       const { email, password } = body;
@@ -95,7 +98,9 @@ export const handler = async (event: any) => {
 
       if (error) {
         console.error("[API] Auth error:", error.message);
-        return sendResponse(401, { error: error.message || "Authentication failed" });
+        return sendResponse(401, {
+          error: error.message || "Authentication failed",
+        });
       }
 
       if (!data?.user) {
@@ -112,12 +117,17 @@ export const handler = async (event: any) => {
       });
     } catch (error: any) {
       console.error("[API] Login error:", error.message);
-      return sendResponse(500, { error: error.message || "Internal server error" });
+      return sendResponse(500, {
+        error: error.message || "Internal server error",
+      });
     }
   }
 
   // Signup
-  if ((path === "/auth/signup" || path === "/api/auth/signup") && method === "POST") {
+  if (
+    (path === "/auth/signup" || path === "/api/auth/signup") &&
+    method === "POST"
+  ) {
     try {
       const body = await parseBody(event);
       const { email, password, username, full_name } = body;
@@ -159,7 +169,9 @@ export const handler = async (event: any) => {
       });
     } catch (error: any) {
       console.error("[API] Signup error:", error.message);
-      return sendResponse(500, { error: error.message || "Internal server error" });
+      return sendResponse(500, {
+        error: error.message || "Internal server error",
+      });
     }
   }
 

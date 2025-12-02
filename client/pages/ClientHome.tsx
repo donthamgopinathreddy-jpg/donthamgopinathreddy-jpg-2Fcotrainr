@@ -47,7 +47,8 @@ export default function ClientHome() {
   const stepsTarget = editStepsTarget;
 
   // Auto-calculate calories from steps (approx 0.05 cal per step)
-  const caloriesBurned = Math.round(stepsToday * 0.05) || dailyStats?.calories_burned || 0;
+  const caloriesBurned =
+    Math.round(stepsToday * 0.05) || dailyStats?.calories_burned || 0;
   const caloriesTarget = 2000;
 
   // Auto-calculate water intake based on weight (30ml per kg of body weight)
@@ -439,7 +440,9 @@ export default function ClientHome() {
                     />
                   </div>
                   <p className="text-white/70 text-xs mt-2">
-                    {stepsTarget.toLocaleString()} goal • {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}%
+                    {stepsTarget.toLocaleString()} goal •{" "}
+                    {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}
+                    %
                   </p>
                 </div>
                 <button
@@ -502,7 +505,12 @@ export default function ClientHome() {
                     />
                   </div>
                   <p className="text-white/70 text-xs mt-2">
-                    {caloriesTarget} goal • {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}%
+                    {caloriesTarget} goal •{" "}
+                    {Math.min(
+                      (caloriesBurned / caloriesTarget) * 100,
+                      100,
+                    ).toFixed(0)}
+                    %
                   </p>
                 </div>
                 <button
@@ -564,7 +572,12 @@ export default function ClientHome() {
                     />
                   </div>
                   <p className="text-white/70 text-xs mt-2">
-                    {autoWaterTarget}ml goal • {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}%
+                    {autoWaterTarget}ml goal •{" "}
+                    {Math.min(
+                      (waterConsumed / autoWaterTarget) * 100,
+                      100,
+                    ).toFixed(0)}
+                    %
                   </p>
                 </div>
                 <button
@@ -586,7 +599,9 @@ export default function ClientHome() {
                       <p>💧 Average: 2,350 ml/day</p>
                       <p>✅ Days goal met: 5/7</p>
                       <p>📈 Consistency: Good hydration</p>
-                      <p className="text-blue-600 font-medium">Goal: {autoWaterTarget} ml</p>
+                      <p className="text-blue-600 font-medium">
+                        Goal: {autoWaterTarget} ml
+                      </p>
                     </div>
                   </div>
 
@@ -668,12 +683,13 @@ export default function ClientHome() {
             </div>
           </div>
 
-
           {/* 5. BMI Card */}
           <div className="mx-5 mb-6 backdrop-blur-md bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-6 shadow-md border border-purple-100 hover:shadow-lg transition-all">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-2">BMI Index</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">
+                  BMI Index
+                </p>
                 <p className="text-4xl font-bold text-gray-900">
                   {bmiValue || "—"}
                 </p>
@@ -683,12 +699,20 @@ export default function ClientHome() {
               </div>
               <div className="text-right">
                 <div className="mb-3">
-                  <p className="text-xs font-medium text-gray-600 mb-1">Height</p>
-                  <p className="text-lg font-bold text-gray-900">{userProfile?.height_cm || "—"} cm</p>
+                  <p className="text-xs font-medium text-gray-600 mb-1">
+                    Height
+                  </p>
+                  <p className="text-lg font-bold text-gray-900">
+                    {userProfile?.height_cm || "—"} cm
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-600 mb-1">Weight</p>
-                  <p className="text-lg font-bold text-gray-900">{userProfile?.weight_kg || "—"} kg</p>
+                  <p className="text-xs font-medium text-gray-600 mb-1">
+                    Weight
+                  </p>
+                  <p className="text-lg font-bold text-gray-900">
+                    {userProfile?.weight_kg || "—"} kg
+                  </p>
                 </div>
               </div>
             </div>
@@ -733,11 +757,16 @@ export default function ClientHome() {
                     onClick={tile.onClick}
                     className="backdrop-blur-xl rounded-2xl p-3 shadow-lg hover:shadow-xl transition-all flex flex-col items-center gap-2 group active:scale-95 border border-white/30 hover:border-white/50"
                     style={{
-                      background: tile.label === "Trainers" ? "linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(34, 197, 94, 0.5))" :
-                               tile.label === "Nutritionists" ? "linear-gradient(135deg, rgba(168, 85, 247, 0.5), rgba(236, 72, 153, 0.5))" :
-                               tile.label === "Meal Tracker" ? "linear-gradient(135deg, rgba(34, 197, 94, 0.5), rgba(16, 185, 129, 0.5))" :
-                               tile.label === "CoCircle" ? "linear-gradient(135deg, rgba(249, 115, 22, 0.5), rgba(234, 179, 8, 0.5))" :
-                               "linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(168, 85, 247, 0.5))"
+                      background:
+                        tile.label === "Trainers"
+                          ? "linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(34, 197, 94, 0.5))"
+                          : tile.label === "Nutritionists"
+                            ? "linear-gradient(135deg, rgba(168, 85, 247, 0.5), rgba(236, 72, 153, 0.5))"
+                            : tile.label === "Meal Tracker"
+                              ? "linear-gradient(135deg, rgba(34, 197, 94, 0.5), rgba(16, 185, 129, 0.5))"
+                              : tile.label === "CoCircle"
+                                ? "linear-gradient(135deg, rgba(249, 115, 22, 0.5), rgba(234, 179, 8, 0.5))"
+                                : "linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(168, 85, 247, 0.5))",
                     }}
                   >
                     <div
@@ -882,7 +911,8 @@ export default function ClientHome() {
                   className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-gray-600 focus:outline-none cursor-not-allowed"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Auto-calculated based on your weight ({userProfile?.weight_kg}kg × 30ml)
+                  Auto-calculated based on your weight ({userProfile?.weight_kg}
+                  kg × 30ml)
                 </p>
               </div>
             </div>
