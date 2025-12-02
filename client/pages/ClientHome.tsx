@@ -325,58 +325,78 @@ export default function ClientHome() {
             </button>
           </div>
 
-          {/* 2. Banner Card - Cover Image with Upload */}
-          <div className="mx-5 mb-6 rounded-3xl overflow-hidden relative h-56 group">
-            {/* Background Image */}
+          {/* 2. Full-Width Cover Image with Profile Overlay */}
+          <div className="relative -mx-5 mb-8 h-64 group overflow-hidden">
+            {/* Background Cover Image */}
             <img
               src={
                 coverImage ||
-                "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=300&fit=crop"
+                "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop"
               }
               alt="Cover"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="w-full h-full object-cover"
             />
 
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/30 to-black/50"></div>
+            {/* Gradient Overlay (darker at bottom for text contrast) */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60"></div>
 
-            {/* Upload Button */}
-            <label className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full cursor-pointer transition-all shadow-lg group-hover:scale-110">
+            {/* Cover Image Upload Button - Top Right */}
+            <label className="absolute top-4 right-4 p-3 bg-white/90 hover:bg-white rounded-full cursor-pointer transition-all shadow-xl group-hover:scale-110 active:scale-95">
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleCoverImageUpload}
                 className="hidden"
               />
-              <Zap size={20} className="text-gray-800" />
+              <Zap size={20} className="text-orange-600" />
             </label>
 
-            {/* Top Content */}
-            <div className="absolute top-0 left-0 right-0 p-5 text-white">
-              <h2 className="text-xl font-bold leading-tight mb-1">
-                Progress over perfect! 😊
-              </h2>
-            </div>
+            {/* Bottom section with profile picture and welcome text */}
+            <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 flex items-end gap-4">
+              {/* Profile Picture - Large Circular Avatar */}
+              <button
+                onClick={() => navigate("/profile")}
+                className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-3xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white hover:shadow-2xl transition-all active:scale-95"
+              >
+                {userProfile?.profile_picture_url ? (
+                  <img
+                    src={userProfile.profile_picture_url}
+                    alt={userProfile.full_name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span>{getInitials(userProfile?.full_name)}</span>
+                )}
+              </button>
 
-            {/* Bottom CTA Card */}
-            <div className="absolute bottom-5 left-5 right-5">
-              <div className="backdrop-blur-xl bg-white/95 rounded-2xl p-4 shadow-xl border border-white/30">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center flex-shrink-0">
-                    <span className="text-xl">🏋️</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-gray-900">
-                      Ready to train?
-                    </p>
-                    <p className="text-xs text-gray-600">
-                      Start your workout now
-                    </p>
-                  </div>
-                  <button className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center hover:shadow-lg transition-all active:scale-95">
-                    <ArrowRight size={18} className="text-white" />
-                  </button>
+              {/* Welcome Text */}
+              <div className="flex-1 pb-2">
+                <p className="text-white/80 text-sm font-medium">Welcome back,</p>
+                <h1 className="text-white text-2xl font-bold leading-tight">
+                  {userGreeting}
+                </h1>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. Banner Card - CTA Section */}
+          <div className="mx-5 mb-6 rounded-3xl overflow-hidden relative bg-white">
+            <div className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center flex-shrink-0">
+                  <span className="text-xl">🏋️</span>
                 </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-gray-900">
+                    Ready to train?
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    Start your workout now
+                  </p>
+                </div>
+                <button className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center hover:shadow-lg transition-all active:scale-95">
+                  <ArrowRight size={18} className="text-white" />
+                </button>
               </div>
             </div>
           </div>
