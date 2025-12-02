@@ -1,5 +1,5 @@
 import React from "react";
-import { Flame, Protein, Leaf } from "lucide-react";
+import { Flame, Zap, Leaf } from "lucide-react";
 import VibrancyCard from "./VibrancyCard";
 
 interface MealCardProps {
