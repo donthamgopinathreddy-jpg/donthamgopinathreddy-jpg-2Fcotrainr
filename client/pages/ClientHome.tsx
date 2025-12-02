@@ -374,7 +374,7 @@ export default function ClientHome() {
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60"></div>
 
             {/* Cover Image Upload Button - Camera Icon - Top Right */}
-            <label className="absolute top-4 right-4 p-3 bg-white/90 hover:bg-white rounded-full cursor-pointer transition-all shadow-xl group-hover:scale-110 active:scale-95">
+            <label className="absolute top-4 right-5 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full cursor-pointer transition-all flex items-center justify-center backdrop-blur-sm border border-white/40 active:scale-95">
               <input
                 type="file"
                 accept="image/*"
