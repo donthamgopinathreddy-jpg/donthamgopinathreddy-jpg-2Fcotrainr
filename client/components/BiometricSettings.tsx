@@ -120,7 +120,7 @@ export default function BiometricSettings({ userId }: BiometricSettingsProps) {
             } disabled:opacity-50 disabled:cursor-not-allowed`}
             title={enabled ? "Disable biometric" : "Enable biometric"}
           >
-            <Toggle2 className="w-6 h-6" />
+            <ToggleRight className="w-6 h-6" />
           </button>
         </div>
 
