@@ -26,7 +26,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
 export default function ClientHome() {
-  const { userProfile } = useAuth();
+  const { userProfile, updateProfile } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { steps } = useStepCounter();
