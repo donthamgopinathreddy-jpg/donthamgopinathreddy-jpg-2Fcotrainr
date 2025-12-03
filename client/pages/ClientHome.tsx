@@ -148,6 +148,13 @@ export default function ClientHome() {
     fetchUnreadCount();
   }, [userProfile?.id]);
 
+  // Debug: Log user profile on mount
+  useEffect(() => {
+    console.log("=== ClientHome Mounted ===");
+    console.log("User Profile ID:", userProfile?.id);
+    console.log("User Profile Email:", userProfile?.email);
+  }, [userProfile?.id]);
+
   // Fetch cover image from Supabase database
   useEffect(() => {
     const fetchCoverImage = async () => {
