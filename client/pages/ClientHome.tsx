@@ -18,6 +18,7 @@ import {
   MessageCircle,
   User,
   Camera,
+  TrendingUp,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
