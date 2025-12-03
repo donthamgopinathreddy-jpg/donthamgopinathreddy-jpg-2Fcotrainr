@@ -236,7 +236,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
           if (isMounted) {
             if (session?.user) {
-              console.log("Session found:", session.user.email);
+              console.log("[Auth] ✅ Session found:", session.user.email);
+              console.log("[Auth] Session user ID:", session.user.id);
+              console.log("[Auth] Has refresh token:", !!session.refresh_token);
+              console.log("[Auth] Has access token:", !!session.access_token);
+
               if (!session.refresh_token) {
                 console.warn(
                   "[Auth] Session found but missing refresh_token - user may need to re-login on page reload",
@@ -244,8 +248,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               }
               setUser(session.user);
               // Fetch profile asynchronously without blocking initialization
+              console.log("[Auth] Initiating profile fetch during initialization...");
               fetchUserProfile(session.user.id).catch((err) =>
-                console.error("Profile fetch error:", err),
+                console.error("[Auth] Profile fetch error during init:", err),
               );
             } else {
               console.log("[Auth] No session found - user will need to login");
