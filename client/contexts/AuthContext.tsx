@@ -589,15 +589,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("[Auth] Auth User Email:", user.email);
       console.log("[Auth] Updates:", updates);
 
+      // Use the authenticated user's ID to update their profile
       const { data, error } = await supabase
         .from("users")
         .update(updates)
         .eq("id", user.id)
-        .select();
+        .select("*");
 
-      console.log("[Auth] Update response data:", data);
-      console.log("[Auth] Update response error:", error);
-      console.log("[Auth] ===== PROFILE UPDATE END =====");
+      console.log("[Auth] Update response - data:", data);
+      console.log("[Auth] Update response - error:", error);
 
       if (error) {
         // Retry on "body stream already read" error
@@ -610,21 +610,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           return updateProfile(updates, retryCount + 1);
         }
 
-        const errorMsg =
-          error?.message ||
-          error?.details ||
-          JSON.stringify(error) ||
-          "Unknown error";
         console.error("[Auth] ❌ Update error - Message:", error?.message);
         console.error("[Auth] ❌ Update error - Details:", error?.details);
-        console.error("[Auth] ❌ Update error - Full:", error);
+        console.error("[Auth] ❌ Update error - Code:", error?.code);
+        const errorMsg = error?.message || JSON.stringify(error) || "Unknown error";
         throw new Error(errorMsg);
       }
 
-      console.log("[Auth] ✅ Profile update successful, returned data:", data);
-
+      // Update local state
       setUserProfile((prev) => (prev ? { ...prev, ...updates } : null));
-      console.log("[Auth] Profile updated successfully");
+      console.log("[Auth] ✅ Profile updated successfully in local state");
+      console.log("[Auth] ===== PROFILE UPDATE END =====");
     } catch (error: any) {
       // Retry on network errors
       if (
@@ -636,9 +632,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return updateProfile(updates, retryCount + 1);
       }
 
-      const errorMsg =
-        error?.message || String(error) || "Failed to update profile";
-      console.error("[Auth] Error updating profile:", errorMsg, error);
+      const errorMsg = error?.message || String(error) || "Failed to update profile";
+      console.error("[Auth] ❌ Error updating profile:", errorMsg);
+      console.error("[Auth] Full error:", error);
       throw new Error(errorMsg);
     }
   };
