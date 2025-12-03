@@ -24,7 +24,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useStepCounter } from "@/hooks/useStepCounter";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import MetricDetailsModal from "@/components/MetricDetailsModal";
+import UnifiedMetricsModal from "@/components/UnifiedMetricsModal";
 
 export default function ClientHome() {
   const { userProfile, updateProfile } = useAuth();
