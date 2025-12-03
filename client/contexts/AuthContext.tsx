@@ -597,19 +597,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (!user) throw new Error("No user logged in");
 
       console.log("[Auth] ===== PROFILE UPDATE START =====");
-      console.log("[Auth] Auth User ID:", user.id);
-      console.log("[Auth] Auth User Email:", user.email);
-      console.log("[Auth] Updates:", updates);
+      console.log("[Auth] User ID (UUID):", user.id);
+      console.log("[Auth] Update fields:", Object.keys(updates));
 
-      // Use the authenticated user's ID to update their profile
+      // Update the user's profile using their authenticated UUID
       const { data, error } = await supabase
         .from("users")
         .update(updates)
         .eq("id", user.id)
-        .select("*");
+        .select("id, email, cover_image_url, profile_picture_url");
 
-      console.log("[Auth] Update response - data:", data);
-      console.log("[Auth] Update response - error:", error);
+      console.log("[Auth] Database response:", {
+        dataReceived: !!data,
+        hasError: !!error,
+        errorCode: error?.code,
+        errorMessage: error?.message,
+      });
 
       if (error) {
         // Retry on "body stream already read" error
@@ -617,21 +620,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           error?.message?.includes("body stream already read") &&
           retryCount < 2
         ) {
-          console.warn(`Profile update retry attempt ${retryCount + 1}/2`);
+          console.warn(`[Auth] Retrying profile update (attempt ${retryCount + 1}/2)...`);
           await new Promise((resolve) => setTimeout(resolve, 500));
           return updateProfile(updates, retryCount + 1);
         }
 
-        console.error("[Auth] ❌ Update error - Message:", error?.message);
-        console.error("[Auth] ❌ Update error - Details:", error?.details);
-        console.error("[Auth] ❌ Update error - Code:", error?.code);
+        console.error("[Auth] ❌ UPDATE FAILED:");
+        console.error("[Auth] Code:", error?.code);
+        console.error("[Auth] Message:", error?.message);
+        console.error("[Auth] Details:", error?.details);
         const errorMsg = error?.message || JSON.stringify(error) || "Unknown error";
         throw new Error(errorMsg);
       }
 
-      // Update local state
+      // Update local state immediately
       setUserProfile((prev) => (prev ? { ...prev, ...updates } : null));
-      console.log("[Auth] ✅ Profile updated successfully in local state");
+
+      // Log what was saved
+      if (data && data[0]) {
+        console.log("[Auth] ✅ UPDATE SUCCESSFUL");
+        console.log("[Auth] Saved data - ID:", data[0].id);
+        console.log("[Auth] Saved data - Has cover_image_url:", !!data[0].cover_image_url);
+      }
+
       console.log("[Auth] ===== PROFILE UPDATE END =====");
     } catch (error: any) {
       // Retry on network errors
@@ -639,14 +650,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         error?.message?.includes("body stream already read") &&
         retryCount < 2
       ) {
-        console.warn(`Profile update retry attempt ${retryCount + 1}/2`);
+        console.warn(`[Auth] Retrying profile update (attempt ${retryCount + 1}/2)...`);
         await new Promise((resolve) => setTimeout(resolve, 500));
         return updateProfile(updates, retryCount + 1);
       }
 
       const errorMsg = error?.message || String(error) || "Failed to update profile";
-      console.error("[Auth] ❌ Error updating profile:", errorMsg);
-      console.error("[Auth] Full error:", error);
+      console.error("[Auth] ❌ UPDATE ERROR:", errorMsg);
       throw new Error(errorMsg);
     }
   };
