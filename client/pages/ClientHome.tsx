@@ -35,7 +35,12 @@ export default function ClientHome() {
   const [dailyStats, setDailyStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [waterConsumed, setWaterConsumed] = useState(0);
-  const [coverImage, setCoverImage] = useState<string | null>(null);
+  const [coverImage, setCoverImage] = useState<string | null>(
+    userProfile?.cover_image_url || null
+  );
+  const [profilePicture, setProfilePicture] = useState<string | null>(
+    userProfile?.profile_picture_url || null
+  );
   const [expandedMetric, setExpandedMetric] = useState<string | null>(null);
   const [showStepsModal, setShowStepsModal] = useState(false);
   const [editStepsTarget, setEditStepsTarget] = useState(10000);
