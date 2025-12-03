@@ -108,6 +108,28 @@ export default function MobileProfile() {
     return "Obese";
   };
 
+  // Update form states when userProfile changes
+  useEffect(() => {
+    if (userProfile) {
+      setBasicForm({
+        username: userProfile.username || "",
+        full_name: userProfile.full_name || "",
+      });
+      setPhysicalForm({
+        height_cm: userProfile.height_cm?.toString() || "",
+        weight_kg: userProfile.weight_kg?.toString() || "",
+        gender: userProfile.gender || "",
+      });
+      setContactForm({
+        phone_number: userProfile.phone_number || "",
+        country_code: userProfile.country_code || "+1",
+      });
+      setBioForm({
+        bio: userProfile.bio || "",
+      });
+    }
+  }, [userProfile]);
+
   // Fetch stats
   useEffect(() => {
     const fetchStats = async () => {
