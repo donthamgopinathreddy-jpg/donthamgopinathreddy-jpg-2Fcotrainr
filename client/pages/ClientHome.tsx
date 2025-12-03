@@ -418,7 +418,7 @@ export default function ClientHome() {
           </div>
 
           {/* Welcome Text Section - Below cover image */}
-          <div className="px-5 mb-6 text-center mt-16">
+          <div className="px-5 mb-6 text-center mt-20">
             <p className="text-gray-600 text-xs font-medium">Welcome back,</p>
             <h1 className="text-gray-900 text-xl font-bold">
               {userProfile?.full_name || "User"}
