@@ -348,8 +348,8 @@ export default function ClientHome() {
             </button>
           </div>
 
-          {/* 2. Full-Width Cover Image with Profile Overlay */}
-          <div className="relative -mx-5 mb-20 h-40 group overflow-hidden">
+          {/* 2. Full-Width Cover Image with Centered Profile Overlay */}
+          <div className="relative -mx-5 mb-8 h-56 group overflow-visible">
             {/* Background Cover Image */}
             <img
               src={
@@ -363,38 +363,9 @@ export default function ClientHome() {
             {/* Gradient Overlay (darker at bottom for text contrast) */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60"></div>
 
-            {/* Cover Image Upload Button - Camera Icon - Outline Style - Top Right */}
-            <label className="absolute top-4 right-4 cursor-pointer transition-all active:scale-95">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleCoverImageUpload}
-                className="hidden"
-              />
-              <svg
-                className="w-5 h-5 text-white drop-shadow-lg"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.5}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-            </label>
-
-            {/* Bottom section with profile picture and welcome text */}
-            <div className="absolute bottom-5 left-0 right-0 px-5 flex items-end gap-3">
-              {/* Profile Picture - Square Avatar with Upload */}
-              <div className="mt-2 ml-3">
+            {/* Centered Profile Picture - Positioned at bottom, overlapping cover */}
+            <div className="absolute left-0 right-0 -bottom-12 flex justify-center pointer-events-auto">
+              <div className="relative">
                 <input
                   ref={profileImageInputRef}
                   type="file"
@@ -404,7 +375,7 @@ export default function ClientHome() {
                 />
                 <button
                   onClick={() => profileImageInputRef.current?.click()}
-                  className="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-lg overflow-hidden flex-shrink-0 shadow-lg border-2 border-white hover:shadow-xl transition-all active:scale-95 relative group"
+                  className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-2xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white hover:shadow-2xl transition-all active:scale-95 relative group"
                 >
                   {userProfile?.profile_picture_url ? (
                     <img
@@ -415,41 +386,23 @@ export default function ClientHome() {
                   ) : (
                     <span>{getInitials(userProfile?.full_name)}</span>
                   )}
-                  {/* Upload Overlay Hint */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-2xl">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
+                  {/* Camera Icon Badge - Bottom Right */}
+                  <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center border-3 border-white shadow-md group-hover:bg-orange-600 transition-colors">
+                    <Camera size={16} className="text-white" />
                   </div>
                 </button>
               </div>
-
-              {/* Welcome Text - Using actual user full name from database */}
-              <div className="flex-1">
-                <p className="text-white/70 text-xs font-medium">
-                  Welcome back,
-                </p>
-                <h1 className="text-white text-lg font-bold leading-tight">
-                  {userProfile?.full_name || "User"}
-                </h1>
-              </div>
             </div>
+          </div>
+
+          {/* Welcome Text Section - Below cover image */}
+          <div className="px-5 mb-6 text-center mt-16">
+            <p className="text-gray-600 text-xs font-medium">
+              Welcome back,
+            </p>
+            <h1 className="text-gray-900 text-xl font-bold">
+              {userProfile?.full_name || "User"}
+            </h1>
           </div>
 
           {/* 3. Banner Card - CTA Section */}
