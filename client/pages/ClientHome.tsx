@@ -592,7 +592,7 @@ export default function ClientHome() {
             <div className="grid grid-cols-2 gap-4">
               {/* Steps Tile */}
               <button
-                onClick={() => navigate("/insights/steps")}
+                onClick={() => setOpenMetric("steps")}
                 className="group backdrop-blur-md bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-3xl p-5 shadow-md border border-orange-200/50 text-left hover:shadow-xl hover:scale-105 transition-all active:scale-95"
               >
                 <div className="flex items-start justify-between mb-3">
