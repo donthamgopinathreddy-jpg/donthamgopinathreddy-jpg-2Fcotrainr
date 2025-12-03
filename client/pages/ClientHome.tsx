@@ -409,6 +409,10 @@ export default function ClientHome() {
             </button>
           </div>
 
+          {/* Debug: Log user IDs */}
+          {typeof window !== "undefined" &&
+            console.log("ClientHome - userProfile ID:", userProfile?.id)}
+
           {/* 2. Full-Width Cover Image with Centered Profile Overlay */}
           <div className="relative -mx-5 mb-12 h-56 group overflow-visible">
             {/* Background Cover Image */}
