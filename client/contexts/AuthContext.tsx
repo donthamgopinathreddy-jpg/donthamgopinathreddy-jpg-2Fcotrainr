@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   // Fetch user profile from database directly
-  const fetchUserProfile = async (userId: string) => {
+  const fetchUserProfile = async (userId: string, retryCount = 0) => {
     try {
       console.log("[Auth] ===== FETCH USER PROFILE =====");
       console.log("[Auth] Fetching profile for User ID:", userId);
@@ -65,25 +65,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return;
       }
 
-      // Ensure we have a valid session before querying
-      const { data: sessionData, error: sessionError } =
-        await supabase.auth.getSession();
-
-      if (sessionError) {
-        console.error("[Auth] Session check error:", sessionError);
-        return;
-      }
-
-      if (!sessionData?.session?.access_token) {
-        console.warn("[Auth] No valid session - cannot fetch user profile yet");
-        // Try again after a delay to give session time to load from localStorage
-        setTimeout(() => fetchUserProfile(userId), 500);
-        return;
-      }
-
-      console.log("[Auth] Session valid, fetching user profile...");
+      console.log("[Auth] Querying database for user profile...");
 
       // Fetch directly from Supabase using the authenticated user's UUID
+      // The Supabase client will automatically include the session token
       const { data, error } = await supabase
         .from("users")
         .select("*")
