@@ -278,19 +278,42 @@ export default function ClientHome() {
           setCoverImage(dataUrl);
           toast.success("Cover image updated!");
 
-          // Verify the data was saved
+          // Clear the input
+          e.target.value = "";
+
+          // Verify the data was saved after a short delay
           setTimeout(async () => {
-            const { data } = await supabase
-              .from("users")
-              .select("cover_image_url")
-              .eq("id", userProfile.id)
-              .single();
-            console.log("Verified saved cover image in DB:", !!data?.cover_image_url);
-          }, 1000);
+            try {
+              const { data, error } = await supabase
+                .from("users")
+                .select("cover_image_url")
+                .eq("id", userProfile.id)
+                .single();
+
+              if (error) {
+                console.error("❌ Verification query error:", error);
+                return;
+              }
+
+              const hasCoverImage = !!data?.cover_image_url;
+              console.log("✅ Verified saved cover image in DB:", hasCoverImage);
+
+              if (!hasCoverImage) {
+                console.warn("⚠️ Cover image not found in database after update!");
+              }
+            } catch (err) {
+              console.error("❌ Verification error:", err);
+            }
+          }, 1500);
         } catch (err) {
           console.error("❌ Error in cover upload onload:", err);
           toast.error("Failed to update cover image");
+          e.target.value = "";
         }
+      };
+      reader.onerror = () => {
+        console.error("❌ FileReader error");
+        toast.error("Failed to read image file");
       };
       reader.readAsDataURL(file);
     } catch (err) {
