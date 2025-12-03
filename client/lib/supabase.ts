@@ -148,10 +148,11 @@ console.log("[Supabase] Initializing client", {
 export const supabase = createClient(apiUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
-    autoRefreshToken: false,
+    autoRefreshToken: true,
     storage: storageImpl as any,
     detectSessionInUrl: true,
     flowType: "pkce",
+    debug: true,
   },
 });
 
