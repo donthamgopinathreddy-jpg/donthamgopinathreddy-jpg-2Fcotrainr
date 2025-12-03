@@ -590,76 +590,90 @@ export default function ClientHome() {
           </div>
 
           {/* 4. 2x2 Metric Tiles Grid */}
-          {/* Unified Metrics Tile - Dark Design */}
+          {/* Unified Metrics Tile - Light Theme */}
           <div className="mx-5 mb-6">
             <button
               onClick={() => setShowMetricsModal(true)}
-              className="w-full group bg-gradient-to-r from-gray-800 to-gray-900 rounded-3xl p-6 shadow-lg border border-gray-700 text-left hover:shadow-2xl transition-all active:scale-95 relative overflow-hidden"
+              className="w-full group bg-gradient-to-br from-white to-gray-50 rounded-3xl p-6 shadow-md border border-gray-200 text-left hover:shadow-lg transition-all active:scale-95"
             >
-              {/* Background decoration */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full blur-3xl" />
-              </div>
+              <div className="space-y-4">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-bold text-gray-900">Today's Stats</h3>
+                  <TrendingUp size={20} className="text-purple-600" />
+                </div>
 
-              <div className="relative z-10 flex items-center justify-between">
-                {/* Left side - Metrics List */}
-                <div className="space-y-4 flex-1">
+                {/* 4 Metrics in Grid */}
+                <div className="grid grid-cols-2 gap-4">
                   {/* Steps */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center flex-shrink-0">
-                      <Footprints size={18} className="text-white" />
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-4 border border-green-100">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                        <Footprints size={16} className="text-white" />
+                      </div>
+                      <p className="text-xs font-semibold text-gray-600">Steps</p>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white font-bold text-lg">
-                        {stepsToday.toLocaleString()}
-                        <span className="text-gray-400 font-normal text-sm ml-2">steps</span>
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Active Minutes */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center flex-shrink-0">
-                      <Activity size={18} className="text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white font-bold text-lg">
-                        222
-                        <span className="text-gray-400 font-normal text-sm ml-2">mins</span>
-                      </p>
-                    </div>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {(stepsToday / 1000).toFixed(1)}k
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}%
+                    </p>
                   </div>
 
                   {/* Calories */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center flex-shrink-0">
-                      <Flame size={18} className="text-white" />
+                  <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-4 border border-orange-100">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
+                        <Flame size={16} className="text-white" />
+                      </div>
+                      <p className="text-xs font-semibold text-gray-600">Calories</p>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white font-bold text-lg">
-                        {caloriesBurned}
-                        <span className="text-gray-400 font-normal text-sm ml-2">Cal</span>
-                      </p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {(caloriesBurned / 100).toFixed(1)}k
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}%
+                    </p>
+                  </div>
+
+                  {/* Water */}
+                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-4 border border-blue-100">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
+                        <Droplets size={16} className="text-white" />
+                      </div>
+                      <p className="text-xs font-semibold text-gray-600">Water</p>
                     </div>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {(waterConsumed / 1000).toFixed(1)}L
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}%
+                    </p>
+                  </div>
+
+                  {/* Distance */}
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-4 border border-purple-100">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center flex-shrink-0">
+                        <MapPin size={16} className="text-white" />
+                      </div>
+                      <p className="text-xs font-semibold text-gray-600">Distance</p>
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {distanceKm.toFixed(1)}km
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {Math.min((distanceKm / 10) * 100, 100).toFixed(0)}%
+                    </p>
                   </div>
                 </div>
 
-                {/* Right side - Decorative Icon */}
-                <div className="flex-shrink-0 ml-6 flex items-center justify-center">
-                  <div className="relative w-32 h-32">
-                    {/* Outer heart ring - Green */}
-                    <div className="absolute inset-0 rounded-full border-4 border-green-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      {/* Middle heart ring - Blue */}
-                      <div className="w-24 h-24 rounded-full border-4 border-blue-400 flex items-center justify-center">
-                        {/* Inner heart ring - Pink */}
-                        <div className="w-16 h-16 rounded-full border-3 border-pink-500 flex items-center justify-center">
-                          {/* Center heart */}
-                          <Heart size={32} className="text-pink-500 fill-pink-500" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {/* Tap to view details */}
+                <p className="text-xs text-gray-500 text-center mt-2 group-hover:text-purple-600 transition-colors">
+                  Tap to view weekly analytics →
+                </p>
               </div>
             </button>
           </div>
