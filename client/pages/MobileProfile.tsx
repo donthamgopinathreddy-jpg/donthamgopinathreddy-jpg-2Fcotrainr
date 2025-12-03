@@ -29,7 +29,13 @@ interface EditModalProps {
   children: React.ReactNode;
 }
 
-function EditModal({ isOpen, title, onClose, onSave, children }: EditModalProps) {
+function EditModal({
+  isOpen,
+  title,
+  onClose,
+  onSave,
+  children,
+}: EditModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -241,7 +247,9 @@ export default function MobileProfile() {
     }
   };
 
-  const handleCoverImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoverImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -259,7 +267,9 @@ export default function MobileProfile() {
     }
   };
 
-  const handleProfileImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfileImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -371,13 +381,17 @@ export default function MobileProfile() {
                         : "bg-purple-100 text-purple-700"
                     }`}
                   >
-                    {userProfile?.role === "trainer" ? "🏋️ Trainer" : "👤 Client"}
+                    {userProfile?.role === "trainer"
+                      ? "🏋️ Trainer"
+                      : "👤 Client"}
                   </span>
                 </div>
               </div>
             </div>
             <button
-              onClick={() => setEditModals((prev) => ({ ...prev, basic: true }))}
+              onClick={() =>
+                setEditModals((prev) => ({ ...prev, basic: true }))
+              }
               className="p-2 hover:bg-gray-100 rounded-lg"
             >
               <Edit2 size={20} className="text-purple-600" />
@@ -386,17 +400,19 @@ export default function MobileProfile() {
 
           {/* Bio */}
           {userProfile?.bio && (
-            <p className="text-gray-700 text-sm mb-4 italic">"{userProfile.bio}"</p>
+            <p className="text-gray-700 text-sm mb-4 italic">
+              "{userProfile.bio}"
+            </p>
           )}
 
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-2 gap-2 mt-4">
             <div className="bg-purple-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-purple-600">
-                {bmi || "—"}
-              </p>
+              <p className="text-2xl font-bold text-purple-600">{bmi || "—"}</p>
               <p className="text-xs text-gray-600">BMI</p>
-              <p className="text-xs text-gray-500">{getBMIStatus(bmi ? parseFloat(bmi) : null)}</p>
+              <p className="text-xs text-gray-500">
+                {getBMIStatus(bmi ? parseFloat(bmi) : null)}
+              </p>
             </div>
             <div className="bg-pink-50 p-3 rounded-lg">
               <p className="text-2xl font-bold text-pink-600">{stats.coins}</p>
@@ -456,7 +472,9 @@ export default function MobileProfile() {
 
       {/* Personal Details Section */}
       <div className="px-4 mb-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-3">Personal Details</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-3">
+          Personal Details
+        </h3>
         <div className="space-y-3">
           {/* Physical Info Card */}
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex justify-between items-center">
@@ -467,7 +485,9 @@ export default function MobileProfile() {
               </p>
             </div>
             <button
-              onClick={() => setEditModals((prev) => ({ ...prev, physical: true }))}
+              onClick={() =>
+                setEditModals((prev) => ({ ...prev, physical: true }))
+              }
               className="p-2 hover:bg-gray-100 rounded-lg"
             >
               <Edit2 size={18} className="text-gray-600" />
@@ -495,11 +515,14 @@ export default function MobileProfile() {
                 <p className="text-xs text-gray-500">Phone & Country</p>
               </div>
               <p className="text-sm font-semibold text-gray-900">
-                {userProfile?.country_code} {userProfile?.phone_number || "Not set"}
+                {userProfile?.country_code}{" "}
+                {userProfile?.phone_number || "Not set"}
               </p>
             </div>
             <button
-              onClick={() => setEditModals((prev) => ({ ...prev, contact: true }))}
+              onClick={() =>
+                setEditModals((prev) => ({ ...prev, contact: true }))
+              }
               className="p-2 hover:bg-gray-100 rounded-lg"
             >
               <Edit2 size={18} className="text-gray-600" />
@@ -541,7 +564,9 @@ export default function MobileProfile() {
         <div className="space-y-2">
           <button className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left">
             <p className="font-semibold text-gray-900">Notification Settings</p>
-            <p className="text-xs text-gray-500 mt-1">Manage your notifications</p>
+            <p className="text-xs text-gray-500 mt-1">
+              Manage your notifications
+            </p>
           </button>
 
           <button className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left">
