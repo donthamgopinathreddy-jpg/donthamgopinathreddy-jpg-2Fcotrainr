@@ -148,12 +148,34 @@ export default function ClientHome() {
     fetchUnreadCount();
   }, [userProfile?.id]);
 
-  // Fetch cover image from profile
+  // Fetch cover image from Supabase database
   useEffect(() => {
-    if (userProfile?.cover_image_url) {
-      setCoverImage(userProfile.cover_image_url);
-    }
-  }, [userProfile?.cover_image_url]);
+    const fetchCoverImage = async () => {
+      if (!userProfile?.id) return;
+
+      try {
+        const { data, error } = await supabase
+          .from("users")
+          .select("cover_image_url")
+          .eq("id", userProfile.id)
+          .single();
+
+        if (error) {
+          console.warn("Error fetching cover image:", error);
+          return;
+        }
+
+        if (data?.cover_image_url) {
+          console.log("Cover image fetched from database");
+          setCoverImage(data.cover_image_url);
+        }
+      } catch (err) {
+        console.error("Error fetching cover image:", err);
+      }
+    };
+
+    fetchCoverImage();
+  }, [userProfile?.id]);
 
   // Subscribe to real-time profile updates
   useEffect(() => {
@@ -383,8 +405,8 @@ export default function ClientHome() {
             {/* Gradient Overlay (darker at bottom for text contrast) */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60"></div>
 
-            {/* Cover Image Picker - Right Side Circle */}
-            <div className="absolute right-1/4 translate-x-1/2 -bottom-8 pointer-events-auto">
+            {/* Cover Image Picker - Right Corner Circle */}
+            <div className="absolute right-4 -bottom-8 pointer-events-auto">
               <div className="relative">
                 <input
                   type="file"
