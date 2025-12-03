@@ -80,6 +80,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("[Auth] Error code:", error?.code);
         console.error("[Auth] Error message:", error?.message);
         console.error("[Auth] Error details:", error?.details);
+
+        // Retry once if it's a transient error
+        if (retryCount < 1) {
+          console.log("[Auth] Retrying profile fetch...");
+          setTimeout(() => fetchUserProfile(userId, retryCount + 1), 1000);
+        }
         return;
       }
 
@@ -93,6 +99,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           "[Auth] Has profile_picture_url:",
           !!data.profile_picture_url,
         );
+
+        if (data.cover_image_url) {
+          console.log("[Auth] ✅ Cover image found in profile - will display");
+        }
+        if (data.profile_picture_url) {
+          console.log("[Auth] ✅ Profile picture found in profile - will display");
+        }
+
         setUserProfile(data);
       }
       console.log("[Auth] ===== END FETCH =====");
@@ -101,7 +115,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         "[Auth] ❌ Catch error fetching user profile:",
         error?.message,
       );
-      // Silently fail - profile is optional
+
+      // Retry once on network errors
+      if (retryCount < 1) {
+        console.log("[Auth] Retrying after network error...");
+        setTimeout(() => fetchUserProfile(userId, retryCount + 1), 1000);
+      }
     }
   };
 
