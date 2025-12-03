@@ -694,7 +694,7 @@ export default function ClientHome() {
 
               {/* Distance Tile */}
               <button
-                onClick={() => navigate("/insights/distance")}
+                onClick={() => setOpenMetric("distance")}
                 className="group backdrop-blur-md bg-gradient-to-br from-green-400 via-green-300 to-emerald-300 rounded-3xl p-5 shadow-md border border-green-200/50 text-left hover:shadow-xl hover:scale-105 transition-all active:scale-95"
               >
                 <div className="flex items-start justify-between mb-3">
