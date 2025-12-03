@@ -161,6 +161,21 @@ export default function ClientHome() {
       if (!userProfile?.id) return;
 
       try {
+        // First ensure we have a valid session
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          console.error("[Cover] Session check error:", sessionError);
+          return;
+        }
+
+        if (!sessionData?.session?.access_token) {
+          console.warn("[Cover] No valid session - cannot fetch cover image");
+          return;
+        }
+
+        console.log("[Cover] Session valid, fetching cover image for user:", userProfile.id);
+
         const { data, error } = await supabase
           .from("users")
           .select("cover_image_url")
@@ -168,16 +183,22 @@ export default function ClientHome() {
           .single();
 
         if (error) {
-          console.warn("Error fetching cover image:", error);
+          console.error("[Cover] Error fetching cover image:", {
+            code: error?.code,
+            message: error?.message,
+            details: error?.details,
+          });
           return;
         }
 
         if (data?.cover_image_url) {
-          console.log("Cover image fetched from database");
+          console.log("[Cover] ✅ Cover image fetched from database");
           setCoverImage(data.cover_image_url);
+        } else {
+          console.log("[Cover] No cover image found in database");
         }
       } catch (err) {
-        console.error("Error fetching cover image:", err);
+        console.error("[Cover] Error fetching cover image:", err);
       }
     };
 
