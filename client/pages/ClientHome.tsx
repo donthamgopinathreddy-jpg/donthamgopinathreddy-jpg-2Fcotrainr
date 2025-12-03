@@ -140,13 +140,26 @@ export default function ClientHome() {
       if (!userProfile?.id) return;
 
       try {
+        // Ensure we have a valid session
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          console.error("[Notifications] Session check error:", sessionError);
+          return;
+        }
+
+        if (!sessionData?.session?.access_token) {
+          console.warn("[Notifications] No valid session - cannot fetch notifications");
+          return;
+        }
+
         const { data, error } = await supabase
           .from("notifications")
           .select("id")
           .eq("user_id", userProfile.id)
           .eq("read", false)
           .catch((err) => {
-            console.warn("Failed to fetch notifications:", err?.message);
+            console.warn("[Notifications] Failed to fetch:", err?.message);
             return { data: null, error: err };
           });
 
@@ -155,7 +168,7 @@ export default function ClientHome() {
         }
       } catch (err) {
         console.warn(
-          "Notification fetch error:",
+          "[Notifications] Fetch error:",
           err instanceof Error ? err.message : "Unknown error",
         );
       }
