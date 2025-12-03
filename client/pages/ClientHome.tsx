@@ -659,7 +659,7 @@ export default function ClientHome() {
 
               {/* Water Tile */}
               <button
-                onClick={() => navigate("/insights/water")}
+                onClick={() => setOpenMetric("water")}
                 className="group backdrop-blur-md bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-300 rounded-3xl p-5 shadow-md border border-blue-200/50 text-left hover:shadow-xl hover:scale-105 transition-all active:scale-95"
               >
                 <div className="flex items-start justify-between mb-3">
