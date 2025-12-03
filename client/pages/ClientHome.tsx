@@ -284,25 +284,32 @@ export default function ClientHome() {
           // Verify the data was saved after a short delay
           setTimeout(async () => {
             try {
+              console.log("Verifying cover image save - User ID:", userProfile.id);
               const { data, error } = await supabase
                 .from("users")
-                .select("cover_image_url")
+                .select("id, cover_image_url")
                 .eq("id", userProfile.id)
                 .single();
 
               if (error) {
-                console.error("❌ Verification query error:", error);
+                console.error("❌ Verification query error:");
+                console.error("  Code:", error?.code);
+                console.error("  Message:", error?.message);
+                console.error("  Details:", error?.details);
                 return;
               }
 
               const hasCoverImage = !!data?.cover_image_url;
-              console.log("✅ Verified saved cover image in DB:", hasCoverImage);
-
-              if (!hasCoverImage) {
+              if (hasCoverImage) {
+                console.log("✅ Verified saved cover image in DB - Size:", data.cover_image_url.length);
+              } else {
                 console.warn("⚠️ Cover image not found in database after update!");
               }
-            } catch (err) {
-              console.error("❌ Verification error:", err);
+            } catch (err: any) {
+              console.error("❌ Verification error:", {
+                message: err?.message,
+                stack: err?.stack,
+              });
             }
           }, 1500);
         } catch (err) {
