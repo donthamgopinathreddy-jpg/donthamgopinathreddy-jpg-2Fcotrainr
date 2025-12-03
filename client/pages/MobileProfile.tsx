@@ -67,18 +67,17 @@ export default function MobileProfile() {
     physical: false,
     contact: false,
     bio: false,
-    avatar: false,
   });
 
-  // Form states for each modal
+  // Form states - pre-filled with current data
   const [basicForm, setBasicForm] = useState({
     username: userProfile?.username || "",
     full_name: userProfile?.full_name || "",
   });
 
   const [physicalForm, setPhysicalForm] = useState({
-    height_cm: userProfile?.height_cm || "",
-    weight_kg: userProfile?.weight_kg || "",
+    height_cm: userProfile?.height_cm?.toString() || "",
+    weight_kg: userProfile?.weight_kg?.toString() || "",
     gender: userProfile?.gender || "",
   });
 
@@ -90,9 +89,6 @@ export default function MobileProfile() {
   const [bioForm, setBioForm] = useState({
     bio: userProfile?.bio || "",
   });
-
-  const [coverForm, setCoverForm] = useState<File | null>(null);
-  const [avatarForm, setAvatarForm] = useState<File | null>(null);
 
   // Calculate BMI
   const bmi =
