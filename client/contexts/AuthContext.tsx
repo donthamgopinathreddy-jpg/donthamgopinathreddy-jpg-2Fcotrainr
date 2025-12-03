@@ -66,7 +66,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       // Ensure we have a valid session before querying
-      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
 
       if (sessionError) {
         console.error("[Auth] Session check error:", sessionError);

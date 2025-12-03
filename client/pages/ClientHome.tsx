@@ -83,7 +83,8 @@ export default function ClientHome() {
         setLoading(true);
 
         // Ensure we have a valid session
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        const { data: sessionData, error: sessionError } =
+          await supabase.auth.getSession();
 
         if (sessionError) {
           console.error("[Stats] Session check error:", sessionError);
@@ -141,7 +142,8 @@ export default function ClientHome() {
 
       try {
         // Ensure we have a valid session
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        const { data: sessionData, error: sessionError } =
+          await supabase.auth.getSession();
 
         if (sessionError) {
           console.error("[Notifications] Session check error:", sessionError);
@@ -149,7 +151,9 @@ export default function ClientHome() {
         }
 
         if (!sessionData?.session?.access_token) {
-          console.warn("[Notifications] No valid session - cannot fetch notifications");
+          console.warn(
+            "[Notifications] No valid session - cannot fetch notifications",
+          );
           return;
         }
 
@@ -191,7 +195,8 @@ export default function ClientHome() {
 
       try {
         // First ensure we have a valid session
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        const { data: sessionData, error: sessionError } =
+          await supabase.auth.getSession();
 
         if (sessionError) {
           console.error("[Cover] Session check error:", sessionError);
@@ -203,7 +208,10 @@ export default function ClientHome() {
           return;
         }
 
-        console.log("[Cover] Session valid, fetching cover image for user:", userProfile.id);
+        console.log(
+          "[Cover] Session valid, fetching cover image for user:",
+          userProfile.id,
+        );
 
         const { data, error } = await supabase
           .from("users")
