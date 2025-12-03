@@ -181,6 +181,8 @@ export default function ClientHome() {
   useEffect(() => {
     if (!userProfile?.id) return;
 
+    console.log("Setting up realtime subscription for user:", userProfile.id);
+
     const subscription = supabase
       .channel(`profile_${userProfile.id}`)
       .on(
@@ -197,14 +199,18 @@ export default function ClientHome() {
             const updatedProfile = payload.new as any;
             // Update cover image if changed
             if (updatedProfile.cover_image_url) {
+              console.log("Cover image updated from realtime");
               setCoverImage(updatedProfile.cover_image_url);
             }
           }
         },
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log("Subscription status:", status);
+      });
 
     return () => {
+      console.log("Cleaning up realtime subscription");
       subscription.unsubscribe();
     };
   }, [userProfile?.id]);
