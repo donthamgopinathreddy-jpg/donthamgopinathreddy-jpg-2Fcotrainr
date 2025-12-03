@@ -624,7 +624,7 @@ export default function ClientHome() {
 
               {/* Calories Tile */}
               <button
-                onClick={() => navigate("/insights/calories")}
+                onClick={() => setOpenMetric("calories")}
                 className="group backdrop-blur-md bg-gradient-to-br from-red-400 via-red-300 to-pink-300 rounded-3xl p-5 shadow-md border border-red-200/50 text-left hover:shadow-xl hover:scale-105 transition-all active:scale-95"
               >
                 <div className="flex items-start justify-between mb-3">
