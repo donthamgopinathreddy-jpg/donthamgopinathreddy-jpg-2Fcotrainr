@@ -643,6 +643,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("[Auth] Saved data - Has cover_image_url:", !!data[0].cover_image_url);
       }
 
+      // Fetch fresh data from database to confirm save
+      setTimeout(async () => {
+        try {
+          const { data: freshData, error: fetchError } = await supabase
+            .from("users")
+            .select("*")
+            .eq("id", user.id)
+            .single();
+
+          if (fetchError) {
+            console.warn("[Auth] ⚠️ Could not verify save - fetch error:", fetchError?.message);
+            return;
+          }
+
+          if (freshData) {
+            console.log("[Auth] ✅ DATABASE VERIFICATION:");
+            console.log("[Auth] Cover image saved:", !!freshData.cover_image_url);
+            console.log("[Auth] Profile picture saved:", !!freshData.profile_picture_url);
+          }
+        } catch (err) {
+          console.warn("[Auth] Could not verify save:", err);
+        }
+      }, 800);
+
       console.log("[Auth] ===== PROFILE UPDATE END =====");
     } catch (error: any) {
       // Retry on network errors
