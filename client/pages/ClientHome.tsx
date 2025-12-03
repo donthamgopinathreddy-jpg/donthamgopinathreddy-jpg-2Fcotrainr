@@ -42,8 +42,8 @@ export default function ClientHome() {
   const [showStepsModal, setShowStepsModal] = useState(false);
   const [editStepsTarget, setEditStepsTarget] = useState(10000);
 
-  // Metric details modal state
-  const [openMetric, setOpenMetric] = useState<string | null>(null);
+  // Unified metrics modal state
+  const [showMetricsModal, setShowMetricsModal] = useState(false);
   const [weeklyData, setWeeklyData] = useState({
     steps: [8000, 9500, 7200, 10500, 8900, 9200, 8800],
     calories: [2100, 2400, 1900, 2600, 2200, 2300, 2000],
