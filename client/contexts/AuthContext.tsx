@@ -65,6 +65,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return;
       }
 
+      // Ensure we have a valid session before querying
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+      if (sessionError) {
+        console.error("[Auth] Session check error:", sessionError);
+        return;
+      }
+
+      if (!sessionData?.session?.access_token) {
+        console.warn("[Auth] No valid session - cannot fetch user profile yet");
+        // Try again after a delay to give session time to load from localStorage
+        setTimeout(() => fetchUserProfile(userId), 500);
+        return;
+      }
+
+      console.log("[Auth] Session valid, fetching user profile...");
+
       // Fetch directly from Supabase using the authenticated user's UUID
       const { data, error } = await supabase
         .from("users")
@@ -76,6 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("[Auth] ❌ Error fetching profile from database:", error);
         console.error("[Auth] Error code:", error?.code);
         console.error("[Auth] Error message:", error?.message);
+        console.error("[Auth] Error details:", error?.details);
         return;
       }
 
