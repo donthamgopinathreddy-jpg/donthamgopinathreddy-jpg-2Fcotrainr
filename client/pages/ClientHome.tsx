@@ -887,6 +887,51 @@ export default function ClientHome() {
           </div>
         </div>
 
+        {/* Metric Details Modals */}
+        <MetricDetailsModal
+          isOpen={openMetric === "steps"}
+          onClose={() => setOpenMetric(null)}
+          title="Steps"
+          icon={<Footprints size={24} className="text-white" />}
+          unit="steps"
+          target={editStepsTarget}
+          color="orange"
+          weeklyData={weeklyData.steps}
+        />
+
+        <MetricDetailsModal
+          isOpen={openMetric === "calories"}
+          onClose={() => setOpenMetric(null)}
+          title="Calories Burned"
+          icon={<Flame size={24} className="text-white" />}
+          unit="kcal"
+          target={caloriesTarget}
+          color="red"
+          weeklyData={weeklyData.calories}
+        />
+
+        <MetricDetailsModal
+          isOpen={openMetric === "water"}
+          onClose={() => setOpenMetric(null)}
+          title="Water Intake"
+          icon={<Droplets size={24} className="text-white" />}
+          unit="ml"
+          target={autoWaterTarget}
+          color="blue"
+          weeklyData={weeklyData.water}
+        />
+
+        <MetricDetailsModal
+          isOpen={openMetric === "distance"}
+          onClose={() => setOpenMetric(null)}
+          title="Distance"
+          icon={<MapPin size={24} className="text-white" />}
+          unit="km"
+          target={10}
+          color="green"
+          weeklyData={weeklyData.distance}
+        />
+
         {/* Bottom Navigation Bar - Fixed & Overlapping */}
         <div className="fixed bottom-0 left-0 right-0 z-50 max-w-[430px] mx-auto">
           {/* Fade effect above nav */}
