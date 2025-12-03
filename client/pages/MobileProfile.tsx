@@ -298,7 +298,7 @@ export default function MobileProfile() {
         <div className="bg-white rounded-3xl shadow-lg p-6">
           {/* Avatar Section */}
           <div className="flex justify-between items-start mb-4">
-            <div className="flex items-end gap-4">
+            <div className="flex items-end gap-4 flex-1">
               <div className="relative">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
                   {userProfile?.profile_picture_url ? (
@@ -328,13 +328,21 @@ export default function MobileProfile() {
                 />
               </div>
 
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900">
                   {userProfile?.full_name || userProfile?.username}
                 </h2>
-                <p className="text-gray-600 text-sm capitalize">
-                  {userProfile?.role}
-                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                      userProfile?.role === "trainer"
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-purple-100 text-purple-700"
+                    }`}
+                  >
+                    {userProfile?.role === "trainer" ? "🏋️ Trainer" : "👤 Client"}
+                  </span>
+                </div>
               </div>
             </div>
             <button
