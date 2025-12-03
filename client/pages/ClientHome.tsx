@@ -329,14 +329,14 @@ export default function ClientHome() {
 
         {/* Main Content - Navigation will overlap */}
         <div className="relative z-10 flex-1 overflow-y-auto pb-28">
-          {/* 1. Top Right Notification Bell - Outline Style */}
-          <div className="absolute top-4 right-12 z-50">
+          {/* 1. Top Left Notification Bell - Outline Style */}
+          <div className="absolute top-4 left-5 z-50">
             <button
               onClick={() => navigate("/notifications")}
               className="relative flex items-center justify-center transition-all active:scale-95"
             >
               <Bell
-                size={20}
+                size={26}
                 className="text-white drop-shadow-lg"
                 strokeWidth={1.5}
               />
@@ -363,8 +363,30 @@ export default function ClientHome() {
             {/* Gradient Overlay (darker at bottom for text contrast) */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60"></div>
 
+            {/* Cover Image Picker - Left Side Circle */}
+            <div className="absolute left-1/4 -translate-x-1/2 -bottom-8 pointer-events-auto">
+              <div className="relative">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleCoverImageUpload}
+                  className="hidden"
+                  id="coverImageInput"
+                />
+                <label
+                  htmlFor="coverImageInput"
+                  className="w-20 h-20 rounded-full bg-white flex items-center justify-center text-orange-500 font-bold text-sm overflow-hidden flex-shrink-0 shadow-lg border-3 border-white hover:shadow-xl transition-all active:scale-95 relative group cursor-pointer"
+                >
+                  {/* Camera Icon for Cover */}
+                  <div className="flex items-center justify-center w-full h-full">
+                    <Camera size={24} className="text-orange-500" />
+                  </div>
+                </label>
+              </div>
+            </div>
+
             {/* Centered Profile Picture - Positioned at bottom, overlapping cover */}
-            <div className="absolute left-0 right-0 -bottom-12 flex justify-center pointer-events-auto">
+            <div className="absolute right-1/4 translate-x-1/2 -bottom-8 pointer-events-auto">
               <div className="relative">
                 <input
                   ref={profileImageInputRef}
@@ -375,7 +397,7 @@ export default function ClientHome() {
                 />
                 <button
                   onClick={() => profileImageInputRef.current?.click()}
-                  className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-2xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white hover:shadow-2xl transition-all active:scale-95 relative group"
+                  className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-4xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white hover:shadow-2xl transition-all active:scale-95 relative group"
                 >
                   {userProfile?.profile_picture_url ? (
                     <img
@@ -387,8 +409,8 @@ export default function ClientHome() {
                     <span>{getInitials(userProfile?.full_name)}</span>
                   )}
                   {/* Camera Icon Badge - Bottom Right */}
-                  <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center border-3 border-white shadow-md group-hover:bg-orange-600 transition-colors">
-                    <Camera size={16} className="text-white" />
+                  <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center border-4 border-white shadow-md group-hover:bg-orange-600 transition-colors">
+                    <Camera size={20} className="text-white" />
                   </div>
                 </button>
               </div>
