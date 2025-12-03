@@ -256,7 +256,12 @@ export default function ClientHome() {
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
-    console.log("Cover upload triggered - File:", file?.name, "User ID:", userProfile?.id);
+    console.log(
+      "Cover upload triggered - File:",
+      file?.name,
+      "User ID:",
+      userProfile?.id,
+    );
 
     if (!file || !userProfile?.id) {
       console.log("Cover upload - Missing file or user ID");
@@ -281,7 +286,9 @@ export default function ClientHome() {
           // Clear the input
           e.target.value = "";
 
-          console.log("✅ Cover image upload completed - AuthContext will verify the save");
+          console.log(
+            "✅ Cover image upload completed - AuthContext will verify the save",
+          );
         } catch (err) {
           console.error("❌ Error in cover upload onload:", err);
           toast.error("Failed to update cover image");

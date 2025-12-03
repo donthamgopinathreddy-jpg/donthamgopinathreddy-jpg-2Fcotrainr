@@ -85,12 +85,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("[Auth] Profile ID:", data.id);
         console.log("[Auth] Profile email:", data.email);
         console.log("[Auth] Has cover_image_url:", !!data.cover_image_url);
-        console.log("[Auth] Has profile_picture_url:", !!data.profile_picture_url);
+        console.log(
+          "[Auth] Has profile_picture_url:",
+          !!data.profile_picture_url,
+        );
         setUserProfile(data);
       }
       console.log("[Auth] ===== END FETCH =====");
     } catch (error: any) {
-      console.error("[Auth] ❌ Catch error fetching user profile:", error?.message);
+      console.error(
+        "[Auth] ❌ Catch error fetching user profile:",
+        error?.message,
+      );
       // Silently fail - profile is optional
     }
   };
@@ -620,7 +626,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           error?.message?.includes("body stream already read") &&
           retryCount < 2
         ) {
-          console.warn(`[Auth] Retrying profile update (attempt ${retryCount + 1}/2)...`);
+          console.warn(
+            `[Auth] Retrying profile update (attempt ${retryCount + 1}/2)...`,
+          );
           await new Promise((resolve) => setTimeout(resolve, 500));
           return updateProfile(updates, retryCount + 1);
         }
@@ -629,7 +637,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("[Auth] Code:", error?.code);
         console.error("[Auth] Message:", error?.message);
         console.error("[Auth] Details:", error?.details);
-        const errorMsg = error?.message || JSON.stringify(error) || "Unknown error";
+        const errorMsg =
+          error?.message || JSON.stringify(error) || "Unknown error";
         throw new Error(errorMsg);
       }
 
@@ -640,7 +649,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (data && data[0]) {
         console.log("[Auth] ✅ UPDATE SUCCESSFUL");
         console.log("[Auth] Saved data - ID:", data[0].id);
-        console.log("[Auth] Saved data - Has cover_image_url:", !!data[0].cover_image_url);
+        console.log(
+          "[Auth] Saved data - Has cover_image_url:",
+          !!data[0].cover_image_url,
+        );
       }
 
       // Fetch fresh data from database to confirm save
@@ -653,14 +665,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             .single();
 
           if (fetchError) {
-            console.warn("[Auth] ⚠️ Could not verify save - fetch error:", fetchError?.message);
+            console.warn(
+              "[Auth] ⚠️ Could not verify save - fetch error:",
+              fetchError?.message,
+            );
             return;
           }
 
           if (freshData) {
             console.log("[Auth] ✅ DATABASE VERIFICATION:");
-            console.log("[Auth] Cover image saved:", !!freshData.cover_image_url);
-            console.log("[Auth] Profile picture saved:", !!freshData.profile_picture_url);
+            console.log(
+              "[Auth] Cover image saved:",
+              !!freshData.cover_image_url,
+            );
+            console.log(
+              "[Auth] Profile picture saved:",
+              !!freshData.profile_picture_url,
+            );
           }
         } catch (err) {
           console.warn("[Auth] Could not verify save:", err);
@@ -674,12 +695,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         error?.message?.includes("body stream already read") &&
         retryCount < 2
       ) {
-        console.warn(`[Auth] Retrying profile update (attempt ${retryCount + 1}/2)...`);
+        console.warn(
+          `[Auth] Retrying profile update (attempt ${retryCount + 1}/2)...`,
+        );
         await new Promise((resolve) => setTimeout(resolve, 500));
         return updateProfile(updates, retryCount + 1);
       }
 
-      const errorMsg = error?.message || String(error) || "Failed to update profile";
+      const errorMsg =
+        error?.message || String(error) || "Failed to update profile";
       console.error("[Auth] ❌ UPDATE ERROR:", errorMsg);
       throw new Error(errorMsg);
     }
