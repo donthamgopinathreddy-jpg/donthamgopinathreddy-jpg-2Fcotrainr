@@ -223,9 +223,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
           if (sessionError) {
             console.warn(
-              "[Auth] Session check error (may be token refresh issue):",
-              sessionError,
+              "[Auth] ❌ Session check error (may be token refresh issue):",
+              sessionError?.message || sessionError,
             );
+            console.warn("[Auth] Error code:", (sessionError as any)?.code);
             // Clear invalid session
             if (isMounted) {
               setUser(null);
