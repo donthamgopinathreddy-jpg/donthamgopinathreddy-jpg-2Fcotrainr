@@ -589,88 +589,77 @@ export default function ClientHome() {
           </div>
 
           {/* 4. 2x2 Metric Tiles Grid */}
-          {/* Unified Metrics Tile */}
+          {/* Unified Metrics Tile - Dark Design */}
           <div className="mx-5 mb-6">
             <button
               onClick={() => setShowMetricsModal(true)}
-              className="w-full group backdrop-blur-md bg-gradient-to-br from-purple-400 via-pink-300 to-red-300 rounded-3xl p-6 shadow-lg border border-purple-200/50 text-left hover:shadow-2xl hover:scale-105 transition-all active:scale-95"
+              className="w-full group bg-gradient-to-r from-gray-800 to-gray-900 rounded-3xl p-6 shadow-lg border border-gray-700 text-left hover:shadow-2xl transition-all active:scale-95 relative overflow-hidden"
             >
-              {/* Header */}
-              <div className="flex items-start justify-between mb-6">
-                <div>
-                  <p className="text-white/80 text-sm font-medium mb-2">
-                    Your Performance
-                  </p>
-                  <p className="text-3xl font-bold text-white mb-4">
-                    Weekly Summary
-                  </p>
-                </div>
-                <TrendingUp size={28} className="text-white group-hover:scale-110 transition-transform" />
+              {/* Background decoration */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full blur-3xl" />
               </div>
 
-              {/* 4 Mini Metric Cards */}
-              <div className="grid grid-cols-2 gap-3">
-                {/* Steps */}
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Footprints size={16} className="text-white" />
-                    <p className="text-white/70 text-xs font-medium">Steps</p>
+              <div className="relative z-10 flex items-center justify-between">
+                {/* Left side - Metrics List */}
+                <div className="space-y-4 flex-1">
+                  {/* Steps */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center flex-shrink-0">
+                      <Footprints size={18} className="text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white font-bold text-lg">
+                        {stepsToday.toLocaleString()}
+                        <span className="text-gray-400 font-normal text-sm ml-2">steps</span>
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-2xl font-bold text-white">
-                    {stepsToday.toLocaleString()}
-                  </p>
-                  <p className="text-white/60 text-xs mt-1">
-                    {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}%
-                  </p>
+
+                  {/* Active Minutes */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center flex-shrink-0">
+                      <Activity size={18} className="text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white font-bold text-lg">
+                        222
+                        <span className="text-gray-400 font-normal text-sm ml-2">mins</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Calories */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center flex-shrink-0">
+                      <Flame size={18} className="text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white font-bold text-lg">
+                        {caloriesBurned}
+                        <span className="text-gray-400 font-normal text-sm ml-2">Cal</span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Calories */}
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Flame size={16} className="text-white" />
-                    <p className="text-white/70 text-xs font-medium">Calories</p>
+                {/* Right side - Decorative Icon */}
+                <div className="flex-shrink-0 ml-6 flex items-center justify-center">
+                  <div className="relative w-32 h-32">
+                    {/* Outer heart ring - Green */}
+                    <div className="absolute inset-0 rounded-full border-4 border-green-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      {/* Middle heart ring - Blue */}
+                      <div className="w-24 h-24 rounded-full border-4 border-blue-400 flex items-center justify-center">
+                        {/* Inner heart ring - Pink */}
+                        <div className="w-16 h-16 rounded-full border-3 border-pink-500 flex items-center justify-center">
+                          {/* Center heart */}
+                          <Heart size={32} className="text-pink-500 fill-pink-500" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-2xl font-bold text-white">
-                    {caloriesBurned}
-                  </p>
-                  <p className="text-white/60 text-xs mt-1">
-                    {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}%
-                  </p>
-                </div>
-
-                {/* Water */}
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Droplets size={16} className="text-white" />
-                    <p className="text-white/70 text-xs font-medium">Water</p>
-                  </div>
-                  <p className="text-2xl font-bold text-white">
-                    {(waterConsumed / 1000).toFixed(1)}L
-                  </p>
-                  <p className="text-white/60 text-xs mt-1">
-                    {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}%
-                  </p>
-                </div>
-
-                {/* Distance */}
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
-                  <div className="flex items-center gap-2 mb-2">
-                    <MapPin size={16} className="text-white" />
-                    <p className="text-white/70 text-xs font-medium">Distance</p>
-                  </div>
-                  <p className="text-2xl font-bold text-white">
-                    {distanceKm.toFixed(1)}km
-                  </p>
-                  <p className="text-white/60 text-xs mt-1">
-                    {Math.min((distanceKm / 10) * 100, 100).toFixed(0)}%
-                  </p>
                 </div>
               </div>
-
-              {/* Tap to see details */}
-              <p className="text-white/70 text-xs mt-4 text-center">
-                Tap to see detailed weekly analytics →
-              </p>
             </button>
           </div>
 
