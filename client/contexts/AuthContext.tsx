@@ -615,9 +615,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           error?.details ||
           JSON.stringify(error) ||
           "Unknown error";
-        console.error("[Auth] Update error details:", error);
+        console.error("[Auth] ❌ Update error - Message:", error?.message);
+        console.error("[Auth] ❌ Update error - Details:", error?.details);
+        console.error("[Auth] ❌ Update error - Full:", error);
         throw new Error(errorMsg);
       }
+
+      console.log("[Auth] ✅ Profile update successful, returned data:", data);
 
       setUserProfile((prev) => (prev ? { ...prev, ...updates } : null));
       console.log("[Auth] Profile updated successfully");
