@@ -152,6 +152,10 @@ export default function MobileProfile() {
 
   const handleSaveBasic = async () => {
     try {
+      if (!basicForm.full_name.trim() || !basicForm.username.trim()) {
+        toast.error("Please fill in all fields");
+        return;
+      }
       await updateProfile({
         username: basicForm.username,
         full_name: basicForm.full_name,
@@ -168,7 +172,12 @@ export default function MobileProfile() {
       const height = parseFloat(physicalForm.height_cm as any);
       const weight = parseFloat(physicalForm.weight_kg as any);
 
-      if (isNaN(height) || isNaN(weight)) {
+      if (!physicalForm.height_cm || !physicalForm.weight_kg) {
+        toast.error("Please fill in all fields");
+        return;
+      }
+
+      if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
         toast.error("Please enter valid numbers");
         return;
       }
