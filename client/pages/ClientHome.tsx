@@ -835,49 +835,17 @@ export default function ClientHome() {
           </div>
         </div>
 
-        {/* Metric Details Modals */}
-        <MetricDetailsModal
-          isOpen={openMetric === "steps"}
-          onClose={() => setOpenMetric(null)}
-          title="Steps"
-          icon={<Footprints size={24} className="text-white" />}
-          unit="steps"
-          target={editStepsTarget}
-          color="orange"
-          weeklyData={weeklyData.steps}
-        />
-
-        <MetricDetailsModal
-          isOpen={openMetric === "calories"}
-          onClose={() => setOpenMetric(null)}
-          title="Calories Burned"
-          icon={<Flame size={24} className="text-white" />}
-          unit="kcal"
-          target={caloriesTarget}
-          color="red"
-          weeklyData={weeklyData.calories}
-        />
-
-        <MetricDetailsModal
-          isOpen={openMetric === "water"}
-          onClose={() => setOpenMetric(null)}
-          title="Water Intake"
-          icon={<Droplets size={24} className="text-white" />}
-          unit="ml"
-          target={autoWaterTarget}
-          color="blue"
-          weeklyData={weeklyData.water}
-        />
-
-        <MetricDetailsModal
-          isOpen={openMetric === "distance"}
-          onClose={() => setOpenMetric(null)}
-          title="Distance"
-          icon={<MapPin size={24} className="text-white" />}
-          unit="km"
-          target={10}
-          color="green"
-          weeklyData={weeklyData.distance}
+        {/* Unified Metrics Modal */}
+        <UnifiedMetricsModal
+          isOpen={showMetricsModal}
+          onClose={() => setShowMetricsModal(false)}
+          weeklyData={weeklyData}
+          targets={{
+            steps: editStepsTarget,
+            calories: caloriesTarget,
+            water: autoWaterTarget,
+            distance: 10,
+          }}
         />
 
         {/* Bottom Navigation Bar - Fixed & Overlapping */}
