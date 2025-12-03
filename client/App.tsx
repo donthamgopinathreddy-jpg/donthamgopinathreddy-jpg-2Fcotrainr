@@ -270,36 +270,32 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
 const PermissionRequester = () => {
   const context = useContext(AuthContext);
 
-  // Initialize native app features
+  // Initialize native app features - must be called unconditionally
   useNativeAppInit();
 
-  // If context is not available yet, don't try to use useAuth
-  if (!context) {
-    return null;
-  }
-
-  const { user } = context;
-
+  // Request permissions effect - must be called unconditionally
   useEffect(() => {
-    if (user) {
-      // Request permissions on app startup for authenticated users
-      const requestInitialPermissions = async () => {
-        try {
-          // Request notifications (can be called without user interaction in many cases)
-          if (
-            "Notification" in window &&
-            Notification.permission === "default"
-          ) {
-            await Notification.requestPermission();
-          }
-        } catch (error) {
-          console.debug("Permission request result:", error);
-        }
-      };
-
-      requestInitialPermissions();
+    // Only request permissions if context is available and user is authenticated
+    if (!context?.user) {
+      return;
     }
-  }, [user]);
+
+    const requestInitialPermissions = async () => {
+      try {
+        // Request notifications (can be called without user interaction in many cases)
+        if (
+          "Notification" in window &&
+          Notification.permission === "default"
+        ) {
+          await Notification.requestPermission();
+        }
+      } catch (error) {
+        console.debug("Permission request result:", error);
+      }
+    };
+
+    requestInitialPermissions();
+  }, [context?.user]);
 
   return null;
 };
