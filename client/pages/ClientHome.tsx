@@ -39,7 +39,6 @@ export default function ClientHome() {
   const [expandedMetric, setExpandedMetric] = useState<string | null>(null);
   const [showStepsModal, setShowStepsModal] = useState(false);
   const [editStepsTarget, setEditStepsTarget] = useState(10000);
-  const profileImageInputRef = useRef<HTMLInputElement>(null);
 
   // User greeting
   const userGreeting = userProfile?.full_name?.split(" ")[0] || "User";
@@ -209,27 +208,6 @@ export default function ClientHome() {
     }
   };
 
-  const handleProfileImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file || !userProfile?.id) return;
-
-    try {
-      const reader = new FileReader();
-      reader.onload = async (event) => {
-        const dataUrl = event.target?.result as string;
-
-        // Update profile through auth context
-        await updateProfile({ profile_picture_url: dataUrl });
-        toast.success("Profile picture updated!");
-      };
-      reader.readAsDataURL(file);
-    } catch (err) {
-      console.log("Could not update profile picture:", err);
-      toast.error("Failed to update profile picture");
-    }
-  };
 
   const getInitials = (name?: string) => {
     if (!name) return "?";
@@ -329,8 +307,8 @@ export default function ClientHome() {
 
         {/* Main Content - Navigation will overlap */}
         <div className="relative z-10 flex-1 overflow-y-auto pb-28">
-          {/* 1. Top Left Notification Bell - Outline Style */}
-          <div className="absolute top-4 left-5 z-50">
+          {/* 1. Top Right Notification Bell - Outline Style */}
+          <div className="absolute top-4 right-5 z-50">
             <button
               onClick={() => navigate("/notifications")}
               className="relative flex items-center justify-center transition-all active:scale-95"
@@ -363,8 +341,8 @@ export default function ClientHome() {
             {/* Gradient Overlay (darker at bottom for text contrast) */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/60"></div>
 
-            {/* Cover Image Picker - Left Side Circle */}
-            <div className="absolute left-1/4 -translate-x-1/2 -bottom-8 pointer-events-auto">
+            {/* Cover Image Picker - Right Side Circle */}
+            <div className="absolute right-1/4 translate-x-1/2 -bottom-8 pointer-events-auto">
               <div className="relative">
                 <input
                   type="file"
@@ -385,34 +363,18 @@ export default function ClientHome() {
               </div>
             </div>
 
-            {/* Centered Profile Picture - Positioned at bottom, overlapping cover */}
-            <div className="absolute right-1/4 translate-x-1/2 -bottom-8 pointer-events-auto">
-              <div className="relative">
-                <input
-                  ref={profileImageInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleProfileImageUpload}
-                  className="hidden"
-                />
-                <button
-                  onClick={() => profileImageInputRef.current?.click()}
-                  className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-4xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white hover:shadow-2xl transition-all active:scale-95 relative group"
-                >
-                  {userProfile?.profile_picture_url ? (
-                    <img
-                      src={userProfile.profile_picture_url}
-                      alt={userProfile.full_name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span>{getInitials(userProfile?.full_name)}</span>
-                  )}
-                  {/* Camera Icon Badge - Bottom Right */}
-                  <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center border-4 border-white shadow-md group-hover:bg-orange-600 transition-colors">
-                    <Camera size={20} className="text-white" />
-                  </div>
-                </button>
+            {/* Centered Profile Picture - Display Only, No Upload */}
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-8 pointer-events-none">
+              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-4xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white relative">
+                {userProfile?.profile_picture_url ? (
+                  <img
+                    src={userProfile.profile_picture_url}
+                    alt={userProfile.full_name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span>{getInitials(userProfile?.full_name)}</span>
+                )}
               </div>
             </div>
           </div>
