@@ -35,15 +35,23 @@ export default function ClientHome() {
   const [dailyStats, setDailyStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [waterConsumed, setWaterConsumed] = useState(0);
-  const [coverImage, setCoverImage] = useState<string | null>(
-    userProfile?.cover_image_url || null
-  );
-  const [profilePicture, setProfilePicture] = useState<string | null>(
-    userProfile?.profile_picture_url || null
-  );
+  const [coverImage, setCoverImage] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [expandedMetric, setExpandedMetric] = useState<string | null>(null);
   const [showStepsModal, setShowStepsModal] = useState(false);
   const [editStepsTarget, setEditStepsTarget] = useState(10000);
+
+  // Initialize images from userProfile when it loads
+  useEffect(() => {
+    if (userProfile?.cover_image_url) {
+      console.log("[ClientHome] Loading cover image from userProfile");
+      setCoverImage(userProfile.cover_image_url);
+    }
+    if (userProfile?.profile_picture_url) {
+      console.log("[ClientHome] Loading profile picture from userProfile");
+      setProfilePicture(userProfile.profile_picture_url);
+    }
+  }, [userProfile?.cover_image_url, userProfile?.profile_picture_url]);
 
   // User greeting
   const userGreeting = userProfile?.full_name?.split(" ")[0] || "User";
