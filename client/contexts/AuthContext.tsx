@@ -584,10 +584,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       if (!user) throw new Error("No user logged in");
 
-      const { error } = await supabase
+      console.log("[Auth] Updating profile for user:", user.id);
+      console.log("[Auth] Updates:", updates);
+
+      const { data, error } = await supabase
         .from("users")
         .update(updates)
-        .eq("id", user.id);
+        .eq("id", user.id)
+        .select();
+
+      console.log("[Auth] Update response:", { data, error });
 
       if (error) {
         // Retry on "body stream already read" error
@@ -605,10 +611,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           error?.details ||
           JSON.stringify(error) ||
           "Unknown error";
+        console.error("[Auth] Update error details:", error);
         throw new Error(errorMsg);
       }
 
       setUserProfile((prev) => (prev ? { ...prev, ...updates } : null));
+      console.log("[Auth] Profile updated successfully");
     } catch (error: any) {
       // Retry on network errors
       if (
@@ -622,7 +630,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       const errorMsg =
         error?.message || String(error) || "Failed to update profile";
-      console.error("Error updating profile:", errorMsg);
+      console.error("[Auth] Error updating profile:", errorMsg, error);
       throw new Error(errorMsg);
     }
   };
