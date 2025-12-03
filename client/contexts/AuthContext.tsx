@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch user profile from API
+  // Fetch user profile from database directly
   const fetchUserProfile = async (userId: string) => {
     try {
       console.log("Fetching user profile for:", userId);
@@ -61,35 +61,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // Skip if no user ID
       if (!userId) return;
 
-      // Get current session (should have access token)
-      const {
-        data: { session: currentSession },
-      } = await supabase.auth.getSession();
+      // Fetch directly from Supabase
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", userId)
+        .single();
 
-      if (!currentSession?.access_token) {
-        console.warn("No access token available - cannot fetch profile");
+      if (error) {
+        console.error("Error fetching profile from database:", error);
         return;
       }
 
-      // Fetch user profile from API
-      const response = await fetch("/api/users/profile", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentSession.access_token}`,
-        },
-      });
-
-      if (!response.ok) {
-        console.error("Failed to fetch user profile:", response.status);
-        return;
-      }
-
-      const result = await response.json();
-
-      if (result.data) {
-        console.log("User profile fetched successfully");
-        setUserProfile(result.data);
+      if (data) {
+        console.log("User profile fetched successfully from database");
+        setUserProfile(data);
       }
     } catch (error: any) {
       console.error("Error fetching user profile:", error?.message);
