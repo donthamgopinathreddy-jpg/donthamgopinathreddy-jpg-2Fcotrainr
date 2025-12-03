@@ -249,32 +249,45 @@ export default function ClientHome() {
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
+    console.log("Cover upload triggered - File:", file?.name, "User ID:", userProfile?.id);
+
     if (!file || !userProfile?.id) {
       console.log("Cover upload - Missing file or user ID");
       return;
     }
 
     try {
-      console.log("Starting cover image upload...");
+      console.log("Starting cover image upload for user:", userProfile.id);
       const reader = new FileReader();
       reader.onload = async (event) => {
         try {
           const dataUrl = event.target?.result as string;
-          console.log("Cover image converted to base64, updating profile...");
+          console.log("Cover image converted to base64, size:", dataUrl.length);
+          console.log("Updating profile with cover_image_url...");
 
           // Update profile through auth context
           await updateProfile({ cover_image_url: dataUrl });
-          console.log("Cover image updated successfully");
+          console.log("✅ Cover image update successful");
           setCoverImage(dataUrl);
           toast.success("Cover image updated!");
+
+          // Verify the data was saved
+          setTimeout(async () => {
+            const { data } = await supabase
+              .from("users")
+              .select("cover_image_url")
+              .eq("id", userProfile.id)
+              .single();
+            console.log("Verified saved cover image in DB:", !!data?.cover_image_url);
+          }, 1000);
         } catch (err) {
-          console.error("Error in cover upload onload:", err);
+          console.error("❌ Error in cover upload onload:", err);
           toast.error("Failed to update cover image");
         }
       };
       reader.readAsDataURL(file);
     } catch (err) {
-      console.error("Cover upload error:", err);
+      console.error("❌ Cover upload error:", err);
       toast.error("Failed to update cover image");
     }
   };
