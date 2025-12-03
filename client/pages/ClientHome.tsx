@@ -240,7 +240,6 @@ export default function ClientHome() {
     }
   };
 
-
   const getInitials = (name?: string) => {
     if (!name) return "?";
     return name
