@@ -314,9 +314,9 @@ export default function ClientHome() {
               className="relative flex items-center justify-center transition-all active:scale-95"
             >
               <Bell
-                size={26}
-                className="text-white drop-shadow-lg"
-                strokeWidth={1.5}
+                size={24}
+                className="text-white drop-shadow-lg fill-white"
+                strokeWidth={0}
               />
               {unreadCount > 0 && (
                 <div className="absolute -top-1 -right-2 px-1.5 py-0.5 bg-red-500 text-white text-xs font-bold rounded-full shadow-lg min-w-fit">
@@ -353,11 +353,11 @@ export default function ClientHome() {
                 />
                 <label
                   htmlFor="coverImageInput"
-                  className="w-20 h-20 rounded-full bg-white flex items-center justify-center text-orange-500 font-bold text-sm overflow-hidden flex-shrink-0 shadow-lg border-3 border-white hover:shadow-xl transition-all active:scale-95 relative group cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-orange-500 font-bold text-sm overflow-hidden flex-shrink-0 shadow-lg border-2 border-white hover:shadow-xl transition-all active:scale-95 relative group cursor-pointer"
                 >
                   {/* Camera Icon for Cover */}
                   <div className="flex items-center justify-center w-full h-full">
-                    <Camera size={24} className="text-orange-500" />
+                    <Camera size={16} className="text-orange-500" />
                   </div>
                 </label>
               </div>
@@ -381,8 +381,8 @@ export default function ClientHome() {
 
           {/* Welcome Text Section - Below cover image */}
           <div className="px-5 mb-6 text-center mt-20">
-            <p className="text-gray-600 text-xs font-medium">Welcome back,</p>
-            <h1 className="text-gray-900 text-xl font-bold">
+            <p className="text-gray-600 text-sm font-medium">Welcome back,</p>
+            <h1 className="text-gray-900 text-3xl font-bold">
               {userProfile?.full_name || "User"}
             </h1>
           </div>
