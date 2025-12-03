@@ -124,6 +124,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Subscribe to real-time profile changes
+  useEffect(() => {
+    if (!userProfile?.id) return;
+
+    const channel = supabase
+      .channel(`profile_${userProfile.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "users",
+          filter: `id=eq.${userProfile.id}`,
+        },
+        (payload) => {
+          console.log("Profile updated in realtime:", payload);
+          if (payload.new) {
+            setUserProfile(payload.new as UserProfile);
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [userProfile?.id]);
+
   // Check auth state on mount and listen for changes
   useEffect(() => {
     let isMounted = true;
