@@ -81,6 +81,22 @@ export default function ClientHome() {
 
       try {
         setLoading(true);
+
+        // Ensure we have a valid session
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          console.error("[Stats] Session check error:", sessionError);
+          setLoading(false);
+          return;
+        }
+
+        if (!sessionData?.session?.access_token) {
+          console.warn("[Stats] No valid session - cannot fetch daily stats");
+          setLoading(false);
+          return;
+        }
+
         // Get today's date
         const today = new Date().toISOString().split("T")[0];
 
@@ -93,7 +109,7 @@ export default function ClientHome() {
           .single()
           .catch((err) => {
             console.warn(
-              "Supabase call failed, using fallback data:",
+              "[Stats] Supabase call failed, using fallback data:",
               err?.message,
             );
             return { data: null, error: err };
@@ -107,7 +123,7 @@ export default function ClientHome() {
         }
       } catch (err) {
         console.warn(
-          "Stats fetch error:",
+          "[Stats] Fetch error:",
           err instanceof Error ? err.message : "Unknown error",
         );
       } finally {
