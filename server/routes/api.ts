@@ -447,11 +447,12 @@ router.post('/auth/signup', async (req: Request, res: Response) => {
           country_code: country_code || '',
         };
 
-        console.log('[API] Profile data to insert:', JSON.stringify(profileData, null, 2));
+        console.log('[API] Profile data to insert/update:', JSON.stringify(profileData, null, 2));
 
+        // Use upsert to handle cases where trigger already created the record
         const { error: profileError, data: profileResult } = await authenticatedSupabase
           .from('users')
-          .insert([profileData]);
+          .upsert([profileData], { onConflict: 'id' });
 
         if (profileError) {
           console.error('[API] ❌ Profile creation error:');
