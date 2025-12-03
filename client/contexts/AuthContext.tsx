@@ -56,12 +56,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Fetch user profile from database directly
   const fetchUserProfile = async (userId: string) => {
     try {
-      console.log("Fetching user profile for:", userId);
+      console.log("[Auth] ===== FETCH USER PROFILE =====");
+      console.log("[Auth] Fetching profile for User ID:", userId);
 
       // Skip if no user ID
-      if (!userId) return;
+      if (!userId) {
+        console.warn("[Auth] No userId provided");
+        return;
+      }
 
-      // Fetch directly from Supabase
+      // Fetch directly from Supabase using the authenticated user's UUID
       const { data, error } = await supabase
         .from("users")
         .select("*")
@@ -69,16 +73,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .single();
 
       if (error) {
-        console.error("Error fetching profile from database:", error);
+        console.error("[Auth] ❌ Error fetching profile from database:", error);
+        console.error("[Auth] Error code:", error?.code);
+        console.error("[Auth] Error message:", error?.message);
         return;
       }
 
       if (data) {
-        console.log("User profile fetched successfully from database");
+        console.log("[Auth] ✅ User profile fetched successfully");
+        console.log("[Auth] Profile data keys:", Object.keys(data));
+        console.log("[Auth] Profile ID:", data.id);
+        console.log("[Auth] Profile email:", data.email);
+        console.log("[Auth] Has cover_image_url:", !!data.cover_image_url);
+        console.log("[Auth] Has profile_picture_url:", !!data.profile_picture_url);
         setUserProfile(data);
       }
+      console.log("[Auth] ===== END FETCH =====");
     } catch (error: any) {
-      console.error("Error fetching user profile:", error?.message);
+      console.error("[Auth] ❌ Catch error fetching user profile:", error?.message);
       // Silently fail - profile is optional
     }
   };
