@@ -284,7 +284,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const {
           data: { subscription: authSubscription },
         } = supabase.auth.onAuthStateChange((event, session) => {
-          console.log("Auth state changed:", event, session?.user?.email);
+          console.log("[Auth] ===== Auth state changed =====");
+          console.log("[Auth] Event:", event);
+          console.log("[Auth] User email:", session?.user?.email);
+          console.log("[Auth] Has access token:", !!session?.access_token);
 
           if (event === "TOKEN_REFRESH_FAILED") {
             console.error("[Auth] Token refresh failed during listener");
@@ -298,6 +301,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
           // Handle token refresh errors and signed out
           if (event === "SIGNED_OUT" || !session) {
+            console.log("[Auth] User signed out or no session");
             if (isMounted) {
               setUser(null);
               setUserProfile(null);
@@ -306,17 +310,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }
 
           if (isMounted) {
+            console.log("[Auth] Setting user and fetching profile...");
             setUser(session?.user || null);
 
             if (session?.user) {
               // Fetch profile without blocking
+              console.log("[Auth] Calling fetchUserProfile for:", session.user.id);
               fetchUserProfile(session.user.id).catch((err) => {
-                console.warn("Profile fetch failed:", err);
+                console.warn("[Auth] Profile fetch failed:", err);
               });
             } else {
               setUserProfile(null);
             }
           }
+          console.log("[Auth] ===== End auth state change =====");
         });
 
         subscription = authSubscription;
