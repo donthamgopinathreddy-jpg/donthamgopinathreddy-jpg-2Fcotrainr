@@ -534,10 +534,10 @@ export default function ClientHome() {
             {/* Centered Profile Picture - Display Only, No Upload */}
             <div className="absolute left-1/2 -translate-x-1/2 -bottom-8 pointer-events-none">
               <div className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-4xl overflow-hidden flex-shrink-0 shadow-xl border-4 border-white relative">
-                {userProfile?.profile_picture_url ? (
+                {profilePicture || userProfile?.profile_picture_url ? (
                   <img
-                    src={userProfile.profile_picture_url}
-                    alt={userProfile.full_name}
+                    src={profilePicture || userProfile?.profile_picture_url!}
+                    alt={userProfile?.full_name}
                     className="w-full h-full object-cover"
                   />
                 ) : (
