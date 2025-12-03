@@ -218,24 +218,35 @@ export default function ClientHome() {
   };
 
   const handleCoverImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeChange<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
-    if (!file || !userProfile?.id) return;
+    if (!file || !userProfile?.id) {
+      console.log("Cover upload - Missing file or user ID");
+      return;
+    }
 
     try {
+      console.log("Starting cover image upload...");
       const reader = new FileReader();
       reader.onload = async (event) => {
-        const dataUrl = event.target?.result as string;
+        try {
+          const dataUrl = event.target?.result as string;
+          console.log("Cover image converted to base64, updating profile...");
 
-        // Update profile through auth context
-        await updateProfile({ cover_image_url: dataUrl });
-        setCoverImage(dataUrl);
-        toast.success("Cover image updated!");
+          // Update profile through auth context
+          await updateProfile({ cover_image_url: dataUrl });
+          console.log("Cover image updated successfully");
+          setCoverImage(dataUrl);
+          toast.success("Cover image updated!");
+        } catch (err) {
+          console.error("Error in cover upload onload:", err);
+          toast.error("Failed to update cover image");
+        }
       };
       reader.readAsDataURL(file);
     } catch (err) {
-      console.log("Could not update cover image:", err);
+      console.error("Cover upload error:", err);
       toast.error("Failed to update cover image");
     }
   };
