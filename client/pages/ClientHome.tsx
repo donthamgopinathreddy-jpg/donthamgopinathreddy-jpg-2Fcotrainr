@@ -155,6 +155,38 @@ export default function ClientHome() {
     }
   }, [userProfile?.cover_image_url]);
 
+  // Subscribe to real-time profile updates
+  useEffect(() => {
+    if (!userProfile?.id) return;
+
+    const subscription = supabase
+      .channel(`profile_${userProfile.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "users",
+          filter: `id=eq.${userProfile.id}`,
+        },
+        (payload) => {
+          console.log("Profile updated in realtime:", payload);
+          if (payload.new) {
+            const updatedProfile = payload.new as any;
+            // Update cover image if changed
+            if (updatedProfile.cover_image_url) {
+              setCoverImage(updatedProfile.cover_image_url);
+            }
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [userProfile?.id]);
+
   const handleAddWater = async (amount: number) => {
     if (!userProfile?.id) return;
 
