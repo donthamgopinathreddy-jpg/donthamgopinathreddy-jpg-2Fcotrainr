@@ -42,6 +42,15 @@ export default function ClientHome() {
   const [showStepsModal, setShowStepsModal] = useState(false);
   const [editStepsTarget, setEditStepsTarget] = useState(10000);
 
+  // Metric details modal state
+  const [openMetric, setOpenMetric] = useState<string | null>(null);
+  const [weeklyData, setWeeklyData] = useState({
+    steps: [8000, 9500, 7200, 10500, 8900, 9200, 8800],
+    calories: [2100, 2400, 1900, 2600, 2200, 2300, 2000],
+    water: [1500, 2000, 1800, 2100, 1900, 2200, 1700],
+    distance: [5.2, 6.1, 4.8, 7.2, 5.9, 6.3, 5.1],
+  });
+
   // Initialize images from userProfile when it loads
   useEffect(() => {
     if (userProfile?.cover_image_url) {
