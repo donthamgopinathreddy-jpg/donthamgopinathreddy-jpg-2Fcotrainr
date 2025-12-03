@@ -584,7 +584,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       if (!user) throw new Error("No user logged in");
 
-      console.log("[Auth] Updating profile for user:", user.id);
+      console.log("[Auth] ===== PROFILE UPDATE START =====");
+      console.log("[Auth] Auth User ID:", user.id);
+      console.log("[Auth] Auth User Email:", user.email);
       console.log("[Auth] Updates:", updates);
 
       const { data, error } = await supabase
@@ -593,7 +595,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .eq("id", user.id)
         .select();
 
-      console.log("[Auth] Update response:", { data, error });
+      console.log("[Auth] Update response data:", data);
+      console.log("[Auth] Update response error:", error);
+      console.log("[Auth] ===== PROFILE UPDATE END =====");
 
       if (error) {
         // Retry on "body stream already read" error
