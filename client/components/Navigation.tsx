@@ -178,14 +178,6 @@ const Navigation = () => {
                     )}
                   </div>
 
-                  {/* Label with smooth transition */}
-                  <span
-                    className={`text-[11px] font-bold leading-tight transition-all duration-300 group-hover:font-bold ${
-                      active ? "text-white drop-shadow" : "text-inherit"
-                    }`}
-                  >
-                    {label}
-                  </span>
 
                   {/* Active indicator dot */}
                   {active && (
