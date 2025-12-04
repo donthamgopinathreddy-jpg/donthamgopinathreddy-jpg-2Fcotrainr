@@ -35,23 +35,36 @@ const MacroBar = ({
   target,
   label,
   gradient,
+  size = "normal",
 }: {
   current: number;
   target: number;
   label: string;
   gradient: string;
+  size?: "large" | "normal";
 }) => {
   const percentage = Math.min((current / target) * 100, 100);
+  const isLarge = size === "large";
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between mb-1.5">
-        <p className="text-xs font-bold text-gray-700">{label}</p>
-        <p className="text-sm font-bold text-gray-900">
+      <div className="flex items-center justify-between mb-2">
+        <p
+          className={`${isLarge ? "text-sm" : "text-xs"} font-bold text-gray-700`}
+        >
+          {label}
+        </p>
+        <p
+          className={`${isLarge ? "text-lg" : "text-sm"} font-bold text-gray-900`}
+        >
           {Math.round(current)}/{target}
         </p>
       </div>
-      <div className="w-full bg-gray-200/50 rounded-full h-2 overflow-hidden border border-gray-300/30">
+      <div
+        className={`w-full bg-gray-200/50 rounded-full overflow-hidden border border-gray-300/30 ${
+          isLarge ? "h-4" : "h-2"
+        }`}
+      >
         <div
           className={`h-full rounded-full transition-all duration-300 bg-gradient-to-r ${gradient}`}
           style={{ width: `${percentage}%` }}
