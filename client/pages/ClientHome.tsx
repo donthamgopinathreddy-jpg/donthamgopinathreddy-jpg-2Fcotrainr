@@ -431,7 +431,7 @@ export default function ClientHome() {
     },
     {
       label: "Online Meeting",
-      icon: Camera,
+      icon: Video,
       color: "from-cyan-400 to-blue-500",
       onClick: () => navigate("/video-sessions"),
     },
