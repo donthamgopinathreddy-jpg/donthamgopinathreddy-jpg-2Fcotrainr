@@ -115,7 +115,7 @@ const Navigation = () => {
       <div className="w-full">
         <div className="flex justify-around items-stretch">
           {navItems.map(
-            ({ path, label, icon: Icon }: any) => {
+            ({ path, label, icon: Icon, gradient }: any) => {
               const active = isActive(path);
 
               return (
@@ -123,26 +123,18 @@ const Navigation = () => {
                   key={path}
                   to={path}
                   onClick={handleNavClick}
-                  className={`flex flex-col items-center justify-center gap-1 py-2 px-3 flex-1 relative transition-colors duration-200 ${
+                  className={`flex flex-col items-center justify-center py-3 px-4 flex-1 relative transition-all duration-200 ${
                     active
-                      ? "text-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      ? `bg-gradient-to-br ${gradient} text-white shadow-md`
+                      : "text-gray-500 hover:text-gray-700"
                   }`}
                 >
-                  {/* Icon */}
+                  {/* Icon only, no text */}
                   <Icon size={24} className="text-current" />
-
-                  {/* Label */}
-                  <span className="text-xs font-medium text-current">{label}</span>
-
-                  {/* Active indicator line */}
-                  {active && (
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600" />
-                  )}
 
                   {/* Unread Badge with pulse animation */}
                   {path === "/messages" && totalUnreadMessages > 0 && (
-                    <div className="absolute top-0 right-1 rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-bold text-white bg-red-500 shadow-lg animate-pulse">
+                    <div className="absolute top-1 right-1 rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-bold text-white bg-red-500 shadow-lg animate-pulse">
                       {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
                     </div>
                   )}
