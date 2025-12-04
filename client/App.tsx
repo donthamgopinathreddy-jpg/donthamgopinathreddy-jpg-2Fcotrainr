@@ -384,7 +384,9 @@ const AppRoutes = () => {
         path="/discover"
         element={
           <ProtectedRoute>
-            <MobileDiscover />
+            <AppLayout>
+              <MobileDiscover />
+            </AppLayout>
           </ProtectedRoute>
         }
       />
