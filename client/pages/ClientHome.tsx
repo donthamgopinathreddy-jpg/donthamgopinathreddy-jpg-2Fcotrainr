@@ -590,124 +590,129 @@ export default function ClientHome() {
           </div>
 
           {/* 4. 2x2 Metric Tiles Grid */}
-          {/* Unified Metrics Card - Progress Bar Style */}
-          <div className="mx-5 mb-6">
-            <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-3xl p-6 shadow-md border border-orange-100">
-              {/* Header with Edit Button */}
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-bold text-gray-900">Daily Goals</h3>
-                <button
-                  onClick={() => setShowMetricsModal(true)}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-white text-xs font-semibold rounded-lg transition-all active:scale-95"
-                >
-                  ✏️ Edit Goals
-                </button>
-              </div>
+          {/* Unified Metrics Card - Glassmorphism with Animations */}
+          <div className="mx-5 mb-6 group">
+            <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/40 via-orange-100/30 to-yellow-100/40 rounded-3xl p-6 shadow-xl border border-white/30 hover:shadow-2xl transition-all duration-500 overflow-hidden">
+              {/* Animated background gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-300/10 via-yellow-300/5 to-pink-300/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-              {/* Metrics with Progress Bars */}
-              <div className="space-y-5">
-                {/* Steps */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
-                        <Footprints size={16} className="text-white" />
-                      </div>
-                      <span className="text-sm font-semibold text-gray-700">Steps</span>
-                    </div>
-                    <span className="text-sm font-bold text-gray-900">
-                      {stepsToday.toLocaleString()} / {stepsTarget.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-orange-400 to-yellow-400 transition-all duration-500"
-                      style={{
-                        width: `${Math.min((stepsToday / stepsTarget) * 100, 100)}%`,
-                      }}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}% of daily goal
-                  </p>
+              <div className="relative z-10">
+                {/* Header with Edit Button */}
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-bold text-gray-900">Daily Goals</h3>
+                  <button
+                    onClick={() => setShowMetricsModal(true)}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-white flex items-center justify-center font-bold text-xl shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 transform hover:-rotate-90"
+                  >
+                    +
+                  </button>
                 </div>
 
-                {/* Calories */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
-                        <Flame size={16} className="text-white" />
+                {/* Metrics with Progress Bars */}
+                <div className="space-y-5">
+                  {/* Steps */}
+                  <div className="group/metric hover:bg-white/30 p-3 rounded-2xl transition-all duration-300">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center group-hover/metric:scale-110 transition-transform duration-300">
+                          <Footprints size={16} className="text-white" />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700">Steps</span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-700">Calories Burned</span>
+                      <span className="text-sm font-bold text-gray-900 group-hover/metric:text-orange-600 transition-colors">
+                        {stepsToday.toLocaleString()} / {stepsTarget.toLocaleString()}
+                      </span>
                     </div>
-                    <span className="text-sm font-bold text-gray-900">
-                      {caloriesBurned} cal
-                    </span>
+                    <div className="w-full bg-gray-200/50 backdrop-blur-sm rounded-full h-2.5 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-orange-400 to-yellow-400 transition-all duration-700 shadow-lg"
+                        style={{
+                          width: `${Math.min((stepsToday / stepsTarget) * 100, 100)}%`,
+                        }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 group-hover/metric:text-gray-600 transition-colors">
+                      {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}% of daily goal
+                    </p>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-red-400 to-pink-400 transition-all duration-500"
-                      style={{
-                        width: `${Math.min((caloriesBurned / caloriesTarget) * 100, 100)}%`,
-                      }}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}% out from {caloriesTarget} kcal
-                  </p>
-                </div>
 
-                {/* Water */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
-                        <Droplets size={16} className="text-white" />
+                  {/* Calories */}
+                  <div className="group/metric hover:bg-white/30 p-3 rounded-2xl transition-all duration-300">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-400 to-red-500 flex items-center justify-center group-hover/metric:scale-110 transition-transform duration-300">
+                          <Flame size={16} className="text-white" />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700">Calories Burned</span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-700">Water</span>
+                      <span className="text-sm font-bold text-gray-900 group-hover/metric:text-red-600 transition-colors">
+                        {caloriesBurned} cal
+                      </span>
                     </div>
-                    <span className="text-sm font-bold text-gray-900">
-                      {(waterConsumed / 1000).toFixed(1)} / {(autoWaterTarget / 1000).toFixed(1)} L
-                    </span>
+                    <div className="w-full bg-gray-200/50 backdrop-blur-sm rounded-full h-2.5 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-red-400 to-pink-400 transition-all duration-700 shadow-lg"
+                        style={{
+                          width: `${Math.min((caloriesBurned / caloriesTarget) * 100, 100)}%`,
+                        }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 group-hover/metric:text-gray-600 transition-colors">
+                      {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}% out from {caloriesTarget} kcal
+                    </p>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-blue-400 to-cyan-400 transition-all duration-500"
-                      style={{
-                        width: `${Math.min((waterConsumed / autoWaterTarget) * 100, 100)}%`,
-                      }}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}% of daily goal
-                  </p>
-                </div>
 
-                {/* Distance */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center">
-                        <MapPin size={16} className="text-white" />
+                  {/* Water */}
+                  <div className="group/metric hover:bg-white/30 p-3 rounded-2xl transition-all duration-300">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center group-hover/metric:scale-110 transition-transform duration-300">
+                          <Droplets size={16} className="text-white" />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700">Water</span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-700">Distance</span>
+                      <span className="text-sm font-bold text-gray-900 group-hover/metric:text-blue-600 transition-colors">
+                        {(waterConsumed / 1000).toFixed(1)} / {(autoWaterTarget / 1000).toFixed(1)} L
+                      </span>
                     </div>
-                    <span className="text-sm font-bold text-gray-900">
-                      {distanceKm.toFixed(1)} km
-                    </span>
+                    <div className="w-full bg-gray-200/50 backdrop-blur-sm rounded-full h-2.5 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-blue-400 to-cyan-400 transition-all duration-700 shadow-lg"
+                        style={{
+                          width: `${Math.min((waterConsumed / autoWaterTarget) * 100, 100)}%`,
+                        }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 group-hover/metric:text-gray-600 transition-colors">
+                      {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}% of daily goal
+                    </p>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-500"
-                      style={{
-                        width: `${Math.min((distanceKm / 10) * 100, 100)}%`,
-                      }}
-                    />
+
+                  {/* Distance */}
+                  <div className="group/metric hover:bg-white/30 p-3 rounded-2xl transition-all duration-300">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center group-hover/metric:scale-110 transition-transform duration-300">
+                          <MapPin size={16} className="text-white" />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700">Distance</span>
+                      </div>
+                      <span className="text-sm font-bold text-gray-900 group-hover/metric:text-purple-600 transition-colors">
+                        {distanceKm.toFixed(1)} km
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200/50 backdrop-blur-sm rounded-full h-2.5 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-700 shadow-lg"
+                        style={{
+                          width: `${Math.min((distanceKm / 10) * 100, 100)}%`,
+                        }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 group-hover/metric:text-gray-600 transition-colors">
+                      {Math.min((distanceKm / 10) * 100, 100).toFixed(0)}% of 10 km
+                    </p>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {Math.min((distanceKm / 10) * 100, 100).toFixed(0)}% of 10 km
-                  </p>
                 </div>
               </div>
             </div>
