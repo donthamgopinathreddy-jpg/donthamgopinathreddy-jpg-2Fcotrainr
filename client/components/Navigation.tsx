@@ -127,51 +127,43 @@ const Navigation = () => {
 
   return (
     <nav
-      className="w-full bg-white rounded-t-3xl backdrop-blur-xl shadow-lg transition-all duration-500"
+      className="w-full bg-white border-t border-gray-200 transition-all duration-500"
       style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}
     >
-      <div className="w-full px-2 py-3">
-        <div className="flex justify-around items-center gap-3">
+      <div className="w-full">
+        <div className="flex justify-around items-stretch">
           {navItems.map(
-            ({ path, label, icon: Icon, bgColor, textColor }: any) => {
+            ({ path, label, icon: Icon }: any) => {
               const active = isActive(path);
-
-              // Single gradient for all nav items
-              const gradient = "from-orange-400 to-yellow-500";
 
               return (
                 <Link
                   key={path}
                   to={path}
                   onClick={handleNavClick}
-                  className={`group relative flex flex-col items-center justify-center gap-0 py-2.5 px-4 rounded-2xl transition-all duration-300 flex-1 overflow-hidden ${
+                  className={`flex flex-col items-center justify-center gap-1 py-2 px-3 flex-1 relative transition-colors duration-200 ${
                     active
-                      ? `bg-gradient-to-br from-orange-400 to-yellow-500 text-white shadow-lg shadow-orange-300/50 scale-105`
-                      : "text-gray-600 hover:text-orange-600 hover:scale-110 active:scale-95"
+                      ? "text-blue-600"
+                      : "text-gray-600 hover:text-gray-900"
                   }`}
-                  style={{
-                    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                  }}
                 >
-                  {/* Animated background gradient on hover */}
-                  {!active && (
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-gray-100 to-gray-50" />
+                  {/* Icon */}
+                  <Icon size={24} className="text-current" />
+
+                  {/* Label */}
+                  <span className="text-xs font-medium text-current">{label}</span>
+
+                  {/* Active indicator line */}
+                  {active && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600" />
                   )}
 
-                  {/* Icon with animation */}
-                  <div className="relative z-10 group-hover:scale-110 group-active:scale-90 transition-transform duration-200">
-                    <Icon
-                      size={26}
-                      className={`${active ? "text-white drop-shadow-lg" : "text-gray-600"}`}
-                    />
-
-                    {/* Unread Badge with pulse animation */}
-                    {path === "/messages" && totalUnreadMessages > 0 && (
-                      <div className="absolute -top-2 -right-3 rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-bold text-white bg-gradient-to-br from-red-500 to-pink-500 shadow-lg animate-pulse">
-                        {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
-                      </div>
-                    )}
-                  </div>
+                  {/* Unread Badge with pulse animation */}
+                  {path === "/messages" && totalUnreadMessages > 0 && (
+                    <div className="absolute top-0 right-1 rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-bold text-white bg-red-500 shadow-lg animate-pulse">
+                      {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
+                    </div>
+                  )}
                 </Link>
               );
             },
