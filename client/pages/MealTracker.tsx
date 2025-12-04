@@ -197,6 +197,7 @@ const MealTracker = () => {
     lunch: "🍽️",
     snacks: "🥜",
     dinner: "🌙",
+    custom: "➕",
   };
 
   const mealColors: Record<string, string> = {
@@ -204,6 +205,7 @@ const MealTracker = () => {
     lunch: "from-blue-100 to-cyan-100",
     snacks: "from-purple-100 to-pink-100",
     dinner: "from-indigo-100 to-blue-100",
+    custom: "from-gray-100 to-slate-100",
   };
 
   const scroll = (direction: "left" | "right") => {
