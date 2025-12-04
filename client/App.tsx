@@ -450,7 +450,9 @@ const AppRoutes = () => {
         path="/meals"
         element={
           <ProtectedRoute>
-            <MobileMeals />
+            <AppLayout>
+              <MobileMeals />
+            </AppLayout>
           </ProtectedRoute>
         }
       />
