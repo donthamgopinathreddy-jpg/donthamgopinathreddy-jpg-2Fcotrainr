@@ -334,7 +334,9 @@ const AppRoutes = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <ClientHome />
+            <AppLayout>
+              <ClientHome />
+            </AppLayout>
           </ProtectedRoute>
         }
       />
