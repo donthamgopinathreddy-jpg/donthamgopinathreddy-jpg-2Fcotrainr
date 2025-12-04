@@ -125,16 +125,6 @@ const Navigation = () => {
     }
   };
 
-  // Get different gradients for each page
-  const getPageGradient = () => {
-    if (location.pathname === "/") return "from-orange-400 to-yellow-500";
-    if (location.pathname === "/discover") return "from-green-400 to-emerald-500";
-    if (location.pathname === "/achievements") return "from-yellow-400 to-orange-500";
-    if (location.pathname === "/messages") return "from-blue-400 to-cyan-500";
-    if (location.pathname === "/profile") return "from-pink-400 to-rose-500";
-    return "from-orange-400 to-yellow-500";
-  };
-
   return (
     <nav
       className="w-full bg-white rounded-t-3xl backdrop-blur-xl shadow-lg transition-all duration-500"
