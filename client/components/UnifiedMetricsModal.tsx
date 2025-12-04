@@ -120,6 +120,8 @@ export default function UnifiedMetricsModal({
   targets,
 }: UnifiedMetricsModalProps) {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [editSteps, setEditSteps] = useState(targets.steps.toString());
+  const [isEditing, setIsEditing] = useState(false);
 
   if (!isOpen) return null;
 
