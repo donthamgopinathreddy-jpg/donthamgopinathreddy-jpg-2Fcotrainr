@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Plus, Trash2, Search, Flame, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Trash2, Search, Camera, ImageIcon, X } from "lucide-react";
 import { useMealTrackerData } from "@/hooks/useMeals";
+import { useMealPhotos } from "@/hooks/useMealPhotos";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -22,6 +23,7 @@ const MealTracker = () => {
   const { toast } = useToast();
   const { useDailyMeals, useWeeklyMeals, useAddMeal, useDeleteMeal } =
     useMealTrackerData();
+  const { uploadPhoto, fetchPhotos, uploading } = useMealPhotos();
 
   const [currentDate, setCurrentDate] = useState(() => {
     const today = new Date();
@@ -38,13 +40,15 @@ const MealTracker = () => {
   const [quantity, setQuantity] = useState(100);
   const [selectedUnit, setSelectedUnit] = useState("g");
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [mealPhotos, setMealPhotos] = useState<Record<string, any[]>>({});
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const { data: dailyMeals, isLoading: loadingDaily } = useDailyMeals(
     currentDate,
     user?.id
   );
-  const { data: weeklyMeals } = useWeeklyMeals(getWeekStartDate(), user?.id);
   const addMealMutation = useAddMeal();
   const deleteMealMutation = useDeleteMeal();
 
@@ -55,13 +59,28 @@ const MealTracker = () => {
       .catch((err) => console.error("Failed to load foods:", err));
   }, []);
 
-  function getWeekStartDate() {
-    const date = new Date(currentDate);
-    const day = date.getDay();
-    const diff = date.getDate() - day;
-    const weekStart = new Date(date.setDate(diff));
-    return weekStart.toISOString().split("T")[0];
-  }
+  // Load photos for all meal types
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const loadAllPhotos = async () => {
+      const mealTypes = ["breakfast", "lunch", "snacks", "dinner"];
+      const photos: Record<string, any[]> = {};
+
+      for (const mealType of mealTypes) {
+        try {
+          const photoList = await fetchPhotos(user.id, currentDate, mealType);
+          photos[mealType] = photoList;
+        } catch (error) {
+          console.error(`Error loading photos for ${mealType}:`, error);
+        }
+      }
+
+      setMealPhotos(photos);
+    };
+
+    loadAllPhotos();
+  }, [currentDate, user?.id]);
 
   function formatDate(dateStr: string) {
     const date = new Date(dateStr);
@@ -118,17 +137,27 @@ const MealTracker = () => {
     }
   }
 
-  async function handleDeleteMeal(mealId: string) {
+  async function handlePhotoUpload(file: File, mealType: string) {
+    if (!user?.id || !file) return;
+
     try {
-      await deleteMealMutation.mutateAsync(mealId);
+      await uploadPhoto(file, user.id, currentDate, mealType);
+      
+      // Reload photos
+      const photoList = await fetchPhotos(user.id, currentDate, mealType);
+      setMealPhotos(prev => ({
+        ...prev,
+        [mealType]: photoList,
+      }));
+
       toast({
         title: "Success",
-        description: "Meal removed",
+        description: "Meal photo added! (Auto-deleted after 7 days)",
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to remove meal",
+        description: "Failed to upload photo. Please try again.",
         variant: "destructive",
       });
     }
@@ -150,11 +179,11 @@ const MealTracker = () => {
     dinner: "🌙",
   };
 
-  const mealColors: Record<string, { gradient: string; dark: string }> = {
-    breakfast: { gradient: "from-orange-400 to-yellow-500", dark: "orange" },
-    lunch: { gradient: "from-blue-400 to-cyan-500", dark: "blue" },
-    snacks: { gradient: "from-purple-400 to-pink-500", dark: "purple" },
-    dinner: { gradient: "from-indigo-400 to-blue-600", dark: "indigo" },
+  const mealColors: Record<string, string> = {
+    breakfast: "from-amber-100 to-orange-100",
+    lunch: "from-blue-100 to-cyan-100",
+    snacks: "from-purple-100 to-pink-100",
+    dinner: "from-indigo-100 to-blue-100",
   };
 
   const scroll = (direction: "left" | "right") => {
@@ -168,24 +197,24 @@ const MealTracker = () => {
   };
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col overflow-hidden">
+    <div className="w-full h-full bg-gradient-to-br from-slate-50 via-white to-slate-100 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-700 border-b border-slate-600 p-4 flex items-center justify-between sticky top-0 z-20 shadow-2xl">
+      <div className="bg-white/70 backdrop-blur-md border-b border-gray-200/50 p-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
         <button
           onClick={() => setCurrentDate(
             new Date(new Date(currentDate).getTime() - 24 * 60 * 60 * 1000)
               .toISOString()
               .split("T")[0]
           )}
-          className="p-2 hover:bg-slate-600 rounded-lg transition text-white"
+          className="p-2 hover:bg-gray-100/50 rounded-lg transition text-gray-700"
         >
           <ChevronLeft size={24} />
         </button>
         <div className="flex-1 text-center">
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-gray-900">
             {formatDate(currentDate)}
           </h1>
-          <p className="text-xs text-slate-400 mt-1">Swipe to browse meals</p>
+          <p className="text-xs text-gray-500 mt-1">Swipe to browse meals</p>
         </div>
         <button
           onClick={() => setCurrentDate(
@@ -193,7 +222,7 @@ const MealTracker = () => {
               .toISOString()
               .split("T")[0]
           )}
-          className="p-2 hover:bg-slate-600 rounded-lg transition text-white"
+          className="p-2 hover:bg-gray-100/50 rounded-lg transition text-gray-700"
         >
           <ChevronRight size={24} />
         </button>
@@ -201,27 +230,27 @@ const MealTracker = () => {
 
       {/* Macro Summary Bar */}
       {dailyMeals && (
-        <div className="bg-gradient-to-r from-slate-800 to-slate-700 border-b border-slate-600 p-4 shadow-lg">
+        <div className="bg-white/50 backdrop-blur-md border-b border-gray-200/50 p-4 shadow-sm">
           <div className="flex justify-between gap-2">
-            <div className="flex-1 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl p-3 text-white">
-              <p className="text-xs font-semibold opacity-90">Cal</p>
+            <div className="flex-1 bg-gradient-to-br from-orange-200/60 to-red-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-orange-200/40">
+              <p className="text-xs font-semibold opacity-80">Cal</p>
               <p className="text-xl font-bold">{Math.round(dailyMeals.totals.calories)}</p>
-              <p className="text-xs opacity-75">/ 2500</p>
+              <p className="text-xs opacity-70">/ 2500</p>
             </div>
-            <div className="flex-1 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl p-3 text-white">
-              <p className="text-xs font-semibold opacity-90">Protein</p>
+            <div className="flex-1 bg-gradient-to-br from-blue-200/60 to-cyan-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-blue-200/40">
+              <p className="text-xs font-semibold opacity-80">Protein</p>
               <p className="text-xl font-bold">{Math.round(dailyMeals.totals.protein)}g</p>
-              <p className="text-xs opacity-75">/ 150g</p>
+              <p className="text-xs opacity-70">/ 150g</p>
             </div>
-            <div className="flex-1 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-3 text-white">
-              <p className="text-xs font-semibold opacity-90">Carbs</p>
+            <div className="flex-1 bg-gradient-to-br from-green-200/60 to-emerald-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-green-200/40">
+              <p className="text-xs font-semibold opacity-80">Carbs</p>
               <p className="text-xl font-bold">{Math.round(dailyMeals.totals.carbs)}g</p>
-              <p className="text-xs opacity-75">/ 300g</p>
+              <p className="text-xs opacity-70">/ 300g</p>
             </div>
-            <div className="flex-1 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-2xl p-3 text-white">
-              <p className="text-xs font-semibold opacity-90">Fats</p>
+            <div className="flex-1 bg-gradient-to-br from-yellow-200/60 to-amber-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-yellow-200/40">
+              <p className="text-xs font-semibold opacity-80">Fats</p>
               <p className="text-xl font-bold">{Math.round(dailyMeals.totals.fats)}g</p>
-              <p className="text-xs opacity-75">/ 75g</p>
+              <p className="text-xs opacity-70">/ 75g</p>
             </div>
           </div>
         </div>
@@ -230,17 +259,17 @@ const MealTracker = () => {
       {/* Horizontal Swiper */}
       <div className="flex-1 overflow-hidden flex flex-col">
         <div className="flex items-center justify-between px-3 pt-4">
-          <h2 className="text-lg font-bold text-white">Meals</h2>
+          <h2 className="text-lg font-bold text-gray-900">Meals</h2>
           <div className="flex gap-2">
             <button
               onClick={() => scroll("left")}
-              className="p-2 hover:bg-slate-700 rounded-full transition text-white"
+              className="p-2 hover:bg-gray-100/70 rounded-full transition text-gray-700"
             >
               <ChevronLeft size={20} />
             </button>
             <button
               onClick={() => scroll("right")}
-              className="p-2 hover:bg-slate-700 rounded-full transition text-white"
+              className="p-2 hover:bg-gray-100/70 rounded-full transition text-gray-700"
             >
               <ChevronRight size={20} />
             </button>
@@ -257,23 +286,24 @@ const MealTracker = () => {
               ? dailyMeals[mealType as keyof typeof dailyMeals].reduce((s, m) => s + (m.calories || 0), 0)
               : 0;
             const mealItems = dailyMeals?.[mealType as keyof typeof dailyMeals] || [];
+            const photos = mealPhotos[mealType] || [];
 
             return (
               <div
                 key={mealType}
                 className="flex-shrink-0 w-80 snap-center"
               >
-                <div className={`bg-gradient-to-br ${mealColors[mealType].gradient} rounded-3xl p-6 h-full shadow-2xl hover:shadow-3xl transition-all duration-300 border-2 border-white/20 flex flex-col`}>
+                <div className={`bg-gradient-to-br ${mealColors[mealType]} backdrop-blur-lg rounded-3xl p-6 h-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/40 flex flex-col`}>
                   {/* Header */}
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-4xl">{mealIcons[mealType]}</span>
                         <div>
-                          <h3 className="text-2xl font-bold text-white capitalize">
+                          <h3 className="text-2xl font-bold text-gray-900 capitalize">
                             {mealType}
                           </h3>
-                          <p className="text-sm text-white/80 font-semibold">
+                          <p className="text-sm text-gray-700 font-semibold">
                             {Math.round(mealCalories)} cal
                           </p>
                         </div>
@@ -284,33 +314,94 @@ const MealTracker = () => {
                         setSelectedMealType(mealType as any);
                         setShowAddFood(true);
                       }}
-                      className="p-3 bg-white/20 hover:bg-white/30 rounded-full transition text-white backdrop-blur-sm"
+                      className="p-3 bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-full transition text-gray-700 border border-white/40"
                     >
                       <Plus size={24} />
                     </button>
                   </div>
 
+                  {/* Photo Section */}
+                  <div className="mb-4">
+                    {photos.length > 0 ? (
+                      <div className="grid grid-cols-2 gap-2 mb-3">
+                        {photos.map((photo) => (
+                          <div key={photo.id} className="relative group">
+                            <img
+                              src={photo.photo_url}
+                              alt="Meal"
+                              className="w-full h-20 object-cover rounded-lg border border-white/40"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                    
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => cameraInputRef.current?.click()}
+                        disabled={uploading}
+                        className="flex-1 flex items-center justify-center gap-2 py-2 bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-lg transition text-gray-700 border border-white/40 font-semibold disabled:opacity-50"
+                      >
+                        <Camera size={18} />
+                        Camera
+                      </button>
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                        className="flex-1 flex items-center justify-center gap-2 py-2 bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-lg transition text-gray-700 border border-white/40 font-semibold disabled:opacity-50"
+                      >
+                        <ImageIcon size={18} />
+                        Photo
+                      </button>
+                    </div>
+
+                    <input
+                      ref={cameraInputRef}
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) {
+                          handlePhotoUpload(e.target.files[0], mealType);
+                        }
+                      }}
+                      className="hidden"
+                    />
+
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) {
+                          handlePhotoUpload(e.target.files[0], mealType);
+                        }
+                      }}
+                      className="hidden"
+                    />
+                  </div>
+
                   {/* Macro Stats */}
-                  <div className="grid grid-cols-3 gap-2 mb-4 bg-white/10 rounded-2xl p-3 backdrop-blur-sm">
+                  <div className="grid grid-cols-3 gap-2 mb-4 bg-white/30 backdrop-blur-sm rounded-2xl p-3 border border-white/40">
                     <div className="text-center">
-                      <p className="text-xs text-white/80 font-semibold">P</p>
-                      <p className="text-lg font-bold text-white">
+                      <p className="text-xs text-gray-700 font-semibold">P</p>
+                      <p className="text-lg font-bold text-gray-900">
                         {Math.round(
                           mealItems.reduce((s, m) => s + (m.protein || 0), 0)
                         )}g
                       </p>
                     </div>
-                    <div className="text-center border-l border-r border-white/20">
-                      <p className="text-xs text-white/80 font-semibold">C</p>
-                      <p className="text-lg font-bold text-white">
+                    <div className="text-center border-l border-r border-white/40">
+                      <p className="text-xs text-gray-700 font-semibold">C</p>
+                      <p className="text-lg font-bold text-gray-900">
                         {Math.round(
                           mealItems.reduce((s, m) => s + (m.carbs || 0), 0)
                         )}g
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-white/80 font-semibold">F</p>
-                      <p className="text-lg font-bold text-white">
+                      <p className="text-xs text-gray-700 font-semibold">F</p>
+                      <p className="text-lg font-bold text-gray-900">
                         {Math.round(
                           mealItems.reduce((s, m) => s + (m.fats || 0), 0)
                         )}g
@@ -324,19 +415,19 @@ const MealTracker = () => {
                       mealItems.map((meal) => (
                         <div
                           key={meal.id}
-                          className="bg-white/10 backdrop-blur-sm rounded-xl p-3 flex items-center justify-between group hover:bg-white/20 transition"
+                          className="bg-white/30 backdrop-blur-sm rounded-xl p-3 flex items-center justify-between group hover:bg-white/50 transition border border-white/40"
                         >
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-white truncate">
+                            <p className="text-sm font-bold text-gray-900 truncate">
                               {meal.food_name}
                             </p>
-                            <p className="text-xs text-white/70">
+                            <p className="text-xs text-gray-700">
                               {meal.quantity}{meal.unit} • {meal.calories}cal
                             </p>
                           </div>
                           <button
-                            onClick={() => handleDeleteMeal(meal.id!)}
-                            className="p-1.5 hover:bg-red-500/50 rounded-lg transition text-white/80 hover:text-white ml-2 flex-shrink-0"
+                            onClick={() => deleteMealMutation.mutateAsync(meal.id!)}
+                            className="p-1.5 hover:bg-red-200/70 rounded-lg transition text-red-600 ml-2 flex-shrink-0"
                           >
                             <X size={16} />
                           </button>
@@ -344,8 +435,8 @@ const MealTracker = () => {
                       ))
                     ) : (
                       <div className="flex flex-col items-center justify-center h-full text-center">
-                        <p className="text-white/50 font-semibold">No items yet</p>
-                        <p className="text-xs text-white/40 mt-1">Tap + to add food</p>
+                        <p className="text-gray-700 font-semibold">No items yet</p>
+                        <p className="text-xs text-gray-600 mt-1">Tap + to add food</p>
                       </div>
                     )}
                   </div>
@@ -356,7 +447,7 @@ const MealTracker = () => {
                       setSelectedMealType(mealType as any);
                       setShowAddFood(true);
                     }}
-                    className="w-full py-3 bg-white text-slate-900 font-bold rounded-2xl hover:bg-slate-100 transition shadow-lg"
+                    className="w-full py-3 bg-white/70 hover:bg-white text-gray-900 font-bold rounded-2xl transition shadow-md border border-white/40"
                   >
                     + Add Food
                   </button>
@@ -369,7 +460,7 @@ const MealTracker = () => {
 
       {/* Add Food Modal */}
       {showAddFood && (
-        <div className="fixed inset-0 bg-black/70 flex items-end z-50 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/30 flex items-end z-50 backdrop-blur-sm">
           <div className="w-full bg-white rounded-t-3xl p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-gray-900">Add Food</h2>
@@ -403,7 +494,7 @@ const MealTracker = () => {
                     <button
                       key={food.id}
                       onClick={() => setSelectedFood(food)}
-                      className="w-full text-left p-3 bg-gradient-to-r from-gray-50 to-gray-100 hover:from-orange-50 hover:to-yellow-50 rounded-2xl transition border border-gray-200 hover:border-orange-300"
+                      className="w-full text-left p-3 bg-gradient-to-r from-gray-100/60 to-gray-50/60 hover:from-orange-100/60 hover:to-yellow-100/60 rounded-2xl transition border border-gray-200/50"
                     >
                       <p className="font-bold text-gray-900">
                         {food.name}
@@ -479,30 +570,30 @@ const MealTracker = () => {
                   </div>
 
                   {macros && (
-                    <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-4 border-2 border-orange-200">
+                    <div className="bg-gradient-to-br from-orange-100/60 to-yellow-100/60 rounded-2xl p-4 border-2 border-orange-200/40 backdrop-blur-sm">
                       <p className="text-sm font-bold text-gray-900 mb-3">
                         Nutritional Info
                       </p>
                       <div className="grid grid-cols-4 gap-2 text-center">
-                        <div className="bg-white rounded-lg p-2">
+                        <div className="bg-white/60 rounded-lg p-2">
                           <p className="text-lg font-bold text-orange-600">
                             {macros.calories}
                           </p>
                           <p className="text-xs text-gray-600">Cal</p>
                         </div>
-                        <div className="bg-white rounded-lg p-2">
+                        <div className="bg-white/60 rounded-lg p-2">
                           <p className="text-lg font-bold text-blue-600">
                             {macros.protein}g
                           </p>
                           <p className="text-xs text-gray-600">P</p>
                         </div>
-                        <div className="bg-white rounded-lg p-2">
+                        <div className="bg-white/60 rounded-lg p-2">
                           <p className="text-lg font-bold text-green-600">
                             {macros.carbs}g
                           </p>
                           <p className="text-xs text-gray-600">C</p>
                         </div>
-                        <div className="bg-white rounded-lg p-2">
+                        <div className="bg-white/60 rounded-lg p-2">
                           <p className="text-lg font-bold text-red-600">
                             {macros.fats}g
                           </p>
