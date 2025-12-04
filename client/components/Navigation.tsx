@@ -145,39 +145,54 @@ const Navigation = () => {
           {navItems.map(
             ({ path, label, icon: Icon, bgColor, textColor }: any) => {
               const active = isActive(path);
+
+              // Different gradient for each nav item
+              const getGradientForPath = (navPath: string) => {
+                if (navPath === "/") return "from-orange-400 to-yellow-500";
+                if (navPath === "/discover") return "from-green-400 to-emerald-500";
+                if (navPath === "/achievements") return "from-yellow-400 to-orange-500";
+                if (navPath === "/messages") return "from-blue-400 to-cyan-500";
+                if (navPath === "/profile") return "from-pink-400 to-rose-500";
+                return "from-orange-400 to-yellow-500";
+              };
+
+              const gradient = getGradientForPath(path);
+
+              // Get shadow color for this gradient
+              const getShadowColor = (navPath: string) => {
+                if (navPath === "/") return "rgba(251, 146, 60, 0.3)";
+                if (navPath === "/discover") return "rgba(74, 222, 128, 0.3)";
+                if (navPath === "/achievements") return "rgba(253, 224, 71, 0.3)";
+                if (navPath === "/messages") return "rgba(96, 165, 250, 0.3)";
+                if (navPath === "/profile") return "rgba(244, 114, 182, 0.3)";
+                return "rgba(251, 146, 60, 0.3)";
+              };
+
               return (
                 <Link
                   key={path}
                   to={path}
                   onClick={handleNavClick}
-                  className={`group relative flex flex-col items-center justify-center gap-0 py-2.5 px-4 rounded-3xl transition-all duration-300 flex-1 overflow-hidden ${
+                  className={`group relative flex flex-col items-center justify-center gap-0 py-2.5 px-4 rounded-2xl transition-all duration-300 flex-1 overflow-hidden ${
                     active
-                      ? "bg-gradient-to-br from-orange-400 to-yellow-500 text-white shadow-lg shadow-orange-300/50 scale-105"
-                      : "text-gray-600 hover:text-orange-600 hover:bg-gradient-to-br hover:from-orange-100 hover:to-yellow-100 hover:shadow-md hover:scale-110 active:scale-95"
+                      ? `bg-gradient-to-br ${gradient} text-white shadow-lg scale-105`
+                      : "text-gray-600 hover:text-white hover:scale-110 active:scale-95"
                   }`}
                   style={{
-                    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)"
+                    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                    boxShadow: active ? `0 8px 24px ${getShadowColor(path)}` : "none",
                   }}
                 >
                   {/* Animated background gradient on hover */}
-                  <div
-                    className={`absolute inset-0 rounded-3xl transition-opacity duration-300 ${
-                      active
-                        ? "opacity-0"
-                        : "opacity-0 group-hover:opacity-100 bg-gradient-to-br from-orange-50 to-yellow-50"
-                    }`}
-                    style={{
-                      zIndex: -1,
-                    }}
-                  />
+                  {!active && (
+                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-gray-100 to-gray-50" />
+                  )}
 
                   {/* Icon with animation */}
                   <div className="relative z-10 group-hover:scale-110 group-active:scale-90 transition-transform duration-200">
                     <Icon
                       size={26}
-                      className={`${
-                        active ? "text-white drop-shadow-lg" : "text-current"
-                      }`}
+                      className={`${active ? "text-white drop-shadow-lg" : "text-current"}`}
                     />
 
                     {/* Unread Badge with pulse animation */}
@@ -188,10 +203,9 @@ const Navigation = () => {
                     )}
                   </div>
 
-
                   {/* Active indicator dot */}
                   {active && (
-                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-white shadow-lg animate-pulse" />
+                    <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white shadow-lg animate-pulse" />
                   )}
                 </Link>
               );
