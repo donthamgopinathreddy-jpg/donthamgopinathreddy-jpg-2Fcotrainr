@@ -20,6 +20,8 @@ import {
   Camera,
   TrendingUp,
   Activity,
+  Settings,
+  Plus,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -600,7 +602,18 @@ export default function ClientHome() {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-orange-500 to-yellow-600 opacity-90 group-hover:opacity-100 transition-opacity" />
                 <div className="relative p-5 h-32 flex flex-col items-start justify-between text-white">
-                  <Footprints size={28} className="text-white/80" />
+                  <div className="flex items-start justify-between w-full">
+                    <Footprints size={28} className="text-white/80" />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowStepsModal(true);
+                      }}
+                      className="p-1.5 bg-white/20 hover:bg-white/40 rounded-lg transition-all duration-200 active:scale-95"
+                    >
+                      <Settings size={16} className="text-white" />
+                    </button>
+                  </div>
                   <div>
                     <p className="text-xs font-semibold text-white/70">Daily Steps</p>
                     <p className="text-2xl font-black text-white">{(stepsToday / 1000).toFixed(1)}k</p>
@@ -642,21 +655,32 @@ export default function ClientHome() {
             </button>
 
             {/* Water Card - Full Width */}
-            <button
+            <div
               onClick={() => setShowMetricsModal(true)}
-              className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer w-full"
+              className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer w-full"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-600 opacity-90 group-hover:opacity-100 transition-opacity" />
               <div className="relative p-5 h-20 flex items-center justify-between text-white">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 flex-1">
                   <Droplets size={28} className="text-white/80" />
                   <div className="text-left">
                     <p className="text-xs font-semibold text-white/70">Water Intake</p>
                     <p className="text-2xl font-black text-white">{(waterConsumed / 1000).toFixed(1)}L</p>
                   </div>
                 </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newWater = waterConsumed + 250;
+                    setWaterConsumed(newWater);
+                    toast.success("Added 250ml water!");
+                  }}
+                  className="p-2 bg-white/20 hover:bg-white/40 rounded-lg transition-all duration-200 active:scale-95 ml-2"
+                >
+                  <Plus size={20} className="text-white" />
+                </button>
               </div>
-            </button>
+            </div>
           </div>
 
           {/* 5. BMI Card */}
