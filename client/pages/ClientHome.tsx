@@ -597,7 +597,7 @@ export default function ClientHome() {
             {/* Top Row - Steps and Calories */}
             <div className="grid grid-cols-2 gap-3">
               {/* Steps Card */}
-              <button
+              <div
                 onClick={() => setShowMetricsModal(true)}
                 className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
               >
@@ -605,25 +605,25 @@ export default function ClientHome() {
                 <div className="relative p-5 h-32 flex flex-col items-start justify-between text-white">
                   <div className="flex items-start justify-between w-full">
                     <Footprints size={28} className="text-white/80" />
-                    <button
+                    <div
                       onClick={(e) => {
                         e.stopPropagation();
                         setShowStepsModal(true);
                       }}
-                      className="p-1.5 bg-white/20 hover:bg-white/40 rounded-lg transition-all duration-200 active:scale-95"
+                      className="p-1.5 bg-white/20 hover:bg-white/40 rounded-lg transition-all duration-200 active:scale-95 cursor-pointer"
                     >
                       <Settings size={16} className="text-white" />
-                    </button>
+                    </div>
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-white/70">Daily Steps</p>
                     <p className="text-xl font-black text-white">{(stepsToday / 1000).toFixed(1)}k / {(stepsTarget / 1000).toFixed(0)}k</p>
                   </div>
                 </div>
-              </button>
+              </div>
 
               {/* Calories Card */}
-              <button
+              <div
                 onClick={() => setShowMetricsModal(true)}
                 className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
               >
@@ -631,22 +631,22 @@ export default function ClientHome() {
                 <div className="relative p-5 h-32 flex flex-col items-start justify-between text-white">
                   <div className="flex items-start justify-between w-full">
                     <Flame size={28} className="text-white/80" />
-                    <button
+                    <div
                       onClick={(e) => {
                         e.stopPropagation();
                         setShowStepsModal(true);
                       }}
-                      className="p-1.5 bg-white/20 hover:bg-white/40 rounded-lg transition-all duration-200 active:scale-95"
+                      className="p-1.5 bg-white/20 hover:bg-white/40 rounded-lg transition-all duration-200 active:scale-95 cursor-pointer"
                     >
                       <Settings size={16} className="text-white" />
-                    </button>
+                    </div>
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-white/70">Calories</p>
                     <p className="text-xl font-black text-white">{caloriesBurned} / {caloriesTarget}</p>
                   </div>
                 </div>
-              </button>
+              </div>
             </div>
 
             {/* Distance Card - Full Width */}
