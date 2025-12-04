@@ -784,36 +784,46 @@ export default function ClientHome() {
             <div className="grid grid-cols-2 gap-3">
               {quickAccessTiles.map((tile) => {
                 const Icon = tile.icon;
+                let bgColor = "";
+                let textColor = "";
+                let iconBg = "";
+
+                if (tile.label === "Trainers") {
+                  bgColor = "bg-blue-100";
+                  textColor = "text-blue-700";
+                  iconBg = "bg-blue-300";
+                } else if (tile.label === "Nutritionists") {
+                  bgColor = "bg-blue-100";
+                  textColor = "text-blue-700";
+                  iconBg = "bg-blue-300";
+                } else if (tile.label === "Meal Tracker") {
+                  bgColor = "bg-amber-100";
+                  textColor = "text-amber-700";
+                  iconBg = "bg-amber-300";
+                } else if (tile.label === "Online Meeting") {
+                  bgColor = "bg-purple-100";
+                  textColor = "text-purple-700";
+                  iconBg = "bg-purple-300";
+                } else if (tile.label === "CoCircle") {
+                  bgColor = "bg-green-100";
+                  textColor = "text-green-700";
+                  iconBg = "bg-green-300";
+                } else if (tile.label === "Become a Trainer") {
+                  bgColor = "bg-pink-100";
+                  textColor = "text-pink-700";
+                  iconBg = "bg-pink-300";
+                }
+
                 return (
                   <button
                     key={tile.label}
                     onClick={tile.onClick}
-                    className="backdrop-blur-2xl rounded-3xl p-4 transition-all duration-300 flex flex-col items-center gap-2 group active:scale-95 border border-white/40 hover:border-white/80 hover:scale-105"
-                    style={{
-                      background:
-                        tile.label === "Trainers"
-                          ? "linear-gradient(135deg, rgba(251, 146, 60, 0.65), rgba(249, 115, 22, 0.85))"
-                          : tile.label === "Nutritionists"
-                            ? "linear-gradient(135deg, rgba(96, 165, 250, 0.65), rgba(59, 130, 246, 0.85))"
-                            : tile.label === "Meal Tracker"
-                              ? "linear-gradient(135deg, rgba(74, 222, 128, 0.65), rgba(34, 197, 94, 0.85))"
-                              : tile.label === "CoCircle"
-                                ? "linear-gradient(135deg, rgba(168, 85, 247, 0.65), rgba(139, 92, 246, 0.85))"
-                                : tile.label === "Quests"
-                                  ? "linear-gradient(135deg, rgba(253, 224, 71, 0.65), rgba(234, 179, 8, 0.85))"
-                                  : "linear-gradient(135deg, rgba(239, 68, 68, 0.65), rgba(220, 38, 38, 0.85))",
-                      backdropFilter: "blur(25px)",
-                      WebkitBackdropFilter: "blur(25px)",
-                      boxShadow:
-                        "0 4px 16px 0 rgba(0, 0, 0, 0.1), inset 0 1px 3px 0 rgba(255, 255, 255, 0.5)",
-                    }}
+                    className={`rounded-3xl p-5 transition-all duration-300 flex flex-col items-center gap-2 group active:scale-95 hover:scale-105 ${bgColor} shadow-sm hover:shadow-md`}
                   >
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center group-hover:scale-125 transition-transform duration-300`}
-                    >
-                      <Icon size={20} className="text-white drop-shadow-lg" />
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${iconBg} group-hover:scale-125 transition-transform duration-300`}>
+                      <Icon size={20} className="text-white" />
                     </div>
-                    <p className="text-xs font-semibold text-white text-center drop-shadow">
+                    <p className={`text-xs font-semibold text-center ${textColor}`}>
                       {tile.label}
                     </p>
                   </button>
