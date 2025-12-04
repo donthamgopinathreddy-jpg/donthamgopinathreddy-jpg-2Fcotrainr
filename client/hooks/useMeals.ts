@@ -1,202 +1,210 @@
-import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/contexts/AuthContext";
 
-export interface Meal {
-  id: string;
-  user_id: string;
+export interface MealEntry {
+  id?: string;
+  user_id?: string;
+  date: string;
+  meal_type: "breakfast" | "lunch" | "snacks" | "dinner";
   food_name: string;
-  weight_g: number;
+  quantity: number;
+  unit: string;
   calories: number;
-  protein_g: number;
-  carbs_g: number;
-  fat_g: number;
-  meal_type: "breakfast" | "lunch" | "dinner" | "snack";
-  logged_at: string;
+  protein: number;
+  carbs: number;
+  fats: number;
+  created_at?: string;
+}
+
+export interface DailyMealSummary {
+  breakfast: MealEntry[];
+  lunch: MealEntry[];
+  snacks: MealEntry[];
+  dinner: MealEntry[];
+  totals: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fats: number;
+  };
 }
 
 export const useMeals = () => {
-  const { user } = useAuth();
-  const [meals, setMeals] = useState<Meal[]>([]);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  // Check if user is in demo mode
-  const isDemoMode = () => {
-    return user?.id?.startsWith("demo-user") || user?.id?.includes("demo");
-  };
+  // Fetch meals for a specific date
+  const useDailyMeals = (date: string, userId?: string) => {
+    return useQuery({
+      queryKey: ["meals", date, userId],
+      queryFn: async () => {
+        if (!userId) {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+          userId = user?.id;
+        }
 
-  // Fetch meals for today
-  const fetchTodayMeals = async () => {
-    if (!user) return;
+        const { data, error } = await supabase
+          .from("meals_logs")
+          .select("*")
+          .eq("user_id", userId)
+          .eq("date", date)
+          .order("created_at", { ascending: true });
 
-    setLoading(true);
-    try {
-      const isDemo = isDemoMode();
+        if (error) throw error;
 
-      if (isDemo) {
-        // Load from localStorage in demo mode
-        const demoMeals = localStorage.getItem(`meals_demo_${user.id}`);
-        setMeals(demoMeals ? JSON.parse(demoMeals) : []);
-        setLoading(false);
-        return;
-      }
-
-      const today = new Date().toISOString().split("T")[0];
-      const { data, error } = await supabase
-        .from("meals")
-        .select("*")
-        .eq("user_id", user.id)
-        .gte("logged_at", `${today}T00:00:00`)
-        .lte("logged_at", `${today}T23:59:59`)
-        .order("logged_at", { ascending: false });
-
-      if (error) {
-        console.debug("Fetch meals error:", error?.code);
-        setMeals([]);
-      } else {
-        setMeals(data || []);
-      }
-    } catch (error: any) {
-      console.debug(
-        "Fetch meals catch error:",
-        error instanceof Error ? error.code : "unknown",
-      );
-      setMeals([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Add a new meal
-  const addMeal = async (
-    mealData: Omit<Meal, "id" | "user_id" | "logged_at">,
-  ) => {
-    if (!user) return;
-
-    try {
-      const isDemo = isDemoMode();
-      const loggedAt = new Date().toISOString();
-
-      if (isDemo) {
-        // Add to localStorage in demo mode
-        const newMeal: Meal = {
-          id: `local-${Date.now()}`,
-          user_id: user.id,
-          ...mealData,
-          logged_at: loggedAt,
+        // Organize by meal type and calculate totals
+        const organized: DailyMealSummary = {
+          breakfast: [],
+          lunch: [],
+          snacks: [],
+          dinner: [],
+          totals: {
+            calories: 0,
+            protein: 0,
+            carbs: 0,
+            fats: 0,
+          },
         };
 
-        const demoMeals = localStorage.getItem(`meals_demo_${user.id}`);
-        const existingMeals = demoMeals ? JSON.parse(demoMeals) : [];
-        const updatedMeals = [newMeal, ...existingMeals];
+        data.forEach((meal) => {
+          organized[meal.meal_type as keyof typeof organized].push(meal);
+          organized.totals.calories += meal.calories;
+          organized.totals.protein += meal.protein;
+          organized.totals.carbs += meal.carbs;
+          organized.totals.fats += meal.fats;
+        });
 
-        localStorage.setItem(
-          `meals_demo_${user.id}`,
-          JSON.stringify(updatedMeals),
-        );
-        setMeals((prev) => [newMeal, ...prev]);
-        return newMeal;
-      }
-
-      const { data, error } = await supabase
-        .from("meals")
-        .insert({
-          user_id: user.id,
-          ...mealData,
-          logged_at: loggedAt,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.debug("Add meal error:", error?.code);
-        throw error;
-      }
-      setMeals((prev) => [data, ...prev]);
-      return data;
-    } catch (error: any) {
-      const errorMsg = error?.message || error?.code || "Failed to add meal";
-      console.debug("Add meal catch error:", errorMsg);
-      throw new Error(errorMsg);
-    }
+        return organized;
+      },
+    });
   };
 
-  // Delete a meal
-  const deleteMeal = async (mealId: string) => {
-    if (!user) return;
-
-    try {
-      const isDemo = isDemoMode();
-
-      if (isDemo) {
-        // Delete from localStorage in demo mode
-        const demoMeals = localStorage.getItem(`meals_demo_${user.id}`);
-        if (demoMeals) {
-          const existingMeals = JSON.parse(demoMeals);
-          const updatedMeals = existingMeals.filter(
-            (m: Meal) => m.id !== mealId,
-          );
-          localStorage.setItem(
-            `meals_demo_${user.id}`,
-            JSON.stringify(updatedMeals),
-          );
+  // Fetch meals for a week
+  const useWeeklyMeals = (startDate: string, userId?: string) => {
+    return useQuery({
+      queryKey: ["weekly-meals", startDate, userId],
+      queryFn: async () => {
+        if (!userId) {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+          userId = user?.id;
         }
-        setMeals((prev) => prev.filter((m) => m.id !== mealId));
-        return;
-      }
 
-      const { error } = await supabase
-        .from("meals")
-        .delete()
-        .eq("id", mealId)
-        .eq("user_id", user.id);
+        const endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + 6);
 
-      if (error) throw error;
-      setMeals((prev) => prev.filter((m) => m.id !== mealId));
-    } catch (error) {
-      console.debug(
-        "Delete meal error:",
-        error instanceof Error ? error.code : "unknown",
-      );
-      throw error;
-    }
+        const { data, error } = await supabase
+          .from("meals_logs")
+          .select("*")
+          .eq("user_id", userId)
+          .gte("date", startDate)
+          .lte("date", endDate.toISOString().split("T")[0])
+          .order("date", { ascending: true });
+
+        if (error) throw error;
+
+        // Organize by date
+        const weeklyData: Record<string, DailyMealSummary> = {};
+
+        for (let i = 0; i < 7; i++) {
+          const date = new Date(startDate);
+          date.setDate(date.getDate() + i);
+          const dateStr = date.toISOString().split("T")[0];
+          weeklyData[dateStr] = {
+            breakfast: [],
+            lunch: [],
+            snacks: [],
+            dinner: [],
+            totals: {
+              calories: 0,
+              protein: 0,
+              carbs: 0,
+              fats: 0,
+            },
+          };
+        }
+
+        data.forEach((meal) => {
+          const dateData = weeklyData[meal.date];
+          if (dateData) {
+            dateData[meal.meal_type as keyof typeof dateData].push(meal);
+            dateData.totals.calories += meal.calories;
+            dateData.totals.protein += meal.protein;
+            dateData.totals.carbs += meal.carbs;
+            dateData.totals.fats += meal.fats;
+          }
+        });
+
+        return weeklyData;
+      },
+    });
   };
 
-  // Calculate daily totals
-  const calculateTotals = () => {
-    return meals.reduce(
-      (acc, meal) => ({
-        calories: acc.calories + meal.calories,
-        protein_g: acc.protein_g + meal.protein_g,
-        carbs_g: acc.carbs_g + meal.carbs_g,
-        fat_g: acc.fat_g + meal.fat_g,
-      }),
-      { calories: 0, protein_g: 0, carbs_g: 0, fat_g: 0 },
-    );
+  // Add meal entry
+  const useAddMeal = () => {
+    return useMutation({
+      mutationFn: async (meal: MealEntry) => {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        const { data, error } = await supabase
+          .from("meals_logs")
+          .insert([
+            {
+              user_id: user?.id,
+              date: meal.date,
+              meal_type: meal.meal_type,
+              food_name: meal.food_name,
+              quantity: meal.quantity,
+              unit: meal.unit,
+              calories: Math.round(meal.calories * 10) / 10,
+              protein: Math.round(meal.protein * 10) / 10,
+              carbs: Math.round(meal.carbs * 10) / 10,
+              fats: Math.round(meal.fats * 10) / 10,
+            },
+          ])
+          .select()
+          .single();
+
+        if (error) throw error;
+        return data;
+      },
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ["meals", data.date],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["weekly-meals"],
+        });
+      },
+    });
   };
 
-  // Auto-refresh meals every 30 seconds to stay in sync with database
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (user && !isDemoMode()) {
-        fetchTodayMeals();
-      }
-    }, 30000);
+  // Delete meal entry
+  const useDeleteMeal = () => {
+    return useMutation({
+      mutationFn: async (mealId: string) => {
+        const { error } = await supabase
+          .from("meals_logs")
+          .delete()
+          .eq("id", mealId);
 
-    return () => clearInterval(interval);
-  }, [user]);
-
-  // Initial fetch when user changes
-  useEffect(() => {
-    fetchTodayMeals();
-  }, [user]);
+        if (error) throw error;
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["meals"] });
+        queryClient.invalidateQueries({ queryKey: ["weekly-meals"] });
+      },
+    });
+  };
 
   return {
-    meals,
-    loading,
-    addMeal,
-    deleteMeal,
-    fetchTodayMeals,
-    calculateTotals,
+    useDailyMeals,
+    useWeeklyMeals,
+    useAddMeal,
+    useDeleteMeal,
   };
 };
