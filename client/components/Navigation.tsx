@@ -127,10 +127,10 @@ const Navigation = () => {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 border-t border-gray-100/50 backdrop-blur-xl shadow-2xl"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 border-t border-gray-100/50 backdrop-blur-xl shadow-2xl max-w-[430px] mx-auto"
       style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}
     >
-      <div className="max-w-md mx-auto w-full px-2 py-3">
+      <div className="w-full px-2 py-3">
         <div className="flex justify-around items-center gap-1">
           {navItems.map(
             ({ path, label, icon: Icon, bgColor, textColor }: any) => {
