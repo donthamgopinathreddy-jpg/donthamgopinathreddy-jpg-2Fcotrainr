@@ -243,33 +243,153 @@ const MealTracker = () => {
           </div>
         </div>
 
-        {/* Daily Summary */}
+        {/* Daily Summary with Circular Progress */}
         {dailyMeals && (
-          <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 rounded-t-3xl">
-            <div className="grid grid-cols-4 gap-2 text-center">
-              <div>
-                <p className="text-2xl font-bold text-orange-500">
-                  {Math.round(dailyMeals.totals.calories)}
+          <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-6 rounded-t-3xl shadow-2xl">
+            {/* Macro Progress Bars */}
+            <div className="grid grid-cols-4 gap-3">
+              {/* Calories */}
+              <div className="flex flex-col items-center group cursor-pointer">
+                <div className="relative w-16 h-16 flex items-center justify-center mb-2 transition-transform duration-300 group-hover:scale-110">
+                  <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.915"
+                      fill="none"
+                      className="stroke-orange-100"
+                      strokeWidth="3"
+                    />
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.915"
+                      fill="none"
+                      className="stroke-orange-500 transition-all duration-500 group-hover:stroke-orange-600"
+                      strokeWidth="3"
+                      strokeDasharray="100"
+                      strokeDashoffset={100 - Math.min((dailyMeals.totals.calories / 2500) * 100, 100)}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <span className="absolute text-xs font-bold text-orange-600 group-hover:text-orange-700">
+                    {Math.round((dailyMeals.totals.calories / 2500) * 100)}%
+                  </span>
+                </div>
+                <p className="text-xs font-semibold text-gray-700 group-hover:text-orange-600 transition">
+                  Calories
                 </p>
-                <p className="text-xs text-gray-600">Calories</p>
+                <p className="text-xs text-gray-500 group-hover:text-gray-700 transition">
+                  {Math.round(dailyMeals.totals.calories)}/2500
+                </p>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-blue-500">
+
+              {/* Protein */}
+              <div className="flex flex-col items-center group cursor-pointer">
+                <div className="relative w-16 h-16 flex items-center justify-center mb-2 transition-transform duration-300 group-hover:scale-110">
+                  <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.915"
+                      fill="none"
+                      className="stroke-blue-100"
+                      strokeWidth="3"
+                    />
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.915"
+                      fill="none"
+                      className="stroke-blue-500 transition-all duration-500 group-hover:stroke-blue-600"
+                      strokeWidth="3"
+                      strokeDasharray="100"
+                      strokeDashoffset={100 - Math.min((dailyMeals.totals.protein / 150) * 100, 100)}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <span className="absolute text-xs font-bold text-blue-600 group-hover:text-blue-700">
+                    {Math.round((dailyMeals.totals.protein / 150) * 100)}%
+                  </span>
+                </div>
+                <p className="text-xs font-semibold text-gray-700 group-hover:text-blue-600 transition">
+                  Protein
+                </p>
+                <p className="text-xs text-gray-500 group-hover:text-gray-700 transition">
                   {Math.round(dailyMeals.totals.protein)}g
                 </p>
-                <p className="text-xs text-gray-600">Protein</p>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-green-500">
+
+              {/* Carbs */}
+              <div className="flex flex-col items-center group cursor-pointer">
+                <div className="relative w-16 h-16 flex items-center justify-center mb-2 transition-transform duration-300 group-hover:scale-110">
+                  <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.915"
+                      fill="none"
+                      className="stroke-green-100"
+                      strokeWidth="3"
+                    />
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.915"
+                      fill="none"
+                      className="stroke-green-500 transition-all duration-500 group-hover:stroke-green-600"
+                      strokeWidth="3"
+                      strokeDasharray="100"
+                      strokeDashoffset={100 - Math.min((dailyMeals.totals.carbs / 300) * 100, 100)}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <span className="absolute text-xs font-bold text-green-600 group-hover:text-green-700">
+                    {Math.round((dailyMeals.totals.carbs / 300) * 100)}%
+                  </span>
+                </div>
+                <p className="text-xs font-semibold text-gray-700 group-hover:text-green-600 transition">
+                  Carbs
+                </p>
+                <p className="text-xs text-gray-500 group-hover:text-gray-700 transition">
                   {Math.round(dailyMeals.totals.carbs)}g
                 </p>
-                <p className="text-xs text-gray-600">Carbs</p>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-red-500">
+
+              {/* Fats */}
+              <div className="flex flex-col items-center group cursor-pointer">
+                <div className="relative w-16 h-16 flex items-center justify-center mb-2 transition-transform duration-300 group-hover:scale-110">
+                  <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.915"
+                      fill="none"
+                      className="stroke-red-100"
+                      strokeWidth="3"
+                    />
+                    <circle
+                      cx="18"
+                      cy="18"
+                      r="15.915"
+                      fill="none"
+                      className="stroke-red-500 transition-all duration-500 group-hover:stroke-red-600"
+                      strokeWidth="3"
+                      strokeDasharray="100"
+                      strokeDashoffset={100 - Math.min((dailyMeals.totals.fats / 75) * 100, 100)}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <span className="absolute text-xs font-bold text-red-600 group-hover:text-red-700">
+                    {Math.round((dailyMeals.totals.fats / 75) * 100)}%
+                  </span>
+                </div>
+                <p className="text-xs font-semibold text-gray-700 group-hover:text-red-600 transition">
+                  Fats
+                </p>
+                <p className="text-xs text-gray-500 group-hover:text-gray-700 transition">
                   {Math.round(dailyMeals.totals.fats)}g
                 </p>
-                <p className="text-xs text-gray-600">Fats</p>
               </div>
             </div>
           </div>
