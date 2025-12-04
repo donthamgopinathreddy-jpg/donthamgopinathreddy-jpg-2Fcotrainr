@@ -9,6 +9,7 @@ import {
   Paperclip,
   X,
   Edit2,
+  Settings,
 } from "lucide-react";
 import { useMealTrackerData } from "@/hooks/useMeals";
 import { useMealPhotos } from "@/hooks/useMealPhotos";
