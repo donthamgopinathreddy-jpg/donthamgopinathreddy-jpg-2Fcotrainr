@@ -329,9 +329,38 @@ const MealTracker = () => {
             const photos = mealPhotos[mealType] || [];
 
             return (
-              <div key={mealType} className="flex-shrink-0 w-80 snap-center">
+              <div
+                key={mealType}
+                className="flex-shrink-0 w-80 snap-center cursor-move group"
+                draggable
+                onDragStart={(e) => {
+                  setDraggedMeal(mealType);
+                  e.dataTransfer.effectAllowed = "move";
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = "move";
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  if (draggedMeal && draggedMeal !== mealType) {
+                    const newOrder = [...mealOrder];
+                    const draggedIndex = newOrder.indexOf(draggedMeal);
+                    const targetIndex = newOrder.indexOf(mealType);
+
+                    newOrder.splice(draggedIndex, 1);
+                    newOrder.splice(targetIndex, 0, draggedMeal);
+
+                    setMealOrder(newOrder);
+                  }
+                  setDraggedMeal(null);
+                }}
+                onDragEnd={() => setDraggedMeal(null)}
+              >
                 <div
-                  className={`bg-gradient-to-br ${mealColors[mealType]} backdrop-blur-lg rounded-3xl p-6 h-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/40 flex flex-col`}
+                  className={`bg-gradient-to-br ${mealColors[mealType]} backdrop-blur-lg rounded-3xl p-6 h-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/40 flex flex-col ${
+                    draggedMeal === mealType ? "opacity-50 scale-95" : ""
+                  }`}
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between mb-4">
