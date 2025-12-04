@@ -123,14 +123,15 @@ const Navigation = () => {
                   key={path}
                   to={path}
                   onClick={handleNavClick}
-                  className={`flex flex-col items-center justify-center py-3 px-4 flex-1 relative transition-all duration-200 ${
-                    active
-                      ? `bg-gradient-to-br ${gradient} text-white shadow-md`
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
+                  className={`flex flex-col items-center justify-center py-3 px-4 flex-1 relative transition-all duration-200 text-gray-500 hover:text-gray-700`}
                 >
                   {/* Icon only, no text */}
                   <Icon size={24} className="text-current" />
+
+                  {/* Colored bar indicator at bottom - only when active */}
+                  {active && (
+                    <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient} transition-all duration-200`} />
+                  )}
 
                   {/* Unread Badge with pulse animation */}
                   {path === "/messages" && totalUnreadMessages > 0 && (
