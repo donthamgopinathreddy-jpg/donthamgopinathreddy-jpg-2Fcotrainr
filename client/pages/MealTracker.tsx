@@ -317,26 +317,7 @@ const MealTracker = () => {
           className="flex gap-4 p-4 overflow-x-auto snap-x snap-mandatory flex-1 scrollbar-hide"
           style={{ scrollBehavior: "smooth" }}
         >
-          {/* Custom Extra Meal Tile */}
-          <div className="flex-shrink-0 w-80 snap-center">
-            <button
-              onClick={() => {
-                setSelectedMealType("breakfast");
-                setShowAddFood(true);
-              }}
-              className="w-full h-full bg-gradient-to-br from-gray-100 to-slate-100 backdrop-blur-lg rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-dashed border-gray-300 hover:border-gray-400 flex flex-col items-center justify-center group"
-            >
-              <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">➕</div>
-              <h3 className="text-2xl font-bold text-gray-900 text-center mb-2">
-                Add Extra Meal
-              </h3>
-              <p className="text-sm text-gray-600 text-center">
-                Log a custom meal or snack
-              </p>
-            </button>
-          </div>
-
-          {mealTypes.map((mealType) => {
+          {mealOrder.map((mealType) => {
             const mealCalories = dailyMeals
               ? dailyMeals[mealType as keyof typeof dailyMeals].reduce(
                   (s, m) => s + (m.calories || 0),
