@@ -427,7 +427,7 @@ export default function ClientHome() {
       label: "Meal Tracker",
       icon: Utensils,
       color: "from-blue-400 to-blue-500",
-      onClick: () => navigate("/meals"),
+      onClick: () => navigate("/meal-tracker"),
     },
     {
       label: "Online Meeting",
