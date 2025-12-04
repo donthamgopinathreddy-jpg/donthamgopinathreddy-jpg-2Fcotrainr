@@ -44,7 +44,13 @@ const FOOD_DATABASE: Record<string, FoodInfo> = {
     fat: 3.6,
     inputType: "weight",
   },
-  rice: { calories: 130, protein: 2.7, carbs: 28, fat: 0.3, inputType: "weight" },
+  rice: {
+    calories: 130,
+    protein: 2.7,
+    carbs: 28,
+    fat: 0.3,
+    inputType: "weight",
+  },
   oatmeal: {
     calories: 389,
     protein: 17,
@@ -52,7 +58,13 @@ const FOOD_DATABASE: Record<string, FoodInfo> = {
     fat: 6.9,
     inputType: "weight",
   },
-  berries: { calories: 57, protein: 0.7, carbs: 14, fat: 0.3, inputType: "weight" },
+  berries: {
+    calories: 57,
+    protein: 0.7,
+    carbs: 14,
+    fat: 0.3,
+    inputType: "weight",
+  },
   "greek yogurt": {
     calories: 59,
     protein: 10,
@@ -69,7 +81,13 @@ const FOOD_DATABASE: Record<string, FoodInfo> = {
     unitName: "per egg",
     unitWeight: 50,
   },
-  milk: { calories: 61, protein: 3.2, carbs: 4.8, fat: 3.3, inputType: "weight" },
+  milk: {
+    calories: 61,
+    protein: 3.2,
+    carbs: 4.8,
+    fat: 3.3,
+    inputType: "weight",
+  },
   bread: {
     calories: 265,
     protein: 9,
@@ -239,7 +257,7 @@ export default function MealsPage() {
   const foodResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
     return Object.keys(FOOD_DATABASE).filter((food) =>
-      food.toLowerCase().includes(searchQuery.toLowerCase())
+      food.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [searchQuery]);
 
@@ -249,7 +267,7 @@ export default function MealsPage() {
     ? {
         calories: Math.round(
           selectedFoodData.calories *
-            (selectedFoodData.inputType === "weight" ? quantity : quantity)
+            (selectedFoodData.inputType === "weight" ? quantity : quantity),
         ),
         protein: (selectedFoodData.protein * quantity).toFixed(1),
         carbs: (selectedFoodData.carbs * quantity).toFixed(1),
@@ -262,7 +280,7 @@ export default function MealsPage() {
     (meal) =>
       meal.mealType === selectedMealType &&
       new Date(meal.id.split("-")[0]).toDateString() ===
-        selectedDate.toDateString()
+        selectedDate.toDateString(),
   );
 
   // Calculate daily totals
@@ -270,7 +288,7 @@ export default function MealsPage() {
     const dayMeals = meals.filter(
       (meal) =>
         new Date(meal.id.split("-")[0]).toDateString() ===
-        selectedDate.toDateString()
+        selectedDate.toDateString(),
     );
     return {
       calories: dayMeals.reduce((sum, meal) => sum + meal.calories, 0),
@@ -286,17 +304,17 @@ export default function MealsPage() {
     const weekMeals = meals.filter((meal) => {
       const mealDate = new Date(meal.id.split("-")[0]);
       const daysDiff = Math.floor(
-        (today.getTime() - mealDate.getTime()) / (1000 * 60 * 60 * 24)
+        (today.getTime() - mealDate.getTime()) / (1000 * 60 * 60 * 24),
       );
       return daysDiff <= 7;
     });
     const daysWithMeals = new Set(
-      weekMeals.map((m) => new Date(m.id.split("-")[0]).toDateString())
+      weekMeals.map((m) => new Date(m.id.split("-")[0]).toDateString()),
     ).size;
     return {
       calories: Math.round(
         weekMeals.reduce((sum, meal) => sum + meal.calories, 0) /
-          Math.max(daysWithMeals, 1)
+          Math.max(daysWithMeals, 1),
       ),
       protein: (
         weekMeals.reduce((sum, meal) => sum + meal.protein, 0) /
@@ -426,7 +444,7 @@ export default function MealsPage() {
                 (meal) =>
                   meal.mealType === mealType.id &&
                   new Date(meal.id.split("-")[0]).toDateString() ===
-                    selectedDate.toDateString()
+                    selectedDate.toDateString(),
               );
 
               const mealTotals = {
@@ -445,7 +463,7 @@ export default function MealsPage() {
                         | "breakfast"
                         | "lunch"
                         | "snacks"
-                        | "dinner"
+                        | "dinner",
                     );
                     setShowAddFood(true);
                   }}
@@ -462,9 +480,7 @@ export default function MealsPage() {
                         <p className="text-sm font-bold text-gray-900">
                           {mealType.name}
                         </p>
-                        <p className="text-xs text-gray-600">
-                          {mealType.time}
-                        </p>
+                        <p className="text-xs text-gray-600">{mealType.time}</p>
                       </div>
                       <span className="text-2xl">{mealType.icon}</span>
                     </div>
@@ -574,20 +590,23 @@ export default function MealsPage() {
                   const dayMeals = meals.filter(
                     (meal) =>
                       new Date(meal.id.split("-")[0]).toDateString() ===
-                      date.toDateString()
+                      date.toDateString(),
                   );
                   const dayCalories = dayMeals.reduce(
                     (sum, meal) => sum + meal.calories,
-                    0
+                    0,
                   );
                   const maxHeight = 200;
                   const barHeight = Math.max(
                     (dayCalories / 2500) * maxHeight,
-                    10
+                    10,
                   );
 
                   return (
-                    <div key={day} className="flex-1 flex flex-col items-center">
+                    <div
+                      key={day}
+                      className="flex-1 flex flex-col items-center"
+                    >
                       <div
                         className="w-full bg-gradient-to-t from-orange-400 to-yellow-400 rounded-t-xl transition-all hover:shadow-lg"
                         style={{ height: `${barHeight}px` }}
@@ -608,17 +627,13 @@ export default function MealsPage() {
                   <p className="text-2xl font-black text-orange-600">
                     {weeklyAverage.calories}
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">
-                    Avg Calories
-                  </p>
+                  <p className="text-xs text-gray-600 mt-1">Avg Calories</p>
                 </div>
                 <div className="text-center">
                   <p className="text-2xl font-black text-blue-600">
                     {weeklyAverage.protein}g
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">
-                    Avg Protein
-                  </p>
+                  <p className="text-xs text-gray-600 mt-1">Avg Protein</p>
                 </div>
               </div>
             </div>
@@ -684,8 +699,8 @@ export default function MealsPage() {
                                 {food}
                               </p>
                               <p className="text-xs text-gray-600 mt-1">
-                                {foodInfo.calories} cal • P: {foodInfo.protein}
-                                g • C: {foodInfo.carbs}g • F: {foodInfo.fat}g (
+                                {foodInfo.calories} cal • P: {foodInfo.protein}g
+                                • C: {foodInfo.carbs}g • F: {foodInfo.fat}g (
                                 per 100g)
                               </p>
                             </button>
@@ -730,7 +745,9 @@ export default function MealsPage() {
                           type="number"
                           value={quantity}
                           onChange={(e) =>
-                            setQuantity(Math.max(1, parseInt(e.target.value) || 1))
+                            setQuantity(
+                              Math.max(1, parseInt(e.target.value) || 1),
+                            )
                           }
                           className="flex-1 text-center bg-white border border-gray-300 rounded-lg px-4 py-2 font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
                         />
@@ -800,7 +817,8 @@ export default function MealsPage() {
                     onClick={handleAddFood}
                     className="w-full py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold rounded-xl transition-all duration-300 hover:shadow-lg active:scale-95 mt-4"
                   >
-                    Add to {MEAL_TYPES.find((m) => m.id === selectedMealType)?.name}
+                    Add to{" "}
+                    {MEAL_TYPES.find((m) => m.id === selectedMealType)?.name}
                   </button>
 
                   {/* Back Button */}

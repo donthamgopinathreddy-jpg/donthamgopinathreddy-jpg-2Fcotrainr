@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { X, Footprints, Flame, Droplets, MapPin, TrendingUp, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  X,
+  Footprints,
+  Flame,
+  Droplets,
+  MapPin,
+  TrendingUp,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 interface WeeklyMetrics {
   steps: number[];
@@ -48,7 +57,8 @@ const MetricCard = ({
     green: "from-green-500 to-emerald-500",
   } as Record<string, string>;
 
-  const bgGradient = colorClasses[color as keyof typeof colorClasses] || colorClasses.orange;
+  const bgGradient =
+    colorClasses[color as keyof typeof colorClasses] || colorClasses.orange;
 
   return (
     <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100">
@@ -88,9 +98,14 @@ const MetricCard = ({
             <div key={idx}>
               <div className="flex items-center justify-between mb-1">
                 <div>
-                  <p className="text-xs font-medium text-gray-900">{days[date.getDay()]}</p>
+                  <p className="text-xs font-medium text-gray-900">
+                    {days[date.getDay()]}
+                  </p>
                   <p className="text-xs text-gray-500">
-                    {date.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                    {date.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </p>
                 </div>
                 <p className="text-sm font-bold text-gray-900">
@@ -201,7 +216,9 @@ export default function UnifiedMetricsModal({
             {/* Edit Steps Target Card */}
             <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-4 border border-orange-200">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-900">Daily Steps Goal</h3>
+                <h3 className="text-sm font-semibold text-gray-900">
+                  Daily Steps Goal
+                </h3>
                 <button
                   onClick={() => setIsEditing(!isEditing)}
                   className="text-xs px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
@@ -227,7 +244,9 @@ export default function UnifiedMetricsModal({
                   </button>
                 </div>
               ) : (
-                <p className="text-2xl font-bold text-gray-900">{targets.steps.toLocaleString()} steps</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {targets.steps.toLocaleString()} steps
+                </p>
               )}
             </div>
 
@@ -245,7 +264,9 @@ export default function UnifiedMetricsModal({
 
             {/* Date Selector */}
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">Select Week</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-4">
+                Select Week
+              </h3>
               <div className="flex items-center justify-between mb-4">
                 <button className="p-2 hover:bg-white rounded-lg transition-colors">
                   <ChevronLeft size={20} className="text-gray-600" />
@@ -266,7 +287,9 @@ export default function UnifiedMetricsModal({
               <div className="grid grid-cols-7 gap-2">
                 {["S", "M", "T", "W", "T", "F", "S"].map((day, idx) => (
                   <div key={idx} className="text-center">
-                    <p className="text-xs font-medium text-gray-600 mb-2">{day}</p>
+                    <p className="text-xs font-medium text-gray-600 mb-2">
+                      {day}
+                    </p>
                     <button className="w-full aspect-square text-xs font-medium text-gray-600 hover:bg-white rounded-lg transition-colors">
                       {idx + 1}
                     </button>
@@ -277,9 +300,12 @@ export default function UnifiedMetricsModal({
 
             {/* Insights */}
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border border-blue-200">
-              <h3 className="text-sm font-semibold text-blue-900 mb-2">💡 Weekly Insights</h3>
+              <h3 className="text-sm font-semibold text-blue-900 mb-2">
+                💡 Weekly Insights
+              </h3>
               <p className="text-xs text-blue-800">
-                You're on track with most metrics! Keep up the consistency for better results.
+                You're on track with most metrics! Keep up the consistency for
+                better results.
               </p>
             </div>
 

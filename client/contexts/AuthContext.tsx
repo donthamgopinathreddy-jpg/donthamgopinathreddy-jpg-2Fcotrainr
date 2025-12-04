@@ -104,7 +104,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.log("[Auth] ✅ Cover image found in profile - will display");
         }
         if (data.profile_picture_url) {
-          console.log("[Auth] ✅ Profile picture found in profile - will display");
+          console.log(
+            "[Auth] ✅ Profile picture found in profile - will display",
+          );
         }
 
         setUserProfile(data);
@@ -249,7 +251,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               }
               setUser(session.user);
               // Fetch profile asynchronously without blocking initialization
-              console.log("[Auth] Initiating profile fetch during initialization...");
+              console.log(
+                "[Auth] Initiating profile fetch during initialization...",
+              );
               fetchUserProfile(session.user.id).catch((err) =>
                 console.error("[Auth] Profile fetch error during init:", err),
               );
@@ -321,7 +325,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
             if (session?.user) {
               // Fetch profile without blocking
-              console.log("[Auth] Calling fetchUserProfile for:", session.user.id);
+              console.log(
+                "[Auth] Calling fetchUserProfile for:",
+                session.user.id,
+              );
               fetchUserProfile(session.user.id).catch((err) => {
                 console.warn("[Auth] Profile fetch failed:", err);
               });

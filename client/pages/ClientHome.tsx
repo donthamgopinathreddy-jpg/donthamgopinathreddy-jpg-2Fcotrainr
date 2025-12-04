@@ -405,7 +405,9 @@ export default function ClientHome() {
   const handleSaveStepsGoal = () => {
     if (editStepsTarget > 0 && editCaloriesTarget > 0) {
       setShowStepsModal(false);
-      toast.success(`Goals updated: ${editStepsTarget} steps, ${editCaloriesTarget} calories`);
+      toast.success(
+        `Goals updated: ${editStepsTarget} steps, ${editCaloriesTarget} calories`,
+      );
     } else {
       toast.error("Please enter valid values for both goals");
     }
@@ -616,8 +618,13 @@ export default function ClientHome() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-white/70">Daily Steps</p>
-                    <p className="text-xl font-black text-white">{(stepsToday / 1000).toFixed(1)}k / {(stepsTarget / 1000).toFixed(0)}k</p>
+                    <p className="text-xs font-semibold text-white/70">
+                      Daily Steps
+                    </p>
+                    <p className="text-xl font-black text-white">
+                      {(stepsToday / 1000).toFixed(1)}k /{" "}
+                      {(stepsTarget / 1000).toFixed(0)}k
+                    </p>
                   </div>
                 </div>
               </div>
@@ -642,8 +649,12 @@ export default function ClientHome() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-white/70">Calories</p>
-                    <p className="text-xl font-black text-white">{caloriesBurned} / {caloriesTarget}</p>
+                    <p className="text-xs font-semibold text-white/70">
+                      Calories
+                    </p>
+                    <p className="text-xl font-black text-white">
+                      {caloriesBurned} / {caloriesTarget}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -659,8 +670,12 @@ export default function ClientHome() {
                 <div className="flex items-center gap-4">
                   <MapPin size={28} className="text-white/80" />
                   <div className="text-left">
-                    <p className="text-xs font-semibold text-white/70">Distance</p>
-                    <p className="text-2xl font-black text-white">{distanceKm.toFixed(1)} km</p>
+                    <p className="text-xs font-semibold text-white/70">
+                      Distance
+                    </p>
+                    <p className="text-2xl font-black text-white">
+                      {distanceKm.toFixed(1)} km
+                    </p>
                   </div>
                 </div>
               </div>
@@ -676,8 +691,13 @@ export default function ClientHome() {
                 <div className="flex items-center gap-4 flex-1">
                   <Droplets size={28} className="text-white/80" />
                   <div className="text-left">
-                    <p className="text-xs font-semibold text-white/70">Water Intake</p>
-                    <p className="text-sm font-medium text-white/90">{(waterConsumed / 1000).toFixed(1)}L / {(autoWaterTarget / 1000).toFixed(1)}L</p>
+                    <p className="text-xs font-semibold text-white/70">
+                      Water Intake
+                    </p>
+                    <p className="text-sm font-medium text-white/90">
+                      {(waterConsumed / 1000).toFixed(1)}L /{" "}
+                      {(autoWaterTarget / 1000).toFixed(1)}L
+                    </p>
                   </div>
                 </div>
                 <button
@@ -951,8 +971,12 @@ export default function ClientHome() {
               </div>
 
               <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
-                <p className="text-sm font-semibold text-teal-900 mb-1">Water Goal</p>
-                <p className="text-lg font-black text-teal-600">{(autoWaterTarget / 1000).toFixed(2)}L</p>
+                <p className="text-sm font-semibold text-teal-900 mb-1">
+                  Water Goal
+                </p>
+                <p className="text-lg font-black text-teal-600">
+                  {(autoWaterTarget / 1000).toFixed(2)}L
+                </p>
                 <p className="text-xs text-teal-700 mt-1">
                   Auto-calculated: {userProfile?.weight_kg}kg × 30ml per kg
                 </p>

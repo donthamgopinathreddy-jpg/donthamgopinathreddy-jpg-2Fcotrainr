@@ -46,7 +46,9 @@ export default function MetricDetailsModal({
   });
 
   const maxValue = Math.max(...weeklyData, target);
-  const weeklyAverage = Math.round(weeklyData.reduce((a, b) => a + b, 0) / weeklyData.length);
+  const weeklyAverage = Math.round(
+    weeklyData.reduce((a, b) => a + b, 0) / weeklyData.length,
+  );
   const weeklyTotal = weeklyData.reduce((a, b) => a + b, 0);
 
   // Determine color classes based on color prop
@@ -58,7 +60,8 @@ export default function MetricDetailsModal({
     purple: "from-purple-500 to-pink-500",
   } as Record<string, string>;
 
-  const bgGradient = colorClasses[color as keyof typeof colorClasses] || colorClasses.purple;
+  const bgGradient =
+    colorClasses[color as keyof typeof colorClasses] || colorClasses.purple;
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center sm:justify-center">
@@ -92,7 +95,9 @@ export default function MetricDetailsModal({
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 text-center">
               <p className="text-gray-600 text-xs font-medium mb-1">Total</p>
-              <p className={`text-2xl font-bold bg-gradient-to-r ${bgGradient} bg-clip-text text-transparent`}>
+              <p
+                className={`text-2xl font-bold bg-gradient-to-r ${bgGradient} bg-clip-text text-transparent`}
+              >
                 {weeklyTotal.toLocaleString()}
               </p>
               <p className="text-gray-500 text-xs mt-1">{unit}</p>
@@ -100,7 +105,9 @@ export default function MetricDetailsModal({
 
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 text-center">
               <p className="text-gray-600 text-xs font-medium mb-1">Average</p>
-              <p className={`text-2xl font-bold bg-gradient-to-r ${bgGradient} bg-clip-text text-transparent`}>
+              <p
+                className={`text-2xl font-bold bg-gradient-to-r ${bgGradient} bg-clip-text text-transparent`}
+              >
                 {weeklyAverage.toLocaleString()}
               </p>
               <p className="text-gray-500 text-xs mt-1">{unit}</p>
@@ -108,7 +115,9 @@ export default function MetricDetailsModal({
 
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 text-center">
               <p className="text-gray-600 text-xs font-medium mb-1">Target</p>
-              <p className={`text-2xl font-bold bg-gradient-to-r ${bgGradient} bg-clip-text text-transparent`}>
+              <p
+                className={`text-2xl font-bold bg-gradient-to-r ${bgGradient} bg-clip-text text-transparent`}
+              >
                 {target.toLocaleString()}
               </p>
               <p className="text-gray-500 text-xs mt-1">{unit}</p>
@@ -127,7 +136,9 @@ export default function MetricDetailsModal({
                 <div key={idx}>
                   <div className="flex items-center justify-between mb-1">
                     <div>
-                      <p className="text-xs font-medium text-gray-900">{item.day}</p>
+                      <p className="text-xs font-medium text-gray-900">
+                        {item.day}
+                      </p>
                       <p className="text-xs text-gray-500">
                         {item.date.toLocaleDateString("en-US", {
                           month: "short",
@@ -155,7 +166,9 @@ export default function MetricDetailsModal({
           {/* Date Selector */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-900">Select Week</h3>
+              <h3 className="text-sm font-semibold text-gray-900">
+                Select Week
+              </h3>
               <div className="flex items-center gap-2">
                 <button className="p-2 hover:bg-white rounded-lg transition-colors">
                   <ChevronLeft size={18} className="text-gray-600" />
@@ -176,7 +189,9 @@ export default function MetricDetailsModal({
             <div className="grid grid-cols-7 gap-2">
               {["S", "M", "T", "W", "T", "F", "S"].map((day, idx) => (
                 <div key={idx} className="text-center">
-                  <p className="text-xs font-medium text-gray-600 mb-2">{day}</p>
+                  <p className="text-xs font-medium text-gray-600 mb-2">
+                    {day}
+                  </p>
                   <button className="w-full aspect-square text-xs font-medium text-gray-600 hover:bg-white rounded-lg transition-colors">
                     {idx + 1}
                   </button>
@@ -187,9 +202,12 @@ export default function MetricDetailsModal({
 
           {/* Insights */}
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border border-blue-200">
-            <h3 className="text-sm font-semibold text-blue-900 mb-2">💡 Insights</h3>
+            <h3 className="text-sm font-semibold text-blue-900 mb-2">
+              💡 Insights
+            </h3>
             <p className="text-xs text-blue-800">
-              Your weekly average is {weeklyAverage} {unit}. Keep up the consistency!
+              Your weekly average is {weeklyAverage} {unit}. Keep up the
+              consistency!
             </p>
           </div>
         </div>
