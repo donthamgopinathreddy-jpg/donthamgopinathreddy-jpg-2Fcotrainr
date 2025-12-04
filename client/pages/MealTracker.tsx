@@ -290,6 +290,21 @@ const MealTracker = () => {
     setShowAddFood(true);
   }
 
+  function handleSaveMacroTargets() {
+    if (user?.id) {
+      localStorage.setItem(
+        `macro_targets_${user.id}`,
+        JSON.stringify(editMacroTargets)
+      );
+    }
+    setMacroTargets(editMacroTargets);
+    setShowMacroTargetsModal(false);
+    toast({
+      title: "Success",
+      description: "Macro targets updated!",
+    });
+  }
+
   const filteredFoods = foods.filter((food) =>
     food.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
