@@ -140,7 +140,7 @@ const Navigation = () => {
                   key={path}
                   to={path}
                   onClick={handleNavClick}
-                  className={`group relative flex flex-col items-center justify-center gap-1.5 py-3 px-5 rounded-3xl transition-all duration-300 flex-1 overflow-hidden ${
+                  className={`group relative flex flex-col items-center justify-center gap-0 py-2.5 px-4 rounded-3xl transition-all duration-300 flex-1 overflow-hidden ${
                     active
                       ? "bg-gradient-to-br from-orange-400 to-yellow-500 text-white shadow-lg shadow-orange-300/50 scale-105"
                       : "text-gray-600 hover:text-orange-600 hover:bg-gradient-to-br hover:from-orange-100 hover:to-yellow-100 hover:shadow-md hover:scale-110 active:scale-95"
