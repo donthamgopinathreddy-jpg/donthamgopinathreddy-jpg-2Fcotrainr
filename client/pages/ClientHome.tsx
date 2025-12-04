@@ -776,29 +776,29 @@ export default function ClientHome() {
                 let iconBg = "";
 
                 if (tile.label === "Trainers") {
-                  bgColor = "bg-blue-100/70";
-                  textColor = "text-blue-700";
-                  iconBg = "bg-blue-300/70";
+                  bgColor = "bg-blue-200/85";
+                  textColor = "text-blue-800";
+                  iconBg = "bg-blue-400/85";
                 } else if (tile.label === "Nutritionists") {
-                  bgColor = "bg-red-100/70";
-                  textColor = "text-red-700";
-                  iconBg = "bg-red-300/70";
+                  bgColor = "bg-red-200/85";
+                  textColor = "text-red-800";
+                  iconBg = "bg-red-400/85";
                 } else if (tile.label === "Meal Tracker") {
-                  bgColor = "bg-amber-100/70";
-                  textColor = "text-amber-700";
-                  iconBg = "bg-amber-300/70";
+                  bgColor = "bg-amber-200/85";
+                  textColor = "text-amber-800";
+                  iconBg = "bg-amber-400/85";
                 } else if (tile.label === "Online Meeting") {
-                  bgColor = "bg-purple-100/70";
-                  textColor = "text-purple-700";
-                  iconBg = "bg-purple-300/70";
+                  bgColor = "bg-purple-200/85";
+                  textColor = "text-purple-800";
+                  iconBg = "bg-purple-400/85";
                 } else if (tile.label === "CoCircle") {
-                  bgColor = "bg-green-100/70";
-                  textColor = "text-green-700";
-                  iconBg = "bg-green-300/70";
+                  bgColor = "bg-green-200/85";
+                  textColor = "text-green-800";
+                  iconBg = "bg-green-400/85";
                 } else if (tile.label === "Become a Trainer") {
-                  bgColor = "bg-pink-100/70";
-                  textColor = "text-pink-700";
-                  iconBg = "bg-pink-300/70";
+                  bgColor = "bg-pink-200/85";
+                  textColor = "text-pink-800";
+                  iconBg = "bg-pink-400/85";
                 }
 
                 return (
