@@ -127,11 +127,11 @@ const Navigation = () => {
 
   return (
     <nav
-      className="relative z-50 w-full bg-white/95 border-t border-gray-100/50 backdrop-blur-xl shadow-2xl"
+      className="relative z-50 w-full bg-gradient-to-r from-white via-white to-white/90 border-t border-gray-100/30 backdrop-blur-2xl shadow-2xl"
       style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}
     >
-      <div className="w-full px-2 py-3">
-        <div className="flex justify-around items-center gap-1">
+      <div className="w-full px-2 py-4">
+        <div className="flex justify-around items-center gap-2">
           {navItems.map(
             ({ path, label, icon: Icon, bgColor, textColor }: any) => {
               const active = isActive(path);
@@ -140,31 +140,66 @@ const Navigation = () => {
                   key={path}
                   to={path}
                   onClick={handleNavClick}
-                  className={`flex flex-col items-center justify-center gap-1 py-2.5 px-4 rounded-2xl transition-all duration-300 flex-1 ${
+                  className={`group relative flex flex-col items-center justify-center gap-1.5 py-3 px-5 rounded-3xl transition-all duration-300 flex-1 overflow-hidden ${
                     active
-                      ? `${bgColor} ${textColor} shadow-md`
-                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-100/50"
+                      ? "bg-gradient-to-br from-orange-400 to-yellow-500 text-white shadow-lg shadow-orange-300/50 scale-105"
+                      : "text-gray-600 hover:text-orange-600 hover:bg-gradient-to-br hover:from-orange-100 hover:to-yellow-100 hover:shadow-md hover:scale-110 active:scale-95"
                   }`}
+                  style={{
+                    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)"
+                  }}
                 >
-                  <div className="relative">
-                    <Icon size={24} />
+                  {/* Animated background gradient on hover */}
+                  <div
+                    className={`absolute inset-0 rounded-3xl transition-opacity duration-300 ${
+                      active
+                        ? "opacity-0"
+                        : "opacity-0 group-hover:opacity-100 bg-gradient-to-br from-orange-50 to-yellow-50"
+                    }`}
+                    style={{
+                      zIndex: -1,
+                    }}
+                  />
 
-                    {/* Unread Badge */}
+                  {/* Icon with animation */}
+                  <div className="relative z-10 group-hover:scale-110 group-active:scale-90 transition-transform duration-200">
+                    <Icon
+                      size={26}
+                      className={`${
+                        active ? "text-white drop-shadow-lg" : "text-current"
+                      }`}
+                    />
+
+                    {/* Unread Badge with pulse animation */}
                     {path === "/messages" && totalUnreadMessages > 0 && (
-                      <div className="absolute -top-2 -right-2 rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold text-white bg-gradient-to-br from-red-500 to-pink-500 shadow-lg">
+                      <div className="absolute -top-2 -right-3 rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-bold text-white bg-gradient-to-br from-red-500 to-pink-500 shadow-lg animate-pulse">
                         {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
                       </div>
                     )}
                   </div>
-                  <span className="text-[10px] font-semibold leading-tight">
+
+                  {/* Label with smooth transition */}
+                  <span
+                    className={`text-[11px] font-bold leading-tight transition-all duration-300 group-hover:font-bold ${
+                      active ? "text-white drop-shadow" : "text-inherit"
+                    }`}
+                  >
                     {label}
                   </span>
+
+                  {/* Active indicator dot */}
+                  {active && (
+                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-white shadow-lg animate-pulse" />
+                  )}
                 </Link>
               );
             },
           )}
         </div>
       </div>
+
+      {/* Top border glow effect */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-300/50 to-transparent" />
     </nav>
   );
 };
