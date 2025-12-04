@@ -198,6 +198,39 @@ export default function UnifiedMetricsModal({
         {/* Scrollable Content */}
         <div className="overflow-y-auto flex-1">
           <div className="p-6 space-y-6">
+            {/* Edit Steps Target Card */}
+            <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-4 border border-orange-200">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-gray-900">Daily Steps Goal</h3>
+                <button
+                  onClick={() => setIsEditing(!isEditing)}
+                  className="text-xs px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
+                >
+                  {isEditing ? "Cancel" : "Edit"}
+                </button>
+              </div>
+
+              {isEditing ? (
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    value={editSteps}
+                    onChange={(e) => setEditSteps(e.target.value)}
+                    className="flex-1 px-3 py-2 border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900"
+                    placeholder="Enter steps goal"
+                  />
+                  <button
+                    onClick={handleSaveStepsTarget}
+                    className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium rounded-lg transition-all"
+                  >
+                    Save
+                  </button>
+                </div>
+              ) : (
+                <p className="text-2xl font-bold text-gray-900">{targets.steps.toLocaleString()} steps</p>
+              )}
+            </div>
+
             {metrics.map((metric, idx) => (
               <MetricCard
                 key={idx}
