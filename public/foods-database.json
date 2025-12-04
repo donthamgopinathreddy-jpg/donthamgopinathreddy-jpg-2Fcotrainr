@@ -1,0 +1,604 @@
+{
+  "foods": [
+    {
+      "id": "1",
+      "name": "Banana",
+      "category": "fruits",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 89,
+        "protein": 1.1,
+        "carbs": 23,
+        "fats": 0.3
+      }
+    },
+    {
+      "id": "2",
+      "name": "Apple",
+      "category": "fruits",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 52,
+        "protein": 0.3,
+        "carbs": 14,
+        "fats": 0.2
+      }
+    },
+    {
+      "id": "3",
+      "name": "Mango",
+      "category": "fruits",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 60,
+        "protein": 0.8,
+        "carbs": 15,
+        "fats": 0.4
+      }
+    },
+    {
+      "id": "4",
+      "name": "Orange",
+      "category": "fruits",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 47,
+        "protein": 0.9,
+        "carbs": 12,
+        "fats": 0.1
+      }
+    },
+    {
+      "id": "5",
+      "name": "Egg (whole)",
+      "category": "proteins",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 155,
+        "protein": 13,
+        "carbs": 1.1,
+        "fats": 11
+      }
+    },
+    {
+      "id": "6",
+      "name": "Egg White",
+      "category": "proteins",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 52,
+        "protein": 11,
+        "carbs": 0.7,
+        "fats": 0.2
+      }
+    },
+    {
+      "id": "7",
+      "name": "Chicken Breast",
+      "category": "proteins",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 165,
+        "protein": 31,
+        "carbs": 0,
+        "fats": 3.6
+      }
+    },
+    {
+      "id": "8",
+      "name": "Fish (Salmon)",
+      "category": "proteins",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 208,
+        "protein": 20,
+        "carbs": 0,
+        "fats": 13
+      }
+    },
+    {
+      "id": "9",
+      "name": "Paneer (Indian Cheese)",
+      "category": "proteins",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 265,
+        "protein": 25,
+        "carbs": 3.2,
+        "fats": 17
+      }
+    },
+    {
+      "id": "10",
+      "name": "Curd (Yogurt)",
+      "category": "dairy",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 59,
+        "protein": 3.5,
+        "carbs": 3.3,
+        "fats": 0.4
+      }
+    },
+    {
+      "id": "11",
+      "name": "Milk (Cow)",
+      "category": "dairy",
+      "units_available": ["ml", "cup"],
+      "per_100g": {
+        "calories": 61,
+        "protein": 3.2,
+        "carbs": 4.8,
+        "fats": 3.3
+      }
+    },
+    {
+      "id": "12",
+      "name": "Cheese",
+      "category": "dairy",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 402,
+        "protein": 25,
+        "carbs": 1.3,
+        "fats": 33
+      }
+    },
+    {
+      "id": "13",
+      "name": "Rice (White, Cooked)",
+      "category": "grains",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 130,
+        "protein": 2.7,
+        "carbs": 28,
+        "fats": 0.3
+      }
+    },
+    {
+      "id": "14",
+      "name": "Rice (Brown, Cooked)",
+      "category": "grains",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 112,
+        "protein": 2.6,
+        "carbs": 24,
+        "fats": 0.9
+      }
+    },
+    {
+      "id": "15",
+      "name": "Wheat Bread",
+      "category": "grains",
+      "units_available": ["g", "slice"],
+      "per_100g": {
+        "calories": 265,
+        "protein": 9,
+        "carbs": 49,
+        "fats": 3.3
+      }
+    },
+    {
+      "id": "16",
+      "name": "Oats (Dry)",
+      "category": "grains",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 389,
+        "protein": 17,
+        "carbs": 66,
+        "fats": 6.9
+      }
+    },
+    {
+      "id": "17",
+      "name": "Roti (Chapati)",
+      "category": "grains",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 207,
+        "protein": 7,
+        "carbs": 41,
+        "fats": 1.5
+      }
+    },
+    {
+      "id": "18",
+      "name": "Paratha",
+      "category": "grains",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 249,
+        "protein": 7,
+        "carbs": 36,
+        "fats": 8
+      }
+    },
+    {
+      "id": "19",
+      "name": "Idli",
+      "category": "grains",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 95,
+        "protein": 2.5,
+        "carbs": 19,
+        "fats": 0.5
+      }
+    },
+    {
+      "id": "20",
+      "name": "Dosa",
+      "category": "grains",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 182,
+        "protein": 5,
+        "carbs": 26,
+        "fats": 5
+      }
+    },
+    {
+      "id": "21",
+      "name": "Upma",
+      "category": "grains",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 130,
+        "protein": 3.5,
+        "carbs": 26,
+        "fats": 1.5
+      }
+    },
+    {
+      "id": "22",
+      "name": "Dal (Lentil Curry)",
+      "category": "legumes",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 106,
+        "protein": 7.5,
+        "carbs": 18,
+        "fats": 1
+      }
+    },
+    {
+      "id": "23",
+      "name": "Chickpeas (Cooked)",
+      "category": "legumes",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 134,
+        "protein": 8.9,
+        "carbs": 23,
+        "fats": 2.1
+      }
+    },
+    {
+      "id": "24",
+      "name": "Black Beans (Cooked)",
+      "category": "legumes",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 84,
+        "protein": 8.9,
+        "carbs": 15,
+        "fats": 0.3
+      }
+    },
+    {
+      "id": "25",
+      "name": "Sambar",
+      "category": "vegetables",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 45,
+        "protein": 2,
+        "carbs": 8,
+        "fats": 0.8
+      }
+    },
+    {
+      "id": "26",
+      "name": "Spinach (Cooked)",
+      "category": "vegetables",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 23,
+        "protein": 2.9,
+        "carbs": 3.6,
+        "fats": 0.4
+      }
+    },
+    {
+      "id": "27",
+      "name": "Broccoli (Cooked)",
+      "category": "vegetables",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 34,
+        "protein": 2.8,
+        "carbs": 7,
+        "fats": 0.4
+      }
+    },
+    {
+      "id": "28",
+      "name": "Carrot",
+      "category": "vegetables",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 41,
+        "protein": 0.9,
+        "carbs": 10,
+        "fats": 0.2
+      }
+    },
+    {
+      "id": "29",
+      "name": "Potato (Boiled)",
+      "category": "vegetables",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 77,
+        "protein": 1.7,
+        "carbs": 17,
+        "fats": 0.1
+      }
+    },
+    {
+      "id": "30",
+      "name": "Tomato",
+      "category": "vegetables",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 18,
+        "protein": 0.9,
+        "carbs": 3.9,
+        "fats": 0.2
+      }
+    },
+    {
+      "id": "31",
+      "name": "Cucumber",
+      "category": "vegetables",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 16,
+        "protein": 0.7,
+        "carbs": 3.6,
+        "fats": 0.1
+      }
+    },
+    {
+      "id": "32",
+      "name": "Onion",
+      "category": "vegetables",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 40,
+        "protein": 1.1,
+        "carbs": 9,
+        "fats": 0.1
+      }
+    },
+    {
+      "id": "33",
+      "name": "Garlic",
+      "category": "vegetables",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 149,
+        "protein": 6.4,
+        "carbs": 33,
+        "fats": 0.5
+      }
+    },
+    {
+      "id": "34",
+      "name": "Ginger",
+      "category": "vegetables",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 80,
+        "protein": 1.8,
+        "carbs": 18,
+        "fats": 0.8
+      }
+    },
+    {
+      "id": "35",
+      "name": "Almonds",
+      "category": "nuts",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 579,
+        "protein": 21,
+        "carbs": 22,
+        "fats": 50
+      }
+    },
+    {
+      "id": "36",
+      "name": "Peanuts",
+      "category": "nuts",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 567,
+        "protein": 26,
+        "carbs": 16,
+        "fats": 49
+      }
+    },
+    {
+      "id": "37",
+      "name": "Cashews",
+      "category": "nuts",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 553,
+        "protein": 18,
+        "carbs": 30,
+        "fats": 44
+      }
+    },
+    {
+      "id": "38",
+      "name": "Walnut",
+      "category": "nuts",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 654,
+        "protein": 9,
+        "carbs": 14,
+        "fats": 65
+      }
+    },
+    {
+      "id": "39",
+      "name": "Protein Powder (Whey)",
+      "category": "supplements",
+      "units_available": ["g", "scoop"],
+      "per_100g": {
+        "calories": 412,
+        "protein": 80,
+        "carbs": 5,
+        "fats": 2
+      }
+    },
+    {
+      "id": "40",
+      "name": "Honey",
+      "category": "sweeteners",
+      "units_available": ["g", "tbsp"],
+      "per_100g": {
+        "calories": 304,
+        "protein": 0.3,
+        "carbs": 82,
+        "fats": 0
+      }
+    },
+    {
+      "id": "41",
+      "name": "Olive Oil",
+      "category": "oils",
+      "units_available": ["ml", "tbsp"],
+      "per_100g": {
+        "calories": 884,
+        "protein": 0,
+        "carbs": 0,
+        "fats": 100
+      }
+    },
+    {
+      "id": "42",
+      "name": "Butter",
+      "category": "oils",
+      "units_available": ["g", "tbsp"],
+      "per_100g": {
+        "calories": 717,
+        "protein": 0.9,
+        "carbs": 0.1,
+        "fats": 81
+      }
+    },
+    {
+      "id": "43",
+      "name": "Peas (Frozen, Cooked)",
+      "category": "legumes",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 42,
+        "protein": 3.4,
+        "carbs": 7.7,
+        "fats": 0.2
+      }
+    },
+    {
+      "id": "44",
+      "name": "Corn",
+      "category": "grains",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 86,
+        "protein": 3.3,
+        "carbs": 19,
+        "fats": 1.2
+      }
+    },
+    {
+      "id": "45",
+      "name": "Avocado",
+      "category": "fruits",
+      "units_available": ["g", "half"],
+      "per_100g": {
+        "calories": 160,
+        "protein": 2,
+        "carbs": 9,
+        "fats": 15
+      }
+    },
+    {
+      "id": "46",
+      "name": "Sweet Potato (Boiled)",
+      "category": "vegetables",
+      "units_available": ["g", "piece"],
+      "per_100g": {
+        "calories": 86,
+        "protein": 1.6,
+        "carbs": 20,
+        "fats": 0.1
+      }
+    },
+    {
+      "id": "47",
+      "name": "Quinoa (Cooked)",
+      "category": "grains",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 120,
+        "protein": 4.4,
+        "carbs": 21,
+        "fats": 1.9
+      }
+    },
+    {
+      "id": "48",
+      "name": "Lentils (Cooked)",
+      "category": "legumes",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 116,
+        "protein": 9,
+        "carbs": 20,
+        "fats": 0.4
+      }
+    },
+    {
+      "id": "49",
+      "name": "Tofu",
+      "category": "proteins",
+      "units_available": ["g"],
+      "per_100g": {
+        "calories": 76,
+        "protein": 8,
+        "carbs": 1.9,
+        "fats": 4.8
+      }
+    },
+    {
+      "id": "50",
+      "name": "Greek Yogurt",
+      "category": "dairy",
+      "units_available": ["g", "cup"],
+      "per_100g": {
+        "calories": 59,
+        "protein": 10,
+        "carbs": 3.3,
+        "fats": 0.4
+      }
+    }
+  ]
+}
