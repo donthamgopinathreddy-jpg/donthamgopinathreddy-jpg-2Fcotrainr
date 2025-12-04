@@ -163,16 +163,24 @@ const MealTracker = () => {
               {formatDate(currentDate)}
             </h1>
           </div>
-          <button
-            onClick={() => setCurrentDate(
-              new Date(new Date(currentDate).getTime() + 24 * 60 * 60 * 1000)
-                .toISOString()
-                .split("T")[0]
-            )}
-            className="p-2 hover:bg-gray-100 rounded-lg transition"
-          >
-            <ChevronRight size={20} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setView("weekly")}
+              className="text-xs font-medium text-blue-600 hover:text-blue-800 px-3 py-1 bg-blue-50 rounded-full"
+            >
+              Weekly
+            </button>
+            <button
+              onClick={() => setCurrentDate(
+                new Date(new Date(currentDate).getTime() + 24 * 60 * 60 * 1000)
+                  .toISOString()
+                  .split("T")[0]
+              )}
+              className="p-2 hover:bg-gray-100 rounded-lg transition"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Daily Meals */}
