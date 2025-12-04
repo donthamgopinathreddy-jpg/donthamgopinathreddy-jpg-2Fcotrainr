@@ -453,6 +453,123 @@ const MealTracker = () => {
     );
   }
 
+  // Weekly view
+  if (view === "weekly") {
+    const weekStart = getWeekStartDate();
+    const weekDays = [];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(weekStart);
+      date.setDate(date.getDate() + i);
+      weekDays.push(date.toISOString().split("T")[0]);
+    }
+
+    const weeklyData = weeklyMeals || {};
+    const weeklyCalories = weekDays.map((day) => weeklyData[day]?.totals.calories || 0);
+    const weeklyProtein = weekDays.map((day) => weeklyData[day]?.totals.protein || 0);
+    const maxCalories = Math.max(...weeklyCalories, 2500);
+    const avgCalories = weeklyCalories.reduce((a, b) => a + b, 0) / 7;
+    const avgProtein = weeklyProtein.reduce((a, b) => a + b, 0) / 7;
+
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-orange-50 via-white to-blue-50 flex flex-col overflow-hidden">
+        {/* Header */}
+        <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between sticky top-0 z-10">
+          <div className="flex-1 text-center">
+            <h1 className="text-lg font-bold text-gray-900">Weekly Overview</h1>
+            <p className="text-xs text-gray-600">
+              {new Date(weekStart).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })}{" "}
+              -{" "}
+              {new Date(new Date(weekStart).getTime() + 6 * 24 * 60 * 60 * 1000).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })}
+            </p>
+          </div>
+          <button
+            onClick={() => setView("daily")}
+            className="text-xs font-medium text-orange-600 hover:text-orange-800 px-3 py-1 bg-orange-50 rounded-full"
+          >
+            Daily
+          </button>
+        </div>
+
+        {/* Weekly Content */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24">
+          {/* Bar Chart */}
+          <div className="bg-white rounded-3xl p-6 border border-gray-200">
+            <h2 className="text-sm font-bold text-gray-900 mb-4">Daily Calories</h2>
+            <div className="flex items-end justify-between gap-2 h-32">
+              {weekDays.map((day, i) => (
+                <div key={day} className="flex-1 flex flex-col items-center gap-2">
+                  <div className="relative w-full h-full flex items-end justify-center">
+                    <div
+                      className="w-full bg-gradient-to-t from-orange-400 to-orange-500 rounded-t-lg transition-all hover:shadow-lg"
+                      style={{
+                        height: `${(weeklyCalories[i] / maxCalories) * 100}%`,
+                        minHeight: weeklyCalories[i] > 0 ? "4px" : "0px",
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs font-medium text-gray-900">
+                    {weeklyCalories[i] > 0 ? Math.round(weeklyCalories[i]) : "—"}
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    {new Date(day).toLocaleDateString("en-US", { weekday: "short" })}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-white rounded-3xl p-4 border border-gray-200">
+              <p className="text-xs text-gray-600 mb-1">Average Daily Calories</p>
+              <p className="text-2xl font-bold text-orange-500">
+                {Math.round(avgCalories)}
+              </p>
+            </div>
+            <div className="bg-white rounded-3xl p-4 border border-gray-200">
+              <p className="text-xs text-gray-600 mb-1">Average Daily Protein</p>
+              <p className="text-2xl font-bold text-blue-500">{Math.round(avgProtein)}g</p>
+            </div>
+          </div>
+
+          {/* Daily Breakdown */}
+          <div className="bg-white rounded-3xl p-4 border border-gray-200">
+            <h2 className="text-sm font-bold text-gray-900 mb-3">Daily Breakdown</h2>
+            <div className="space-y-2">
+              {weekDays.map((day) => (
+                <button
+                  key={day}
+                  onClick={() => {
+                    setCurrentDate(day);
+                    setView("daily");
+                  }}
+                  className="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-2xl transition flex items-center justify-between"
+                >
+                  <div>
+                    <p className="font-medium text-gray-900">
+                      {formatDate(day)}
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      {weeklyData[day]?.totals.calories || 0}cal • P:
+                      {Math.round(weeklyData[day]?.totals.protein || 0)}g
+                    </p>
+                  </div>
+                  <ChevronRight size={16} className="text-gray-400" />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return null;
 };
 
