@@ -589,175 +589,145 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 4. 2x2 Metric Tiles Grid */}
-          {/* Unified Metrics Card - Bold Vibrant Design */}
-          <div className="mx-5 mb-6 group">
-            {/* Decorative background circles */}
-            <div className="absolute left-0 -top-20 w-40 h-40 bg-gradient-to-br from-orange-400 to-pink-400 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500" />
-            <div className="absolute right-10 -top-10 w-32 h-32 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500" />
+          {/* 4. Connected Metrics Card - Sketch Design */}
+          <div className="mx-5 mb-6 relative">
+            {/* Container for positioning */}
+            <div className="flex flex-col items-center">
+              {/* Top Icon - User */}
+              <div className="mb-8 animate-bounce" style={{ animationDelay: "0s" }}>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center shadow-lg border-4 border-white">
+                  <User size={28} className="text-white" />
+                </div>
+              </div>
 
-            <div className="relative bg-gradient-to-br from-orange-500 via-pink-400 to-purple-500 rounded-3xl p-1 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
-              {/* Inner card */}
-              <div className="bg-gradient-to-br from-white via-orange-50 to-pink-50 rounded-3xl p-6 relative overflow-hidden">
-                {/* Animated accent lines */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-orange-200/30 to-transparent rounded-full blur-2xl -mr-32 -mt-32" />
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-pink-200/30 to-transparent rounded-full blur-2xl -ml-24 -mb-24" />
-
-                <div className="relative z-10">
-                  {/* Header with Edit Button */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h3 className="text-2xl font-black text-gray-900">Daily Goals</h3>
-                      <p className="text-xs text-gray-500 mt-1">Keep crushing it! 🔥</p>
-                    </div>
-                    <button
-                      onClick={() => setShowMetricsModal(true)}
-                      className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 via-pink-500 to-purple-500 hover:from-orange-600 hover:via-pink-600 hover:to-purple-600 text-white flex items-center justify-center font-bold text-3xl shadow-2xl hover:shadow-3xl hover:scale-125 active:scale-105 transition-all duration-300 transform hover:-rotate-90"
-                    >
-                      +
-                    </button>
+              {/* Middle Section with Left/Right Icons and Center Card */}
+              <div className="relative w-full flex items-center justify-center mb-8">
+                {/* Left Icon - Calories */}
+                <div className="absolute left-0 animate-bounce" style={{ animationDelay: "0.2s" }}>
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-red-400 to-red-500 flex items-center justify-center shadow-lg border-4 border-white">
+                    <Flame size={28} className="text-white" />
                   </div>
+                </div>
 
-                  {/* Metrics with Progress Bars */}
-                  <div className="space-y-4">
-                    {/* Steps */}
-                    <div className="group/metric bg-gradient-to-br from-orange-100 to-yellow-100 hover:from-orange-200 hover:to-yellow-200 p-4 rounded-2xl border-2 border-orange-300 hover:border-orange-400 transition-all duration-300 transform hover:scale-102 hover:shadow-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center group-hover/metric:scale-125 transition-transform duration-300 shadow-lg">
-                            <Footprints size={20} className="text-white" />
-                          </div>
-                          <div>
-                            <span className="text-sm font-black text-gray-900 block">Steps</span>
-                            <span className="text-xs text-gray-600">Walking goal</span>
-                          </div>
-                        </div>
-                        <span className="text-xl font-black text-orange-600 group-hover/metric:text-orange-700">
-                          {(stepsToday / 1000).toFixed(1)}k
-                        </span>
+                {/* Center Card with Metrics */}
+                <div className="relative z-10 bg-gradient-to-br from-white to-blue-50 rounded-3xl border-4 border-gray-900 shadow-2xl mx-20 w-full max-w-xs">
+                  {/* Gradient Border Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-pink-500 to-purple-500 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  {/* Inner Content */}
+                  <div className="relative z-20 bg-white rounded-2xl p-6">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-6">
+                      <div>
+                        <h3 className="text-xl font-black text-gray-900">Daily Goals</h3>
+                        <p className="text-xs text-gray-600 font-medium">Your metrics</p>
                       </div>
-                      <div className="w-full bg-gray-300 rounded-full h-4 overflow-hidden shadow-inner">
-                        <div
-                          className="h-full bg-gradient-to-r from-orange-500 to-yellow-500 transition-all duration-700 shadow-lg relative group-hover/metric:shadow-orange-500/50"
-                          style={{
-                            width: `${Math.min((stepsToday / stepsTarget) * 100, 100)}%`,
-                          }}
-                        >
-                          <div className="absolute inset-0 animate-pulse bg-white/20" />
-                        </div>
-                      </div>
-                      <div className="mt-2 flex items-center justify-between">
-                        <p className="text-xs font-bold text-gray-700">
-                          {Math.min((stepsToday / stepsTarget) * 100, 100).toFixed(0)}% / {stepsTarget.toLocaleString()}
-                        </p>
-                        <span className="text-xs bg-orange-500/20 text-orange-700 font-bold px-2 py-1 rounded-full">Target</span>
-                      </div>
+                      <button
+                        onClick={() => setShowMetricsModal(true)}
+                        className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white flex items-center justify-center font-bold text-xl shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-200"
+                      >
+                        +
+                      </button>
                     </div>
 
-                    {/* Calories */}
-                    <div className="group/metric bg-gradient-to-br from-red-100 to-pink-100 hover:from-red-200 hover:to-pink-200 p-4 rounded-2xl border-2 border-red-300 hover:border-red-400 transition-all duration-300 transform hover:scale-102 hover:shadow-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center group-hover/metric:scale-125 transition-transform duration-300 shadow-lg">
-                            <Flame size={20} className="text-white" />
-                          </div>
-                          <div>
-                            <span className="text-sm font-black text-gray-900 block">Calories</span>
-                            <span className="text-xs text-gray-600">Burn target</span>
+                    {/* Metrics List */}
+                    <div className="space-y-3">
+                      {/* Steps */}
+                      <div className="flex items-center justify-between p-3 rounded-xl bg-orange-50 border-l-4 border-orange-500">
+                        <div className="flex items-center gap-2 flex-1">
+                          <Footprints size={16} className="text-orange-600" />
+                          <div className="flex-1">
+                            <p className="text-xs font-bold text-gray-900">Steps</p>
+                            <p className="text-xs text-gray-600">10,000</p>
                           </div>
                         </div>
-                        <span className="text-xl font-black text-red-600 group-hover/metric:text-red-700">
-                          {(caloriesBurned / 100).toFixed(0)}kcal
-                        </span>
+                        <span className="text-sm font-black text-orange-600">{(stepsToday / 1000).toFixed(1)}k</span>
                       </div>
-                      <div className="w-full bg-gray-300 rounded-full h-4 overflow-hidden shadow-inner">
-                        <div
-                          className="h-full bg-gradient-to-r from-red-500 to-pink-500 transition-all duration-700 shadow-lg"
-                          style={{
-                            width: `${Math.min((caloriesBurned / caloriesTarget) * 100, 100)}%`,
-                          }}
-                        >
-                          <div className="absolute inset-0 animate-pulse bg-white/20" />
-                        </div>
-                      </div>
-                      <div className="mt-2 flex items-center justify-between">
-                        <p className="text-xs font-bold text-gray-700">
-                          {Math.min((caloriesBurned / caloriesTarget) * 100, 100).toFixed(0)}% / {caloriesTarget}
-                        </p>
-                        <span className="text-xs bg-red-500/20 text-red-700 font-bold px-2 py-1 rounded-full">Burn</span>
-                      </div>
-                    </div>
 
-                    {/* Water */}
-                    <div className="group/metric bg-gradient-to-br from-blue-100 to-cyan-100 hover:from-blue-200 hover:to-cyan-200 p-4 rounded-2xl border-2 border-blue-300 hover:border-blue-400 transition-all duration-300 transform hover:scale-102 hover:shadow-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover/metric:scale-125 transition-transform duration-300 shadow-lg">
-                            <Droplets size={20} className="text-white" />
-                          </div>
-                          <div>
-                            <span className="text-sm font-black text-gray-900 block">Water</span>
-                            <span className="text-xs text-gray-600">Hydration goal</span>
+                      {/* Calories */}
+                      <div className="flex items-center justify-between p-3 rounded-xl bg-red-50 border-l-4 border-red-500">
+                        <div className="flex items-center gap-2 flex-1">
+                          <Flame size={16} className="text-red-600" />
+                          <div className="flex-1">
+                            <p className="text-xs font-bold text-gray-900">Calories</p>
+                            <p className="text-xs text-gray-600">2,000 kcal</p>
                           </div>
                         </div>
-                        <span className="text-xl font-black text-blue-600 group-hover/metric:text-blue-700">
-                          {(waterConsumed / 1000).toFixed(1)}L
-                        </span>
+                        <span className="text-sm font-black text-red-600">{(caloriesBurned / 100).toFixed(0)}kcal</span>
                       </div>
-                      <div className="w-full bg-gray-300 rounded-full h-4 overflow-hidden shadow-inner">
-                        <div
-                          className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-700 shadow-lg"
-                          style={{
-                            width: `${Math.min((waterConsumed / autoWaterTarget) * 100, 100)}%`,
-                          }}
-                        >
-                          <div className="absolute inset-0 animate-pulse bg-white/20" />
-                        </div>
-                      </div>
-                      <div className="mt-2 flex items-center justify-between">
-                        <p className="text-xs font-bold text-gray-700">
-                          {Math.min((waterConsumed / autoWaterTarget) * 100, 100).toFixed(0)}% / {(autoWaterTarget / 1000).toFixed(1)}L
-                        </p>
-                        <span className="text-xs bg-blue-500/20 text-blue-700 font-bold px-2 py-1 rounded-full">Hydrate</span>
-                      </div>
-                    </div>
 
-                    {/* Distance */}
-                    <div className="group/metric bg-gradient-to-br from-purple-100 to-pink-100 hover:from-purple-200 hover:to-pink-200 p-4 rounded-2xl border-2 border-purple-300 hover:border-purple-400 transition-all duration-300 transform hover:scale-102 hover:shadow-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover/metric:scale-125 transition-transform duration-300 shadow-lg">
-                            <MapPin size={20} className="text-white" />
-                          </div>
-                          <div>
-                            <span className="text-sm font-black text-gray-900 block">Distance</span>
-                            <span className="text-xs text-gray-600">Travel goal</span>
+                      {/* Distance */}
+                      <div className="flex items-center justify-between p-3 rounded-xl bg-purple-50 border-l-4 border-purple-500">
+                        <div className="flex items-center gap-2 flex-1">
+                          <MapPin size={16} className="text-purple-600" />
+                          <div className="flex-1">
+                            <p className="text-xs font-bold text-gray-900">Distance</p>
+                            <p className="text-xs text-gray-600">10 km</p>
                           </div>
                         </div>
-                        <span className="text-xl font-black text-purple-600 group-hover/metric:text-purple-700">
-                          {distanceKm.toFixed(1)}km
-                        </span>
+                        <span className="text-sm font-black text-purple-600">{distanceKm.toFixed(1)}km</span>
                       </div>
-                      <div className="w-full bg-gray-300 rounded-full h-4 overflow-hidden shadow-inner">
-                        <div
-                          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-700 shadow-lg"
-                          style={{
-                            width: `${Math.min((distanceKm / 10) * 100, 100)}%`,
-                          }}
-                        >
-                          <div className="absolute inset-0 animate-pulse bg-white/20" />
+
+                      {/* Water */}
+                      <div className="flex items-center justify-between p-3 rounded-xl bg-blue-50 border-l-4 border-blue-500">
+                        <div className="flex items-center gap-2 flex-1">
+                          <Droplets size={16} className="text-blue-600" />
+                          <div className="flex-1">
+                            <p className="text-xs font-bold text-gray-900">Water</p>
+                            <p className="text-xs text-gray-600">{(autoWaterTarget / 1000).toFixed(1)}L</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="mt-2 flex items-center justify-between">
-                        <p className="text-xs font-bold text-gray-700">
-                          {Math.min((distanceKm / 10) * 100, 100).toFixed(0)}% / 10km
-                        </p>
-                        <span className="text-xs bg-purple-500/20 text-purple-700 font-bold px-2 py-1 rounded-full">Active</span>
+                        <span className="text-sm font-black text-blue-600">{(waterConsumed / 1000).toFixed(1)}L</span>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Right Icon - Distance */}
+                <div className="absolute right-0 animate-bounce" style={{ animationDelay: "0.4s" }}>
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center shadow-lg border-4 border-white">
+                    <MapPin size={28} className="text-white" />
+                  </div>
+                </div>
               </div>
+
+              {/* Bottom Icon - Water */}
+              <div className="animate-bounce" style={{ animationDelay: "0.6s" }}>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center shadow-lg border-4 border-white">
+                  <Droplets size={28} className="text-white" />
+                </div>
+              </div>
+
+              {/* Connection Lines SVG */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>
+                {/* Top line */}
+                <line x1="50%" y1="32" x2="50%" y2="80" stroke="url(#gradientVertical)" strokeWidth="2" strokeDasharray="4,4" />
+                {/* Left line */}
+                <line x1="32" y1="50%" x2="20%" y2="50%" stroke="url(#gradientLeft)" strokeWidth="2" strokeDasharray="4,4" />
+                {/* Right line */}
+                <line x1="68%" y1="50%" x2="88" y2="50%" stroke="url(#gradientRight)" strokeWidth="2" strokeDasharray="4,4" />
+                {/* Bottom line */}
+                <line x1="50%" y1="60%" x2="50%" y2="calc(100% - 32px)" stroke="url(#gradientVertical2)" strokeWidth="2" strokeDasharray="4,4" />
+
+                <defs>
+                  <linearGradient id="gradientVertical" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#f97316" />
+                    <stop offset="100%" stopColor="#fb923c" />
+                  </linearGradient>
+                  <linearGradient id="gradientVertical2" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#60a5fa" />
+                  </linearGradient>
+                  <linearGradient id="gradientLeft" x1="100%" y1="0%" x2="0%" y2="0%">
+                    <stop offset="0%" stopColor="#ef4444" />
+                    <stop offset="100%" stopColor="#f87171" />
+                  </linearGradient>
+                  <linearGradient id="gradientRight" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#a855f7" />
+                    <stop offset="100%" stopColor="#c084fc" />
+                  </linearGradient>
+                </defs>
+              </svg>
             </div>
           </div>
 
