@@ -510,7 +510,9 @@ const AppRoutes = () => {
         path="/profile"
         element={
           <ProtectedRoute>
-            <MobileProfile />
+            <AppLayout>
+              <MobileProfile />
+            </AppLayout>
           </ProtectedRoute>
         }
       />
