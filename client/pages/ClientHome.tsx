@@ -665,7 +665,7 @@ export default function ClientHome() {
                   <Droplets size={28} className="text-white/80" />
                   <div className="text-left">
                     <p className="text-xs font-semibold text-white/70">Water Intake</p>
-                    <p className="text-2xl font-black text-white">{(waterConsumed / 1000).toFixed(1)}L</p>
+                    <p className="text-sm font-medium text-white/90">{(waterConsumed / 1000).toFixed(1)}L / {(autoWaterTarget / 1000).toFixed(1)}L</p>
                   </div>
                 </div>
                 <button
@@ -675,9 +675,10 @@ export default function ClientHome() {
                     setWaterConsumed(newWater);
                     toast.success("Added 250ml water!");
                   }}
-                  className="p-2 bg-white/20 hover:bg-white/40 rounded-lg transition-all duration-200 active:scale-95 ml-2"
+                  className="px-3 py-1.5 bg-white/20 hover:bg-white/40 rounded-lg transition-all duration-200 active:scale-95 ml-2 flex items-center gap-1 text-xs font-semibold text-white"
                 >
-                  <Plus size={20} className="text-white" />
+                  <Plus size={16} className="text-white" />
+                  250ml
                 </button>
               </div>
             </div>
@@ -919,19 +920,11 @@ export default function ClientHome() {
                 </p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Water Goal (ml)
-                </label>
-                <input
-                  type="number"
-                  value={autoWaterTarget}
-                  disabled
-                  className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 text-gray-600 focus:outline-none cursor-not-allowed"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Auto-calculated based on your weight ({userProfile?.weight_kg}
-                  kg × 30ml)
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
+                <p className="text-sm font-semibold text-teal-900 mb-1">Water Goal</p>
+                <p className="text-lg font-black text-teal-600">{(autoWaterTarget / 1000).toFixed(2)}L</p>
+                <p className="text-xs text-teal-700 mt-1">
+                  Auto-calculated: {userProfile?.weight_kg}kg × 30ml per kg
                 </p>
               </div>
             </div>
