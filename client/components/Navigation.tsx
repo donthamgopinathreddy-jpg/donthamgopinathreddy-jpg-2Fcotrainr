@@ -146,27 +146,8 @@ const Navigation = () => {
             ({ path, label, icon: Icon, bgColor, textColor }: any) => {
               const active = isActive(path);
 
-              // Different gradient for each nav item
-              const getGradientForPath = (navPath: string) => {
-                if (navPath === "/") return "from-orange-400 to-yellow-500";
-                if (navPath === "/discover") return "from-green-400 to-emerald-500";
-                if (navPath === "/achievements") return "from-yellow-400 to-orange-500";
-                if (navPath === "/messages") return "from-blue-400 to-cyan-500";
-                if (navPath === "/profile") return "from-pink-400 to-rose-500";
-                return "from-orange-400 to-yellow-500";
-              };
-
-              const gradient = getGradientForPath(path);
-
-              // Get shadow color for this gradient
-              const getShadowColor = (navPath: string) => {
-                if (navPath === "/") return "rgba(251, 146, 60, 0.3)";
-                if (navPath === "/discover") return "rgba(74, 222, 128, 0.3)";
-                if (navPath === "/achievements") return "rgba(253, 224, 71, 0.3)";
-                if (navPath === "/messages") return "rgba(96, 165, 250, 0.3)";
-                if (navPath === "/profile") return "rgba(244, 114, 182, 0.3)";
-                return "rgba(251, 146, 60, 0.3)";
-              };
+              // Single gradient for all nav items
+              const gradient = "from-orange-400 to-yellow-500";
 
               return (
                 <Link
