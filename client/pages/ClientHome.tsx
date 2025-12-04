@@ -776,29 +776,29 @@ export default function ClientHome() {
                 let iconBg = "";
 
                 if (tile.label === "Trainers") {
-                  bgColor = "bg-blue-100/60";
+                  bgColor = "bg-blue-100/70";
                   textColor = "text-blue-700";
-                  iconBg = "bg-blue-300/60";
+                  iconBg = "bg-blue-300/70";
                 } else if (tile.label === "Nutritionists") {
-                  bgColor = "bg-red-100/60";
+                  bgColor = "bg-red-100/70";
                   textColor = "text-red-700";
-                  iconBg = "bg-red-300/60";
+                  iconBg = "bg-red-300/70";
                 } else if (tile.label === "Meal Tracker") {
-                  bgColor = "bg-amber-100/60";
+                  bgColor = "bg-amber-100/70";
                   textColor = "text-amber-700";
-                  iconBg = "bg-amber-300/60";
+                  iconBg = "bg-amber-300/70";
                 } else if (tile.label === "Online Meeting") {
-                  bgColor = "bg-purple-100/60";
+                  bgColor = "bg-purple-100/70";
                   textColor = "text-purple-700";
-                  iconBg = "bg-purple-300/60";
+                  iconBg = "bg-purple-300/70";
                 } else if (tile.label === "CoCircle") {
-                  bgColor = "bg-green-100/60";
+                  bgColor = "bg-green-100/70";
                   textColor = "text-green-700";
-                  iconBg = "bg-green-300/60";
+                  iconBg = "bg-green-300/70";
                 } else if (tile.label === "Become a Trainer") {
-                  bgColor = "bg-pink-100/60";
+                  bgColor = "bg-pink-100/70";
                   textColor = "text-pink-700";
-                  iconBg = "bg-pink-300/60";
+                  iconBg = "bg-pink-300/70";
                 }
 
                 return (
