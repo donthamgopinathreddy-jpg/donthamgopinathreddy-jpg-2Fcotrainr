@@ -430,7 +430,9 @@ const AppRoutes = () => {
         path="/messages"
         element={
           <ProtectedRoute>
-            <MobileMessages />
+            <AppLayout>
+              <MobileMessages />
+            </AppLayout>
           </ProtectedRoute>
         }
       />
