@@ -50,6 +50,8 @@ const MealTracker = () => {
   const [selectedUnit, setSelectedUnit] = useState("g");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [mealPhotos, setMealPhotos] = useState<Record<string, any[]>>({});
+  const [mealOrder, setMealOrder] = useState(["breakfast", "lunch", "snacks", "dinner"]);
+  const [draggedMeal, setDraggedMeal] = useState<string | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
