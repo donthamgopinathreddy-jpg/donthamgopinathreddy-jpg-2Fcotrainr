@@ -162,7 +162,7 @@ const Navigation = () => {
                   <div className="relative z-10 group-hover:scale-110 group-active:scale-90 transition-transform duration-200">
                     <Icon
                       size={26}
-                      className={`${active ? "text-white drop-shadow-lg" : "text-current"}`}
+                      className={`${active ? "text-white drop-shadow-lg" : "text-gray-600"}`}
                     />
 
                     {/* Unread Badge with pulse animation */}
@@ -172,11 +172,6 @@ const Navigation = () => {
                       </div>
                     )}
                   </div>
-
-                  {/* Active indicator dot */}
-                  {active && (
-                    <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white shadow-lg animate-pulse" />
-                  )}
                 </Link>
               );
             },
