@@ -589,140 +589,144 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 4. Connected Metrics Card - Sketch Design */}
-          <div className="mx-5 mb-6 relative">
-            {/* Container for positioning */}
-            <div className="flex flex-col items-center">
-              {/* Top Icon - User */}
-              <div className="mb-8 animate-bounce" style={{ animationDelay: "0s" }}>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center shadow-lg border-4 border-white">
-                  <User size={28} className="text-white" />
+          {/* 4. Connected Metrics Card - Square Layout with Rounded Boxes */}
+          <div className="mx-5 mb-6 px-4">
+            {/* Full Width Square Layout */}
+            <div className="relative" style={{ aspectRatio: "1" }}>
+              {/* Top Box - User */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 animate-bounce" style={{ animationDelay: "0s" }}>
+                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center shadow-lg border-4 border-white hover:scale-110 transition-transform cursor-pointer">
+                  <User size={32} className="text-white" />
                 </div>
               </div>
 
-              {/* Middle Section with Left/Right Icons and Center Card */}
-              <div className="relative w-full flex items-center justify-center mb-8">
-                {/* Left Icon - Calories */}
-                <div className="absolute left-0 animate-bounce" style={{ animationDelay: "0.2s" }}>
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-red-400 to-red-500 flex items-center justify-center shadow-lg border-4 border-white">
-                    <Flame size={28} className="text-white" />
+              {/* Middle Row with Left/Right Boxes and Center Card */}
+              <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 flex items-center justify-between">
+                {/* Left Box - Calories */}
+                <div className="animate-bounce" style={{ animationDelay: "0.2s" }}>
+                  <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-red-400 to-red-500 flex items-center justify-center shadow-lg border-4 border-white hover:scale-110 transition-transform cursor-pointer">
+                    <Flame size={32} className="text-white" />
                   </div>
                 </div>
 
-                {/* Center Card with Metrics */}
-                <div className="relative z-10 bg-gradient-to-br from-white to-blue-50 rounded-3xl border-4 border-gray-900 shadow-2xl mx-20 w-full max-w-xs">
-                  {/* Gradient Border Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-pink-500 to-purple-500 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
+                {/* Center Card with Metrics - Clickable */}
+                <button
+                  onClick={() => setShowMetricsModal(true)}
+                  className="relative z-10 bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 active:scale-95 border-4 border-gray-900 w-48 h-48 flex flex-col items-center justify-center p-4 cursor-pointer"
+                >
                   {/* Inner Content */}
-                  <div className="relative z-20 bg-white rounded-2xl p-6">
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div>
-                        <h3 className="text-xl font-black text-gray-900">Daily Goals</h3>
-                        <p className="text-xs text-gray-600 font-medium">Your metrics</p>
-                      </div>
-                      <button
-                        onClick={() => setShowMetricsModal(true)}
-                        className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white flex items-center justify-center font-bold text-xl shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-200"
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    {/* Metrics List */}
-                    <div className="space-y-3">
-                      {/* Steps */}
-                      <div className="flex items-center justify-between p-3 rounded-xl bg-orange-50 border-l-4 border-orange-500">
-                        <div className="flex items-center gap-2 flex-1">
-                          <Footprints size={16} className="text-orange-600" />
-                          <div className="flex-1">
-                            <p className="text-xs font-bold text-gray-900">Steps</p>
-                            <p className="text-xs text-gray-600">10,000</p>
-                          </div>
-                        </div>
-                        <span className="text-sm font-black text-orange-600">{(stepsToday / 1000).toFixed(1)}k</span>
-                      </div>
-
-                      {/* Calories */}
-                      <div className="flex items-center justify-between p-3 rounded-xl bg-red-50 border-l-4 border-red-500">
-                        <div className="flex items-center gap-2 flex-1">
-                          <Flame size={16} className="text-red-600" />
-                          <div className="flex-1">
-                            <p className="text-xs font-bold text-gray-900">Calories</p>
-                            <p className="text-xs text-gray-600">2,000 kcal</p>
-                          </div>
-                        </div>
-                        <span className="text-sm font-black text-red-600">{(caloriesBurned / 100).toFixed(0)}kcal</span>
-                      </div>
-
-                      {/* Distance */}
-                      <div className="flex items-center justify-between p-3 rounded-xl bg-purple-50 border-l-4 border-purple-500">
-                        <div className="flex items-center gap-2 flex-1">
-                          <MapPin size={16} className="text-purple-600" />
-                          <div className="flex-1">
-                            <p className="text-xs font-bold text-gray-900">Distance</p>
-                            <p className="text-xs text-gray-600">10 km</p>
-                          </div>
-                        </div>
-                        <span className="text-sm font-black text-purple-600">{distanceKm.toFixed(1)}km</span>
-                      </div>
-
-                      {/* Water */}
-                      <div className="flex items-center justify-between p-3 rounded-xl bg-blue-50 border-l-4 border-blue-500">
-                        <div className="flex items-center gap-2 flex-1">
-                          <Droplets size={16} className="text-blue-600" />
-                          <div className="flex-1">
-                            <p className="text-xs font-bold text-gray-900">Water</p>
-                            <p className="text-xs text-gray-600">{(autoWaterTarget / 1000).toFixed(1)}L</p>
-                          </div>
-                        </div>
-                        <span className="text-sm font-black text-blue-600">{(waterConsumed / 1000).toFixed(1)}L</span>
+                  <div className="relative z-20 flex flex-col items-center justify-center text-center">
+                    <h3 className="text-2xl font-black text-gray-900 mb-2">Daily</h3>
+                    <p className="text-sm font-bold text-gray-600 mb-4">Goals</p>
+                    <div className="space-y-2">
+                      <div className="text-xs font-semibold text-gray-700">
+                        <p>📍 Steps • Calories</p>
+                        <p>💧 Distance • Water</p>
                       </div>
                     </div>
+                    <p className="text-xs text-blue-600 font-bold mt-4">Tap for details →</p>
                   </div>
-                </div>
+                </button>
 
-                {/* Right Icon - Distance */}
-                <div className="absolute right-0 animate-bounce" style={{ animationDelay: "0.4s" }}>
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center shadow-lg border-4 border-white">
-                    <MapPin size={28} className="text-white" />
+                {/* Right Box - Distance */}
+                <div className="animate-bounce" style={{ animationDelay: "0.4s" }}>
+                  <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center shadow-lg border-4 border-white hover:scale-110 transition-transform cursor-pointer">
+                    <MapPin size={32} className="text-white" />
                   </div>
                 </div>
               </div>
 
-              {/* Bottom Icon - Water */}
-              <div className="animate-bounce" style={{ animationDelay: "0.6s" }}>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center shadow-lg border-4 border-white">
-                  <Droplets size={28} className="text-white" />
+              {/* Bottom Box - Water */}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 animate-bounce" style={{ animationDelay: "0.6s" }}>
+                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center shadow-lg border-4 border-white hover:scale-110 transition-transform cursor-pointer">
+                  <Droplets size={32} className="text-white" />
                 </div>
               </div>
 
               {/* Connection Lines SVG */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}
+              >
                 {/* Top line */}
-                <line x1="50%" y1="32" x2="50%" y2="80" stroke="url(#gradientVertical)" strokeWidth="2" strokeDasharray="4,4" />
+                <line
+                  x1="50%"
+                  y1="0"
+                  x2="50%"
+                  y2="20%"
+                  stroke="url(#gradientVertical)"
+                  strokeWidth="3"
+                  strokeDasharray="6,4"
+                />
                 {/* Left line */}
-                <line x1="32" y1="50%" x2="20%" y2="50%" stroke="url(#gradientLeft)" strokeWidth="2" strokeDasharray="4,4" />
+                <line
+                  x1="0"
+                  y1="50%"
+                  x2="30%"
+                  y2="50%"
+                  stroke="url(#gradientLeft)"
+                  strokeWidth="3"
+                  strokeDasharray="6,4"
+                />
                 {/* Right line */}
-                <line x1="68%" y1="50%" x2="88" y2="50%" stroke="url(#gradientRight)" strokeWidth="2" strokeDasharray="4,4" />
+                <line
+                  x1="70%"
+                  y1="50%"
+                  x2="100%"
+                  y2="50%"
+                  stroke="url(#gradientRight)"
+                  strokeWidth="3"
+                  strokeDasharray="6,4"
+                />
                 {/* Bottom line */}
-                <line x1="50%" y1="60%" x2="50%" y2="calc(100% - 32px)" stroke="url(#gradientVertical2)" strokeWidth="2" strokeDasharray="4,4" />
+                <line
+                  x1="50%"
+                  y1="80%"
+                  x2="50%"
+                  y2="100%"
+                  stroke="url(#gradientVertical2)"
+                  strokeWidth="3"
+                  strokeDasharray="6,4"
+                />
 
                 <defs>
-                  <linearGradient id="gradientVertical" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <linearGradient
+                    id="gradientVertical"
+                    x1="0%"
+                    y1="0%"
+                    x2="0%"
+                    y2="100%"
+                  >
                     <stop offset="0%" stopColor="#f97316" />
                     <stop offset="100%" stopColor="#fb923c" />
                   </linearGradient>
-                  <linearGradient id="gradientVertical2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <linearGradient
+                    id="gradientVertical2"
+                    x1="0%"
+                    y1="0%"
+                    x2="0%"
+                    y2="100%"
+                  >
                     <stop offset="0%" stopColor="#3b82f6" />
                     <stop offset="100%" stopColor="#60a5fa" />
                   </linearGradient>
-                  <linearGradient id="gradientLeft" x1="100%" y1="0%" x2="0%" y2="0%">
+                  <linearGradient
+                    id="gradientLeft"
+                    x1="100%"
+                    y1="0%"
+                    x2="0%"
+                    y2="0%"
+                  >
                     <stop offset="0%" stopColor="#ef4444" />
                     <stop offset="100%" stopColor="#f87171" />
                   </linearGradient>
-                  <linearGradient id="gradientRight" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <linearGradient
+                    id="gradientRight"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="0%"
+                  >
                     <stop offset="0%" stopColor="#a855f7" />
                     <stop offset="100%" stopColor="#c084fc" />
                   </linearGradient>
