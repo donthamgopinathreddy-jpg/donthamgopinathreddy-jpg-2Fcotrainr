@@ -213,9 +213,6 @@ const Navigation = () => {
           )}
         </div>
       </div>
-
-      {/* Top border glow effect */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-300/50 to-transparent" />
     </nav>
   );
 };
