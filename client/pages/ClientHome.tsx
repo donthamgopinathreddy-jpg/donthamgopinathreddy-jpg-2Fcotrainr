@@ -470,16 +470,6 @@ export default function ClientHome() {
     },
   ];
 
-  const navItems = [
-    { path: "/", label: "Home", icon: HomeIcon },
-    { path: "/nutrition", label: "Nutrition", icon: Utensils },
-    { path: "/discover", label: "Discover", icon: MapPin },
-    { path: "/messages", label: "Messages", icon: MessageCircle },
-    { path: "/profile", label: "Profile", icon: User },
-  ];
-
-  const isActive = (path: string) => location.pathname === path;
-
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 flex flex-col">
       {/* Mobile Container - max width for native feel (390px iPhone-like) */}
