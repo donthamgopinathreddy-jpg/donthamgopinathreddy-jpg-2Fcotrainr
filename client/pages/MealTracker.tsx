@@ -50,7 +50,12 @@ const MealTracker = () => {
   const [selectedUnit, setSelectedUnit] = useState("g");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [mealPhotos, setMealPhotos] = useState<Record<string, any[]>>({});
-  const [mealOrder, setMealOrder] = useState(["breakfast", "lunch", "snacks", "dinner"]);
+  const [mealOrder, setMealOrder] = useState([
+    "breakfast",
+    "lunch",
+    "snacks",
+    "dinner",
+  ]);
   const [draggedMeal, setDraggedMeal] = useState<string | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -576,7 +581,9 @@ const MealTracker = () => {
                 draggedMeal === "custom" ? "opacity-50 scale-95" : ""
               }`}
             >
-              <div className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">➕</div>
+              <div className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                ➕
+              </div>
               <h3 className="text-xl font-bold text-gray-900 text-center mb-1">
                 Extra Meal
               </h3>
