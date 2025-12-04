@@ -412,30 +412,53 @@ const MealTracker = () => {
       {/* Macro Summary Bar with Horizontal Bars */}
       {dailyMeals && (
         <div className="bg-white/50 backdrop-blur-md border-b border-gray-200/50 p-6 shadow-sm">
-          <div className="space-y-4">
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <h3 className="text-sm font-bold text-gray-700">Daily Goals</h3>
+            <button
+              onClick={() => {
+                setEditMacroTargets(macroTargets);
+                setShowMacroTargetsModal(true);
+              }}
+              className="p-2 hover:bg-gray-100 rounded-lg transition text-gray-600"
+              title="Edit macro targets"
+            >
+              <Settings size={18} />
+            </button>
+          </div>
+
+          {/* Large Protein Bar */}
+          <div className="mb-5">
             <MacroBar
               current={dailyMeals.totals.protein}
-              target={150}
+              target={macroTargets.protein}
               label="Protein"
               gradient="from-blue-400 to-blue-600"
+              size="large"
             />
+          </div>
+
+          {/* 3 Smaller Bars Below */}
+          <div className="grid grid-cols-3 gap-3">
             <MacroBar
               current={dailyMeals.totals.calories}
-              target={2500}
-              label="Calories"
+              target={macroTargets.calories}
+              label="Cal"
               gradient="from-orange-400 to-orange-600"
+              size="normal"
             />
             <MacroBar
               current={dailyMeals.totals.carbs}
-              target={300}
+              target={macroTargets.carbs}
               label="Carbs"
               gradient="from-green-400 to-green-600"
+              size="normal"
             />
             <MacroBar
               current={dailyMeals.totals.fats}
-              target={75}
+              target={macroTargets.fats}
               label="Fats"
               gradient="from-red-400 to-red-600"
+              size="normal"
             />
           </div>
         </div>
