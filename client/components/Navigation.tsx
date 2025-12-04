@@ -130,8 +130,8 @@ const Navigation = () => {
       className="relative z-50 w-full bg-gradient-to-r from-white via-white to-white/90 border-t border-gray-100/30 backdrop-blur-2xl shadow-2xl"
       style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}
     >
-      <div className="w-full px-2 py-4">
-        <div className="flex justify-around items-center gap-2">
+      <div className="w-full px-2 py-3">
+        <div className="flex justify-around items-center gap-3">
           {navItems.map(
             ({ path, label, icon: Icon, bgColor, textColor }: any) => {
               const active = isActive(path);
