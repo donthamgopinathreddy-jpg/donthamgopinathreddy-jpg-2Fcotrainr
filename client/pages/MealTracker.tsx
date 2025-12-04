@@ -393,10 +393,39 @@ const MealTracker = () => {
                     ) : null}
 
                     <div className="flex gap-2">
+                      <input
+                        ref={cameraInputRef}
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        onChange={(e) => {
+                          if (e.target.files?.[0]) {
+                            handlePhotoUpload(e.target.files[0], mealType);
+                          }
+                          // Reset input so same file can be captured again
+                          e.currentTarget.value = "";
+                        }}
+                        className="hidden"
+                      />
+
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          if (e.target.files?.[0]) {
+                            handlePhotoUpload(e.target.files[0], mealType);
+                          }
+                          // Reset input so same file can be selected again
+                          e.currentTarget.value = "";
+                        }}
+                        className="hidden"
+                      />
+
                       <button
                         onClick={() => cameraInputRef.current?.click()}
                         disabled={uploading}
-                        className="flex-1 flex items-center justify-center gap-2 py-2 bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-lg transition text-gray-700 border border-white/40 font-semibold disabled:opacity-50"
+                        className="flex-1 flex items-center justify-center gap-2 py-2 bg-blue-400/60 hover:bg-blue-500/70 backdrop-blur-sm rounded-lg transition text-white border border-blue-400/40 font-semibold disabled:opacity-50 active:scale-95"
                       >
                         <Camera size={18} />
                         Camera
@@ -404,37 +433,12 @@ const MealTracker = () => {
                       <button
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="flex-1 flex items-center justify-center gap-2 py-2 bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-lg transition text-gray-700 border border-white/40 font-semibold disabled:opacity-50"
+                        className="flex-1 flex items-center justify-center gap-2 py-2 bg-purple-400/60 hover:bg-purple-500/70 backdrop-blur-sm rounded-lg transition text-white border border-purple-400/40 font-semibold disabled:opacity-50 active:scale-95"
                       >
                         <ImageIcon size={18} />
                         Photo
                       </button>
                     </div>
-
-                    <input
-                      ref={cameraInputRef}
-                      type="file"
-                      accept="image/*"
-                      capture="environment"
-                      onChange={(e) => {
-                        if (e.target.files?.[0]) {
-                          handlePhotoUpload(e.target.files[0], mealType);
-                        }
-                      }}
-                      className="hidden"
-                    />
-
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        if (e.target.files?.[0]) {
-                          handlePhotoUpload(e.target.files[0], mealType);
-                        }
-                      }}
-                      className="hidden"
-                    />
                   </div>
 
                   {/* Macro Stats */}
