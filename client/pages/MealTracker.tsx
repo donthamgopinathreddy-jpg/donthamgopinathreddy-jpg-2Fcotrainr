@@ -479,7 +479,7 @@ const MealTracker = () => {
                           onChange={(e) =>
                             setQuantity(Number(e.target.value) || 0)
                           }
-                          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-orange-500"
+                          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-center text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
                         />
                         <button
                           onClick={() => setQuantity(quantity + 10)}
