@@ -137,7 +137,7 @@ const Navigation = () => {
 
   return (
     <nav
-      className="w-full bg-white/80 backdrop-blur-xl shadow-lg transition-all duration-500"
+      className="w-full bg-white rounded-t-3xl backdrop-blur-xl shadow-lg transition-all duration-500"
       style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}
     >
       <div className="w-full px-2 py-3">
