@@ -185,42 +185,105 @@ const MealTracker = () => {
 
         {/* Daily Macro Summary - Top Section */}
         {dailyMeals && (
-          <div className="bg-white border-b border-gray-200 p-4 sticky top-16 z-9 shadow-sm">
-            <div className="grid grid-cols-4 gap-2">
+          <div className="bg-gradient-to-br from-slate-50 to-gray-100 border-b border-gray-300 p-5 sticky top-16 z-9 shadow-md">
+            {/* Title */}
+            <h2 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+              <Flame size={16} className="text-orange-500" />
+              Today's Nutrition
+            </h2>
+
+            {/* Macro Cards Grid */}
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {/* Calories */}
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-3 border border-orange-200 group hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p className="text-xs text-orange-700 font-semibold mb-1">Calories</p>
-                <p className="text-xl font-bold text-orange-600">
-                  {Math.round(dailyMeals.totals.calories)}
-                </p>
-                <p className="text-xs text-orange-600/70">/ 2500</p>
+              <div className="bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 rounded-3xl p-4 border border-orange-300 group hover:shadow-2xl hover:scale-110 transition-all duration-300 cursor-pointer text-white relative overflow-hidden shadow-lg">
+                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold opacity-90">Calories</p>
+                    <Flame size={14} className="opacity-70" />
+                  </div>
+                  <p className="text-2xl font-bold mb-1">
+                    {Math.round(dailyMeals.totals.calories)}
+                  </p>
+                  <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden mb-1">
+                    <div
+                      className="bg-white h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min((dailyMeals.totals.calories / 2500) * 100, 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs opacity-80">2500 cal goal</p>
+                </div>
               </div>
 
               {/* Protein */}
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-3 border border-blue-200 group hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p className="text-xs text-blue-700 font-semibold mb-1">Protein</p>
-                <p className="text-xl font-bold text-blue-600">
-                  {Math.round(dailyMeals.totals.protein)}g
-                </p>
-                <p className="text-xs text-blue-600/70">/ 150g</p>
+              <div className="bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 rounded-3xl p-4 border border-blue-300 group hover:shadow-2xl hover:scale-110 transition-all duration-300 cursor-pointer text-white relative overflow-hidden shadow-lg">
+                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold opacity-90">Protein</p>
+                    <Egg size={14} className="opacity-70" />
+                  </div>
+                  <p className="text-2xl font-bold mb-1">
+                    {Math.round(dailyMeals.totals.protein)}g
+                  </p>
+                  <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden mb-1">
+                    <div
+                      className="bg-white h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min((dailyMeals.totals.protein / 150) * 100, 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs opacity-80">150g goal</p>
+                </div>
               </div>
 
               {/* Carbs */}
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-3 border border-green-200 group hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p className="text-xs text-green-700 font-semibold mb-1">Carbs</p>
-                <p className="text-xl font-bold text-green-600">
-                  {Math.round(dailyMeals.totals.carbs)}g
-                </p>
-                <p className="text-xs text-green-600/70">/ 300g</p>
+              <div className="bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-3xl p-4 border border-emerald-300 group hover:shadow-2xl hover:scale-110 transition-all duration-300 cursor-pointer text-white relative overflow-hidden shadow-lg">
+                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold opacity-90">Carbs</p>
+                    <Wind size={14} className="opacity-70" />
+                  </div>
+                  <p className="text-2xl font-bold mb-1">
+                    {Math.round(dailyMeals.totals.carbs)}g
+                  </p>
+                  <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden mb-1">
+                    <div
+                      className="bg-white h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min((dailyMeals.totals.carbs / 300) * 100, 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs opacity-80">300g goal</p>
+                </div>
               </div>
 
               {/* Fats */}
-              <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-3 border border-red-200 group hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                <p className="text-xs text-red-700 font-semibold mb-1">Fats</p>
-                <p className="text-xl font-bold text-red-600">
-                  {Math.round(dailyMeals.totals.fats)}g
-                </p>
-                <p className="text-xs text-red-600/70">/ 75g</p>
+              <div className="bg-gradient-to-br from-rose-400 via-rose-500 to-rose-600 rounded-3xl p-4 border border-rose-300 group hover:shadow-2xl hover:scale-110 transition-all duration-300 cursor-pointer text-white relative overflow-hidden shadow-lg">
+                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold opacity-90">Fats</p>
+                    <Droplet size={14} className="opacity-70" />
+                  </div>
+                  <p className="text-2xl font-bold mb-1">
+                    {Math.round(dailyMeals.totals.fats)}g
+                  </p>
+                  <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden mb-1">
+                    <div
+                      className="bg-white h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min((dailyMeals.totals.fats / 75) * 100, 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs opacity-80">75g goal</p>
+                </div>
               </div>
             </div>
           </div>
