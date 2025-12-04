@@ -589,150 +589,74 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* 4. Connected Metrics Card - Square Layout with Rounded Boxes */}
-          <div className="mx-5 mb-6 px-4">
-            {/* Full Width Square Layout */}
-            <div className="relative" style={{ aspectRatio: "1" }}>
-              {/* Top Box - User */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 animate-bounce" style={{ animationDelay: "0s" }}>
-                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center shadow-lg border-4 border-white hover:scale-110 transition-transform cursor-pointer">
-                  <User size={32} className="text-white" />
-                </div>
-              </div>
-
-              {/* Middle Row with Left/Right Boxes and Center Card */}
-              <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 flex items-center justify-between">
-                {/* Left Box - Calories */}
-                <div className="animate-bounce" style={{ animationDelay: "0.2s" }}>
-                  <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-red-400 to-red-500 flex items-center justify-center shadow-lg border-4 border-white hover:scale-110 transition-transform cursor-pointer">
-                    <Flame size={32} className="text-white" />
-                  </div>
-                </div>
-
-                {/* Center Card with Metrics - Clickable */}
-                <button
-                  onClick={() => setShowMetricsModal(true)}
-                  className="relative z-10 bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 active:scale-95 border-4 border-gray-900 w-48 h-48 flex flex-col items-center justify-center p-4 cursor-pointer"
-                >
-                  {/* Inner Content */}
-                  <div className="relative z-20 flex flex-col items-center justify-center text-center">
-                    <h3 className="text-2xl font-black text-gray-900 mb-2">Daily</h3>
-                    <p className="text-sm font-bold text-gray-600 mb-4">Goals</p>
-                    <div className="space-y-2">
-                      <div className="text-xs font-semibold text-gray-700">
-                        <p>📍 Steps • Calories</p>
-                        <p>💧 Distance • Water</p>
-                      </div>
-                    </div>
-                    <p className="text-xs text-blue-600 font-bold mt-4">Tap for details →</p>
-                  </div>
-                </button>
-
-                {/* Right Box - Distance */}
-                <div className="animate-bounce" style={{ animationDelay: "0.4s" }}>
-                  <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center shadow-lg border-4 border-white hover:scale-110 transition-transform cursor-pointer">
-                    <MapPin size={32} className="text-white" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom Box - Water */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 animate-bounce" style={{ animationDelay: "0.6s" }}>
-                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center shadow-lg border-4 border-white hover:scale-110 transition-transform cursor-pointer">
-                  <Droplets size={32} className="text-white" />
-                </div>
-              </div>
-
-              {/* Connection Lines SVG */}
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}
+          {/* 4. Clean Metrics Grid - Steps, Calories, Distance, Water */}
+          <div className="mx-5 mb-6 space-y-3">
+            {/* Top Row - Steps and Calories */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* Steps Card */}
+              <button
+                onClick={() => setShowMetricsModal(true)}
+                className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
               >
-                {/* Top line */}
-                <line
-                  x1="50%"
-                  y1="0"
-                  x2="50%"
-                  y2="20%"
-                  stroke="url(#gradientVertical)"
-                  strokeWidth="3"
-                  strokeDasharray="6,4"
-                />
-                {/* Left line */}
-                <line
-                  x1="0"
-                  y1="50%"
-                  x2="30%"
-                  y2="50%"
-                  stroke="url(#gradientLeft)"
-                  strokeWidth="3"
-                  strokeDasharray="6,4"
-                />
-                {/* Right line */}
-                <line
-                  x1="70%"
-                  y1="50%"
-                  x2="100%"
-                  y2="50%"
-                  stroke="url(#gradientRight)"
-                  strokeWidth="3"
-                  strokeDasharray="6,4"
-                />
-                {/* Bottom line */}
-                <line
-                  x1="50%"
-                  y1="80%"
-                  x2="50%"
-                  y2="100%"
-                  stroke="url(#gradientVertical2)"
-                  strokeWidth="3"
-                  strokeDasharray="6,4"
-                />
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-orange-500 to-yellow-600 opacity-90 group-hover:opacity-100 transition-opacity" />
+                <div className="relative p-5 h-32 flex flex-col items-start justify-between text-white">
+                  <Footprints size={28} className="text-white/80" />
+                  <div>
+                    <p className="text-xs font-semibold text-white/70">Daily Steps</p>
+                    <p className="text-2xl font-black text-white">{(stepsToday / 1000).toFixed(1)}k</p>
+                  </div>
+                </div>
+              </button>
 
-                <defs>
-                  <linearGradient
-                    id="gradientVertical"
-                    x1="0%"
-                    y1="0%"
-                    x2="0%"
-                    y2="100%"
-                  >
-                    <stop offset="0%" stopColor="#f97316" />
-                    <stop offset="100%" stopColor="#fb923c" />
-                  </linearGradient>
-                  <linearGradient
-                    id="gradientVertical2"
-                    x1="0%"
-                    y1="0%"
-                    x2="0%"
-                    y2="100%"
-                  >
-                    <stop offset="0%" stopColor="#3b82f6" />
-                    <stop offset="100%" stopColor="#60a5fa" />
-                  </linearGradient>
-                  <linearGradient
-                    id="gradientLeft"
-                    x1="100%"
-                    y1="0%"
-                    x2="0%"
-                    y2="0%"
-                  >
-                    <stop offset="0%" stopColor="#ef4444" />
-                    <stop offset="100%" stopColor="#f87171" />
-                  </linearGradient>
-                  <linearGradient
-                    id="gradientRight"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
-                  >
-                    <stop offset="0%" stopColor="#a855f7" />
-                    <stop offset="100%" stopColor="#c084fc" />
-                  </linearGradient>
-                </defs>
-              </svg>
+              {/* Calories Card */}
+              <button
+                onClick={() => setShowMetricsModal(true)}
+                className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-red-400 via-pink-500 to-rose-600 opacity-90 group-hover:opacity-100 transition-opacity" />
+                <div className="relative p-5 h-32 flex flex-col items-start justify-between text-white">
+                  <Flame size={28} className="text-white/80" />
+                  <div>
+                    <p className="text-xs font-semibold text-white/70">Calories</p>
+                    <p className="text-2xl font-black text-white">{(caloriesBurned / 100).toFixed(0)}</p>
+                  </div>
+                </div>
+              </button>
             </div>
+
+            {/* Distance Card - Full Width */}
+            <button
+              onClick={() => setShowMetricsModal(true)}
+              className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer w-full"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-purple-500 to-indigo-600 opacity-90 group-hover:opacity-100 transition-opacity" />
+              <div className="relative p-5 h-20 flex items-center justify-between text-white">
+                <div className="flex items-center gap-4">
+                  <MapPin size={28} className="text-white/80" />
+                  <div className="text-left">
+                    <p className="text-xs font-semibold text-white/70">Distance</p>
+                    <p className="text-2xl font-black text-white">{distanceKm.toFixed(1)} km</p>
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            {/* Water Card - Full Width */}
+            <button
+              onClick={() => setShowMetricsModal(true)}
+              className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer w-full"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-600 opacity-90 group-hover:opacity-100 transition-opacity" />
+              <div className="relative p-5 h-20 flex items-center justify-between text-white">
+                <div className="flex items-center gap-4">
+                  <Droplets size={28} className="text-white/80" />
+                  <div className="text-left">
+                    <p className="text-xs font-semibold text-white/70">Water Intake</p>
+                    <p className="text-2xl font-black text-white">{(waterConsumed / 1000).toFixed(1)}L</p>
+                  </div>
+                </div>
+              </div>
+            </button>
           </div>
 
           {/* 5. BMI Card */}
