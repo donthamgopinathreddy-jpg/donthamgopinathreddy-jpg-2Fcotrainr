@@ -63,16 +63,16 @@ const Navigation = () => {
           color: "from-blue-500 to-cyan-500",
         },
         {
-          path: "/nutrition",
-          label: "Nutrition",
-          icon: Utensils,
-          color: "from-green-500 to-emerald-500",
-        },
-        {
           path: "/discover",
           label: "Discover",
           icon: MapPin,
           color: "from-indigo-500 to-purple-500",
+        },
+        {
+          path: "/achievements",
+          label: "Quest",
+          icon: Trophy,
+          color: "from-yellow-500 to-orange-500",
         },
         {
           path: "/messages",
