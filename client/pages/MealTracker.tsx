@@ -6,7 +6,7 @@ import {
   Trash2,
   Search,
   Camera,
-  ImageIcon,
+  Paperclip,
   X,
 } from "lucide-react";
 import { useMealTrackerData } from "@/hooks/useMeals";
@@ -26,6 +26,53 @@ interface Food {
     fats: number;
   };
 }
+
+// Semi-circle macro visualization component
+const MacroSemiCircle = ({
+  current,
+  target,
+  label,
+  color,
+}: {
+  current: number;
+  target: number;
+  label: string;
+  color: string;
+}) => {
+  const percentage = Math.min((current / target) * 100, 100);
+  const circumference = Math.PI * 60; // radius = 60
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="relative w-32 h-16 flex items-center justify-center">
+        <svg width="128" height="64" viewBox="0 0 128 64" className="transform">
+          {/* Background semicircle */}
+          <path
+            d="M 8 64 A 60 60 0 0 1 120 64"
+            fill="none"
+            stroke="#e5e7eb"
+            strokeWidth="6"
+          />
+          {/* Progress semicircle */}
+          <path
+            d="M 8 64 A 60 60 0 0 1 120 64"
+            fill="none"
+            stroke={color}
+            strokeWidth="6"
+            strokeDasharray={`${(circumference / 2) * (percentage / 100)} ${circumference / 2}`}
+            strokeLinecap="round"
+            style={{ transition: "stroke-dasharray 0.3s ease" }}
+          />
+        </svg>
+        <div className="absolute text-center">
+          <p className="text-2xl font-bold text-gray-900">{Math.round(current)}</p>
+          <p className="text-xs text-gray-600">{label}</p>
+        </div>
+      </div>
+      <p className="text-xs text-gray-500 mt-2">/ {target}</p>
+    </div>
+  );
+};
 
 const MealTracker = () => {
   const { user } = useAuth();
@@ -261,37 +308,46 @@ const MealTracker = () => {
         </button>
       </div>
 
-      {/* Macro Summary Bar */}
+      {/* New Macro Summary with Semi-Circles */}
       {dailyMeals && (
-        <div className="bg-white/50 backdrop-blur-md border-b border-gray-200/50 p-4 shadow-sm">
-          <div className="flex justify-between gap-2">
-            <div className="flex-1 bg-gradient-to-br from-orange-200/60 to-red-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-orange-200/40">
-              <p className="text-xs font-semibold opacity-80">Cal</p>
-              <p className="text-xl font-bold">
-                {Math.round(dailyMeals.totals.calories)}
-              </p>
-              <p className="text-xs opacity-70">/ 2500</p>
+        <div className="bg-white/50 backdrop-blur-md border-b border-gray-200/50 p-6 shadow-sm">
+          <div className="flex flex-col items-center gap-8">
+            {/* Central Protein Tile */}
+            <div className="flex justify-center">
+              <MacroSemiCircle
+                current={dailyMeals.totals.protein}
+                target={150}
+                label="Protein"
+                color="#3b82f6"
+              />
             </div>
-            <div className="flex-1 bg-gradient-to-br from-blue-200/60 to-cyan-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-blue-200/40">
-              <p className="text-xs font-semibold opacity-80">Protein</p>
-              <p className="text-xl font-bold">
-                {Math.round(dailyMeals.totals.protein)}g
-              </p>
-              <p className="text-xs opacity-70">/ 150g</p>
-            </div>
-            <div className="flex-1 bg-gradient-to-br from-green-200/60 to-emerald-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-green-200/40">
-              <p className="text-xs font-semibold opacity-80">Carbs</p>
-              <p className="text-xl font-bold">
-                {Math.round(dailyMeals.totals.carbs)}g
-              </p>
-              <p className="text-xs opacity-70">/ 300g</p>
-            </div>
-            <div className="flex-1 bg-gradient-to-br from-yellow-200/60 to-amber-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-yellow-200/40">
-              <p className="text-xs font-semibold opacity-80">Fats</p>
-              <p className="text-xl font-bold">
-                {Math.round(dailyMeals.totals.fats)}g
-              </p>
-              <p className="text-xs opacity-70">/ 75g</p>
+
+            {/* Other Macros Below */}
+            <div className="grid grid-cols-3 gap-6 w-full">
+              <div className="flex justify-center">
+                <MacroSemiCircle
+                  current={dailyMeals.totals.calories}
+                  target={2500}
+                  label="Calories"
+                  color="#f97316"
+                />
+              </div>
+              <div className="flex justify-center">
+                <MacroSemiCircle
+                  current={dailyMeals.totals.carbs}
+                  target={300}
+                  label="Carbs"
+                  color="#22c55e"
+                />
+              </div>
+              <div className="flex justify-center">
+                <MacroSemiCircle
+                  current={dailyMeals.totals.fats}
+                  target={75}
+                  label="Fats"
+                  color="#ef4444"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -419,7 +475,6 @@ const MealTracker = () => {
                           if (e.target.files?.[0]) {
                             handlePhotoUpload(e.target.files[0], mealType);
                           }
-                          // Reset input so same file can be captured again
                           e.currentTarget.value = "";
                         }}
                         className="hidden"
@@ -433,7 +488,6 @@ const MealTracker = () => {
                           if (e.target.files?.[0]) {
                             handlePhotoUpload(e.target.files[0], mealType);
                           }
-                          // Reset input so same file can be selected again
                           e.currentTarget.value = "";
                         }}
                         className="hidden"
@@ -442,18 +496,18 @@ const MealTracker = () => {
                       <button
                         onClick={() => cameraInputRef.current?.click()}
                         disabled={uploading}
-                        className="flex-1 flex items-center justify-center gap-2 py-2 bg-blue-400/60 hover:bg-blue-500/70 backdrop-blur-sm rounded-lg transition text-white border border-blue-400/40 font-semibold disabled:opacity-50 active:scale-95"
+                        className="p-2.5 bg-blue-400/60 hover:bg-blue-500/70 backdrop-blur-sm rounded-lg transition text-white border border-blue-400/40 font-semibold disabled:opacity-50 active:scale-95"
+                        title="Camera"
                       >
-                        <Camera size={18} />
-                        Camera
+                        <Camera size={20} />
                       </button>
                       <button
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="flex-1 flex items-center justify-center gap-2 py-2 bg-purple-400/60 hover:bg-purple-500/70 backdrop-blur-sm rounded-lg transition text-white border border-purple-400/40 font-semibold disabled:opacity-50 active:scale-95"
+                        className="p-2.5 bg-purple-400/60 hover:bg-purple-500/70 backdrop-blur-sm rounded-lg transition text-white border border-purple-400/40 font-semibold disabled:opacity-50 active:scale-95"
+                        title="Photo Gallery"
                       >
-                        <ImageIcon size={18} />
-                        Photo
+                        <Paperclip size={20} />
                       </button>
                     </div>
                   </div>
@@ -595,15 +649,15 @@ const MealTracker = () => {
         </div>
       </div>
 
-      {/* Add Food Modal */}
+      {/* Modern Add Food Modal - Samsung/Apple Style */}
       {showAddFood && (
-        <div className="fixed inset-0 bg-black/30 flex items-end z-50 backdrop-blur-sm">
-          <div className="w-full bg-white rounded-t-3xl p-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-gray-900">Add Food</h2>
+        <div className="fixed inset-0 bg-black/40 flex items-end z-50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full bg-white/95 backdrop-blur-xl rounded-t-3xl p-6 max-h-[90vh] overflow-y-auto shadow-2xl border-t border-white/40">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-gray-900">Add Food</h2>
               <button
                 onClick={() => setShowAddFood(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="p-2 hover:bg-gray-100 rounded-full transition text-gray-600"
               >
                 <X size={24} />
               </button>
@@ -611,10 +665,11 @@ const MealTracker = () => {
 
             {!selectedFood ? (
               <>
-                <div className="relative mb-4">
+                {/* Search Bar */}
+                <div className="relative mb-6">
                   <Search
-                    size={18}
-                    className="absolute left-3 top-3 text-gray-400"
+                    size={20}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
                   />
                   <input
                     type="text"
@@ -622,22 +677,26 @@ const MealTracker = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     autoFocus
-                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900 placeholder-gray-500"
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-100/80 backdrop-blur-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500 border border-gray-200/40"
                   />
                 </div>
 
-                <div className="space-y-2 max-h-96 overflow-y-auto">
+                {/* Food List */}
+                <div className="space-y-3 max-h-96 overflow-y-auto">
                   {filteredFoods.slice(0, 30).map((food) => (
                     <button
                       key={food.id}
                       onClick={() => setSelectedFood(food)}
-                      className="w-full text-left p-3 bg-gradient-to-r from-gray-100/60 to-gray-50/60 hover:from-orange-100/60 hover:to-yellow-100/60 rounded-2xl transition border border-gray-200/50"
+                      className="w-full text-left p-4 bg-gradient-to-r from-gray-50/60 to-gray-100/60 hover:from-blue-50/80 hover:to-blue-100/80 rounded-2xl transition-all duration-200 border border-gray-200/50 hover:border-blue-300/50 hover:shadow-md group"
                     >
-                      <p className="font-bold text-gray-900">{food.name}</p>
-                      <p className="text-xs text-gray-600 mt-1">
-                        {food.per_100g.calories}cal/100g • P:
-                        {food.per_100g.protein}g C:{food.per_100g.carbs}g F:
-                        {food.per_100g.fats}g
+                      <p className="font-semibold text-gray-900 group-hover:text-blue-600 transition">
+                        {food.name}
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1.5 font-medium">
+                        <span className="text-orange-600">Cal: {food.per_100g.calories}</span> •{" "}
+                        <span className="text-blue-600">P: {food.per_100g.protein}g</span> •{" "}
+                        <span className="text-green-600">C: {food.per_100g.carbs}g</span> •{" "}
+                        <span className="text-red-600">F: {food.per_100g.fats}g</span>
                       </p>
                     </button>
                   ))}
@@ -645,114 +704,127 @@ const MealTracker = () => {
               </>
             ) : (
               <>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900">
-                      {selectedFood.name}
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      {selectedFood.category}
+                {/* Food Details */}
+                <div className="mb-6">
+                  <h3 className="text-3xl font-bold text-gray-900 mb-1">
+                    {selectedFood.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 font-medium">
+                    {selectedFood.category}
+                  </p>
+                </div>
+
+                {/* Quantity Section */}
+                <div className="mb-6">
+                  <label className="block text-sm font-bold text-gray-900 mb-3">
+                    Quantity
+                  </label>
+                  <div className="flex items-center gap-4 bg-gray-100/80 rounded-2xl p-2">
+                    <button
+                      onClick={() => setQuantity(Math.max(10, quantity - 10))}
+                      className="w-12 h-12 bg-white hover:bg-gray-50 rounded-xl font-bold text-xl text-gray-900 transition shadow-sm"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      value={quantity}
+                      onChange={(e) =>
+                        setQuantity(Number(e.target.value) || 0)
+                      }
+                      className="flex-1 bg-transparent text-center text-3xl font-bold text-gray-900 focus:outline-none"
+                    />
+                    <button
+                      onClick={() => setQuantity(quantity + 10)}
+                      className="w-12 h-12 bg-white hover:bg-gray-50 rounded-xl font-bold text-xl text-gray-900 transition shadow-sm"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                {/* Unit Selection */}
+                <div className="mb-6">
+                  <label className="block text-sm font-bold text-gray-900 mb-3">
+                    Unit
+                  </label>
+                  <div className="flex gap-3">
+                    {selectedFood.units_available.map((unit) => (
+                      <button
+                        key={unit}
+                        onClick={() => setSelectedUnit(unit)}
+                        className={`px-5 py-2.5 rounded-xl font-bold transition-all duration-200 ${
+                          selectedUnit === unit
+                            ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg scale-105"
+                            : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                        }`}
+                      >
+                        {unit}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Nutritional Info Card */}
+                {macros && (
+                  <div className="bg-gradient-to-br from-blue-50/80 to-blue-100/80 rounded-2xl p-4 border border-blue-200/40 backdrop-blur-sm mb-6">
+                    <p className="text-sm font-bold text-gray-900 mb-4">
+                      Nutritional Info (per serving)
                     </p>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-gray-900 mb-2">
-                      Quantity
-                    </label>
-                    <div className="flex items-center gap-3 bg-gray-100 rounded-lg p-1">
-                      <button
-                        onClick={() => setQuantity(Math.max(10, quantity - 10))}
-                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-bold text-lg"
-                      >
-                        −
-                      </button>
-                      <input
-                        type="number"
-                        value={quantity}
-                        onChange={(e) =>
-                          setQuantity(Number(e.target.value) || 0)
-                        }
-                        className="flex-1 bg-transparent text-center text-2xl font-bold text-gray-900 focus:outline-none"
-                      />
-                      <button
-                        onClick={() => setQuantity(quantity + 10)}
-                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-bold text-lg"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-gray-900 mb-2">
-                      Unit
-                    </label>
-                    <div className="flex gap-2">
-                      {selectedFood.units_available.map((unit) => (
-                        <button
-                          key={unit}
-                          onClick={() => setSelectedUnit(unit)}
-                          className={`px-4 py-2 rounded-lg font-bold transition ${
-                            selectedUnit === unit
-                              ? "bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-lg"
-                              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                          }`}
-                        >
-                          {unit}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {macros && (
-                    <div className="bg-gradient-to-br from-orange-100/60 to-yellow-100/60 rounded-2xl p-4 border-2 border-orange-200/40 backdrop-blur-sm">
-                      <p className="text-sm font-bold text-gray-900 mb-3">
-                        Nutritional Info
-                      </p>
-                      <div className="grid grid-cols-4 gap-2 text-center">
-                        <div className="bg-white/60 rounded-lg p-2">
-                          <p className="text-lg font-bold text-orange-600">
-                            {macros.calories}
-                          </p>
-                          <p className="text-xs text-gray-600">Cal</p>
-                        </div>
-                        <div className="bg-white/60 rounded-lg p-2">
-                          <p className="text-lg font-bold text-blue-600">
-                            {macros.protein}g
-                          </p>
-                          <p className="text-xs text-gray-600">P</p>
-                        </div>
-                        <div className="bg-white/60 rounded-lg p-2">
-                          <p className="text-lg font-bold text-green-600">
-                            {macros.carbs}g
-                          </p>
-                          <p className="text-xs text-gray-600">C</p>
-                        </div>
-                        <div className="bg-white/60 rounded-lg p-2">
-                          <p className="text-lg font-bold text-red-600">
-                            {macros.fats}g
-                          </p>
-                          <p className="text-xs text-gray-600">F</p>
-                        </div>
+                    <div className="grid grid-cols-4 gap-2 text-center">
+                      <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-orange-200/40">
+                        <p className="text-xl font-bold text-orange-600">
+                          {Math.round(macros.calories)}
+                        </p>
+                        <p className="text-xs text-gray-600 font-semibold mt-1">
+                          Cal
+                        </p>
+                      </div>
+                      <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-blue-200/40">
+                        <p className="text-xl font-bold text-blue-600">
+                          {macros.protein.toFixed(1)}
+                        </p>
+                        <p className="text-xs text-gray-600 font-semibold mt-1">
+                          P
+                        </p>
+                      </div>
+                      <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-green-200/40">
+                        <p className="text-xl font-bold text-green-600">
+                          {macros.carbs.toFixed(1)}
+                        </p>
+                        <p className="text-xs text-gray-600 font-semibold mt-1">
+                          C
+                        </p>
+                      </div>
+                      <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-red-200/40">
+                        <p className="text-xl font-bold text-red-600">
+                          {macros.fats.toFixed(1)}
+                        </p>
+                        <p className="text-xs text-gray-600 font-semibold mt-1">
+                          F
+                        </p>
                       </div>
                     </div>
-                  )}
-
-                  <div className="flex gap-3 pt-4">
-                    <button
-                      onClick={() => setSelectedFood(null)}
-                      className="flex-1 px-4 py-3 bg-gray-200 text-gray-900 rounded-lg font-bold hover:bg-gray-300 transition"
-                    >
-                      Back
-                    </button>
-                    <button
-                      onClick={handleAddFood}
-                      disabled={addMealMutation.isPending}
-                      className="flex-1 px-4 py-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white rounded-lg font-bold hover:shadow-lg transition disabled:opacity-50"
-                    >
-                      Add to {selectedMealType}
-                    </button>
                   </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-2">
+                  <button
+                    onClick={() => setSelectedFood(null)}
+                    className="flex-1 px-4 py-3.5 bg-gray-100 text-gray-900 rounded-2xl font-bold hover:bg-gray-200 transition-all duration-200 active:scale-95"
+                  >
+                    Back
+                  </button>
+                  <button
+                    onClick={handleAddFood}
+                    disabled={addMealMutation.isPending}
+                    className="flex-1 px-4 py-3.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl font-bold hover:shadow-lg transition-all duration-200 disabled:opacity-50 active:scale-95"
+                  >
+                    {addMealMutation.isPending
+                      ? "Adding..."
+                      : `Add to ${selectedMealType}`}
+                  </button>
                 </div>
               </>
             )}
