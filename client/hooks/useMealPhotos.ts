@@ -8,7 +8,7 @@ export const useMealPhotos = () => {
     file: File,
     userId: string,
     date: string,
-    mealType: string
+    mealType: string,
   ) => {
     if (!file) return null;
 
@@ -62,7 +62,7 @@ export const useMealPhotos = () => {
   const fetchPhotos = async (
     userId: string,
     date: string,
-    mealType: string
+    mealType: string,
   ) => {
     try {
       const { data, error } = await supabase

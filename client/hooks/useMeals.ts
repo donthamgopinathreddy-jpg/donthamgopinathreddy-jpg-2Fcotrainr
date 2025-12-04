@@ -277,7 +277,10 @@ export const useMeals = () => {
   };
 
   const deleteMeal = async (mealId: string) => {
-    const { error } = await supabase.from("meals_logs").delete().eq("id", mealId);
+    const { error } = await supabase
+      .from("meals_logs")
+      .delete()
+      .eq("id", mealId);
 
     if (error) throw error;
   };

@@ -114,35 +114,35 @@ const Navigation = () => {
     >
       <div className="w-full">
         <div className="flex justify-around items-stretch">
-          {navItems.map(
-            ({ path, label, icon: Icon, gradient }: any) => {
-              const active = isActive(path);
+          {navItems.map(({ path, label, icon: Icon, gradient }: any) => {
+            const active = isActive(path);
 
-              return (
-                <Link
-                  key={path}
-                  to={path}
-                  onClick={handleNavClick}
-                  className={`flex flex-col items-center justify-center py-3 px-4 flex-1 relative transition-all duration-200 text-gray-500 hover:text-gray-700`}
-                >
-                  {/* Icon only, no text */}
-                  <Icon size={24} className="text-current" />
+            return (
+              <Link
+                key={path}
+                to={path}
+                onClick={handleNavClick}
+                className={`flex flex-col items-center justify-center py-3 px-4 flex-1 relative transition-all duration-200 text-gray-500 hover:text-gray-700`}
+              >
+                {/* Icon only, no text */}
+                <Icon size={24} className="text-current" />
 
-                  {/* Colored bar indicator at bottom - only when active */}
-                  {active && (
-                    <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient} transition-all duration-200`} />
-                  )}
+                {/* Colored bar indicator at bottom - only when active */}
+                {active && (
+                  <div
+                    className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient} transition-all duration-200`}
+                  />
+                )}
 
-                  {/* Unread Badge with pulse animation */}
-                  {path === "/messages" && totalUnreadMessages > 0 && (
-                    <div className="absolute top-1 right-1 rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-bold text-white bg-red-500 shadow-lg animate-pulse">
-                      {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
-                    </div>
-                  )}
-                </Link>
-              );
-            },
-          )}
+                {/* Unread Badge with pulse animation */}
+                {path === "/messages" && totalUnreadMessages > 0 && (
+                  <div className="absolute top-1 right-1 rounded-full w-5 h-5 flex items-center justify-center text-[11px] font-bold text-white bg-red-500 shadow-lg animate-pulse">
+                    {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
+                  </div>
+                )}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </nav>

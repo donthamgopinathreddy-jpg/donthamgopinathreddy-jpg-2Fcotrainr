@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Plus, Trash2, Search, Camera, ImageIcon, X } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Trash2,
+  Search,
+  Camera,
+  ImageIcon,
+  X,
+} from "lucide-react";
 import { useMealTrackerData } from "@/hooks/useMeals";
 import { useMealPhotos } from "@/hooks/useMealPhotos";
 import { useAuth } from "@/contexts/AuthContext";
@@ -47,7 +56,7 @@ const MealTracker = () => {
 
   const { data: dailyMeals, isLoading: loadingDaily } = useDailyMeals(
     currentDate,
-    user?.id
+    user?.id,
   );
   const addMealMutation = useAddMeal();
   const deleteMealMutation = useDeleteMeal();
@@ -87,11 +96,22 @@ const MealTracker = () => {
     const today = new Date();
     const isToday =
       date.toISOString().split("T")[0] === today.toISOString().split("T")[0];
-    return isToday ? "Today" : date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+    return isToday
+      ? "Today"
+      : date.toLocaleDateString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+        });
   }
 
   function calculateMacros(food: Food, qty: number, unit: string) {
-    const multiplier = unit === "g" ? qty / 100 : unit === "piece" ? (qty * 100) / 100 : qty / 100;
+    const multiplier =
+      unit === "g"
+        ? qty / 100
+        : unit === "piece"
+          ? (qty * 100) / 100
+          : qty / 100;
     return {
       calories: Math.round(food.per_100g.calories * multiplier * 10) / 10,
       protein: Math.round(food.per_100g.protein * multiplier * 10) / 10,
@@ -142,10 +162,10 @@ const MealTracker = () => {
 
     try {
       await uploadPhoto(file, user.id, currentDate, mealType);
-      
+
       // Reload photos
       const photoList = await fetchPhotos(user.id, currentDate, mealType);
-      setMealPhotos(prev => ({
+      setMealPhotos((prev) => ({
         ...prev,
         [mealType]: photoList,
       }));
@@ -164,7 +184,7 @@ const MealTracker = () => {
   }
 
   const filteredFoods = foods.filter((food) =>
-    food.name.toLowerCase().includes(searchQuery.toLowerCase())
+    food.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const macros = selectedFood
@@ -201,11 +221,13 @@ const MealTracker = () => {
       {/* Header */}
       <div className="bg-white/70 backdrop-blur-md border-b border-gray-200/50 p-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
         <button
-          onClick={() => setCurrentDate(
-            new Date(new Date(currentDate).getTime() - 24 * 60 * 60 * 1000)
-              .toISOString()
-              .split("T")[0]
-          )}
+          onClick={() =>
+            setCurrentDate(
+              new Date(new Date(currentDate).getTime() - 24 * 60 * 60 * 1000)
+                .toISOString()
+                .split("T")[0],
+            )
+          }
           className="p-2 hover:bg-gray-100/50 rounded-lg transition text-gray-700"
         >
           <ChevronLeft size={24} />
@@ -217,11 +239,13 @@ const MealTracker = () => {
           <p className="text-xs text-gray-500 mt-1">Swipe to browse meals</p>
         </div>
         <button
-          onClick={() => setCurrentDate(
-            new Date(new Date(currentDate).getTime() + 24 * 60 * 60 * 1000)
-              .toISOString()
-              .split("T")[0]
-          )}
+          onClick={() =>
+            setCurrentDate(
+              new Date(new Date(currentDate).getTime() + 24 * 60 * 60 * 1000)
+                .toISOString()
+                .split("T")[0],
+            )
+          }
           className="p-2 hover:bg-gray-100/50 rounded-lg transition text-gray-700"
         >
           <ChevronRight size={24} />
@@ -234,22 +258,30 @@ const MealTracker = () => {
           <div className="flex justify-between gap-2">
             <div className="flex-1 bg-gradient-to-br from-orange-200/60 to-red-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-orange-200/40">
               <p className="text-xs font-semibold opacity-80">Cal</p>
-              <p className="text-xl font-bold">{Math.round(dailyMeals.totals.calories)}</p>
+              <p className="text-xl font-bold">
+                {Math.round(dailyMeals.totals.calories)}
+              </p>
               <p className="text-xs opacity-70">/ 2500</p>
             </div>
             <div className="flex-1 bg-gradient-to-br from-blue-200/60 to-cyan-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-blue-200/40">
               <p className="text-xs font-semibold opacity-80">Protein</p>
-              <p className="text-xl font-bold">{Math.round(dailyMeals.totals.protein)}g</p>
+              <p className="text-xl font-bold">
+                {Math.round(dailyMeals.totals.protein)}g
+              </p>
               <p className="text-xs opacity-70">/ 150g</p>
             </div>
             <div className="flex-1 bg-gradient-to-br from-green-200/60 to-emerald-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-green-200/40">
               <p className="text-xs font-semibold opacity-80">Carbs</p>
-              <p className="text-xl font-bold">{Math.round(dailyMeals.totals.carbs)}g</p>
+              <p className="text-xl font-bold">
+                {Math.round(dailyMeals.totals.carbs)}g
+              </p>
               <p className="text-xs opacity-70">/ 300g</p>
             </div>
             <div className="flex-1 bg-gradient-to-br from-yellow-200/60 to-amber-200/60 backdrop-blur-sm rounded-2xl p-3 text-gray-900 border border-yellow-200/40">
               <p className="text-xs font-semibold opacity-80">Fats</p>
-              <p className="text-xl font-bold">{Math.round(dailyMeals.totals.fats)}g</p>
+              <p className="text-xl font-bold">
+                {Math.round(dailyMeals.totals.fats)}g
+              </p>
               <p className="text-xs opacity-70">/ 75g</p>
             </div>
           </div>
@@ -283,17 +315,20 @@ const MealTracker = () => {
         >
           {mealTypes.map((mealType) => {
             const mealCalories = dailyMeals
-              ? dailyMeals[mealType as keyof typeof dailyMeals].reduce((s, m) => s + (m.calories || 0), 0)
+              ? dailyMeals[mealType as keyof typeof dailyMeals].reduce(
+                  (s, m) => s + (m.calories || 0),
+                  0,
+                )
               : 0;
-            const mealItems = dailyMeals?.[mealType as keyof typeof dailyMeals] || [];
+            const mealItems =
+              dailyMeals?.[mealType as keyof typeof dailyMeals] || [];
             const photos = mealPhotos[mealType] || [];
 
             return (
-              <div
-                key={mealType}
-                className="flex-shrink-0 w-80 snap-center"
-              >
-                <div className={`bg-gradient-to-br ${mealColors[mealType]} backdrop-blur-lg rounded-3xl p-6 h-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/40 flex flex-col`}>
+              <div key={mealType} className="flex-shrink-0 w-80 snap-center">
+                <div
+                  className={`bg-gradient-to-br ${mealColors[mealType]} backdrop-blur-lg rounded-3xl p-6 h-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/40 flex flex-col`}
+                >
                   {/* Header */}
                   <div className="flex items-center justify-between mb-4">
                     <div>
@@ -335,7 +370,7 @@ const MealTracker = () => {
                         ))}
                       </div>
                     ) : null}
-                    
+
                     <div className="flex gap-2">
                       <button
                         onClick={() => cameraInputRef.current?.click()}
@@ -387,24 +422,27 @@ const MealTracker = () => {
                       <p className="text-xs text-gray-700 font-semibold">P</p>
                       <p className="text-lg font-bold text-gray-900">
                         {Math.round(
-                          mealItems.reduce((s, m) => s + (m.protein || 0), 0)
-                        )}g
+                          mealItems.reduce((s, m) => s + (m.protein || 0), 0),
+                        )}
+                        g
                       </p>
                     </div>
                     <div className="text-center border-l border-r border-white/40">
                       <p className="text-xs text-gray-700 font-semibold">C</p>
                       <p className="text-lg font-bold text-gray-900">
                         {Math.round(
-                          mealItems.reduce((s, m) => s + (m.carbs || 0), 0)
-                        )}g
+                          mealItems.reduce((s, m) => s + (m.carbs || 0), 0),
+                        )}
+                        g
                       </p>
                     </div>
                     <div className="text-center">
                       <p className="text-xs text-gray-700 font-semibold">F</p>
                       <p className="text-lg font-bold text-gray-900">
                         {Math.round(
-                          mealItems.reduce((s, m) => s + (m.fats || 0), 0)
-                        )}g
+                          mealItems.reduce((s, m) => s + (m.fats || 0), 0),
+                        )}
+                        g
                       </p>
                     </div>
                   </div>
@@ -422,11 +460,14 @@ const MealTracker = () => {
                               {meal.food_name}
                             </p>
                             <p className="text-xs text-gray-700">
-                              {meal.quantity}{meal.unit} • {meal.calories}cal
+                              {meal.quantity}
+                              {meal.unit} • {meal.calories}cal
                             </p>
                           </div>
                           <button
-                            onClick={() => deleteMealMutation.mutateAsync(meal.id!)}
+                            onClick={() =>
+                              deleteMealMutation.mutateAsync(meal.id!)
+                            }
                             className="p-1.5 hover:bg-red-200/70 rounded-lg transition text-red-600 ml-2 flex-shrink-0"
                           >
                             <X size={16} />
@@ -435,8 +476,12 @@ const MealTracker = () => {
                       ))
                     ) : (
                       <div className="flex flex-col items-center justify-center h-full text-center">
-                        <p className="text-gray-700 font-semibold">No items yet</p>
-                        <p className="text-xs text-gray-600 mt-1">Tap + to add food</p>
+                        <p className="text-gray-700 font-semibold">
+                          No items yet
+                        </p>
+                        <p className="text-xs text-gray-600 mt-1">
+                          Tap + to add food
+                        </p>
                       </div>
                     )}
                   </div>
@@ -496,11 +541,11 @@ const MealTracker = () => {
                       onClick={() => setSelectedFood(food)}
                       className="w-full text-left p-3 bg-gradient-to-r from-gray-100/60 to-gray-50/60 hover:from-orange-100/60 hover:to-yellow-100/60 rounded-2xl transition border border-gray-200/50"
                     >
-                      <p className="font-bold text-gray-900">
-                        {food.name}
-                      </p>
+                      <p className="font-bold text-gray-900">{food.name}</p>
                       <p className="text-xs text-gray-600 mt-1">
-                        {food.per_100g.calories}cal/100g • P:{food.per_100g.protein}g C:{food.per_100g.carbs}g F:{food.per_100g.fats}g
+                        {food.per_100g.calories}cal/100g • P:
+                        {food.per_100g.protein}g C:{food.per_100g.carbs}g F:
+                        {food.per_100g.fats}g
                       </p>
                     </button>
                   ))}
@@ -524,9 +569,7 @@ const MealTracker = () => {
                     </label>
                     <div className="flex items-center gap-3 bg-gray-100 rounded-lg p-1">
                       <button
-                        onClick={() =>
-                          setQuantity(Math.max(10, quantity - 10))
-                        }
+                        onClick={() => setQuantity(Math.max(10, quantity - 10))}
                         className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-bold text-lg"
                       >
                         −
