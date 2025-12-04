@@ -8,6 +8,7 @@ import {
   Camera,
   Paperclip,
   X,
+  Edit2,
 } from "lucide-react";
 import { useMealTrackerData } from "@/hooks/useMeals";
 import { useMealPhotos } from "@/hooks/useMealPhotos";
@@ -27,49 +28,34 @@ interface Food {
   };
 }
 
-// Semi-circle macro visualization component
-const MacroSemiCircle = ({
+// Horizontal macro bar component
+const MacroBar = ({
   current,
   target,
   label,
-  color,
+  gradient,
 }: {
   current: number;
   target: number;
   label: string;
-  color: string;
+  gradient: string;
 }) => {
   const percentage = Math.min((current / target) * 100, 100);
-  const circumference = Math.PI * 60; // radius = 60
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="relative w-32 h-16 flex items-center justify-center">
-        <svg width="128" height="64" viewBox="0 0 128 64" className="transform">
-          {/* Background semicircle */}
-          <path
-            d="M 8 64 A 60 60 0 0 1 120 64"
-            fill="none"
-            stroke="#e5e7eb"
-            strokeWidth="6"
-          />
-          {/* Progress semicircle */}
-          <path
-            d="M 8 64 A 60 60 0 0 1 120 64"
-            fill="none"
-            stroke={color}
-            strokeWidth="6"
-            strokeDasharray={`${(circumference / 2) * (percentage / 100)} ${circumference / 2}`}
-            strokeLinecap="round"
-            style={{ transition: "stroke-dasharray 0.3s ease" }}
-          />
-        </svg>
-        <div className="absolute text-center">
-          <p className="text-2xl font-bold text-gray-900">{Math.round(current)}</p>
-          <p className="text-xs text-gray-600">{label}</p>
-        </div>
+    <div className="w-full">
+      <div className="flex items-center justify-between mb-1.5">
+        <p className="text-xs font-bold text-gray-700">{label}</p>
+        <p className="text-sm font-bold text-gray-900">
+          {Math.round(current)}/{target}
+        </p>
       </div>
-      <p className="text-xs text-gray-500 mt-2">/ {target}</p>
+      <div className="w-full bg-gray-200/50 rounded-full h-2 overflow-hidden border border-gray-300/30">
+        <div
+          className={`h-full rounded-full transition-all duration-300 bg-gradient-to-r ${gradient}`}
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
     </div>
   );
 };
@@ -88,9 +74,9 @@ const MealTracker = () => {
 
   const [foods, setFoods] = useState<Food[]>([]);
   const [showAddFood, setShowAddFood] = useState(false);
-  const [selectedMealType, setSelectedMealType] = useState<
-    "breakfast" | "lunch" | "snacks" | "dinner"
-  >("breakfast");
+  const [selectedMealType, setSelectedMealType] = useState<string>(
+    "breakfast"
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   const [quantity, setQuantity] = useState(100);
@@ -104,6 +90,10 @@ const MealTracker = () => {
     "dinner",
   ]);
   const [draggedMeal, setDraggedMeal] = useState<string | null>(null);
+  const [customMeals, setCustomMeals] = useState<Record<string, string>>({});
+  const [showNamingModal, setShowNamingModal] = useState(false);
+  const [mealNameInput, setMealNameInput] = useState("");
+  const [editingMealType, setEditingMealType] = useState<string | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
@@ -127,10 +117,10 @@ const MealTracker = () => {
     if (!user?.id) return;
 
     const loadAllPhotos = async () => {
-      const mealTypes = ["breakfast", "lunch", "snacks", "dinner"];
+      const allMealTypes = [...mealOrder, ...Object.keys(customMeals)];
       const photos: Record<string, any[]> = {};
 
-      for (const mealType of mealTypes) {
+      for (const mealType of allMealTypes) {
         try {
           const photoList = await fetchPhotos(user.id, currentDate, mealType);
           photos[mealType] = photoList;
@@ -143,7 +133,7 @@ const MealTracker = () => {
     };
 
     loadAllPhotos();
-  }, [currentDate, user?.id]);
+  }, [currentDate, user?.id, mealOrder, customMeals]);
 
   function formatDate(dateStr: string) {
     const date = new Date(dateStr);
@@ -237,6 +227,39 @@ const MealTracker = () => {
     }
   }
 
+  function handleCreateCustomMeal() {
+    if (!mealNameInput.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a meal name",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (editingMealType) {
+      // Update existing custom meal name
+      setCustomMeals((prev) => ({
+        ...prev,
+        [editingMealType]: mealNameInput,
+      }));
+      setSelectedMealType(editingMealType);
+    } else {
+      // Create new custom meal
+      const mealId = `custom_${Date.now()}`;
+      setCustomMeals((prev) => ({
+        ...prev,
+        [mealId]: mealNameInput,
+      }));
+      setSelectedMealType(mealId);
+    }
+
+    setShowNamingModal(false);
+    setMealNameInput("");
+    setEditingMealType(null);
+    setShowAddFood(true);
+  }
+
   const filteredFoods = foods.filter((food) =>
     food.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
@@ -245,13 +268,11 @@ const MealTracker = () => {
     ? calculateMacros(selectedFood, quantity, selectedUnit)
     : null;
 
-  const mealTypes = ["breakfast", "lunch", "snacks", "dinner"];
   const mealIcons: Record<string, string> = {
     breakfast: "🌅",
     lunch: "🍽️",
     snacks: "🥜",
     dinner: "🌙",
-    custom: "➕",
   };
 
   const mealColors: Record<string, string> = {
@@ -259,7 +280,27 @@ const MealTracker = () => {
     lunch: "from-blue-100 to-cyan-100",
     snacks: "from-purple-100 to-pink-100",
     dinner: "from-indigo-100 to-blue-100",
-    custom: "from-gray-100 to-slate-100",
+  };
+
+  const getMealDisplayName = (mealType: string) => {
+    if (customMeals[mealType]) {
+      return customMeals[mealType];
+    }
+    return mealType.charAt(0).toUpperCase() + mealType.slice(1);
+  };
+
+  const getMealColor = (mealType: string) => {
+    if (mealColors[mealType]) {
+      return mealColors[mealType];
+    }
+    return "from-gray-100 to-slate-100";
+  };
+
+  const getMealIcon = (mealType: string) => {
+    if (mealIcons[mealType]) {
+      return mealIcons[mealType];
+    }
+    return "🍴";
   };
 
   const scroll = (direction: "left" | "right") => {
@@ -271,6 +312,8 @@ const MealTracker = () => {
       });
     }
   };
+
+  const allMealTypes = [...mealOrder, ...Object.keys(customMeals)];
 
   return (
     <div className="w-full h-full bg-gradient-to-br from-slate-50 via-white to-slate-100 flex flex-col overflow-hidden">
@@ -308,47 +351,34 @@ const MealTracker = () => {
         </button>
       </div>
 
-      {/* New Macro Summary with Semi-Circles */}
+      {/* Macro Summary Bar with Horizontal Bars */}
       {dailyMeals && (
         <div className="bg-white/50 backdrop-blur-md border-b border-gray-200/50 p-6 shadow-sm">
-          <div className="flex flex-col items-center gap-8">
-            {/* Central Protein Tile */}
-            <div className="flex justify-center">
-              <MacroSemiCircle
-                current={dailyMeals.totals.protein}
-                target={150}
-                label="Protein"
-                color="#3b82f6"
-              />
-            </div>
-
-            {/* Other Macros Below */}
-            <div className="grid grid-cols-3 gap-6 w-full">
-              <div className="flex justify-center">
-                <MacroSemiCircle
-                  current={dailyMeals.totals.calories}
-                  target={2500}
-                  label="Calories"
-                  color="#f97316"
-                />
-              </div>
-              <div className="flex justify-center">
-                <MacroSemiCircle
-                  current={dailyMeals.totals.carbs}
-                  target={300}
-                  label="Carbs"
-                  color="#22c55e"
-                />
-              </div>
-              <div className="flex justify-center">
-                <MacroSemiCircle
-                  current={dailyMeals.totals.fats}
-                  target={75}
-                  label="Fats"
-                  color="#ef4444"
-                />
-              </div>
-            </div>
+          <div className="space-y-4">
+            <MacroBar
+              current={dailyMeals.totals.protein}
+              target={150}
+              label="Protein"
+              gradient="from-blue-400 to-blue-600"
+            />
+            <MacroBar
+              current={dailyMeals.totals.calories}
+              target={2500}
+              label="Calories"
+              gradient="from-orange-400 to-orange-600"
+            />
+            <MacroBar
+              current={dailyMeals.totals.carbs}
+              target={300}
+              label="Carbs"
+              gradient="from-green-400 to-green-600"
+            />
+            <MacroBar
+              current={dailyMeals.totals.fats}
+              target={75}
+              label="Fats"
+              gradient="from-red-400 to-red-600"
+            />
           </div>
         </div>
       )}
@@ -378,25 +408,32 @@ const MealTracker = () => {
           className="flex gap-4 p-4 overflow-x-auto snap-x snap-mandatory flex-1 scrollbar-hide"
           style={{ scrollBehavior: "smooth" }}
         >
-          {mealOrder.map((mealType) => {
-            const mealCalories = dailyMeals
-              ? dailyMeals[mealType as keyof typeof dailyMeals].reduce(
-                  (s, m) => s + (m.calories || 0),
-                  0,
-                )
+          {allMealTypes.map((mealType) => {
+            const mealItems = dailyMeals?.[mealType as keyof typeof dailyMeals] as any[];
+            const mealCalories = mealItems
+              ? mealItems.reduce((s, m) => s + (m.calories || 0), 0)
               : 0;
-            const mealItems =
-              dailyMeals?.[mealType as keyof typeof dailyMeals] || [];
+            const mealProtein = mealItems
+              ? mealItems.reduce((s, m) => s + (m.protein || 0), 0)
+              : 0;
+            const mealCarbs = mealItems
+              ? mealItems.reduce((s, m) => s + (m.carbs || 0), 0)
+              : 0;
+            const mealFats = mealItems
+              ? mealItems.reduce((s, m) => s + (m.fats || 0), 0)
+              : 0;
             const photos = mealPhotos[mealType] || [];
 
             return (
               <div
                 key={mealType}
                 className="flex-shrink-0 w-80 snap-center cursor-move group"
-                draggable
+                draggable={!mealType.startsWith("custom")}
                 onDragStart={(e) => {
-                  setDraggedMeal(mealType);
-                  e.dataTransfer.effectAllowed = "move";
+                  if (!mealType.startsWith("custom")) {
+                    setDraggedMeal(mealType);
+                    e.dataTransfer.effectAllowed = "move";
+                  }
                 }}
                 onDragOver={(e) => {
                   e.preventDefault();
@@ -404,7 +441,7 @@ const MealTracker = () => {
                 }}
                 onDrop={(e) => {
                   e.preventDefault();
-                  if (draggedMeal && draggedMeal !== mealType) {
+                  if (draggedMeal && draggedMeal !== mealType && !mealType.startsWith("custom")) {
                     const newOrder = [...mealOrder];
                     const draggedIndex = newOrder.indexOf(draggedMeal);
                     const targetIndex = newOrder.indexOf(mealType);
@@ -419,19 +456,34 @@ const MealTracker = () => {
                 onDragEnd={() => setDraggedMeal(null)}
               >
                 <div
-                  className={`bg-gradient-to-br ${mealColors[mealType]} backdrop-blur-lg rounded-3xl p-6 h-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/40 flex flex-col ${
+                  className={`bg-gradient-to-br ${getMealColor(mealType)} backdrop-blur-lg rounded-3xl p-6 h-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/40 flex flex-col ${
                     draggedMeal === mealType ? "opacity-50 scale-95" : ""
                   }`}
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between mb-4">
-                    <div>
+                    <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-4xl">{mealIcons[mealType]}</span>
+                        <span className="text-4xl">{getMealIcon(mealType)}</span>
                         <div>
-                          <h3 className="text-2xl font-bold text-gray-900 capitalize">
-                            {mealType}
-                          </h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-2xl font-bold text-gray-900">
+                              {getMealDisplayName(mealType)}
+                            </h3>
+                            {mealType.startsWith("custom") && (
+                              <button
+                                onClick={() => {
+                                  setEditingMealType(mealType);
+                                  setMealNameInput(customMeals[mealType]);
+                                  setShowNamingModal(true);
+                                }}
+                                className="p-1 hover:bg-white/40 rounded-lg transition text-gray-600"
+                                title="Edit meal name"
+                              >
+                                <Edit2 size={16} />
+                              </button>
+                            )}
+                          </div>
                           <p className="text-sm text-gray-700 font-semibold">
                             {Math.round(mealCalories)} cal
                           </p>
@@ -440,10 +492,10 @@ const MealTracker = () => {
                     </div>
                     <button
                       onClick={() => {
-                        setSelectedMealType(mealType as any);
+                        setSelectedMealType(mealType);
                         setShowAddFood(true);
                       }}
-                      className="p-3 bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-full transition text-gray-700 border border-white/40"
+                      className="p-3 bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-full transition text-gray-700 border border-white/40 flex-shrink-0"
                     >
                       <Plus size={24} />
                     </button>
@@ -512,41 +564,38 @@ const MealTracker = () => {
                     </div>
                   </div>
 
-                  {/* Macro Stats */}
-                  <div className="grid grid-cols-3 gap-2 mb-4 bg-white/30 backdrop-blur-sm rounded-2xl p-3 border border-white/40">
-                    <div className="text-center">
-                      <p className="text-xs text-gray-700 font-semibold">P</p>
-                      <p className="text-lg font-bold text-gray-900">
-                        {Math.round(
-                          mealItems.reduce((s, m) => s + (m.protein || 0), 0),
-                        )}
-                        g
-                      </p>
-                    </div>
-                    <div className="text-center border-l border-r border-white/40">
-                      <p className="text-xs text-gray-700 font-semibold">C</p>
-                      <p className="text-lg font-bold text-gray-900">
-                        {Math.round(
-                          mealItems.reduce((s, m) => s + (m.carbs || 0), 0),
-                        )}
-                        g
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-xs text-gray-700 font-semibold">F</p>
-                      <p className="text-lg font-bold text-gray-900">
-                        {Math.round(
-                          mealItems.reduce((s, m) => s + (m.fats || 0), 0),
-                        )}
-                        g
-                      </p>
-                    </div>
+                  {/* Macro Stats - Horizontal Bars */}
+                  <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-3 border border-white/40 mb-4 space-y-2.5">
+                    <MacroBar
+                      current={mealProtein}
+                      target={150}
+                      label="P"
+                      gradient="from-blue-400 to-blue-600"
+                    />
+                    <MacroBar
+                      current={mealCalories}
+                      target={2500}
+                      label="Cal"
+                      gradient="from-orange-400 to-orange-600"
+                    />
+                    <MacroBar
+                      current={mealCarbs}
+                      target={300}
+                      label="C"
+                      gradient="from-green-400 to-green-600"
+                    />
+                    <MacroBar
+                      current={mealFats}
+                      target={75}
+                      label="F"
+                      gradient="from-red-400 to-red-600"
+                    />
                   </div>
 
                   {/* Food Items */}
                   <div className="flex-1 overflow-y-auto mb-4 space-y-2">
-                    {mealItems.length > 0 ? (
-                      mealItems.map((meal) => (
+                    {mealItems && mealItems.length > 0 ? (
+                      mealItems.map((meal: any) => (
                         <div
                           key={meal.id}
                           className="bg-white/30 backdrop-blur-sm rounded-xl p-3 flex items-center justify-between group hover:bg-white/50 transition border border-white/40"
@@ -585,7 +634,7 @@ const MealTracker = () => {
                   {/* Add Button */}
                   <button
                     onClick={() => {
-                      setSelectedMealType(mealType as any);
+                      setSelectedMealType(mealType);
                       setShowAddFood(true);
                     }}
                     className="w-full py-3 bg-white/70 hover:bg-white text-gray-900 font-bold rounded-2xl transition shadow-md border border-white/40"
@@ -598,58 +647,72 @@ const MealTracker = () => {
           })}
 
           {/* Extra Meal Tile - Draggable */}
-          <div
-            className="flex-shrink-0 w-80 snap-center cursor-move group"
-            draggable
-            onDragStart={(e) => {
-              setDraggedMeal("custom");
-              e.dataTransfer.effectAllowed = "move";
-            }}
-            onDragOver={(e) => {
-              e.preventDefault();
-              e.dataTransfer.dropEffect = "move";
-            }}
-            onDrop={(e) => {
-              e.preventDefault();
-              if (draggedMeal && draggedMeal !== "custom") {
-                const newOrder = [...mealOrder];
-                const draggedIndex = newOrder.indexOf(draggedMeal);
-
-                // Remove dragged item
-                newOrder.splice(draggedIndex, 1);
-                // Insert before custom position (which is at the end)
-                newOrder.splice(newOrder.length, 0, draggedMeal);
-
-                setMealOrder(newOrder);
-              }
-              setDraggedMeal(null);
-            }}
-            onDragEnd={() => setDraggedMeal(null)}
-          >
+          <div className="flex-shrink-0 w-80 snap-center">
             <button
               onClick={() => {
-                setSelectedMealType("breakfast");
-                setShowAddFood(true);
+                setShowNamingModal(true);
+                setEditingMealType(null);
+                setMealNameInput("");
               }}
-              className={`w-full h-full bg-gradient-to-br from-gray-100 to-slate-100 backdrop-blur-lg rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-dashed border-gray-400 hover:border-gray-500 flex flex-col items-center justify-center ${
-                draggedMeal === "custom" ? "opacity-50 scale-95" : ""
-              }`}
+              className="w-full h-full bg-gradient-to-br from-gray-100 to-slate-100 backdrop-blur-lg rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-dashed border-gray-400 hover:border-gray-500 flex flex-col items-center justify-center hover:bg-gradient-to-br hover:from-gray-200 hover:to-slate-200"
             >
               <div className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">
                 ➕
               </div>
               <h3 className="text-xl font-bold text-gray-900 text-center mb-1">
-                Extra Meal
+                Add Meal
               </h3>
               <p className="text-xs text-gray-600 text-center">
-                Hold to reorder
+                Create custom meal
               </p>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Modern Add Food Modal - Samsung/Apple Style */}
+      {/* Meal Naming Modal */}
+      {showNamingModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4 shadow-2xl border border-gray-200/40">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              {editingMealType ? "Edit Meal Name" : "Create New Meal"}
+            </h2>
+            <input
+              type="text"
+              value={mealNameInput}
+              onChange={(e) => setMealNameInput(e.target.value)}
+              placeholder="e.g., Snack 2, Pre-workout, Evening meal"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500 mb-6"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleCreateCustomMeal();
+                }
+              }}
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowNamingModal(false);
+                  setMealNameInput("");
+                  setEditingMealType(null);
+                }}
+                className="flex-1 px-4 py-3 bg-gray-200 text-gray-900 rounded-xl font-bold hover:bg-gray-300 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCreateCustomMeal}
+                className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold hover:shadow-lg transition"
+              >
+                {editingMealType ? "Update" : "Create"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Food Modal - Samsung/Apple Style */}
       {showAddFood && (
         <div className="fixed inset-0 bg-black/40 flex items-end z-50 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="w-full bg-white/95 backdrop-blur-xl rounded-t-3xl p-6 max-h-[90vh] overflow-y-auto shadow-2xl border-t border-white/40">
@@ -823,7 +886,7 @@ const MealTracker = () => {
                   >
                     {addMealMutation.isPending
                       ? "Adding..."
-                      : `Add to ${selectedMealType}`}
+                      : `Add to ${getMealDisplayName(selectedMealType)}`}
                   </button>
                 </div>
               </>
