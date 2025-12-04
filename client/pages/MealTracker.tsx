@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Plus, Trash2, Search } from "lucide-react";
-import { useMeals } from "@/hooks/useMeals";
+import { useMealTrackerData } from "@/hooks/useMeals";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 
