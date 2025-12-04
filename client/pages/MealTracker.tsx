@@ -21,7 +21,7 @@ const MealTracker = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const { useDailyMeals, useWeeklyMeals, useAddMeal, useDeleteMeal } =
-    useMeals();
+    useMealTrackerData();
 
   const [currentDate, setCurrentDate] = useState(() => {
     const today = new Date();
