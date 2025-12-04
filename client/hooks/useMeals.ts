@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 
@@ -5,14 +6,18 @@ export interface MealEntry {
   id?: string;
   user_id?: string;
   date: string;
-  meal_type: "breakfast" | "lunch" | "snacks" | "dinner";
+  meal_type: "breakfast" | "lunch" | "snacks" | "dinner" | "snack";
   food_name: string;
-  quantity: number;
-  unit: string;
+  quantity?: number;
+  unit?: string;
+  weight_g?: number;
   calories: number;
-  protein: number;
-  carbs: number;
-  fats: number;
+  protein?: number;
+  carbs?: number;
+  fats?: number;
+  protein_g?: number;
+  carbs_g?: number;
+  fat_g?: number;
   created_at?: string;
 }
 
@@ -29,7 +34,8 @@ export interface DailyMealSummary {
   };
 }
 
-export const useMeals = () => {
+// Hook for new MealTracker page (React Query based)
+export const useMealTrackerData = () => {
   const queryClient = useQueryClient();
 
   // Fetch meals for a specific date
@@ -67,12 +73,12 @@ export const useMeals = () => {
           },
         };
 
-        data.forEach((meal) => {
+        (data || []).forEach((meal) => {
           organized[meal.meal_type as keyof typeof organized].push(meal);
-          organized.totals.calories += meal.calories;
-          organized.totals.protein += meal.protein;
-          organized.totals.carbs += meal.carbs;
-          organized.totals.fats += meal.fats;
+          organized.totals.calories += meal.calories || 0;
+          organized.totals.protein += meal.protein || 0;
+          organized.totals.carbs += meal.carbs || 0;
+          organized.totals.fats += meal.fats || 0;
         });
 
         return organized;
@@ -126,14 +132,14 @@ export const useMeals = () => {
           };
         }
 
-        data.forEach((meal) => {
+        (data || []).forEach((meal) => {
           const dateData = weeklyData[meal.date];
           if (dateData) {
             dateData[meal.meal_type as keyof typeof dateData].push(meal);
-            dateData.totals.calories += meal.calories;
-            dateData.totals.protein += meal.protein;
-            dateData.totals.carbs += meal.carbs;
-            dateData.totals.fats += meal.fats;
+            dateData.totals.calories += meal.calories || 0;
+            dateData.totals.protein += meal.protein || 0;
+            dateData.totals.carbs += meal.carbs || 0;
+            dateData.totals.fats += meal.fats || 0;
           }
         });
 
@@ -158,12 +164,12 @@ export const useMeals = () => {
               date: meal.date,
               meal_type: meal.meal_type,
               food_name: meal.food_name,
-              quantity: meal.quantity,
-              unit: meal.unit,
-              calories: Math.round(meal.calories * 10) / 10,
-              protein: Math.round(meal.protein * 10) / 10,
-              carbs: Math.round(meal.carbs * 10) / 10,
-              fats: Math.round(meal.fats * 10) / 10,
+              quantity: meal.quantity || 100,
+              unit: meal.unit || "g",
+              calories: Math.round((meal.calories || 0) * 10) / 10,
+              protein: Math.round((meal.protein || 0) * 10) / 10,
+              carbs: Math.round((meal.carbs || 0) * 10) / 10,
+              fats: Math.round((meal.fats || 0) * 10) / 10,
             },
           ])
           .select()
@@ -206,5 +212,81 @@ export const useMeals = () => {
     useWeeklyMeals,
     useAddMeal,
     useDeleteMeal,
+  };
+};
+
+// Legacy hook for MobileMeals (backward compatible)
+export const useMeals = () => {
+  const [meals, setMeals] = useState<MealEntry[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchTodayMeals = async () => {
+    setLoading(true);
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const today = new Date().toISOString().split("T")[0];
+      const { data, error } = await supabase
+        .from("meals_logs")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("date", today);
+
+      if (error) throw error;
+      setMeals(data || []);
+    } catch (error) {
+      console.error("Error fetching meals:", error);
+      setMeals([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addMeal = async (meal: Omit<MealEntry, "id" | "date" | "user_id">) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error("Not authenticated");
+
+    const today = new Date().toISOString().split("T")[0];
+
+    const { data, error } = await supabase
+      .from("meals_logs")
+      .insert([
+        {
+          user_id: user.id,
+          date: today,
+          meal_type: meal.meal_type,
+          food_name: meal.food_name,
+          quantity: meal.weight_g || 100,
+          unit: "g",
+          calories: meal.calories || 0,
+          protein: meal.protein_g || 0,
+          carbs: meal.carbs_g || 0,
+          fats: meal.fat_g || 0,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  };
+
+  const deleteMeal = async (mealId: string) => {
+    const { error } = await supabase.from("meals_logs").delete().eq("id", mealId);
+
+    if (error) throw error;
+  };
+
+  return {
+    meals,
+    loading,
+    addMeal,
+    deleteMeal,
+    fetchTodayMeals,
   };
 };
