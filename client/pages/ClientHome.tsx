@@ -433,16 +433,16 @@ export default function ClientHome() {
       onClick: () => navigate("/meals"),
     },
     {
+      label: "Online Meeting",
+      icon: Users,
+      color: "from-cyan-400 to-blue-500",
+      onClick: () => navigate("/video-sessions"),
+    },
+    {
       label: "CoCircle",
       icon: Users,
       color: "from-purple-400 to-purple-500",
       onClick: () => navigate("/community"),
-    },
-    {
-      label: "Quests",
-      icon: Trophy,
-      color: "from-yellow-400 to-yellow-500",
-      onClick: () => navigate("/quests"),
     },
     {
       label: "Become a Trainer",
