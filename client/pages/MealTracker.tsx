@@ -537,6 +537,54 @@ const MealTracker = () => {
               </div>
             );
           })}
+
+          {/* Extra Meal Tile - Draggable */}
+          <div
+            className="flex-shrink-0 w-80 snap-center cursor-move group"
+            draggable
+            onDragStart={(e) => {
+              setDraggedMeal("custom");
+              e.dataTransfer.effectAllowed = "move";
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.dataTransfer.dropEffect = "move";
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (draggedMeal && draggedMeal !== "custom") {
+                const newOrder = [...mealOrder];
+                const draggedIndex = newOrder.indexOf(draggedMeal);
+
+                // Remove dragged item
+                newOrder.splice(draggedIndex, 1);
+                // Insert before custom position (which is at the end)
+                newOrder.splice(newOrder.length, 0, draggedMeal);
+
+                setMealOrder(newOrder);
+              }
+              setDraggedMeal(null);
+            }}
+            onDragEnd={() => setDraggedMeal(null)}
+          >
+            <button
+              onClick={() => {
+                setSelectedMealType("breakfast");
+                setShowAddFood(true);
+              }}
+              className={`w-full h-full bg-gradient-to-br from-gray-100 to-slate-100 backdrop-blur-lg rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-dashed border-gray-400 hover:border-gray-500 flex flex-col items-center justify-center ${
+                draggedMeal === "custom" ? "opacity-50 scale-95" : ""
+              }`}
+            >
+              <div className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">➕</div>
+              <h3 className="text-xl font-bold text-gray-900 text-center mb-1">
+                Extra Meal
+              </h3>
+              <p className="text-xs text-gray-600 text-center">
+                Hold to reorder
+              </p>
+            </button>
+          </div>
         </div>
       </div>
 
