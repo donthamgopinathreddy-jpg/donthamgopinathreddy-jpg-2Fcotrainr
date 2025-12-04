@@ -467,7 +467,7 @@ export default function ClientHome() {
   ];
 
   return (
-    <div className="w-full h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 flex flex-col relative overflow-hidden">
+    <div className="w-full h-full bg-gradient-to-br from-orange-50 via-white to-blue-50 flex flex-col relative overflow-hidden">
       {/* Mobile Container - max width for native feel (390px iPhone-like) */}
       <div className="w-full h-full flex flex-col relative">
         {/* Decorative background elements - contained properly */}
