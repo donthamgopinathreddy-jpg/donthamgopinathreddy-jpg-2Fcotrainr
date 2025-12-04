@@ -150,7 +150,7 @@ const Navigation = () => {
                       : "text-gray-600 hover:text-orange-600 hover:scale-110 active:scale-95"
                   }`}
                   style={{
-                    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)"
+                    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
                   }}
                 >
                   {/* Animated background gradient on hover */}
