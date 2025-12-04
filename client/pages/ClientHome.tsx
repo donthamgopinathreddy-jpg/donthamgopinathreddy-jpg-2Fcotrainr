@@ -476,8 +476,8 @@ export default function ClientHome() {
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
         </div>
 
-        {/* Main Content - Navigation will overlap */}
-        <div className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden pb-24">
+        {/* Main Content */}
+        <div className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden pb-8">
           {/* 1. Top Right Notification Bell - Outline Style */}
           <div className="absolute top-4 right-5 z-50">
             <button
