@@ -133,13 +133,7 @@ const Navigation = () => {
       <div className="max-w-md mx-auto w-full px-2 py-3">
         <div className="flex justify-around items-center gap-1">
           {navItems.map(
-            ({
-              path,
-              label,
-              icon: Icon,
-              bgColor,
-              textColor,
-            }: any) => {
+            ({ path, label, icon: Icon, bgColor, textColor }: any) => {
               const active = isActive(path);
               return (
                 <Link
@@ -167,7 +161,7 @@ const Navigation = () => {
                   </span>
                 </Link>
               );
-            }
+            },
           )}
         </div>
       </div>

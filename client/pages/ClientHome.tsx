@@ -806,10 +806,14 @@ export default function ClientHome() {
                     onClick={tile.onClick}
                     className={`rounded-3xl p-5 transition-all duration-300 flex flex-col items-center gap-2 group active:scale-95 hover:scale-105 ${bgColor} shadow-sm hover:shadow-md`}
                   >
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${iconBg} group-hover:scale-125 transition-transform duration-300`}>
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center ${iconBg} group-hover:scale-125 transition-transform duration-300`}
+                    >
                       <Icon size={20} className="text-white" />
                     </div>
-                    <p className={`text-xs font-semibold text-center ${textColor}`}>
+                    <p
+                      className={`text-xs font-semibold text-center ${textColor}`}
+                    >
                       {tile.label}
                     </p>
                   </button>
