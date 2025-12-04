@@ -126,6 +126,22 @@ const MealTracker = () => {
       .catch((err) => console.error("Failed to load foods:", err));
   }, []);
 
+  // Load macro targets from localStorage
+  useEffect(() => {
+    if (user?.id) {
+      const savedTargets = localStorage.getItem(`macro_targets_${user.id}`);
+      if (savedTargets) {
+        try {
+          const parsed = JSON.parse(savedTargets);
+          setMacroTargets(parsed);
+          setEditMacroTargets(parsed);
+        } catch (err) {
+          console.error("Failed to parse saved targets:", err);
+        }
+      }
+    }
+  }, [user?.id]);
+
   // Load photos for all meal types
   useEffect(() => {
     if (!user?.id) return;
