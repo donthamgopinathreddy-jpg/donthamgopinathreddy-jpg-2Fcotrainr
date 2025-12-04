@@ -95,6 +95,19 @@ const MealTracker = () => {
   const [showNamingModal, setShowNamingModal] = useState(false);
   const [mealNameInput, setMealNameInput] = useState("");
   const [editingMealType, setEditingMealType] = useState<string | null>(null);
+  const [showMacroTargetsModal, setShowMacroTargetsModal] = useState(false);
+  const [macroTargets, setMacroTargets] = useState({
+    protein: 150,
+    calories: 2500,
+    carbs: 300,
+    fats: 75,
+  });
+  const [editMacroTargets, setEditMacroTargets] = useState({
+    protein: 150,
+    calories: 2500,
+    carbs: 300,
+    fats: 75,
+  });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
