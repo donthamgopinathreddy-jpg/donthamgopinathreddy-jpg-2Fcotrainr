@@ -419,7 +419,7 @@ export default function ClientHome() {
     {
       label: "Nutritionists",
       icon: Apple,
-      color: "from-green-400 to-green-500",
+      color: "from-red-400 to-red-500",
       onClick: () => navigate("/nutritionists"),
     },
     {
@@ -430,7 +430,7 @@ export default function ClientHome() {
     },
     {
       label: "Online Meeting",
-      icon: Users,
+      icon: Camera,
       color: "from-cyan-400 to-blue-500",
       onClick: () => navigate("/video-sessions"),
     },
@@ -779,9 +779,9 @@ export default function ClientHome() {
                   textColor = "text-blue-700";
                   iconBg = "bg-blue-300";
                 } else if (tile.label === "Nutritionists") {
-                  bgColor = "bg-blue-100";
-                  textColor = "text-blue-700";
-                  iconBg = "bg-blue-300";
+                  bgColor = "bg-red-100";
+                  textColor = "text-red-700";
+                  iconBg = "bg-red-300";
                 } else if (tile.label === "Meal Tracker") {
                   bgColor = "bg-amber-100";
                   textColor = "text-amber-700";
