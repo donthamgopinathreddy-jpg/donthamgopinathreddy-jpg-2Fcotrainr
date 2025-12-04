@@ -156,12 +156,11 @@ const Navigation = () => {
                   onClick={handleNavClick}
                   className={`group relative flex flex-col items-center justify-center gap-0 py-2.5 px-4 rounded-2xl transition-all duration-300 flex-1 overflow-hidden ${
                     active
-                      ? `bg-gradient-to-br ${gradient} text-white shadow-lg scale-105`
-                      : "text-gray-600 hover:text-white hover:scale-110 active:scale-95"
+                      ? `bg-gradient-to-br from-orange-400 to-yellow-500 text-white shadow-lg shadow-orange-300/50 scale-105`
+                      : "text-gray-600 hover:text-orange-600 hover:scale-110 active:scale-95"
                   }`}
                   style={{
-                    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                    boxShadow: active ? `0 8px 24px ${getShadowColor(path)}` : "none",
+                    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)"
                   }}
                 >
                   {/* Animated background gradient on hover */}
