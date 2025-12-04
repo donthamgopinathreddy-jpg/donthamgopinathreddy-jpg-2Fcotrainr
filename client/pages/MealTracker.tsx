@@ -975,6 +975,110 @@ const MealTracker = () => {
           </div>
         </div>
       )}
+
+      {/* Macro Targets Edit Modal */}
+      {showMacroTargetsModal && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-6 shadow-2xl border border-gray-200/40">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Daily Macro Goals
+            </h2>
+
+            <div className="space-y-4">
+              {/* Protein */}
+              <div>
+                <label className="block text-sm font-bold text-gray-900 mb-2">
+                  Protein Target (g)
+                </label>
+                <input
+                  type="number"
+                  value={editMacroTargets.protein}
+                  onChange={(e) =>
+                    setEditMacroTargets({
+                      ...editMacroTargets,
+                      protein: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  placeholder="e.g., 150"
+                />
+              </div>
+
+              {/* Calories */}
+              <div>
+                <label className="block text-sm font-bold text-gray-900 mb-2">
+                  Calories Target (kcal)
+                </label>
+                <input
+                  type="number"
+                  value={editMacroTargets.calories}
+                  onChange={(e) =>
+                    setEditMacroTargets({
+                      ...editMacroTargets,
+                      calories: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  placeholder="e.g., 2500"
+                />
+              </div>
+
+              {/* Carbs */}
+              <div>
+                <label className="block text-sm font-bold text-gray-900 mb-2">
+                  Carbs Target (g)
+                </label>
+                <input
+                  type="number"
+                  value={editMacroTargets.carbs}
+                  onChange={(e) =>
+                    setEditMacroTargets({
+                      ...editMacroTargets,
+                      carbs: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-400"
+                  placeholder="e.g., 300"
+                />
+              </div>
+
+              {/* Fats */}
+              <div>
+                <label className="block text-sm font-bold text-gray-900 mb-2">
+                  Fats Target (g)
+                </label>
+                <input
+                  type="number"
+                  value={editMacroTargets.fats}
+                  onChange={(e) =>
+                    setEditMacroTargets({
+                      ...editMacroTargets,
+                      fats: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-400"
+                  placeholder="e.g., 75"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setShowMacroTargetsModal(false)}
+                className="flex-1 px-4 py-3 bg-gray-200 text-gray-900 rounded-xl font-bold hover:bg-gray-300 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveMacroTargets}
+                className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold hover:shadow-lg transition"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
