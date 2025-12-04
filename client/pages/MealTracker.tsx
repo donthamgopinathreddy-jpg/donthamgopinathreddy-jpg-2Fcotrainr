@@ -320,20 +320,19 @@ const MealTracker = () => {
                       (meal) => (
                         <div
                           key={meal.id}
-                          className="flex items-center justify-between p-3 bg-gray-50 rounded-2xl"
+                          className="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-100 rounded-2xl hover:shadow-md transition-all duration-300"
                         >
                           <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-bold text-gray-900">
                               {meal.food_name}
                             </p>
-                            <p className="text-xs text-gray-500">
-                              {meal.quantity}
-                              {meal.unit} • {meal.calories}cal
+                            <p className="text-xs text-gray-600 font-medium">
+                              {meal.quantity}{meal.unit} • <span className="text-orange-600 font-bold">{meal.calories}cal</span>
                             </p>
                           </div>
                           <button
                             onClick={() => handleDeleteMeal(meal.id!)}
-                            className="p-1 hover:bg-red-100 rounded-lg transition text-red-600"
+                            className="p-2 hover:bg-red-200 rounded-lg transition text-red-600 hover:scale-110"
                           >
                             <Trash2 size={16} />
                           </button>
