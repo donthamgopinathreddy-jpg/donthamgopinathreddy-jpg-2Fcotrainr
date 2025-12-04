@@ -67,6 +67,7 @@ import InsightsWater from "./pages/InsightsWater";
 import InsightsDistance from "./pages/InsightsDistance";
 import Trainers from "./pages/Trainers";
 import Nutritionists from "./pages/Nutritionists";
+import MealTracker from "./pages/MealTracker";
 import Navigation from "./components/Navigation";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { isUserAdmin } from "@/lib/adminAuth";
