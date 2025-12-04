@@ -24,7 +24,7 @@ import {
   Plus,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useStepCounter } from "@/hooks/useStepCounter";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
@@ -33,7 +33,6 @@ import UnifiedMetricsModal from "@/components/UnifiedMetricsModal";
 export default function ClientHome() {
   const { userProfile, updateProfile } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const { steps } = useStepCounter();
 
   const [unreadCount, setUnreadCount] = useState(0);
