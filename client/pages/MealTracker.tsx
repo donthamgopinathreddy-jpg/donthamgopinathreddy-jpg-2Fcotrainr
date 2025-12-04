@@ -341,7 +341,10 @@ const MealTracker = () => {
                     )}
                   </div>
                 ) : (
-                  <p className="text-sm text-gray-500">No items yet</p>
+                  <div className="text-center py-6">
+                    <p className="text-sm text-gray-400 font-medium">No items yet</p>
+                    <p className="text-xs text-gray-400 mt-1">Tap Add to log your meal</p>
+                  </div>
                 )}
               </div>
             ))}
