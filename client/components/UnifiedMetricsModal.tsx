@@ -125,6 +125,16 @@ export default function UnifiedMetricsModal({
 
   if (!isOpen) return null;
 
+  const handleSaveStepsTarget = () => {
+    const newSteps = parseInt(editSteps);
+    if (!isNaN(newSteps) && newSteps > 0) {
+      // Here you would call an update function from parent
+      // For now, we'll just close the edit mode
+      setIsEditing(false);
+      console.log("Steps target updated to:", newSteps);
+    }
+  };
+
   const metrics = [
     {
       title: "Steps",
