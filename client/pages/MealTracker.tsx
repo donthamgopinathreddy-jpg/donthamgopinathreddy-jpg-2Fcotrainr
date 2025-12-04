@@ -166,7 +166,7 @@ const MealTracker = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setView("weekly")}
-              className="text-xs font-medium text-blue-600 hover:text-blue-800 px-3 py-1 bg-blue-50 rounded-full"
+              className="text-xs font-medium text-blue-600 hover:text-blue-800 px-3 py-1 bg-blue-50 rounded-full transition hover:bg-blue-100"
             >
               Weekly
             </button>
@@ -182,6 +182,49 @@ const MealTracker = () => {
             </button>
           </div>
         </div>
+
+        {/* Daily Macro Summary - Top Section */}
+        {dailyMeals && (
+          <div className="bg-white border-b border-gray-200 p-4 sticky top-16 z-9 shadow-sm">
+            <div className="grid grid-cols-4 gap-2">
+              {/* Calories */}
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-3 border border-orange-200 group hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+                <p className="text-xs text-orange-700 font-semibold mb-1">Calories</p>
+                <p className="text-xl font-bold text-orange-600">
+                  {Math.round(dailyMeals.totals.calories)}
+                </p>
+                <p className="text-xs text-orange-600/70">/ 2500</p>
+              </div>
+
+              {/* Protein */}
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-3 border border-blue-200 group hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+                <p className="text-xs text-blue-700 font-semibold mb-1">Protein</p>
+                <p className="text-xl font-bold text-blue-600">
+                  {Math.round(dailyMeals.totals.protein)}g
+                </p>
+                <p className="text-xs text-blue-600/70">/ 150g</p>
+              </div>
+
+              {/* Carbs */}
+              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-3 border border-green-200 group hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+                <p className="text-xs text-green-700 font-semibold mb-1">Carbs</p>
+                <p className="text-xl font-bold text-green-600">
+                  {Math.round(dailyMeals.totals.carbs)}g
+                </p>
+                <p className="text-xs text-green-600/70">/ 300g</p>
+              </div>
+
+              {/* Fats */}
+              <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-3 border border-red-200 group hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
+                <p className="text-xs text-red-700 font-semibold mb-1">Fats</p>
+                <p className="text-xl font-bold text-red-600">
+                  {Math.round(dailyMeals.totals.fats)}g
+                </p>
+                <p className="text-xs text-red-600/70">/ 75g</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Daily Meals */}
         <div className="flex-1 overflow-y-auto pb-24">
