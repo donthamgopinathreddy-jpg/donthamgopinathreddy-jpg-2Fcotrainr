@@ -79,8 +79,8 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-hidden">
-      <div className="min-h-screen">{children}</div>
+    <div className="w-screen h-screen bg-background text-foreground flex flex-col overflow-hidden">
+      <div className="flex-1 overflow-hidden">{children}</div>
       <Navigation />
     </div>
   );
