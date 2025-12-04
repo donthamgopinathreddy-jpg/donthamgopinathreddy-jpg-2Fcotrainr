@@ -467,17 +467,17 @@ export default function ClientHome() {
   ];
 
   return (
-    <div className="w-screen min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 flex flex-col overflow-x-hidden">
+    <div className="w-full h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 flex flex-col relative overflow-hidden">
       {/* Mobile Container - max width for native feel (390px iPhone-like) */}
-      <div className="w-full h-full max-w-[430px] mx-auto flex flex-col relative">
-        {/* Decorative background elements */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden max-w-[430px] mx-auto">
+      <div className="w-full h-full flex flex-col relative">
+        {/* Decorative background elements - contained properly */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
         </div>
 
         {/* Main Content - Navigation will overlap */}
-        <div className="relative z-10 flex-1 overflow-y-auto pb-24">
+        <div className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden pb-24">
           {/* 1. Top Right Notification Bell - Outline Style */}
           <div className="absolute top-4 right-5 z-50">
             <button
