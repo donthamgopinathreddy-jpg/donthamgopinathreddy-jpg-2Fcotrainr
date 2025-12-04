@@ -478,6 +478,16 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/meal-tracker"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <MealTracker />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/leaderboard"
         element={
           <ProtectedRoute>
