@@ -895,11 +895,11 @@ export default function ClientHome() {
 
       {/* Steps Goal Modal */}
       {showStepsModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4">
-            <h2 className="text-lg font-bold text-gray-900">Set Daily Goals</h2>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <p className="text-sm text-blue-900">
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-card rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-border/40">
+            <h2 className="text-lg font-bold text-foreground">Set Daily Goals</h2>
+            <div className="bg-muted/50 border border-border rounded-lg p-3">
+              <p className="text-sm text-muted-foreground">
                 📊 Steps are automatically counted from your device sensors
               </p>
             </div>
