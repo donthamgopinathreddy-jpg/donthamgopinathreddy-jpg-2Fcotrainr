@@ -50,18 +50,18 @@ const MacroBar = ({
     <div className="w-full">
       <div className="flex items-center justify-between mb-2">
         <p
-          className={`${isLarge ? "text-sm" : "text-xs"} font-bold text-gray-700`}
+          className={`${isLarge ? "text-sm" : "text-xs"} font-bold text-muted-foreground`}
         >
           {label}
         </p>
         <p
-          className={`${isLarge ? "text-lg" : "text-sm"} font-bold text-gray-900`}
+          className={`${isLarge ? "text-lg" : "text-sm"} font-bold text-foreground`}
         >
           {Math.round(current)}/{target}
         </p>
       </div>
       <div
-        className={`w-full bg-gray-200/50 rounded-full overflow-hidden border border-gray-300/30 ${
+        className={`w-full bg-muted rounded-full overflow-hidden border border-border/50 ${
           isLarge ? "h-4" : "h-2"
         }`}
       >
