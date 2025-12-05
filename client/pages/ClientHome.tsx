@@ -560,7 +560,7 @@ export default function ClientHome() {
           </div>
 
           {/* 3. Banner Card - CTA Section */}
-          <div className="mx-5 mb-6 rounded-3xl overflow-hidden relative bg-white">
+          <div className="mx-5 mb-6 rounded-3xl overflow-hidden relative bg-card border border-border/40 shadow-sm">
             <div className="p-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center flex-shrink-0">
