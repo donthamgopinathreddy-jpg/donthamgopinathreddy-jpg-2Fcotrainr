@@ -1006,7 +1006,7 @@ const MealTracker = () => {
 
               {/* Calories */}
               <div>
-                <label className="block text-sm font-bold text-gray-900 mb-2">
+                <label className="block text-sm font-bold text-foreground mb-2">
                   Calories Target (kcal)
                 </label>
                 <input
@@ -1018,14 +1018,14 @@ const MealTracker = () => {
                       calories: parseFloat(e.target.value) || 0,
                     })
                   }
-                  className="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  className="input-modern"
                   placeholder="e.g., 2500"
                 />
               </div>
 
               {/* Carbs */}
               <div>
-                <label className="block text-sm font-bold text-gray-900 mb-2">
+                <label className="block text-sm font-bold text-foreground mb-2">
                   Carbs Target (g)
                 </label>
                 <input
@@ -1037,14 +1037,14 @@ const MealTracker = () => {
                       carbs: parseFloat(e.target.value) || 0,
                     })
                   }
-                  className="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="input-modern"
                   placeholder="e.g., 300"
                 />
               </div>
 
               {/* Fats */}
               <div>
-                <label className="block text-sm font-bold text-gray-900 mb-2">
+                <label className="block text-sm font-bold text-foreground mb-2">
                   Fats Target (g)
                 </label>
                 <input
@@ -1056,7 +1056,7 @@ const MealTracker = () => {
                       fats: parseFloat(e.target.value) || 0,
                     })
                   }
-                  className="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-400"
+                  className="input-modern"
                   placeholder="e.g., 75"
                 />
               </div>
@@ -1065,13 +1065,13 @@ const MealTracker = () => {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={() => setShowMacroTargetsModal(false)}
-                className="flex-1 px-4 py-3 bg-gray-200 text-gray-900 rounded-xl font-bold hover:bg-gray-300 transition"
+                className="flex-1 px-4 py-3 bg-muted text-foreground rounded-xl font-bold hover:bg-muted/80 transition active:scale-95"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveMacroTargets}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold hover:shadow-lg transition"
+                className="flex-1 px-4 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:shadow-lg transition active:scale-95"
               >
                 Save
               </button>
