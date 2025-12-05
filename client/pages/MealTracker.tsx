@@ -753,9 +753,9 @@ const MealTracker = () => {
 
       {/* Meal Naming Modal */}
       {showNamingModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4 shadow-2xl border border-gray-200/40">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 backdrop-blur-sm p-4">
+          <div className="bg-card rounded-2xl p-6 w-full max-w-sm shadow-2xl border border-border/40">
+            <h2 className="text-2xl font-bold text-foreground mb-4">
               {editingMealType ? "Edit Meal Name" : "Create New Meal"}
             </h2>
             <input
@@ -763,7 +763,7 @@ const MealTracker = () => {
               value={mealNameInput}
               onChange={(e) => setMealNameInput(e.target.value)}
               placeholder="e.g., Snack 2, Pre-workout, Evening meal"
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500 mb-6"
+              className="input-modern mb-6"
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -778,13 +778,13 @@ const MealTracker = () => {
                   setMealNameInput("");
                   setEditingMealType(null);
                 }}
-                className="flex-1 px-4 py-3 bg-gray-200 text-gray-900 rounded-xl font-bold hover:bg-gray-300 transition"
+                className="flex-1 px-4 py-3 bg-muted text-foreground rounded-xl font-bold hover:bg-muted/80 transition active:scale-95"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCreateCustomMeal}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold hover:shadow-lg transition"
+                className="flex-1 px-4 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:shadow-lg transition active:scale-95"
               >
                 {editingMealType ? "Update" : "Create"}
               </button>
