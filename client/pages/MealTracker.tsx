@@ -979,15 +979,15 @@ const MealTracker = () => {
       {/* Macro Targets Edit Modal */}
       {showMacroTargetsModal && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 space-y-6 shadow-2xl border border-gray-200/40">
-            <h2 className="text-2xl font-bold text-gray-900">
+          <div className="bg-card rounded-2xl max-w-sm w-full p-6 space-y-6 shadow-2xl border border-border/40">
+            <h2 className="text-2xl font-bold text-foreground">
               Daily Macro Goals
             </h2>
 
             <div className="space-y-4">
               {/* Protein */}
               <div>
-                <label className="block text-sm font-bold text-gray-900 mb-2">
+                <label className="block text-sm font-bold text-foreground mb-2">
                   Protein Target (g)
                 </label>
                 <input
@@ -999,7 +999,7 @@ const MealTracker = () => {
                       protein: parseFloat(e.target.value) || 0,
                     })
                   }
-                  className="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="input-modern"
                   placeholder="e.g., 150"
                 />
               </div>
