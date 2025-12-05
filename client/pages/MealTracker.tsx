@@ -411,15 +411,15 @@ const MealTracker = () => {
 
       {/* Macro Summary Bar with Horizontal Bars */}
       {dailyMeals && (
-        <div className="bg-white/50 backdrop-blur-md border-b border-gray-200/50 p-6 shadow-sm">
+        <div className="bg-card/60 backdrop-blur-md border-b border-border/40 p-4 sm:p-6 shadow-sm">
           <div className="flex items-start justify-between gap-4 mb-4">
-            <h3 className="text-sm font-bold text-gray-700">Daily Goals</h3>
+            <h3 className="text-sm font-bold text-muted-foreground">Daily Goals</h3>
             <button
               onClick={() => {
                 setEditMacroTargets(macroTargets);
                 setShowMacroTargetsModal(true);
               }}
-              className="p-2 hover:bg-gray-100 rounded-lg transition text-gray-600"
+              className="p-2 hover:bg-muted rounded-lg transition text-muted-foreground"
               title="Edit macro targets"
             >
               <Settings size={18} />
@@ -438,7 +438,7 @@ const MealTracker = () => {
           </div>
 
           {/* 3 Smaller Bars Below */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             <MacroBar
               current={dailyMeals.totals.calories}
               target={macroTargets.calories}
