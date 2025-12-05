@@ -288,7 +288,7 @@ export default function Home() {
   const waterPercent = Math.round((waterConsumed / waterGoal) * 100);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 pb-24">
+    <div className="min-h-screen bg-background pb-24">
       {/* Pending Meeting Invites */}
       {pendingMeetings.length > 0 && (
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-b-2 border-orange-200 px-4 py-4">
