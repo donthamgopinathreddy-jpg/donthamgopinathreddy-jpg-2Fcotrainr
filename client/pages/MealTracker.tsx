@@ -860,13 +860,13 @@ const MealTracker = () => {
 
                 {/* Quantity Section */}
                 <div className="mb-6">
-                  <label className="block text-sm font-bold text-gray-900 mb-3">
+                  <label className="block text-sm font-bold text-foreground mb-3">
                     Quantity
                   </label>
-                  <div className="flex items-center gap-4 bg-gray-100/80 rounded-2xl p-2">
+                  <div className="flex items-center gap-4 bg-muted rounded-2xl p-2">
                     <button
                       onClick={() => setQuantity(Math.max(10, quantity - 10))}
-                      className="w-12 h-12 bg-white hover:bg-gray-50 rounded-xl font-bold text-xl text-gray-900 transition shadow-sm"
+                      className="w-12 h-12 bg-card hover:bg-card/80 rounded-xl font-bold text-xl text-foreground transition shadow-sm"
                     >
                       −
                     </button>
@@ -876,11 +876,11 @@ const MealTracker = () => {
                       onChange={(e) =>
                         setQuantity(Number(e.target.value) || 0)
                       }
-                      className="flex-1 bg-transparent text-center text-3xl font-bold text-gray-900 focus:outline-none"
+                      className="flex-1 bg-transparent text-center text-3xl font-bold text-foreground focus:outline-none"
                     />
                     <button
                       onClick={() => setQuantity(quantity + 10)}
-                      className="w-12 h-12 bg-white hover:bg-gray-50 rounded-xl font-bold text-xl text-gray-900 transition shadow-sm"
+                      className="w-12 h-12 bg-card hover:bg-card/80 rounded-xl font-bold text-xl text-foreground transition shadow-sm"
                     >
                       +
                     </button>
@@ -889,18 +889,18 @@ const MealTracker = () => {
 
                 {/* Unit Selection */}
                 <div className="mb-6">
-                  <label className="block text-sm font-bold text-gray-900 mb-3">
+                  <label className="block text-sm font-bold text-foreground mb-3">
                     Unit
                   </label>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 flex-wrap">
                     {selectedFood.units_available.map((unit) => (
                       <button
                         key={unit}
                         onClick={() => setSelectedUnit(unit)}
                         className={`px-5 py-2.5 rounded-xl font-bold transition-all duration-200 ${
                           selectedUnit === unit
-                            ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg scale-105"
-                            : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                            ? "bg-primary text-primary-foreground shadow-lg scale-105"
+                            : "bg-muted text-foreground hover:bg-muted/80"
                         }`}
                       >
                         {unit}
@@ -911,40 +911,40 @@ const MealTracker = () => {
 
                 {/* Nutritional Info Card */}
                 {macros && (
-                  <div className="bg-gradient-to-br from-blue-50/80 to-blue-100/80 rounded-2xl p-4 border border-blue-200/40 backdrop-blur-sm mb-6">
-                    <p className="text-sm font-bold text-gray-900 mb-4">
+                  <div className="bg-muted/50 rounded-2xl p-4 border border-border/40 backdrop-blur-sm mb-6">
+                    <p className="text-sm font-bold text-foreground mb-4">
                       Nutritional Info (per serving)
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center">
-                      <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-orange-200/40">
+                      <div className="bg-card/60 backdrop-blur-sm rounded-xl p-3 border border-orange-500/30">
                         <p className="text-xl font-bold text-orange-600">
                           {Math.round(macros.calories)}
                         </p>
-                        <p className="text-xs text-gray-600 font-semibold mt-1">
+                        <p className="text-xs text-muted-foreground font-semibold mt-1">
                           Cal
                         </p>
                       </div>
-                      <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-blue-200/40">
+                      <div className="bg-card/60 backdrop-blur-sm rounded-xl p-3 border border-blue-500/30">
                         <p className="text-xl font-bold text-blue-600">
                           {macros.protein.toFixed(1)}
                         </p>
-                        <p className="text-xs text-gray-600 font-semibold mt-1">
+                        <p className="text-xs text-muted-foreground font-semibold mt-1">
                           P
                         </p>
                       </div>
-                      <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-green-200/40">
+                      <div className="bg-card/60 backdrop-blur-sm rounded-xl p-3 border border-green-500/30">
                         <p className="text-xl font-bold text-green-600">
                           {macros.carbs.toFixed(1)}
                         </p>
-                        <p className="text-xs text-gray-600 font-semibold mt-1">
+                        <p className="text-xs text-muted-foreground font-semibold mt-1">
                           C
                         </p>
                       </div>
-                      <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-red-200/40">
+                      <div className="bg-card/60 backdrop-blur-sm rounded-xl p-3 border border-red-500/30">
                         <p className="text-xl font-bold text-red-600">
                           {macros.fats.toFixed(1)}
                         </p>
-                        <p className="text-xs text-gray-600 font-semibold mt-1">
+                        <p className="text-xs text-muted-foreground font-semibold mt-1">
                           F
                         </p>
                       </div>
@@ -956,14 +956,14 @@ const MealTracker = () => {
                 <div className="flex gap-3 pt-2">
                   <button
                     onClick={() => setSelectedFood(null)}
-                    className="flex-1 px-4 py-3.5 bg-gray-100 text-gray-900 rounded-2xl font-bold hover:bg-gray-200 transition-all duration-200 active:scale-95"
+                    className="flex-1 px-4 py-3.5 bg-muted text-foreground rounded-2xl font-bold hover:bg-muted/80 transition-all duration-200 active:scale-95"
                   >
                     Back
                   </button>
                   <button
                     onClick={handleAddFood}
                     disabled={addMealMutation.isPending}
-                    className="flex-1 px-4 py-3.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl font-bold hover:shadow-lg transition-all duration-200 disabled:opacity-50 active:scale-95"
+                    className="flex-1 px-4 py-3.5 bg-primary text-primary-foreground rounded-2xl font-bold hover:shadow-lg transition-all duration-200 disabled:opacity-50 active:scale-95"
                   >
                     {addMealMutation.isPending
                       ? "Adding..."
