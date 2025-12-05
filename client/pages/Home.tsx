@@ -291,9 +291,9 @@ export default function Home() {
     <div className="min-h-screen bg-background pb-24">
       {/* Pending Meeting Invites */}
       {pendingMeetings.length > 0 && (
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-b-2 border-orange-200 px-4 py-4">
+        <div className="bg-muted/50 border-b border-border px-4 py-4">
           <div className="max-w-md mx-auto">
-            <h3 className="text-sm font-bold text-gray-900 mb-3">
+            <h3 className="text-sm font-bold text-foreground mb-3">
               Meeting Invites
             </h3>
             <div className="space-y-2">
