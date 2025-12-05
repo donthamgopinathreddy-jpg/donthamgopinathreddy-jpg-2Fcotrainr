@@ -553,7 +553,7 @@ export default function Profile() {
 
   return (
     <div
-      className={`min-h-screen ${theme === "dark" ? "bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-b from-white via-gray-50 to-white"}`}
+      className="min-h-screen bg-background"
     >
       <div className="w-full max-w-2xl mx-auto px-4 py-6 space-y-6 pb-24">
         {/* HEADER WITH NAVIGATION */}
