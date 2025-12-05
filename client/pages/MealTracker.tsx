@@ -537,18 +537,18 @@ const MealTracker = () => {
                 onDragEnd={() => setDraggedMeal(null)}
               >
                 <div
-                  className={`bg-gradient-to-br ${getMealColor(mealType)} backdrop-blur-lg rounded-3xl p-6 h-full shadow-lg hover:shadow-xl transition-all duration-300 border border-white/40 flex flex-col ${
+                  className={`bg-card/80 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 h-full shadow-lg hover:shadow-xl transition-all duration-300 border border-border/40 flex flex-col ${
                     draggedMeal === mealType ? "opacity-50 scale-95" : ""
                   }`}
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-4xl">{getMealIcon(mealType)}</span>
-                        <div>
+                        <span className="text-3xl sm:text-4xl flex-shrink-0">{getMealIcon(mealType)}</span>
+                        <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <h3 className="text-2xl font-bold text-gray-900">
+                            <h3 className="text-lg sm:text-2xl font-bold text-foreground truncate">
                               {getMealDisplayName(mealType)}
                             </h3>
                             {mealType.startsWith("custom") && (
@@ -558,14 +558,14 @@ const MealTracker = () => {
                                   setMealNameInput(customMeals[mealType]);
                                   setShowNamingModal(true);
                                 }}
-                                className="p-1 hover:bg-white/40 rounded-lg transition text-gray-600"
+                                className="p-1 hover:bg-muted rounded-lg transition text-muted-foreground flex-shrink-0"
                                 title="Edit meal name"
                               >
                                 <Edit2 size={16} />
                               </button>
                             )}
                           </div>
-                          <p className="text-sm text-gray-700 font-semibold">
+                          <p className="text-xs sm:text-sm text-muted-foreground font-semibold">
                             {Math.round(mealCalories)} cal
                           </p>
                         </div>
@@ -576,7 +576,7 @@ const MealTracker = () => {
                         setSelectedMealType(mealType);
                         setShowAddFood(true);
                       }}
-                      className="p-3 bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-full transition text-gray-700 border border-white/40 flex-shrink-0"
+                      className="p-2.5 sm:p-3 bg-primary/10 hover:bg-primary/20 backdrop-blur-sm rounded-full transition text-primary border border-primary/30 flex-shrink-0 ml-2"
                     >
                       <Plus size={24} />
                     </button>
