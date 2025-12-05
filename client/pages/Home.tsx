@@ -940,7 +940,7 @@ export default function Home() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-bold text-foreground mb-1">
                   Daily Steps Goal
                 </label>
                 <input
@@ -949,16 +949,16 @@ export default function Home() {
                   onChange={(e) =>
                     setEditStepsTarget(parseInt(e.target.value) || 0)
                   }
-                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="input-modern"
                   placeholder="e.g., 10000"
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Calories burned = steps × 0.05 cal
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-bold text-foreground mb-1">
                   Water Consumed Today (L)
                 </label>
                 <input
@@ -969,10 +969,10 @@ export default function Home() {
                   onChange={(e) =>
                     setWaterConsumed(parseFloat(e.target.value) || 0)
                   }
-                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="input-modern"
                   placeholder="e.g., 2.5"
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Daily goal: {waterGoal}L (based on your weight)
                 </p>
               </div>
