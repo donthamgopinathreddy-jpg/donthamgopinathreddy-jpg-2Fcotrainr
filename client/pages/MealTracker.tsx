@@ -735,15 +735,15 @@ const MealTracker = () => {
                 setEditingMealType(null);
                 setMealNameInput("");
               }}
-              className="w-full h-full bg-gradient-to-br from-gray-100 to-slate-100 backdrop-blur-lg rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-dashed border-gray-400 hover:border-gray-500 flex flex-col items-center justify-center hover:bg-gradient-to-br hover:from-gray-200 hover:to-slate-200"
+              className="w-full h-full bg-card/60 backdrop-blur-lg rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-dashed border-border hover:border-primary flex flex-col items-center justify-center hover:bg-card/80"
             >
               <div className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">
                 ➕
               </div>
-              <h3 className="text-xl font-bold text-gray-900 text-center mb-1">
+              <h3 className="text-xl font-bold text-foreground text-center mb-1">
                 Add Meal
               </h3>
-              <p className="text-xs text-gray-600 text-center">
+              <p className="text-xs text-muted-foreground text-center">
                 Create custom meal
               </p>
             </button>
