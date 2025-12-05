@@ -487,7 +487,7 @@ export default function Home() {
         {/* Progress Bars Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 space-y-6 l-shape-bg fitness-gradient-1">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-bold text-foreground">
               Today's Stats
             </h2>
             <div className="flex items-center gap-2">
