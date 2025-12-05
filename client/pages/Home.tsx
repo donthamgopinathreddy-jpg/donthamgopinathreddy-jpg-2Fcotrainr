@@ -303,10 +303,10 @@ export default function Home() {
                   className="bg-card border border-border rounded-lg p-3 flex items-center justify-between gap-2 shadow-md hover:shadow-lg transition-shadow"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-sm text-gray-900">
+                    <p className="font-bold text-sm text-foreground">
                       {meeting.title}
                     </p>
-                    <p className="text-xs text-gray-600">
+                    <p className="text-xs text-muted-foreground">
                       {meeting.trainer} • {meeting.time}
                     </p>
                   </div>
