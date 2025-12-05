@@ -300,7 +300,7 @@ export default function Home() {
               {pendingMeetings.map((meeting) => (
                 <div
                   key={meeting.id}
-                  className="bg-white border-2 border-orange-400 rounded-lg p-3 flex items-center justify-between gap-2 shadow-md hover:shadow-lg transition-shadow"
+                  className="bg-card border border-border rounded-lg p-3 flex items-center justify-between gap-2 shadow-md hover:shadow-lg transition-shadow"
                 >
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-sm text-gray-900">
