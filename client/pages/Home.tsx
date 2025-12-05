@@ -549,7 +549,7 @@ export default function Home() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Footprints className="w-5 h-5 text-orange-600" />
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="font-semibold text-foreground">
                   Steps
                 </span>
               </div>
@@ -557,7 +557,7 @@ export default function Home() {
                 <span className="text-sm font-bold text-orange-600">
                   {steps.toLocaleString()}
                 </span>
-                <span className="text-xs text-gray-600 dark:text-gray-400">
+                <span className="text-xs text-muted-foreground">
                   {stepsPercent}%
                 </span>
               </div>
@@ -599,7 +599,7 @@ export default function Home() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Flame className="w-5 h-5 text-red-600" />
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="font-semibold text-foreground">
                   Calories
                 </span>
               </div>
@@ -607,7 +607,7 @@ export default function Home() {
                 <span className="text-sm font-bold text-red-600">
                   {Math.round(steps * 0.05)} cal
                 </span>
-                <span className="text-xs text-gray-600 dark:text-gray-400">
+                <span className="text-xs text-muted-foreground">
                   {Math.min(Math.round((steps * 0.05) / 20), 100)}%
                 </span>
               </div>
@@ -636,7 +636,7 @@ export default function Home() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Droplets className="w-5 h-5 text-cyan-600" />
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="font-semibold text-foreground">
                   Water
                 </span>
               </div>
@@ -644,7 +644,7 @@ export default function Home() {
                 <span className="text-sm font-bold text-cyan-600">
                   {waterConsumed}L ({Math.round(waterConsumed * 1000)}ml)
                 </span>
-                <span className="text-xs text-gray-600 dark:text-gray-400">
+                <span className="text-xs text-muted-foreground">
                   {waterPercent}%
                 </span>
               </div>
@@ -693,7 +693,7 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Activity className={`w-6 h-6 ${bmiStatus.color}`} />
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-bold text-foreground">
                 BMI Index
               </h2>
             </div>
@@ -705,11 +705,11 @@ export default function Home() {
             <p className={`text-sm font-semibold ${bmiStatus.color} mb-3`}>
               {bmiStatus.category}
             </p>
-            <p className="text-xs text-gray-600 dark:text-gray-400">
+            <p className="text-xs text-muted-foreground">
               Height: {userHeight}cm | Weight: {userWeight}kg
             </p>
           </div>
-          <div className="flex gap-2 text-xs text-gray-700 dark:text-gray-300">
+          <div className="flex gap-2 text-xs text-muted-foreground">
             <div className="flex-1 text-center">
               <p className="font-semibold">Normal</p>
               <p className="text-gray-500 dark:text-gray-400">18.5 - 24.9</p>
@@ -723,7 +723,7 @@ export default function Home() {
 
         {/* Quick Action Tiles */}
         <div className="space-y-3 rounded-2xl">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white px-2">
+          <h3 className="text-lg font-bold text-foreground px-2">
             Quick Access
           </h3>
           <div className="grid grid-cols-2 gap-3">
@@ -819,7 +819,7 @@ export default function Home() {
 
         {/* Daily Streak Section */}
         <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 px-2">
+          <h2 className="text-xl font-bold text-foreground mb-4 px-2">
             📊 Your Progress
           </h2>
           <StreaksCard compact={false} />
@@ -917,7 +917,7 @@ export default function Home() {
           ) : (
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center">
               <Newspaper className="w-8 h-8 text-gray-400 dark:text-gray-500 mx-auto mb-2" />
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 No posts yet. Check back soon!
               </p>
             </div>
