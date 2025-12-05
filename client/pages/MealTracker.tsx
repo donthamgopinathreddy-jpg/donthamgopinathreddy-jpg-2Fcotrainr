@@ -466,18 +466,18 @@ const MealTracker = () => {
 
       {/* Horizontal Swiper */}
       <div className="flex-1 overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between px-3 pt-4">
-          <h2 className="text-lg font-bold text-gray-900">Meals</h2>
+        <div className="flex items-center justify-between px-4 sm:px-6 pt-3 sm:pt-4">
+          <h2 className="text-lg sm:text-xl font-bold text-foreground">Meals</h2>
           <div className="flex gap-2">
             <button
               onClick={() => scroll("left")}
-              className="p-2 hover:bg-gray-100/70 rounded-full transition text-gray-700"
+              className="p-2 hover:bg-muted rounded-full transition text-foreground"
             >
               <ChevronLeft size={20} />
             </button>
             <button
               onClick={() => scroll("right")}
-              className="p-2 hover:bg-gray-100/70 rounded-full transition text-gray-700"
+              className="p-2 hover:bg-muted rounded-full transition text-foreground"
             >
               <ChevronRight size={20} />
             </button>
