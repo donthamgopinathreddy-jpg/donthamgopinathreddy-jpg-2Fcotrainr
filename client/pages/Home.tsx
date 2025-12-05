@@ -927,13 +927,13 @@ export default function Home() {
 
       {/* Targets Edit Modal */}
       {showTargetsModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-sm w-full p-6 space-y-4">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-card rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-border/40">
+            <h2 className="text-lg font-bold text-foreground">
               Set Daily Goals
             </h2>
-            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-3">
-              <p className="text-sm text-blue-900 dark:text-blue-200">
+            <div className="bg-muted/50 border border-border rounded-lg p-3">
+              <p className="text-sm text-muted-foreground">
                 �� Steps are automatically counted from your device sensors
               </p>
             </div>
