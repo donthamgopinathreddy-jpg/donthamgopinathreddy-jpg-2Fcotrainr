@@ -588,11 +588,7 @@ export default function Profile() {
 
         {/* PROFILE HERO SECTION */}
         <div
-          className={`relative rounded-2xl overflow-visible shadow-lg transition-all ${
-            theme === "dark"
-              ? "bg-gradient-to-br from-gray-800 to-gray-900"
-              : "bg-white"
-          }`}
+          className="relative rounded-2xl overflow-visible shadow-lg transition-all bg-card border border-border/40"
         >
           {/* Cover Image with Bell Icon */}
           <div className="relative h-56 group overflow-hidden rounded-t-2xl">
