@@ -15,36 +15,36 @@
     /* Light Theme (System Default) */
     --background: 0 0% 100%;
     --foreground: 25 15% 15%;
-    
+
     --card: 0 0% 98%;
     --card-foreground: 25 15% 15%;
-    
+
     --popover: 0 0% 100%;
     --popover-foreground: 25 15% 15%;
-    
+
     /* Primary Orange Gradient (from Figma) */
     --primary: 39 100% 50%;
     --primary-foreground: 0 0% 100%;
-    
+
     /* Secondary Colors */
     --secondary: 220 90% 50%;
     --secondary-foreground: 0 0% 100%;
-    
+
     --muted: 0 0% 92%;
     --muted-foreground: 0 0% 45%;
-    
+
     --accent: 39 100% 50%;
     --accent-foreground: 0 0% 100%;
-    
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    
+
     --border: 0 0% 88%;
     --input: 0 0% 95%;
     --ring: 39 100% 50%;
-    
+
     --radius: 1rem;
-    
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 25 15% 15%;
     --sidebar-primary: 39 100% 50%;
@@ -61,32 +61,32 @@
       /* Figma Dark Theme */
       --background: 240 8% 10%;
       --foreground: 0 0% 99%;
-      
+
       --card: 240 8% 15%;
       --card-foreground: 0 0% 99%;
-      
+
       --popover: 240 8% 10%;
       --popover-foreground: 0 0% 99%;
-      
+
       --primary: 39 100% 50%;
       --primary-foreground: 0 0% 100%;
-      
+
       --secondary: 220 90% 50%;
       --secondary-foreground: 0 0% 100%;
-      
+
       --muted: 240 8% 25%;
       --muted-foreground: 0 0% 65%;
-      
+
       --accent: 39 100% 50%;
       --accent-foreground: 0 0% 100%;
-      
+
       --destructive: 0 84.2% 60.2%;
       --destructive-foreground: 0 0% 100%;
-      
+
       --border: 240 8% 20%;
       --input: 240 8% 18%;
       --ring: 39 100% 50%;
-      
+
       --sidebar-background: 240 8% 15%;
       --sidebar-foreground: 0 0% 99%;
       --sidebar-primary: 39 100% 50%;
@@ -102,32 +102,32 @@
   .dark {
     --background: 240 8% 10%;
     --foreground: 0 0% 99%;
-    
+
     --card: 240 8% 15%;
     --card-foreground: 0 0% 99%;
-    
+
     --popover: 240 8% 10%;
     --popover-foreground: 0 0% 99%;
-    
+
     --primary: 39 100% 50%;
     --primary-foreground: 0 0% 100%;
-    
+
     --secondary: 220 90% 50%;
     --secondary-foreground: 0 0% 100%;
-    
+
     --muted: 240 8% 25%;
     --muted-foreground: 0 0% 65%;
-    
+
     --accent: 39 100% 50%;
     --accent-foreground: 0 0% 100%;
-    
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    
+
     --border: 240 8% 20%;
     --input: 240 8% 18%;
     --ring: 39 100% 50%;
-    
+
     --sidebar-background: 240 8% 15%;
     --sidebar-foreground: 0 0% 99%;
     --sidebar-primary: 39 100% 50%;
@@ -148,7 +148,9 @@
     /* Safe area support for native/PWA apps */
     --safe-area-bottom: env(safe-area-inset-bottom);
     /* Smooth theme transition */
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
     /* Mobile-first approach */
     font-size: clamp(14px, 2vw, 16px);
     /* Prevent horizontal scrolling */
@@ -159,12 +161,19 @@
   body {
     @apply bg-background text-foreground font-sans;
     /* Primary font: Montserrat */
-    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
-      Roboto, sans-serif;
+    font-family:
+      "Montserrat",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
     /* Support for notch and home indicator */
     padding-bottom: max(0px, env(safe-area-inset-bottom));
     /* Smooth theme transition */
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
     /* Prevent horizontal scrolling */
     width: 100%;
     overflow-x: hidden;
@@ -226,7 +235,9 @@
     overflow-wrap: anywhere;
     word-break: break-word;
     /* Smooth theme transition */
-    transition: color 0.3s ease, background-color 0.3s ease,
+    transition:
+      color 0.3s ease,
+      background-color 0.3s ease,
       border-color 0.3s ease;
   }
 
@@ -420,19 +431,35 @@
 
 /* Modern gradient backgrounds matching Figma design */
 .fitness-gradient-1 {
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.15) 0%, rgba(255, 165, 0, 0.15) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.15) 0%,
+    rgba(255, 165, 0, 0.15) 100%
+  );
 }
 
 .fitness-gradient-2 {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.15) 0%,
+    rgba(6, 182, 212, 0.15) 100%
+  );
 }
 
 .fitness-gradient-3 {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.15) 0%,
+    rgba(236, 72, 153, 0.15) 100%
+  );
 }
 
 .fitness-gradient-4 {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.15) 0%,
+    rgba(16, 185, 129, 0.15) 100%
+  );
 }
 
 /* Figma design gradients */

@@ -88,9 +88,7 @@ const MealTracker = () => {
 
   const [foods, setFoods] = useState<Food[]>([]);
   const [showAddFood, setShowAddFood] = useState(false);
-  const [selectedMealType, setSelectedMealType] = useState<string>(
-    "breakfast"
-  );
+  const [selectedMealType, setSelectedMealType] = useState<string>("breakfast");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   const [quantity, setQuantity] = useState(100);
@@ -307,7 +305,7 @@ const MealTracker = () => {
     if (user?.id) {
       localStorage.setItem(
         `macro_targets_${user.id}`,
-        JSON.stringify(editMacroTargets)
+        JSON.stringify(editMacroTargets),
       );
     }
     setMacroTargets(editMacroTargets);
@@ -393,7 +391,9 @@ const MealTracker = () => {
           <h1 className="text-xl sm:text-2xl font-bold text-foreground">
             {formatDate(currentDate)}
           </h1>
-          <p className="text-xs text-muted-foreground mt-1">Swipe to browse meals</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            Swipe to browse meals
+          </p>
         </div>
         <button
           onClick={() =>
@@ -413,7 +413,9 @@ const MealTracker = () => {
       {dailyMeals && (
         <div className="bg-card/60 backdrop-blur-md border-b border-border/40 p-4 sm:p-6 shadow-sm">
           <div className="flex items-start justify-between gap-4 mb-4">
-            <h3 className="text-sm font-bold text-muted-foreground">Daily Goals</h3>
+            <h3 className="text-sm font-bold text-muted-foreground">
+              Daily Goals
+            </h3>
             <button
               onClick={() => {
                 setEditMacroTargets(macroTargets);
@@ -467,7 +469,9 @@ const MealTracker = () => {
       {/* Horizontal Swiper */}
       <div className="flex-1 overflow-hidden flex flex-col">
         <div className="flex items-center justify-between px-4 sm:px-6 pt-3 sm:pt-4">
-          <h2 className="text-lg sm:text-xl font-bold text-foreground">Meals</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-foreground">
+            Meals
+          </h2>
           <div className="flex gap-2">
             <button
               onClick={() => scroll("left")}
@@ -490,7 +494,9 @@ const MealTracker = () => {
           style={{ scrollBehavior: "smooth" }}
         >
           {allMealTypes.map((mealType) => {
-            const mealItems = dailyMeals?.[mealType as keyof typeof dailyMeals] as any[];
+            const mealItems = dailyMeals?.[
+              mealType as keyof typeof dailyMeals
+            ] as any[];
             const mealCalories = mealItems
               ? mealItems.reduce((s, m) => s + (m.calories || 0), 0)
               : 0;
@@ -522,7 +528,11 @@ const MealTracker = () => {
                 }}
                 onDrop={(e) => {
                   e.preventDefault();
-                  if (draggedMeal && draggedMeal !== mealType && !mealType.startsWith("custom")) {
+                  if (
+                    draggedMeal &&
+                    draggedMeal !== mealType &&
+                    !mealType.startsWith("custom")
+                  ) {
                     const newOrder = [...mealOrder];
                     const draggedIndex = newOrder.indexOf(draggedMeal);
                     const targetIndex = newOrder.indexOf(mealType);
@@ -545,7 +555,9 @@ const MealTracker = () => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-3xl sm:text-4xl flex-shrink-0">{getMealIcon(mealType)}</span>
+                        <span className="text-3xl sm:text-4xl flex-shrink-0">
+                          {getMealIcon(mealType)}
+                        </span>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
                             <h3 className="text-lg sm:text-2xl font-bold text-foreground truncate">
@@ -837,10 +849,21 @@ const MealTracker = () => {
                         {food.name}
                       </p>
                       <p className="text-xs text-muted-foreground mt-1.5 font-medium">
-                        <span className="text-orange-600">Cal: {food.per_100g.calories}</span> •{" "}
-                        <span className="text-blue-600">P: {food.per_100g.protein}g</span> •{" "}
-                        <span className="text-green-600">C: {food.per_100g.carbs}g</span> •{" "}
-                        <span className="text-red-600">F: {food.per_100g.fats}g</span>
+                        <span className="text-orange-600">
+                          Cal: {food.per_100g.calories}
+                        </span>{" "}
+                        •{" "}
+                        <span className="text-blue-600">
+                          P: {food.per_100g.protein}g
+                        </span>{" "}
+                        •{" "}
+                        <span className="text-green-600">
+                          C: {food.per_100g.carbs}g
+                        </span>{" "}
+                        •{" "}
+                        <span className="text-red-600">
+                          F: {food.per_100g.fats}g
+                        </span>
                       </p>
                     </button>
                   ))}
@@ -873,9 +896,7 @@ const MealTracker = () => {
                     <input
                       type="number"
                       value={quantity}
-                      onChange={(e) =>
-                        setQuantity(Number(e.target.value) || 0)
-                      }
+                      onChange={(e) => setQuantity(Number(e.target.value) || 0)}
                       className="flex-1 bg-transparent text-center text-3xl font-bold text-foreground focus:outline-none"
                     />
                     <button
