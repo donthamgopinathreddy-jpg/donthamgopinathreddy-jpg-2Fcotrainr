@@ -957,13 +957,13 @@ export default function ClientHome() {
             <div className="flex gap-2 pt-2">
               <button
                 onClick={() => setShowStepsModal(false)}
-                className="flex-1 bg-gray-100 text-gray-900 font-medium py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                className="flex-1 bg-muted text-foreground font-medium py-2 rounded-lg hover:bg-muted/80 transition-colors active:scale-95"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveStepsGoal}
-                className="flex-1 bg-gradient-to-br from-orange-500 to-orange-600 text-white font-medium py-2 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-colors"
+                className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:shadow-lg transition-all active:scale-95"
               >
                 Save Goals
               </button>
