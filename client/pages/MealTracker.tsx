@@ -796,12 +796,12 @@ const MealTracker = () => {
       {/* Add Food Modal - Samsung/Apple Style */}
       {showAddFood && (
         <div className="fixed inset-0 bg-black/40 flex items-end z-50 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full bg-white/95 backdrop-blur-xl rounded-t-3xl p-6 max-h-[90vh] overflow-y-auto shadow-2xl border-t border-white/40">
+          <div className="w-full bg-card/95 backdrop-blur-xl rounded-t-3xl p-4 sm:p-6 max-h-[90vh] overflow-y-auto shadow-2xl border-t border-border/40">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Add Food</h2>
+              <h2 className="text-xl font-bold text-foreground">Add Food</h2>
               <button
                 onClick={() => setShowAddFood(false)}
-                className="p-2 hover:bg-gray-100 rounded-full transition text-gray-600"
+                className="p-2 hover:bg-muted rounded-full transition text-foreground"
               >
                 <X size={24} />
               </button>
@@ -813,7 +813,7 @@ const MealTracker = () => {
                 <div className="relative mb-6">
                   <Search
                     size={20}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"
                   />
                   <input
                     type="text"
@@ -821,22 +821,22 @@ const MealTracker = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     autoFocus
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-100/80 backdrop-blur-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500 border border-gray-200/40"
+                    className="w-full pl-12 pr-4 py-3.5 bg-input border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder-muted-foreground"
                   />
                 </div>
 
                 {/* Food List */}
-                <div className="space-y-3 max-h-96 overflow-y-auto">
+                <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-hide">
                   {filteredFoods.slice(0, 30).map((food) => (
                     <button
                       key={food.id}
                       onClick={() => setSelectedFood(food)}
-                      className="w-full text-left p-4 bg-gradient-to-r from-gray-50/60 to-gray-100/60 hover:from-blue-50/80 hover:to-blue-100/80 rounded-2xl transition-all duration-200 border border-gray-200/50 hover:border-blue-300/50 hover:shadow-md group"
+                      className="w-full text-left p-4 bg-muted/50 hover:bg-muted rounded-2xl transition-all duration-200 border border-border/40 hover:border-primary/50 hover:shadow-md group active:scale-95"
                     >
-                      <p className="font-semibold text-gray-900 group-hover:text-blue-600 transition">
+                      <p className="font-semibold text-foreground group-hover:text-primary transition">
                         {food.name}
                       </p>
-                      <p className="text-xs text-gray-600 mt-1.5 font-medium">
+                      <p className="text-xs text-muted-foreground mt-1.5 font-medium">
                         <span className="text-orange-600">Cal: {food.per_100g.calories}</span> •{" "}
                         <span className="text-blue-600">P: {food.per_100g.protein}g</span> •{" "}
                         <span className="text-green-600">C: {food.per_100g.carbs}g</span> •{" "}
@@ -850,10 +850,10 @@ const MealTracker = () => {
               <>
                 {/* Food Details */}
                 <div className="mb-6">
-                  <h3 className="text-3xl font-bold text-gray-900 mb-1">
+                  <h3 className="text-3xl font-bold text-foreground mb-1">
                     {selectedFood.name}
                   </h3>
-                  <p className="text-sm text-gray-600 font-medium">
+                  <p className="text-sm text-muted-foreground font-medium">
                     {selectedFood.category}
                   </p>
                 </div>
