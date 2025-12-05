@@ -591,7 +591,7 @@ const MealTracker = () => {
                             <img
                               src={photo.photo_url}
                               alt="Meal"
-                              className="w-full h-20 object-cover rounded-lg border border-white/40"
+                              className="w-full h-20 object-cover rounded-lg border border-border/40"
                             />
                           </div>
                         ))}
@@ -629,24 +629,24 @@ const MealTracker = () => {
                       <button
                         onClick={() => cameraInputRef.current?.click()}
                         disabled={uploading}
-                        className="p-2.5 bg-blue-400/60 hover:bg-blue-500/70 backdrop-blur-sm rounded-lg transition text-white border border-blue-400/40 font-semibold disabled:opacity-50 active:scale-95"
+                        className="flex-1 p-2 sm:p-2.5 bg-secondary/20 hover:bg-secondary/30 backdrop-blur-sm rounded-lg transition text-secondary border border-secondary/30 font-semibold disabled:opacity-50 active:scale-95"
                         title="Camera"
                       >
-                        <Camera size={20} />
+                        <Camera size={20} className="mx-auto" />
                       </button>
                       <button
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="p-2.5 bg-purple-400/60 hover:bg-purple-500/70 backdrop-blur-sm rounded-lg transition text-white border border-purple-400/40 font-semibold disabled:opacity-50 active:scale-95"
+                        className="flex-1 p-2 sm:p-2.5 bg-accent/20 hover:bg-accent/30 backdrop-blur-sm rounded-lg transition text-accent border border-accent/30 font-semibold disabled:opacity-50 active:scale-95"
                         title="Photo Gallery"
                       >
-                        <Paperclip size={20} />
+                        <Paperclip size={20} className="mx-auto" />
                       </button>
                     </div>
                   </div>
 
                   {/* Macro Stats - Horizontal Bars */}
-                  <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-3 border border-white/40 mb-4 space-y-2.5">
+                  <div className="bg-muted/40 backdrop-blur-sm rounded-2xl p-3 border border-border/40 mb-4 space-y-2.5">
                     <MacroBar
                       current={mealProtein}
                       target={150}
