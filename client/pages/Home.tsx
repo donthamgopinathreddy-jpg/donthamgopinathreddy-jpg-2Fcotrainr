@@ -982,13 +982,13 @@ export default function Home() {
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowTargetsModal(false)}
-                  className="flex-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-medium py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  className="flex-1 bg-muted text-foreground font-medium py-2 rounded-lg hover:bg-muted/80 transition-colors active:scale-95"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSaveTargets}
-                  className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
+                  className="flex-1 bg-primary text-primary-foreground font-medium py-2 rounded-lg hover:shadow-lg transition-all active:scale-95"
                 >
                   Save
                 </button>
