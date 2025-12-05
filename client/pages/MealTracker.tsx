@@ -374,9 +374,9 @@ const MealTracker = () => {
   const allMealTypes = [...mealOrder, ...Object.keys(customMeals)];
 
   return (
-    <div className="w-full h-full bg-gradient-to-br from-slate-50 via-white to-slate-100 flex flex-col overflow-hidden">
+    <div className="w-full h-full bg-background flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="bg-white/70 backdrop-blur-md border-b border-gray-200/50 p-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+      <div className="bg-card/80 backdrop-blur-md border-b border-border/40 px-4 py-3 sm:py-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
         <button
           onClick={() =>
             setCurrentDate(
@@ -385,15 +385,15 @@ const MealTracker = () => {
                 .split("T")[0],
             )
           }
-          className="p-2 hover:bg-gray-100/50 rounded-lg transition text-gray-700"
+          className="p-2 hover:bg-muted rounded-lg transition text-foreground"
         >
           <ChevronLeft size={24} />
         </button>
         <div className="flex-1 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">
             {formatDate(currentDate)}
           </h1>
-          <p className="text-xs text-gray-500 mt-1">Swipe to browse meals</p>
+          <p className="text-xs text-muted-foreground mt-1">Swipe to browse meals</p>
         </div>
         <button
           onClick={() =>
@@ -403,7 +403,7 @@ const MealTracker = () => {
                 .split("T")[0],
             )
           }
-          className="p-2 hover:bg-gray-100/50 rounded-lg transition text-gray-700"
+          className="p-2 hover:bg-muted rounded-lg transition text-foreground"
         >
           <ChevronRight size={24} />
         </button>
