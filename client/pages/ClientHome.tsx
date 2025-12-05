@@ -906,7 +906,7 @@ export default function ClientHome() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-foreground mb-1">
                   Daily Steps Goal
                 </label>
                 <input
@@ -915,16 +915,16 @@ export default function ClientHome() {
                   onChange={(e) =>
                     setEditStepsTarget(parseInt(e.target.value) || 0)
                   }
-                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="input-modern"
                   placeholder="e.g., 10000"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Set your daily step target
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-foreground mb-1">
                   Daily Calories Goal
                 </label>
                 <input
@@ -933,22 +933,22 @@ export default function ClientHome() {
                   onChange={(e) =>
                     setEditCaloriesTarget(parseInt(e.target.value) || 0)
                   }
-                  className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="input-modern"
                   placeholder="e.g., 2000"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Set your daily calorie burn target
                 </p>
               </div>
 
-              <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
-                <p className="text-sm font-semibold text-teal-900 mb-1">
+              <div className="bg-muted/50 border border-border rounded-lg p-3">
+                <p className="text-sm font-semibold text-foreground mb-1">
                   Water Goal
                 </p>
-                <p className="text-lg font-black text-teal-600">
+                <p className="text-lg font-black text-primary">
                   {(autoWaterTarget / 1000).toFixed(2)}L
                 </p>
-                <p className="text-xs text-teal-700 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Auto-calculated: {userProfile?.weight_kg}kg × 30ml per kg
                 </p>
               </div>
