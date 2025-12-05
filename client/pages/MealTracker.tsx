@@ -674,18 +674,18 @@ const MealTracker = () => {
                   </div>
 
                   {/* Food Items */}
-                  <div className="flex-1 overflow-y-auto mb-4 space-y-2">
+                  <div className="flex-1 overflow-y-auto mb-4 space-y-2 scrollbar-hide">
                     {mealItems && mealItems.length > 0 ? (
                       mealItems.map((meal: any) => (
                         <div
                           key={meal.id}
-                          className="bg-white/30 backdrop-blur-sm rounded-xl p-3 flex items-center justify-between group hover:bg-white/50 transition border border-white/40"
+                          className="bg-muted/50 backdrop-blur-sm rounded-lg p-3 flex items-center justify-between group hover:bg-muted transition border border-border/40"
                         >
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-gray-900 truncate">
+                            <p className="text-xs sm:text-sm font-bold text-foreground truncate">
                               {meal.food_name}
                             </p>
-                            <p className="text-xs text-gray-700">
+                            <p className="text-xs text-muted-foreground">
                               {meal.quantity}
                               {meal.unit} • {meal.calories}cal
                             </p>
@@ -694,7 +694,7 @@ const MealTracker = () => {
                             onClick={() =>
                               deleteMealMutation.mutateAsync(meal.id!)
                             }
-                            className="p-1.5 hover:bg-red-200/70 rounded-lg transition text-red-600 ml-2 flex-shrink-0"
+                            className="p-1.5 hover:bg-destructive/20 rounded-lg transition text-destructive ml-2 flex-shrink-0"
                           >
                             <X size={16} />
                           </button>
@@ -702,10 +702,10 @@ const MealTracker = () => {
                       ))
                     ) : (
                       <div className="flex flex-col items-center justify-center h-full text-center">
-                        <p className="text-gray-700 font-semibold">
+                        <p className="text-foreground font-semibold">
                           No items yet
                         </p>
-                        <p className="text-xs text-gray-600 mt-1">
+                        <p className="text-xs text-muted-foreground mt-1">
                           Tap + to add food
                         </p>
                       </div>
@@ -718,7 +718,7 @@ const MealTracker = () => {
                       setSelectedMealType(mealType);
                       setShowAddFood(true);
                     }}
-                    className="w-full py-3 bg-white/70 hover:bg-white text-gray-900 font-bold rounded-2xl transition shadow-md border border-white/40"
+                    className="w-full py-3 bg-primary/80 hover:bg-primary text-primary-foreground font-bold rounded-2xl transition shadow-md border border-primary/40 active:scale-95"
                   >
                     + Add Food
                   </button>
