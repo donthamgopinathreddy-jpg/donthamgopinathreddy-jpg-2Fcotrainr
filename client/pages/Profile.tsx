@@ -560,11 +560,7 @@ export default function Profile() {
         <div className="flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-all ${
-              theme === "dark"
-                ? "hover:bg-gray-800 text-gray-300 hover:text-white"
-                : "hover:bg-orange-100 text-gray-700 hover:text-orange-600"
-            }`}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-all hover:bg-muted text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft size={20} />
             Back
