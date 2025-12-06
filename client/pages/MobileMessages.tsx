@@ -165,7 +165,7 @@ export default function MobileMessages() {
       )}
 
       {/* New Message Button */}
-      <button className="fixed bottom-24 right-4 w-14 h-14 rounded-full bg-orange-500 hover:bg-orange-600 text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all">
+      <button className="fixed bottom-24 right-4 w-14 h-14 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all hover:scale-110 active:scale-95">
         <Plus size={28} />
       </button>
     </div>
