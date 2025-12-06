@@ -40,6 +40,7 @@ const fitnessCategories = [
 
 export default function MobileDiscover() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const { trainers, loading: trainersLoading } = useTrainers();
 
   const [activeTab, setActiveTab] = useState<DiscoverTab>("trainers");
