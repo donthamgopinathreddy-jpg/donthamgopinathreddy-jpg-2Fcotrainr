@@ -32,6 +32,7 @@ export default function ClientHome() {
   const { userProfile, updateProfile } = useAuth();
   const navigate = useNavigate();
   const { steps } = useStepCounter();
+  const { theme } = useTheme();
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [dailyStats, setDailyStats] = useState<any>(null);
