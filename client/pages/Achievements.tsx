@@ -160,12 +160,8 @@ export default function Quests() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`relative py-2 px-2 sm:px-3 text-xs sm:text-sm md:text-base font-bold transition-all whitespace-nowrap flex items-center gap-1 sm:gap-1.5 group ${
                   activeTab === tab.id
-                    ? theme === "dark"
-                      ? "text-white"
-                      : "text-gray-900"
-                    : theme === "dark"
-                      ? "text-gray-400 hover:text-gray-300"
-                      : "text-gray-600 hover:text-gray-900"
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {/* Animated background for active tab */}
