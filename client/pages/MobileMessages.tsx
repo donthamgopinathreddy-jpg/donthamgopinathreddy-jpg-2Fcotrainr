@@ -145,16 +145,16 @@ export default function MobileMessages() {
             <button
               key={conv.id}
               onClick={() => handleSelectConversation(conv)}
-              className="w-full px-4 py-3 bg-white hover:bg-gray-50 border-b border-gray-100 flex items-center gap-3 transition-colors"
+              className={`w-full px-4 py-3 backdrop-blur-sm border-b flex items-center gap-3 transition-colors ${theme === "dark" ? "bg-gray-800/50 hover:bg-gray-700/50 border-gray-800/50" : "bg-white/60 hover:bg-white/80 border-purple-200/30"}`}
             >
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white flex-shrink-0">
                 👤
               </div>
               <div className="flex-1 text-left">
-                <p className="font-semibold text-gray-900">
+                <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
                   {conv.participant1?.username || conv.participant2?.username}
                 </p>
-                <p className="text-xs text-gray-500">Click to open chat</p>
+                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Click to open chat</p>
               </div>
               <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></div>
             </button>
