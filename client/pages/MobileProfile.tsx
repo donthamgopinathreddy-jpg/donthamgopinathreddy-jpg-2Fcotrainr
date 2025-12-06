@@ -476,15 +476,15 @@ export default function MobileProfile() {
 
       {/* Personal Details Section */}
       <div className="px-4 mb-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-3">
+        <h3 className={`text-lg font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
           Personal Details
         </h3>
         <div className="space-y-3">
           {/* Physical Info Card */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex justify-between items-center">
+          <div className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
             <div>
-              <p className="text-xs text-gray-500">Height & Weight</p>
-              <p className="text-sm font-semibold text-gray-900">
+              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Height & Weight</p>
+              <p className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
                 {userProfile?.height_cm}cm • {userProfile?.weight_kg}kg
               </p>
             </div>
