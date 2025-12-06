@@ -295,18 +295,18 @@ export default function Signup() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">CoTrainr</h1>
-          <p className="text-gray-600">Create your account</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">CoTrainr</h1>
+          <p className="text-muted-foreground">Create your account</p>
         </div>
 
         {/* Signup Form */}
         <form
           onSubmit={handleSignup}
-          className="bg-white rounded-2xl shadow-lg p-8 space-y-5"
+          className="bg-card rounded-2xl shadow-lg p-8 space-y-5 border border-border"
         >
           {/* Username */}
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
+            <label className="block text-sm font-semibold text-foreground mb-2">
               Username
             </label>
             <div className="relative">
