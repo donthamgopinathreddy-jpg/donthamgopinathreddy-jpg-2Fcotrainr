@@ -294,7 +294,7 @@ export default function MobileProfile() {
   return (
     <div className={`min-h-screen pb-20 ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
       {/* Header with Back Button */}
-      <div className={`sticky top-0 z-40 border-b ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}`}>
+      <div className={`sticky top-0 z-40 border-b backdrop-blur-md ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
         <div className="px-4 py-3 flex items-center justify-between">
           <button
             onClick={() => navigate("/")}
