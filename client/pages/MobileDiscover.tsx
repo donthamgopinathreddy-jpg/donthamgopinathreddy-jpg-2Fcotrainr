@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin, Star, Heart, ArrowLeft, Loader, AlertCircle, X } from "lucide-react";
+import { Search, MapPin, Star, Heart, ArrowLeft, Loader, AlertCircle, X, Filter } from "lucide-react";
 import { useTrainers } from "@/hooks/useTrainers";
 
 type DiscoverTab = "trainers" | "nutritionists" | "fitness_centers";
@@ -236,8 +236,8 @@ export default function MobileDiscover() {
           />
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex gap-2 -mx-4 px-4 overflow-x-auto pb-2">
+        {/* Tab Navigation - Underline Style */}
+        <div className="flex gap-4 -mx-4 px-4 overflow-x-auto pb-1 border-b border-border">
           {[
             { id: "trainers", label: "Trainers", emoji: "💪" },
             { id: "nutritionists", label: "Nutrition", emoji: "🥗" },
@@ -251,13 +251,16 @@ export default function MobileDiscover() {
                 setCategory("");
                 setSelectedFitnessTypes([]);
               }}
-              className={`px-5 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all ${
+              className={`px-1 py-3 font-bold text-sm whitespace-nowrap transition-all relative ${
                 activeTab === tab.id
-                  ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg"
-                  : "bg-muted text-foreground"
+                  ? "text-foreground"
+                  : "text-muted-foreground"
               }`}
             >
               {tab.emoji} {tab.label}
+              {activeTab === tab.id && (
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full" />
+              )}
             </button>
           ))}
         </div>
@@ -266,6 +269,12 @@ export default function MobileDiscover() {
       {/* Category/Filter Section */}
       {activeTab === "trainers" && (
         <div className="sticky top-24 z-40 bg-background border-b border-border px-4 py-3">
+          <div className="flex items-center gap-2 mb-3">
+            <Filter size={18} className="text-orange-500" />
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+              Categories
+            </p>
+          </div>
           <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4">
             {[
               "All",
@@ -293,9 +302,12 @@ export default function MobileDiscover() {
 
       {activeTab === "fitness_centers" && (
         <div className="bg-background border-b border-border px-4 py-4">
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">
-            Select Categories
-          </p>
+          <div className="flex items-center gap-2 mb-3">
+            <Filter size={18} className="text-orange-500" />
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+              Filter Categories
+            </p>
+          </div>
           <div className="grid grid-cols-2 gap-2">
             {fitnessCategories.map((cat) => (
               <button
