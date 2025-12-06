@@ -46,9 +46,7 @@ export default function ProgressTracker() {
 
   return (
     <div className="space-y-4">
-      <h3
-        className="text-lg font-bold flex items-center gap-2 px-2 text-foreground"
-      >
+      <h3 className="text-lg font-bold flex items-center gap-2 px-2 text-foreground">
         <Target className="w-5 h-5 text-orange-500" />
         Your Goals
       </h3>
@@ -61,15 +59,11 @@ export default function ProgressTracker() {
           {/* Header */}
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h4
-                className="font-bold text-sm mb-1 text-foreground"
-              >
+              <h4 className="font-bold text-sm mb-1 text-foreground">
                 {goal.goal_name}
               </h4>
               {goal.description && (
-                <p
-                  className="text-xs mb-2 text-muted-foreground"
-                >
+                <p className="text-xs mb-2 text-muted-foreground">
                   {goal.description}
                 </p>
               )}
@@ -78,9 +72,7 @@ export default function ProgressTracker() {
             {/* Trainer Info */}
             {goal.trainer && (
               <div className="text-right">
-                <p
-                  className="text-xs font-semibold text-muted-foreground"
-                >
+                <p className="text-xs font-semibold text-muted-foreground">
                   by {goal.trainer.full_name}
                 </p>
               </div>
@@ -90,9 +82,7 @@ export default function ProgressTracker() {
           {/* Progress Bar */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
-              <span
-                className="text-xs font-semibold text-muted-foreground"
-              >
+              <span className="text-xs font-semibold text-muted-foreground">
                 Progress
               </span>
               <span
@@ -112,9 +102,7 @@ export default function ProgressTracker() {
 
             <div
               className={`relative h-3 rounded-full overflow-hidden ${
-                theme === "dark"
-                  ? "bg-gray-700/50"
-                  : "bg-gray-200/50"
+                theme === "dark" ? "bg-gray-700/50" : "bg-gray-200/50"
               }`}
             >
               <div

@@ -326,14 +326,10 @@ export default function Quests() {
                         <div className="text-4xl mb-3">
                           {achievement.icon || "🏆"}
                         </div>
-                        <h4
-                          className="font-bold text-sm mb-1 text-foreground"
-                        >
+                        <h4 className="font-bold text-sm mb-1 text-foreground">
                           {achievement.title}
                         </h4>
-                        <p
-                          className="text-xs mb-3 text-muted-foreground"
-                        >
+                        <p className="text-xs mb-3 text-muted-foreground">
                           {achievement.description}
                         </p>
                         <div className="flex items-center justify-between">

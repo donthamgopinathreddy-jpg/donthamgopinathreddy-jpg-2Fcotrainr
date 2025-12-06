@@ -387,7 +387,9 @@ export default function Signup() {
                 )}
               </button>
             </div>
-            <p className="text-xs text-muted-foreground mt-2">Minimum 6 characters</p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Minimum 6 characters
+            </p>
           </div>
 
           {/* Confirm Password */}

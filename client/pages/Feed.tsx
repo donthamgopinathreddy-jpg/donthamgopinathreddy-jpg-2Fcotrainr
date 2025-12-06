@@ -288,11 +288,7 @@ export default function Feed() {
               : "bg-gray-900 border-gray-800"
           }`}
         >
-          <h1
-            className="text-3xl font-bold text-foreground"
-          >
-            Community Feed
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground">Community Feed</h1>
           <p
             className={`text-sm ${theme === "light" ? "text-gray-600" : "text-gray-400"}`}
           >
@@ -383,9 +379,7 @@ export default function Feed() {
                               }}
                               className="flex-1 min-w-0 text-left hover:opacity-80 transition-opacity"
                             >
-                              <p
-                                className="text-sm font-semibold truncate text-foreground"
-                              >
+                              <p className="text-sm font-semibold truncate text-foreground">
                                 {user.full_name}
                               </p>
                               <p
@@ -465,9 +459,7 @@ export default function Feed() {
                                         : "border-gray-700"
                                     }`}
                                   >
-                                    <p
-                                      className="text-xs font-semibold text-foreground"
-                                    >
+                                    <p className="text-xs font-semibold text-foreground">
                                       {formatDate(post.created_at)}
                                     </p>
                                   </div>

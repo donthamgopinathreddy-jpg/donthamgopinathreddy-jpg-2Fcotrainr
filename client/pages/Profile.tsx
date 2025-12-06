@@ -52,7 +52,9 @@ export default function Profile() {
     gender: userProfile?.gender || "Not specified",
     height: userProfile?.height_cm || 170,
     weight: userProfile?.weight_kg || 70,
-    profilePhoto: userProfile?.avatar || "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop",
+    profilePhoto:
+      userProfile?.avatar ||
+      "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop",
     subscriptionPlan: "Premium",
     isVerified: userProfile?.role === "trainer",
     categories: userProfile?.role === "trainer" ? ["Gym", "Yoga"] : [],
@@ -125,9 +127,14 @@ export default function Profile() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      {user.name}
+                    </h2>
                     {user.isVerified && (
-                      <Verified size={24} className="text-blue-500 fill-blue-500" />
+                      <Verified
+                        size={24}
+                        className="text-blue-500 fill-blue-500"
+                      />
                     )}
                   </div>
                   <p className="text-gray-600 font-medium">@{user.username}</p>
@@ -142,18 +149,20 @@ export default function Profile() {
               </div>
 
               {/* Category Badges (Trainer) */}
-              {user.role === "trainer" && user.categories && user.categories.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {user.categories.map((cat) => (
-                    <span
-                      key={cat}
-                      className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold"
-                    >
-                      {cat}
-                    </span>
-                  ))}
-                </div>
-              )}
+              {user.role === "trainer" &&
+                user.categories &&
+                user.categories.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {user.categories.map((cat) => (
+                      <span
+                        key={cat}
+                        className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
               {/* Stats Row */}
               <div className="grid grid-cols-3 gap-4 py-4 border-t border-gray-200">
@@ -251,7 +260,9 @@ export default function Profile() {
               <SettingToggle
                 label="App Theme"
                 description={theme === "light" ? "Light mode" : "Dark mode"}
-                icon={theme === "light" ? <Sun size={20} /> : <Moon size={20} />}
+                icon={
+                  theme === "light" ? <Sun size={20} /> : <Moon size={20} />
+                }
                 defaultValue={theme === "dark"}
                 onChange={toggleTheme}
               />
@@ -260,7 +271,9 @@ export default function Profile() {
 
           {/* Referral Section */}
           <div className="border-b border-gray-200 p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Referral Program</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">
+              Referral Program
+            </h3>
             <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
               <p className="text-sm text-gray-700 mb-3">Your referral code:</p>
               <div className="flex items-center gap-2">
@@ -323,7 +336,9 @@ export default function Profile() {
             <h3 className="text-lg font-bold text-gray-900 mb-4">About</h3>
             <div className="space-y-2">
               <p className="text-sm text-gray-600">App Version: 2.0.0</p>
-              <p className="text-sm text-gray-600">Member since: January 2024</p>
+              <p className="text-sm text-gray-600">
+                Member since: January 2024
+              </p>
             </div>
           </div>
 

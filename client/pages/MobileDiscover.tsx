@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin, Star, Heart, ArrowLeft, Loader, AlertCircle, Filter, ChevronDown } from "lucide-react";
+import {
+  Search,
+  MapPin,
+  Star,
+  Heart,
+  ArrowLeft,
+  Loader,
+  AlertCircle,
+  Filter,
+  ChevronDown,
+} from "lucide-react";
 import { useTrainers } from "@/hooks/useTrainers";
 
 type DiscoverTab = "trainers" | "nutritionists" | "fitness_centers";
@@ -34,17 +44,31 @@ export default function MobileDiscover() {
   const [activeTab, setActiveTab] = useState<DiscoverTab>("trainers");
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("");
-  const [selectedFitnessTypes, setSelectedFitnessTypes] = useState<string[]>([]);
-  const [fitnessLocations, setFitnessLocations] = useState<FitnessLocation[]>([]);
+  const [selectedFitnessTypes, setSelectedFitnessTypes] = useState<string[]>(
+    [],
+  );
+  const [fitnessLocations, setFitnessLocations] = useState<FitnessLocation[]>(
+    [],
+  );
   const [loadingLocations, setLoadingLocations] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [locationPermissionDenied, setLocationPermissionDenied] = useState(false);
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [locationPermissionDenied, setLocationPermissionDenied] =
+    useState(false);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const [sortBy, setSortBy] = useState<"rating" | "distance" | "name">("rating");
+  const [sortBy, setSortBy] = useState<"rating" | "distance" | "name">(
+    "rating",
+  );
 
   useEffect(() => {
-    if (activeTab === "fitness_centers" && !userLocation && !locationPermissionDenied) {
+    if (
+      activeTab === "fitness_centers" &&
+      !userLocation &&
+      !locationPermissionDenied
+    ) {
       requestUserLocation();
     }
   }, [activeTab]);
@@ -61,9 +85,9 @@ export default function MobileDiscover() {
           console.error("Geolocation error:", error);
           setLocationPermissionDenied(true);
           setLocationError(
-            "Location access denied. Please enable location permissions to see nearby fitness centers."
+            "Location access denied. Please enable location permissions to see nearby fitness centers.",
           );
-        }
+        },
       );
     }
   };
@@ -149,7 +173,9 @@ export default function MobileDiscover() {
       setFitnessLocations(mockLocations);
     } catch (error) {
       console.error("Error fetching fitness centers:", error);
-      setLocationError("Failed to fetch nearby fitness centers. Please try again.");
+      setLocationError(
+        "Failed to fetch nearby fitness centers. Please try again.",
+      );
     } finally {
       setLoadingLocations(false);
     }
@@ -161,7 +187,7 @@ export default function MobileDiscover() {
         !category ||
         (trainer.specialties &&
           trainer.specialties.some((s) =>
-            s.toLowerCase().includes(category.toLowerCase())
+            s.toLowerCase().includes(category.toLowerCase()),
           ));
       const matchesSearch =
         !searchQuery ||
@@ -181,7 +207,8 @@ export default function MobileDiscover() {
   const filteredFitnessLocations = fitnessLocations
     .filter((location) => {
       const matchesType =
-        selectedFitnessTypes.length === 0 || selectedFitnessTypes.includes(location.type);
+        selectedFitnessTypes.length === 0 ||
+        selectedFitnessTypes.includes(location.type);
       const matchesSearch =
         !searchQuery ||
         location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -201,7 +228,7 @@ export default function MobileDiscover() {
 
   const toggleFitnessType = (type: string) => {
     setSelectedFitnessTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
     );
   };
 
@@ -211,23 +238,27 @@ export default function MobileDiscover() {
     if (isIOS) {
       window.open(
         `maps://maps.apple.com/?address=${encodeURIComponent(
-          location.address
+          location.address,
         )}&q=${encodeURIComponent(location.name)}&ll=${location.lat},${location.lng}`,
-        "_blank"
+        "_blank",
       );
     } else {
       window.open(
         `https://www.google.com/maps/search/${encodeURIComponent(
-          location.name
+          location.name,
         )}/@${location.lat},${location.lng},15z`,
-        "_blank"
+        "_blank",
       );
     }
   };
 
   const getSortLabel = () => {
     if (activeTab === "fitness_centers") {
-      return sortBy === "distance" ? "Nearby" : sortBy === "rating" ? "Top Rated" : "A-Z";
+      return sortBy === "distance"
+        ? "Nearby"
+        : sortBy === "rating"
+          ? "Top Rated"
+          : "A-Z";
     }
     return sortBy === "rating" ? "Top Rated" : "A-Z";
   };
@@ -254,7 +285,9 @@ export default function MobileDiscover() {
           >
             <ArrowLeft size={20} />
           </button>
-          <h1 className="text-2xl font-black text-foreground flex-1">Discover</h1>
+          <h1 className="text-2xl font-black text-foreground flex-1">
+            Discover
+          </h1>
         </div>
 
         {/* Tab Navigation - Underline Style */}
@@ -274,7 +307,9 @@ export default function MobileDiscover() {
                 setShowFilterDropdown(false);
               }}
               className={`px-1 py-3 font-bold text-sm whitespace-nowrap transition-all relative ${
-                activeTab === tab.id ? "text-foreground" : "text-muted-foreground"
+                activeTab === tab.id
+                  ? "text-foreground"
+                  : "text-muted-foreground"
               }`}
             >
               {tab.emoji} {tab.label}
@@ -291,7 +326,10 @@ export default function MobileDiscover() {
         <div className="flex gap-2 relative">
           {/* Search Input */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              size={18}
+            />
             <input
               type="text"
               value={searchQuery}
@@ -300,8 +338,8 @@ export default function MobileDiscover() {
                 activeTab === "trainers"
                   ? "Search trainers..."
                   : activeTab === "nutritionists"
-                  ? "Search nutritionists..."
-                  : "Search fitness centers..."
+                    ? "Search nutritionists..."
+                    : "Search fitness centers..."
               }
               className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-border bg-card text-foreground focus:ring-2 focus:ring-orange-400 focus:border-transparent outline-none placeholder-muted-foreground transition font-medium text-sm"
             />
@@ -325,7 +363,9 @@ export default function MobileDiscover() {
           <div className="absolute top-20 left-4 right-4 bg-card border-2 border-border rounded-2xl shadow-2xl z-50 mt-2 overflow-hidden">
             {/* Filter Header */}
             <div className="px-6 py-4 border-b border-border bg-muted/30">
-              <h3 className="font-bold text-foreground text-sm">Filters & Sort</h3>
+              <h3 className="font-bold text-foreground text-sm">
+                Filters & Sort
+              </h3>
             </div>
 
             {/* Filter Content */}
@@ -336,16 +376,26 @@ export default function MobileDiscover() {
                   <span className="w-1 h-4 bg-orange-500 rounded" />
                   {activeTab === "trainers" ? "Specialties" : "Categories"}
                 </h4>
-                <div className={`grid gap-2 ${activeTab === "trainers" ? "grid-cols-2" : "grid-cols-2"}`}>
+                <div
+                  className={`grid gap-2 ${activeTab === "trainers" ? "grid-cols-2" : "grid-cols-2"}`}
+                >
                   {activeTab === "trainers" && (
                     <>
-                      {["All", "Gym", "Yoga", "Boxing", "Zumba", "Nutrition"].map((cat) => (
+                      {[
+                        "All",
+                        "Gym",
+                        "Yoga",
+                        "Boxing",
+                        "Zumba",
+                        "Nutrition",
+                      ].map((cat) => (
                         <button
                           key={cat}
                           type="button"
                           onClick={() => setCategory(cat === "All" ? "" : cat)}
                           className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
-                            (cat === "All" && category === "") || category === cat
+                            (cat === "All" && category === "") ||
+                            category === cat
                               ? "bg-orange-500 text-white"
                               : "bg-muted text-foreground hover:bg-muted/80"
                           }`}
@@ -460,8 +510,12 @@ export default function MobileDiscover() {
               </div>
             ) : filteredTrainers.length === 0 ? (
               <div className="py-16 text-center">
-                <p className="text-foreground text-lg font-bold mb-2">No trainers found</p>
-                <p className="text-muted-foreground">Try adjusting your filters</p>
+                <p className="text-foreground text-lg font-bold mb-2">
+                  No trainers found
+                </p>
+                <p className="text-muted-foreground">
+                  Try adjusting your filters
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4">
@@ -472,7 +526,8 @@ export default function MobileDiscover() {
                   >
                     <div className="h-24 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 flex items-end justify-between p-4 relative">
                       <div className="absolute -bottom-8 left-4 w-16 h-16 rounded-full bg-gradient-to-br from-orange-300 to-orange-600 border-4 border-card flex items-center justify-center text-3xl font-bold text-white">
-                        {trainer.users?.username?.charAt(0).toUpperCase() || "T"}
+                        {trainer.users?.username?.charAt(0).toUpperCase() ||
+                          "T"}
                       </div>
                       <button className="text-white hover:scale-110 transition">
                         <Heart size={24} fill="white" />
@@ -489,7 +544,11 @@ export default function MobileDiscover() {
 
                       <div className="flex items-center gap-4 mb-4">
                         <div className="flex items-center gap-1">
-                          <Star size={16} className="text-yellow-500" fill="currentColor" />
+                          <Star
+                            size={16}
+                            className="text-yellow-500"
+                            fill="currentColor"
+                          />
                           <span className="font-bold text-foreground">
                             {trainer.rating?.toFixed(1) || "4.5"}
                           </span>
@@ -515,8 +574,12 @@ export default function MobileDiscover() {
         {activeTab === "nutritionists" && (
           <div className="py-16 text-center">
             <div className="text-6xl mb-4">🥗</div>
-            <p className="text-foreground text-lg font-bold mb-2">Coming Soon</p>
-            <p className="text-muted-foreground">Nutrition experts launching soon</p>
+            <p className="text-foreground text-lg font-bold mb-2">
+              Coming Soon
+            </p>
+            <p className="text-muted-foreground">
+              Nutrition experts launching soon
+            </p>
           </div>
         )}
 
@@ -525,10 +588,17 @@ export default function MobileDiscover() {
           <>
             {locationPermissionDenied && (
               <div className="mb-6 bg-red-500/10 border-2 border-red-500 rounded-2xl p-4 flex gap-3">
-                <AlertCircle className="text-red-500 flex-shrink-0 mt-0.5" size={20} />
+                <AlertCircle
+                  className="text-red-500 flex-shrink-0 mt-0.5"
+                  size={20}
+                />
                 <div>
-                  <p className="text-sm font-bold text-red-600">Location required</p>
-                  <p className="text-xs text-red-600 mt-1">Enable location access to discover nearby centers</p>
+                  <p className="text-sm font-bold text-red-600">
+                    Location required
+                  </p>
+                  <p className="text-xs text-red-600 mt-1">
+                    Enable location access to discover nearby centers
+                  </p>
                   <button
                     onClick={requestUserLocation}
                     className="mt-2 text-sm font-bold text-orange-600 hover:text-orange-700"
@@ -547,12 +617,16 @@ export default function MobileDiscover() {
             ) : locationError && !userLocation ? (
               <div className="py-16 text-center">
                 <div className="text-6xl mb-4">📍</div>
-                <p className="text-foreground text-lg font-bold mb-2">Unable to fetch locations</p>
+                <p className="text-foreground text-lg font-bold mb-2">
+                  Unable to fetch locations
+                </p>
               </div>
             ) : filteredFitnessLocations.length === 0 ? (
               <div className="py-16 text-center">
                 <div className="text-6xl mb-4">🔍</div>
-                <p className="text-foreground text-lg font-bold mb-2">No centers found</p>
+                <p className="text-foreground text-lg font-bold mb-2">
+                  No centers found
+                </p>
                 <p className="text-muted-foreground">Try a different filter</p>
               </div>
             ) : (
