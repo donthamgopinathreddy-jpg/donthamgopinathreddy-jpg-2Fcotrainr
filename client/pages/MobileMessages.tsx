@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, Plus, Send } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useMessages } from "@/hooks/useMessages";
 import { toast } from "sonner";
 
