@@ -340,7 +340,7 @@ export default function MobileProfile() {
 
       {/* Profile Card */}
       <div className="px-4 -mt-12 relative z-10 mb-6">
-        <div className="bg-white rounded-3xl shadow-lg p-6">
+        <div className={`rounded-3xl shadow-lg p-6 ${theme === "dark" ? "bg-gray-800" : "bg-white"}`}>
           {/* Avatar Section */}
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-end gap-4 flex-1">
