@@ -294,16 +294,16 @@ export default function MobileProfile() {
   return (
     <div className={`min-h-screen pb-20 ${theme === "dark" ? "bg-gradient-to-b from-gray-900 to-gray-800" : "bg-gradient-to-b from-gray-50 to-white"}`}>
       {/* Header with Back Button */}
-      <div className="bg-white sticky top-0 z-40 border-b border-gray-200">
+      <div className={`sticky top-0 z-40 border-b ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}`}>
         <div className="px-4 py-3 flex items-center justify-between">
           <button
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-gray-700 font-semibold"
+            className={`flex items-center gap-2 font-semibold ${theme === "dark" ? "text-gray-200" : "text-gray-700"}`}
           >
             <ArrowLeft size={24} />
             Back
           </button>
-          <h1 className="text-lg font-bold">My Profile</h1>
+          <h1 className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>My Profile</h1>
           <div className="w-6" />
         </div>
       </div>
