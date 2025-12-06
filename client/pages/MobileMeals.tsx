@@ -145,26 +145,26 @@ export default function MobileMeals() {
 
             return (
               <div key={type}>
-                <h3 className="font-bold text-gray-900 capitalize mb-2">
+                <h3 className="font-bold text-foreground capitalize mb-2">
                   {type}
                 </h3>
                 <div className="space-y-2">
                   {typeMeals.map((meal) => (
                     <div
                       key={meal.id}
-                      className="bg-white rounded-xl p-3 flex justify-between items-center"
+                      className="bg-card rounded-xl p-3 flex justify-between items-center border border-border"
                     >
                       <div>
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-foreground">
                           {meal.notes || "Meal"}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                           {new Date(meal.created_at).toLocaleTimeString()}
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Flame size={18} className="text-orange-500" />
-                        <span className="font-bold text-gray-900">
+                        <span className="font-bold text-foreground">
                           {meal.calories}
                         </span>
                       </div>
@@ -186,10 +186,10 @@ export default function MobileMeals() {
           <Plus size={28} />
         </button>
       ) : (
-        <div className="fixed bottom-24 left-4 right-4 bg-white rounded-2xl p-4 shadow-xl">
+        <div className="fixed bottom-24 left-4 right-4 bg-card rounded-2xl p-4 shadow-xl border border-border">
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-foreground mb-2">
                 Meal Type
               </label>
               <select
