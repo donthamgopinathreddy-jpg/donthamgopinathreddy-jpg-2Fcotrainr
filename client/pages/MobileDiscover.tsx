@@ -324,7 +324,7 @@ export default function MobileDiscover() {
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="sticky top-16 z-40 bg-background border-b border-border px-4 py-4">
+      <div className={`sticky top-16 z-40 backdrop-blur-md border-b px-4 py-4 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
         <div className="flex gap-2 relative">
           {/* Search Input */}
           <div className="flex-1 relative">
