@@ -12,11 +12,11 @@
    * Mobile-first responsive design
    */
   :root {
-    /* Light Theme (System Default) */
-    --background: 0 0% 100%;
+    /* Light Theme (System Default) - Quest Hub Inspired */
+    --background: 240 20% 98%;
     --foreground: 25 15% 15%;
 
-    --card: 0 0% 98%;
+    --card: 0 0% 100%;
     --card-foreground: 25 15% 15%;
 
     --popover: 0 0% 100%;
