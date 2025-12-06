@@ -40,6 +40,8 @@ export default function MobileDiscover() {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locationPermissionDenied, setLocationPermissionDenied] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [showFitnessDropdown, setShowFitnessDropdown] = useState(false);
 
   useEffect(() => {
     if (activeTab === "fitness_centers" && !userLocation && !locationPermissionDenied) {
@@ -266,63 +268,86 @@ export default function MobileDiscover() {
         </div>
       </div>
 
-      {/* Category/Filter Section */}
+      {/* Category/Filter Section - Dropdown */}
       {activeTab === "trainers" && (
         <div className="sticky top-24 z-40 bg-background border-b border-border px-4 py-3">
-          <div className="flex items-center gap-2 mb-3">
+          <button
+            onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+            className="flex items-center gap-2 py-2 hover:opacity-80 transition"
+          >
             <Filter size={18} className="text-orange-500" />
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-              Categories
+              {category || "All Categories"}
             </p>
-          </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4">
-            {[
-              "All",
-              "Gym",
-              "Yoga",
-              "Boxing",
-              "Zumba",
-              "Nutrition",
-            ].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategory(cat === "All" ? "" : cat)}
-                className={`px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap transition-all ${
-                  (cat === "All" && category === "") || category === cat
-                    ? "bg-orange-500 text-white"
-                    : "bg-muted text-foreground"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          </button>
+
+          {/* Dropdown Menu */}
+          {showCategoryDropdown && (
+            <div className="absolute top-20 left-4 right-4 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2">
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  "All",
+                  "Gym",
+                  "Yoga",
+                  "Boxing",
+                  "Zumba",
+                  "Nutrition",
+                ].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setCategory(cat === "All" ? "" : cat);
+                      setShowCategoryDropdown(false);
+                    }}
+                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                      (cat === "All" && category === "") || category === cat
+                        ? "bg-orange-500 text-white"
+                        : "bg-muted text-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {activeTab === "fitness_centers" && (
-        <div className="bg-background border-b border-border px-4 py-4">
-          <div className="flex items-center gap-2 mb-3">
+        <div className="bg-background border-b border-border px-4 py-3">
+          <button
+            onClick={() => setShowFitnessDropdown(!showFitnessDropdown)}
+            className="flex items-center gap-2 py-2 hover:opacity-80 transition"
+          >
             <Filter size={18} className="text-orange-500" />
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-              Filter Categories
+              {selectedFitnessTypes.length > 0
+                ? `${selectedFitnessTypes.length} Selected`
+                : "All Categories"}
             </p>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {fitnessCategories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => toggleFitnessType(cat.type)}
-                className={`px-3 py-3 rounded-xl font-semibold text-sm transition-all ${
-                  selectedFitnessTypes.includes(cat.type)
-                    ? "bg-orange-500 text-white shadow-lg"
-                    : "bg-muted text-foreground"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
+          </button>
+
+          {/* Dropdown Menu */}
+          {showFitnessDropdown && (
+            <div className="absolute top-20 left-4 right-4 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2">
+              <div className="grid grid-cols-2 gap-2">
+                {fitnessCategories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => toggleFitnessType(cat.type)}
+                    className={`px-3 py-3 rounded-lg font-semibold text-sm transition-all ${
+                      selectedFitnessTypes.includes(cat.type)
+                        ? "bg-orange-500 text-white shadow-lg"
+                        : "bg-muted text-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
