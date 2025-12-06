@@ -39,14 +39,14 @@ export default function TrainerClientDetail() {
   const weightRemaining = client.goal_weight_kg ? client.goal_weight_kg - client.weight_kg : 0;
 
   return (
-    <div className="min-h-screen bg-white pb-24">
+    <div className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-between px-4 py-3">
+      <div className="sticky top-0 z-40 bg-background border-b border-border flex items-center justify-between px-4 py-3">
         <button
           onClick={() => navigate("/trainer-dashboard")}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-muted rounded-lg transition-colors"
         >
-          <ArrowLeft className="w-6 h-6 text-gray-900" />
+          <ArrowLeft className="w-6 h-6 text-foreground" />
         </button>
         <Logo size="sm" />
         <div className="w-10" />
@@ -58,17 +58,17 @@ export default function TrainerClientDetail() {
           <img
             src={client.avatar}
             alt={client.name}
-            className="w-20 h-20 rounded-full mx-auto mb-4 border-4 border-gray-200"
+            className="w-20 h-20 rounded-full mx-auto mb-4 border-4 border-border"
           />
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">{client.name}</h1>
-          <p className="text-gray-600">{client.goal_type.replace("_", " ")}</p>
-          <p className="text-xs text-gray-500 mt-2">Joined {client.joined_date}</p>
+          <h1 className="text-2xl font-bold text-foreground mb-1">{client.name}</h1>
+          <p className="text-muted-foreground">{client.goal_type.replace("_", " ")}</p>
+          <p className="text-xs text-muted-foreground mt-2">Joined {client.joined_date}</p>
         </div>
 
         {/* Goal Progress */}
         <div className="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-gray-900">Progress to Goal</h3>
+            <h3 className="font-bold text-foreground">Progress to Goal</h3>
             <span className="text-2xl font-bold text-cyan-700">{client.progress_percentage}%</span>
           </div>
           <div className="bg-white/50 rounded-full h-3 overflow-hidden mb-4">
@@ -79,26 +79,26 @@ export default function TrainerClientDetail() {
           </div>
           <div className="grid grid-cols-3 gap-2 text-sm">
             <div>
-              <p className="text-gray-600 text-xs">Current</p>
-              <p className="font-bold text-gray-900">{client.weight_kg} kg</p>
+              <p className="text-muted-foreground text-xs">Current</p>
+              <p className="font-bold text-foreground">{client.weight_kg} kg</p>
             </div>
             <div>
-              <p className="text-gray-600 text-xs">Remaining</p>
-              <p className="font-bold text-gray-900">
+              <p className="text-muted-foreground text-xs">Remaining</p>
+              <p className="font-bold text-foreground">
                 {weightRemaining > 0 ? "-" : "+"}
                 {Math.abs(weightRemaining)} kg
               </p>
             </div>
             <div>
-              <p className="text-gray-600 text-xs">Goal</p>
-              <p className="font-bold text-gray-900">{client.goal_weight_kg} kg</p>
+              <p className="text-muted-foreground text-xs">Goal</p>
+              <p className="font-bold text-foreground">{client.goal_weight_kg} kg</p>
             </div>
           </div>
         </div>
 
         {/* Body Metrics */}
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">Body Metrics</h2>
+          <h2 className="text-lg font-bold text-foreground mb-3">Body Metrics</h2>
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <p className="text-xs text-gray-600 mb-1">Height</p>
