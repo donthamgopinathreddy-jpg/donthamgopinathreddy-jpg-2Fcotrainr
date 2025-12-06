@@ -62,6 +62,7 @@ function EditModal({
 export default function MobileProfile() {
   const navigate = useNavigate();
   const { userProfile, signOut, updateProfile } = useAuth();
+  const { theme = "light", toggleTheme } = useTheme();
   const [stats, setStats] = useState({
     followers: 0,
     following: 0,
