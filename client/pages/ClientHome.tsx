@@ -470,13 +470,17 @@ export default function ClientHome() {
   ];
 
   return (
-    <div className="w-full h-full bg-background flex flex-col relative overflow-hidden">
+    <div className={`w-full h-full flex flex-col relative overflow-hidden ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
       {/* Mobile Container - max width for native feel (390px iPhone-like) */}
       <div className="w-full h-full flex flex-col relative">
         {/* Decorative background elements - contained properly */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+          {theme !== "dark" && (
+            <>
+              <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-200/40 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
+              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200/40 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
+            </>
+          )}
         </div>
 
         {/* Main Content */}
