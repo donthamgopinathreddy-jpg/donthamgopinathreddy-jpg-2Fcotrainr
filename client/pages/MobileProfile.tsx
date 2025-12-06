@@ -292,9 +292,13 @@ export default function MobileProfile() {
   };
 
   return (
-    <div className={`min-h-screen pb-20 ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
+    <div
+      className={`min-h-screen pb-20 ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}
+    >
       {/* Header with Back Button */}
-      <div className={`sticky top-0 z-40 border-b backdrop-blur-md ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
+      <div
+        className={`sticky top-0 z-40 border-b backdrop-blur-md ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}
+      >
         <div className="px-4 py-3 flex items-center justify-between">
           <button
             onClick={() => navigate("/")}
@@ -303,7 +307,11 @@ export default function MobileProfile() {
             <ArrowLeft size={24} />
             Back
           </button>
-          <h1 className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>My Profile</h1>
+          <h1
+            className={`text-lg font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+          >
+            My Profile
+          </h1>
           <div className="w-6" />
         </div>
       </div>
@@ -340,7 +348,9 @@ export default function MobileProfile() {
 
       {/* Profile Card */}
       <div className="px-4 -mt-12 relative z-10 mb-6">
-        <div className={`rounded-3xl shadow-lg p-6 ${theme === "dark" ? "bg-gray-800" : "bg-white"}`}>
+        <div
+          className={`rounded-3xl shadow-lg p-6 ${theme === "dark" ? "bg-gray-800" : "bg-white"}`}
+        >
           {/* Avatar Section */}
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-end gap-4 flex-1">
@@ -374,15 +384,21 @@ export default function MobileProfile() {
               </div>
 
               <div className="flex-1">
-                <h2 className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                <h2
+                  className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                >
                   {userProfile?.full_name || userProfile?.username}
                 </h2>
                 <div className="flex items-center gap-2 mt-1">
                   <span
                     className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                       userProfile?.role === "trainer"
-                        ? theme === "dark" ? "bg-blue-900 text-blue-200" : "bg-blue-100 text-blue-700"
-                        : theme === "dark" ? "bg-purple-900 text-purple-200" : "bg-purple-100 text-purple-700"
+                        ? theme === "dark"
+                          ? "bg-blue-900 text-blue-200"
+                          : "bg-blue-100 text-blue-700"
+                        : theme === "dark"
+                          ? "bg-purple-900 text-purple-200"
+                          : "bg-purple-100 text-purple-700"
                     }`}
                   >
                     {userProfile?.role === "trainer"
@@ -404,35 +420,75 @@ export default function MobileProfile() {
 
           {/* Bio */}
           {userProfile?.bio && (
-            <p className={`text-sm mb-4 italic ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+            <p
+              className={`text-sm mb-4 italic ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
+            >
               "{userProfile.bio}"
             </p>
           )}
 
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-2 gap-2 mt-4">
-            <div className={`p-3 rounded-lg ${theme === "dark" ? "bg-purple-900/30" : "bg-purple-50"}`}>
-              <p className={`text-2xl font-bold ${theme === "dark" ? "text-purple-400" : "text-purple-600"}`}>{bmi || "—"}</p>
-              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>BMI</p>
-              <p className={`text-xs ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>
+            <div
+              className={`p-3 rounded-lg ${theme === "dark" ? "bg-purple-900/30" : "bg-purple-50"}`}
+            >
+              <p
+                className={`text-2xl font-bold ${theme === "dark" ? "text-purple-400" : "text-purple-600"}`}
+              >
+                {bmi || "—"}
+              </p>
+              <p
+                className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              >
+                BMI
+              </p>
+              <p
+                className={`text-xs ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}
+              >
                 {getBMIStatus(bmi ? parseFloat(bmi) : null)}
               </p>
             </div>
-            <div className={`p-3 rounded-lg ${theme === "dark" ? "bg-pink-900/30" : "bg-pink-50"}`}>
-              <p className={`text-2xl font-bold ${theme === "dark" ? "text-pink-400" : "text-pink-600"}`}>{stats.coins}</p>
-              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Coins</p>
+            <div
+              className={`p-3 rounded-lg ${theme === "dark" ? "bg-pink-900/30" : "bg-pink-50"}`}
+            >
+              <p
+                className={`text-2xl font-bold ${theme === "dark" ? "text-pink-400" : "text-pink-600"}`}
+              >
+                {stats.coins}
+              </p>
+              <p
+                className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              >
+                Coins
+              </p>
             </div>
-            <div className={`p-3 rounded-lg ${theme === "dark" ? "bg-blue-900/30" : "bg-blue-50"}`}>
-              <p className={`text-2xl font-bold ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}>
+            <div
+              className={`p-3 rounded-lg ${theme === "dark" ? "bg-blue-900/30" : "bg-blue-50"}`}
+            >
+              <p
+                className={`text-2xl font-bold ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}
+              >
                 {userProfile?.height_cm || "—"}
               </p>
-              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Height (cm)</p>
+              <p
+                className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              >
+                Height (cm)
+              </p>
             </div>
-            <div className={`p-3 rounded-lg ${theme === "dark" ? "bg-green-900/30" : "bg-green-50"}`}>
-              <p className={`text-2xl font-bold ${theme === "dark" ? "text-green-400" : "text-green-600"}`}>
+            <div
+              className={`p-3 rounded-lg ${theme === "dark" ? "bg-green-900/30" : "bg-green-50"}`}
+            >
+              <p
+                className={`text-2xl font-bold ${theme === "dark" ? "text-green-400" : "text-green-600"}`}
+              >
                 {userProfile?.weight_kg || "—"}
               </p>
-              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Weight (kg)</p>
+              <p
+                className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+              >
+                Weight (kg)
+              </p>
             </div>
           </div>
         </div>
@@ -440,51 +496,99 @@ export default function MobileProfile() {
 
       {/* Stats Section */}
       <div className="px-4 mb-6">
-        <h3 className={`text-lg font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Activity</h3>
+        <h3
+          className={`text-lg font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+        >
+          Activity
+        </h3>
         <div className="grid grid-cols-2 gap-3">
-          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <div
+            className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+          >
             <Heart className="text-red-500 mx-auto mb-2" size={28} />
-            <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <p
+              className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               {stats.followers || 0}
             </p>
-            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Followers</p>
+            <p
+              className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+            >
+              Followers
+            </p>
           </div>
 
-          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <div
+            className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+          >
             <TrendingUp className="text-green-500 mx-auto mb-2" size={28} />
-            <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <p
+              className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               {stats.following || 0}
             </p>
-            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Following</p>
+            <p
+              className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+            >
+              Following
+            </p>
           </div>
 
-          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <div
+            className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+          >
             <Award className="text-yellow-500 mx-auto mb-2" size={28} />
-            <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <p
+              className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               {stats.achievements || 0}
             </p>
-            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Achievements</p>
+            <p
+              className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+            >
+              Achievements
+            </p>
           </div>
 
-          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <div
+            className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+          >
             <Zap className="text-orange-500 mx-auto mb-2" size={28} />
-            <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>0</p>
-            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Streak Days</p>
+            <p
+              className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              0
+            </p>
+            <p
+              className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}
+            >
+              Streak Days
+            </p>
           </div>
         </div>
       </div>
 
       {/* Personal Details Section */}
       <div className="px-4 mb-6">
-        <h3 className={`text-lg font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+        <h3
+          className={`text-lg font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+        >
           Personal Details
         </h3>
         <div className="space-y-3">
           {/* Physical Info Card */}
-          <div className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <div
+            className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+          >
             <div>
-              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Height & Weight</p>
-              <p className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              <p
+                className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+              >
+                Height & Weight
+              </p>
+              <p
+                className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
                 {userProfile?.height_cm}cm • {userProfile?.weight_kg}kg
               </p>
             </div>
@@ -499,26 +603,42 @@ export default function MobileProfile() {
           </div>
 
           {/* Contact Info Card */}
-          <div className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <div
+            className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+          >
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <Mail size={16} className="text-purple-600" />
-                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Email</p>
+                <p
+                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+                >
+                  Email
+                </p>
               </div>
-              <p className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              <p
+                className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
                 {userProfile?.email}
               </p>
             </div>
           </div>
 
           {/* Phone Card */}
-          <div className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <div
+            className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+          >
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <MapPin size={16} className="text-pink-600" />
-                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Phone & Country</p>
+                <p
+                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+                >
+                  Phone & Country
+                </p>
               </div>
-              <p className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              <p
+                className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
                 {userProfile?.country_code}{" "}
                 {userProfile?.phone_number || "Not set"}
               </p>
@@ -534,21 +654,37 @@ export default function MobileProfile() {
           </div>
 
           {/* Gender Card */}
-          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
-            <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Gender</p>
-            <p className={`text-sm font-semibold capitalize ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+          <div
+            className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+          >
+            <p
+              className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+            >
+              Gender
+            </p>
+            <p
+              className={`text-sm font-semibold capitalize ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               {userProfile?.gender || "Not specified"}
             </p>
           </div>
 
           {/* Bio Card */}
-          <div className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <div
+            className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+          >
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <FileText size={16} className="text-blue-600" />
-                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Bio</p>
+                <p
+                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+                >
+                  Bio
+                </p>
               </div>
-              <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+              <p
+                className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}
+              >
                 {userProfile?.bio || "Add a bio to your profile"}
               </p>
             </div>
@@ -564,18 +700,40 @@ export default function MobileProfile() {
 
       {/* Settings Section */}
       <div className="px-4 mb-6">
-        <h3 className={`text-lg font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Settings</h3>
+        <h3
+          className={`text-lg font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+        >
+          Settings
+        </h3>
         <div className="space-y-2">
-          <button className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}>
-            <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Notification Settings</p>
-            <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+          <button
+            className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}
+          >
+            <p
+              className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              Notification Settings
+            </p>
+            <p
+              className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+            >
               Manage your notifications
             </p>
           </button>
 
-          <button className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}>
-            <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Privacy Settings</p>
-            <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Control your privacy</p>
+          <button
+            className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}
+          >
+            <p
+              className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              Privacy Settings
+            </p>
+            <p
+              className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+            >
+              Control your privacy
+            </p>
           </button>
 
           <button
@@ -583,19 +741,33 @@ export default function MobileProfile() {
             className={`w-full px-4 py-3 rounded-xl transition-colors border text-left flex items-center justify-between ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}
           >
             <div>
-              <p className={`font-semibold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+              <p
+                className={`font-semibold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+              >
                 {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
                 Theme
               </p>
-              <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+              <p
+                className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+              >
                 {theme === "light" ? "Light mode" : "Dark mode"}
               </p>
             </div>
           </button>
 
-          <button className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}>
-            <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>About CoTrainr</p>
-            <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Version 1.0.0</p>
+          <button
+            className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}
+          >
+            <p
+              className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
+              About CoTrainr
+            </p>
+            <p
+              className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+            >
+              Version 1.0.0
+            </p>
           </button>
         </div>
       </div>
@@ -607,8 +779,15 @@ export default function MobileProfile() {
           className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-red-900/30 hover:bg-red-900/40 border-red-800" : "bg-red-50 hover:bg-red-100 border-red-200"}`}
         >
           <div className="flex items-center gap-2">
-            <LogOut size={20} className={`${theme === "dark" ? "text-red-400" : "text-red-600"}`} />
-            <p className={`font-semibold ${theme === "dark" ? "text-red-400" : "text-red-600"}`}>Logout</p>
+            <LogOut
+              size={20}
+              className={`${theme === "dark" ? "text-red-400" : "text-red-600"}`}
+            />
+            <p
+              className={`font-semibold ${theme === "dark" ? "text-red-400" : "text-red-600"}`}
+            >
+              Logout
+            </p>
           </div>
         </button>
       </div>

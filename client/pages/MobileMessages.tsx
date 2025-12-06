@@ -35,9 +35,13 @@ export default function MobileMessages() {
 
   if (selectedConversation) {
     return (
-      <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
+      <div
+        className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}
+      >
         {/* Header */}
-        <div className={`backdrop-blur-md border-b px-4 py-3 flex items-center gap-3 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
+        <div
+          className={`backdrop-blur-md border-b px-4 py-3 flex items-center gap-3 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}
+        >
           <button
             onClick={() => setSelectedConversation(null)}
             className="text-orange-600 font-semibold"
@@ -45,11 +49,17 @@ export default function MobileMessages() {
             <ArrowLeft size={24} />
           </button>
           <div>
-            <h2 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            <h2
+              className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+            >
               {selectedConversation.participant1?.username ||
                 selectedConversation.participant2?.username}
             </h2>
-            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Active now</p>
+            <p
+              className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+            >
+              Active now
+            </p>
           </div>
         </div>
 
@@ -65,8 +75,8 @@ export default function MobileMessages() {
                   message.sender_id === localStorage.getItem("userId")
                     ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-br-none"
                     : theme === "dark"
-                    ? "bg-gray-700 text-gray-100 rounded-bl-none"
-                    : "bg-white/80 text-gray-900 rounded-bl-none border border-purple-200/30"
+                      ? "bg-gray-700 text-gray-100 rounded-bl-none"
+                      : "bg-white/80 text-gray-900 rounded-bl-none border border-purple-200/30"
                 }`}
               >
                 <p className="text-sm break-words">{message.text}</p>
@@ -81,7 +91,9 @@ export default function MobileMessages() {
         </div>
 
         {/* Message Input */}
-        <div className={`fixed bottom-0 left-0 right-0 backdrop-blur-md border-t px-4 py-3 safe-area-inset-bottom ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
+        <div
+          className={`fixed bottom-0 left-0 right-0 backdrop-blur-md border-t px-4 py-3 safe-area-inset-bottom ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}
+        >
           <form onSubmit={handleSendMessage} className="flex gap-2">
             <input
               type="text"
@@ -104,9 +116,13 @@ export default function MobileMessages() {
   }
 
   return (
-    <div className={`min-h-screen pb-20 ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
+    <div
+      className={`min-h-screen pb-20 ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}
+    >
       {/* Header */}
-      <div className={`sticky top-0 z-10 backdrop-blur-md border-b px-4 py-3 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
+      <div
+        className={`sticky top-0 z-10 backdrop-blur-md border-b px-4 py-3 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}
+      >
         <button
           onClick={() => navigate("/")}
           className={`flex items-center gap-2 font-semibold mb-4 ${theme === "dark" ? "text-purple-400 hover:text-purple-300" : "text-orange-600 hover:text-orange-700"}`}
@@ -114,13 +130,22 @@ export default function MobileMessages() {
           <ArrowLeft size={20} />
           Back
         </button>
-        <h1 className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Messages</h1>
+        <h1
+          className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+        >
+          Messages
+        </h1>
       </div>
 
       {/* Search */}
-      <div className={`px-4 py-4 backdrop-blur-md border-b ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
+      <div
+        className={`px-4 py-4 backdrop-blur-md border-b ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}
+      >
         <div className="relative">
-          <Search className={`absolute left-3 top-3 ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`} size={20} />
+          <Search
+            className={`absolute left-3 top-3 ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`}
+            size={20}
+          />
           <input
             type="text"
             placeholder="Search conversations..."
@@ -136,8 +161,14 @@ export default function MobileMessages() {
         </div>
       ) : conversations.length === 0 ? (
         <div className="px-4 py-12 text-center">
-          <p className={`text-lg ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>No conversations yet</p>
-          <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+          <p
+            className={`text-lg ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}
+          >
+            No conversations yet
+          </p>
+          <p
+            className={`text-sm mt-2 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+          >
             Start chatting with trainers
           </p>
         </div>
@@ -153,10 +184,16 @@ export default function MobileMessages() {
                 👤
               </div>
               <div className="flex-1 text-left">
-                <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+                <p
+                  className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}
+                >
                   {conv.participant1?.username || conv.participant2?.username}
                 </p>
-                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Click to open chat</p>
+                <p
+                  className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+                >
+                  Click to open chat
+                </p>
               </div>
               <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></div>
             </button>

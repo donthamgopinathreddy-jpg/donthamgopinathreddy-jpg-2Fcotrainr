@@ -470,7 +470,9 @@ export default function ClientHome() {
   ];
 
   return (
-    <div className={`w-full h-full flex flex-col relative overflow-hidden ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
+    <div
+      className={`w-full h-full flex flex-col relative overflow-hidden ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}
+    >
       {/* Mobile Container - max width for native feel (390px iPhone-like) */}
       <div className="w-full h-full flex flex-col relative">
         {/* Decorative background elements - contained properly */}
@@ -903,7 +905,9 @@ export default function ClientHome() {
       {showStepsModal && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-card rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-border/40">
-            <h2 className="text-lg font-bold text-foreground">Set Daily Goals</h2>
+            <h2 className="text-lg font-bold text-foreground">
+              Set Daily Goals
+            </h2>
             <div className="bg-muted/50 border border-border rounded-lg p-3">
               <p className="text-sm text-muted-foreground">
                 📊 Steps are automatically counted from your device sensors

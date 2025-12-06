@@ -277,9 +277,13 @@ export default function MobileDiscover() {
   };
 
   return (
-    <div className={`min-h-screen pb-24 ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
+    <div
+      className={`min-h-screen pb-24 ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}
+    >
       {/* Header */}
-      <div className={`sticky top-0 z-50 backdrop-blur-md border-b px-4 py-3 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
+      <div
+        className={`sticky top-0 z-50 backdrop-blur-md border-b px-4 py-3 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}
+      >
         <div className="flex items-center gap-3 mb-4">
           <button
             onClick={() => navigate("/")}
@@ -324,7 +328,9 @@ export default function MobileDiscover() {
       </div>
 
       {/* Search & Filter Bar */}
-      <div className={`sticky top-16 z-40 backdrop-blur-md border-b px-4 py-4 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
+      <div
+        className={`sticky top-16 z-40 backdrop-blur-md border-b px-4 py-4 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}
+      >
         <div className="flex gap-2 relative">
           {/* Search Input */}
           <div className="flex-1 relative">

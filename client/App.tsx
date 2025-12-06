@@ -81,7 +81,9 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useTheme();
 
   return (
-    <div className={`w-full h-screen text-foreground flex flex-col overflow-hidden ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
+    <div
+      className={`w-full h-screen text-foreground flex flex-col overflow-hidden ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}
+    >
       <div className="flex-1 overflow-auto w-full">{children}</div>
       <Navigation />
     </div>
