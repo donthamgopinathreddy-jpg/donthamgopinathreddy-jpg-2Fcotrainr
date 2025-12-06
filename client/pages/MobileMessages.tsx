@@ -79,7 +79,7 @@ export default function MobileMessages() {
         </div>
 
         {/* Message Input */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 safe-area-inset-bottom">
+        <div className={`fixed bottom-0 left-0 right-0 backdrop-blur-md border-t px-4 py-3 safe-area-inset-bottom ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
           <form onSubmit={handleSendMessage} className="flex gap-2">
             <input
               type="text"
