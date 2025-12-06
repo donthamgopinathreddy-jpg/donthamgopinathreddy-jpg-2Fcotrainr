@@ -384,11 +384,7 @@ export default function Feed() {
                               className="flex-1 min-w-0 text-left hover:opacity-80 transition-opacity"
                             >
                               <p
-                                className={`text-sm font-semibold truncate ${
-                                  theme === "light"
-                                    ? "text-gray-900"
-                                    : "text-white"
-                                }`}
+                                className="text-sm font-semibold truncate text-foreground"
                               >
                                 {user.full_name}
                               </p>
