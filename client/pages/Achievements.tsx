@@ -327,16 +327,12 @@ export default function Quests() {
                           {achievement.icon || "🏆"}
                         </div>
                         <h4
-                          className={`font-bold text-sm mb-1 ${
-                            theme === "dark" ? "text-white" : "text-gray-900"
-                          }`}
+                          className="font-bold text-sm mb-1 text-foreground"
                         >
                           {achievement.title}
                         </h4>
                         <p
-                          className={`text-xs mb-3 ${
-                            theme === "dark" ? "text-gray-400" : "text-gray-600"
-                          }`}
+                          className="text-xs mb-3 text-muted-foreground"
                         >
                           {achievement.description}
                         </p>
