@@ -100,21 +100,21 @@ export default function TrainerClientDetail() {
         <div className="mb-6">
           <h2 className="text-lg font-bold text-foreground mb-3">Body Metrics</h2>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <p className="text-xs text-gray-600 mb-1">Height</p>
-              <p className="text-xl font-bold text-gray-900">{client.height_cm} cm</p>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <p className="text-xs text-muted-foreground mb-1">Height</p>
+              <p className="text-xl font-bold text-foreground">{client.height_cm} cm</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <p className="text-xs text-gray-600 mb-1">Current Weight</p>
-              <p className="text-xl font-bold text-gray-900">{client.weight_kg} kg</p>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <p className="text-xs text-muted-foreground mb-1">Current Weight</p>
+              <p className="text-xl font-bold text-foreground">{client.weight_kg} kg</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <p className="text-xs text-gray-600 mb-1">BMI</p>
-              <p className="text-xl font-bold text-gray-900">{bmi}</p>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <p className="text-xs text-muted-foreground mb-1">BMI</p>
+              <p className="text-xl font-bold text-foreground">{bmi}</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <p className="text-xs text-gray-600 mb-1">Weight Change</p>
-              <p className={`text-xl font-bold ${client.current_stats.weight_progress_kg < 0 ? "text-green-600" : "text-gray-900"}`}>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <p className="text-xs text-muted-foreground mb-1">Weight Change</p>
+              <p className={`text-xl font-bold ${client.current_stats.weight_progress_kg < 0 ? "text-green-600" : "text-foreground"}`}>
                 {client.current_stats.weight_progress_kg > 0 ? "+" : ""}
                 {client.current_stats.weight_progress_kg} kg
               </p>
@@ -124,13 +124,13 @@ export default function TrainerClientDetail() {
 
         {/* Training Sessions */}
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">Training Activity</h2>
+          <h2 className="text-lg font-bold text-foreground mb-3">Training Activity</h2>
           <div className="space-y-3">
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-cyan-200 rounded-lg p-4 flex items-center gap-3">
               <Video className="w-6 h-6 text-cyan-600 flex-shrink-0" />
               <div className="flex-1">
-                <p className="text-sm font-semibold text-gray-900">Video Sessions</p>
-                <p className="text-xs text-gray-600">{client.video_session_count} completed</p>
+                <p className="text-sm font-semibold text-foreground">Video Sessions</p>
+                <p className="text-xs text-muted-foreground">{client.video_session_count} completed</p>
               </div>
               <p className="text-2xl font-bold text-cyan-600">{client.video_session_count}</p>
             </div>
@@ -138,8 +138,8 @@ export default function TrainerClientDetail() {
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
               <Calendar className="w-6 h-6 text-green-600 flex-shrink-0" />
               <div className="flex-1">
-                <p className="text-sm font-semibold text-gray-900">Booked Sessions</p>
-                <p className="text-xs text-gray-600">
+                <p className="text-sm font-semibold text-foreground">Booked Sessions</p>
+                <p className="text-xs text-muted-foreground">
                   {client.sessions_completed}/{client.total_sessions}
                 </p>
               </div>
@@ -151,8 +151,8 @@ export default function TrainerClientDetail() {
             <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4 flex items-center gap-3">
               <Utensils className="w-6 h-6 text-purple-600 flex-shrink-0" />
               <div className="flex-1">
-                <p className="text-sm font-semibold text-gray-900">Meal Logs</p>
-                <p className="text-xs text-gray-600">
+                <p className="text-sm font-semibold text-foreground">Meal Logs</p>
+                <p className="text-xs text-muted-foreground">
                   {client.meal_logs_this_week}/21 this week
                 </p>
               </div>
@@ -165,23 +165,23 @@ export default function TrainerClientDetail() {
 
         {/* Daily Averages */}
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">Weekly Averages</h2>
-          <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-3">
-            <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-              <p className="text-gray-700">Daily Calories</p>
-              <p className="font-bold text-gray-900">{client.current_stats.calories_avg_daily} cal</p>
+          <h2 className="text-lg font-bold text-foreground mb-3">Weekly Averages</h2>
+          <div className="bg-card border border-border rounded-lg p-4 space-y-3">
+            <div className="flex justify-between items-center pb-3 border-b border-border">
+              <p className="text-muted-foreground">Daily Calories</p>
+              <p className="font-bold text-foreground">{client.current_stats.calories_avg_daily} cal</p>
             </div>
-            <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-              <p className="text-gray-700">Daily Protein</p>
-              <p className="font-bold text-gray-900">{client.current_stats.protein_g_avg_daily}g</p>
+            <div className="flex justify-between items-center pb-3 border-b border-border">
+              <p className="text-muted-foreground">Daily Protein</p>
+              <p className="font-bold text-foreground">{client.current_stats.protein_g_avg_daily}g</p>
             </div>
-            <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-              <p className="text-gray-700">Workouts/Week</p>
-              <p className="font-bold text-gray-900">{client.current_stats.workout_frequency_weekly}x</p>
+            <div className="flex justify-between items-center pb-3 border-b border-border">
+              <p className="text-muted-foreground">Workouts/Week</p>
+              <p className="font-bold text-foreground">{client.current_stats.workout_frequency_weekly}x</p>
             </div>
             <div className="flex justify-between items-center">
-              <p className="text-gray-700">Avg Session Duration</p>
-              <p className="font-bold text-gray-900">{client.avg_session_duration_min} min</p>
+              <p className="text-muted-foreground">Avg Session Duration</p>
+              <p className="font-bold text-foreground">{client.avg_session_duration_min} min</p>
             </div>
           </div>
         </div>
@@ -189,7 +189,7 @@ export default function TrainerClientDetail() {
         {/* Trainer Notes */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold text-gray-900">Trainer Notes</h2>
+            <h2 className="text-lg font-bold text-foreground">Trainer Notes</h2>
             <button
               onClick={() => setIsEditingNotes(!isEditingNotes)}
               className="text-blue-600 hover:text-blue-700 transition-colors"
@@ -204,7 +204,7 @@ export default function TrainerClientDetail() {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Add your notes about this client..."
-                className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full bg-card border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-foreground"
                 rows={4}
               />
               <button
@@ -216,7 +216,7 @@ export default function TrainerClientDetail() {
             </div>
           ) : (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-gray-700 text-sm">{notes || "No notes yet. Click edit to add notes."}</p>
+              <p className="text-foreground text-sm">{notes || "No notes yet. Click edit to add notes."}</p>
             </div>
           )}
         </div>
