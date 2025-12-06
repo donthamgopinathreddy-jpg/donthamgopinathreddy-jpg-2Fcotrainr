@@ -134,8 +134,8 @@ export default function MobileMessages() {
         </div>
       ) : conversations.length === 0 ? (
         <div className="px-4 py-12 text-center">
-          <p className="text-gray-600 text-lg">No conversations yet</p>
-          <p className="text-gray-500 text-sm mt-2">
+          <p className={`text-lg ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>No conversations yet</p>
+          <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
             Start chatting with trainers
           </p>
         </div>
