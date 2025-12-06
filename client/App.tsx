@@ -81,7 +81,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="w-full h-screen bg-background text-foreground flex flex-col overflow-hidden">
-      <div className="flex-1 overflow-y-auto w-full">{children}</div>
+      <div className="flex-1 overflow-auto w-full">{children}</div>
       <Navigation />
     </div>
   );
