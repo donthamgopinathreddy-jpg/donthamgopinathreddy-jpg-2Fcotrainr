@@ -292,7 +292,7 @@ export default function MobileProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
+    <div className={`min-h-screen pb-20 ${theme === "dark" ? "bg-gradient-to-b from-gray-900 to-gray-800" : "bg-gradient-to-b from-gray-50 to-white"}`}>
       {/* Header with Back Button */}
       <div className="bg-white sticky top-0 z-40 border-b border-gray-200">
         <div className="px-4 py-3 flex items-center justify-between">
