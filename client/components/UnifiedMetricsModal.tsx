@@ -216,7 +216,7 @@ export default function UnifiedMetricsModal({
             {/* Edit Steps Target Card */}
             <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-4 border border-orange-200">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-900">
+                <h3 className="text-sm font-semibold text-foreground">
                   Daily Steps Goal
                 </h3>
                 <button
@@ -233,7 +233,7 @@ export default function UnifiedMetricsModal({
                     type="number"
                     value={editSteps}
                     onChange={(e) => setEditSteps(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-900"
+                    className="flex-1 px-3 py-2 border border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-foreground"
                     placeholder="Enter steps goal"
                   />
                   <button
@@ -244,7 +244,7 @@ export default function UnifiedMetricsModal({
                   </button>
                 </div>
               ) : (
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-foreground">
                   {targets.steps.toLocaleString()} steps
                 </p>
               )}
@@ -263,23 +263,23 @@ export default function UnifiedMetricsModal({
             ))}
 
             {/* Date Selector */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">
+            <div className="bg-card rounded-2xl p-6 border border-border">
+              <h3 className="text-sm font-semibold text-foreground mb-4">
                 Select Week
               </h3>
               <div className="flex items-center justify-between mb-4">
-                <button className="p-2 hover:bg-white rounded-lg transition-colors">
-                  <ChevronLeft size={20} className="text-gray-600" />
+                <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+                  <ChevronLeft size={20} className="text-muted-foreground" />
                 </button>
-                <span className="text-sm font-medium text-gray-900 min-w-[150px] text-center">
+                <span className="text-sm font-medium text-foreground min-w-[150px] text-center">
                   {selectedDate.toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
                     year: "numeric",
                   })}
                 </span>
-                <button className="p-2 hover:bg-white rounded-lg transition-colors">
-                  <ChevronRight size={20} className="text-gray-600" />
+                <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+                  <ChevronRight size={20} className="text-muted-foreground" />
                 </button>
               </div>
 
@@ -287,10 +287,10 @@ export default function UnifiedMetricsModal({
               <div className="grid grid-cols-7 gap-2">
                 {["S", "M", "T", "W", "T", "F", "S"].map((day, idx) => (
                   <div key={idx} className="text-center">
-                    <p className="text-xs font-medium text-gray-600 mb-2">
+                    <p className="text-xs font-medium text-muted-foreground mb-2">
                       {day}
                     </p>
-                    <button className="w-full aspect-square text-xs font-medium text-gray-600 hover:bg-white rounded-lg transition-colors">
+                    <button className="w-full aspect-square text-xs font-medium text-muted-foreground hover:bg-muted rounded-lg transition-colors">
                       {idx + 1}
                     </button>
                   </div>
