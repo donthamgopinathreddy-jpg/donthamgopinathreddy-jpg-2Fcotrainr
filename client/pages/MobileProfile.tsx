@@ -411,28 +411,28 @@ export default function MobileProfile() {
 
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-2 gap-2 mt-4">
-            <div className="bg-purple-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-purple-600">{bmi || "—"}</p>
-              <p className="text-xs text-gray-600">BMI</p>
-              <p className="text-xs text-gray-500">
+            <div className={`p-3 rounded-lg ${theme === "dark" ? "bg-purple-900/30" : "bg-purple-50"}`}>
+              <p className={`text-2xl font-bold ${theme === "dark" ? "text-purple-400" : "text-purple-600"}`}>{bmi || "—"}</p>
+              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>BMI</p>
+              <p className={`text-xs ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>
                 {getBMIStatus(bmi ? parseFloat(bmi) : null)}
               </p>
             </div>
-            <div className="bg-pink-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-pink-600">{stats.coins}</p>
-              <p className="text-xs text-gray-600">Coins</p>
+            <div className={`p-3 rounded-lg ${theme === "dark" ? "bg-pink-900/30" : "bg-pink-50"}`}>
+              <p className={`text-2xl font-bold ${theme === "dark" ? "text-pink-400" : "text-pink-600"}`}>{stats.coins}</p>
+              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Coins</p>
             </div>
-            <div className="bg-blue-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-blue-600">
+            <div className={`p-3 rounded-lg ${theme === "dark" ? "bg-blue-900/30" : "bg-blue-50"}`}>
+              <p className={`text-2xl font-bold ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}>
                 {userProfile?.height_cm || "—"}
               </p>
-              <p className="text-xs text-gray-600">Height (cm)</p>
+              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Height (cm)</p>
             </div>
-            <div className="bg-green-50 p-3 rounded-lg">
-              <p className="text-2xl font-bold text-green-600">
+            <div className={`p-3 rounded-lg ${theme === "dark" ? "bg-green-900/30" : "bg-green-50"}`}>
+              <p className={`text-2xl font-bold ${theme === "dark" ? "text-green-400" : "text-green-600"}`}>
                 {userProfile?.weight_kg || "—"}
               </p>
-              <p className="text-xs text-gray-600">Weight (kg)</p>
+              <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Weight (kg)</p>
             </div>
           </div>
         </div>
