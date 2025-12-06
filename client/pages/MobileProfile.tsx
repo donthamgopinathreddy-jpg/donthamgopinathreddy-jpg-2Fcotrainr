@@ -534,21 +534,21 @@ export default function MobileProfile() {
           </div>
 
           {/* Gender Card */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-            <p className="text-xs text-gray-500 mb-1">Gender</p>
-            <p className="text-sm font-semibold text-gray-900 capitalize">
+          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+            <p className={`text-xs mb-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Gender</p>
+            <p className={`text-sm font-semibold capitalize ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
               {userProfile?.gender || "Not specified"}
             </p>
           </div>
 
           {/* Bio Card */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex justify-between items-center">
+          <div className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <FileText size={16} className="text-blue-600" />
-                <p className="text-xs text-gray-500">Bio</p>
+                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Bio</p>
               </div>
-              <p className="text-sm text-gray-700">
+              <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
                 {userProfile?.bio || "Add a bio to your profile"}
               </p>
             </div>
