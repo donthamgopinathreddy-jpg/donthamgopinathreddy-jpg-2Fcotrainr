@@ -374,15 +374,15 @@ export default function MobileProfile() {
               </div>
 
               <div className="flex-1">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
                   {userProfile?.full_name || userProfile?.username}
                 </h2>
                 <div className="flex items-center gap-2 mt-1">
                   <span
                     className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                       userProfile?.role === "trainer"
-                        ? "bg-blue-100 text-blue-700"
-                        : "bg-purple-100 text-purple-700"
+                        ? theme === "dark" ? "bg-blue-900 text-blue-200" : "bg-blue-100 text-blue-700"
+                        : theme === "dark" ? "bg-purple-900 text-purple-200" : "bg-purple-100 text-purple-700"
                     }`}
                   >
                     {userProfile?.role === "trainer"
