@@ -11,6 +11,7 @@ import {
   Filter,
   ChevronDown,
 } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useTrainers } from "@/hooks/useTrainers";
 
 type DiscoverTab = "trainers" | "nutritionists" | "fitness_centers";
