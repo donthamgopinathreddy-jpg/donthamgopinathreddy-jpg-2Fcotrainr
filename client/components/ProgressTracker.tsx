@@ -47,9 +47,7 @@ export default function ProgressTracker() {
   return (
     <div className="space-y-4">
       <h3
-        className={`text-lg font-bold flex items-center gap-2 px-2 ${
-          theme === "dark" ? "text-white" : "text-gray-900"
-        }`}
+        className="text-lg font-bold flex items-center gap-2 px-2 text-foreground"
       >
         <Target className="w-5 h-5 text-orange-500" />
         Your Goals
@@ -58,27 +56,19 @@ export default function ProgressTracker() {
       {goals.map((goal) => (
         <div
           key={goal.id}
-          className={`rounded-2xl p-5 transition-all hover:shadow-md ${
-            theme === "dark"
-              ? "bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-orange-600/50"
-              : "bg-white border border-gray-200 hover:border-orange-400 hover:shadow-lg"
-          }`}
+          className={`rounded-2xl p-5 transition-all hover:shadow-md ${"bg-card border border-border hover:border-orange-400/50"}`}
         >
           {/* Header */}
           <div className="flex items-start justify-between mb-3">
             <div>
               <h4
-                className={`font-bold text-sm mb-1 ${
-                  theme === "dark" ? "text-white" : "text-gray-900"
-                }`}
+                className="font-bold text-sm mb-1 text-foreground"
               >
                 {goal.goal_name}
               </h4>
               {goal.description && (
                 <p
-                  className={`text-xs mb-2 ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-600"
-                  }`}
+                  className="text-xs mb-2 text-muted-foreground"
                 >
                   {goal.description}
                 </p>
@@ -89,9 +79,7 @@ export default function ProgressTracker() {
             {goal.trainer && (
               <div className="text-right">
                 <p
-                  className={`text-xs font-semibold ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-700"
-                  }`}
+                  className="text-xs font-semibold text-muted-foreground"
                 >
                   by {goal.trainer.full_name}
                 </p>
@@ -103,9 +91,7 @@ export default function ProgressTracker() {
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
               <span
-                className={`text-xs font-semibold ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`}
+                className="text-xs font-semibold text-muted-foreground"
               >
                 Progress
               </span>
