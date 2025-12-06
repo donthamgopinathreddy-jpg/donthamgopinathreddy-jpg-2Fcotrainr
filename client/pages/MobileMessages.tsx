@@ -120,11 +120,11 @@ export default function MobileMessages() {
       {/* Search */}
       <div className={`px-4 py-4 backdrop-blur-md border-b ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
         <div className="relative">
-          <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+          <Search className={`absolute left-3 top-3 ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`} size={20} />
           <input
             type="text"
             placeholder="Search conversations..."
-            className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
+            className={`w-full pl-10 pr-4 py-2 rounded-full border focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none ${theme === "dark" ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "bg-white/80 border-purple-200/30 text-gray-900 placeholder-gray-500"}`}
           />
         </div>
       </div>
