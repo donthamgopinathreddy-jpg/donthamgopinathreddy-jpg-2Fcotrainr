@@ -88,12 +88,12 @@ export default function MobileMessages() {
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
+              className={`flex-1 px-4 py-2 rounded-full border focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none ${theme === "dark" ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500" : "bg-white/80 border-purple-200/30 text-gray-900 placeholder-gray-500"}`}
             />
             <button
               type="submit"
               disabled={!messageText.trim()}
-              className="p-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white disabled:opacity-50 transition-colors"
+              className={`p-2 rounded-full text-white disabled:opacity-50 transition-colors ${theme === "dark" ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600" : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"}`}
             >
               <Send size={20} />
             </button>
