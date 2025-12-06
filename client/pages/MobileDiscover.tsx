@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, MapPin, Star, Heart, ArrowLeft, Loader, AlertCircle, X, Filter } from "lucide-react";
+import { Search, MapPin, Star, Heart, ArrowLeft, Loader, AlertCircle, Filter, ChevronDown } from "lucide-react";
 import { useTrainers } from "@/hooks/useTrainers";
 
 type DiscoverTab = "trainers" | "nutritionists" | "fitness_centers";
@@ -40,10 +40,8 @@ export default function MobileDiscover() {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locationPermissionDenied, setLocationPermissionDenied] = useState(false);
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
-  const [showFitnessDropdown, setShowFitnessDropdown] = useState(false);
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [sortBy, setSortBy] = useState<"rating" | "distance" | "name">("rating");
-  const [showSortDropdown, setShowSortDropdown] = useState(false);
 
   useEffect(() => {
     if (activeTab === "fitness_centers" && !userLocation && !locationPermissionDenied) {
@@ -227,41 +225,40 @@ export default function MobileDiscover() {
     }
   };
 
+  const getSortLabel = () => {
+    if (activeTab === "fitness_centers") {
+      return sortBy === "distance" ? "Nearby" : sortBy === "rating" ? "Top Rated" : "A-Z";
+    }
+    return sortBy === "rating" ? "Top Rated" : "A-Z";
+  };
+
+  const getCategoryLabel = () => {
+    if (activeTab === "trainers") {
+      return category || "All Categories";
+    } else if (activeTab === "fitness_centers") {
+      return selectedFitnessTypes.length > 0
+        ? `${selectedFitnessTypes.length} Selected`
+        : "All Categories";
+    }
+    return "All";
+  };
+
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}
       <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border px-4 py-3">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3 mb-4">
           <button
             onClick={() => navigate("/")}
             className="flex items-center gap-2 text-orange-600 font-semibold hover:opacity-80 transition"
           >
             <ArrowLeft size={20} />
           </button>
-          <h1 className="text-2xl font-black text-foreground">Discover</h1>
-          <div className="w-6" />
-        </div>
-
-        {/* Search Bar */}
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={
-              activeTab === "trainers"
-                ? "Search trainers..."
-                : activeTab === "nutritionists"
-                ? "Search nutritionists..."
-                : "Search fitness centers..."
-            }
-            className="w-full pl-10 pr-4 py-3 rounded-2xl border-2 border-border bg-card text-foreground focus:ring-2 focus:ring-orange-400 focus:border-transparent outline-none placeholder-muted-foreground transition font-medium"
-          />
+          <h1 className="text-2xl font-black text-foreground flex-1">Discover</h1>
         </div>
 
         {/* Tab Navigation - Underline Style */}
-        <div className="flex gap-4 -mx-4 px-4 overflow-x-auto pb-1 border-b border-border">
+        <div className="flex gap-4 overflow-x-auto pb-1 border-b border-border -mx-4 px-4">
           {[
             { id: "trainers", label: "Trainers", emoji: "💪" },
             { id: "nutritionists", label: "Nutritionists", emoji: "🥗" },
@@ -274,11 +271,10 @@ export default function MobileDiscover() {
                 setSearchQuery("");
                 setCategory("");
                 setSelectedFitnessTypes([]);
+                setShowFilterDropdown(false);
               }}
               className={`px-1 py-3 font-bold text-sm whitespace-nowrap transition-all relative ${
-                activeTab === tab.id
-                  ? "text-foreground"
-                  : "text-muted-foreground"
+                activeTab === tab.id ? "text-foreground" : "text-muted-foreground"
               }`}
             >
               {tab.emoji} {tab.label}
@@ -290,177 +286,167 @@ export default function MobileDiscover() {
         </div>
       </div>
 
-      {/* Category/Filter Section - Dropdown */}
-      {activeTab === "trainers" && (
-        <div className="sticky top-24 z-40 bg-background border-b border-border px-4 py-3">
-          <div className="flex items-center gap-2">
-            {/* Category Filter */}
-            <button
-              onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-              className="flex items-center gap-2 py-2 hover:opacity-80 transition flex-1"
-            >
-              <Filter size={18} className="text-orange-500" />
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                {category || "All Categories"}
-              </p>
-            </button>
-
-            {/* Sort Filter */}
-            <button
-              onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className="flex items-center gap-1 py-2 px-3 rounded-lg bg-muted hover:bg-muted/80 transition"
-              title="Sort options"
-            >
-              <Filter size={16} className="text-muted-foreground" />
-              <p className="text-xs font-bold text-muted-foreground uppercase">
-                {sortBy === "rating" ? "Rating" : sortBy === "name" ? "A-Z" : "Sort"}
-              </p>
-            </button>
+      {/* Search & Filter Bar */}
+      <div className="sticky top-16 z-40 bg-background border-b border-border px-4 py-4">
+        <div className="flex gap-2 relative">
+          {/* Search Input */}
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={
+                activeTab === "trainers"
+                  ? "Search trainers..."
+                  : activeTab === "nutritionists"
+                  ? "Search nutritionists..."
+                  : "Search fitness centers..."
+              }
+              className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-border bg-card text-foreground focus:ring-2 focus:ring-orange-400 focus:border-transparent outline-none placeholder-muted-foreground transition font-medium text-sm"
+            />
           </div>
 
-          {/* Category Dropdown Menu */}
-          {showCategoryDropdown && (
-            <div className="absolute top-20 left-4 right-20 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2" onClick={(e) => e.stopPropagation()}>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  "All",
-                  "Gym",
-                  "Yoga",
-                  "Boxing",
-                  "Zumba",
-                  "Nutrition",
-                ].map((cat) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => {
-                      setCategory(cat === "All" ? "" : cat);
-                      setShowCategoryDropdown(false);
-                    }}
-                    className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
-                      (cat === "All" && category === "") || category === cat
-                        ? "bg-orange-500 text-white"
-                        : "bg-muted text-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Sort Dropdown Menu */}
-          {showSortDropdown && (
-            <div className="absolute top-20 right-4 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2 min-w-[180px]" onClick={(e) => e.stopPropagation()}>
-              <div className="space-y-2">
-                {[
-                  { id: "rating", label: "⭐ Highest Rated" },
-                  { id: "name", label: "A-Z Name" },
-                ].map((sort) => (
-                  <button
-                    key={sort.id}
-                    type="button"
-                    onClick={() => {
-                      setSortBy(sort.id as any);
-                      setShowSortDropdown(false);
-                    }}
-                    className={`w-full text-left px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
-                      sortBy === sort.id
-                        ? "bg-orange-500 text-white"
-                        : "bg-muted text-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    {sort.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Filter Button */}
+          <button
+            onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+            className="px-4 py-3 rounded-xl bg-muted hover:bg-muted/80 transition flex items-center gap-2 font-semibold text-sm text-foreground border-2 border-transparent hover:border-border"
+          >
+            <Filter size={18} />
+            <ChevronDown
+              size={16}
+              className={`transition-transform ${showFilterDropdown ? "rotate-180" : ""}`}
+            />
+          </button>
         </div>
-      )}
 
-      {activeTab === "fitness_centers" && (
-        <div className="bg-background border-b border-border px-4 py-3">
-          <div className="flex items-center gap-2">
-            {/* Category Filter */}
-            <button
-              onClick={() => setShowFitnessDropdown(!showFitnessDropdown)}
-              className="flex items-center gap-2 py-2 hover:opacity-80 transition flex-1"
-            >
-              <Filter size={18} className="text-orange-500" />
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                {selectedFitnessTypes.length > 0
-                  ? `${selectedFitnessTypes.length} Selected`
-                  : "All Categories"}
-              </p>
-            </button>
+        {/* Professional Filter Dropdown */}
+        {showFilterDropdown && (
+          <div className="absolute top-20 left-4 right-4 bg-card border-2 border-border rounded-2xl shadow-2xl z-50 mt-2 overflow-hidden">
+            {/* Filter Header */}
+            <div className="px-6 py-4 border-b border-border bg-muted/30">
+              <h3 className="font-bold text-foreground text-sm">Filters & Sort</h3>
+            </div>
 
-            {/* Sort Filter */}
-            <button
-              onClick={() => setShowSortDropdown(!showSortDropdown)}
-              className="flex items-center gap-1 py-2 px-3 rounded-lg bg-muted hover:bg-muted/80 transition"
-              title="Sort options"
-            >
-              <Filter size={16} className="text-muted-foreground" />
-              <p className="text-xs font-bold text-muted-foreground uppercase">
-                {sortBy === "distance" ? "Nearby" : sortBy === "rating" ? "Rating" : "Sort"}
-              </p>
-            </button>
+            {/* Filter Content */}
+            <div className="p-6 space-y-6">
+              {/* Categories Filter */}
+              <div>
+                <h4 className="font-bold text-foreground text-sm mb-3 flex items-center gap-2">
+                  <span className="w-1 h-4 bg-orange-500 rounded" />
+                  {activeTab === "trainers" ? "Specialties" : "Categories"}
+                </h4>
+                <div className={`grid gap-2 ${activeTab === "trainers" ? "grid-cols-2" : "grid-cols-2"}`}>
+                  {activeTab === "trainers" && (
+                    <>
+                      {["All", "Gym", "Yoga", "Boxing", "Zumba", "Nutrition"].map((cat) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => setCategory(cat === "All" ? "" : cat)}
+                          className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                            (cat === "All" && category === "") || category === cat
+                              ? "bg-orange-500 text-white"
+                              : "bg-muted text-foreground hover:bg-muted/80"
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </>
+                  )}
+                  {activeTab === "fitness_centers" && (
+                    <>
+                      {fitnessCategories.map((cat) => (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => toggleFitnessType(cat.type)}
+                          className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
+                            selectedFitnessTypes.includes(cat.type)
+                              ? "bg-orange-500 text-white"
+                              : "bg-muted text-foreground hover:bg-muted/80"
+                          }`}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Sort Filter */}
+              <div className="border-t border-border pt-6">
+                <h4 className="font-bold text-foreground text-sm mb-3 flex items-center gap-2">
+                  <span className="w-1 h-4 bg-orange-500 rounded" />
+                  Sort By
+                </h4>
+                <div className="space-y-2">
+                  {activeTab === "fitness_centers" && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSortBy("distance");
+                        setShowFilterDropdown(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 rounded-lg font-semibold text-sm transition-all ${
+                        sortBy === "distance"
+                          ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border border-orange-400"
+                          : "bg-muted text-foreground hover:bg-muted/80"
+                      }`}
+                    >
+                      📍 Nearby
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSortBy("rating");
+                      setShowFilterDropdown(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 rounded-lg font-semibold text-sm transition-all ${
+                      sortBy === "rating"
+                        ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border border-orange-400"
+                        : "bg-muted text-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    ⭐ Top Rated
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSortBy("name");
+                      setShowFilterDropdown(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 rounded-lg font-semibold text-sm transition-all ${
+                      sortBy === "name"
+                        ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 border border-orange-400"
+                        : "bg-muted text-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    A-Z Name
+                  </button>
+                </div>
+              </div>
+
+              {/* Clear Filters Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setCategory("");
+                  setSelectedFitnessTypes([]);
+                  setSortBy("rating");
+                  setShowFilterDropdown(false);
+                }}
+                className="w-full py-3 text-sm font-semibold text-muted-foreground hover:text-foreground transition border border-border rounded-lg"
+              >
+                Reset All Filters
+              </button>
+            </div>
           </div>
-
-          {/* Category Dropdown Menu */}
-          {showFitnessDropdown && (
-            <div className="absolute top-20 left-4 right-20 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2" onClick={(e) => e.stopPropagation()}>
-              <div className="grid grid-cols-2 gap-2">
-                {fitnessCategories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => toggleFitnessType(cat.type)}
-                    className={`px-3 py-3 rounded-lg font-semibold text-sm transition-all ${
-                      selectedFitnessTypes.includes(cat.type)
-                        ? "bg-orange-500 text-white shadow-lg"
-                        : "bg-muted text-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Sort Dropdown Menu */}
-          {showSortDropdown && (
-            <div className="absolute top-20 right-4 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2 min-w-[180px]" onClick={(e) => e.stopPropagation()}>
-              <div className="space-y-2">
-                {[
-                  { id: "distance", label: "📍 Nearby" },
-                  { id: "rating", label: "⭐ Highest Rated" },
-                  { id: "name", label: "A-Z Name" },
-                ].map((sort) => (
-                  <button
-                    key={sort.id}
-                    type="button"
-                    onClick={() => {
-                      setSortBy(sort.id as any);
-                      setShowSortDropdown(false);
-                    }}
-                    className={`w-full text-left px-4 py-2 rounded-lg font-semibold text-sm transition-all ${
-                      sortBy === sort.id
-                        ? "bg-orange-500 text-white"
-                        : "bg-muted text-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    {sort.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Content */}
       <div className="px-4 py-6">
@@ -484,7 +470,6 @@ export default function MobileDiscover() {
                     key={trainer.id}
                     className="group bg-card rounded-3xl overflow-hidden border-2 border-border hover:border-orange-400 transition-all"
                   >
-                    {/* Trainer Card Header with Gradient */}
                     <div className="h-24 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 flex items-end justify-between p-4 relative">
                       <div className="absolute -bottom-8 left-4 w-16 h-16 rounded-full bg-gradient-to-br from-orange-300 to-orange-600 border-4 border-card flex items-center justify-center text-3xl font-bold text-white">
                         {trainer.users?.username?.charAt(0).toUpperCase() || "T"}
@@ -494,7 +479,6 @@ export default function MobileDiscover() {
                       </button>
                     </div>
 
-                    {/* Trainer Info */}
                     <div className="p-4 pt-10">
                       <h3 className="font-bold text-lg text-foreground mb-1">
                         {trainer.users?.username || "Trainer"}
@@ -503,7 +487,6 @@ export default function MobileDiscover() {
                         {trainer.categories?.join(", ") || "Fitness"}
                       </p>
 
-                      {/* Stats */}
                       <div className="flex items-center gap-4 mb-4">
                         <div className="flex items-center gap-1">
                           <Star size={16} className="text-yellow-500" fill="currentColor" />
@@ -517,7 +500,6 @@ export default function MobileDiscover() {
                         </div>
                       </div>
 
-                      {/* CTA Button */}
                       <button className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-2xl transition-all active:scale-95 shadow-lg">
                         Book Now
                       </button>
@@ -581,7 +563,6 @@ export default function MobileDiscover() {
                     onClick={() => openInMaps(location)}
                     className="text-left bg-card rounded-3xl overflow-hidden border-2 border-border hover:border-orange-400 transition-all group active:scale-95"
                   >
-                    {/* Location Card Header */}
                     <div className="h-20 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 flex items-center justify-between p-4 relative">
                       <div className="absolute -bottom-6 left-4 w-12 h-12 rounded-full bg-gradient-to-br from-orange-300 to-orange-600 border-4 border-card flex items-center justify-center text-2xl">
                         {location.icon}
@@ -598,7 +579,6 @@ export default function MobileDiscover() {
                       </div>
                     </div>
 
-                    {/* Location Info */}
                     <div className="p-4 pt-8">
                       <h3 className="font-bold text-lg text-foreground mb-1">
                         {location.name}
