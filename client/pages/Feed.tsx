@@ -466,11 +466,7 @@ export default function Feed() {
                                     }`}
                                   >
                                     <p
-                                      className={`text-xs font-semibold ${
-                                        theme === "light"
-                                          ? "text-gray-900"
-                                          : "text-white"
-                                      }`}
+                                      className="text-xs font-semibold text-foreground"
                                     >
                                       {formatDate(post.created_at)}
                                     </p>
