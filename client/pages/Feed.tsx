@@ -408,9 +408,7 @@ export default function Feed() {
                             disabled={isTogglingId === user.id}
                             className={`ml-2 flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-colors whitespace-nowrap disabled:opacity-50 flex-shrink-0 ${
                               isFollowing(user.id)
-                                ? theme === "light"
-                                  ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                                  : "bg-gray-600 text-white hover:bg-gray-500"
+                                ? "bg-muted text-foreground hover:bg-muted/80"
                                 : "bg-primary text-primary-foreground hover:opacity-90"
                             }`}
                           >
