@@ -320,7 +320,7 @@ export default function MobileDiscover() {
 
           {/* Category Dropdown Menu */}
           {showCategoryDropdown && (
-            <div className="absolute top-20 left-4 right-20 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2">
+            <div className="absolute top-20 left-4 right-20 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2" onClick={(e) => e.stopPropagation()}>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   "All",
@@ -332,6 +332,7 @@ export default function MobileDiscover() {
                 ].map((cat) => (
                   <button
                     key={cat}
+                    type="button"
                     onClick={() => {
                       setCategory(cat === "All" ? "" : cat);
                       setShowCategoryDropdown(false);
@@ -351,7 +352,7 @@ export default function MobileDiscover() {
 
           {/* Sort Dropdown Menu */}
           {showSortDropdown && (
-            <div className="absolute top-20 right-4 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2 min-w-[180px]">
+            <div className="absolute top-20 right-4 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2 min-w-[180px]" onClick={(e) => e.stopPropagation()}>
               <div className="space-y-2">
                 {[
                   { id: "rating", label: "⭐ Highest Rated" },
@@ -359,6 +360,7 @@ export default function MobileDiscover() {
                 ].map((sort) => (
                   <button
                     key={sort.id}
+                    type="button"
                     onClick={() => {
                       setSortBy(sort.id as any);
                       setShowSortDropdown(false);
@@ -409,11 +411,12 @@ export default function MobileDiscover() {
 
           {/* Category Dropdown Menu */}
           {showFitnessDropdown && (
-            <div className="absolute top-20 left-4 right-20 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2">
+            <div className="absolute top-20 left-4 right-20 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2" onClick={(e) => e.stopPropagation()}>
               <div className="grid grid-cols-2 gap-2">
                 {fitnessCategories.map((cat) => (
                   <button
                     key={cat.id}
+                    type="button"
                     onClick={() => toggleFitnessType(cat.type)}
                     className={`px-3 py-3 rounded-lg font-semibold text-sm transition-all ${
                       selectedFitnessTypes.includes(cat.type)
@@ -430,7 +433,7 @@ export default function MobileDiscover() {
 
           {/* Sort Dropdown Menu */}
           {showSortDropdown && (
-            <div className="absolute top-20 right-4 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2 min-w-[180px]">
+            <div className="absolute top-20 right-4 bg-card border-2 border-border rounded-2xl shadow-lg z-50 p-4 mt-2 min-w-[180px]" onClick={(e) => e.stopPropagation()}>
               <div className="space-y-2">
                 {[
                   { id: "distance", label: "📍 Nearby" },
@@ -439,6 +442,7 @@ export default function MobileDiscover() {
                 ].map((sort) => (
                   <button
                     key={sort.id}
+                    type="button"
                     onClick={() => {
                       setSortBy(sort.id as any);
                       setShowSortDropdown(false);
