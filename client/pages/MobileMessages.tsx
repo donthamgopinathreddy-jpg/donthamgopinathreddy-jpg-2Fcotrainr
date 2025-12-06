@@ -112,11 +112,11 @@ export default function MobileMessages() {
           <ArrowLeft size={20} />
           Back
         </button>
-        <h1 className="text-2xl font-bold text-gray-900">Messages</h1>
+        <h1 className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Messages</h1>
       </div>
 
       {/* Search */}
-      <div className="px-4 py-4 bg-white border-b border-gray-200">
+      <div className={`px-4 py-4 backdrop-blur-md border-b ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
         <div className="relative">
           <Search className="absolute left-3 top-3 text-gray-400" size={20} />
           <input
