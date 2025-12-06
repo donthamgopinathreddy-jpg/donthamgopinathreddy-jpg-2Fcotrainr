@@ -578,6 +578,21 @@ export default function MobileProfile() {
             <p className="text-xs text-gray-500 mt-1">Control your privacy</p>
           </button>
 
+          <button
+            onClick={toggleTheme}
+            className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left flex items-center justify-between"
+          >
+            <div>
+              <p className="font-semibold text-gray-900 flex items-center gap-2">
+                {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
+                Theme
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                {theme === "light" ? "Light mode" : "Dark mode"}
+              </p>
+            </div>
+          </button>
+
           <button className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left">
             <p className="font-semibold text-gray-900">About CoTrainr</p>
             <p className="text-xs text-gray-500 mt-1">Version 1.0.0</p>
