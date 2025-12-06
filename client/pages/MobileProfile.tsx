@@ -15,9 +15,12 @@ import {
   Camera,
   Save,
   X,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 
