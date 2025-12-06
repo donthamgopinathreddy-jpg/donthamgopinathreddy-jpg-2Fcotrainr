@@ -29,7 +29,7 @@ export default function MobileDiscover() {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-10">
+      <div className="bg-background border-b border-border px-4 py-3 sticky top-0 z-10">
         <button
           onClick={() => navigate("/")}
           className="flex items-center gap-2 text-orange-600 font-semibold mb-4"
@@ -37,11 +37,11 @@ export default function MobileDiscover() {
           <ArrowLeft size={20} />
           Back
         </button>
-        <h1 className="text-2xl font-bold text-gray-900">Find Trainers</h1>
+        <h1 className="text-2xl font-bold text-foreground">Find Trainers</h1>
       </div>
 
       {/* Search Bar */}
-      <div className="px-4 py-4 bg-white border-b border-gray-200">
+      <div className="px-4 py-4 bg-background border-b border-border">
         <div className="relative">
           <Search className="absolute left-3 top-3 text-gray-400" size={20} />
           <input
@@ -55,14 +55,14 @@ export default function MobileDiscover() {
       </div>
 
       {/* Category Filter */}
-      <div className="px-4 py-4 bg-white overflow-x-auto">
+      <div className="px-4 py-4 bg-background overflow-x-auto">
         <div className="flex gap-2 pb-2">
           <button
             onClick={() => setCategory("")}
             className={`px-4 py-2 rounded-full font-semibold whitespace-nowrap transition-all ${
               category === ""
                 ? "bg-orange-500 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                : "bg-muted text-foreground hover:bg-muted/80"
             }`}
           >
             All
@@ -74,7 +74,7 @@ export default function MobileDiscover() {
               className={`px-4 py-2 rounded-full font-semibold whitespace-nowrap capitalize transition-all ${
                 category === cat
                   ? "bg-orange-500 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  : "bg-muted text-foreground hover:bg-muted/80"
               }`}
             >
               {cat}
@@ -98,7 +98,7 @@ export default function MobileDiscover() {
           {filteredTrainers.map((trainer) => (
             <div
               key={trainer.id}
-              className="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-all"
+              className="bg-card rounded-2xl p-4 shadow-sm hover:shadow-md transition-all border border-border"
             >
               <div className="flex gap-4">
                 {/* Avatar */}
@@ -110,10 +110,10 @@ export default function MobileDiscover() {
                 <div className="flex-1">
                   <div className="flex justify-between items-start mb-2">
                     <div>
-                      <h3 className="font-bold text-gray-900">
+                      <h3 className="font-bold text-foreground">
                         {trainer.users?.username || "Trainer"}
                       </h3>
-                      <p className="text-xs text-gray-500 capitalize">
+                      <p className="text-xs text-muted-foreground capitalize">
                         {trainer.categories?.join(", ") || "Fitness"}
                       </p>
                     </div>
@@ -129,11 +129,11 @@ export default function MobileDiscover() {
                         className="text-yellow-500"
                         fill="currentColor"
                       />
-                      <span className="text-sm font-semibold text-gray-900">
+                      <span className="text-sm font-semibold text-foreground">
                         {trainer.rating?.toFixed(1) || "4.5"}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 text-gray-600">
+                    <div className="flex items-center gap-1 text-muted-foreground">
                       <MapPin size={16} />
                       <span className="text-sm">
                         {trainer.years_experience || 5}y exp
