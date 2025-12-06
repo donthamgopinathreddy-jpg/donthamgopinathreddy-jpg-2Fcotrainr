@@ -14,7 +14,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider, useAuth, AuthContext } from "@/contexts/AuthContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
 import Onboarding from "./pages/Onboarding";
 import Login from "./pages/Login";
 import PremiumSignup from "./pages/PremiumSignup";
