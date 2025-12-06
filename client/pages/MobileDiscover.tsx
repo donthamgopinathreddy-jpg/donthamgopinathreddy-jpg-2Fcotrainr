@@ -277,9 +277,9 @@ export default function MobileDiscover() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className={`min-h-screen pb-24 ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border px-4 py-3">
+      <div className={`sticky top-0 z-50 backdrop-blur-md border-b px-4 py-3 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
         <div className="flex items-center gap-3 mb-4">
           <button
             onClick={() => navigate("/")}
