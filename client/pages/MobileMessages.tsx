@@ -63,7 +63,7 @@ export default function MobileMessages() {
               <div
                 className={`max-w-xs px-4 py-2 rounded-2xl ${
                   message.sender_id === localStorage.getItem("userId")
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-none"
+                    ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-br-none"
                     : theme === "dark"
                     ? "bg-gray-700 text-gray-100 rounded-bl-none"
                     : "bg-white/80 text-gray-900 rounded-bl-none border border-purple-200/30"
@@ -71,7 +71,7 @@ export default function MobileMessages() {
               >
                 <p className="text-sm break-words">{message.text}</p>
                 <p
-                  className={`text-xs mt-1 ${message.sender_id === localStorage.getItem("userId") ? "text-purple-100" : theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
+                  className={`text-xs mt-1 ${message.sender_id === localStorage.getItem("userId") ? "text-orange-100" : theme === "dark" ? "text-gray-400" : "text-gray-500"}`}
                 >
                   {new Date(message.created_at).toLocaleTimeString()}
                 </p>
