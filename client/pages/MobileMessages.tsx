@@ -45,11 +45,11 @@ export default function MobileMessages() {
             <ArrowLeft size={24} />
           </button>
           <div>
-            <h2 className="font-bold text-gray-900">
+            <h2 className={`font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
               {selectedConversation.participant1?.username ||
                 selectedConversation.participant2?.username}
             </h2>
-            <p className="text-xs text-gray-500">Active now</p>
+            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Active now</p>
           </div>
         </div>
 
