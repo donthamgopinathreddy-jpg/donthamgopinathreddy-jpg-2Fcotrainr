@@ -292,7 +292,7 @@ export default function MobileProfile() {
   };
 
   return (
-    <div className={`min-h-screen pb-20 ${theme === "dark" ? "bg-gradient-to-b from-gray-900 to-gray-800" : "bg-gradient-to-b from-gray-50 to-white"}`}>
+    <div className={`min-h-screen pb-20 ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
       {/* Header with Back Button */}
       <div className={`sticky top-0 z-40 border-b ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}`}>
         <div className="px-4 py-3 flex items-center justify-between">
