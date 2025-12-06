@@ -440,36 +440,36 @@ export default function MobileProfile() {
 
       {/* Stats Section */}
       <div className="px-4 mb-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-3">Activity</h3>
+        <h3 className={`text-lg font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Activity</h3>
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
             <Heart className="text-red-500 mx-auto mb-2" size={28} />
-            <p className="text-2xl font-bold text-gray-900">
+            <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
               {stats.followers || 0}
             </p>
-            <p className="text-xs text-gray-600">Followers</p>
+            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Followers</p>
           </div>
 
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
             <TrendingUp className="text-green-500 mx-auto mb-2" size={28} />
-            <p className="text-2xl font-bold text-gray-900">
+            <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
               {stats.following || 0}
             </p>
-            <p className="text-xs text-gray-600">Following</p>
+            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Following</p>
           </div>
 
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
             <Award className="text-yellow-500 mx-auto mb-2" size={28} />
-            <p className="text-2xl font-bold text-gray-900">
+            <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
               {stats.achievements || 0}
             </p>
-            <p className="text-xs text-gray-600">Achievements</p>
+            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Achievements</p>
           </div>
 
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div className={`rounded-2xl p-4 shadow-sm border ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
             <Zap className="text-orange-500 mx-auto mb-2" size={28} />
-            <p className="text-2xl font-bold text-gray-900">0</p>
-            <p className="text-xs text-gray-600">Streak Days</p>
+            <p className={`text-2xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>0</p>
+            <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>Streak Days</p>
           </div>
         </div>
       </div>
