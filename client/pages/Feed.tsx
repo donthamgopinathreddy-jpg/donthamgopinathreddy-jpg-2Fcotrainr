@@ -289,7 +289,7 @@ export default function Feed() {
           }`}
         >
           <h1
-            className={`text-3xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}
+            className="text-3xl font-bold text-foreground"
           >
             Community Feed
           </h1>
@@ -304,8 +304,8 @@ export default function Feed() {
             onClick={() => setShowSearch(!showSearch)}
             className={`mt-4 w-full flex items-center gap-2 px-4 py-2 rounded-lg border transition-all ${
               theme === "light"
-                ? "bg-gray-50 border-gray-300 hover:bg-gray-100 text-gray-900"
-                : "bg-gray-800 border-gray-700 hover:bg-gray-700 text-white"
+                ? "bg-gray-50 border-gray-300 hover:bg-gray-100 text-foreground"
+                : "bg-card border-border hover:bg-card/80 text-foreground"
             }`}
           >
             <SearchIcon className="w-4 h-4" />
@@ -329,8 +329,8 @@ export default function Feed() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className={`w-full px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary ${
                 theme === "light"
-                  ? "bg-white border-gray-300 text-gray-900 placeholder-gray-400"
-                  : "bg-gray-700 border-gray-600 text-white placeholder-gray-500"
+                  ? "bg-white border-gray-300 text-foreground placeholder-muted-foreground"
+                  : "bg-card border-border text-foreground placeholder-muted-foreground"
               }`}
             />
 
@@ -370,8 +370,8 @@ export default function Feed() {
                               }}
                               className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs hover:opacity-80 transition-opacity ${
                                 theme === "light"
-                                  ? "bg-gray-300 text-gray-700"
-                                  : "bg-gray-600 text-white"
+                                  ? "bg-muted text-foreground"
+                                  : "bg-card border border-border text-foreground"
                               }`}
                             >
                               {user.full_name.charAt(0)}
