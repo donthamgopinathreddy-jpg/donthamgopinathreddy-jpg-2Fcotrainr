@@ -564,38 +564,38 @@ export default function MobileProfile() {
 
       {/* Settings Section */}
       <div className="px-4 mb-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-3">Settings</h3>
+        <h3 className={`text-lg font-bold mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Settings</h3>
         <div className="space-y-2">
-          <button className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left">
-            <p className="font-semibold text-gray-900">Notification Settings</p>
-            <p className="text-xs text-gray-500 mt-1">
+          <button className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}>
+            <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Notification Settings</p>
+            <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
               Manage your notifications
             </p>
           </button>
 
-          <button className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left">
-            <p className="font-semibold text-gray-900">Privacy Settings</p>
-            <p className="text-xs text-gray-500 mt-1">Control your privacy</p>
+          <button className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}>
+            <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Privacy Settings</p>
+            <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Control your privacy</p>
           </button>
 
           <button
             onClick={toggleTheme}
-            className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left flex items-center justify-between"
+            className={`w-full px-4 py-3 rounded-xl transition-colors border text-left flex items-center justify-between ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}
           >
             <div>
-              <p className="font-semibold text-gray-900 flex items-center gap-2">
+              <p className={`font-semibold flex items-center gap-2 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
                 {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
                 Theme
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
                 {theme === "light" ? "Light mode" : "Dark mode"}
               </p>
             </div>
           </button>
 
-          <button className="w-full px-4 py-3 bg-white rounded-xl hover:bg-gray-50 transition-colors border border-gray-200 text-left">
-            <p className="font-semibold text-gray-900">About CoTrainr</p>
-            <p className="text-xs text-gray-500 mt-1">Version 1.0.0</p>
+          <button className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-gray-800 hover:bg-gray-700 border-gray-700" : "bg-white hover:bg-gray-50 border-gray-200"}`}>
+            <p className={`font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>About CoTrainr</p>
+            <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Version 1.0.0</p>
           </button>
         </div>
       </div>
@@ -604,11 +604,11 @@ export default function MobileProfile() {
       <div className="px-4">
         <button
           onClick={handleLogout}
-          className="w-full px-4 py-3 bg-red-50 hover:bg-red-100 rounded-xl transition-colors border border-red-200 text-left"
+          className={`w-full px-4 py-3 rounded-xl transition-colors border text-left ${theme === "dark" ? "bg-red-900/30 hover:bg-red-900/40 border-red-800" : "bg-red-50 hover:bg-red-100 border-red-200"}`}
         >
           <div className="flex items-center gap-2">
-            <LogOut size={20} className="text-red-600" />
-            <p className="font-semibold text-red-600">Logout</p>
+            <LogOut size={20} className={`${theme === "dark" ? "text-red-400" : "text-red-600"}`} />
+            <p className={`font-semibold ${theme === "dark" ? "text-red-400" : "text-red-600"}`}>Logout</p>
           </div>
         </button>
       </div>
