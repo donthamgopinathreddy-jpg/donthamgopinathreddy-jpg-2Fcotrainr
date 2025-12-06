@@ -140,7 +140,7 @@ export default function Quests() {
                 id: "competitions" as const,
                 label: "Competitions",
                 icon: "⚡",
-                color: "from-purple-500 to-pink-500",
+                color: "from-orange-500 to-yellow-500",
               },
               {
                 id: "achievements" as const,
