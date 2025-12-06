@@ -93,7 +93,7 @@ export default function MobileMessages() {
             <button
               type="submit"
               disabled={!messageText.trim()}
-              className={`p-2 rounded-full text-white disabled:opacity-50 transition-colors ${theme === "dark" ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600" : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"}`}
+              className="p-2 rounded-full text-white disabled:opacity-50 transition-colors bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600"
             >
               <Send size={20} />
             </button>
