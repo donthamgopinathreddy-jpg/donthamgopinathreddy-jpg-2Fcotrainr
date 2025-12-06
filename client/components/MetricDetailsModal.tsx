@@ -126,7 +126,7 @@ export default function MetricDetailsModal({
 
           {/* Weekly Chart */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
               <TrendingUp size={16} className={`text-${color}-500`} />
               This Week
             </h3>
@@ -136,17 +136,17 @@ export default function MetricDetailsModal({
                 <div key={idx}>
                   <div className="flex items-center justify-between mb-1">
                     <div>
-                      <p className="text-xs font-medium text-gray-900">
+                      <p className="text-xs font-medium text-foreground">
                         {item.day}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">
                         {item.date.toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
                         })}
                       </p>
                     </div>
-                    <p className="text-sm font-bold text-gray-900">
+                    <p className="text-sm font-bold text-foreground">
                       {item.value.toLocaleString()}
                     </p>
                   </div>
@@ -164,23 +164,23 @@ export default function MetricDetailsModal({
           </div>
 
           {/* Date Selector */}
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 space-y-4">
+          <div className="bg-card rounded-2xl p-4 space-y-4 border border-border">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-900">
+              <h3 className="text-sm font-semibold text-foreground">
                 Select Week
               </h3>
               <div className="flex items-center gap-2">
-                <button className="p-2 hover:bg-white rounded-lg transition-colors">
-                  <ChevronLeft size={18} className="text-gray-600" />
+                <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+                  <ChevronLeft size={18} className="text-muted-foreground" />
                 </button>
-                <span className="text-sm font-medium text-gray-900 min-w-[100px] text-center">
+                <span className="text-sm font-medium text-foreground min-w-[100px] text-center">
                   {selectedDate.toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
                   })}
                 </span>
-                <button className="p-2 hover:bg-white rounded-lg transition-colors">
-                  <ChevronRight size={18} className="text-gray-600" />
+                <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+                  <ChevronRight size={18} className="text-muted-foreground" />
                 </button>
               </div>
             </div>
@@ -189,10 +189,10 @@ export default function MetricDetailsModal({
             <div className="grid grid-cols-7 gap-2">
               {["S", "M", "T", "W", "T", "F", "S"].map((day, idx) => (
                 <div key={idx} className="text-center">
-                  <p className="text-xs font-medium text-gray-600 mb-2">
+                  <p className="text-xs font-medium text-muted-foreground mb-2">
                     {day}
                   </p>
-                  <button className="w-full aspect-square text-xs font-medium text-gray-600 hover:bg-white rounded-lg transition-colors">
+                  <button className="w-full aspect-square text-xs font-medium text-muted-foreground hover:bg-muted rounded-lg transition-colors">
                     {idx + 1}
                   </button>
                 </div>
@@ -213,10 +213,10 @@ export default function MetricDetailsModal({
         </div>
 
         {/* Footer */}
-        <div className="bg-gray-50 border-t border-gray-200 p-4 flex gap-3">
+        <div className="bg-card border-t border-border p-4 flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold rounded-xl transition-colors"
+            className="flex-1 px-4 py-3 bg-muted hover:bg-muted/80 text-foreground font-semibold rounded-xl transition-colors"
           >
             Close
           </button>
