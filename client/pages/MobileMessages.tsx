@@ -35,9 +35,9 @@ export default function MobileMessages() {
 
   if (selectedConversation) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className={`min-h-screen flex flex-col ${theme === "dark" ? "bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}>
         {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3">
+        <div className={`backdrop-blur-md border-b px-4 py-3 flex items-center gap-3 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
           <button
             onClick={() => setSelectedConversation(null)}
             className="text-orange-600 font-semibold"
