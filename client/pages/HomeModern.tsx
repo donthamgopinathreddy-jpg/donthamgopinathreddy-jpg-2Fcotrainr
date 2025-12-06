@@ -93,7 +93,7 @@ const HomeModern = () => {
     {
       icon: Users,
       label: "Discover",
-      color: "from-purple-500 to-pink-500",
+      color: "from-orange-500 to-yellow-500",
       path: "/discover",
       shortcut: "Find trainers",
     },
