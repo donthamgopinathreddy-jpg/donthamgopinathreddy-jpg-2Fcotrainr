@@ -499,26 +499,26 @@ export default function MobileProfile() {
           </div>
 
           {/* Contact Info Card */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex justify-between items-center">
+          <div className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <Mail size={16} className="text-purple-600" />
-                <p className="text-xs text-gray-500">Email</p>
+                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Email</p>
               </div>
-              <p className="text-sm font-semibold text-gray-900">
+              <p className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
                 {userProfile?.email}
               </p>
             </div>
           </div>
 
           {/* Phone Card */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex justify-between items-center">
+          <div className={`rounded-2xl p-4 shadow-sm border flex justify-between items-center ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <MapPin size={16} className="text-pink-600" />
-                <p className="text-xs text-gray-500">Phone & Country</p>
+                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>Phone & Country</p>
               </div>
-              <p className="text-sm font-semibold text-gray-900">
+              <p className={`text-sm font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
                 {userProfile?.country_code}{" "}
                 {userProfile?.phone_number || "Not set"}
               </p>
