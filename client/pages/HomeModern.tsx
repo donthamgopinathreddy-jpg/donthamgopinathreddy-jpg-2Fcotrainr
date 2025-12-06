@@ -478,8 +478,8 @@ const HomeModern = () => {
                       <Icon
                         size={32}
                         className={`mx-auto mb-2 group-hover:scale-110 transition-transform duration-300 ${
-                          tile.color === "from-purple-500 to-pink-500"
-                            ? "text-purple-500"
+                          tile.color === "from-orange-500 to-yellow-500"
+                            ? "text-orange-500"
                             : tile.color === "from-green-500 to-emerald-500"
                               ? "text-green-500"
                               : tile.color === "from-blue-500 to-cyan-500"
