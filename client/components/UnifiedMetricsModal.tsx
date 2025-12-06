@@ -98,17 +98,17 @@ const MetricCard = ({
             <div key={idx}>
               <div className="flex items-center justify-between mb-1">
                 <div>
-                  <p className="text-xs font-medium text-gray-900">
+                  <p className="text-xs font-medium text-foreground">
                     {days[date.getDay()]}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-muted-foreground">
                     {date.toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                     })}
                   </p>
                 </div>
-                <p className="text-sm font-bold text-gray-900">
+                <p className="text-sm font-bold text-foreground">
                   {value.toLocaleString()} {unit}
                 </p>
               </div>
