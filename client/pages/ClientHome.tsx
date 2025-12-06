@@ -22,6 +22,7 @@ import {
   Video,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { useStepCounter } from "@/hooks/useStepCounter";
 import { supabase } from "@/lib/supabase";
