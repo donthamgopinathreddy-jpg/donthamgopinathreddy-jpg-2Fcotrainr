@@ -107,7 +107,7 @@ export default function MobileMessages() {
       <div className={`sticky top-0 z-10 backdrop-blur-md border-b px-4 py-3 ${theme === "dark" ? "bg-gray-950/95 border-gray-800/50" : "bg-white/80 border-purple-200/30"}`}>
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 text-orange-600 font-semibold mb-4"
+          className={`flex items-center gap-2 font-semibold mb-4 ${theme === "dark" ? "text-purple-400 hover:text-purple-300" : "text-orange-600 hover:text-orange-700"}`}
         >
           <ArrowLeft size={20} />
           Back
