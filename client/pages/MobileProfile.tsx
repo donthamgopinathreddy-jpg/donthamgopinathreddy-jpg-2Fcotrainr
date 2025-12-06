@@ -404,7 +404,7 @@ export default function MobileProfile() {
 
           {/* Bio */}
           {userProfile?.bio && (
-            <p className="text-gray-700 text-sm mb-4 italic">
+            <p className={`text-sm mb-4 italic ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
               "{userProfile.bio}"
             </p>
           )}
