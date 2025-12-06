@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 export default function MobileMessages() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const { conversations, messages, loading, sendMessage } = useMessages();
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [messageText, setMessageText] = useState("");
